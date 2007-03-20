@@ -1,0 +1,31 @@
+doc/
+doc/make/
+doc/make/3.81/
+doc/make/3.81/make-3.81/
+doc/make/3.81/make-3.81/make.chm
+doc/make/3.81/make-3.81/make.dvi.gz
+doc/make/3.81/make-3.81/make.hlp
+doc/make/3.81/make-3.81/make.html
+doc/make/3.81/make-3.81/make.pdf
+doc/make/3.81/make-3.81/make.ps.gz
+doc/Open Group Base Specifications Issue 6/
+doc/Open Group Base Specifications Issue 6/make.htm
+doc/UnixV7/
+doc/UnixV7/make_V7.pdf
+doc/UnixV7/make_V7.ps.gz
+info/
+info/dir
+info/make.info
+info/make.info-1
+info/make.info-2
+man/cat1/
+man/html/
+man/html/make.1.html
+man/man1/
+man/man1/make.1
+man/pdf/
+man/pdf/make-man.pdf
+man/ps/
+man/ps/make-man.ps.gz
+manifest/make-3.81-doc.mft
+manifest/make-3.81-doc.ver

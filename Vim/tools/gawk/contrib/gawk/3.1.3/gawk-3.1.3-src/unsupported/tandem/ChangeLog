@@ -1,0 +1,46 @@
+Mon Jul  7 11:01:43 2003  Arnold D. Robbins  <arnold@skeeve.com>
+
+	* Release 3.1.3: Release tar file made.
+
+Wed Mar 19 14:10:31 2003  Arnold D. Robbins  <arnold@skeeve.com>
+
+	This time for sure.
+		-- Bullwinkle
+
+	* Release 3.1.2: Release tar file made.
+
+Wed May  1 16:41:32 2002  Arnold D. Robbins  <arnold@skeeve.com>
+
+	* Release 3.1.1: Release tar file made.
+
+Sun Jun  3 13:04:44 2001  Arnold D. Robbins  <arnold@skeeve.com>
+
+	* Release 3.1.0: Release tar file made.  And there was
+	  rejoicing.
+
+Sun Jan 28 15:50:02 2001  Eli Zaretskii  <eliz@is.elta.co.il>
+
+	* tmisc.c (os_restore_mode): New function
+
+Sun Dec  3 16:53:37 2000  Arnold D. Robbins  <arnold@skeeve.com> 
+
+	* tmisc.c (os_setbinmode): new function.
+
+Tue Nov  7 14:09:14 2000  Arnold D. Robbins  <arnold@skeeve.com>
+
+	* tmisc.c (os_is_setuid): new function.
+
+Tue Jun  1 14:09:36 1999  Arnold D. Robbins  <arnold@gnu.org>
+
+	Sync with changes in 3.0.4 for non-Unix popen/pclose
+	* popen.h: add defines for popen and pclose.
+	* config.h: add define for HAVE_POPEN_H.
+
+Wed Jul 30 19:53:52 1997  Arnold D. Robbins  <arnold@gnu.org>
+
+	* Close-on-exec changes:
+	  tmisc.c: (os_close_on_exec, os_isdir): new functions.
+
+Mon Jul 27 11:40:00 1997  Arnold D. Robbins  <arnold@gnu.org>
+
+	* Initial integration of Tandem stuff into gawk source tree.

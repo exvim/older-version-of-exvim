@@ -1,0 +1,6 @@
+#! /bin/sh
+
+for sym
+do
+    gid $sym |egrep '(}[ 	]*|:[ 	]*#[ 	]*define[ 	]+)'$sym'|typedef\>.*[ 	]+'$sym
+done

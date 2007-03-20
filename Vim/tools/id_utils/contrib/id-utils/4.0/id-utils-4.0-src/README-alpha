@@ -1,0 +1,93 @@
+id-utils README-alpha
+
+id-utils-4.0 Special instructions for pre-release testers
+---------------------------------------------------------
+
+ * The code has been substantially changed.
+   Portability problems might remain.
+
+ * Please report your successes/problems along with your operating system,
+   compiler, and possibly other relevant information. 
+
+ Information that follows this small section is out of date,
+ but might contain interesting info.
+__________________________________________________________
+
+
+
+
+id-utils-3.x Special instructions for pre-release testers
+  (WARNING! Out of date, for reference only)
+
+* The code is pretty solid, but portability problems might remain.
+
+  I have already successfully configured, built and run `make check' on the
+  following systems, so if you have limited time, you needn't go out of
+  your way to retest them:
+
+  sparc-sun-solaris2.6		gcc
+  sparc-sun-solaris2.5.1	gcc
+  sparc-sun-sunos4.1.4		gcc & vendor cc (k&r)
+  i386-pc-solaris2.5.1		gcc
+  i386-pc-solaris2.6		gcc
+  i586-pc-linux-gnu		gcc
+  i386-pc-bsdi4.0		gcc
+  i386-unknown-freebsd2.2.7	gcc
+  i386-unknown-netbsd1.3.1	gcc
+  hppa1.1-hp-hpux9.04		gcc & vendor cc
+  mips-sgi-irix6.2		gcc & vendor cc
+
+  I always used GNU make.  The vendor-supplied make failed on HP/UX and
+  IRIX.  I didn't debug the vendor make failures, which is properly the
+  domain of automake.
+
+* At least do this:
+
+	./configure --prefix test; make all; make check; make install.
+
+  Make check should "echo OK" if it succeeded.  This is not a very rigorous
+  test, but it at least ensures sanity for the core tools.
+  If all goes well and you want to start using it, reconfigure to install
+  in a normal place, e.g.,
+
+	 # put things in /usr/local/{bin,lib,info} (the default)
+	./configure; make install
+		-or-
+	 # put things in /usr/{bin,lib,info}
+	./configure --prefix /usr; make install
+
+  If you have the time, patience and software, please build using both your
+  vendor-supplied compiler and gcc.  By default, configure will use gcc if
+  it is available.  You can override this by doing this:
+
+	make distclean
+	CC=vendor-supplied-cc ./configure	# bourne-shell syntax
+		-or-
+	setenv CC vendor-supplied-cc; ./configure # csh syntax
+
+
+* If you run into build problems, please help by emailing me the following:
+  * A brilliant, elegant patch to fix it. ;-)
+  -- or, if you don't have time for that... --
+  * The version of mkid you're trying to build
+    (type ./mkid to get the usage banner which includes the version)
+  * The output of "make -k all", to show me where it's dying.
+  * The output of "uname -a"
+  * The output of "nm" on your system's libc, if applicable.
+
+  Send bug reports directly to me: gkm@gnu.org
+
+* Be aware that this is still work in progress.  See TODO for a list of
+  things yet undone.
+
+* If you have contributed enhacements or fixes but don't find yourself
+  mentioned in the THANKS file, please bring it to my attention.
+
+Thanks!
+Greg
+
+
+Local Variables:
+mode: text
+fill-column: 75
+End:

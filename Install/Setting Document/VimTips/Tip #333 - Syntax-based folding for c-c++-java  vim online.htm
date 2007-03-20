@@ -1,0 +1,558 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0050)http://vim.sourceforge.net/tips/tip.php?tip_id=333 -->
+<HTML><HEAD><TITLE>Tip #333 - Syntax-based folding for c/c++/java : vim online</TITLE><LINK 
+href="Tip #333 - Syntax-based folding for c-c++-java  vim online_files/style.css" 
+type=text/css rel=Stylesheet>
+<META http-equiv=Content-Type content="text/html; charset=ISO-8859-1">
+<META 
+content="Vim, Vi IMproved, text editor, home, documentation, tips, scripts, news" 
+name=KEYWORDS><LINK href="/images/vim_shortcut.ico" type=image/x-icon 
+rel="shortcut icon">
+<META content="MSHTML 6.00.2900.2963" name=GENERATOR></HEAD>
+<BODY bgColor=#ffffff leftMargin=0 topMargin=0 marginwidth="0" marginheight="0"><!-- HEADER, SPONSOR IMAGE, VIM IMAGE AND BOOK AD -->
+<TABLE borderColor=red cellSpacing=0 cellPadding=0 width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD class=lightbg colSpan=4><IMG height=5 alt="" 
+      src="Tip #333 - Syntax-based folding for c-c++-java  vim online_files/spacer.gif" 
+      width=1></TD></TR>
+  <TR>
+    <TD class=lightbg>&nbsp;&nbsp;&nbsp;</TD>
+    <TD class=lightbg align=left><A 
+      href="http://vim.sourceforge.net/sponsor/index.php"><IMG 
+      alt="sponsor Vim development" 
+      src="Tip #333 - Syntax-based folding for c-c++-java  vim online_files/sponsorvim.gif" 
+      border=0></A></TD>
+    <TD class=lightbg align=middle><A 
+      href="http://vim.sourceforge.net/index.php"><IMG alt="Vim logo" 
+      src="Tip #333 - Syntax-based folding for c-c++-java  vim online_files/vim_header.gif" 
+      border=0></A></TD>
+    <TD class=lightbg align=right><A 
+      href="http://iccf-holland.org/click5.html"><IMG alt="Vim Book Ad" 
+      src="Tip #333 - Syntax-based folding for c-c++-java  vim online_files/buyhelplearn.gif" 
+      border=0></A></TD></TR>
+  <TR>
+    <TD class=lightbg colSpan=4><IMG height=5 alt="" 
+      src="Tip #333 - Syntax-based folding for c-c++-java  vim online_files/spacer.gif" 
+      width=1></TD></TR>
+  <TR>
+    <TD class=darkbg colSpan=4><IMG height=10 alt="" 
+      src="Tip #333 - Syntax-based folding for c-c++-java  vim online_files/spacer.gif" 
+      width=1></TD></TR></TBODY></TABLE><!-- THE PAGE BODY: BETWEEN HEADER AND FOOTER -->
+<TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+  <COLGROUP>
+  <COL width=180>
+  <COL width=1>
+  <TBODY>
+  <TR vAlign=top>
+    <TD class=sidebar>
+      <TABLE cellSpacing=0 cellPadding=4 width=180 border=0>
+        <TBODY>
+        <TR vAlign=top>
+          <TD class=sidebar><!-- INCLUDE THE PAGE NAVIGATION -->
+            <TABLE borderColor=red cellSpacing=0 cellPadding=0 width="100%" 
+            border=0>
+              <TBODY>
+              <TR>
+                <TD><SMALL>not logged in (<A 
+                  href="http://vim.sourceforge.net/login.php">login</A>)</SMALL></TD></TR>
+              <TR>
+                <TD><IMG height=1 alt="" 
+                  src="Tip #333 - Syntax-based folding for c-c++-java  vim online_files/spacer.gif" 
+                  width=1 border=0></TD></TR>
+              <TR>
+                <TD class=darkbg><IMG height=3 alt="" 
+                  src="Tip #333 - Syntax-based folding for c-c++-java  vim online_files/spacer.gif" 
+                  border=0></TD></TR>
+              <TR>
+                <TD><IMG height=2 alt="" 
+                  src="Tip #333 - Syntax-based folding for c-c++-java  vim online_files/spacer.gif" 
+                  width=1 border=0></TD></TR>
+              <TR>
+                <TD class=sidebarheader><A 
+                  href="http://vim.sourceforge.net/index.php">Home</A></TD></TR>
+              <TR>
+                <TD class=sidebarheader><A 
+                  href="http://vim.sourceforge.net/search.php">Search</A></TD></TR>
+              <TR>
+                <TD><IMG height=7 alt="" 
+                  src="Tip #333 - Syntax-based folding for c-c++-java  vim online_files/spacer.gif" 
+                  width=1 border=0></TD></TR>
+              <TR>
+                <TD class=checker><IMG height=1 alt="" 
+                  src="Tip #333 - Syntax-based folding for c-c++-java  vim online_files/spacer.gif" 
+                  border=0></TD></TR>
+              <TR>
+                <TD><IMG height=7 alt="" 
+                  src="Tip #333 - Syntax-based folding for c-c++-java  vim online_files/spacer.gif" 
+                  width=1 border=0></TD></TR>
+              <TR>
+                <TD class=sidebarheader><A 
+                  href="http://vim.sourceforge.net/about.php">About 
+Vim</A></TD></TR>
+              <TR>
+                <TD class=sidebarheader><A 
+                  href="http://vim.sourceforge.net/community.php">Community</A></TD></TR>
+              <TR>
+                <TD class=sidebarheader><A 
+                  href="http://vim.sourceforge.net/news/news.php">News</A></TD></TR>
+              <TR>
+                <TD class=sidebarheader><A 
+                  href="http://vim.sourceforge.net/sponsor/index.php">Sponsoring</A></TD></TR>
+              <TR>
+                <TD class=sidebarheader><A 
+                  href="http://vim.sourceforge.net/trivia.php">Trivia</A></TD></TR>
+              <TR>
+                <TD class=sidebarheader><A 
+                  href="http://vim.sourceforge.net/docs.php">Documentation</A></TD></TR>
+              <TR>
+                <TD class=sidebarheader><A 
+                  href="http://vim.sourceforge.net/download.php">Download</A></TD></TR>
+              <TR>
+                <TD><IMG height=7 alt="" 
+                  src="Tip #333 - Syntax-based folding for c-c++-java  vim online_files/spacer.gif" 
+                  width=1 border=0></TD></TR>
+              <TR>
+                <TD class=checker><IMG height=1 alt="" 
+                  src="Tip #333 - Syntax-based folding for c-c++-java  vim online_files/spacer.gif" 
+                  border=0></TD></TR>
+              <TR>
+                <TD><IMG height=7 alt="" 
+                  src="Tip #333 - Syntax-based folding for c-c++-java  vim online_files/spacer.gif" 
+                  width=1 border=0></TD></TR>
+              <TR>
+                <TD class=sidebarheader><A 
+                  href="http://vim.sourceforge.net/scripts/index.php">Scripts</A></TD></TR>
+              <TR>
+                <TD class=sidebarheader><A 
+                  href="http://vim.sourceforge.net/tips/index.php">Tips</A></TD></TR>
+              <TR>
+                <TD class=sidebarheader><A 
+                  href="http://vim.sourceforge.net/account/index.php">My 
+                  Account</A></TD></TR>
+              <TR>
+                <TD><IMG height=7 alt="" 
+                  src="Tip #333 - Syntax-based folding for c-c++-java  vim online_files/spacer.gif" 
+                  width=1 border=0></TD></TR>
+              <TR>
+                <TD class=checker><IMG height=1 alt="" 
+                  src="Tip #333 - Syntax-based folding for c-c++-java  vim online_files/spacer.gif" 
+                  border=0></TD></TR>
+              <TR>
+                <TD><IMG height=7 alt="" 
+                  src="Tip #333 - Syntax-based folding for c-c++-java  vim online_files/spacer.gif" 
+                  width=1 border=0></TD></TR>
+              <TR>
+                <TD class=sidebarheader><A 
+                  href="http://vim.sourceforge.net/huh.php">Site 
+              Help</A></TD></TR></TBODY></TABLE>
+            <TABLE cellSpacing=0 cellPadding=0 width=172 border=0>
+              <TBODY>
+              <TR>
+                <TD><IMG height=8 alt="" 
+                  src="Tip #333 - Syntax-based folding for c-c++-java  vim online_files/spacer.gif" 
+                  width=1 border=0></TD></TR>
+              <TR>
+                <TD class=darkbg><IMG height=3 alt="" 
+                  src="Tip #333 - Syntax-based folding for c-c++-java  vim online_files/spacer.gif" 
+                  width=1></TD></TR></TBODY></TABLE><BR><!-- INCLUDE THE PAGE SIDEBAR TEXT -->&nbsp; 
+          </TD></TR></TBODY></TABLE></TD>
+    <TD class=darkbg><IMG height=1 alt="" 
+      src="Tip #333 - Syntax-based folding for c-c++-java  vim online_files/spacer.gif" 
+      width=1 border=0><BR></TD>
+    <TD>
+      <TABLE borderColor=red cellSpacing=0 cellPadding=10 width="100%" 
+        border=0><TBODY>
+        <TR>
+          <TD vAlign=top>
+            <H1><IMG alt=intermediate 
+            src="Tip #333 - Syntax-based folding for c-c++-java  vim online_files/intermediate.gif">&nbsp;Tip 
+            #333: Syntax-based folding for c/c++/java</H1><!-- karma table -->
+            <TABLE borderColor=#000066 cellSpacing=0 cellPadding=4 border=1>
+              <TBODY>
+              <TR>
+                <TD class=lightbg><B>&nbsp;tip karma&nbsp;</B></TD>
+                <TD>&nbsp;Rating <B>142/53</B>, Viewed by 12082&nbsp; 
+              </TD></TR></TBODY></TABLE><BR>
+            <TABLE cellSpacing=0 cellPadding=0 border=0>
+              <TBODY>
+              <TR>
+                <TD class=prompt>created:</TD>
+                <TD>&nbsp;</TD>
+                <TD>September 23, 2002 18:32</TD>
+                <TD>&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+                <TD class=prompt>complexity:</TD>
+                <TD>&nbsp;</TD>
+                <TD>intermediate</TD></TR>
+              <TR>
+                <TD class=prompt>author:</TD>
+                <TD>&nbsp;</TD>
+                <TD>Kartik Agaram</TD>
+                <TD>&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+                <TD class=prompt>as of Vim:</TD>
+                <TD>&nbsp;</TD>
+                <TD>6.0</TD></TR></TBODY></TABLE>
+            <P><CODE>Here's a function to toggle the use of syntax-based folding 
+            for a c/c++/java file. It also handles folding markers. 
+            <BR><BR>function! OutlineToggle() <BR>&nbsp;&nbsp;&nbsp;&nbsp;if (! 
+            exists ("b:outline_mode")) 
+            <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;let 
+            b:outline_mode = 0 <BR>&nbsp;&nbsp;&nbsp;&nbsp;endif 
+            <BR><BR>&nbsp;&nbsp;&nbsp;&nbsp;if (b:outline_mode == 0) 
+            <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;syn region 
+            myFold start="{" end="}" transparent fold 
+            <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;syn sync 
+            fromstart <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;set 
+            foldmethod=syntax 
+            <BR><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;silent! exec 
+            "%s/{{{/&lt;&lt;&lt;/" 
+            <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;silent! exec 
+            "%s/}}}/&gt;&gt;&gt;/" 
+            <BR><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;let 
+            b:outline_mode = 1 <BR>&nbsp;&nbsp;&nbsp;&nbsp;else 
+            <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;set 
+            foldmethod=marker 
+            <BR><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;silent! exec 
+            "%s/&lt;&lt;&lt;/{{{/" 
+            <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;silent! exec 
+            "%s/&gt;&gt;&gt;/}}}/" 
+            <BR><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;let 
+            b:outline_mode = 0 <BR>&nbsp;&nbsp;&nbsp;&nbsp;endif 
+            <BR>endfunction</CODE></P><!-- rating table -->
+            <FORM name=rating><INPUT type=hidden value=333 name=tip_id> 
+            <TABLE borderColor=#000066 cellSpacing=0 cellPadding=4 border=1>
+              <TBODY>
+              <TR>
+                <TD class=lightbg><B>&nbsp;rate this tip&nbsp;</B></TD>
+                <TD vAlign=center><INPUT type=radio value=life_changing 
+                  name=rating>Life Changing <INPUT type=radio value=helpful 
+                  name=rating>Helpful <INPUT type=radio value=unfulfilling 
+                  name=rating>Unfulfilling&nbsp; <INPUT type=submit value=rate> 
+                </TD></TR></TBODY></TABLE></FORM>
+            <P><SMALL><A 
+            href="http://vim.sourceforge.net/tips/tip.php?tip_id=332">&lt;&lt;make 
+            footnotes in vim</A> | <A 
+            href="http://vim.sourceforge.net/tips/tip.php?tip_id=334">Loading 
+            scripts in .vimrc safely &gt;&gt;</A> </SMALL><BR><BR>
+            <H1>Additional Notes</H1>
+            <FORM action=add_tip_note.php method=get><INPUT type=hidden 
+            value=333 name=tip_id> 
+            <TABLE cellSpacing=4 cellPadding=3 width="100%" border=0>
+              <TBODY>
+              <TR>
+                <TD class=lightbg>feral@firetop.spammersdie.com, <FONT 
+                  size=-1>September 24, 2002 5:47 </FONT></TD></TR>
+              <TR>
+                <TD><TT>I took Kartik's implementation and played with it, 
+                  then played with it some more and finally got it to work. 
+                  <BR>The "syn region myFold start="{" end="}" transparent fold" 
+                  method does not like to work when you have other syn groups 
+                  for {,}. I found this annoying (as I like my colored Braces!) 
+                  so I figured a pure marker method would work nearly (or just 
+                  as) good, and it does at least for my uses. <BR><BR>Hopefully 
+                  everything works just did v0.03 and I have run out of time, 
+                  enjoy! <BR><BR>outlinetoggle.vim from my plugin 
+                  dir&gt;&gt;&gt; <BR>" vim:ff=unix ts=4 ss=4 <BR>" 
+                  vim60:fdm=marker <BR>" \file outlinetoggle.vim <BR>" <BR>" 
+                  \brief VIM-Tip #333: Syntax-based folding for c/c++/java <BR>" 
+                  <BR>" \author author:&nbsp;&nbsp; Kartik Agaram as of 
+                  Vim:&nbsp;&nbsp; 6.0 <BR>" \author Mangled by 
+                  Feral@FireTop.Com <BR>" \date Tue, 24 Sep 2002 05:44 Pacific 
+                  Daylight Time <BR>" \version $Id$ <BR>" Version: 0.03 <BR>" 
+                  History: <BR>" [Feral:267/02@05:43] v0.03: <BR>" saves the old 
+                  marker method now. <BR>" stoped trying to be clever (just do 
+                  the command twice heh) <BR>" v0.02 <BR>" trys to be cleaver 
+                  and start in the proper outline mode based on if it <BR>" 
+                  finds a "{&gt;&gt;" in the file. <BR><BR><BR>"if 
+                  exists("loaded_outlinetoggle") <BR>" finish <BR>"endif 
+                  <BR>"let loaded_outlinetoggle = 1 <BR><BR><BR>" Tip #333: 
+                  Syntax-based folding for c/c++/java <BR>" tip karma Rating 
+                  0/0, Viewed by 88 <BR>" <BR>"created:&nbsp;&nbsp; September 
+                  23, 2002 18:32 complexity:&nbsp;&nbsp; intermediate 
+                  <BR>"author:&nbsp;&nbsp; Kartik Agaram as of Vim:&nbsp;&nbsp; 
+                  6.0 <BR>" <BR>"Here's a function to toggle the use of 
+                  syntax-based folding for a c/c++/java file. It also handles 
+                  folding markers. <BR><BR>function! &lt;SID&gt;OutlineToggle() 
+                  <BR>let OldLine = line(".") <BR>let OldCol = virtcol(".") 
+                  <BR>if (! exists ("b:outline_mode")) <BR>let b:outline_mode = 
+                  0 <BR>let b:OldMarker = &amp;foldmarker <BR>" :echo 
+                  confirm(b:OldMarker) <BR>" if search("{&gt;&gt;", 'w') == 0 
+                  <BR>" " no modifed marker found, must be normal marker mode 
+                  <BR>" let b:outline_mode = 0 <BR>" else <BR>" let 
+                  b:outline_mode = 1 <BR>" endif <BR>endif <BR><BR><BR>if 
+                  (b:outline_mode == 0) <BR>let b:outline_mode = 1 <BR>" syn 
+                  region myFold start="{" end="}" transparent fold <BR>" syn 
+                  sync fromstart <BR>" set foldmethod=syntax <BR>" set 
+                  foldmethod=indent <BR><BR>set foldmethod=marker <BR>set 
+                  foldmarker={,} <BR><BR>silent! exec "%s/{{{/{&lt;&lt;/" 
+                  <BR>silent! exec "%s/}}}/}&gt;&gt;/" <BR>else <BR>let 
+                  b:outline_mode = 0 <BR>set foldmethod=marker <BR>let 
+                  &amp;foldmarker=b:OldMarker <BR>" set foldmarker={{{,}}} 
+                  <BR><BR>silent! exec "%s/{&lt;&lt;/{{{/" <BR>silent! exec 
+                  "%s/}&gt;&gt;/}}}/" <BR>endif <BR><BR>execute "normal! 
+                  ".OldLine."G" <BR>execute "normal! ".OldCol."|" <BR>unlet 
+                  OldLine <BR>unlet OldCol <BR>execute "normal! zv" 
+                  <BR>endfunction 
+                  <BR><BR>"***************************************************************** 
+                  <BR>"* Commands 
+                  <BR>"***************************************************************** 
+                  <BR>:command! -nargs=0 OUTLINE call &lt;SID&gt;OutlineToggle() 
+                  <BR><BR>" <BR>"EOF <BR>&lt;&lt;&lt;</TT></TD></TR>
+              <TR>
+                <TD class=lightbg>Kartik Agaram, <FONT size=-1>September 25, 
+                  2002 20:52 </FONT></TD></TR>
+              <TR>
+                <TD><TT>Nice. Not changing foldmethod is definitely more 
+                  elegant.</TT></TD></TR>
+              <TR>
+                <TD class=lightbg>bronson@real-time.com, <FONT size=-1>May 20, 
+                  2003 6:36 </FONT></TD></TR>
+              <TR>
+                <TD><TT>So, how would I set vim up to fold all c and cpp files 
+                  when I load them? <BR><BR>This sounds like it should be in the 
+                  syntax file for cpp just like the pl syntax file allows 
+                  perl_fold=1.</TT></TD></TR>
+              <TR>
+                <TD class=lightbg>Rich S., <FONT size=-1>January 9, 2004 13:05 
+                  </FONT></TD></TR>
+              <TR>
+                <TD><TT>Hi, <BR>The tip in the comment is great.&nbsp;&nbsp;As 
+                  is the whole concept of easy folding. <BR>I popped this into 
+                  my .vimrc: <BR>map &lt;silent&gt; &lt;F12&gt; 
+                  :OUTLINE&lt;CR&gt; <BR>This makes F12 switch in and out of 
+                  outline (folded) mode. <BR><BR>You could probably use 
+                  autocommand to make the folding happen when you open something 
+                  you want to fold.</TT></TD></TR>
+              <TR>
+                <TD class=lightbg>ostrygun@cs.com, <FONT size=-1>June 17, 2004 
+                  18:09 </FONT></TD></TR>
+              <TR>
+                <TD><TT>I wish I had same thing for comments /*&nbsp;&nbsp;*/, 
+                  but foldermarker does not support regular expression. <BR>How 
+                  about adding alternative foldermarkers ? <BR>So, we may write: 
+                  <BR>set foldermarker1={,} <BR>set foldermarker2=/*,*/ <BR>To 
+                  me it sounds like a cool feature. <BR><BR>Please, check more 
+                  simple implementation and it works with mouse, I tried to 
+                  reproduce Visual Studio C# editor :) <BR>It looks almost the 
+                  same.&nbsp;&nbsp;This is optimum combination to work with Java 
+                  files. <BR><BR>--------------------------------- <BR>set 
+                  foldmarker={,} <BR>set foldmethod=marker <BR>set 
+                  foldtext=substitute(getline(v:foldstart),'{.*','{...}','') 
+                  <BR>set foldcolumn=4 <BR>set foldlevelstart=1 
+                  <BR>----------------------------------</TT></TD></TR>
+              <TR>
+                <TD 
+                  class=lightbg>rajas_sambhare@lycosNOSPAMMONKEYBUSINESS.com, 
+                  <FONT size=-1>July 15, 2004 10:04 </FONT></TD></TR>
+              <TR>
+                <TD><TT>Combined&nbsp;&nbsp;feral@firetop.spammersdie.com 's 
+                  tip with the fold columns based on tip comment by cs.com 
+                  <BR><BR>Here is the code <BR><BR>" \file outlinetoggle.vim 
+                  <BR>" \brief VIM-Tip #333: Syntax-based folding for c/c++/java 
+                  <BR>" \author Kartik Agaram as of Vim:&nbsp;&nbsp; 6.0 <BR>" 
+                  \author Mangled by Feral@FireTop.Com <BR>" \author Further 
+                  mauled by rajas_sambhare@lycosNOSPAMMONKEYBUSINESS.com <BR>" 
+                  \date Tue, 24 Sep 2002 05:44 Pacific Daylight Time <BR>" 
+                  \version $Id$ <BR>" Version: 0.04 <BR>" History: <BR>" 
+                  [Feral:267/02@05:43] v0.03: <BR>" saves the old marker method 
+                  now. <BR>" stoped trying to be clever (just do the command 
+                  twice heh) <BR>" v0.02 <BR>" trys to be clever and start in 
+                  the proper outline mode based on if it <BR>" finds a 
+                  "{&gt;&gt;" in the file. <BR>" [Rajas:07/15/04] v0.04: <BR>" 
+                  Combined feral's tip with the foldcolumn method and cleaned 
+                  out comments <BR>" from ferals code. Changed commands name to 
+                  FOLD (shorter :) <BR><BR>" Tip #333: Syntax-based folding for 
+                  c/c++/java <BR>" tip karma Rating 0/0, Viewed by 88 <BR>" 
+                  <BR>"created: September 23, 2002 18:32 complexity:&nbsp;&nbsp; 
+                  intermediate <BR>"author: Kartik Agaram as of Vim:&nbsp;&nbsp; 
+                  6.0 <BR>" <BR>"Here's a function to toggle the use of 
+                  syntax-based folding for a c/c++/java file. It also handles 
+                  folding markers. <BR><BR>function! &lt;SID&gt;OutlineToggle() 
+                  <BR>let OldLine = line(".") <BR>let OldCol = virtcol(".") 
+                  <BR>if (! exists ("b:outline_mode")) <BR>let b:outline_mode = 
+                  0 <BR>let b:OldMarker = &amp;foldmarker <BR>endif 
+                  <BR><BR><BR>if (b:outline_mode == 0) <BR>let b:outline_mode = 
+                  1 <BR>set foldmethod=marker <BR>set foldmarker={,} <BR>silent! 
+                  exec "%s//{&lt;&lt;/" <BR>silent! exec "%s//}&gt;&gt;/" 
+                  <BR>set foldcolumn=4 <BR>else <BR>let b:outline_mode = 0 
+                  <BR>set foldmethod=marker <BR>let &amp;foldmarker=b:OldMarker 
+                  <BR>silent! exec "%s//{&lt;&lt;/" <BR>silent! exec 
+                  "%s//}&gt;&gt;/" <BR>set foldcolumn=0 <BR>endif 
+                  <BR><BR>execute "normal! ".OldLine."G" <BR>execute "normal! 
+                  ".OldCol."|" <BR>unlet OldLine <BR>unlet OldCol <BR>execute 
+                  "normal! zv" <BR>endfunction 
+                  <BR><BR>"***************************************************************** 
+                  <BR>"* Commands 
+                  <BR>"***************************************************************** 
+                  <BR>:command! -nargs=0 FOLD call &lt;SID&gt;OutlineToggle() 
+                  <BR>" End of code <BR><BR>Copy and save this as 
+                  outlinetoggle.vim in your Vim/vim63/plugins directory. To 
+                  toggle folding, type :FOLD <BR>Remember you can use :zE to 
+                  expand all folds.</TT></TD></TR>
+              <TR>
+                <TD 
+                  class=lightbg>rajas_sambhare@lycosNOSPAMMONKEYBUSINESS.com, 
+                  <FONT size=-1>July 16, 2004 10:16 </FONT></TD></TR>
+              <TR>
+                <TD><TT>Sorry, there's a bug in the previous code, caused by 
+                  opening that plugin in vim and typing zE, that messed up the 
+                  regular expression. Here is the correct version, <BR><BR>" 
+                  \file outlinetoggle.vim <BR>" \brief VIM-Tip #333: 
+                  Syntax-based folding for c/c++/java <BR>" \author Kartik 
+                  Agaram as of Vim:&nbsp;&nbsp; 6.0 <BR>" \author Mangled by 
+                  Feral@FireTop.Com <BR>" \author Further mauled by 
+                  rajas_sambhare@lycosNOSPAMMONKEYBUSINESS.com <BR>" \date Tue, 
+                  24 Sep 2002 05:44 Pacific Daylight Time <BR>" \version $Id$ 
+                  <BR>" Version: 0.04 <BR>" History: <BR>" [Feral:267/02@05:43] 
+                  v0.03: <BR>" saves the old marker method now. <BR>" stoped 
+                  trying to be clever (just do the command twice heh) <BR>" 
+                  v0.02 <BR>" trys to be clever and start in the proper outline 
+                  mode based on if it <BR>" finds a "{&gt;&gt;" in the file. 
+                  <BR>" [Rajas:07/16/04] v0.04.1: <BR>" Combined feral's tip 
+                  with the foldcolumn method and cleaned out comments <BR>" from 
+                  ferals code. Changed commands name to FOLD (shorter :) 
+                  <BR><BR>" Tip #333: Syntax-based folding for c/c++/java <BR>" 
+                  tip karma Rating 0/0, Viewed by 88 <BR>" <BR>"created: 
+                  September 23, 2002 18:32 complexity:&nbsp;&nbsp; intermediate 
+                  <BR>"author: Kartik Agaram as of Vim:&nbsp;&nbsp; 6.0 <BR>" 
+                  <BR>"Here's a function to toggle the use of syntax-based 
+                  folding for a c/c++/java file. It also handles folding 
+                  markers. <BR><BR>function! &lt;SID&gt;OutlineToggle() <BR>let 
+                  OldLine = line(".") <BR>let OldCol = virtcol(".") <BR>if (! 
+                  exists ("b:outline_mode")) <BR>let b:outline_mode = 0 <BR>let 
+                  b:OldMarker = &amp;foldmarker <BR>endif <BR><BR><BR>if 
+                  (b:outline_mode == 0) <BR>let b:outline_mode = 1 <BR>set 
+                  foldmethod=marker <BR>set foldmarker={,} <BR>silent! exec 
+                  "%s/{{{/{&lt;&lt;/" <BR>silent! exec "%s/}}}/}&gt;&gt;/" 
+                  <BR>set foldcolumn=4 <BR>else <BR>let b:outline_mode = 0 
+                  <BR>set foldmethod=marker <BR>let &amp;foldmarker=b:OldMarker 
+                  <BR>silent! exec "%s/{&lt;&lt;/{{{/" <BR>silent! exec 
+                  "%s/}&gt;&gt;/{{{/" <BR>set foldcolumn=0 <BR>endif 
+                  <BR><BR>execute "normal! ".OldLine."G" <BR>execute "normal! 
+                  ".OldCol."|" <BR>unlet OldLine <BR>unlet OldCol <BR>execute 
+                  "normal! zv" <BR>endfunction 
+                  <BR><BR>"***************************************************************** 
+                  <BR>"* Commands 
+                  <BR>"***************************************************************** 
+                  <BR>:command! -nargs=0 FOLD call &lt;SID&gt;OutlineToggle() 
+                  <BR>" End of code <BR><BR></TT></TD></TR>
+              <TR>
+                <TD class=lightbg><B>Anonymous</B>, <FONT size=-1>March 14, 
+                  2005 9:36 </FONT></TD></TR>
+              <TR>
+                <TD><TT>Arghh! I'm trying to get C-code folding and hiding all 
+                  comments, but I've tried all of the above with no luck! 
+                  Help!... :(</TT></TD></TR>
+              <TR>
+                <TD class=lightbg><B>Anonymous</B>, <FONT size=-1>June 22, 
+                  2005 12:19 </FONT></TD></TR>
+              <TR>
+                <TD><TT>It would be cool it there was some way of folding the 
+                  previous line for those of us that write code like <BR><BR>int 
+                  function(....) <BR>{ <BR>&nbsp;&nbsp;.... <BR>} <BR>so that 
+                  the function name was the folded highlight.</TT></TD></TR>
+              <TR>
+                <TD class=lightbg><B>Anonymous</B>, <FONT size=-1>October 15, 
+                  2005 18:50 </FONT></TD></TR>
+              <TR>
+                <TD><TT>you can always do <BR>set 
+                  foldtext=v:folddashes.substitute(getline(v:foldstart-1),'/\\*\\\|\\*/\\\|{{{\\d\\=','','g') 
+                  <BR>to have the highlighting be the previous lines 
+                text.</TT></TD></TR>
+              <TR>
+                <TD class=lightbg>bow@skip.informatik.gu.se, <FONT 
+                  size=-1>October 29, 2005 14:31 </FONT></TD></TR>
+              <TR>
+                <TD><TT>When in folding mode is it possible to fold a section, 
+                  like it is possible to unfold one?</TT></TD></TR>
+              <TR>
+                <TD class=lightbg><B>Anonymous</B>, <FONT size=-1>May 15, 2006 
+                  15:45 </FONT></TD></TR>
+              <TR>
+                <TD><TT>now when I open file using gvim, the function is 
+                  folded,&nbsp;&nbsp;and I happened to get a keyboard comment 
+                  let one of the unfold, but I don't know how to refold them 
+                  back. <BR><BR>i.e. <BR>what's the key borad comment to 
+                  <BR>fold <BR>unfold <BR>a region. <BR><BR>get some tips from 
+                  <A href="http://www.ssds.ucdavis.edu/unix/unix-7-10-14-8.html" 
+                  target=_blank>http://www.ssds.ucdavis.edu/unix/unix-7-10-14-8.html</A> 
+                  <BR>but don't understand what is zo zc, how to use and where. 
+                  </TT></TD></TR>
+              <TR>
+                <TD class=lightbg>andrewford@optonline.net, <FONT size=-1>May 
+                  18, 2006 9:49 </FONT></TD></TR>
+              <TR>
+                <TD><TT>zo = Open a fold <BR>zc = Close a fold (The fold 
+                  region must already exist) <BR>zfm = 'zf' means to create a 
+                  fold of movement 'm' <BR><BR>So, if i had a block of code: 
+                  <BR>if( predicate ) <BR>{ <BR>&nbsp;&nbsp;someFunction(); 
+                  <BR>} <BR><BR>If you move the cursor to one of the curly 
+                  braces, in command mode you type 'zf%', then you will end up 
+                  with a fold looking something like this: <BR>if( predicate ) 
+                  <BR>3 lines:&nbsp;&nbsp;{ <BR><BR>The "3 lines: {" will be 
+                  highlighted, indicating that you have created a 
+                  fold.&nbsp;&nbsp;Also, "3 lines" tells you how many lines were 
+                  folded.</TT></TD></TR>
+              <TR>
+                <TD class=lightbg><B>Anonymous</B>, <FONT size=-1>August 30, 
+                  2006 0:01 </FONT></TD></TR>
+              <TR>
+                <TD><TT>Great! just what I want, thanks!</TT></TD></TR>
+              <TR>
+                <TD><INPUT type=submit value="Add Note" name="Add Note"> 
+              </TD></TR></TBODY></TABLE></FORM><!-- finish off the framework --></TD></TR></TBODY></TABLE></TD></TR></TBODY></TABLE><!-- END OF THE PAGE BODY: BETWEEN HEADER AND FOOTER -->
+<TABLE borderColor=red cellSpacing=0 cellPadding=0 width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD colSpan=4><IMG height=5 alt="" 
+      src="Tip #333 - Syntax-based folding for c-c++-java  vim online_files/spacer.gif" 
+      width=1></TD></TR>
+  <TR>
+    <TD bgColor=#000000 colSpan=4><IMG height=2 alt="" 
+      src="Tip #333 - Syntax-based folding for c-c++-java  vim online_files/spacer.gif" 
+      width=1></TD></TR>
+  <TR>
+    <TD colSpan=4><IMG height=5 alt="" 
+      src="Tip #333 - Syntax-based folding for c-c++-java  vim online_files/spacer.gif" 
+      width=1></TD></TR>
+  <TR>
+    <TD><IMG height=1 alt="" 
+      src="Tip #333 - Syntax-based folding for c-c++-java  vim online_files/spacer.gif" 
+      width=5></TD>
+    <TD vAlign=top align=left><SMALL>If you have questions or remarks about 
+      this site, visit the <A href="http://vimonline.sf.net/">vimonline 
+      development</A> pages. Please use this site responsibly. <BR>Questions 
+      about <A href="http://www.vim.org/about.php">Vim</A> should go to 
+      vim@vim.org after searching <A 
+      href="http://groups.yahoo.com/group/vim">the archive</A>. Help Bram <A 
+      href="http://iccf-holland.org/">help Uganda</A>. </SMALL>&nbsp; &nbsp; <!-- Start of StatCounter Code -->
+      <SCRIPT language=javascript type=text/javascript>
+	var sc_project=1417324; 
+	var sc_invisible=1; 
+	var sc_partition=11; 
+	var sc_security="d41633bc"; 
+	</SCRIPT>
+
+      <SCRIPT language=javascript 
+      src="Tip #333 - Syntax-based folding for c-c++-java  vim online_files/counter.js" 
+      type=text/javascript></SCRIPT>
+      <NOSCRIPT><A href="http://www.statcounter.com/" target=_blank><IMG 
+      alt="free tracking" 
+      src="Tip #333 - Syntax-based folding for c-c++-java  vim online_files/counter.png" 
+      border=0></A> </NOSCRIPT><!-- End of StatCounter Code --><SMALL><A 
+      href="http://my.statcounter.com/project/standard/stats.php?project_id=1417324&amp;guest=1">stats</A> 
+      </SMALL></TD>
+    <TD vAlign=top align=right><A href="http://www.webconceptgroup.net/"><IMG 
+      height=30 alt="Sponsored by Web Concept Group Inc." 
+      src="Tip #333 - Syntax-based folding for c-c++-java  vim online_files/logo_sponsor_wcg.jpg" 
+      width=131 border=0></A> <A href="http://sourceforge.net/"><IMG height=31 
+      alt="SourceForge.net Logo" 
+      src="Tip #333 - Syntax-based folding for c-c++-java  vim online_files/sflogo.png" 
+      width=88 border=0></A> </TD>
+    <TD><IMG height=1 alt="" 
+      src="Tip #333 - Syntax-based folding for c-c++-java  vim online_files/spacer.gif" 
+      width=5></TD></TR>
+  <TR>
+    <TD colSpan=4><IMG height=5 alt="" 
+      src="Tip #333 - Syntax-based folding for c-c++-java  vim online_files/spacer.gif" 
+      width=1></TD></TR></TBODY></TABLE></BODY></HTML>

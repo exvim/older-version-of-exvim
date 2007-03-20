@@ -1,0 +1,1136 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0050)http://vim.sourceforge.net/tips/tip.php?tip_id=305 -->
+<HTML><HEAD><TITLE>Tip #305 - Best of VIM Tips (VIM's best Features) : vim online</TITLE><LINK 
+href="Tip #305 - Best of VIM Tips (VIM's best Features)  vim online_files/style.css" 
+type=text/css rel=Stylesheet>
+<META http-equiv=Content-Type content="text/html; charset=ISO-8859-1">
+<META 
+content="Vim, Vi IMproved, text editor, home, documentation, tips, scripts, news" 
+name=KEYWORDS><LINK href="/images/vim_shortcut.ico" type=image/x-icon 
+rel="shortcut icon">
+<META content="MSHTML 6.00.2900.2963" name=GENERATOR></HEAD>
+<BODY bgColor=#ffffff leftMargin=0 topMargin=0 marginwidth="0" marginheight="0"><!-- HEADER, SPONSOR IMAGE, VIM IMAGE AND BOOK AD -->
+<TABLE borderColor=red cellSpacing=0 cellPadding=0 width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD class=lightbg colSpan=4><IMG height=5 alt="" 
+      src="Tip #305 - Best of VIM Tips (VIM's best Features)  vim online_files/spacer.gif" 
+      width=1></TD></TR>
+  <TR>
+    <TD class=lightbg>&nbsp;&nbsp;&nbsp;</TD>
+    <TD class=lightbg align=left><A 
+      href="http://vim.sourceforge.net/sponsor/index.php"><IMG 
+      alt="sponsor Vim development" 
+      src="Tip #305 - Best of VIM Tips (VIM's best Features)  vim online_files/sponsorvim.gif" 
+      border=0></A></TD>
+    <TD class=lightbg align=middle><A 
+      href="http://vim.sourceforge.net/index.php"><IMG alt="Vim logo" 
+      src="Tip #305 - Best of VIM Tips (VIM's best Features)  vim online_files/vim_header.gif" 
+      border=0></A></TD>
+    <TD class=lightbg align=right><A 
+      href="http://iccf-holland.org/click5.html"><IMG alt="Vim Book Ad" 
+      src="Tip #305 - Best of VIM Tips (VIM's best Features)  vim online_files/buyhelplearn.gif" 
+      border=0></A></TD></TR>
+  <TR>
+    <TD class=lightbg colSpan=4><IMG height=5 alt="" 
+      src="Tip #305 - Best of VIM Tips (VIM's best Features)  vim online_files/spacer.gif" 
+      width=1></TD></TR>
+  <TR>
+    <TD class=darkbg colSpan=4><IMG height=10 alt="" 
+      src="Tip #305 - Best of VIM Tips (VIM's best Features)  vim online_files/spacer.gif" 
+      width=1></TD></TR></TBODY></TABLE><!-- THE PAGE BODY: BETWEEN HEADER AND FOOTER -->
+<TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+  <COLGROUP>
+  <COL width=180>
+  <COL width=1>
+  <TBODY>
+  <TR vAlign=top>
+    <TD class=sidebar>
+      <TABLE cellSpacing=0 cellPadding=4 width=180 border=0>
+        <TBODY>
+        <TR vAlign=top>
+          <TD class=sidebar><!-- INCLUDE THE PAGE NAVIGATION -->
+            <TABLE borderColor=red cellSpacing=0 cellPadding=0 width="100%" 
+            border=0>
+              <TBODY>
+              <TR>
+                <TD><SMALL>not logged in (<A 
+                  href="http://vim.sourceforge.net/login.php">login</A>)</SMALL></TD></TR>
+              <TR>
+                <TD><IMG height=1 alt="" 
+                  src="Tip #305 - Best of VIM Tips (VIM's best Features)  vim online_files/spacer.gif" 
+                  width=1 border=0></TD></TR>
+              <TR>
+                <TD class=darkbg><IMG height=3 alt="" 
+                  src="Tip #305 - Best of VIM Tips (VIM's best Features)  vim online_files/spacer.gif" 
+                  border=0></TD></TR>
+              <TR>
+                <TD><IMG height=2 alt="" 
+                  src="Tip #305 - Best of VIM Tips (VIM's best Features)  vim online_files/spacer.gif" 
+                  width=1 border=0></TD></TR>
+              <TR>
+                <TD class=sidebarheader><A 
+                  href="http://vim.sourceforge.net/index.php">Home</A></TD></TR>
+              <TR>
+                <TD class=sidebarheader><A 
+                  href="http://vim.sourceforge.net/search.php">Search</A></TD></TR>
+              <TR>
+                <TD><IMG height=7 alt="" 
+                  src="Tip #305 - Best of VIM Tips (VIM's best Features)  vim online_files/spacer.gif" 
+                  width=1 border=0></TD></TR>
+              <TR>
+                <TD class=checker><IMG height=1 alt="" 
+                  src="Tip #305 - Best of VIM Tips (VIM's best Features)  vim online_files/spacer.gif" 
+                  border=0></TD></TR>
+              <TR>
+                <TD><IMG height=7 alt="" 
+                  src="Tip #305 - Best of VIM Tips (VIM's best Features)  vim online_files/spacer.gif" 
+                  width=1 border=0></TD></TR>
+              <TR>
+                <TD class=sidebarheader><A 
+                  href="http://vim.sourceforge.net/about.php">About 
+Vim</A></TD></TR>
+              <TR>
+                <TD class=sidebarheader><A 
+                  href="http://vim.sourceforge.net/community.php">Community</A></TD></TR>
+              <TR>
+                <TD class=sidebarheader><A 
+                  href="http://vim.sourceforge.net/news/news.php">News</A></TD></TR>
+              <TR>
+                <TD class=sidebarheader><A 
+                  href="http://vim.sourceforge.net/sponsor/index.php">Sponsoring</A></TD></TR>
+              <TR>
+                <TD class=sidebarheader><A 
+                  href="http://vim.sourceforge.net/trivia.php">Trivia</A></TD></TR>
+              <TR>
+                <TD class=sidebarheader><A 
+                  href="http://vim.sourceforge.net/docs.php">Documentation</A></TD></TR>
+              <TR>
+                <TD class=sidebarheader><A 
+                  href="http://vim.sourceforge.net/download.php">Download</A></TD></TR>
+              <TR>
+                <TD><IMG height=7 alt="" 
+                  src="Tip #305 - Best of VIM Tips (VIM's best Features)  vim online_files/spacer.gif" 
+                  width=1 border=0></TD></TR>
+              <TR>
+                <TD class=checker><IMG height=1 alt="" 
+                  src="Tip #305 - Best of VIM Tips (VIM's best Features)  vim online_files/spacer.gif" 
+                  border=0></TD></TR>
+              <TR>
+                <TD><IMG height=7 alt="" 
+                  src="Tip #305 - Best of VIM Tips (VIM's best Features)  vim online_files/spacer.gif" 
+                  width=1 border=0></TD></TR>
+              <TR>
+                <TD class=sidebarheader><A 
+                  href="http://vim.sourceforge.net/scripts/index.php">Scripts</A></TD></TR>
+              <TR>
+                <TD class=sidebarheader><A 
+                  href="http://vim.sourceforge.net/tips/index.php">Tips</A></TD></TR>
+              <TR>
+                <TD class=sidebarheader><A 
+                  href="http://vim.sourceforge.net/account/index.php">My 
+                  Account</A></TD></TR>
+              <TR>
+                <TD><IMG height=7 alt="" 
+                  src="Tip #305 - Best of VIM Tips (VIM's best Features)  vim online_files/spacer.gif" 
+                  width=1 border=0></TD></TR>
+              <TR>
+                <TD class=checker><IMG height=1 alt="" 
+                  src="Tip #305 - Best of VIM Tips (VIM's best Features)  vim online_files/spacer.gif" 
+                  border=0></TD></TR>
+              <TR>
+                <TD><IMG height=7 alt="" 
+                  src="Tip #305 - Best of VIM Tips (VIM's best Features)  vim online_files/spacer.gif" 
+                  width=1 border=0></TD></TR>
+              <TR>
+                <TD class=sidebarheader><A 
+                  href="http://vim.sourceforge.net/huh.php">Site 
+              Help</A></TD></TR></TBODY></TABLE>
+            <TABLE cellSpacing=0 cellPadding=0 width=172 border=0>
+              <TBODY>
+              <TR>
+                <TD><IMG height=8 alt="" 
+                  src="Tip #305 - Best of VIM Tips (VIM's best Features)  vim online_files/spacer.gif" 
+                  width=1 border=0></TD></TR>
+              <TR>
+                <TD class=darkbg><IMG height=3 alt="" 
+                  src="Tip #305 - Best of VIM Tips (VIM's best Features)  vim online_files/spacer.gif" 
+                  width=1></TD></TR></TBODY></TABLE><BR><!-- INCLUDE THE PAGE SIDEBAR TEXT -->&nbsp; 
+          </TD></TR></TBODY></TABLE></TD>
+    <TD class=darkbg><IMG height=1 alt="" 
+      src="Tip #305 - Best of VIM Tips (VIM's best Features)  vim online_files/spacer.gif" 
+      width=1 border=0><BR></TD>
+    <TD>
+      <TABLE borderColor=red cellSpacing=0 cellPadding=10 width="100%" 
+        border=0><TBODY>
+        <TR>
+          <TD vAlign=top>
+            <H1><IMG alt=intermediate 
+            src="Tip #305 - Best of VIM Tips (VIM's best Features)  vim online_files/intermediate.gif">&nbsp;Tip 
+            #305: Best of VIM Tips (VIM's best Features)</H1><!-- karma table -->
+            <TABLE borderColor=#000066 cellSpacing=0 cellPadding=4 border=1>
+              <TBODY>
+              <TR>
+                <TD class=lightbg><B>&nbsp;tip karma&nbsp;</B></TD>
+                <TD>&nbsp;Rating <B>3907/1212</B>, Viewed by 77377&nbsp; 
+              </TD></TR></TBODY></TABLE><BR>
+            <TABLE cellSpacing=0 cellPadding=0 border=0>
+              <TBODY>
+              <TR>
+                <TD class=prompt>created:</TD>
+                <TD>&nbsp;</TD>
+                <TD>August 10, 2002 6:05</TD>
+                <TD>&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+                <TD class=prompt>complexity:</TD>
+                <TD>&nbsp;</TD>
+                <TD>intermediate</TD></TR>
+              <TR>
+                <TD class=prompt>author:</TD>
+                <TD>&nbsp;</TD>
+                <TD>zzapper</TD>
+                <TD>&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+                <TD class=prompt>as of Vim:</TD>
+                <TD>&nbsp;</TD>
+                <TD>5.7</TD></TR></TBODY></TABLE>
+            <P><CODE>Here's a necessarily cryptic list of "MY" Best Vim Tips 
+            that I've gleaned <BR>from <A href="http://vim.sf.net/&nbsp;&nbsp;" 
+            target=_blank>http://vim.sf.net/&nbsp;&nbsp;</A>;&amp; 
+            comp.editors&nbsp;&nbsp; <BR><A 
+            href="http://groups.google.com/groups?safe=off&amp;group=comp.editors" 
+            target=_blank>http://groups.google.com/groups?safe=off&amp;group=comp.editors</A> 
+            <BR><BR>updated version at <A 
+            href="http://www.rayninfo.co.uk/vimtips.html" 
+            target=_blank>http://www.rayninfo.co.uk/vimtips.html</A> 
+            <BR>------------------------------------------------------------------------------ 
+            <BR># Absolutely essential 
+            <BR>------------------------------------------------------------------------------ 
+            <BR>vim.sf.net&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; : 
+            Visit frequently <BR>comp.editors&nbsp;&nbsp;&nbsp;&nbsp;: "VIM" 
+            dominated newsgroup <BR>* # g* 
+            g#&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: find 
+            word under cursor (forwards/backwards) 
+            <BR>%&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+            : match brackets {}[]() 
+            <BR>matchit.vim&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: % now matches 
+            tags &lt;tr&gt;&lt;td&gt;&lt;script&gt; etc <BR>&lt;C-N&gt; 
+            &lt;C-P&gt;&nbsp;&nbsp; : word completion in insert mode 
+            <BR>&lt;C-X&gt;&lt;C-L&gt;&nbsp;&nbsp;&nbsp;&nbsp;: Line complete 
+            SUPER USEFUL <BR>/&lt;C-R&gt;&lt;C-W&gt;&nbsp;&nbsp; : Pull 
+            &lt;cword&gt; onto search/command line <BR>:set ignorecase # you 
+            nearly always want this <BR>:syntax on&nbsp;&nbsp;&nbsp;&nbsp;: 
+            colour syntax in Perl,HTML,PHP etc <BR>:h slash&lt;C-D&gt; : type 
+            control-D and get a list all help topics containing 
+            <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+            slash (plus use TAB for Help completion) 
+            <BR>------------------------------------------------------------------------------ 
+            <BR># MAKE IT EASY TO UPDATE/RELOAD_vimrc <BR>:nmap ,s :source 
+            $VIM/_vimrc <BR>:nmap ,v :e $VIM/_vimrc 
+            <BR>------------------------------------------------------------------------------ 
+            <BR>#VISUAL MODE Mappings <BR>:vmap sb 
+            "zdi&lt;b&gt;&lt;C-R&gt;z&lt;/b&gt;&lt;ESC&gt; : wrap 
+            &lt;b&gt;&lt;/b&gt; around VISUALLY selected Text <BR>:vmap st 
+            "zdi&lt;?= &lt;C-R&gt;z ?&gt;&lt;ESC&gt;&nbsp;&nbsp;: wrap 
+            &lt;?=&nbsp;&nbsp; ?&gt; around VISUALLY selected Text 
+            <BR>------------------------------------------------------------------------------ 
+            <BR># Exploring 
+            <BR>:Ex&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+            : file explorer note capital Ex 
+            <BR>\be&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+            : builtin buffer explorer 
+            <BR>:ls&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+            : list of buffers(eg following) <BR>:cd 
+            ..&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: 
+            move to parent directory 
+            <BR>------------------------------------------------------------------------------ 
+            <BR># Great 
+            <BR>guu&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+            : lowercase line 
+            <BR>gUU&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+            : uppercase line 
+            <BR>gf&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: 
+            open file name under cursor (SUPER) 
+            <BR>ga&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: 
+            display hex,ascii value of character under cursor 
+            <BR>ggVGg?&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: 
+            rot13 whole file 
+            <BR>CTRL-A,CTRL-X&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+            : increment,decerement number under cursor 
+            <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;win32 
+            users must remap CNTRL-A 
+            <BR>CTRL-R=5*5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: 
+            insert 25 into text 
+            <BR>------------------------------------------------------------------------------ 
+            <BR># Makes all other tips superfluous <BR>:h 
+            42&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+            <BR>:h 
+            holy-grail&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+            <BR>:help!&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+            <BR>------------------------------------------------------------------------------ 
+            <BR># Markers &amp; moving about 
+            <BR>'.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+            : jump to last modification line (SUPER) 
+            <BR>`.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+            : jump to exact spot in last modification line 
+            <BR>&lt;C-O&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: 
+            retrace your movements in file (old) 
+            <BR>&lt;C-I&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: 
+            retrace your movements in file (new) <BR>:ju(mps) <BR>:help 
+            jump-motions 
+            <BR>:history&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: 
+            list of all your commands 
+            <BR>------------------------------------------------------------------------------ 
+            <BR># Abbreviations &amp; maps <BR>:map&nbsp;&nbsp; 
+            &lt;f7&gt;&nbsp;&nbsp; :'a,'bw! c:/aaa/x <BR>:map&nbsp;&nbsp; 
+            &lt;f8&gt;&nbsp;&nbsp; :r c:/aaa/x <BR>:map&nbsp;&nbsp; 
+            &lt;f9&gt;&nbsp;&nbsp; :w&lt;CR&gt;:!c:/php/php.exe %&lt;CR&gt; 
+            <BR>:map&nbsp;&nbsp; &lt;f11&gt;&nbsp;&nbsp;:.w! c:/aaa/xr&lt;CR&gt; 
+            <BR>:map&nbsp;&nbsp; &lt;f12&gt;&nbsp;&nbsp;:r c:/aaa/xr&lt;CR&gt; 
+            <BR>:ab 
+            php&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; : 
+            list of abbreviations beginning php <BR>:map 
+            ,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: 
+            list of maps beginning , <BR># For use in Maps 
+            <BR>&lt;CR&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+            : carriage Return for maps 
+            <BR>&lt;ESC&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: 
+            Escape 
+            <BR>&lt;LEADER&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; : 
+            normally \ 
+            <BR>&lt;BAR&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: 
+            | pipe 
+            <BR>------------------------------------------------------------------------------ 
+            <BR># List your Registers 
+            <BR>:reg&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+            : display contents of all registers 
+            <BR>"1p....&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: 
+            retrieve numeric buffers 
+            <BR>------------------------------------------------------------------------------ 
+            <BR># Useful trick 
+            <BR>"ayy@a&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: 
+            execute "Vim command" in a text file 
+            <BR>yy@"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: 
+            same thing using unnamed register 
+            <BR>------------------------------------------------------------------------------ 
+            <BR># Get output from other commands 
+            <BR>:r!ls.exe&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: reads 
+            in output of ls 
+            <BR>!!date&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+            : same thing <BR>:%!sort -u&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; : 
+            use an external program to filter content 
+            <BR>------------------------------------------------------------------------------ 
+            <BR># Multiple Files Management 
+            <BR>:wn&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: 
+            write file and move to next (SUPER) 
+            <BR>:bd&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: 
+            remove file from buffer list (SUPER) <BR>:sav 
+            php.html&nbsp;&nbsp;&nbsp;&nbsp;: Save current file as php.html and 
+            "move" to php.html <BR>:sp fred.txt&nbsp;&nbsp;&nbsp;&nbsp; : open 
+            fred.txt into a split 
+            <BR>:e!&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: 
+            return to unmodified file <BR>:w 
+            c:/aaa/%&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: save file elsewhere 
+            <BR>:e 
+            #&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+            : edit alternative file <BR>:e % 
+            <BR>:rew&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: 
+            rewwind to first file in ARGS 
+            <BR>:bn&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+            : next file 
+            <BR>:bp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+            : next file <BR>:brew 
+            <BR>------------------------------------------------------------------------------ 
+            <BR># Recording (BEST TIP of ALL) <BR>qq&nbsp;&nbsp;# record to q 
+            <BR>your commands <BR>q <BR>@q to execute <BR>@@ to Repeat <BR># 
+            editing a register/recording <BR>"ap <BR>&lt;you can now see 
+            register contents, edit as required&gt; <BR>"add <BR>@a 
+            <BR>------------------------------------------------------------------------------ 
+            <BR># _vimrc essentials <BR>:set incsearch : jumps to search word as 
+            you type (annoying but excellent) <BR>:set 
+            wildignore=*.o,*.obj,*.bak,*.exe <BR>:set shiftwidth=3 
+            <BR>------------------------------------------------------------------------------ 
+            <BR># launching Win IE <BR>:nmap ,f :update&lt;CR&gt;:silent !start 
+            c:\progra~1\intern~1\iexplore.exe file://%:p&lt;CR&gt; <BR>:nmap ,i 
+            :update&lt;CR&gt;: !start c:\progra~1\intern~1\iexplore.exe 
+            &lt;cWORD&gt;&lt;CR&gt; 
+            <BR>------------------------------------------------------------------------------ 
+            <BR># FTPing from VIM <BR>cmap ,r&nbsp;&nbsp;:Nread <A 
+            href="ftp://209.51.134.122/public_html/index.html" 
+            target=_blank>ftp://209.51.134.122/public_html/index.html</A> 
+            <BR>cmap ,w&nbsp;&nbsp;:Nwrite <A 
+            href="ftp://209.51.134.122/public_html/index.html" 
+            target=_blank>ftp://209.51.134.122/public_html/index.html</A> 
+            <BR>gvim <A href="ftp://209.51.134.122/public_html/index.html" 
+            target=_blank>ftp://209.51.134.122/public_html/index.html</A> 
+            <BR>------------------------------------------------------------------------------ 
+            <BR># appending to registers (use CAPITAL) <BR># yank 5 lines into 
+            "a" then add a further 5 <BR>"a5yy <BR>10j <BR>"A5yy 
+            <BR>------------------------------------------------------------------------------ 
+            <BR>[I&nbsp;&nbsp;&nbsp;&nbsp; : show lines matching word under 
+            cursor &lt;cword&gt; 
+            <BR>------------------------------------------------------------------------------ 
+            <BR>#Conventional Shifting <BR>:'a,'b&gt;&gt; <BR># visual shifting 
+            (builtin-repeat) <BR>:vnoremap &lt; &lt;gv <BR>:vnoremap &gt; &gt;gv 
+            <BR>------------------------------------------------------------------------------ 
+            <BR># searching <BR>/^joe.*fred.*bill/ : normal 
+            <BR>/^[A-J]\+/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; : 
+            search for lines beginning A-J followed by at leat 1 A-J 
+            <BR>/forum\(\_.\)*pent&nbsp;&nbsp; search over possible multiple 
+            lines <BR>/fred\_s*joe/i&nbsp;&nbsp;&nbsp;&nbsp;: any whitespace 
+            including newline 
+            <BR>/fred\|joe&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: 
+            Search for FRED OR JOE 
+            <BR>------------------------------------------------------------------------------ 
+            <BR>#substitution 
+            <BR>:%s/fred/joe/igc&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: 
+            general substitute command 
+            <BR>:%s/\r//g&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+            : Delete DOS returns ^M <BR>:'a,'bg/fred/s/dick/joe/gc&nbsp;&nbsp;: 
+            VERY USEFUL <BR>:s/\(.*\):\(.*\)/\2 :&nbsp;&nbsp;\1/&nbsp;&nbsp;: 
+            reverse fields separated by : 
+            <BR>:%s/^.\{-}pdf/new.pdf/&nbsp;&nbsp;non greedy matching (ie to 
+            first pdf) <BR>:s/fred/&lt;c-r&gt;a/g substitute "fred" with 
+            contents of register "a" <BR>:%s/^\(.*\)\n\1/\1$/&nbsp;&nbsp;delete 
+            duplicate lines <BR># non-greedy matching \{-} 
+            <BR>:%s/^.\{-}pdf/new.pdf/ <BR>:help /\{-} 
+            <BR>:s/fred/&lt;c-r&gt;a/g substitute "fred" with contents of 
+            register "a" <BR># multiple commands 
+            <BR>:%s/\f\+\.gif\&gt;/\r&amp;\r/g | v/\.gif$/d | %s/gif/jpg/ 
+            <BR>:%s/suck\|buck/loopy/gc&nbsp;&nbsp;: ORing 
+            <BR>:s/__date__/\=strftime("%c")/ : insert datestring 
+            <BR>------------------------------------------------------------------------------ 
+            <BR># global command 
+            <BR>:g/^\s*$/d&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; :delete all blank 
+            lines <BR>:g!/^dd/d&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: 
+            delete lines not containing string 
+            <BR>:v/^dd/d&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; : 
+            delete lines not containing string <BR>:g/fred/,/joe/d&nbsp;&nbsp;: 
+            not line based <BR>:v/./.,/./-1join : compress empty lines 
+            <BR>:'a,'b g/^Error/ . w &gt;&gt; errors.txt 
+            <BR>:g/cmap\|form/p&nbsp;&nbsp;: ORing 
+            <BR>------------------------------------------------------------------------------ 
+            <BR># Paste register * <BR>:redir @*&nbsp;&nbsp; : redirect commands 
+            to paste <BR>:redir END 
+            <BR>"*yy&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: yank to 
+            paste <BR>"*p&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; : 
+            insert paste buffer 
+            <BR>------------------------------------------------------------------------------ 
+            <BR># Formatting text <BR>gq&lt;CR&gt; <BR>gqap&nbsp;&nbsp;(a is 
+            motion p paragraph (visual mode)) 
+            <BR>------------------------------------------------------------------------------ 
+            <BR># Operate command over multiple files <BR>:argdo %s/foo/bar/ 
+            <BR>:bufdo %s/foo/bar/ <BR>:windo %s/foo/bar/ 
+            <BR>------------------------------------------------------------------------------ 
+            <BR># Command line tricks <BR>gvim -h <BR>ls | gvim -&nbsp;&nbsp; : 
+            edit a PIPE!! <BR># vg.ksh (shell script) <BR># vi all files in 
+            directory containing keyword $1 and jump to $1 <BR>gvim.exe -c 
+            "/$1"&nbsp;&nbsp;$(grep -isl "$1" *) &amp; 
+            <BR>------------------------------------------------------------------------------ 
+            <BR></CODE></P><!-- rating table -->
+            <FORM name=rating><INPUT type=hidden value=305 name=tip_id> 
+            <TABLE borderColor=#000066 cellSpacing=0 cellPadding=4 border=1>
+              <TBODY>
+              <TR>
+                <TD class=lightbg><B>&nbsp;rate this tip&nbsp;</B></TD>
+                <TD vAlign=center><INPUT type=radio value=life_changing 
+                  name=rating>Life Changing <INPUT type=radio value=helpful 
+                  name=rating>Helpful <INPUT type=radio value=unfulfilling 
+                  name=rating>Unfulfilling&nbsp; <INPUT type=submit value=rate> 
+                </TD></TR></TBODY></TABLE></FORM>
+            <P><SMALL><A 
+            href="http://vim.sourceforge.net/tips/tip.php?tip_id=304">&lt;&lt;fold 
+            braces and javadoc</A> | <A 
+            href="http://vim.sourceforge.net/tips/tip.php?tip_id=306">Open a 
+            web-browser with the URL in the current line &gt;&gt;</A> 
+            </SMALL><BR><BR>
+            <H1>Additional Notes</H1>
+            <FORM action=add_tip_note.php method=get><INPUT type=hidden 
+            value=305 name=tip_id> 
+            <TABLE cellSpacing=4 cellPadding=3 width="100%" border=0>
+              <TBODY>
+              <TR>
+                <TD class=lightbg>y_ellzs@tsmc.com.tw, <FONT size=-1>August 
+                  11, 2002 7:36 </FONT></TD></TR>
+              <TR>
+                <TD><TT>test</TT></TD></TR>
+              <TR>
+                <TD class=lightbg>david@tvis.co.uk, <FONT size=-1>August 14, 
+                  2002 13:35 </FONT></TD></TR>
+              <TR>
+                <TD><TT>Just a reminder that this is just my 
+                  selection,but&nbsp;&nbsp;there's plenty of other good tips 
+                  <BR>in the vim tip collection <BR><BR># Vim traps <BR>In 
+                  regular expressions you must backslash + (match 1 or more) 
+                  <BR>/fred\+/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: matches 
+                  fred/freddy but not free 
+                  <BR>---------------------------------------- <BR># \v or very 
+                  magic (usually) reduces backslashing 
+                  <BR>/codes\(\n\|\s\)*where&nbsp;&nbsp;: normal regexp 
+                  <BR>/\vcodes(\n|\s)*where&nbsp;&nbsp; : very magic 
+                  <BR>---------------------------------------- <BR># pulling 
+                  objects onto command/search line (SUPER) <BR>CTRL-R CTRL-W 
+                  Pull word under the cursor into a command line or search 
+                  <BR>CTRL-R 
+                  -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: 
+                  pull small register <BR>CTRL-R 
+                  [0-9a-z]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; : 
+                  pull named registers <BR>CTRL-R 
+                  %&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: 
+                  pull file name (also #) 
+                  <BR>---------------------------------------- <BR># 
+                  manipulating registers <BR>map&nbsp;&nbsp; &lt;f11&gt; 
+                  "qyy:let @q=@q."zzz" 
+                  <BR>---------------------------------------- <BR># help <BR>:h 
+                  visual&lt;C-D&gt;&lt;tab&gt;&nbsp;&nbsp;&nbsp;&nbsp; : 
+                  obtain&nbsp;&nbsp;list of all visual help topics 
+                  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: 
+                  Then use tab to step thru them 
+                  <BR>---------------------------------------- <BR># where was 
+                  an option set <BR>:verbose set 
+                  history&nbsp;&nbsp;&nbsp;&nbsp;: reveals value of history and 
+                  where set <BR>---------------------------------------- <BR># 
+                  running file thru an external program (eg php) 
+                  <BR>map&nbsp;&nbsp; &lt;f9&gt;&nbsp;&nbsp; 
+                  :w&lt;CR&gt;:!c:/php/php.exe %&lt;CR&gt; 
+                  <BR>----------------------------------------</TT></TD></TR>
+              <TR>
+                <TD class=lightbg>david@tvis.co.uk, <FONT size=-1>September 
+                  13, 2002 1:45 </FONT></TD></TR>
+              <TR>
+                <TD><TT># Inserting Carriage Returns 
+                  <BR>:%s/nubian/&lt;C-V&gt;&lt;C-M&gt;&amp;/g&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;that's 
+                  what you type 
+                  <BR>:%s/nubian/&lt;C-Q&gt;&lt;C-M&gt;&amp;/g&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;for 
+                  Win32 
+                  <BR>:%s/nubian/^M&amp;/g&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;what 
+                  you'll see where ^M is ONE character 
+                  <BR>---------------------------------------- <BR># Retrieving 
+                  last command line command for copy &amp; pasting into text 
+                  <BR>&lt;c-r&gt;: <BR># Retrieving last Search Command for copy 
+                  &amp; pasting into text <BR>&lt;c-r&gt;/ 
+                  <BR>---------------------------------------- <BR># doing 
+                  things over multiple lines \_ means including newline 
+                  <BR>/&lt;!--\_p\{-}--&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+                  : search for multiple line comments 
+                  <BR>/fred\_s*joe/i&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: 
+                  any whitespace including newline 
+                  <BR>/bugs\(\_.\)*bunny&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: 
+                  bugs followed by bunny anywhere in file <BR>:h 
+                  \_&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+                  : help <BR>---------------------------------------- <BR># more 
+                  completions 
+                  <BR>&lt;C-X&gt;&lt;C-F&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+                  :insert name of a file in current directory 
+                  <BR>---------------------------------------- <BR># help for 
+                  help <BR>:h 
+                  visual&lt;C-D&gt;&lt;tab&gt;&nbsp;&nbsp;&nbsp;&nbsp; : 
+                  obtain&nbsp;&nbsp;list of all visual help topics 
+                  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: 
+                  Then use tab to step thru them <BR>:h 
+                  ctrl&lt;C-D&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: 
+                  list help of all control keys <BR>:h 
+                  :r&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+                  : help for :ex command <BR>:h 
+                  CTRL-R&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+                  : normal mode <BR>:h 
+                  \r&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+                  : what's \r in a regexp <BR>:h 
+                  i_CTRL-R&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+                  : help for say &lt;C-R&gt; in insert mode <BR>:h 
+                  c_CTRL-R&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+                  : help for say &lt;C-R&gt; in command mode <BR>:h 
+                  v_CTRL-V&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+                  : visual mode 
+                <BR>----------------------------------------</TT></TD></TR>
+              <TR>
+                <TD class=lightbg>kdr_tech@yahoo.com, <FONT size=-1>November 
+                  3, 2002 10:23 </FONT></TD></TR>
+              <TR>
+                <TD><TT>This is an extension to <BR># pulling objects onto 
+                  command/search line <BR><BR>If you use <BR>/CTRL-R CTRL-A 
+                  <BR>it brings the whole word under the cursor including any 
+                  special characters. <BR>For Ex: <BR><BR>If you are in a HTML 
+                  page and the cursor is under a keyword &lt;table&gt; 
+                  <BR><BR>/CTRL-R CTRL-A brings /&lt;table&gt; <BR>/CTRL-R 
+                  CTRL-W brings /table (depending on what the letter under your 
+                  cursor is ... table or &lt; or &gt; <BR><BR>-Kdr 
+              <BR></TT></TD></TR>
+              <TR>
+                <TD class=lightbg>zzapper@ntlworld.com, <FONT size=-1>December 
+                  23, 2002 11:42 </FONT></TD></TR>
+              <TR>
+                <TD><TT>The Buffer Explorer scripts mentioned above (\be \bs) 
+                  rely on the 2nd most popular VIM script bufexplorer.vim 
+                  <BR><BR>available at <A 
+                  href="http://www.vim.org/script.php?script_id=42&nbsp;&nbsp;updated" 
+                  target=_blank>http://www.vim.org/script.php?script_id=42&nbsp;&nbsp;updated</A> 
+                  05-Nov-2002 <BR><BR>This is a must have script. <BR><BR>Have 
+                  recently started to appreciate taglist.vim (the most popular 
+                  VIM script) it really comes into it's own with very long 
+                  programs containting lots of subroutines/functions as it shows 
+                  which function/sub you're in etc etc <BR><BR><A 
+                  href="http://www.vim.org/script.php?script_id=273" 
+                  target=_blank>http://www.vim.org/script.php?script_id=273</A> 
+                  updated 20-dec-02 <BR><BR>zzapper</TT></TD></TR>
+              <TR>
+                <TD class=lightbg>wisniewski@frontiernet.net, <FONT 
+                  size=-1>June 13, 2003 17:28 </FONT></TD></TR>
+              <TR>
+                <TD><TT>#ftping with vim&nbsp;&nbsp;- great functionality 
+                  <BR><BR>for ascii file transfers add the following line to 
+                  your profile <BR>&nbsp;&nbsp;&nbsp;&nbsp; let 
+                  g:netrw_ftpmode="ascii" <BR></TT></TD></TR>
+              <TR>
+                <TD class=lightbg>junk4todd@dogbus.org, <FONT size=-1>July 16, 
+                  2003 12:06 </FONT></TD></TR>
+              <TR>
+                <TD><TT>If you want to delete multiple duplicate lines in a 
+                  sorted file: <BR>:%s/^\(.*\)\n\(\1\n\)*/\1&lt;NL&gt;/ 
+                  <BR>where &lt;NL&gt; is the character sequence that represents 
+                  a return in your file type.&nbsp;&nbsp;For Windows, the 
+                  easiest way to get this is to highlight a return character in 
+                  another program (open a new notepad, hit return once, select 
+                  all, and copy) and then use Edit -&gt; Paste in VIM to insert 
+                  it.</TT></TD></TR>
+              <TR>
+                <TD class=lightbg>shankarpj@yahoo.com, <FONT size=-1>January 
+                  11, 2004 21:28 </FONT></TD></TR>
+              <TR>
+                <TD><TT>If you want to number the lines in the file try: 
+                  <BR><BR>:%! nl -ba</TT></TD></TR>
+              <TR>
+                <TD class=lightbg>sx7gs7r02@sneakemail.com, <FONT 
+                  size=-1>February 8, 2004 19:02 </FONT></TD></TR>
+              <TR>
+                <TD><TT>Hi, <BR><BR>I think rot13 of the whole file can be 
+                  improved by this: <BR><BR>ggg?G <BR><BR>It's so much better to 
+                  read. Saves one byte over ggVGg? <BR>Also, it does not require 
+                  the overhead of selecting the whole file, <BR>especially if 
+                  the file is huge. <BR><BR>Arvind</TT></TD></TR>
+              <TR>
+                <TD class=lightbg><B>Anonymous</B>, <FONT size=-1>March 4, 
+                  2004 12:42 </FONT></TD></TR>
+              <TR>
+                <TD><TT>In the message above by junk4todd about getting the 
+                  &lt;NL&gt; character, you can get the &lt;NL&gt; character by 
+                  typing: <BR>&lt;Ctrl-V&gt;&lt;CR&gt; <BR>The Ctrl-V character 
+                  is the "escape"-like character and prints the literal of what 
+                  the next sequence is (it works in vi, and seems to work in 
+                  vim, too)</TT></TD></TR>
+              <TR>
+                <TD class=lightbg>smp@cypress.com, <FONT size=-1>March 19, 
+                  2004 16:06 </FONT></TD></TR>
+              <TR>
+                <TD><TT>I'm confused. I'm a long time vi/vim user. I've often 
+                  used ctrl-v to enter escaped characters, but I haven't done it 
+                  in a while. I just tried, and ctrl-v puts me in visual mode 
+                  block selection... as documented. Well, the docs also make 
+                  reference to ctrl-v being used as an escape. So which is it? 
+                  How can ctrl-v be documented to do both things?</TT></TD></TR>
+              <TR>
+                <TD class=lightbg><B>Anonymous</B>, <FONT size=-1>March 23, 
+                  2004 8:28 </FONT></TD></TR>
+              <TR>
+                <TD><TT>smp@cypress.com: control-V only lets you enter escaped 
+                  characters when in insert mode...</TT></TD></TR>
+              <TR>
+                <TD class=lightbg><B>Anonymous</B>, <FONT size=-1>April 7, 
+                  2004 12:24 </FONT></TD></TR>
+              <TR>
+                <TD><TT>Incredible. Before now, I used to consider myself 
+                  pretty bright. Imagine, all these years of overestimating my 
+                  mental abilities. I guess this new found dimness explains a 
+                  few of the blunders in my life. <BR><BR>Anyway, thanks, I 
+                  don't know how I didn't realize that I was trying to insert 
+                  escaped characters when not in insert mode. (I've been using 
+                  vi/vim for ~11 years)</TT></TD></TR>
+              <TR>
+                <TD class=lightbg>tobiasreif pinkjuice com, <FONT size=-1>July 
+                  15, 2004 4:37 </FONT></TD></TR>
+              <TR>
+                <TD><TT>also see the list at <BR><A 
+                  href="http://www.rayninfo.co.uk/vimtips.html" 
+                  target=_blank>http://www.rayninfo.co.uk/vimtips.html</A> 
+                  <BR></TT></TD></TR>
+              <TR>
+                <TD class=lightbg>bsjawle@hotmail.com, <FONT size=-1>August 
+                  16, 2004 23:54 </FONT></TD></TR>
+              <TR>
+                <TD><TT>Thank you</TT></TD></TR>
+              <TR>
+                <TD class=lightbg>rfulbrig@hotmail.com, <FONT size=-1>August 
+                  21, 2004 19:42 </FONT></TD></TR>
+              <TR>
+                <TD><TT>To insert special characters, use ctrl-v in Unix and 
+                  use ctrl-q in Windows.&nbsp;&nbsp;:)</TT></TD></TR>
+              <TR>
+                <TD class=lightbg>mark@whiteaura.com, <FONT size=-1>September 
+                  5, 2004 0:09 </FONT></TD></TR>
+              <TR>
+                <TD><TT>How does one use the substitute command to find and 
+                  remove lines that contain only whitespaces? <BR><BR>I thought 
+                  it was as simple as... <BR>:s:^\s\+$:: <BR><BR>But that only 
+                  removes spaces. I want to also remove the line. <BR><BR>I 
+                  thought maybe this would work but it doesn't either... 
+                  <BR>:s/^\s\+$/\r/ <BR><BR>So I thought that this would work 
+                  and it doesn't (Control-Q then 'Enter' Key)... 
+                  <BR>:s/^\s\+$/&lt;C-CR&gt;/ <BR><BR>I'm amazed that such a 
+                  common task&nbsp;&nbsp;is not found in the VIM manuals. I hope 
+                  this site knows :-)</TT></TD></TR>
+              <TR>
+                <TD class=lightbg>j_crawfd@yahoo.ca, <FONT size=-1>September 
+                  14, 2004 17:09 </FONT></TD></TR>
+              <TR>
+                <TD><TT>Try <BR><BR>:g/^\s\+$/d <BR><BR>Deletes lines 
+                  containing whitespace through the whole file. <BR><BR>or 
+                  <BR><BR>:g/^\s*$/d <BR><BR>to get rid of empty lines with no 
+                  whitespace.</TT></TD></TR>
+              <TR>
+                <TD class=lightbg><B>Anonymous</B>, <FONT size=-1>October 11, 
+                  2004 14:18 </FONT></TD></TR>
+              <TR>
+                <TD><TT>I think that should be: <BR><BR>:g/\s\+/d <BR><BR>and 
+                  then (to delete blank lines) <BR><BR>:g/^$/d 
+                <BR><BR><BR></TT></TD></TR>
+              <TR>
+                <TD class=lightbg>tim@esselens#gmail@com, <FONT 
+                  size=-1>October 20, 2004 6:46 </FONT></TD></TR>
+              <TR>
+                <TD><TT>I use <BR>:map &lt;F12&gt; :set number!&lt;CR&gt; 
+                  <BR><BR>like this: <BR>map &lt;F12&gt; :set 
+                  number!&lt;bar&gt;set number?&lt;CR&gt; <BR>or: <BR>map 
+                  &lt;F11&gt; :set hls!&lt;bar&gt;set hls?&lt;CR&gt; <BR>map 
+                  &lt;F10&gt; :set paste!&lt;bar&gt;set paste?&lt;CR&gt; <BR>map 
+                  &lt;F9&gt; :set wrap!&lt;bar&gt;set wrap?&lt;CR&gt; <BR><BR>so 
+                  I can see what the current state is <BR>(not really usefull 
+                  for number, but better for hlsearch with nothing highlighted 
+                  on your current view) <BR></TT></TD></TR>
+              <TR>
+                <TD class=lightbg><B>Anonymous</B>, <FONT size=-1>January 20, 
+                  2005 12:15 </FONT></TD></TR>
+              <TR>
+                <TD><TT>Is it possible add logic to deleting 
+                  lines.&nbsp;&nbsp;For instance, I want to delete any line that 
+                  contains DTE unless that line also contains STX or 
+                  ETX.&nbsp;&nbsp;So logically,&nbsp;&nbsp; (DTE &amp; !(STX | 
+                  ETX)).&nbsp;&nbsp;If it's possible what's the 
+                  syntax?&nbsp;&nbsp;Thanks</TT></TD></TR>
+              <TR>
+                <TD class=lightbg>jpaulus@fNrOeeSnPeAt.dMe - NOSPAM, <FONT 
+                  size=-1>February 22, 2005 15:56 </FONT></TD></TR>
+              <TR>
+                <TD><TT>You could do this. <BR><BR>:g/^/call 
+                  setreg(0,getline(".")) | if (@0=~#"DTE") &amp;&amp; 
+                  !((@0=~#"STX") || (@0=~#"ETX")) | d | endif <BR><BR>Each line 
+                  is searched for the strings DTE, STX, ETX and according to the 
+                  given rule only the lines <BR>matching the specified condition 
+                  are deleted. If you replace =~# with =~ then the search will 
+                  be <BR>case insensitive. The vertical bar separates the 
+                  commands to be entered all in one line First copying <BR>the 
+                  lines in a register and then examining the register avoids 
+                  calling the getline() function several times. <BR>Read :help 
+                  eval.txt in the manual to learn more about expression 
+                  evaluation. <BR><BR></TT></TD></TR>
+              <TR>
+                <TD class=lightbg><B>Anonymous</B>, <FONT size=-1>March 2, 
+                  2005 9:01 </FONT></TD></TR>
+              <TR>
+                <TD><TT>You're a god. <BR>Thank you.</TT></TD></TR>
+              <TR>
+                <TD class=lightbg>johngtyler@yahoo.com, <FONT size=-1>April 
+                  18, 2005 15:56 </FONT></TD></TR>
+              <TR>
+                <TD><TT>Hey I like your VIM Tips #305.&nbsp;&nbsp;I use it 
+                  alot. <BR>Thanks, <BR>Mr Magoo</TT></TD></TR>
+              <TR>
+                <TD class=lightbg>manyvan2000@yahoo.com, <FONT size=-1>May 5, 
+                  2005 10:56 </FONT></TD></TR>
+              <TR>
+                <TD><TT>I have to merge two files. One will be in the format 
+                  "abcd|123|456|" the other will be "abcd|xyz|def|". So, I have 
+                  to take the first word of each line, ie, "abcd",&nbsp;&nbsp;of 
+                  file2 and search for a line in file1 with that as the first 
+                  word. if I find a match, I have to merge the lines. If not, I 
+                  have to insert the line in file1. Can this be done with vim? 
+                  if so, can anyone please show me how ? <BR>Thanks in advance 
+                  <BR>Mani</TT></TD></TR>
+              <TR>
+                <TD class=lightbg><B>Anonymous</B>, <FONT size=-1>May 18, 2005 
+                  9:17 </FONT></TD></TR>
+              <TR>
+                <TD><TT>Thanks. I'll save it and will&nbsp;&nbsp;use it as a 
+                  reference.</TT></TD></TR>
+              <TR>
+                <TD class=lightbg><B>Anonymous</B>, <FONT size=-1>June 29, 
+                  2005 17:06 </FONT></TD></TR>
+              <TR>
+                <TD><TT>Thanks much! Your tips are really helpful! <BR><BR>- 
+                  Sandeep</TT></TD></TR>
+              <TR>
+                <TD class=lightbg>samittowers@rediffmail.com, <FONT 
+                  size=-1>July 15, 2005 2:26 </FONT></TD></TR>
+              <TR>
+                <TD><TT>How do we ensure that substitution is done only in a 
+                  visual block ?</TT></TD></TR>
+              <TR>
+                <TD class=lightbg>amir.laher@cNoOmSpPlAiMnet.com, <FONT 
+                  size=-1>July 15, 2005 8:55 </FONT></TD></TR>
+              <TR>
+                <TD><TT>whilst in visual mode, press : then you'll see a few 
+                  characters appear after the colon <BR>(like so :'&lt;,'&gt; ) 
+                  <BR><BR>then just do your replacement 
+                  <BR><BR>:'&lt;,'&gt;s/old/new/g <BR></TT></TD></TR>
+              <TR>
+                <TD class=lightbg>Caronte, <FONT size=-1>August 22, 2005 1:37 
+                  </FONT></TD></TR>
+              <TR>
+                <TD><TT>Does anyone know how to use the CTRL-A on Windows to 
+                  increment numbers? <BR><BR><BR>Thanks.</TT></TD></TR>
+              <TR>
+                <TD class=lightbg>dailylama@gmail.com, <FONT size=-1>September 
+                  16, 2005 12:16 </FONT></TD></TR>
+              <TR>
+                <TD><TT>Caronte, during install turn off windows key 
+                  features</TT></TD></TR>
+              <TR>
+                <TD class=lightbg>anupam dot mukherjee at gmail dot com, <FONT 
+                  size=-1>September 29, 2005 4:28 </FONT></TD></TR>
+              <TR>
+                <TD><TT>If you do not want to remove windows key mappings, 
+                  keep the line <BR>noremap &lt;C-kPlus&gt; &lt;C-A&gt; <BR>in 
+                  your _vimrc. <BR>Then you can use Ctrl-NumPad + to increment 
+                  numbers as others do with &lt;C-A&gt; <BR><BR>PS In fact, a 
+                  noremap to any key sequence will do.</TT></TD></TR>
+              <TR>
+                <TD class=lightbg>jkilbour_AT_pol_net, <FONT size=-1>October 
+                  13, 2005 17:25 </FONT></TD></TR>
+              <TR>
+                <TD><TT>very nice, I have some in my _vimrc</TT></TD></TR>
+              <TR>
+                <TD class=lightbg>coward, <FONT size=-1>October 14, 2005 14:52 
+                  </FONT></TD></TR>
+              <TR>
+                <TD><TT>great!</TT></TD></TR>
+              <TR>
+                <TD class=lightbg>perluser@earth.com, <FONT size=-1>October 
+                  19, 2005 8:19 </FONT></TD></TR>
+              <TR>
+                <TD><TT>hey, <BR>your examples helped me a lot&nbsp;&nbsp;! 
+                  <BR>i've looked around but i haven't found any other so useful 
+                  resource - thanks, <BR>jan <BR></TT></TD></TR>
+              <TR>
+                <TD class=lightbg><B>Anonymous</B>, <FONT size=-1>November 1, 
+                  2005 18:27 </FONT></TD></TR>
+              <TR>
+                <TD><TT>Another very useful mapping: <BR><BR>noremap 
+                  &lt;C-J&gt; gj <BR>noremap &lt;C-K&gt; gk <BR><BR>That's 
+                  really useful when dealing with long lines.&nbsp;&nbsp;It lets 
+                  you use Control-J and Control-K to move up and down screen 
+                  lines instead of buffer lines with j and 
+                  k.&nbsp;&nbsp;Control-J isn't really mapped to anything by 
+                  default, it's like hitting enter, but Control-K is something 
+                  to do with digraphs.&nbsp;&nbsp;However, noremap won't remove 
+                  this ability in insert mode. <BR><BR>Alternatively, you could 
+                  use: <BR><BR>noremap &lt;Up&gt; gk <BR>noremap &lt;Down&gt; gj 
+                  <BR><BR>which would map the arrow keys to screen line movement 
+                  instead of buffer line movement. <BR></TT></TD></TR>
+              <TR>
+                <TD class=lightbg>choka13@gmail.com, <FONT size=-1>November 
+                  16, 2005 9:25 </FONT></TD></TR>
+              <TR>
+                <TD><TT>I like it!!! <BR>Thank you.</TT></TD></TR>
+              <TR>
+                <TD class=lightbg>nms_nospam@yahoo.co.in, <FONT 
+                  size=-1>November 17, 2005 21:35 </FONT></TD></TR>
+              <TR>
+                <TD><TT>Great tips.&nbsp;&nbsp;Thanks, Mohan</TT></TD></TR>
+              <TR>
+                <TD class=lightbg><B>Anonymous</B>, <FONT size=-1>November 30, 
+                  2005 15:10 </FONT></TD></TR>
+              <TR>
+                <TD><TT>Awesome work. I use this quite frequently, thank 
+                  you.</TT></TD></TR>
+              <TR>
+                <TD class=lightbg>auditor400@gmail.com, <FONT size=-1>December 
+                  2, 2005 16:41 </FONT></TD></TR>
+              <TR>
+                <TD><TT><BR><BR>my 0.02$, a simple gvim tip, <BR>well, not 
+                  really a gvim tip, but a tip, that ppl using gvim could use, 
+                  (i think) <BR><BR>1. PRINT the page, and put the paper right 
+                  next to the keyboard, <BR>2. each day, try to memorize 1 or 2, 
+                  <BR>3. vote for this guy, he knows what he is doing! 
+                  <BR><BR>once you are done with the page, try another page, or 
+                  another editor, or another language, or another computer 
+                  system, or something else, never stop learning, when you do, 
+                  your brain will feeze, trust me, i know about frozen brains. 
+                  </TT></TD></TR>
+              <TR>
+                <TD class=lightbg>eneese_NOSPAM_@gmail.com, <FONT 
+                  size=-1>January 5, 2006 14:53 </FONT></TD></TR>
+              <TR>
+                <TD><TT>Fabuloso, definitivamente son los principales tips 
+                  <BR><BR>Gracias :) <BR><BR><A 
+                  href="http://nestor.sertzen.com/" 
+                  target=_blank>http://nestor.sertzen.com/</A></TT></TD></TR>
+              <TR>
+                <TD class=lightbg>emilea1na2@yahoo.com, <FONT size=-1>January 
+                  19, 2006 13:48 </FONT></TD></TR>
+              <TR>
+                <TD><TT>O thank you master Guru, I am not worthy! Seriously, 
+                  you astounded me with this. Talk about saving a newbie at vi 
+                  some hell. 1000 thnx!!!</TT></TD></TR>
+              <TR>
+                <TD class=lightbg>satendra.maurya@conexant.com, <FONT 
+                  size=-1>February 2, 2006 22:49 </FONT></TD></TR>
+              <TR>
+                <TD><TT>Can we write a macro that will do the following: 
+                  <BR>i)search for a&nbsp;&nbsp;files with given extension 
+                  <BR>ii)in the searched file ,look for a string <BR>iii)copy 
+                  some 5 lines below the string and paste them in 
+                  some&nbsp;&nbsp;temp file <BR>iv)repeat the above procedure 
+                  for all the files <BR><BR></TT></TD></TR>
+              <TR>
+                <TD class=lightbg><B>Anonymous</B>, <FONT size=-1>February 3, 
+                  2006 16:52 </FONT></TD></TR>
+              <TR>
+                <TD><TT>I'd like to know how I can turn a list of titles with 
+                  spaces and other character types into a list capable of being 
+                  touched to actual files without making a file for each word on 
+                  each line. <BR><BR>basically I want to take a list of 
+                  <BR><BR><BR>foo bar, the <BR>bar &amp; foo <BR>foo's bar 
+                  <BR>bar + foo <BR><BR>and add the necessary escape characters 
+                  so i can do <BR><BR>touch `cat above.list` <BR><BR>and yield 
+                  four files named exactly as above.</TT></TD></TR>
+              <TR>
+                <TD class=lightbg>newTOvi, <FONT size=-1>February 13, 2006 
+                  15:49 </FONT></TD></TR>
+              <TR>
+                <TD><TT>If I have a three line group repeating in the text and 
+                  I want to merge them into one line. How would I do 
+                  this?&nbsp;&nbsp; <BR><BR><BR>eg: ABC 
+                  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DEF 
+                  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GHI <BR><BR>The 
+                  result should be: <BR><BR>&nbsp;&nbsp;ABCDEFGHI <BR><BR>Thanks 
+                  in advance for the help.. <BR><BR></TT></TD></TR>
+              <TR>
+                <TD class=lightbg><B>Anonymous</B>, <FONT size=-1>February 20, 
+                  2006 6:55 </FONT></TD></TR>
+              <TR>
+                <TD><TT>3J on the line with ABC in command mode will get you 
+                  close... <BR>ABC DEF GHI <BR></TT></TD></TR>
+              <TR>
+                <TD class=lightbg><B>Anonymous</B>, <FONT size=-1>February 21, 
+                  2006 12:38 </FONT></TD></TR>
+              <TR>
+                <TD><TT>Amazing page...i jus hav a small question..how do i 
+                  grep for the word under the cursor in a given file say a tags 
+                  file.I want to map this to a function key. </TT></TD></TR>
+              <TR>
+                <TD class=lightbg><B>Anonymous</B>, <FONT size=-1>February 24, 
+                  2006 13:03 </FONT></TD></TR>
+              <TR>
+                <TD><TT>How do I delete from where I stand to the end of line? 
+                  I tried df$ but that doesnt work. What should I 
+use?</TT></TD></TR>
+              <TR>
+                <TD class=lightbg><B>Anonymous</B>, <FONT size=-1>February 24, 
+                  2006 14:39 </FONT></TD></TR>
+              <TR>
+                <TD><TT>the syntax is d&lt;motion&gt;, so what you want would 
+                  be <BR>d$ <BR>or in this particular case, just 
+<BR>D</TT></TD></TR>
+              <TR>
+                <TD class=lightbg><B>Anonymous</B>, <FONT size=-1>February 24, 
+                  2006 14:40 </FONT></TD></TR>
+              <TR>
+                <TD><TT>to search for the word under the cursor: * or # 
+                  (forward or back), as it says in the tips above!!</TT></TD></TR>
+              <TR>
+                <TD class=lightbg>Gerald Lai, <FONT size=-1>March 1, 2006 
+                  18:55 </FONT></TD></TR>
+              <TR>
+                <TD><TT>To Anonymous with file touch problem: <BR>See ":help 
+                  escape()", ":help getline()", ":help :g" <BR>Within the file 
+                  with those 4 lines, do <BR><BR>:g/^/exe "!touch 
+                  ".escape(getline("."), " &amp;'\"") <BR><BR>To 
+                  satendra.maurya@conexant.com: <BR>See ":help args", ":help 
+                  :argdo", ":help :put" <BR>Start a new Vim session and do 
+                  <BR><BR>:let @a="" <BR>:args *.txt <BR>:argdo 
+                  g/&lt;string&gt;/+y A 5|bw <BR>:put! a <BR>:w tempfile 
+                  <BR><BR><BR></TT></TD></TR>
+              <TR>
+                <TD class=lightbg><B>Anonymous</B>, <FONT size=-1>March 8, 
+                  2006 7:08 </FONT></TD></TR>
+              <TR>
+                <TD><TT>Wow, thanks for all those tips! My heart is 
+                  bursting.... i love VIM!!!!</TT></TD></TR>
+              <TR>
+                <TD class=lightbg>nomail@vim.org, <FONT size=-1>April 28, 2006 
+                  14:34 </FONT></TD></TR>
+              <TR>
+                <TD><TT>Great Stuff! Thanks so much!</TT></TD></TR>
+              <TR>
+                <TD class=lightbg><B>Anonymous</B>, <FONT size=-1>May 6, 2006 
+                  11:00 </FONT></TD></TR>
+              <TR>
+                <TD><TT>VI Magic........ <BR><BR>Not long ago I read this 
+                  phrase: programmers treat human input as computer input. Then 
+                  I also had to think about VI magic directly. VI + Unix + Perl 
+                  is a very powerful tool. I came relatively late to this (only 
+                  one year ago) after trying several editors. I am now a second 
+                  year informatics student and use vim (with Unix and Perl) to 
+                  do my everyday coding. It feels being in between two worlds 
+                  now that there are good alternatives like Eclipse which offer 
+                  a very different set of tools. Being a bit fluent in VI means 
+                  being very agile (if you find the corrects keys in time!) and 
+                  this is the most important. These hints belong to my daily 
+                  survival guide.... <BR><BR>Thanks! <BR><BR>Martin</TT></TD></TR>
+              <TR>
+                <TD class=lightbg>adityagurajada -AT- yahoo -DOT- com, <FONT 
+                  size=-1>June 4, 2006 23:28 </FONT></TD></TR>
+              <TR>
+                <TD><TT>I am maybe a mid-level user of vi/vim, and came upon 
+                  this link of tips. It is very useful <BR>and has things that I 
+                  can learn from. <BR><BR>I struggled with ways to find a 
+                  function declaration (in .c/c++) when positioned on the 
+                  <BR>function's usage. Seems like you have a tip for that. Am 
+                  eager to try it out. Great work in <BR>compiling this list. It 
+                  will help the scores of newbie programmers who are coming out 
+                  of <BR>schools educated on Notepad and html editors. Thanks, 
+                  very much. -- Aditya.</TT></TD></TR>
+              <TR>
+                <TD class=lightbg>terrytina@gmail.com, <FONT size=-1>June 22, 
+                  2006 19:18 </FONT></TD></TR>
+              <TR>
+                <TD><TT>Great! It is really helpful for me to move from emacs 
+                  to vim.</TT></TD></TR>
+              <TR>
+                <TD class=lightbg>terrytina@gmail.com, <FONT size=-1>June 22, 
+                  2006 19:24 </FONT></TD></TR>
+              <TR>
+                <TD><TT>Thanks a lot.</TT></TD></TR>
+              <TR>
+                <TD class=lightbg>wengonn@gmail.com, <FONT size=-1>June 23, 
+                  2006 1:17 </FONT></TD></TR>
+              <TR>
+                <TD><TT>excellent stuff !&nbsp;&nbsp; </TT></TD></TR>
+              <TR>
+                <TD class=lightbg><B>Anonymous</B>, <FONT size=-1>June 24, 
+                  2006 3:38 </FONT></TD></TR>
+              <TR>
+                <TD><TT><BR>Though the substitute command (to subsititute text 
+                  FILE by the file name) using command <BR>:1,$ s/FILE/\=@%/ 
+                  <BR>work fine for me when I am in vim visual mode, the same 
+                  does not work if I run the ex editor. <BR><BR>That is if I 
+                  invoke ex editor using ex &lt;filename&gt; and then issue this 
+                  command, this does not work. However, :reg command shows 
+                  filename as the content of "%. <BR><BR>Any help? 
+                  <BR><BR>Thanx.&nbsp;&nbsp;</TT></TD></TR>
+              <TR>
+                <TD class=lightbg><B>Anonymous</B>, <FONT size=-1>June 25, 
+                  2006 2:42 </FONT></TD></TR>
+              <TR>
+                <TD><TT><BR>!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!EX - CE - LL - EN - 
+                  T !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! <BR>:-D</TT></TD></TR>
+              <TR>
+                <TD class=lightbg>amitrajsethi@yahoo.com, <FONT size=-1>June 
+                  27, 2006 21:27 </FONT></TD></TR>
+              <TR>
+                <TD><TT>To substitute any word (say FILE) by actual filename 
+                  you can use 
+                  <BR><BR>&nbsp;&nbsp;&nbsp;&nbsp;:%s/FILE/\=expand("%:t")</TT></TD></TR>
+              <TR>
+                <TD class=lightbg>sunghyun.hwang@magnachip.com, <FONT 
+                  size=-1>July 21, 2006 3:55 </FONT></TD></TR>
+              <TR>
+                <TD><TT>fantastic VIM :)</TT></TD></TR>
+              <TR>
+                <TD class=lightbg>Quick q please, <FONT size=-1>August 15, 
+                  2006 15:09 </FONT></TD></TR>
+              <TR>
+                <TD><TT>I have the screen split in 2, vertically. <BR>The left 
+                  pane has the directory (:vs .) <BR>I put the cursor on a file 
+                  name, how can <BR>I have it open in the right pane 
+?</TT></TD></TR>
+              <TR>
+                <TD class=lightbg><B>Anonymous</B>, <FONT size=-1>August 25, 
+                  2006 8:48 </FONT></TD></TR>
+              <TR>
+                <TD><TT>Using this single page I improved my vim skills a 
+                  hundredfold... Man, you're great.</TT></TD></TR>
+              <TR>
+                <TD class=lightbg>b_vikas@hotmail.com, <FONT size=-1>August 
+                  25, 2006 14:25 </FONT></TD></TR>
+              <TR>
+                <TD><TT>amazing page.... thx a ton</TT></TD></TR>
+              <TR>
+                <TD class=lightbg>lark1341-widgetaccount@yahoo.com, <FONT 
+                  size=-1>September 12, 2006 11:06 </FONT></TD></TR>
+              <TR>
+                <TD><TT>How do I delete all lines in a file that do not start 
+                  with a digit? That includes blank lines and all other lines 
+                  that do not start with a digi!!! <BR>Thanks much for 
+                  helping.</TT></TD></TR>
+              <TR>
+                <TD class=lightbg><B>Anonymous</B>, <FONT size=-1>September 
+                  19, 2006 10:31 </FONT></TD></TR>
+              <TR>
+                <TD><TT>To lark1341-widgetaccount@yahoo.com <BR>:v/^\d/d will 
+                  delete all lines that don't start with a digit.</TT></TD></TR>
+              <TR>
+                <TD><INPUT type=submit value="Add Note" name="Add Note"> 
+              </TD></TR></TBODY></TABLE></FORM><!-- finish off the framework --></TD></TR></TBODY></TABLE></TD></TR></TBODY></TABLE><!-- END OF THE PAGE BODY: BETWEEN HEADER AND FOOTER -->
+<TABLE borderColor=red cellSpacing=0 cellPadding=0 width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD colSpan=4><IMG height=5 alt="" 
+      src="Tip #305 - Best of VIM Tips (VIM's best Features)  vim online_files/spacer.gif" 
+      width=1></TD></TR>
+  <TR>
+    <TD bgColor=#000000 colSpan=4><IMG height=2 alt="" 
+      src="Tip #305 - Best of VIM Tips (VIM's best Features)  vim online_files/spacer.gif" 
+      width=1></TD></TR>
+  <TR>
+    <TD colSpan=4><IMG height=5 alt="" 
+      src="Tip #305 - Best of VIM Tips (VIM's best Features)  vim online_files/spacer.gif" 
+      width=1></TD></TR>
+  <TR>
+    <TD><IMG height=1 alt="" 
+      src="Tip #305 - Best of VIM Tips (VIM's best Features)  vim online_files/spacer.gif" 
+      width=5></TD>
+    <TD vAlign=top align=left><SMALL>If you have questions or remarks about 
+      this site, visit the <A href="http://vimonline.sf.net/">vimonline 
+      development</A> pages. Please use this site responsibly. <BR>Questions 
+      about <A href="http://www.vim.org/about.php">Vim</A> should go to 
+      vim@vim.org after searching <A 
+      href="http://groups.yahoo.com/group/vim">the archive</A>. Help Bram <A 
+      href="http://iccf-holland.org/">help Uganda</A>. </SMALL>&nbsp; &nbsp; <!-- Start of StatCounter Code -->
+      <SCRIPT language=javascript type=text/javascript>
+	var sc_project=1417324; 
+	var sc_invisible=1; 
+	var sc_partition=11; 
+	var sc_security="d41633bc"; 
+	</SCRIPT>
+
+      <SCRIPT language=javascript 
+      src="Tip #305 - Best of VIM Tips (VIM's best Features)  vim online_files/counter.js" 
+      type=text/javascript></SCRIPT>
+      <NOSCRIPT><A href="http://www.statcounter.com/" target=_blank><IMG 
+      alt="free tracking" 
+      src="Tip #305 - Best of VIM Tips (VIM's best Features)  vim online_files/counter.png" 
+      border=0></A> </NOSCRIPT><!-- End of StatCounter Code --><SMALL><A 
+      href="http://my.statcounter.com/project/standard/stats.php?project_id=1417324&amp;guest=1">stats</A> 
+      </SMALL></TD>
+    <TD vAlign=top align=right><A href="http://www.webconceptgroup.net/"><IMG 
+      height=30 alt="Sponsored by Web Concept Group Inc." 
+      src="Tip #305 - Best of VIM Tips (VIM's best Features)  vim online_files/logo_sponsor_wcg.jpg" 
+      width=131 border=0></A> <A href="http://sourceforge.net/"><IMG height=31 
+      alt="SourceForge.net Logo" 
+      src="Tip #305 - Best of VIM Tips (VIM's best Features)  vim online_files/sflogo.png" 
+      width=88 border=0></A> </TD>
+    <TD><IMG height=1 alt="" 
+      src="Tip #305 - Best of VIM Tips (VIM's best Features)  vim online_files/spacer.gif" 
+      width=5></TD></TR>
+  <TR>
+    <TD colSpan=4><IMG height=5 alt="" 
+      src="Tip #305 - Best of VIM Tips (VIM's best Features)  vim online_files/spacer.gif" 
+      width=1></TD></TR></TBODY></TABLE></BODY></HTML>

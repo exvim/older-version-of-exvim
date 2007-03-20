@@ -1,0 +1,286 @@
+*exUtility-exTagSelect.txt*	Plugin for tag selection
+
+Author: Wu Jie  (GayaEcai@N163I.UScom)
+		(remove GENIUS from Wu Jie's email before using)
+For Vim version 6.0 and above
+Last change: 2006 December 10
+
+
+1. Overview					|exTagSelect-Overview|
+2. Prepare					|exTagSelect-Prepare|
+3. QuickStart					|exTagSelect-QuickStart|
+4. KeyMappings					|exTagSelect-KeyMappings|
+5. Commands					|exTagSelect-Commands|
+6. Options					|exTagSelect-Options|
+
+==============================================================================
+OVERVIEW					*exTagSelect-Overview*
+
+The exTagSelect plugin is a extensional tool for tagselect. The original idea
+in writting this plugin, is let the user have a clear tag track, select,
+and jump window. The plugin has the following features:
+
+	1: Display tag preview and have good ui for user to select tags
+	2: Display tag stack and code-line preview for easy pop stack, re-entry 
+	   stack, re-select tags.Good ui for user to easy track code.
+
+==============================================================================
+PREPARE						*exTagSelect-Prepare*
+
+Before using exTagSelect, you need to install ctags in your computer, and add
+the directory of ctags.exe to your environment variable.  You can download the
+exuberant ctags utility from
+>
+	http://ctags.sourceforge.net
+<
+You must add the tag-file in your "set tags=" variable
+
+==============================================================================
+QUICKSTART					*exTagSelect-QuickStart*
+
+Here is a quick start for the user to use exTagSelect quickly:
+
+1: Copy the following script into your _vimrc:~
+	nnoremap <silent> <F7> :ExtsToggle<CR>
+	nnoremap <silent> <Leader>ts :ExtsSelectToggle<CR>
+	nnoremap <silent> <Leader>tt :ExtsStackToggle<CR>
+	map <silent> <Leader>] :ExtsGoDirectly<CR>
+	map <silent> <Leader>[ :PopTagStack<CR>
+	let g:exTS_backto_editbuf = 0
+	let g:exTS_close_when_selected = 1
+
+2: Making cTags for your project:~
+	At your project parent working directory, run the cTags as something
+	like this: ( this is just a example for c++ language, you can generate
+		     your own tags by setting the tag-parameters )
+
+	ctags -R --c++-kinds=+p --fields=+iaS --extra=+q --languages=c++ -I
+
+3: Open your project and now use:~
+	At the word you want to jump: 
+		press <Leader>]
+		use <Up>,<Down> to select tag item
+		use <Enter> to go to the tag-position
+	
+	You also can jump direct just type this in your command-line:
+		:TS jump-tag
+		jump-tag is a parameter for the word you want to jump
+
+	If you want to jump back(like <C-T>): 
+		press <Leader>[
+
+	After several jump you may want to see the jump history: 
+		press <Leader>tt 
+		use <Up>,<Down> to select stack item
+		use <Enter> to go to the old entry-position
+		use <Leader>ts to go to the select window to re-select item
+		you want
+
+Now you try the things and you may known the how exTagSelect worked. 
+You can go on to read other topic for more detail
+	
+
+==============================================================================
+KEYMAPPINGS					*exTagSelect-KeyMappings*
+
+For good understanding exTagSelect working, you can imaging exTagSelect as:
+
+1: tag-select window
+
+		   tag-select window
+ -------------------------------------------------------
+| <c-right>	  to tag-stack				|
+| <up> <down>     select tags				|
+| <enter>	  jump to the position			|
+| <space>	  resize window				|
+| <esc>		  close window				|
+|							|
+| tag-pattern						|
+| filename (full path)					|
+|	1: pattern-preview				|
+|	2: pattern-preview				|
+ -------------------------------------------------------
+The first-time to use tag-select may be slow, because we run the tagfile()
+function. this may invoke a search for tagfiles. But it just happened in
+init-time. You can invoke this window by <leader>] or <leader>ts
+let's see a example:
+>
+	file_a.cpp: line 22
+	  |(cursor pos)	
+	cl_A* pA = new cl_A();
+<
+now your cursor is in the cl_A, you want to jump it.
+let's define this position as "Entry-Point"
+
+if you select the tag in tag window and jump to the code in:
+>
+	file_a.h: line 11
+	 |(cursor pos)
+	class cl_A { 
+<
+let's call this position as "TagSelect-Point"
+As the defines, I want to tell you in we can change the "TagSelect-Point" in a
+"Entry-Point". this concept is important in stack jump, just remember it now.
+
+2: tag-stack window
+
+ 		   tag-stack window
+ -------------------------------------------------------
+| <c-left>	  to tag-select            		|
+| <up> <down>     select stack item             	|
+| <enter>	  jump to the position    		|
+| <space>	  resize window           		|
+| <esc>		  close window            		|
+|					  		|
+|  #	TAG NAME		 ENTRY POINT PREVIEW    |
+|  0:	start_point	===>[TS] pattern-preview   	|
+|  1:	tag_pattern	===>[TS] pattern-preview   	|
+|  2:	tag_pattern	===>[TS] pattern-preview   	|
+ -------------------------------------------------------
+
+ *	Every jump use <leader>] or :TS will be put into the stack except it is the
+ 	same tag-pattern between two times of jump
+
+ *	You can't use <c-T> to jump back because we actually don't push the tag into
+ 	vim stack, instead of this, we have the tag-stack to maintain the whole
+ 	things, so use the <leader>[ to jump back rather than <c-T>
+
+ *	Number 0 tag-pattern always the start point, which is the first place you
+ 	start tag jump.
+
+ *	If you are in the tag-stack window: 
+ 	you want to jump back to the older tags, it will jump back to the "Entry-Point"
+	you want to jump to the forward tags, it will jump to the "TagSelect-Point"
+
+ * 	You can change the "TagSelect-Point" by <leader>ts select one point
+  	you want. The tag-stack will remember the changes
+
+
+                                         
+==============================================================================
+COMMANDS					*exTagSelect-Commands*
+
+	|:TS|				Open and display the tags
+	|:PopTagStack|			Jump back by decrese the stack idx
+	|:TAGS|				Open tag-stack window
+	|:ExtsSelectToggle|		Toggle tag-select window
+	|:ExtsStackToggle|		Toggle tag-stack window
+	|:ExtsToggle|			Toggle window
+	|:ExtsGoDirectly|		Pick up the word and display the tags
+	|:TSigc|			Parsing tags ignore the case
+	|:TSnoigc|			Parsing tags do not ignore the case
+
+						
+:TS [pattern]					*TS*
+		Open and display the [pattern]
+
+:PopTagStack					*PopTagStack*
+		Jump back by decrease the stack idx.
+		Note pop stack will not delete the stack item it poped. It'll
+		keep the item for you to jump forward if you want. but if you
+		poped, and jump to another tags, the item which index > cur-idx
+		will be delete
+
+:TAGS						*TAGS*
+		Open the tag-stack window
+
+:ExtsSelectToggle				*ExtsSelectToggle*
+		Toggle the tag-select window. If the window is stack-window, it will
+		close it first and open the select window
+		
+:ExtsStackToggle				*ExtsStackToggle*
+		Toggle the tag-stack window. If the window is select-window, it will 
+		close it first and open the stack window
+
+:ExtsToggle					*ExtsToggle*
+		Toggle the window. This will toggle the window the last time
+		it is.
+	
+:ExtsGoDirectly					*ExtsGoDirectly*
+		When your cursor is under a word, the command will use "yiw"
+		to copy inner-word, and use TS parsing it
+	
+:TSigc						*TSigc*
+		Parsing the tags ignore the case. The default setting is ignore case
+
+:TSnoigc					*TSnoigc*
+		Parsing the tags do not ignore the case. exTagSelect use smart case
+		method, so you can use this setting to let the plugin turn on
+		the case sensitive.
+                                         
+==============================================================================
+OPTIONS						*exTagSelect-Options*
+
+	|'g:exTS_window_height'|		Set the height of window
+	|'g:exTS_window_width'|			Set the width of window
+	|'g:exTS_window_height_increment'|	Set the height increase value of window
+	|'g:exTS_window_width_increment'|	Set the width increase value of window
+	|'g:exTS_window_direction'|		Set the window direction
+	|'g:exTS_use_vertical_window'|		Use vertical or not
+	|'g:exTS_backto_editbuf'|		Keep the cursor in edit buffer or not when window open
+	|'g:exTS_close_when_selected'|		When select some things, close the windows or not
+
+
+						*'g:exTS_window_height'*
+g:exTS_window_height~
+Set the height of the window. This variable only effect when the
+g:exTS_use_vertical_window = 0
+>
+    let g:exTS_window_height = 20
+<
+						*'g:exTS_window_width'*
+g:exTS_window_width~
+Set the width of the window. This variable only effect when the
+g:exTS_use_vertical_window = 1
+>
+    let g:exTS_window_width = 30
+<
+						*'g:exTS_window_height_increment'*
+g:exTS_window_height_increment~
+Set the height increase value of window. This variable only effect when the
+g:exTS_use_vertical_window = 0
+>
+    let g:exTS_window_height_increment = 30
+<
+						*'g:exTS_window_width_increment'*
+g:exTS_window_width_increment~
+Set the width increase value of window. This variable only effect when the
+g:exTS_use_vertical_window = 1
+>
+    let g:exTS_window_width_increment = 100
+<
+						*'g:exTS_window_direction'*
+g:exTS_window_direction~
+						'topleft'
+						'botright'
+Set the window direction. This variable will be affect by
+g:exTS_use_vertical_window. When the vertical is true. it picked left, right
+direction, when the vertical is false, it picked top, bot direction.
+>
+    let g:exTS_window_direction = 'botright'
+<
+						*'g:exTS_use_vertical_window'*
+g:exTS_use_vertical_window~
+Use the vertical window or the horizontal window
+>
+    let g:exTS_use_vertical_window = 0
+<
+						*'g:exTS_backto_editbuf'*
+g:exTS_backto_editbuf~
+If the value is 1
+After open the tag-window, keep the cursor in the edit-buf.
+else the cursor will jump to the tag-window
+This will affect the selection behavior too
+>
+    let g:exTS_backto_editbuf = 1
+<
+						*'g:exTS_close_when_selected'*
+g:exTS_close_when_selected~
+If the value is 1
+After select things in tag-window, the script will close the window
+immediatelly
+>
+    let g:exTS_close_when_selected = 0
+<
+
+ vim:ts=8 sw=8 noexpandtab tw=78 ft=help:

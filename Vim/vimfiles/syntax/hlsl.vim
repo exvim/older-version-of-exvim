@@ -1,0 +1,82 @@
+" Vim syntax file
+" Language:	High Level Shader Language
+" Maintainer:	Johnny
+" Credits:	Based on the uc.vim syntax file by Mark Ferrell
+" Last change:	2006 Sep 31
+
+if version < 600
+  syntax clear
+elseif exists("b:current_syntax")
+  finish
+endif
+
+" Read the C syntax to start with
+if version < 600
+  so <sfile>:p:h/c.vim
+else
+  runtime! syntax/c.vim
+  unlet b:current_syntax
+endif
+
+" keyword definitions
+" case match
+syntax case match
+" storage
+syn keyword hlslStorage         extern shared static uniform volatile
+
+" base type
+syn keyword hlslType            const row_major col_major
+syn keyword hlslType            snorm4 unorm4 matrix
+syn match   hlslType            "\<\(BOOL\|int\|half\|float\|double\)[1-4]*\>"
+syn match   hlslType            "\<\(BOOL\|int\|half\|float\|double\)[1-4]x[1-4]\>"
+syn keyword hlslType            vertexshader pixelshader struct typedef
+
+" shader type
+syn match   hlslShaderType      "\<\(vs\|ps\|gs\)_[1-4]_[0-4]\>"
+syn keyword hlslBaseFunction    CompileShader SetVertexShader SetGeometryShader SetPixelShader SetDepthStencilState pass
+syn match   hlslBaseFunction    "\<technique\d\+\>"
+
+" function
+syn keyword hlslFunction        abs acos all any asin atan atan2 ceil clamp clip cos cosh cross 
+syn keyword hlslFunction        D3DCOLORtoUBYTE4 ddx ddy degress determinant distance dot exp exp2
+syn keyword hlslFunction        faceforward floor fmod frac frexp fwidth isfinite isinf isnan ldexp
+syn keyword hlslFunction        length lerp lit log log10 log2 max min modf mul noise normalize pow
+syn keyword hlslFunction        radians reflect refract round rsqrt saturate sign sin sincos sinh
+syn keyword hlslFunction        smoothstep sqrt step tan tanh tex1D tex1Dqrad tex1Dbias tex1Dgrad 
+syn keyword hlslFunction        tex1Dlod tex1Dproj tex2D tex2Dbias tex2Dqrad tex2Dlod tex2Dproj
+syn keyword hlslFunction        tex3D tex3Dbias tex3Dqrad tex3Dlod tex3Dproj texCUBE texCUBEqrad
+syn keyword hlslFunction        texCUBEproj transpose
+
+" case ignore
+syntax case ignore
+"syn match   hlslSemantic        "\<\(BINORMAL\|BLENDINDICES\|BLENDWEIGHT\|COLOR\|NORMAL\|POSITION\|PSIZE\|TANGENT\|TESSFACTOR\|TEXCOORD\|DEPTH\)[0-7]*\>" contained
+"syn match   hlslSemantic        "\<\(POSITIONT\|FOG\|PSIZE\|VFACE\|VPOS\)\>" contained
+"syn match   hlslSemantic        "\<\(SV_ClipDistance\|SV_CullDistance\|SV_Target\)[0-7]*\>" contained
+"syn match   hlslSemantic        "\<\(SV_ClipDistance\|SV_CullDistance\|SV_Depth\|SV_InstanceID\|SV_IsFrontFace\|SV_Position\|SV_PrimitiveID\|SV_RenderTargetArrayIndex\|SV_Target\|SV_VertexID\|SV_ViewportArrayIndex\)\>" contained
+
+syn match   hlslType            "\<\(Texture\|sampler\)[1-3]D\>"
+syn keyword hlslType            sampler texture filter
+syn match   hlslType            "address[u,v,w]"
+
+" Define the default highlighting.
+if version >= 508 || !exists("did_cpp_syntax_inits")
+  if version < 508
+    let did_cpp_syntax_inits = 1
+    command -nargs=+ HiLink hi link <args>
+  else
+    command -nargs=+ HiLink hi def link <args>
+  endif
+  HiLink hlslStorage         StorageClass
+  HiLink hlslType            Type
+  HiLink hlslBaseFunction    Type
+  HiLink hlslShaderType      Special
+  HiLink hlslFunction        Function
+  HiLink hlslSemantic        Special
+  delcommand HiLink
+endif
+
+let b:current_syntax = "hlsl"
+
+" vim: ts=8
+
+

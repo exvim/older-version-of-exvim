@@ -1,0 +1,472 @@
+2005-12-15  Claudio Fontana  <claudio@gnu.org>
+	* src/mkid.c: tweak alloc-ed size of token signature to a minimum
+	  of 1 byte. Fixes assertion failure filed as savannah support request
+	  sr #104712.
+
+	* testsuite/consistency: added test case for this bug
+	* testsuite/single_file_token_bug.c [new file]: needed for new test
+	* testsuite/Makefile.am: add new file to distribution
+
+2005-12-11  Claudio Fontana  <claudio@gnu.org>
+	* libidu/scanners.c: Fixed signed/unsigned char* assignments by
+	  making both 'scanner_buffer' and 'id' unsigned char*.
+	  characters from scanner_buffer are first assigned to an int prior
+	  to checking with the class-macros;
+
+	* src/mkid.c, configure.ac, libidu/iduglobal.h:
+	  print an off_t value portably by using offtostr (gnulib)
+
+	* intl/*, po/*: updated to latest version
+	
+2005-12-10  Claudio Fontana  <claudio@gnu.org>
+	* applied savannah patch 2775: include scanner for the perl language
+
+2005-11-01  Claudio Fontana  <claudio@gnu.org>
+	* libidu/scanners.c: applied (with changes) savannah patch 2702:
+	  Fix language options handling bugs, and removed redundant C options
+	  help.
+
+2005-05-31  Claudio Fontana  <sick_soul@users.sourceforge.net>
+        * configure.in: moved to configure.ac
+	* configure.ac (new file): rewritten using gnulib and new macros
+	* Makefile.am: all makefiles revisited
+	
+	* lib/: removed everything and replaced with gnulib imports
+	* m4/: removed everything and replaced with gnulib imports
+
+	* i18n support updated to gettext 0.14.1
+	* po/fr.po: fixed broken headers. FRENCH TRANSLATOR MARKED UNKNOWN.
+	* intl/: updated - Did some nasty things to make libintl work in
+	  most circumstances
+	* libidu/iduglobal.h (new file): common definitions moved here
+	* *.c, *.h: updated to use gnulib functions, removed redundant
+	  definitions and checks
+	* *.c, *.h: reverted __P() macro introduction, and assume prototypes.
+	  Times are mature for that, and I follow gnulib in this.
+
+2000-06-06  Jim Meyering  <meyering@lucent.com>
+
+	* po/POTFILES.in: Add libidu/fnprint.c and remove libidu/xnls.h.
+
+	* mkinstalldirs: Update.
+	* missing: Update.
+
+	* depcomp: New file.
+	* lib/malloc.c: New file.
+	* lib/realloc.c: New file.
+
+	* configure.in: Require 2.14a.
+	Check for declaration of strsep.
+	* libidu/idfile.c: Declare strsep if necessary.
+	* libidu/scanners.c: Likewise.
+	* libidu/walker.c: Likewise.
+
+2000-04-26  Greg McGary  <gkm@gnu.org>
+
+	* lid.c (add_regexp_word_delimiters): Rename from
+	maybe_add_word_delimiters--action is now unconditional.
+	(query_literal_word): Call query_literal_substring if ignoring case.
+	(query_literal_prefix): Call query_regexp if ignoring case.
+	(query_regexp): Test delimiter_style before calling
+	add_regexp_word_delimiters.
+	(query_literal_substring): Add local var arg_length.
+	Handle word matches which can happen when ignoring case.
+	Add local var match.
+
+1999-04-10  Greg McGary  <gkm@gnu.org>
+
+	* walker.c (classify_link): Only return 0 for zero-length files.
+	Keep directories, no matter what their size.  DOS always
+	returns zero size for directories.
+	[From tbisp@uswest.net]
+
+1999-04-09  Greg McGary  <gkm@gnu.org>
+
+	* po/Makefile.in.in (DISTFILES): Remove ChangeLog.
+	* po/ChangeLog: Remove empty file.
+
+1999-04-08  Greg McGary  <gkm@gnu.org>
+
+	* libidu/idread.c (maybe_read_id_file): Add `b' for binary
+	to fopen mode string.  [From tbisp@uswest.net]
+	* src/lid.c (report_grep): Change name of gid_FILE to source_FILE.
+
+	* src/mkid.c (write_id_file): Complain if fclose fails.
+	[From jbb6@acpub.duke.edu]
+
+	* src/lid.c (limits.h): Include earlier to avoid RE_DUP_MAX
+	conflict. [From Erick.Branderhorst@asml.nl]
+	(search_flinkv): Bash terminating newline.  [From marc@snafu.org]
+	* lisp/elisp-comp: Import more recent version from automake.
+	* libidu/scanners.c (SCAN_CPP_DIRECTIVE): Tolerate
+	leading whitespace before first '#' [From rodneybrown@pmsc.com]
+	(get_token_asm, get_token_c): Move some common leading context
+	into SCAN_CPP_DIRECTIVE.
+
+	* po/pl.po, po/nl.po: Add files.
+	* configure.in (ALL_LINGUAS): Add pl & nl.
+
+1999-04-06  Greg McGary  <gkm@gnu.org>
+
+	* Version 3.2d released.
+
+	* libidu/idfile.h (largest_member_file): Add variable decl.
+	(MAX_LARGEST_MEMBER_FILE): Add constant.
+	* libidu/scanners.h (scanner_buffer): Add variable decl.
+	* libidu/scanners.c (scanner_buffer): Rename from id_0.
+	* libidu/walker.c (largest_member_file): Add veriable defn.
+	(walk_flink): Maintain largest_member_file.
+	Call print_member_file.
+	(maybe_get_member_file): Don't call print_member_file.
+	(classify_link): Return 0 if file size is zero.
+	* src/mkid.c (scan_files): Report size of largest file.
+	Cap scanner_buffer size at MAX_LARGEST_MEMBER_FILE.
+	Allocate scanner_buffer.
+	* src/xtokid.c (scan_files): Cap scanner_buffer size at
+	MAX_LARGEST_MEMBER_FILE.  Allocate scanner_buffer.
+
+1999-04-04  Greg McGary  <gkm@gnu.org>
+
+	* configure.in: Check for regcomp and compile lib/regex.c
+	if the system doesn't provide it.
+	* lisp/Makefile.am (lisp_LISP): Add variable.  Remove all
+	other obsolete contents.
+	* src/lid.c (search_flinkv): Replace `gets' with `fgets'.
+
+1999-04-03  Greg McGary  <gkm@gnu.org>
+
+	* Version 3.2c released.
+
+	* libidu/id-file.h (walker_verbose_flag): Add extern variable decl.
+	* libidu/scanners.c (SCAN_CPP_DIRECTIVE): Add macro.
+	(get_token_c, get_token_asm): Call SCAN_CPP_DIRECTIVE.
+	* libidu/walker.c (walker_verbose_flag): Add variable defn.
+	(print_member_file): Add function.
+	(maybe_get_member_file): Call print_member_file in verbose mode.
+	* src/mkid.c: Add coments.  (ceil_log_2): Add function.
+	(main): Handle 'V' option for extra verbosity.
+	(scan_files): Use MAX (1M, n*lg(n)*64) to estimate initial size
+	of token hash table.
+	(name_tokens, number_tokens, string_tokens, literal_tokens,
+	comment_tokens, occurrences, hits_length, tokens_length, output_length):
+	Change type from size_t to unsigned long.
+	(report_statistics): Fix printf formats.
+
+1999-03-29  Greg McGary  <gkm@gnu.org>
+
+	* Version 3.2b released.
+
+	* libidu/idfile.h (struct member_file) [mf_index]: Change
+	type to long.
+	* libidu/scanners.h (MAX_LEVELS): Remove constant.
+	(struct token) [tok_hits, tok_name]: Remove members.
+	[tok_hits_name]: Add member.
+	(TOKEN_HITS, TOKEN_NAME, OFFSETOF_TOKEN_NAME): Add macros.
+	* libidu/scanners.c (log_8_member_files): Add variable definition.
+	(get_token_c, get_token_asm, get_token_text): Use OFFSETOF_TOKEN_NAME.
+	* libidu/walker.c (mark_member_file_links) [new_index]: Change
+	variable type to long.
+	* src/idx.c (scan_member_file): Use TOKEN_NAME.
+	* src/mkid.c (ceil_log_8) Add function.
+	(current_hits_signature): Change variable type to (char *).
+	(main) [log_8_member_files]: Initialize new variable.
+	[current_hits_signature] Allocate storage.
+	(scan_member_file): Print member->mf_index as long.
+	(scan_member_file_1, write_id_file, token_hash_1, token_hash_2,
+	token_hash_cmp, token_qsort_cmp, summarize, write_hits):
+	use TOKEN_NAME & TOKEN_HITS.
+	(init_hits_signature, write_hits): Replace MAX_LEVELS
+	with log_8_member_files.
+	* src/xtokid.c (scan_member_file): Use TOKEN_NAME.
+
+	* libidu/idfile.h (vectorize_string) [delimiter_class]:
+	Declare as pointer to const.
+	* libidu/walker.c (append_strings_to_vector, vectorize_string)
+	[delimiter_class]: Declare as pointer to const.
+	(white_space): Declare as array of const.
+
+1999-03-28  Greg McGary  <gkm@gnu.org>
+
+	* libidu/hash.c (hash_insert): hash_insert_at no longer
+	returns old contents, but rather the new slot address.
+	(hash_insert_at): Return slot address of inserted item.
+	* libidu/walker.c (get_member_file): return member.
+	(get_link_from_dirent, get_link_from_string): Conform
+	to new hash_insert_at API, where return value is slot
+	address of newly inserted item.
+
+	* Makefile.am (AUTOMAKE_OPTIONS): Add macro.
+
+	* config.h.in (WITH_REGEX): Remove.
+	* configure.in (AM_WITH_REGEX): Remove.
+	* src/lid.c (rx.h): Remove #include.
+
+1999-02-11  Greg McGary  <gkm@gnu.org>
+
+	* src/lid.c (report_grep): Continue rather than return when
+	fopen fails.
+
+1999-01-31  Jim Meyering  <meyering@ascend.com>
+
+	* doc/Makefile.am (DISTCLEANFILES): Remove id-utils.cm.
+	* doc/id-utils.texi: Remove unused `@defcodeindex cm'.
+
+1999-01-28  Jim Meyering  <meyering@ascend.com>
+
+	* libidu/scanners.c (set_ushort_ctype): Use an unsigned char index.
+	(clear_ushort_ctype): Likewise.
+	(set_uchar_ctype): Likewise.
+	(clear_uchar_ctype): Likewise.
+	(id_0): Add `unsigned' to declaration of this file-scope static var.
+	(get_token_c): Add `unsigned' to declaration of `id'.
+	(get_token_asm): Likewise.
+	(get_token_text): Likewise.
+
+	* testsuite/Makefile.am (DISTCLEANFILES): Arrange to remove ID.
+	* libidu/Makefile.am (EXTRA_DIST): Arrange to distribute id-lang.map.
+	* lisp/Makefile.am (DISTCLEANFILES): Arrange to remove id-utils.elc.
+	* doc/Makefile.am (DISTCLEANFILES): Arrange to remove id-utils.cm
+	and id-utils.fl.
+
+1999-01-27  Jim Meyering  <meyering@ascend.com> (with some changes from gkm)
+
+	* Makefile.maint: New file.
+	* GNUmakefile: New file.
+
+	* lib/Makefile.am (AUTOMAKE_OPTIONS): Use ../src/ansi2knr.
+	* libidu/Makefile.am (AUTOMAKE_OPTIONS): Likewise.
+	(ansi2knr.c): Remove rule.
+
+	* src/ansi2knr.c: Import new version.
+	* src/ansi2knr.1: Likewise.
+
+	* lib/Makefile.am (EXTRA_DIST): Remove getopt.c and getopt1.c.
+
+	* configure.in: Require autoconf-2.13.
+	Remove some variables that now come with AM_INIT_AUTOMAKE.
+	Remove deprecated AM_MAINTAINER_MODE.
+	Use AC_PROG_INSTALL, not deprecated AM_PROG_INSTALL.
+	Use AM_FUNC_OBSTACK, not AC_REPLACE_OBSTACK.
+	Use AM_GNU_GETTEXT, not ud_GNU_GETTEXT/AC_LINK_FILES...
+	Define LIBOBJS for ansi2knr filtering rules.
+	(AC_OUTPUT): Add m4/Makefile.
+
+	* acconfig.h: Remove many #undefs, now that we're using autoconf-2.13's
+	3-arg form of the AC_DEFINE* macros.
+
+	* Makefile.am (SUBDIRS): Add m4.
+	(EXTRA_DIST): Add Makefile.maint GNUmakefile @README_ALPHA@.
+	(DISTCLEANFILES): Add intl/libintl.h.
+	(ACLOCAL_AMFLAGS): Define to `-I m4'
+
+	* m4/: New directory.
+
+1999-01-26  Greg McGary  <gkm@gnu.org>
+
+	* hash.h (struct hash_table) [ht_empty_slots]: Add struct member.
+	* hash.c (hash_init): Initialize ht_empty_slots.  Don't halve
+	ht_size.  (hash_find_slot) Return deleted slot, if available.
+	(hash_insert_at): Decrement ht_empty_slots if one is consumed.
+	Rehash if emtpy slots become too scarce.  (hash_free_items,
+	hash_deleted_item, hash_free): Re-initialize ht_empty_slots.
+	(hash_rehash): Don't double table size if rehashing only because
+	table is clogged with deleted slots.
+
+1998-11-20  Greg McGary  <gkm@gnu.org>
+
+	* libidu/fnprint.c (print_filenames): Move ALLOCA outside loop.
+	* libidu/walker.c (get_lang_args): Ditto.
+	* src/fnid.c (main): Ditto.
+	* src/lid.c (report_grep, search_flinkv): Ditto.
+	* src/mkid.c (scan_member_file): Consolidate two ALLOCA buffers
+	at inner scopes to a single buffer at an outer scope.
+
+1998-11-18  Greg McGary  <gkm@gnu.org>
+
+	* missing: Add file.
+
+	* configure.in, lib/Makefile.am, libidu/Makefile.am:
+	Conform macro names to automake-1.3 conventions.
+
+	* libidu/scanners.c (id_0): Increase size and make file static.
+
+Tue Aug  6 22:46:16 1996  Greg McGary  <gkm@g2>
+
+	* Version 3.2 released
+
+	* src/fid.c (get_file_index): rename shadowing local decl of
+ 	file_name.
+
+	* src/lid.c (report_edit): post decrement argv when splicing in
+ 	ed_arg_buffer.
+
+	* src/xtokid.c, libidu/idfile.h: #include "xstring.h" to avoid
+	redeclaration of basename/dirname error.
+
+Wed Jul 17 18:06:18 1996  Greg McGary  <gkm@g2>
+
+	* Version 3.1 released
+
+Sun Jun 30 13:06:18 1996  Greg McGary  <gkm@g2>
+
+	* src/lid.c (get_query_func): remove unreachable return stmt.
+
+	* libidu/hash.h (HASH_VACANT): cast item to (void *) for
+ 	comparison.
+
+	* libidu/walker.c (append_strings_to_vector): check length of
+	vector_0, not vector.
+
+	* libidu/scanners.c (get_token_c, get_token_asm, get_token_text):
+	cast return type of obstack_finish.
+
+	* src/lid.c (radix, delimiter_style, pattern_style, key_style,
+ 	result_style, key_style, result_style) libidu/idfile.h
+ 	(separator_style): remove trailing comma from enum list.
+
+	* src/xtokid.c: removed include of string.h.
+
+	* src/lid.c (savetty, restoretty, linetty, chartty): define stub
+ 	versions if no UNIXy tty control is available.
+
+Wed Jun 12 22:15:12 1996  Greg McGary  <gkm@g2>
+
+	* src/lid.c, src/mkid.c, src/fnid.c (main): change default
+	argv variables from char* to char[]
+
+Mon Jun 10 15:29:19 1996  Greg McGary  <gkm@g2>
+
+	* src/mkid.c (main): -v implies -s; handle the case where there's
+	nothing to do.
+	* libidu/walker.c (get_lang_args): test lang_args_default before
+ 	dereference.
+
+Sun Jun  9 23:46:53 1996  Greg McGary  <gkm@g2>
+
+	* lid.c (get_radix, otoi, dtoi, xtoi): Test *str before passing it
+	to strchr--fixes query_number bug.
+
+Sat Feb 25 16:23:49 1995  Greg McGary  <gkm@magilla.cichlid.com>
+
+	* Version 3.0.8 released.
+
+	* configure.in, acconfig.h, Makefile.in (TOUCH, PREV_VERSION):
+	Added.  (check): Export PATH.  (TAGS): Eliminate unnecessary `-t'
+	option to etags.  (mostlyclean, clean, distclean,
+	maintainer-clean, install): Bring into conformance with GNU
+	standards.  (AWK, OLD_PATCH_LEVEL, PATCH_LEVEL, SIZEOF_LONG,
+	bump-major, bump-minor, bump-patch): Deleted.  (ANSI2KNR,
+	ansi2knr): Added.  (depend): Fixed to support ansi2knr.
+
+	* configure.in: Update stamp-h inside AC_OUTPUT.
+
+	* acconfig.h: Work harder to force #undef of HAVE_TERMIOS_H for	NeXT.
+	(__P): Added.
+
+	* bitops.c, fid.c, filenames.c, idfile.c, idx.c, iid.c, lid.c,
+	misc.c, mkid.c, scanners.c, token.c: Changed "config.h" to <config.h>.
+
+	* acconfig.h, bitops.c, bitops.h, fid.c, filenames.h, idfile.c,
+	idfile.h, idx.c, iid.c, lid.c, misc.h, mkid.c, scanners.c,
+	scanners.h, token.h: Use __P around function prototype decls.
+
+	* acconfig.h, idfile.h, idfile.c (intmin32_t, uintmin32_t):
+	Deleted in favor of long and unsigned long.
+
+	* idtest: Fixed bugs (Thanks to Francois Pinard).
+
+	* mkid.c (write_idfile): Delete erroneous remnant of old file name
+	indexing scheme (Reported by Dave Wiggins).  (assert_hits):
+	Simplified & fixed erroneous assertion.
+
+	* lid.c (grep_id): Treat '\0' as end-of-line along with '\n'.
+
+	* strerror.c (strerror): Protoize defn.
+
+Mon Feb 20 16:18:47 1995  Greg McGary  <gkm@magilla.cichlid.com>
+
+	* Version 3.0.7 released.
+
+	* scanners.c (scanners, suffixes, init_scanners, get_scanner,
+	set_scan_args, get_lang_name, get_filter, get_suffix): Fixed
+	boundary conditions.
+
+	* mkid.c (make_sibling_summary): Don't realloc if kid's sum_tokens
+	is already large enough.  (scan_1_file): Ignore blank tokens.
+	Avoid division by 0 (pinard@iro.umontreal.ca).  (write_idfile):
+	Moved assertions & qsort to top.  Don't check for blank tokens--it
+	can't happen.  (rehash): Prefix "Rehashing..." with "\n\t".
+
+	* idtest: Test fid more rigorously.
+
+	* idfile.c (init_idfile): Don't increment i for non-file args.
+
+	* Makefile.in (DEFS, DIST_SHAR, AWK, bump-patch, bump-minor,
+	bump-major, shar): Added.  (.PRECIOUS): Added configure, config.h
+	config.h.in.
+
+	* configure.in (DEPEND): Fixed portability (kazusi-m@is.aist-nara.ac.jp).
+	(AC_CHECK_FUNCS(basename, dirname)): Added.
+	* misc.h, misc.c: Made decl/defn of basename, dirname conditional.
+
+
+Sun Feb 19 19:21:09 1995  Thomas Neumann  <tom@smart.ruhr.de>
+
+ 	* configure.in: Check for <sgtty.h>, not <sgttyb.h>.
+	* accconfig.h: Disbale HAVE_TERMIOS_H for NeXT,
+	if HAVE_SGTTY_H is present.
+	* lid.c: Depend on HAVE_SGTTY_H, not HAVE_SGTTYB_H.
+	(savetty): ANSI'fy arglist declaration.
+
+Sat Feb 18 21:44:39 1995  Greg McGary  <gkm@magilla.cichlid.com>
+
+	* Version 3.0.6 released.
+
+	* Makefile.in, accconfig.h, mkid.c: Revised & simplified package
+	name & version macros.
+
+	* Makefile.in (DIST_MISC_FILES): Added version.texi, stamp-vti.
+	(TAGS): Fixed.  (config.status): Removed dependency on config.cache.
+
+	* acconfig.h: Added #ifndef _config_h_ ... #endif around file.
+	(SIZEOF_INT, SIZEOF_CHAR, SIZEOF_SHORT, uint8_t, uint16_t,
+	uint32_t, int32_t): Deleted.  (SIZEOF_LONG): Changed typedef name
+	to intmin32_t and uintmin32_t; all uses changed.
+	* configure.in (AC_CHECK_SIZEOF (int, short, char)): Deleted.
+	* idfile.h (struct idhead): Dropped uint8_t, uint16_t,
+	uint32_t, int32_t, added intmin32_t & uintmin32_t.
+	* idfile.c (io_idhead, io_write, io_read): Use constants to express
+	integer sizes for I/O on struct idhead.
+
+	* idtest, Makefile.in (stamp-vti): Dumbed-down shell code for portability.
+
+	* lid.c (enum radix): Deleted trailing comma.
+
+	* scanners.c (ctype_c, ctype_asm, ctype_text): Made unsigned.
+
+Thu Feb 16 23:55:44 EST 1995  Greg McGary  <gkm@magilla.cichlid.com>
+
+	* Version 3.0.5 released.
+
+	* iid.y (main): Eliminate useless Do1 variable.
+
+	* filenames.c (kshgetwd): Conditionally use getcwd or getwd.
+
+	* acconfig.h: Added typedefs of uint8_t, uint16_t, uint32_t, int32_t.
+	* idfile.h (struct idhead), idfile.c (io_read, io_write): Use
+	uint8_t, uint16_t, uint32_t, int32_t.
+
+	* lid.c (savetty, restoretty, linetty, chartty): Handle POSIX
+	termios properly.  (HAVE_SYS_IOCTL_H): #include <sys/ioctl.h> if
+	!HAVE_TERMIOS_H.
+
+	* configure.in (OLD_PATCH_LEVEL, MAJOR_VERSION, MINOR_VERSION,
+	FULL_VERSION, AC_CHECK_SIZEOF(int, long, short, char),
+	AC_CHECK_HEADERS(regex.h), AC_CHECK_FUNCS(regcomp regcmp): Added.
+
+	* mkdirhier: Added.
+
+	* Makefile.in (DIST_MISC_FILES): Added ChangeLog.  (depend):
+	$(DEPEND) and Makefile are now .PRECIOUS.  (dist-dir-links):
+	Added.  (check, install, uninstall): Fixed.  (install): Use
+	mkdirhier.

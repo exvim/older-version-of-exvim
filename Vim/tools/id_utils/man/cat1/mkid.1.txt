@@ -1,0 +1,122 @@
+MKID(1)                  User Commands                  MKID(1)
+
+
+
+
+
+NAME
+       mkid - Build an identifier database
+
+SYNOPSIS
+       mkid [OPTION]... [FILE]...
+
+DESCRIPTION
+       Build an identifier database.
+
+       -o, --output=OUTFILE
+              file name of ID database output
+
+       -f, --file=OUTFILE
+              synonym for --output
+
+       -i, --include=LANGS
+              include languages in LANGS (default: "C C++ asm")
+
+       -x, --exclude=LANGS
+              exclude languages in LANGS
+
+       -l, --lang-option=L:OPT pass OPT as a default  for  lan-
+              guage L (see below)
+
+       -m, --lang-map=MAPFILE
+              use  MAPFILE  to  map file names onto source lan-
+              guage
+
+       -d, --default-lang=LANG make  LANG  the  default  source
+              language
+
+       -p, --prune=NAMES
+              exclude the named files and/or directories
+
+       -v, --verbose
+              report per file statistics
+
+       -s, --statistics
+              report statistics at end of run
+
+       --help display this help and exit
+
+       --version
+              output version information and exit
+
+       FILE  may  be a file name, or a directory name to recur-
+       sively search.  If no FILE is given, the current  direc-
+       tory  is searched by default.  Note that the `--include'
+       and `--exclude' options are mutually-exclusive.
+
+       The following arguments apply to  the  language-specific
+       scanners:
+
+   C language:
+       -k,--keep=CHARS
+              Allow  CHARS  in  single-token  strings, keep the
+              result
+
+       -i,--ignore=CHARS
+              Allow CHARS in  single-token  strings,  toss  the
+              result
+
+       -u,--strip-underscore
+              Strip  a  leading  underscore  from  single-token
+              strings
+
+   C language:
+       -k,--keep=CHARS
+              Allow CHARS in  single-token  strings,  keep  the
+              result
+
+       -i,--ignore=CHARS
+              Allow  CHARS  in  single-token  strings, toss the
+              result
+
+       -u,--strip-underscore
+              Strip  a  leading  underscore  from  single-token
+              strings
+
+   Assembly language:
+       -c,--comment=CHARS
+              Any of CHARS starts a comment until end-of-line
+
+       -k,--keep=CHARS
+              Allow CHARS in tokens, and keep the result
+
+       -i,--ignore=CHARS
+              Allow CHARS in tokens, and toss the result
+
+       -u,--strip-underscore
+              Strip a leading underscore from tokens
+
+       -n,--no-cpp
+              Don't handle C pre-processor directives
+
+   Text language:
+       -i,--include=CHAR-CLASS
+              Treat  characters  of  CHAR-CLASS  as  token con-
+              stituents
+
+       -x,--exclude=CHAR-CLASS
+              Treat characters of CHAR-CLASS  as  token  delim-
+              iters
+
+SEE ALSO
+       The full documentation for the id-utils package is main-
+       tained as a Texinfo manual.  If the  info  and  id-utils
+       packages are properly installed, the command
+
+              info 'ID database'
+
+       should give you access to the complete manual.
+
+
+
+mkid -                    August 2005                   MKID(1)

@@ -1,0 +1,39 @@
+FNID(1)                  User Commands                  FNID(1)
+
+
+
+
+
+NAME
+       fnid - Print constituent file names that match PATTERN
+
+SYNOPSIS
+       fnid [OPTION]... [PATTERN]...
+
+DESCRIPTION
+       Print  constituent  file names that match PATTERN, using
+       shell-style wildcards.
+
+       -f, --file=FILE
+              file name of ID database
+
+       -S, --separator=STYLE
+              STYLE is one of `braces', `space' or `newline'
+
+       --help display this help and exit
+
+       --version
+              output version information and exit
+
+SEE ALSO
+       The full documentation for the id-utils package is main-
+       tained  as  a  Texinfo manual.  If the info and id-utils
+       packages are properly installed, the command
+
+              info 'ID database'
+
+       should give you access to the complete manual.
+
+
+
+fnid -                    August 2005                   FNID(1)

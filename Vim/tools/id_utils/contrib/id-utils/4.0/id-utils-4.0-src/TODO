@@ -1,0 +1,53 @@
+id-utils TODO - Future directions
+
+* General
+  - Add comments to all substantive functions
+
+* Portability
+  - Fix file name handling for non-UNIX file systems
+    (notably DOS, Windoze & OS/2).
+  - Fix assumption that (sizeof (int) == sizeof (long))
+  - Integrate changes for MSDOS via djgpp
+  - Port to cygwin
+  - configure gcc warning flags
+  - remove arbitrary buffer-size limits and unsafe libc functions (e.g., gets)
+
+* lid
+  - use "long long" (if available) integer comparisons
+    in query_number ().
+
+* mkid & lid
+  - store & retrieve floating point literals
+  - automatically crack (optionally gzipped or compressed) tar files, so
+    you can index and search archived source without having to unpack it.
+  - reset access times
+
+* mkid
+  - Reinstate "-" on command-line, meaning read stdin for newline-separated args.
+  - Add times(2) results to statistics output.
+  - Scale statistics base unit (KB, MB, GB)
+  - detect and avoid cycles in the tree induced by symlinks to /.
+  - report dangling symlinks as such, rather than just saying "can't stat"
+  - don't gripe about dangling symlinks if file won't be scanned anyway
+  - (Optinally?) store tokenized contents of comments.
+  - Store attributes with symbols: type, func, variable struct-tag
+    enum-tag, keyword, etc.  Store caller/callee relationships between
+    identifiers.  Indicate which files have defns vs. uses.  This info
+    is needed to support a cscope interface.
+  - treat \ specially for TeX files and do likewise with @ for Texinfo.
+  - line-buffer verbose output
+
+* gscope
+  - add a cscope work-alike query interface
+  - rewrite scanners to be scanner/parsers that can distinguish defn
+    from use, lvalues from rvalues, types from vars from funcs from macros.
+
+* grep
+  - Hack GNU grep to use a mkid database for hints about which files to
+    search.
+
+
+Local Variables:
+mode: text
+fill-column: 75
+End:

@@ -1,0 +1,91 @@
+*exUtility-Install.txt*	exUtility install and quick start manual
+
+Author: Wu Jie  (GayaEcai@N163I.UScom)
+		(remove GENIUS from Wu Jie's email before using)
+For Vim version 6.0 and above
+Last change: 2006 December 10
+
+
+1. Installation					|exUtility-Installation|
+2. Changelist					|exUtility-Changelist|
+3. Todolist					|exUtility-Todolist|
+3. Contact					|exUtility-Contact|
+
+==============================================================================
+1. Installation~
+                                                *exUtility-Installation*
+1.1. Files~
+
+The exUtility have these files:
+>
+	plugin\exEnvironmentSetting.vim
+	       exGlobalSearch.vim
+	       exSymbolTable.vim
+	       exTagSelect.vim
+	       exWindow.vim
+
+	doc\exUtility-exEnvironmentSetting.txt 
+	    exUtility-exGlobalSearch.txt       
+	    exUtility-exSymbolTable.txt
+	    exUtility-exTagSelect.txt
+	    exUtility-Install.txt
+<
+1.2. Copy the file into your vim-runtime path~
+	copy all the file into your vim-runtime path
+
+1.3. After install you should read~
+	exUtility have a lot of docment, but don't woryy about this. We wrote
+	a quick-start section for user to easy star up the plugin.
+	Read the quick-start section in each doc file first.
+	We recommend you read them in this order:
+>
+        exUtility-exTagSelect.txt           
+        exUtility-exGlobalSearch.txt        
+        exUtility-exSymbolTable.txt         
+	exUtility-exEnvironmentSetting.txt  
+<
+
+==============================================================================
+2. Changelist~
+                                                *exUtility-Changelist*
+
+exUtility-4.2.0~
+Bug Fix:~
+	exGlobaleSearch: <1> fix jump error when the file have been modified.
+	exWindow: <1> prevent edit same file when jumping, to prevent a pop-up error message.
+Additional Features:~
+	none
+
+
+==============================================================================
+3. Todolist~
+                                                *exUtility-Todolist*
+						
+<1> add exBuild.vim
+	This tool will help you for select compiler, make your code through a
+	make file we support you(or yourself). A quickfix list with edit-able
+	function show in a output window.
+
+<2> add exGDB.vim
+	We will improve the gdbvim first, then consider to make a complete
+	version vim-gdb named exGDB.
+
+==============================================================================
+4. Contact~
+                                                *exUtility-Contact*
+
+Our goal is to make a easy GNU-tools support Vim.
+we still have a lot of bugs and thing to do in exUtility, and we need your
+help if you love and concern this project.
+If you have any good idea for the exUtility,
+	    any bug reports,
+	    any advises,
+	    any questions,
+Feel free to contact us, we will reply your mail asap. We're vim fans
+
+Contact Method:
+	Wu Jie:	ayacai (AT) 163 (DOT) com
+	Yu Jian Rong: YuJianrong (AT) GMail (DOT) com
+
+
+ vim:ts=8 sw=8 noexpandtab tw=78 ft=help:

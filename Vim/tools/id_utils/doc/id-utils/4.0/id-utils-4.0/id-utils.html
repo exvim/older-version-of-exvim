@@ -1,0 +1,1344 @@
+<html lang="en">
+<head>
+<title>ID database utilities</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="ID database utilities">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="top" href="#Top">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<h1 class="settitle">ID database utilities</h1>
+<div class="node">
+<p><hr>
+<a name="Introduction"></a>
+
+
+</div>
+
+<h2 class="chapter">1 Introduction</h2>
+
+<p><a name="index-overview-1"></a><a name="index-introduction-2"></a><a name="index-ID-database_002c-definition-of-3"></a>
+An <dfn>ID database</dfn> is a binary file containing a list of file names, a
+list of tokens, and a sparse matrix indicating which tokens
+appear in which files.
+
+   <p>With this database and some tools to query it (described in this
+manual), many text-searching tasks become simpler and faster.  For
+example, you can list all files that reference a particular
+<code>#include</code> file throughout a huge source hierarchy, search for all
+the memos containing references to a project, or automatically invoke an
+editor on all files containing references to some function or variable. 
+Anyone with a large software project to maintain, or a large set of text
+files to organize, can benefit from the ID utilities.
+
+   <p>Although the name `ID' is short for `identifier', the ID utilities
+handle more than just identifiers; they also treat other kinds of
+tokens, most notably numeric constants, and the contents of certain
+character strings.  Thus, this manual will use the word <dfn>token</dfn> as a
+term that is inclusive of identifiers, numbers and strings.
+
+   <p>There are several programs in the ID utilities family:
+
+     <dl>
+<dt><samp><span class="file">mkid</span></samp><dd>scans files for tokens and builds the ID database file.
+
+     <br><dt><samp><span class="file">lid</span></samp><dd>queries the ID database for tokens, then reports matching file names or
+matching lines.
+
+     <br><dt><samp><span class="file">fid</span></samp><dd>lists all tokens recorded in the database for given files, or
+tokens common to two files.
+
+     <br><dt><samp><span class="file">fnid</span></samp><dd>matches the file names in the database, rather than the tokens.
+
+     <br><dt><samp><span class="file">xtokid</span></samp><dd>extracts raw tokens&mdash;helps with testing of new <samp><span class="file">mkid</span></samp> scanners.
+
+   </dl>
+
+   <p>In addition, the ID utilities have historically provided several query
+programs which are specializations of <samp><span class="file">lid</span></samp>:
+
+     <dl>
+<dt><samp><span class="file">gid</span></samp><dd>(alias for `<samp><span class="samp">lid -R grep</span></samp>')
+lists all lines containing the requested pattern.
+
+     <br><dt><samp><span class="file">eid</span></samp><dd>(alias for `<samp><span class="samp">lid -R edit</span></samp>')
+invokes an editor on all files containing the requested pattern, and
+if possible, initiates a text search for that pattern.
+
+     <br><dt><samp><span class="file">aid</span></samp><dd>(alias for `<samp><span class="samp">lid -ils</span></samp>') treats the requested pattern
+as a case-insensitive literal substring.
+
+   </dl>
+
+   <p><a name="index-bugs_002c-reporting-4"></a>Please report bugs to `<samp><span class="samp">bug-gnu-utils@gnu.ai.mit.edu</span></samp>'.  Remember to
+include the version number, machine architecture, input files, and any
+other information needed to reproduce the bug: your input, what you
+expected, what you got, and why it is wrong.  Diffs are welcome, but
+please include a description of the problem as well, since this is
+sometimes difficult to infer.  See <a href="gcc.html#Bugs">Bugs</a>.
+
+<!-- ************* gkm ********************************************************* -->
+<div class="node">
+<p><hr>
+<a name="Quick-start"></a>
+
+
+</div>
+
+<h2 class="chapter">2 Quick Start Procedure</h2>
+
+     <dl>
+Unpack the distribution.
+
+     <p>Type <samp><span class="file">./configure</span></samp>
+
+     <p>Type `<samp><span class="samp">make</span></samp>'
+
+     <p>Type `<samp><span class="samp">make install</span></samp>' as a user with the appropriate privileges
+(e.g., `<samp><span class="samp">bin</span></samp>' or perhaps even `<samp><span class="samp">root</span></samp>').
+
+     <p>Type `<samp><span class="samp">cd /usr/include; mkid</span></samp>' to build an ID database covering
+all of the system header files.
+
+     <p>Type `<samp><span class="samp">lid FILE</span></samp>', then `<samp><span class="samp">gid strtok</span></samp>', then `<samp><span class="samp">aid stdout</span></samp>'.
+
+</dl>
+
+   <p>You have just built, installed and used the most common commands of the
+GNU ID utilities.  If you ever need help remembering which system header
+files contain a particular declaration, or reference a particular symbol,
+you'll want to keep the ID file you built in <samp><span class="file">/usr/include</span></samp> for
+later use.  If your working directory is elsewhere at the time, simply
+provide the `<samp><span class="samp">-f /usr/include</span></samp>' option to <samp><span class="file">lid</span></samp> (see <a href="#Reading-options">Reading options</a>).
+
+<!-- ************* gkm ********************************************************* -->
+<div class="node">
+<p><hr>
+<a name="Common-options"></a>
+
+
+</div>
+
+<h2 class="chapter">3 Common command-line options</h2>
+
+<p><a name="index-common-command_002dline-options-5"></a>
+Certain options, and regular expression syntax, are shared by various
+groupings of the ID utilities.  We describe these in the sections below,
+rather than repeating them for each program.
+
+<ul class="menu">
+<li><a accesskey="1" href="#Universal-options">Universal options</a>:      Options common to all programs. 
+<li><a accesskey="2" href="#Extraction-options">Extraction options</a>:     Options for programs that extract tokens from source files. 
+<li><a accesskey="3" href="#Walker-options">Walker options</a>:         Options for programs that walk file and directory trees. 
+<li><a accesskey="4" href="#Reading-options">Reading options</a>:        Options for programs that read ID databases. 
+<li><a accesskey="5" href="#Writing-options">Writing options</a>:        Options for programs that write ID databases. 
+<li><a accesskey="6" href="#File-listing-options">File listing options</a>:   Options for programs that list file names. 
+</ul>
+
+<!-- ************* gkm ********************************************************* -->
+<div class="node">
+<p><hr>
+<a name="Universal-options"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="#Extraction-options">Extraction options</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Common-options">Common options</a>
+
+</div>
+
+<h3 class="section">3.1 Options Common to All Programs</h3>
+
+     <dl>
+<dt>`<samp><span class="samp">--help</span></samp>'<dd><a name="index-g_t_002d_002dhelp-6"></a><a name="index-help_002c-online-7"></a>Print a usage message listing all available options, then exit successfully.
+
+     <br><dt>`<samp><span class="samp">--version</span></samp>'<dd><a name="index-g_t_002d_002dversion-8"></a><a name="index-version-number_002c-finding-9"></a>Print the version number, then exit successfully.
+
+</dl>
+
+<!-- ************* gkm ********************************************************* -->
+<div class="node">
+<p><hr>
+<a name="Reading-options"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="#Writing-options">Writing options</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#Walker-options">Walker options</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Common-options">Common options</a>
+
+</div>
+
+<h3 class="section">3.2 Options for Programs that Read ID Databases</h3>
+
+     <dl>
+<dt>`<samp><span class="samp">-f </span><var>filename</var></samp>'<dt>`<samp><span class="samp">--file=</span><var>filename</var></samp>'<dd><a name="index-g_t_002df-10"></a><a name="index-g_t_002d_002dfile-11"></a><a name="index-ID-database-file-name-12"></a>
+<var>Filename</var> is the ID database to read when processing queries.  At
+present, only a single `<samp><span class="samp">--file</span></samp>' option is processed, but in future
+releases, more than one ID database may be named on the command line.
+
+     <br><dt>`<samp><span class="samp">$IDPATH</span></samp>'<dd><a name="index-ID-database-file-name-13"></a>
+`<samp><span class="samp">IDPATH</span></samp>' is an environment variable that contains a
+colon-separated list of ID database names.  If this variable is present,
+and no `<samp><span class="samp">--file</span></samp>' options are presented on the command line, the ID
+databases named in `<samp><span class="samp">IDPATH</span></samp>' are implied.<a rel="footnote" href="#fn-1" name="fnd-1"><sup>1</sup></a>
+
+</dl>
+
+   <p>If no ID databases are specified either on the command line or via the
+`<samp><span class="samp">IDPATH</span></samp>' environment variable, then the ID utilities search for a
+file named <samp><span class="file">ID</span></samp> in the current working directory, and then in
+successive parent directories.
+
+<!-- ************* gkm ********************************************************* -->
+<div class="node">
+<p><hr>
+<a name="Writing-options"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="#File-listing-options">File listing options</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#Reading-options">Reading options</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Common-options">Common options</a>
+
+</div>
+
+<h3 class="section">3.3 Options for Programs that Write ID Databases</h3>
+
+     <dl>
+<dt>`<samp><span class="samp">-o </span><var>filename</var></samp>'<dt>`<samp><span class="samp">--output=</span><var>filename</var></samp>'<dd><a name="index-g_t_002do-14"></a><a name="index-g_t_002d_002doutput-15"></a><a name="index-ID-database-file-name-16"></a>
+The `<samp><span class="samp">--output</span></samp>' option names the file in which to write a new ID
+database.  If no `<samp><span class="samp">--output</span></samp>' (or `<samp><span class="samp">--file</span></samp>') option is present,
+an output file named <samp><span class="file">ID</span></samp> is implied.
+
+     <br><dt>`<samp><span class="samp">-f </span><var>filename</var></samp>'<dt>`<samp><span class="samp">--file=</span><var>filename</var></samp>'<dd><a name="index-g_t_002df-17"></a><a name="index-g_t_002d_002dfile-18"></a><a name="index-ID-database-file-name-19"></a>
+This is a synonym for `<samp><span class="samp">--output</span></samp>'
+
+</dl>
+
+<!-- ************* gkm ********************************************************* -->
+<div class="node">
+<p><hr>
+<a name="Walker-options"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="#Reading-options">Reading options</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#Extraction-options">Extraction options</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Common-options">Common options</a>
+
+</div>
+
+<h3 class="section">3.4 Options for Programs that Walk File and Directory Trees.</h3>
+
+<p>The programs <samp><span class="file">mkid</span></samp> and <samp><span class="file">xtokid</span></samp> accept the names of files and
+directories on the command line.  Files are scanned if there is a
+scanner available and enabled for the file's source language. 
+Directories are recursively descended, searching for files whose names
+match the rules listed in the <em>language map</em> file (see <a href="#Language-map">Language map</a>).
+
+   <p>The following option controls the file tree walker:
+
+     <dl>
+<dt>`<samp><span class="samp">-p </span><var>names</var></samp>'<dt>`<samp><span class="samp">--prune=</span><var>names</var></samp>'<dd><a name="index-g_t_002dp-20"></a><a name="index-g_t_002d_002dprune-21"></a><a name="index-file-tree-pruning-22"></a>
+One or more file or directory names may appear in <var>names</var>.  The file
+tree walker will stop short at these files and directories and their
+contents will not be scanned.
+
+   </dl>
+
+<!-- ************* gkm ********************************************************* -->
+<div class="node">
+<p><hr>
+<a name="File-listing-options"></a>
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#Writing-options">Writing options</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Common-options">Common options</a>
+
+</div>
+
+<h3 class="section">3.5 Options for Programs that List File Names</h3>
+
+<p>The programs <samp><span class="file">lid</span></samp> and <samp><span class="file">fnid</span></samp> can print lists of file names as
+the result of queries.  The following option controls how these lists
+are formatted:
+
+     <dl>
+<dt>`<samp><span class="samp">-S </span><var>style</var></samp>'<dt>`<samp><span class="samp">--separator=</span><var>style</var></samp>'<dd><a name="index-g_t_002dS-23"></a><a name="index-g_t_002d_002dseparator-24"></a><a name="index-file-name-separator-25"></a>
+<var>Style</var> may be one of `<samp><span class="samp">braces</span></samp>', `<samp><span class="samp">space</span></samp>' or `<samp><span class="samp">newline</span></samp>'.
+
+     <p>The <var>style</var> of `<samp><span class="samp">braces</span></samp>' means that file names with common
+directory prefix and common suffix are printed using the shell's brace
+notation in order to compress the output.  For example,
+<samp><span class="file">../src/foo.c ../src/bar.c</span></samp> can be printed in brace notation as
+<samp><span class="file">../src/{foo,bar}.c</span></samp>.
+
+     <p>The <var>style</var>s of `<samp><span class="samp">space</span></samp>' and `<samp><span class="samp">newline</span></samp>' mean that file names
+are separated spaces or by newlines, respectively.
+
+     <p>If the list of files is being printed on a terminal, brace notation is
+the default.  If not, file names are separated by spaces if the
+<var>key</var> is included in the output, and by newlines the <var>key style</var>
+is `<samp><span class="samp">none</span></samp>' (see <a href="#lid-invocation">lid invocation</a>).
+
+   </dl>
+
+<!-- ************* gkm ********************************************************* -->
+<div class="node">
+<p><hr>
+<a name="Extraction-options"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="#Walker-options">Walker options</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#Universal-options">Universal options</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Common-options">Common options</a>
+
+</div>
+
+<h3 class="section">3.6 Options for Programs that Scan Source Files</h3>
+
+<p><samp><span class="file">mkid</span></samp> and <samp><span class="file">xtokid</span></samp> walk file trees, select source files by
+name, and extract tokens from source files.  They accept the following
+options:
+
+     <dl>
+<dt>`<samp><span class="samp">-m </span><var>mapfile</var></samp>'<dt>`<samp><span class="samp">--lang-map=</span><var>mapfile</var></samp>'<dd><a name="index-g_t_002dm-26"></a><a name="index-g_t_002d_002dlang_002dmap-27"></a><a name="index-language-map-file-28"></a>
+<var>mapfile</var> contains rules for determining the source languages from
+file names See <a href="#Language-map">Language map</a>.
+
+     <br><dt>`<samp><span class="samp">-i </span><var>languages</var></samp>'<dt>`<samp><span class="samp">--include=</span><var>languages</var></samp>'<dd><a name="index-g_t_002di-29"></a><a name="index-g_t_002d_002dinclude-30"></a><a name="index-include-languages-31"></a>
+The `<samp><span class="samp">--include</span></samp>' option names <var>languages</var> whose source files
+should be scanned and incorporated into the ID database.  By default,
+all languages known to the ID utilities are enabled.
+
+     <br><dt>`<samp><span class="samp">-x </span><var>languages</var></samp>'<dt>`<samp><span class="samp">--exclude=</span><var>languages</var></samp>'<dd><a name="index-g_t_002dx-32"></a><a name="index-g_t_002d_002dexclude-33"></a><a name="index-exclude-languages-34"></a>
+The `<samp><span class="samp">--exclude</span></samp>' option names <var>languages</var> whose source files
+should <var>not</var> be scanned.  The default list of excluded languages is
+empty.  Note that only one of `<samp><span class="samp">--include</span></samp>' or `<samp><span class="samp">--exclude</span></samp>' may
+be specified on the command line for a single run.
+
+     <br><dt>`<samp><span class="samp">-l </span><var>language</var><span class="samp">:</span><var>options</var></samp>'<dt>`<samp><span class="samp">--lang-option=</span><var>language</var><span class="samp">:</span><var>options</var></samp>'<dd><a name="index-g_t_002dl-35"></a><a name="index-g_t_002d_002dlang_002doption-36"></a><a name="index-language_002dspecific-option-37"></a>
+Language-specific scanners also accept options.  <var>Language</var> denotes
+the desired scanner, and <var>option</var> are the command-line options that
+should be passed through to it.  For example, to pass the <var>-x
+&ndash;coke-bottle</var> options to the scanner for the language <var>swizzle</var>,
+pass this: <var>-l swizzle:"-x &ndash;coke-bottle"</var>, or this:
+<var>-lang-option=swizzle:"-x &ndash;coke-bottle"</var>, or this: <var>-l
+swizzle-x -l swizzle:&ndash;coke-bottle</var>.  Use the `<samp><span class="samp">--help</span></samp>' option to
+see the command-line option summary for
+
+   </dl>
+
+   <p><a name="index-scanners-38"></a>
+To determine which tokens to extract from a file and store in the
+database, <samp><span class="file">mkid</span></samp> calls a <dfn>scanner</dfn>; we say a scanner
+<dfn>recognizes</dfn> a particular language.  Scanners for several languages
+are built-in to <samp><span class="file">mkid</span></samp>; you can add your own scanners as well, as
+explained in <a href="#Defining-scanners">Defining scanners</a>.
+
+   <p>The ID utilities determine which scanner to use for a particular file by
+consulting the language-map file.  Scanners for several are already
+built-in to the ID utilities.  You can see which languages have built-in
+scanners, and examine their language-specific options by invoking
+`<samp><span class="samp">mkid --help</span></samp>' or `<samp><span class="samp">xtokid --help</span></samp>'.
+
+<ul class="menu">
+<li><a accesskey="1" href="#Language-map">Language map</a>:                 Mapping file names to source languages. 
+<li><a accesskey="2" href="#C_002fC_002b_002b-scanner">C/C++ scanner</a>:                For the C and C++ programming language. 
+<li><a accesskey="3" href="#Assembler-scanner">Assembler scanner</a>:            For assembly language. 
+<li><a accesskey="4" href="#Text-scanner">Text scanner</a>:                 For documents or other non-source code. 
+<li><a accesskey="5" href="#Perl-scanner">Perl scanner</a>:                 For Perl language (experimental). 
+<li><a accesskey="6" href="#Defining-scanners">Defining scanners</a>:            Defining new scanners in the source code. 
+</ul>
+
+<!-- ************* gkm ********************************************************* -->
+<div class="node">
+<p><hr>
+<a name="Language-map"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="#C_002fC_002b_002b-scanner">C/C++ scanner</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Extraction-options">Extraction options</a>
+
+</div>
+
+<h4 class="subsection">3.6.1 Mapping file names to source languages</h4>
+
+<p>The file <samp><span class="file">id-lang.map</span></samp>, installed by default in
+<samp><span class="file">$(prefix)/share/id-lang.map</span></samp>, contains rules for mapping file
+names to source languages.  Each rule comprises three parts: a shell
+<var>glob</var> pattern, a language name, and language-specific scanner
+options.
+
+   <p>The special pattern `<samp><span class="samp">**</span></samp>' denotes the default source language.  This is
+the language that's assigned to file names that don't match any other
+pattern.
+
+   <p>The special pattern `<samp><span class="samp">***</span></samp>' should be followed by a file name.  The
+named file should contain more language-map rules and is included at
+this point.
+
+   <p>The order in which rules are presented in a language-map file is
+significant.  This order influences the order in which files are
+displayed as the result of queries.  For example, the distributed
+language-map file places all rules for C <var>.h</var> files ahead of
+<var>.c</var> files, so that in general, declarations will precede
+definitions in query output.  The same thing is done for C++ and its
+many different source file name extensions.
+
+   <p>Here is a pared-down version of the <samp><span class="file">id-lang.map</span></samp> file distributed
+with the ID utilities:
+
+<pre class="example">     
+     # Default language
+     **			IGNORE	# Although this is listed first,
+     				# the default language pattern is
+     				# logically matched last.
+     
+     # Backup files
+     *~			IGNORE
+     *.bak			IGNORE
+     *.bk[0-9]		IGNORE
+     
+     # SCCS files
+     [sp].*			IGNORE
+     
+     # list header files before code files
+     *.h			C
+     *.h.in			C
+     *.H			C++
+     *.hh			C++
+     *.hpp			C++
+     *.hxx			C++
+     
+     # list C `meta' files next
+     *.l			C
+     *.lex			C
+     *.y			C
+     *.yacc			C
+     
+     # list C code files after header files
+     *.c			C
+     *.C			C++
+     *.cc			C++
+     *.cpp			C++
+     *.cxx			C++
+     
+     # list assembly language after C
+     *.[sS]			asm --comment=;
+     *.asm			asm --comment=;
+     
+     # [nt]roff
+     *.[0-9]			roff
+     *.ms			roff
+     *.me			roff
+     *.mm			roff
+     
+     # TeX and friends
+     *.tex			TeX
+     *.ltx			TeX
+     *.texi			texinfo
+     *.texinfo		texinfo
+     
+</pre>
+   <!-- ************* gkm ********************************************************* -->
+<div class="node">
+<p><hr>
+<a name="C%2fC++-scanner"></a>
+<a name="C_002fC_002b_002b-scanner"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="#Assembler-scanner">Assembler scanner</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#Language-map">Language map</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Extraction-options">Extraction options</a>
+
+</div>
+
+<h4 class="subsection">3.6.2 C/C++ Language Scanner</h4>
+
+<p><a name="index-C-scanner_002c-predefined-39"></a>
+The C scanner is the most commonly used.  Files that match the glob
+pattern <samp><span class="file">*.h</span></samp>, <samp><span class="file">*.c</span></samp>, as well as <samp><span class="file">yacc</span></samp> files that match
+<samp><span class="file">*.y</span></samp> or <samp><span class="file">*.yacc</span></samp>, and <samp><span class="file">lex</span></samp> files that match <samp><span class="file">*.l</span></samp>
+or <samp><span class="file">*.lex</span></samp>, are processed with this scanner.
+
+   <p>Scanner-specific options (Note, these options are presented
+<var>without</var> the required `<samp><span class="samp">-l</span></samp>' or `<samp><span class="samp">--lang-option=</span></samp>' prefix):
+
+     <dl>
+<dt>`<samp><span class="samp">-k </span><var>character-class</var></samp>'<dt>`<samp><span class="samp">--keep=</span><var>character-class</var></samp>'<dd><a name="index-g_t_002dk-40"></a><a name="index-g_t_002d_002dkeep-41"></a><a name="index-g_t_002dl-C_003a_002dk-42"></a><a name="index-g_t_002dl-C_003a_002d_002dkeep-43"></a><a name="index-g_t_002d_002dlang_002doption_003dC_003a_002dk-44"></a><a name="index-g_t_002d_002dlang_002doption_003dC_003a_002d_002dkeep-45"></a>
+Consider the characters in <var>character-class</var> as valid constituents of
+identifier names.  For example, if you are indexing C code that contains
+`<samp><span class="samp">$</span></samp>' in some of its identifiers, you can include these by using
+`<samp><span class="samp">--lang-option=C:--keep=$</span></samp>', or `<samp><span class="samp">-l C:"-k $"</span></samp>' (if you don't like
+to type so much).
+
+     <br><dt>`<samp><span class="samp">-i </span><var>character-class</var></samp>'<dt>`<samp><span class="samp">--ignore=</span><var>character-class</var></samp>'<dd><a name="index-g_t_002di-46"></a><a name="index-g_t_002d_002dignore-47"></a><a name="index-g_t_002dl-C_003a_002di-48"></a><a name="index-g_t_002dl-C_003a_002d_002dignore-49"></a><a name="index-g_t_002d_002dlang_002doption_003dC_003a_002di-50"></a><a name="index-g_t_002d_002dlang_002doption_003dC_003a_002d_002dignore-51"></a>
+Consider the characters in <var>character-class</var> as valid constituents of
+identifier names, but discard all tokens containing these characters. 
+For example, if some C code has identifiers containing `<samp><span class="samp">$</span></samp>', but you
+don't want these cluttering up your ID database, use
+`<samp><span class="samp">--lang-option=C:--ignore=$</span></samp>', or the terser equivalent `<samp><span class="samp">-l
+C:"-i $"</span></samp>'.
+
+     <br><dt>`<samp><span class="samp">-u</span></samp>'<dt>`<samp><span class="samp">--strip-underscore</span></samp>'<dd><a name="index-g_t_002du-52"></a><a name="index-g_t_002d_002dstrip_002dunderscore-53"></a><a name="index-g_t_002dl-C_003a_002du-54"></a><a name="index-g_t_002dl-C_003a_002d_002dstrip_002dunderscore-55"></a><a name="index-g_t_002d_002dlang_002doption_003dC_003a_002du-56"></a><a name="index-g_t_002d_002dlang_002doption_003dC_003a_002d_002dstrip_002dunderscore-57"></a>
+Strip one leading underscore from C identifiers encapsulated as
+character strings.  This option is useful if you are indexing C code
+that contains symbol-table name strings for systems that prepend an
+underscore to external symbols.  By default, the leading underscore is
+retained.
+
+   </dl>
+
+<!-- ************* gkm ********************************************************* -->
+<div class="node">
+<p><hr>
+<a name="Assembler-scanner"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="#Text-scanner">Text scanner</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#C_002fC_002b_002b-scanner">C/C++ scanner</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Extraction-options">Extraction options</a>
+
+</div>
+
+<h4 class="subsection">3.6.3 Assembly Language Scanner</h4>
+
+<p><a name="index-assembler-scanner-58"></a><a name="index-assembly-language-scanner-59"></a>
+Assembly languages use a variety of commenting conventions, and allow a
+variety of special characters to <em>dirty up</em> local symbols,
+preventing name space conflicts with symbols defined by higher-level
+languages.  Also, some compilation systems prepend an underscore to
+external symbols.  The options listed below are designed to address
+these differences.
+
+     <dl>
+<dt>`<samp><span class="samp">-c </span><var>character-class</var></samp>'<dt>`<samp><span class="samp">--comment=</span><var>character-class</var></samp>'<dd><a name="index-g_t_002dc-60"></a><a name="index-g_t_002d_002dcomment-61"></a><a name="index-g_t_002dl-asm_003a_002dc-62"></a><a name="index-g_t_002dl-asm_003a_002d_002dcomment-63"></a><a name="index-g_t_002d_002dlang_002doption_003dasm_003a_002dc-64"></a><a name="index-g_t_002d_002dlang_002doption_003dasm_003a_002d_002dcomment-65"></a>
+The characters in <var>character-class</var> are considered left delimiters
+for comments that extend until the end of the current line.
+
+     <br><dt>`<samp><span class="samp">-k </span><var>character-class</var></samp>'<dt>`<samp><span class="samp">--keep=</span><var>character-class</var></samp>'<dd><a name="index-g_t_002dk-66"></a><a name="index-g_t_002d_002dkeep-67"></a><a name="index-g_t_002dl-asm_003a_002dk-68"></a><a name="index-g_t_002dl-asm_003a_002d_002dkeep-69"></a><a name="index-g_t_002d_002dlang_002doption_003dasm_003a_002dk-70"></a><a name="index-g_t_002d_002dlang_002doption_003dasm_003a_002d_002dkeep-71"></a>
+Consider the characters of <var>character-class</var> as valid constituents of
+identifier names.  For example, if you are indexing assembly code that
+prepends `<samp><span class="samp">.</span></samp>' to assembler directives, and prepends `<samp><span class="samp">%</span></samp>' to
+register names, you can keep these characters in the tokens by specifying
+`<samp><span class="samp">--lang-option=asm:--keep=.%</span></samp>', or `<samp><span class="samp">-l asm:"-k .%"</span></samp>'.
+
+     <br><dt>`<samp><span class="samp">-i </span><var>character-class</var></samp>'<dt>`<samp><span class="samp">--ignore=</span><var>character-class</var></samp>'<dd><a name="index-g_t_002di-72"></a><a name="index-g_t_002d_002dignore-73"></a><a name="index-g_t_002dl-asm_003a_002di-74"></a><a name="index-g_t_002dl-asm_003a_002d_002dignore-75"></a><a name="index-g_t_002d_002dlang_002doption_003dasm_003a_002di-76"></a><a name="index-g_t_002d_002dlang_002doption_003dasm_003a_002d_002dignore-77"></a>
+Consider the characters of <var>character-class</var> as valid constituents
+of identifier names, but discard all tokens containing these characters. 
+For example, if you don't want to clutter your ID database with
+assembler directives that begin with a leading `<samp><span class="samp">.</span></samp>' or with
+assembler labels that contain `<samp><span class="samp">@</span></samp>', use
+`<samp><span class="samp">--lang-option=asm:--ignore=.@</span></samp>', or `<samp><span class="samp">-l asm:"-i .@"</span></samp>'.
+
+     <br><dt>`<samp><span class="samp">-u</span></samp>'<dt>`<samp><span class="samp">--strip-underscore</span></samp>'<dd><a name="index-g_t_002du-78"></a><a name="index-g_t_002d_002dstrip_002dunderscore-79"></a><a name="index-g_t_002dl-asm_003a_002du-80"></a><a name="index-g_t_002dl-asm_003a_002d_002dstrip_002dunderscore-81"></a><a name="index-g_t_002d_002dlang_002doption_003dasm_003a_002du-82"></a><a name="index-g_t_002d_002dlang_002doption_003dasm_003a_002d_002dstrip_002dunderscore-83"></a>
+Strip one leading underscore from identifiers.  This option is useful if
+your compilation system prepends an underscore to external symbols.  By
+stripping the underscore, you can canonicalize such names and bring them
+into conformance the way they are expressed in the C language.  By
+default, the leading underscore is retained.
+
+     <br><dt>`<samp><span class="samp">-n</span></samp>'<dt>`<samp><span class="samp">--no-cpp</span></samp>'<dd><a name="index-g_t_002dn-84"></a><a name="index-g_t_002d_002dno_002dcpp-85"></a><a name="index-g_t_002dl-asm_003a_002dn-86"></a><a name="index-g_t_002dl-asm_003a_002d_002dno_002dcpp-87"></a><a name="index-g_t_002d_002dlang_002doption_003dasm_003a_002dn-88"></a><a name="index-g_t_002d_002dlang_002doption_003dasm_003a_002d_002dno_002dcpp-89"></a>
+Do not recognize C preprocessor directives.  By default, such lines are
+handled in the same way as they are by the C language scanner.
+
+   </dl>
+
+<!-- ************* gkm ********************************************************* -->
+<div class="node">
+<p><hr>
+<a name="Text-scanner"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="#Perl-scanner">Perl scanner</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#Assembler-scanner">Assembler scanner</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Extraction-options">Extraction options</a>
+
+</div>
+
+<h4 class="subsection">3.6.4 Text Scanner</h4>
+
+<p><a name="index-text-scanner-90"></a>
+The plain text scanner is intended for human-language documents, or as the
+scanner of last resort for files that have no scanner that is more
+specific.  It is customizable to the extent that character classes can
+be designated as token constituents or as token delimiters.  The default
+token constituents are the alpha-numerics; all other characters are
+considered token delimiters.
+
+     <dl>
+<dt>`<samp><span class="samp">-i </span><var>character-class</var></samp>'<dt>`<samp><span class="samp">--include=</span><var>character-class</var></samp>'<dd><a name="index-g_t_002di-91"></a><a name="index-g_t_002d_002dinclude-92"></a><a name="index-g_t_002dl-text_003a_002di-93"></a><a name="index-g_t_002dl-text_003a_002d_002dinclude-94"></a><a name="index-g_t_002d_002dlang_002doption_003dtext_003a_002di-95"></a><a name="index-g_t_002d_002dlang_002doption_003dtext_003a_002d_002dinclude-96"></a>
+Include characters belonging to <var>character-class</var> in tokens.
+
+     <br><dt>`<samp><span class="samp">-x </span><var>character-class</var></samp>'<dt>`<samp><span class="samp">--exclude=</span><var>character-class</var></samp>'<dd><a name="index-g_t_002dx-97"></a><a name="index-g_t_002d_002dexclude-98"></a><a name="index-g_t_002dl-text_003a_002dx-99"></a><a name="index-g_t_002dl-text_003a_002d_002dexclude-100"></a><a name="index-g_t_002d_002dlang_002doption_003dtext_003a_002dx-101"></a><a name="index-g_t_002d_002dlang_002doption_003dtext_003a_002d_002dexclude-102"></a>
+Exclude characters belonging to <var>character-class</var> from tokens, i.e., treat
+them as token delimiters.
+
+   </dl>
+
+<!-- ************* gkm ********************************************************* -->
+<div class="node">
+<p><hr>
+<a name="Perl-scanner"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="#Defining-scanners">Defining scanners</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#Text-scanner">Text scanner</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Extraction-options">Extraction options</a>
+
+</div>
+
+<h4 class="subsection">3.6.5 Perl Scanner</h4>
+
+<p><a name="index-perl-scanner-103"></a>(EXPERIMENTAL)
+
+   <p>The perl scanner is intended for perl-language documents. Tokens are all
+words, Perl Keywords are included. Comments &amp; string declarations are
+ignored, as well as the documentation.  It is customizable to the extent
+that character classes can be designated as token constituents or as
+token delimiters.  The default token constituents are the alpha-numerics;
+all other characters are considered token delimiters.
+
+     <dl>
+<dt>`<samp><span class="samp">-i </span><var>character-class</var></samp>'<dt>`<samp><span class="samp">--include=</span><var>character-class</var></samp>'<dd><a name="index-g_t_002di-104"></a><a name="index-g_t_002d_002dinclude-105"></a><a name="index-g_t_002dl-perl_003a_002di-106"></a><a name="index-g_t_002dl-perl_003a_002d_002dinclude-107"></a><a name="index-g_t_002d_002dlang_002doption_003dperl_003a_002di-108"></a><a name="index-g_t_002d_002dlang_002doption_003dperl_003a_002d_002dinclude-109"></a>
+Include characters belonging to <var>character-class</var> in tokens.
+
+     <br><dt>`<samp><span class="samp">-x </span><var>character-class</var></samp>'<dt>`<samp><span class="samp">--exclude=</span><var>character-class</var></samp>'<dd><a name="index-g_t_002dx-110"></a><a name="index-g_t_002d_002dexclude-111"></a><a name="index-g_t_002dl-perl_003a_002dx-112"></a><a name="index-g_t_002dl-perl_003a_002d_002dexclude-113"></a><a name="index-g_t_002d_002dlang_002doption_003dperl_003a_002dx-114"></a><a name="index-g_t_002d_002dlang_002doption_003dperl_003a_002d_002dexclude-115"></a>
+Exclude characters belonging to <var>character-class</var> from tokens, i.e., treat
+them as token delimiters.
+
+     <br><dt>`<samp><span class="samp">-d</span></samp>'<dt>`<samp><span class="samp">--dtags</span></samp>'<dd><a name="index-g_t_002dd-116"></a><a name="index-g_t_002d_002ddtags-117"></a><a name="index-g_t_002dl-asm_003a_002dd-118"></a><a name="index-g_t_002dl-asm_003a_002d_002ddtags-119"></a><a name="index-g_t_002d_002dlang_002doption_003dperl_003a_002dd-120"></a><a name="index-g_t_002d_002dlang_002doption_003dperl_003a_002d_002ddtags-121"></a>
+Include tokens from the documentation.  By default, the tokens in the
+documentation are ignored.
+
+   </dl>
+
+<!-- ************* gkm ********************************************************* -->
+<div class="node">
+<p><hr>
+<a name="Defining-scanners"></a>
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#Perl-scanner">Perl scanner</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Extraction-options">Extraction options</a>
+
+</div>
+
+<h4 class="subsection">3.6.6 Defining New Scanners in the Source Code</h4>
+
+<p><a name="index-scanners_002ec-122"></a><a name="index-scanners_002c-defining-in-source-code-123"></a>
+<a name="index-languages_005f0-124"></a>
+To add a new scanner in source code, you should add a new section to the
+file <samp><span class="file">scanners.c</span></samp>.  It might be easiest to clone one of the
+existing scanners and modify it as necessary.  For the hypothetical
+language <var>foo</var>, you must define the functions <code>get_token_foo</code>,
+<code>parse_args_foo</code>, <code>help_me_foo</code>, as well as the tables
+<code>long_options_foo</code> and <code>args_foo</code>.  If your scanner is
+modeled after one of the existing scanners, you'll also need a
+character-attribute table <code>ctype_foo</code>.
+
+   <p>This is not a terribly difficult programming task, but it requires
+recompiling and installing the new version of <samp><span class="file">mkid</span></samp> and <samp><span class="file">xtokid</span></samp>. 
+You should use <samp><span class="file">xtokid</span></samp> to test the operation of the new scanner.
+
+   <p>Once these functions and tables are ready, add function prototypes and
+an entry to the <code>languages_0</code> table near the beginning of the file.
+
+   <p>Be warned that the existing scanners are built for speed, not elegance
+or readability.  You might wish to create a new scanner that's easier to
+read and understand if you don't feel that speed is so important.
+
+<!-- ************* gkm ********************************************************* -->
+<div class="node">
+<p><hr>
+<a name="mkid-invocation"></a>
+
+
+</div>
+
+<h2 class="chapter">4 `<samp><span class="samp">mkid</span></samp>': Creating an ID Database</h2>
+
+<p><a name="index-creating-databases-125"></a><a name="index-databases_002c-creating-126"></a><a name="index-ID-file-format-127"></a><a name="index-architecture_002dindependence-128"></a><a name="index-sharing-ID-files-129"></a>
+<samp><span class="file">mkid</span></samp> builds an ID database.  It accepts the names of files and/or
+directories on the command line, selects files that have an enabled
+scanner, then extracts and stores tokens from those files.  The
+resulting ID database is architecture- and byte-order-independent so it
+can be shared among all systems.
+
+   <p>The primary virtues of <samp><span class="file">mkid</span></samp> are speed and high capacity.  The
+size of the source trees it can index is limited only by available
+system memory.  <samp><span class="file">mkid</span></samp>'s indexing algorithm is very space-efficient
+and exhibits excellent locality-of-reference, and so is capable of
+operating with a working-set size that is only half the size of its
+virtual address space.  A typical <span class="sc">unix</span>-like operating system with
+16 megabytes of system memory should be able to build an ID database
+covering approximately 12,000-14,000 source files totaling
+approximately 50&ndash;100 Megabytes.  A 66 MHz 486 computer can build such
+a large ID database in approximately 10-15 minutes.
+
+   <p><a name="index-cron-130"></a>In a future release, <samp><span class="file">mkid</span></samp> will be able to incrementally update an
+ID database much faster than it can build one from scratch.  Until this
+feature becomes available, it might be a good idea to schedule a
+<samp><span class="file">cron</span></samp> job to regularly update large ID databases during off-hours.
+
+   <p><samp><span class="file">mkid</span></samp> writes the ID file, therefore it accepts the `<samp><span class="samp">--output</span></samp>'
+(and `<samp><span class="samp">--file</span></samp>') options as described in <a href="#Writing-options">Writing options</a>. 
+<samp><span class="file">mkid</span></samp> extracts tokens from source files, therefore it accepts the
+`<samp><span class="samp">--lang-map</span></samp>', `<samp><span class="samp">--include</span></samp>', `<samp><span class="samp">--exclude</span></samp>', and
+`<samp><span class="samp">--lang-option</span></samp>' options, as well as the language-specific scanner
+options, all of which are described in <a href="#Extraction-options">Extraction options</a>. 
+<samp><span class="file">mkid</span></samp> walks file trees, therefore it handles file and directory
+names on its command line and the `<samp><span class="samp">--prune</span></samp>' option as described in
+<a href="#Walker-options">Walker options</a>.
+
+   <p>In addition, <samp><span class="file">mkid</span></samp> accepts the following command-line options:
+
+     <dl>
+<dt>`<samp><span class="samp">-s</span></samp>'<dt>`<samp><span class="samp">--statistics</span></samp>'<dd><a name="index-g_t_002ds-131"></a><a name="index-g_t_002d_002dstatistics-132"></a><a name="index-statistics-133"></a>
+<samp><span class="file">mkid</span></samp> reports statistics about resource usage at the end of its
+run.
+
+     <br><dt>`<samp><span class="samp">-v</span></samp>'<dt>`<samp><span class="samp">--verbose</span></samp>'<dd><a name="index-g_t_002dv-134"></a><a name="index-g_t_002d_002dverbose-135"></a><a name="index-g_t_0040file_007bmkid_007d-progress-136"></a>
+<samp><span class="file">mkid</span></samp> reports statistics about each file as it is scanned, and
+about the resource usage of its indexing algorithm at regular intervals.
+
+   </dl>
+
+<!-- ************* gkm ********************************************************* -->
+<div class="node">
+<p><hr>
+<a name="lid-invocation"></a>
+
+
+</div>
+
+<h2 class="chapter">5 <code>lid</code>: Querying an ID Database by Token</h2>
+
+<p>The <samp><span class="file">lid</span></samp> program accepts <var>patterns</var> on the command line which
+it matches against the tokens stored in an ID database.  The
+interpretation of a <var>pattern</var> is determined by the makeup of the
+<var>pattern</var> string itself, or can be overridden by command-line
+options.  If a <var>pattern</var> contains regular expression meta-characters,
+it is used to perform a regular-expression substring search.  If no such
+meta-characters are present, <var>pattern</var> is used to perform a literal
+word search.  (By default, all searches are sensitive to alphabetic
+case.)  If no <var>pattern</var> is supplied on the command line, <samp><span class="file">lid</span></samp>
+lists every entry in the ID database.
+
+   <p><samp><span class="file">lid</span></samp> reads the ID database, therefore it accepts the `<samp><span class="samp">--file</span></samp>'
+option, and consults the `<samp><span class="samp">IDPATH</span></samp>' environment variable, as
+described in <a href="#Reading-options">Reading options</a>.  <samp><span class="file">lid</span></samp> lists file names,
+therefore it accepts the `<samp><span class="samp">--separator</span></samp>' option, as described in
+<a href="#File-listing-options">File listing options</a>.
+
+   <p>In addition, <code>lid</code> accepts the following command-line options:
+
+     <dl>
+<dt>`<samp><span class="samp">-i</span></samp>'<dt>`<samp><span class="samp">--ignore-case</span></samp>'<dd><a name="index-g_t_002di-137"></a><a name="index-g_t_002d_002dignore_002dcase-138"></a><a name="index-alphabetic-case_002c-ignoring-differences-in-139"></a><a name="index-ignoring-differences-in-alphabetic-case-140"></a>
+Ignoring differences in alphabetic case between the <var>pattern</var> and
+the tokens in the ID database.
+
+     <br><dt>`<samp><span class="samp">-l</span></samp>'<dt>`<samp><span class="samp">--literal</span></samp>'<dd><a name="index-g_t_002dl-141"></a><a name="index-g_t_002d_002dliteral-142"></a>
+Match <var>pattern</var> as a literal string.  Use this option if
+<var>pattern</var> contains regular-expression meta-characters, but you don't
+wish to perform a regular-expression search.
+
+     <br><dt>`<samp><span class="samp">-r</span></samp>'<dt>`<samp><span class="samp">--regexp</span></samp>'<dd><a name="index-g_t_002dr-143"></a><a name="index-g_t_002d_002dregexp-144"></a>
+Match <var>pattern</var> as an <em>extended</em> regular expression<a rel="footnote" href="#fn-2" name="fnd-2"><sup>2</sup></a>. 
+Use this option if no regular-expression expression meta-characters are
+present in <var>pattern</var>, but you wish to force a regular-expression
+search (note: in this case, a <em>literal substring</em> search might be
+faster).
+
+     <br><dt>`<samp><span class="samp">-w</span></samp>'<dt>`<samp><span class="samp">--word</span></samp>'<dd><a name="index-g_t_002dw-145"></a><a name="index-g_t_002d_002dword-146"></a>
+Match <var>pattern</var> using a word-delimited (non substring) search.  This
+is the default for literal searches.
+
+     <br><dt>`<samp><span class="samp">-s</span></samp>'<dt>`<samp><span class="samp">--substring</span></samp>'<dd><a name="index-g_t_002ds-147"></a><a name="index-g_t_002d_002dsubstring-148"></a>
+Match <var>pattern</var> using a substring (non word-delimited) search.  This
+is the default for regular expression searches.
+
+     <br><dt>`<samp><span class="samp">-k </span><var>style</var></samp>'<dt>`<samp><span class="samp">--key=</span><var>style</var></samp>'<dd><a name="index-g_t_002dk-149"></a><a name="index-g_t_002d_002dsubstring-150"></a>
+<var>Style</var> can be one of `<samp><span class="samp">token</span></samp>', `<samp><span class="samp">pattern</span></samp>' or `<samp><span class="samp">none</span></samp>'. 
+This option controls how the subject of the query is presented.  This is
+best illustrated by example:
+
+     <pre class="example">          $ lid --key=token '^dest.'
+          destaddr       libsys/memcpy.c
+          destination    libsys/regex.c
+          destlst        libsys/rx.c
+          destpos        libsys/rx.c
+          destset        libsys/rx.h libsys/rx.c
+          
+          $ lid --key=pattern '^dest.'
+          ^dest.         libsys/rx.h libsys/{memcpy,regex,rx}.c
+          
+          $ lid --key=none '^dest.'
+          libsys/rx.h libsys/{memcpy,regex,rx}.c
+     </pre>
+     <p>When `<samp><span class="samp">--key</span></samp>' is either `<samp><span class="samp">token</span></samp>' or `<samp><span class="samp">pattern</span></samp>', the first
+column of output is a <var>token</var> or <var>pattern</var>, respectively.  When
+`<samp><span class="samp">--key</span></samp>' is `<samp><span class="samp">none</span></samp>', neither of these is printed, and the file
+name list begins immediately.  The default is `<samp><span class="samp">token</span></samp>'.
+
+     <br><dt>`<samp><span class="samp">-R </span><var>style</var></samp>'<dt>`<samp><span class="samp">--result=</span><var>style</var></samp>'<dd><a name="index-g_t_002dR-151"></a><a name="index-g_t_002d_002dresult-152"></a>
+<var>Style</var> can be one of `<samp><span class="samp">filenames</span></samp>', `<samp><span class="samp">grep</span></samp>', `<samp><span class="samp">edit</span></samp>' or
+`<samp><span class="samp">none</span></samp>'.  This option controls how the value associated with the
+query's <var>key</var> presented.  When <var>style</var> is `<samp><span class="samp">filenames</span></samp>', a
+list of file names is printed (this is the default).  When <var>style</var>
+is `<samp><span class="samp">grep</span></samp>', the lines that match <var>pattern</var> are printed in the
+same format as `<samp><span class="samp">egrep -n</span></samp>'.  When <var>style</var> is `<samp><span class="samp">edit</span></samp>', the
+file names are passed to an editor, and if possible <var>pattern</var> is
+passed as an initial search string (see <a href="#eid-invocation">eid invocation</a>).  When
+<var>style</var> is `<samp><span class="samp">none</span></samp>', the file names are not processed in any way. 
+This can be useful if you wish to see what tokens match a <var>pattern</var>,
+but don't care about where they reside.
+
+     <br><dt>`<samp><span class="samp">-d</span></samp>'<dt>`<samp><span class="samp">-o</span></samp>'<dt>`<samp><span class="samp">-x</span></samp>'<dd><a name="index-g_t_002dd-153"></a><a name="index-g_t_002do-154"></a><a name="index-g_t_002dx-155"></a><a name="index-radix-of-numeric-matches_002c-specifying-156"></a><a name="index-numeric-matches_002c-specifying-radix-of-157"></a>
+These options may be used in any combination to specify the radix of
+numeric matches.  `<samp><span class="samp">-d</span></samp>' allows matching on decimal numbers,
+`<samp><span class="samp">-o</span></samp>' on octal numbers, and `<samp><span class="samp">-x</span></samp>' on hexadecimal numbers.  Any
+combination of these options may be used.  The default is to match all
+three radixes.
+
+     <br><dt>`<samp><span class="samp">-F </span><var>range</var></samp>'<dt>`<samp><span class="samp">--frequency=</span><var>range</var></samp>'<dd><a name="index-g_t_002dF-158"></a><a name="index-g_t_002d_002dfrequency-159"></a><a name="index-single-matches_002c-showing-160"></a>
+Match tokens whose occurrence count falls in <var>range</var>.  <var>Range</var>
+may be expressed as a single number <var>n</var>, or as a range
+<var>n</var><code>..</code><var>m</var>.  Either limit of the range may be omitted (e.g.,
+<code>..</code><var>m</var>, or <var>n..</var><code>..</code>).  If the lower limit <var>n</var> is
+omitted, it defaults to <code>1</code>.  If the upper limit is omitted, it
+defaults in the present implementation to <code>65535</code>, the maximum
+value of an unsigned 16-bit integer.
+
+     <p>Particularly useful queries are `<samp><span class="samp">lid -F1</span></samp>', which helps locate
+identifiers that are defined but never used, or are used but never
+defined.  Similarly, <code>lid -F2</code> can help find functions that possess
+a prototype declaration and a definition, but are never called.
+
+     <br><dt>`<samp><span class="samp">-a </span><var>number</var></samp>'<dt>`<samp><span class="samp">--ambiguous=</span><var>number</var></samp>'<dd><a name="index-g_t_002da-161"></a><a name="index-g_t_002d_002dambiguous-162"></a><a name="index-ambiguous-identifier-names_002c-finding-163"></a>
+List identifiers (not numbers) that are ambiguous for the first
+<var>number</var> characters.  This feature might be in useful when porting
+programs to ancient pea-brained compilers that don't support long
+identifier names.  However, the best long-term option is to set such
+systems on fire.
+
+   </dl>
+
+<ul class="menu">
+<li><a accesskey="1" href="#lid-aliases">lid aliases</a>:                  Aliases for specialized lid queries
+<li><a accesskey="2" href="#Emacs-gid-interface">Emacs gid interface</a>:          GNU Emacs query interface
+<li><a accesskey="3" href="#eid-invocation">eid invocation</a>:               Invoking an editor on query results
+</ul>
+
+<!-- ************* gkm ********************************************************* -->
+<div class="node">
+<p><hr>
+<a name="lid-aliases"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="#Emacs-gid-interface">Emacs gid interface</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#lid-invocation">lid invocation</a>
+
+</div>
+
+<h3 class="section">5.1 Aliases for Specialized <samp><span class="file">lid</span></samp> Queries</h3>
+
+<p>Historically, the ID utilities have provided several query interfaces
+which are specializations of <code>lid</code> (see <a href="#lid-invocation">lid invocation</a>).
+
+     <dl>
+<dt><samp><span class="file">gid</span></samp><dd>(alias for `<samp><span class="samp">lid -R grep</span></samp>')
+lists all lines containing the requested pattern.
+
+     <br><dt><samp><span class="file">eid</span></samp><dd>(alias for `<samp><span class="samp">lid -R edit</span></samp>')
+invokes an editor on all files containing the requested pattern, and
+optionally initiates a text search for that pattern.
+
+     <br><dt><samp><span class="file">aid</span></samp><dd>(alias for `<samp><span class="samp">lid -ils</span></samp>') treats the requested pattern
+as a case-insensitive literal substring.
+
+   </dl>
+
+<!-- *************************************************************************** -->
+<div class="node">
+<p><hr>
+<a name="Emacs-gid-interface"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="#eid-invocation">eid invocation</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#lid-aliases">lid aliases</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#lid-invocation">lid invocation</a>
+
+</div>
+
+<h3 class="section">5.2 GNU Emacs query interface</h3>
+
+<p><a name="index-Emacs-interface-to-_0040code_007bgid_007d-164"></a><a name="index-id_002dutils_002eel-_0040r_007binterface-to-Emacs_007d-165"></a>
+<a name="index-load_002dpath-166"></a>The <code>id-utils</code> source distribution comes with a file <samp><span class="file">id-utils.el</span></samp>,
+which defines a GNU Emacs interface to <code>gid</code>.  To install it, put
+<samp><span class="file">id-utils.el</span></samp> somewhere that Emacs will find it (i.e., in your
+<code>load-path</code>) and put
+
+<pre class="example">     (autoload 'gid "gid" nil t)
+</pre>
+   <p class="noindent">in one of Emacs' initialization files, e.g., <samp><span class="file">~/.emacs</span></samp>. 
+You will then be able to use <kbd>M-x gid</kbd> to run the command.
+
+   <p><a name="index-gid-_0040r_007bEmacs-function_007d-167"></a>The <code>gid</code> function prompts you with the word around point.  If you
+want to search for something else, simply delete the line and type the
+pattern of interest.
+
+   <p><a name="index-g_t_002acompilation_002a-_0040r_007bEmacs-buffer_007d-168"></a>The function then runs the <code>gid</code> program in a `<samp><span class="samp">*compilation*</span></samp>'
+buffer, so the normal <code>next-error</code> function can be used to visit
+all the places the identifier is found (see <a href="emacs.html#Compilation">Compilation</a>).
+
+<!-- ************* gkm ********************************************************* -->
+<div class="node">
+<p><hr>
+<a name="eid-invocation"></a>
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#Emacs-gid-interface">Emacs gid interface</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#lid-invocation">lid invocation</a>
+
+</div>
+
+<h3 class="section">5.3 <code>eid</code>: Invoking an Editor on Query Results</h3>
+
+<p><a name="index-eid-169"></a>
+`<samp><span class="samp">lid -R edit</span></samp>' is an editing interface for the ID utilities that is
+most commonly used with <samp><span class="file">vi</span></samp>.  Emacs users should use the interface
+defined in <code>id-utils.el</code> (see <a href="#Emacs-gid-interface">Emacs gid interface</a>).  The ID
+utilities include an alias called <samp><span class="file">eid</span></samp>, and for the sake of
+brevity, we'll use this alias for the remainder of this section. 
+<samp><span class="file">eid</span></samp> performs a <samp><span class="file">lid</span></samp>-style, then asks if you wish to edit
+the files.  If your query yields more than one line of output, you will
+be prompted after each line.  This is the prompt you'll see:
+
+<pre class="example">     Edit? [y1-9^S/nq]
+</pre>
+   <p class="noindent">You may respond with:
+
+     <dl>
+<dt>`<samp><span class="samp">y</span></samp>'<dd>Edit all files listed.
+
+     <br><dt>`<samp><span class="samp">1...9</span></samp>'<dd>Edit all files starting at the <var>n</var> + 1'st file.
+
+     <br><dt>`<samp><span class="samp">/</span><var>string</var><span class="samp"> or </span><kbd>CTRL-S</kbd><var>regexp</var></samp>'<dd>Search into the file list, and begin editing with the first file name
+that matches the regular expression <var>regexp</var>.
+
+     <br><dt>`<samp><span class="samp">n</span></samp>'<dd>Don't edit any files.  If another line of query output is pending,
+advance to that line, for which another `<samp><span class="samp">Edit?</span></samp>' prompt will appear.
+
+     <br><dt>`<samp><span class="samp">q</span></samp>'<dd>Quit&mdash;don't edit any files, and don't process any more lines of query
+output.
+
+   </dl>
+
+   <p>Here is an example:
+
+<pre class="example">     prompt$ eid FILE \^print
+     FILE           {ansi2knr,fid,filenames,idfile,idx,lid,misc,...}.c
+     Edit? [y1-9^S/nq] n
+     ^print         {ansi2knr,fid,getopt,getopt1,lid,mkid,regex,scanners}.c
+     Edit? [y1-9^S/nq] 2
+</pre>
+   <p class="noindent">This will start editing at <samp><span class="file">getopt</span></samp>.c.
+
+   <p><code>eid</code> invokes the editor defined by the environment variable
+`<samp><span class="samp">VISUAL</span></samp>'.  If `<samp><span class="samp">VISUAL</span></samp>' is undefined, it uses the environment
+variable `<samp><span class="samp">EDITOR</span></samp>' instead.  If `<samp><span class="samp">EDITOR</span></samp>' is undefined, it
+defaults to <samp><span class="file">vi</span></samp>.  It is possible for <samp><span class="file">eid</span></samp> to pass the editor
+an initial search pattern so that your cursor will immediately alight on
+the token of interest.  This feature is controlled by the following
+environment variables:
+
+     <dl>
+<dt>`<samp><span class="samp">EIDARG</span></samp>'<dd><a name="index-EIDARG-170"></a><a name="index-search-for-token_002c-initial-171"></a>A printf(3) format string for the editor argument to search for the
+matching token.  For <code>vi</code>, this should be `<samp><span class="samp">+/%s/</span></samp>'.
+
+     <br><dt>`<samp><span class="samp">EIDLDEL</span></samp>'<dd><a name="index-EIDLDEL-172"></a><a name="index-left-delimiter-editor-argument-173"></a><a name="index-beginning_002dof_002dword-editor-argument-174"></a>The regular-expression meta-character(s) for delimiting the beginning of
+a word (the `<samp><span class="file">eid</span></samp> Left DELimiter').  <code>eid</code> inserts this in
+front of the matching token when a word-search is desired.  For
+<samp><span class="file">vi</span></samp>, this should be `<samp><span class="samp">\&lt;</span></samp>'.
+
+     <br><dt>`<samp><span class="samp">EIDRDEL</span></samp>'<dd><a name="index-EIDRDEL-175"></a><a name="index-right-delimiter-editor-argument-176"></a><a name="index-end_002dof_002dword-editor-argument-177"></a>The regular-expression meta-character(s) for delimiting the end of
+a word (the `<samp><span class="file">eid</span></samp> Right DELimiter').  <code>eid</code> inserts this in
+end of the matching token when a word-search is desired.  For
+<samp><span class="file">vi</span></samp>, this should be `<samp><span class="samp">\&gt;</span></samp>'.
+
+   </dl>
+
+<!-- ************* gkm ********************************************************* -->
+<div class="node">
+<p><hr>
+<a name="fid-invocation"></a>
+
+
+</div>
+
+<h2 class="chapter">6 <code>fid</code>: Listing a file's tokens</h2>
+
+<p><a name="index-fid-178"></a><a name="index-tokens-in-a-file-179"></a><a name="index-tokens-common-to-two-files-180"></a>
+<samp><span class="file">fid</span></samp> prints the tokens found in a given file.  If two file names
+are passed on the command line, <samp><span class="file">fid</span></samp> prints the tokens that are
+common to both files (i.e., the <em>set intersection</em> of the two token
+sets).
+
+   <p><samp><span class="file">fid</span></samp> reads the ID database, therefore it accepts the `<samp><span class="samp">--file</span></samp>'
+option, and consults the `<samp><span class="samp">IDPATH</span></samp>' environment variable, as
+described in <a href="#Reading-options">Reading options</a>.
+
+   <p>If the standard output is attached to a terminal, the printed tokens are
+separated by spaces.  Otherwise, the tokens are printed one per line.
+
+<!-- ************* gkm ********************************************************* -->
+<div class="node">
+<p><hr>
+<a name="fnid-invocation"></a>
+
+
+</div>
+
+<h2 class="chapter">7 <code>fnid</code>: Looking up filenames</h2>
+
+<p><a name="index-fnid-181"></a><a name="index-filenames_002c-matching-182"></a><a name="index-matching-filenames-183"></a>
+<samp><span class="file">fnid</span></samp> queries the list of file names stored in the ID database. 
+It accepts shell <em>wildcard</em> patterns on the command line.  If no
+pattern is supplied, <samp><span class="file">*</span></samp> is implied.  <samp><span class="file">fnid</span></samp> prints the
+file names that match the given patterns.
+
+   <p><samp><span class="file">fnid</span></samp> prints file names, and as such accepts the
+`<samp><span class="samp">--separator</span></samp>' option as described in <a href="#File-listing-options">File listing options</a>.
+
+   <p>For example, the command:
+
+<pre class="example">     fnid \*.c
+</pre>
+   <p class="noindent">lists all the <samp><span class="file">.c</span></samp> files in the database.  (The `<samp><span class="samp">\</span></samp>'
+here protects the `<samp><span class="samp">*</span></samp>' from being expanded by the shell.)
+
+<!-- ************* gkm ********************************************************* -->
+<div class="node">
+<p><hr>
+<a name="xtokid-invocation"></a>
+
+
+</div>
+
+<h2 class="chapter">8 <samp><span class="file">xtokid</span></samp>: Testing Language Scanners</h2>
+
+<p><samp><span class="file">xtokid</span></samp> accepts the names of files and/or directories on the
+command line, then extracts and prints a stream of tokens from those
+files for which it has a valid, enabled scanner.  This is useful
+primarily for debugging new <samp><span class="file">mkid</span></samp> scanners (see <a href="#Defining-scanners">Defining scanners</a>).
+
+   <p><samp><span class="file">xtokid</span></samp> extracts tokens from source files, therefore it accepts
+the `<samp><span class="samp">--lang-map</span></samp>', `<samp><span class="samp">--include</span></samp>', `<samp><span class="samp">--exclude</span></samp>', and
+`<samp><span class="samp">--lang-option</span></samp>' options, as well as the language-specific scanner
+options, all of which are described in <a href="#Extraction-options">Extraction options</a>. 
+<samp><span class="file">xtokid</span></samp> walks file trees, therefore it handles file and directory
+names on its command line and the `<samp><span class="samp">--prune</span></samp>' option as described in
+<a href="#Walker-options">Walker options</a>.
+
+   <p>The name `<samp><span class="samp">xtokid</span></samp>' indicates that it is the &ldquo;eXtract TOKens ID
+utility&rdquo;.
+
+<!-- ************* gkm ********************************************************* -->
+<div class="node">
+<p><hr>
+<a name="Past-and-Future"></a>
+
+
+</div>
+
+<h2 class="chapter">9 Past and Future</h2>
+
+<p><a name="index-history-184"></a>
+<a name="index-look-_0040r_007band-_0040file_007bmkid_007d-1_007d-185"></a><a name="index-McGary_002c-Greg-186"></a>Greg McGary conceived of the ideas behind the ID utilities when he
+began working on the Unix kernel in 1984.  He needed a navigation tool
+to help him find his way around the expansive, unfamiliar landscape. 
+The first <code>id-utils</code>-like tools were shell scripts, and produced an
+ASCII database that looks much like the output of `<samp><span class="samp">lid ".*"</span></samp>'.  It
+took over an hour on a <span class="sc">vax 11/750</span> to build a database for a
+<span class="sc">4.1bsd</span> derived kernel.  The first version of <samp><span class="file">lid</span></samp> used the
+<span class="sc">unix</span> system utility <code>look</code>, modified to handle very long
+lines.
+
+   <p>In 1986, Greg rewrote the shell scripts in C to improve performance. 
+Build times for the ID file were shortened by an order of magnitude. 
+The ID utilities were first posted to `<samp><span class="samp">comp.sources.unix</span></samp>' in
+September 1987 under the name <code>id</code>.
+
+   <p><a name="index-Horsley_002c-Tom-187"></a><a name="index-Scofield_002c-Doug-188"></a><a name="index-Leonard_002c-Bill-189"></a><a name="index-Berry_002c-Karl-190"></a>Over the next few years, several versions diverged from the original
+source.  Tom Horsley at Harris Computer Systems Division stepped forward
+to take over maintenance and integrated some of the fixes from divergent
+versions.  A first release of the renamed <samp><span class="file">mkid</span></samp> version&nbsp;2<!-- /@w --> was
+posted to <samp><span class="file">alt.sources</span></samp> near the end of 1990.  At that time, Tom
+wrote a Texinfo manual with the encouragement of the net community. 
+(Tom especially thanks Doug Scofield and Bill Leonard whom he dragooned
+into helping proofread and edit&mdash;they found several problems in the
+initial version.)  Karl Berry revamped the manual for Texinfo style,
+indexing, and organization in 1995.
+
+   <p>In January 1995, Greg McGary reemerged as the primary maintainer and
+launched development of <samp><span class="file">mkid</span></samp> version 3, whose primary new feature
+is an efficient algorithm for building databases that is linear in both
+time and space over the size of the input text.  (The old algorithm was
+quadratic in space so it was incapable of handling very large source
+trees.)  For the first time, the code was released under the GNU Public
+License.
+
+   <p>In June 1996, the package was renamed again to <code>id-utils</code> and was
+released for the first time under FSF copyright as part of the GNU
+system.  All programs had their command-line arguments completely
+revised.  The <samp><span class="file">mkid</span></samp> and <samp><span class="file">xtokid</span></samp> programs also gained a
+file-tree walker, so that directory names can be passed on the command
+line instead of the names of every individual file.  Greg reorganized
+and rewrote most of the Texinfo manual to reflect these changes.
+
+   <p><a name="index-cscope-191"></a><a name="index-grep-192"></a><a name="index-future-193"></a>Future releases of <code>id-utils</code> might include:
+
+     <dl>
+an optional coupling with GNU <code>grep</code>, so that <code>grep</code> can use
+an ID database for hints
+
+     <p>a <code>cscope</code> work-alike query interface
+
+     <p>incremental update of the ID database.
+
+   </dl>
+
+<!-- *************************************************************************** -->
+<div class="node">
+<p><hr>
+<a name="Index"></a>
+
+
+</div>
+
+<h2 class="unnumbered">Index</h2>
+
+<ul class="index-cp" compact>
+<li><a href="#index-g_t_002acompilation_002a-_0040r_007bEmacs-buffer_007d-168"><code>*compilation* </code><span class="roman">Emacs buffer</span></a>: <a href="#Emacs-gid-interface">Emacs gid interface</a></li>
+<li><a href="#index-g_t_002d_002dambiguous-162"><code>--ambiguous</code></a>: <a href="#lid-invocation">lid invocation</a></li>
+<li><a href="#index-g_t_002d_002dcomment-61"><code>--comment</code></a>: <a href="#Assembler-scanner">Assembler scanner</a></li>
+<li><a href="#index-g_t_002d_002ddtags-117"><code>--dtags</code></a>: <a href="#Perl-scanner">Perl scanner</a></li>
+<li><a href="#index-g_t_002d_002dexclude-111"><code>--exclude</code></a>: <a href="#Perl-scanner">Perl scanner</a></li>
+<li><a href="#index-g_t_002d_002dexclude-98"><code>--exclude</code></a>: <a href="#Text-scanner">Text scanner</a></li>
+<li><a href="#index-g_t_002d_002dexclude-33"><code>--exclude</code></a>: <a href="#Extraction-options">Extraction options</a></li>
+<li><a href="#index-g_t_002d_002dfile-18"><code>--file</code></a>: <a href="#Writing-options">Writing options</a></li>
+<li><a href="#index-g_t_002d_002dfile-11"><code>--file</code></a>: <a href="#Reading-options">Reading options</a></li>
+<li><a href="#index-g_t_002d_002dfrequency-159"><code>--frequency</code></a>: <a href="#lid-invocation">lid invocation</a></li>
+<li><a href="#index-g_t_002d_002dhelp-6"><code>--help</code></a>: <a href="#Universal-options">Universal options</a></li>
+<li><a href="#index-g_t_002d_002dignore-73"><code>--ignore</code></a>: <a href="#Assembler-scanner">Assembler scanner</a></li>
+<li><a href="#index-g_t_002d_002dignore-47"><code>--ignore</code></a>: <a href="#C_002fC_002b_002b-scanner">C/C++ scanner</a></li>
+<li><a href="#index-g_t_002d_002dignore_002dcase-138"><code>--ignore-case</code></a>: <a href="#lid-invocation">lid invocation</a></li>
+<li><a href="#index-g_t_002d_002dinclude-105"><code>--include</code></a>: <a href="#Perl-scanner">Perl scanner</a></li>
+<li><a href="#index-g_t_002d_002dinclude-92"><code>--include</code></a>: <a href="#Text-scanner">Text scanner</a></li>
+<li><a href="#index-g_t_002d_002dinclude-30"><code>--include</code></a>: <a href="#Extraction-options">Extraction options</a></li>
+<li><a href="#index-g_t_002d_002dkeep-67"><code>--keep</code></a>: <a href="#Assembler-scanner">Assembler scanner</a></li>
+<li><a href="#index-g_t_002d_002dkeep-41"><code>--keep</code></a>: <a href="#C_002fC_002b_002b-scanner">C/C++ scanner</a></li>
+<li><a href="#index-g_t_002d_002dlang_002dmap-27"><code>--lang-map</code></a>: <a href="#Extraction-options">Extraction options</a></li>
+<li><a href="#index-g_t_002d_002dlang_002doption-36"><code>--lang-option</code></a>: <a href="#Extraction-options">Extraction options</a></li>
+<li><a href="#index-g_t_002d_002dlang_002doption_003dasm_003a_002d_002dcomment-65"><code>--lang-option=asm:--comment</code></a>: <a href="#Assembler-scanner">Assembler scanner</a></li>
+<li><a href="#index-g_t_002d_002dlang_002doption_003dasm_003a_002d_002dignore-77"><code>--lang-option=asm:--ignore</code></a>: <a href="#Assembler-scanner">Assembler scanner</a></li>
+<li><a href="#index-g_t_002d_002dlang_002doption_003dasm_003a_002d_002dkeep-71"><code>--lang-option=asm:--keep</code></a>: <a href="#Assembler-scanner">Assembler scanner</a></li>
+<li><a href="#index-g_t_002d_002dlang_002doption_003dasm_003a_002d_002dno_002dcpp-89"><code>--lang-option=asm:--no-cpp</code></a>: <a href="#Assembler-scanner">Assembler scanner</a></li>
+<li><a href="#index-g_t_002d_002dlang_002doption_003dasm_003a_002d_002dstrip_002dunderscore-83"><code>--lang-option=asm:--strip-underscore</code></a>: <a href="#Assembler-scanner">Assembler scanner</a></li>
+<li><a href="#index-g_t_002d_002dlang_002doption_003dasm_003a_002dc-64"><code>--lang-option=asm:-c</code></a>: <a href="#Assembler-scanner">Assembler scanner</a></li>
+<li><a href="#index-g_t_002d_002dlang_002doption_003dasm_003a_002di-76"><code>--lang-option=asm:-i</code></a>: <a href="#Assembler-scanner">Assembler scanner</a></li>
+<li><a href="#index-g_t_002d_002dlang_002doption_003dasm_003a_002dk-70"><code>--lang-option=asm:-k</code></a>: <a href="#Assembler-scanner">Assembler scanner</a></li>
+<li><a href="#index-g_t_002d_002dlang_002doption_003dasm_003a_002dn-88"><code>--lang-option=asm:-n</code></a>: <a href="#Assembler-scanner">Assembler scanner</a></li>
+<li><a href="#index-g_t_002d_002dlang_002doption_003dasm_003a_002du-82"><code>--lang-option=asm:-u</code></a>: <a href="#Assembler-scanner">Assembler scanner</a></li>
+<li><a href="#index-g_t_002d_002dlang_002doption_003dC_003a_002d_002dignore-51"><code>--lang-option=C:--ignore</code></a>: <a href="#C_002fC_002b_002b-scanner">C/C++ scanner</a></li>
+<li><a href="#index-g_t_002d_002dlang_002doption_003dC_003a_002d_002dkeep-45"><code>--lang-option=C:--keep</code></a>: <a href="#C_002fC_002b_002b-scanner">C/C++ scanner</a></li>
+<li><a href="#index-g_t_002d_002dlang_002doption_003dC_003a_002d_002dstrip_002dunderscore-57"><code>--lang-option=C:--strip-underscore</code></a>: <a href="#C_002fC_002b_002b-scanner">C/C++ scanner</a></li>
+<li><a href="#index-g_t_002d_002dlang_002doption_003dC_003a_002di-50"><code>--lang-option=C:-i</code></a>: <a href="#C_002fC_002b_002b-scanner">C/C++ scanner</a></li>
+<li><a href="#index-g_t_002d_002dlang_002doption_003dC_003a_002dk-44"><code>--lang-option=C:-k</code></a>: <a href="#C_002fC_002b_002b-scanner">C/C++ scanner</a></li>
+<li><a href="#index-g_t_002d_002dlang_002doption_003dC_003a_002du-56"><code>--lang-option=C:-u</code></a>: <a href="#C_002fC_002b_002b-scanner">C/C++ scanner</a></li>
+<li><a href="#index-g_t_002d_002dlang_002doption_003dperl_003a_002d_002ddtags-121"><code>--lang-option=perl:--dtags</code></a>: <a href="#Perl-scanner">Perl scanner</a></li>
+<li><a href="#index-g_t_002d_002dlang_002doption_003dperl_003a_002d_002dexclude-115"><code>--lang-option=perl:--exclude</code></a>: <a href="#Perl-scanner">Perl scanner</a></li>
+<li><a href="#index-g_t_002d_002dlang_002doption_003dperl_003a_002d_002dinclude-109"><code>--lang-option=perl:--include</code></a>: <a href="#Perl-scanner">Perl scanner</a></li>
+<li><a href="#index-g_t_002d_002dlang_002doption_003dperl_003a_002dd-120"><code>--lang-option=perl:-d</code></a>: <a href="#Perl-scanner">Perl scanner</a></li>
+<li><a href="#index-g_t_002d_002dlang_002doption_003dperl_003a_002di-108"><code>--lang-option=perl:-i</code></a>: <a href="#Perl-scanner">Perl scanner</a></li>
+<li><a href="#index-g_t_002d_002dlang_002doption_003dperl_003a_002dx-114"><code>--lang-option=perl:-x</code></a>: <a href="#Perl-scanner">Perl scanner</a></li>
+<li><a href="#index-g_t_002d_002dlang_002doption_003dtext_003a_002d_002dexclude-102"><code>--lang-option=text:--exclude</code></a>: <a href="#Text-scanner">Text scanner</a></li>
+<li><a href="#index-g_t_002d_002dlang_002doption_003dtext_003a_002d_002dinclude-96"><code>--lang-option=text:--include</code></a>: <a href="#Text-scanner">Text scanner</a></li>
+<li><a href="#index-g_t_002d_002dlang_002doption_003dtext_003a_002di-95"><code>--lang-option=text:-i</code></a>: <a href="#Text-scanner">Text scanner</a></li>
+<li><a href="#index-g_t_002d_002dlang_002doption_003dtext_003a_002dx-101"><code>--lang-option=text:-x</code></a>: <a href="#Text-scanner">Text scanner</a></li>
+<li><a href="#index-g_t_002d_002dliteral-142"><code>--literal</code></a>: <a href="#lid-invocation">lid invocation</a></li>
+<li><a href="#index-g_t_002d_002dno_002dcpp-85"><code>--no-cpp</code></a>: <a href="#Assembler-scanner">Assembler scanner</a></li>
+<li><a href="#index-g_t_002d_002doutput-15"><code>--output</code></a>: <a href="#Writing-options">Writing options</a></li>
+<li><a href="#index-g_t_002d_002dprune-21"><code>--prune</code></a>: <a href="#Walker-options">Walker options</a></li>
+<li><a href="#index-g_t_002d_002dregexp-144"><code>--regexp</code></a>: <a href="#lid-invocation">lid invocation</a></li>
+<li><a href="#index-g_t_002d_002dresult-152"><code>--result</code></a>: <a href="#lid-invocation">lid invocation</a></li>
+<li><a href="#index-g_t_002d_002dseparator-24"><code>--separator</code></a>: <a href="#File-listing-options">File listing options</a></li>
+<li><a href="#index-g_t_002d_002dstatistics-132"><code>--statistics</code></a>: <a href="#mkid-invocation">mkid invocation</a></li>
+<li><a href="#index-g_t_002d_002dstrip_002dunderscore-79"><code>--strip-underscore</code></a>: <a href="#Assembler-scanner">Assembler scanner</a></li>
+<li><a href="#index-g_t_002d_002dstrip_002dunderscore-53"><code>--strip-underscore</code></a>: <a href="#C_002fC_002b_002b-scanner">C/C++ scanner</a></li>
+<li><a href="#index-g_t_002d_002dsubstring-148"><code>--substring</code></a>: <a href="#lid-invocation">lid invocation</a></li>
+<li><a href="#index-g_t_002d_002dverbose-135"><code>--verbose</code></a>: <a href="#mkid-invocation">mkid invocation</a></li>
+<li><a href="#index-g_t_002d_002dversion-8"><code>--version</code></a>: <a href="#Universal-options">Universal options</a></li>
+<li><a href="#index-g_t_002d_002dword-146"><code>--word</code></a>: <a href="#lid-invocation">lid invocation</a></li>
+<li><a href="#index-g_t_002da-161"><code>-a</code></a>: <a href="#lid-invocation">lid invocation</a></li>
+<li><a href="#index-g_t_002dc-60"><code>-c</code></a>: <a href="#Assembler-scanner">Assembler scanner</a></li>
+<li><a href="#index-g_t_002dd-153"><code>-d</code></a>: <a href="#lid-invocation">lid invocation</a></li>
+<li><a href="#index-g_t_002dd-116"><code>-d</code></a>: <a href="#Perl-scanner">Perl scanner</a></li>
+<li><a href="#index-g_t_002dF-158"><code>-F</code></a>: <a href="#lid-invocation">lid invocation</a></li>
+<li><a href="#index-g_t_002df-17"><code>-f</code></a>: <a href="#Writing-options">Writing options</a></li>
+<li><a href="#index-g_t_002df-10"><code>-f</code></a>: <a href="#Reading-options">Reading options</a></li>
+<li><a href="#index-g_t_002di-137"><code>-i</code></a>: <a href="#lid-invocation">lid invocation</a></li>
+<li><a href="#index-g_t_002di-104"><code>-i</code></a>: <a href="#Perl-scanner">Perl scanner</a></li>
+<li><a href="#index-g_t_002di-91"><code>-i</code></a>: <a href="#Text-scanner">Text scanner</a></li>
+<li><a href="#index-g_t_002di-72"><code>-i</code></a>: <a href="#Assembler-scanner">Assembler scanner</a></li>
+<li><a href="#index-g_t_002di-46"><code>-i</code></a>: <a href="#C_002fC_002b_002b-scanner">C/C++ scanner</a></li>
+<li><a href="#index-g_t_002di-29"><code>-i</code></a>: <a href="#Extraction-options">Extraction options</a></li>
+<li><a href="#index-g_t_002dk-149"><code>-k</code></a>: <a href="#lid-invocation">lid invocation</a></li>
+<li><a href="#index-g_t_002dk-66"><code>-k</code></a>: <a href="#Assembler-scanner">Assembler scanner</a></li>
+<li><a href="#index-g_t_002dk-40"><code>-k</code></a>: <a href="#C_002fC_002b_002b-scanner">C/C++ scanner</a></li>
+<li><a href="#index-g_t_002dl-141"><code>-l</code></a>: <a href="#lid-invocation">lid invocation</a></li>
+<li><a href="#index-g_t_002dl-35"><code>-l</code></a>: <a href="#Extraction-options">Extraction options</a></li>
+<li><a href="#index-g_t_002dl-asm_003a_002d_002dcomment-63"><code>-l asm:--comment</code></a>: <a href="#Assembler-scanner">Assembler scanner</a></li>
+<li><a href="#index-g_t_002dl-asm_003a_002d_002ddtags-119"><code>-l asm:--dtags</code></a>: <a href="#Perl-scanner">Perl scanner</a></li>
+<li><a href="#index-g_t_002dl-asm_003a_002d_002dignore-75"><code>-l asm:--ignore</code></a>: <a href="#Assembler-scanner">Assembler scanner</a></li>
+<li><a href="#index-g_t_002dl-asm_003a_002d_002dkeep-69"><code>-l asm:--keep</code></a>: <a href="#Assembler-scanner">Assembler scanner</a></li>
+<li><a href="#index-g_t_002dl-asm_003a_002d_002dno_002dcpp-87"><code>-l asm:--no-cpp</code></a>: <a href="#Assembler-scanner">Assembler scanner</a></li>
+<li><a href="#index-g_t_002dl-asm_003a_002d_002dstrip_002dunderscore-81"><code>-l asm:--strip-underscore</code></a>: <a href="#Assembler-scanner">Assembler scanner</a></li>
+<li><a href="#index-g_t_002dl-asm_003a_002dc-62"><code>-l asm:-c</code></a>: <a href="#Assembler-scanner">Assembler scanner</a></li>
+<li><a href="#index-g_t_002dl-asm_003a_002dd-118"><code>-l asm:-d</code></a>: <a href="#Perl-scanner">Perl scanner</a></li>
+<li><a href="#index-g_t_002dl-asm_003a_002di-74"><code>-l asm:-i</code></a>: <a href="#Assembler-scanner">Assembler scanner</a></li>
+<li><a href="#index-g_t_002dl-asm_003a_002dk-68"><code>-l asm:-k</code></a>: <a href="#Assembler-scanner">Assembler scanner</a></li>
+<li><a href="#index-g_t_002dl-asm_003a_002dn-86"><code>-l asm:-n</code></a>: <a href="#Assembler-scanner">Assembler scanner</a></li>
+<li><a href="#index-g_t_002dl-asm_003a_002du-80"><code>-l asm:-u</code></a>: <a href="#Assembler-scanner">Assembler scanner</a></li>
+<li><a href="#index-g_t_002dl-C_003a_002d_002dignore-49"><code>-l C:--ignore</code></a>: <a href="#C_002fC_002b_002b-scanner">C/C++ scanner</a></li>
+<li><a href="#index-g_t_002dl-C_003a_002d_002dkeep-43"><code>-l C:--keep</code></a>: <a href="#C_002fC_002b_002b-scanner">C/C++ scanner</a></li>
+<li><a href="#index-g_t_002dl-C_003a_002d_002dstrip_002dunderscore-55"><code>-l C:--strip-underscore</code></a>: <a href="#C_002fC_002b_002b-scanner">C/C++ scanner</a></li>
+<li><a href="#index-g_t_002dl-C_003a_002di-48"><code>-l C:-i</code></a>: <a href="#C_002fC_002b_002b-scanner">C/C++ scanner</a></li>
+<li><a href="#index-g_t_002dl-C_003a_002dk-42"><code>-l C:-k</code></a>: <a href="#C_002fC_002b_002b-scanner">C/C++ scanner</a></li>
+<li><a href="#index-g_t_002dl-C_003a_002du-54"><code>-l C:-u</code></a>: <a href="#C_002fC_002b_002b-scanner">C/C++ scanner</a></li>
+<li><a href="#index-g_t_002dl-perl_003a_002d_002dexclude-113"><code>-l perl:--exclude</code></a>: <a href="#Perl-scanner">Perl scanner</a></li>
+<li><a href="#index-g_t_002dl-perl_003a_002d_002dinclude-107"><code>-l perl:--include</code></a>: <a href="#Perl-scanner">Perl scanner</a></li>
+<li><a href="#index-g_t_002dl-perl_003a_002di-106"><code>-l perl:-i</code></a>: <a href="#Perl-scanner">Perl scanner</a></li>
+<li><a href="#index-g_t_002dl-perl_003a_002dx-112"><code>-l perl:-x</code></a>: <a href="#Perl-scanner">Perl scanner</a></li>
+<li><a href="#index-g_t_002dl-text_003a_002d_002dexclude-100"><code>-l text:--exclude</code></a>: <a href="#Text-scanner">Text scanner</a></li>
+<li><a href="#index-g_t_002dl-text_003a_002d_002dinclude-94"><code>-l text:--include</code></a>: <a href="#Text-scanner">Text scanner</a></li>
+<li><a href="#index-g_t_002dl-text_003a_002di-93"><code>-l text:-i</code></a>: <a href="#Text-scanner">Text scanner</a></li>
+<li><a href="#index-g_t_002dl-text_003a_002dx-99"><code>-l text:-x</code></a>: <a href="#Text-scanner">Text scanner</a></li>
+<li><a href="#index-g_t_002dm-26"><code>-m</code></a>: <a href="#Extraction-options">Extraction options</a></li>
+<li><a href="#index-g_t_002dn-84"><code>-n</code></a>: <a href="#Assembler-scanner">Assembler scanner</a></li>
+<li><a href="#index-g_t_002do-154"><code>-o</code></a>: <a href="#lid-invocation">lid invocation</a></li>
+<li><a href="#index-g_t_002do-14"><code>-o</code></a>: <a href="#Writing-options">Writing options</a></li>
+<li><a href="#index-g_t_002dp-20"><code>-p</code></a>: <a href="#Walker-options">Walker options</a></li>
+<li><a href="#index-g_t_002dR-151"><code>-R</code></a>: <a href="#lid-invocation">lid invocation</a></li>
+<li><a href="#index-g_t_002dr-143"><code>-r</code></a>: <a href="#lid-invocation">lid invocation</a></li>
+<li><a href="#index-g_t_002ds-147"><code>-s</code></a>: <a href="#lid-invocation">lid invocation</a></li>
+<li><a href="#index-g_t_002ds-131"><code>-s</code></a>: <a href="#mkid-invocation">mkid invocation</a></li>
+<li><a href="#index-g_t_002dS-23"><code>-S</code></a>: <a href="#File-listing-options">File listing options</a></li>
+<li><a href="#index-g_t_002du-78"><code>-u</code></a>: <a href="#Assembler-scanner">Assembler scanner</a></li>
+<li><a href="#index-g_t_002du-52"><code>-u</code></a>: <a href="#C_002fC_002b_002b-scanner">C/C++ scanner</a></li>
+<li><a href="#index-g_t_002dv-134"><code>-v</code></a>: <a href="#mkid-invocation">mkid invocation</a></li>
+<li><a href="#index-g_t_002dw-145"><code>-w</code></a>: <a href="#lid-invocation">lid invocation</a></li>
+<li><a href="#index-g_t_002dx-155"><code>-x</code></a>: <a href="#lid-invocation">lid invocation</a></li>
+<li><a href="#index-g_t_002dx-110"><code>-x</code></a>: <a href="#Perl-scanner">Perl scanner</a></li>
+<li><a href="#index-g_t_002dx-97"><code>-x</code></a>: <a href="#Text-scanner">Text scanner</a></li>
+<li><a href="#index-g_t_002dx-32"><code>-x</code></a>: <a href="#Extraction-options">Extraction options</a></li>
+<li><a href="#index-alphabetic-case_002c-ignoring-differences-in-139">alphabetic case, ignoring differences in</a>: <a href="#lid-invocation">lid invocation</a></li>
+<li><a href="#index-ambiguous-identifier-names_002c-finding-163">ambiguous identifier names, finding</a>: <a href="#lid-invocation">lid invocation</a></li>
+<li><a href="#index-architecture_002dindependence-128">architecture-independence</a>: <a href="#mkid-invocation">mkid invocation</a></li>
+<li><a href="#index-assembler-scanner-58">assembler scanner</a>: <a href="#Assembler-scanner">Assembler scanner</a></li>
+<li><a href="#index-assembly-language-scanner-59">assembly language scanner</a>: <a href="#Assembler-scanner">Assembler scanner</a></li>
+<li><a href="#index-beginning_002dof_002dword-editor-argument-174">beginning-of-word editor argument</a>: <a href="#eid-invocation">eid invocation</a></li>
+<li><a href="#index-Berry_002c-Karl-190">Berry, Karl</a>: <a href="#Past-and-Future">Past and Future</a></li>
+<li><a href="#index-bugs_002c-reporting-4">bugs, reporting</a>: <a href="#Introduction">Introduction</a></li>
+<li><a href="#index-C-scanner_002c-predefined-39">C scanner, predefined</a>: <a href="#C_002fC_002b_002b-scanner">C/C++ scanner</a></li>
+<li><a href="#index-common-command_002dline-options-5">common command-line options</a>: <a href="#Common-options">Common options</a></li>
+<li><a href="#index-creating-databases-125">creating databases</a>: <a href="#mkid-invocation">mkid invocation</a></li>
+<li><a href="#index-cron-130"><code>cron</code></a>: <a href="#mkid-invocation">mkid invocation</a></li>
+<li><a href="#index-cscope-191"><code>cscope</code></a>: <a href="#Past-and-Future">Past and Future</a></li>
+<li><a href="#index-databases_002c-creating-126">databases, creating</a>: <a href="#mkid-invocation">mkid invocation</a></li>
+<li><a href="#index-eid-169"><code>eid</code></a>: <a href="#eid-invocation">eid invocation</a></li>
+<li><a href="#index-EIDARG-170"><code>EIDARG</code></a>: <a href="#eid-invocation">eid invocation</a></li>
+<li><a href="#index-EIDLDEL-172"><code>EIDLDEL</code></a>: <a href="#eid-invocation">eid invocation</a></li>
+<li><a href="#index-EIDRDEL-175"><code>EIDRDEL</code></a>: <a href="#eid-invocation">eid invocation</a></li>
+<li><a href="#index-Emacs-interface-to-_0040code_007bgid_007d-164">Emacs interface to <code>gid</code></a>: <a href="#Emacs-gid-interface">Emacs gid interface</a></li>
+<li><a href="#index-end_002dof_002dword-editor-argument-177">end-of-word editor argument</a>: <a href="#eid-invocation">eid invocation</a></li>
+<li><a href="#index-exclude-languages-34">exclude languages</a>: <a href="#Extraction-options">Extraction options</a></li>
+<li><a href="#index-fid-178"><code>fid</code></a>: <a href="#fid-invocation">fid invocation</a></li>
+<li><a href="#index-file-name-separator-25">file name separator</a>: <a href="#File-listing-options">File listing options</a></li>
+<li><a href="#index-file-tree-pruning-22">file tree pruning</a>: <a href="#Walker-options">Walker options</a></li>
+<li><a href="#index-filenames_002c-matching-182">filenames, matching</a>: <a href="#fnid-invocation">fnid invocation</a></li>
+<li><a href="#index-fnid-181"><code>fnid</code></a>: <a href="#fnid-invocation">fnid invocation</a></li>
+<li><a href="#index-future-193">future</a>: <a href="#Past-and-Future">Past and Future</a></li>
+<li><a href="#index-gid-_0040r_007bEmacs-function_007d-167"><code>gid </code><span class="roman">Emacs function</span></a>: <a href="#Emacs-gid-interface">Emacs gid interface</a></li>
+<li><a href="#index-grep-192"><code>grep</code></a>: <a href="#Past-and-Future">Past and Future</a></li>
+<li><a href="#index-help_002c-online-7">help, online</a>: <a href="#Universal-options">Universal options</a></li>
+<li><a href="#index-history-184">history</a>: <a href="#Past-and-Future">Past and Future</a></li>
+<li><a href="#index-Horsley_002c-Tom-187">Horsley, Tom</a>: <a href="#Past-and-Future">Past and Future</a></li>
+<li><a href="#index-ID-database-file-name-16">ID database file name</a>: <a href="#Writing-options">Writing options</a></li>
+<li><a href="#index-ID-database-file-name-12">ID database file name</a>: <a href="#Reading-options">Reading options</a></li>
+<li><a href="#index-ID-database_002c-definition-of-3">ID database, definition of</a>: <a href="#Introduction">Introduction</a></li>
+<li><a href="#index-ID-file-format-127">ID file format</a>: <a href="#mkid-invocation">mkid invocation</a></li>
+<li><a href="#index-id_002dutils_002eel-_0040r_007binterface-to-Emacs_007d-165"><code>id-utils.el </code><span class="roman">interface to Emacs</span></a>: <a href="#Emacs-gid-interface">Emacs gid interface</a></li>
+<li><a href="#index-ignoring-differences-in-alphabetic-case-140">ignoring differences in alphabetic case</a>: <a href="#lid-invocation">lid invocation</a></li>
+<li><a href="#index-include-languages-31">include languages</a>: <a href="#Extraction-options">Extraction options</a></li>
+<li><a href="#index-introduction-2">introduction</a>: <a href="#Introduction">Introduction</a></li>
+<li><a href="#index-language-map-file-28">language map file</a>: <a href="#Extraction-options">Extraction options</a></li>
+<li><a href="#index-language_002dspecific-option-37">language-specific option</a>: <a href="#Extraction-options">Extraction options</a></li>
+<li><a href="#index-languages_005f0-124"><code>languages_0</code></a>: <a href="#Defining-scanners">Defining scanners</a></li>
+<li><a href="#index-left-delimiter-editor-argument-173">left delimiter editor argument</a>: <a href="#eid-invocation">eid invocation</a></li>
+<li><a href="#index-Leonard_002c-Bill-189">Leonard, Bill</a>: <a href="#Past-and-Future">Past and Future</a></li>
+<li><a href="#index-load_002dpath-166"><code>load-path</code></a>: <a href="#Emacs-gid-interface">Emacs gid interface</a></li>
+<li><a href="#index-look-_0040r_007band-_0040file_007bmkid_007d-1_007d-185"><code>look </code><span class="roman">and <samp>mkid</samp> 1</span></a>: <a href="#Past-and-Future">Past and Future</a></li>
+<li><a href="#index-matching-filenames-183">matching filenames</a>: <a href="#fnid-invocation">fnid invocation</a></li>
+<li><a href="#index-McGary_002c-Greg-186">McGary, Greg</a>: <a href="#Past-and-Future">Past and Future</a></li>
+<li><a href="#index-g_t_0040file_007bmkid_007d-progress-136"><samp><span class="file">mkid</span></samp> progress</a>: <a href="#mkid-invocation">mkid invocation</a></li>
+<li><a href="#index-numeric-matches_002c-specifying-radix-of-157">numeric matches, specifying radix of</a>: <a href="#lid-invocation">lid invocation</a></li>
+<li><a href="#index-overview-1">overview</a>: <a href="#Introduction">Introduction</a></li>
+<li><a href="#index-perl-scanner-103">perl scanner</a>: <a href="#Perl-scanner">Perl scanner</a></li>
+<li><a href="#index-radix-of-numeric-matches_002c-specifying-156">radix of numeric matches, specifying</a>: <a href="#lid-invocation">lid invocation</a></li>
+<li><a href="#index-right-delimiter-editor-argument-176">right delimiter editor argument</a>: <a href="#eid-invocation">eid invocation</a></li>
+<li><a href="#index-scanners-38">scanners</a>: <a href="#Extraction-options">Extraction options</a></li>
+<li><a href="#index-scanners_002c-defining-in-source-code-123">scanners, defining in source code</a>: <a href="#Defining-scanners">Defining scanners</a></li>
+<li><a href="#index-scanners_002ec-122"><code>scanners.c</code></a>: <a href="#Defining-scanners">Defining scanners</a></li>
+<li><a href="#index-Scofield_002c-Doug-188">Scofield, Doug</a>: <a href="#Past-and-Future">Past and Future</a></li>
+<li><a href="#index-search-for-token_002c-initial-171">search for token, initial</a>: <a href="#eid-invocation">eid invocation</a></li>
+<li><a href="#index-sharing-ID-files-129">sharing ID files</a>: <a href="#mkid-invocation">mkid invocation</a></li>
+<li><a href="#index-single-matches_002c-showing-160">single matches, showing</a>: <a href="#lid-invocation">lid invocation</a></li>
+<li><a href="#index-statistics-133">statistics</a>: <a href="#mkid-invocation">mkid invocation</a></li>
+<li><a href="#index-text-scanner-90">text scanner</a>: <a href="#Text-scanner">Text scanner</a></li>
+<li><a href="#index-tokens-common-to-two-files-180">tokens common to two files</a>: <a href="#fid-invocation">fid invocation</a></li>
+<li><a href="#index-tokens-in-a-file-179">tokens in a file</a>: <a href="#fid-invocation">fid invocation</a></li>
+<li><a href="#index-version-number_002c-finding-9">version number, finding</a>: <a href="#Universal-options">Universal options</a></li>
+   </ul>
+<div class="contents">
+<h2>Table of Contents</h2>
+<ul>
+<li><a name="toc_Introduction" href="#Introduction">1 Introduction</a>
+<li><a name="toc_Quick-start" href="#Quick-start">2 Quick Start Procedure</a>
+<li><a name="toc_Common-options" href="#Common-options">3 Common command-line options</a>
+<ul>
+<li><a href="#Universal-options">3.1 Options Common to All Programs</a>
+<li><a href="#Reading-options">3.2 Options for Programs that Read ID Databases</a>
+<li><a href="#Writing-options">3.3 Options for Programs that Write ID Databases</a>
+<li><a href="#Walker-options">3.4 Options for Programs that Walk File and Directory Trees.</a>
+<li><a href="#File-listing-options">3.5 Options for Programs that List File Names</a>
+<li><a href="#Extraction-options">3.6 Options for Programs that Scan Source Files</a>
+<ul>
+<li><a href="#Language-map">3.6.1 Mapping file names to source languages</a>
+<li><a href="#C_002fC_002b_002b-scanner">3.6.2 C/C++ Language Scanner</a>
+<li><a href="#Assembler-scanner">3.6.3 Assembly Language Scanner</a>
+<li><a href="#Text-scanner">3.6.4 Text Scanner</a>
+<li><a href="#Perl-scanner">3.6.5 Perl Scanner</a>
+<li><a href="#Defining-scanners">3.6.6 Defining New Scanners in the Source Code</a>
+</li></ul>
+</li></ul>
+<li><a name="toc_mkid-invocation" href="#mkid-invocation">4 `<samp><span class="samp">mkid</span></samp>': Creating an ID Database</a>
+<li><a name="toc_lid-invocation" href="#lid-invocation">5 <code>lid</code>: Querying an ID Database by Token</a>
+<ul>
+<li><a href="#lid-aliases">5.1 Aliases for Specialized <samp><span class="file">lid</span></samp> Queries</a>
+<li><a href="#Emacs-gid-interface">5.2 GNU Emacs query interface</a>
+<li><a href="#eid-invocation">5.3 <code>eid</code>: Invoking an Editor on Query Results</a>
+</li></ul>
+<li><a name="toc_fid-invocation" href="#fid-invocation">6 <code>fid</code>: Listing a file's tokens</a>
+<li><a name="toc_fnid-invocation" href="#fnid-invocation">7 <code>fnid</code>: Looking up filenames</a>
+<li><a name="toc_xtokid-invocation" href="#xtokid-invocation">8 <samp><span class="file">xtokid</span></samp>: Testing Language Scanners</a>
+<li><a name="toc_Past-and-Future" href="#Past-and-Future">9 Past and Future</a>
+<li><a name="toc_Index" href="#Index">Index</a>
+</li></ul>
+</div>
+
+<div class="footnote">
+<hr>
+<a name="texinfo-footnotes-in-document"></a><h4>Footnotes</h4><p class="footnote"><small>[<a name="fn-1" href="#fnd-1">1</a>]</small> At present, this
+feature isn't fully implemented, since only the first of a list of ID
+database names is processed.</p>
+
+   <p class="footnote"><small>[<a name="fn-2" href="#fnd-2">2</a>]</small> Extended
+regular expressions are the same as those accepted by <samp><span class="file">egrep</span></samp>.</p>
+
+   <p><hr></div>
+
+</body></html>
+

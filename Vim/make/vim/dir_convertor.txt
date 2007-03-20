@@ -1,0 +1,2 @@
+Linux->Windows: %s/\//\\/g
+Windows->Linux: %s/\\/\//g

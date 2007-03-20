@@ -1,0 +1,115 @@
+*exUitlity-exEnvironmentSetting.txt*	Plugin for symbol table
+
+Author: Wu Jie  (GayaEcai@N163I.UScom)
+		(remove GENIUS from Wu Jie's email before using)
+Maintainer: Wu Jie  (GayaEcai@N163I.UScom)
+		    (remove GENIUS from Wu Jie's email before using)
+            Yu Jian Rong  (YuJianrong[at]GMail.com)
+For Vim version 6.0 and above
+Last change: 2006 December 10
+
+
+1. Overview					|exEnvironmentSetting-Overview|
+2. Prepare					|exEnvironmentSetting-Prepare|
+3. QuickStart					|exEnvironmentSetting-QuickStart|
+4. KeyMappings					|exEnvironmentSetting-KeyMappings|
+5. Commands					|exEnvironmentSetting-Commands|
+6. Options					|exEnvironmentSetting-Options|
+
+==============================================================================
+OVERVIEW					*exEnvironmentSetting-Overview*
+
+The exEnvironmentSetting plugin is a tool for quickly create project and
+setting the variable needed by other 'ex_Plugin'
+The original idea in writting this plugin, is let the user have a easy and
+quickly way to create a project.
+
+==============================================================================
+PREPARE						*exEnvironmentSetting-Prepare*
+
+exEnvironmentSetting is a assistant tool for exUtility, we recommend you to
+install the project plugin.
+>
+	http://vim.sourceforge.net/scripts/script.php?script_id=69
+<
+==============================================================================
+QUICKSTART					*exEnvironmentSetting-QuickStart*
+
+Here is a quick start for the user to use exEnvironmentSetting quickly:
+
+1: Install project plugin first:~
+	Though this is not necessary, we recommend you to install project
+	plugin for good using this plugin.
+
+2: Copy the script in your _vimrc:~
+	function g:exES_UpdateEnvironment()
+	    if exists( 'g:exES_PWD' )
+		silent exec 'cd ' . g:exES_PWD
+	    endif
+	    if exists( 'g:exES_Tag' )
+		let &tags = &tags . ',' . g:exES_Tag
+	    endif
+	    if exists( 'g:exES_Project' )
+		silent exec 'Project ' . g:exES_Project
+	    endif
+	endfunction
+
+3: Create envrionment file:~
+	In your project working directory, create a environment file with the
+	post-fix named .vimenvironment
+	Use vim open this file. 
+	If the file is empty, the plugin will fill the default things it need
+	for it
+	Else if it is the first-time you use it.
+	you must fill the value by yourself such as:
+>
+		PWD=project_path
+		Project=project_path\project_name.vimprojects
+		Tag=project_path\tags
+		ID=project_path\ID
+		Symbol=project_path\symbol
+<
+	Else you just need to open this file, it just like a project entry.
+
+Now you what is this plugin gave you, I think it's better to know how it
+worked.
+The plugin will read the file whose post-fix named .vimenvironment by his own
+way. It will parsing the value you define in the .vimenvironment file, and
+create a global variable name: 
+		g:exES_ . ValueName
+g:exES_ is the pre-fix for the variable, ValueName is the name you define in
+.vimenvironemnt. for example, you define a variable in the .vimenvironment
+like:
+		MyTag=c:\my projects\my_tag
+the plugin will generate a global variable named g:exES_MyTag, its value is a
+string "c:/my\ projects/my_tag"
+
+Now you get the variable, the environment plugin will find a function named
+g:exES_UpdateEnvironment() and run it the first time you open the
+.vimenvironment file. so you can use your variable to set something you want
+in this function.
+For example, you define the function in your _vimrc (we recommend you to
+define the function here) 
+	function g:exES_UpdateEnvironment()
+	    if exists( 'g:exES_MyTag' )
+		silent exec 'set tags=' . g:exES_MyTag
+	    endif
+	endfunction
+That's all, every time you open the vimenvironment file for your project, it
+will set the right tag for you. Suppose you have a lot of project, and you
+want to open them and set them automatically, create a file like this do get
+rid of your trouble :)
+
+==============================================================================
+KEYMAPPINGS					*exEnvironmentSetting-KeyMappings*
+Thess are no keymappings for this plugin.
+                                         
+==============================================================================
+COMMANDS					*exEnvironmentSetting-Commands*
+There are no commands for this plugin.
+                                         
+==============================================================================
+OPTIONS						*exEnvironmentSetting-Options*
+There are no options for this plugin.
+
+ vim:ts=8 sw=8 noexpandtab tw=78 ft=help:

@@ -1,0 +1,666 @@
+" --------------------------------------------------------------------------------------
+" General
+" --------------------------------------------------------------------------------------
+set nocompatible " Use Vim settings, rather then Vi settings (much better!). This must be first, because it changes other options as a side effect.
+set langmenu=none " always use English menu
+
+" source $VIMRUNTIME/vimrc_example.vim
+behave xterm  " set mouse behavior as xterm
+
+"set path=.,/usr/include/*,, " where gf, ^Wf, :find will search 
+set backup " make backup file and leave it around 
+"set backupdir=%tmp%
+"set directory=.,%tmp%
+set backupdir=$VIM/data/backup " where to put backup file 
+set directory=$VIM/data/swap " where to put swap file 
+
+" programming related 
+set tags+=./tags,./../tags,./**/tags,tags " which tags files CTRL-] will find 
+set makeef=error.err " the errorfile for :make and :grep 
+
+set viminfo+=! " make sure it can save viminfo 
+filetype on " enable file type detection 
+filetype plugin on " enable loading the plugin for appropriate file type 
+
+" Redefine the shell redirection operator to receive both the stderr messages
+" and stdout messages
+set shellredir=>%s\ 2>&1
+
+set history=50 " keep 50 lines of command line history
+"set isk+=$,%,#,- " none of these should be word dividers 
+set clipboard=unnamed " use clipboard register '*' for all y, d, c, p ops 
+set updatetime=1000 " default = 4000
+set autoread " auto read same-file change ( better for vc/vim change )
+
+" --------------------------------------------------------------------------------------
+" Variable settings ( set all )
+" --------------------------------------------------------------------------------------
+
+" --------------------
+"  Visual
+" --------------------
+set showmatch " show matching paren 
+set matchtime=0 " 0 second to show the matching paren ( much faster )
+set nu " Show LineNumber
+set scrolloff=0 " minimal number of screen lines to keep above and below the cursor 
+set nowrap " I don't like this, cause in split window mode, it feel strange
+" Set gui font to MS_GOTHIC, size 9
+" set guifont=ms_gothic:h9
+" yu jian rong reference this one
+" set guifont=simsun:h8  
+" I prefer this 
+"set guifont=NSimSun:cGB2312
+set guifont=Lucida_Console:h9
+highlight DiffAdd term=bold ctermbg=9 guibg=LightGreen
+highlight DiffDelete term=bold ctermfg=9 ctermbg=11 gui=bold guifg=Red guibg=LightRed
+highlight DiffChange term=bold ctermbg=13 guibg=LightBlue
+highlight DiffText term=reverse cterm=bold ctermbg=12 gui=bold guibg=Yellow
+
+" --------------------
+"  Vim UI
+" --------------------
+set wildmenu " turn on wild menu, try typing :h and press <Tab> 
+set showcmd	" display incomplete commands
+set cmdheight=1 " 1 screen lines to use for the command-line 
+set ruler " show the cursor position all the time
+set hid " allow to change buffer without saving 
+set shortmess=atI " shortens messages to avoid 'press a key' prompt 
+set lazyredraw " do not redraw while executing macros (much faster) 
+set display+=lastline " for easy browse last line with wrap text
+
+" Set window's width to 130 columns and height to 40 rows
+" (if it's GUI)
+if has("gui_running")
+    set lines=40 columns=130
+endif
+
+set showfulltag " ???
+set guioptions+=b " Present the bottom scrollbar when the longest visible line exceen the window
+
+" disable menu & toolbar
+" set guioptions-=m
+set guioptions-=T
+
+"set encoding=japan
+"set termencoding=cp932
+
+"set encoding=cp932
+"set termencoding=cp932
+
+"set grepprg=grep\ -n
+
+" --------------------
+"  Text edit
+" --------------------
+set ai " autoindent 
+set si " smartindent 
+set backspace=indent,eol,start " allow backspacing over everything in insert mode
+" indent options
+"  see help cinoptions-values for more details
+set	cinoptions=>s,e0,n0,f0,{0,}0,^0,:0,=s,l0,b0,g0,hs,ps,ts,is,+s,c3,C0,0,(2s,us,U0,w0,W0,m0,j0,)20,*30
+
+" Official diff settings
+set diffexpr=MyDiff()
+function MyDiff()
+  let opt = '-a --binary -w '
+  if &diffopt =~ 'icase' | let opt = opt . '-i ' | endif
+  if &diffopt =~ 'iwhite' | let opt = opt . '-b ' | endif
+  let arg1 = v:fname_in
+  if arg1 =~ ' ' | let arg1 = '"' . arg1 . '"' | endif
+  let arg2 = v:fname_new
+  if arg2 =~ ' ' | let arg2 = '"' . arg2 . '"' | endif
+  let arg3 = v:fname_out
+  if arg3 =~ ' ' | let arg3 = '"' . arg3 . '"' | endif
+  silent execute '!' .  'diff ' . opt . arg1 . ' ' . arg2 . ' > ' . arg3
+endfunction
+
+set cindent shiftwidth=4 " Set cindent on to autoinent when editing C/C++ file, with 4 shift width
+set tabstop=4 " Set tabstop to 4 characters
+set expandtab " Set expandtab on, the tab will be change to space automaticaly
+
+" Set Number format to null(default is octal) , when press CTRL-A on number
+" like 007, it would not become 010
+set nf=
+" In Visual Block Mode, cursor can be positioned where there is no actual character
+set ve=block
+
+" --------------------
+"  Fold text
+" --------------------
+set foldmethod=marker foldmarker={,} foldlevel=9999
+set diffopt=filler,context:9999
+
+" --------------------
+"  Search
+" --------------------
+" Switch syntax highlighting on, when the terminal has colors
+" Also switch on highlighting the last used search pattern.
+if &t_Co > 2 || has("gui_running")
+  syntax on
+  set hlsearch
+endif
+set incsearch " do incremental searching
+set ignorecase " Set search/replace pattern to ignore case 
+set smartcase " Set smartcase mode on, If there is upper case character in the search patern, the 'ignorecase' option will be override.
+
+" set this to use id-utils for global search
+set grepprg=lid\ -Rgrep\ -s
+set grepformat=%f:%l:%m
+
+" --------------------
+"  Syntax
+" --------------------
+let c_no_curly_error = 1
+"let c_no_bracket_error = 1
+
+" --------------------------------------------------------------------------------------
+" Key Mappings
+" --------------------------------------------------------------------------------------
+
+" Don't use Ex mode, use Q for formatting
+map Q gq  
+
+" Set new Rgrep as the grep to search patterns on the C/C++ files as default
+command -nargs=+ Rgrep :grep -r --include="*.cpp" --include="*.c" --include="*.hpp" --include="*.h" <q-args> *
+map <Leader>fc :call <SID>Grep_Cfiles()<CR>
+function s:Grep_Cfiles()
+    let l_str=input("Input the keyword to be searched: ")
+    exec ":grep -r --include=\"*.cpp\" --include=\"*.c\" --include=\"*.hpp\" --include=\"*.h\" " . l_str . " *"
+endfunction
+
+" functions use in F<1-12> key mapping
+function! InsertIF() range
+    let lstline = a:lastline + 1 
+    call append( a:lastline , "#endif")
+    call append( a:firstline -1 , "#if 0")
+    exec ":" . lstline
+endfunction
+function! InsertRemoveCmt() range
+    if (strpart(getline('.'),0,2) == "//")
+        exec ":" . a:firstline . "," . a:lastline . "s\/^\\\/\\\/\/\/"
+    else
+        exec ":" . a:firstline . "," . a:lastline . "s\/^\/\\\/\\\/\/"
+    endif
+endfunction
+
+" F12: Insert '#if 0' and '#endif' between the selection
+vmap <F12> :call InsertIF()<CR>
+" F11: delete the '#if 0' and '#endif' when cursor in the defines block.
+map <F11> <ESC>[#dd]#dd<C-o>
+
+" F9:  Insert/Remove C++ Comment ("//") before all the lines of the selection
+vmap <F9> :call InsertRemoveCmt()<CR>
+
+" F8:  Set Search pattern highlight on/off
+nmap <F8> :let @/=""<CR>
+
+" F3:  Switch to Japanese Mode 
+" nmap <F3> :set guifont=MS_Gothic:cSHIFTJIS<CR>:set encoding=cp932<CR>
+" F2:  Switch to Chinese Mode (Both Enconding and uiFont)
+" nmap <F2> :set guifont=NSimSun:cGB2312<CR>:set encoding=cp936<CR>
+
+" map Ctrl-Tab to switch window
+map <S-Up> <C-W><Up>
+map! <S-Up> <C-W><Up>
+map <S-Down> <C-W><Down>
+map! <S-Down> <C-W><Down>
+map <S-Left> <C-W><Left>
+map! <S-Left> <C-W><Left>
+map <S-Right> <C-W><Right>
+map! <S-Right> <C-W><Right>
+map <silent><Leader><Tab> :call g:ex_GotoEditBuffer()<CR>
+
+" for the exUtility Plugin
+map <silent><Leader><ESC> :call g:ex_GotoEditBuffer()<CR><ESC>
+
+" VimTip #401: A mapping for easy switching between buffers
+map <silent> <C-Right> :bn!<CR>
+map! <silent> <C-Right> :bn!<CR>
+map <silent> <C-Left> :bp!<CR>
+map! <silent> <C-Left> :bp!<CR>
+map <silent> <C-Tab> :call g:ex_GotoLastEditBuffer()<CR>
+map! <silent> <C-Tab> :call g:ex_GotoLastEditBuffer()<CR>
+
+" Move in fold
+map z<Up> zk
+map z<Down> zj
+map <A-Up> zk
+map <A-Down> zj
+
+" Easy Diff goto
+map <C-Up> [c
+map <C-Down> ]c
+
+" VimTip #412: Easy menu-style switch between files with a simple map
+" map <C-b> :buffers<CR>:e #
+
+" Like J, I make a de-joint for command mode
+nmap <C-j> a<CR><ESC>
+
+" Enhance '<' '>' , do not need to reselect the block after shift it.
+vnoremap < <gv
+vnoremap > >gv
+
+" Fold close & Fold open
+map <kPlus>	zo
+map <kMinus> zc
+
+" VimTip #1119: How to use Vim like an IDE
+" delete the buffer; keep windows; create a scratch buffer if no buffers left 
+" Using this Kwbd function (:call Kwbd(1)) will make Vim behave like an IDE; or maybe even better. 
+function Kwbd(kwbdStage) 
+    if(a:kwbdStage == 1) 
+        if(!buflisted(winbufnr(0))) 
+            bd! 
+            return 
+        endif 
+        let g:kwbdBufNum = bufnr("%") 
+        let g:kwbdWinNum = winnr() 
+        windo call Kwbd(2) 
+        execute "normal " . g:kwbdWinNum . "" 
+        let g:buflistedLeft = 0 
+        let g:bufFinalJump = 0 
+        let l:nBufs = bufnr("$") 
+        let l:i = 1 
+        while(l:i <= l:nBufs) 
+            if(l:i != g:kwbdBufNum) 
+                if(buflisted(l:i)) 
+                    let g:buflistedLeft = g:buflistedLeft + 1 
+                else 
+                    if(bufexists(l:i) && !strlen(bufname(l:i)) && !g:bufFinalJump) 
+                        let g:bufFinalJump = l:i 
+                    endif 
+                endif 
+            endif 
+            let l:i = l:i + 1 
+        endwhile 
+        if(!g:buflistedLeft) 
+            if(g:bufFinalJump) 
+                windo if(buflisted(winbufnr(0))) | execute "b! " . g:bufFinalJump | endif 
+            else 
+                enew 
+                let l:newBuf = bufnr("%") 
+                windo if(buflisted(winbufnr(0))) | execute "b! " . l:newBuf | endif 
+            endif 
+            execute "normal " . g:kwbdWinNum . "" 
+        endif 
+        if(buflisted(g:kwbdBufNum) || g:kwbdBufNum == bufnr("%")) 
+            execute "bd! " . g:kwbdBufNum 
+        endif 
+        if(!g:buflistedLeft) 
+            set buflisted 
+            set bufhidden=delete 
+            set buftype=nofile 
+            setlocal noswapfile 
+            normal athis is the scratch buffer 
+        endif 
+    else 
+        if(bufnr("%") == g:kwbdBufNum) 
+            let prevbufvar = bufnr("#") 
+            if(prevbufvar > 0 && buflisted(prevbufvar) && prevbufvar != g:kwbdBufNum) 
+                b # 
+            else 
+                bn 
+            endif 
+        endif 
+    endif 
+endfunction 
+" map Kwbd(1) to \bd will close buffer and keep window
+nmap <Leader>bd :call Kwbd(1)<CR>
+nmap <C-F4> :call Kwbd(1)<CR>
+
+
+" --------------------------------------------------------------------------------------
+" Command
+" --------------------------------------------------------------------------------------
+
+" TODO
+" perforce key mapping
+"let g:proj_run1='!p4 edit %f'
+"nmap <Leader>po :silent !p4 edit %<CR>
+"nmap <Leader>pr :silent !p4 revert %<CR>
+command Checkout :silent !p4 edit %
+command Revert :silent !p4 revert %
+command Changelist :silent !p4 change
+command ShowChangelist :!p4 changes -s pending -u jwu
+
+" TODO
+" VS.net build
+command Build :!devenv D:\BiaPSP\BIA_EIB_PSP\BIA_PSP_ProDG\BIA_PSP_ProDG.sln /build "PSP HW Debug(Offline)"
+command Compile :!devenv % /build "PSP HW Debug(Offline)"
+
+" --------------------------------------------------------------------------------------
+" Auto Command
+" --------------------------------------------------------------------------------------
+
+" Only do this part when compiled with support for autocommands.
+if has("autocmd")
+  " Enable file type detection.
+  " Use the default filetype settings, so that mail gets 'tw' set to 72,
+  " 'cindent' is on in C files, etc.
+  " Also load indent files, to automatically do language-dependent indenting.
+  filetype plugin indent on
+
+  " Put these in an autocmd group, so that we can delete them easily.
+  augroup vimrcEx
+  au!
+
+  " For all text files set 'textwidth' to 78 characters.
+  autocmd FileType text setlocal textwidth=78
+
+  " When editing a file, always jump to the last known cursor position.
+  " Don't do it when the position is invalid or when inside an event handler
+  " (happens when dropping a file on gvim).
+  autocmd BufReadPost *
+    \ if line("'\"") > 0 && line("'\"") <= line("$") |
+    \   exe "normal g`\"" |
+    \ endif
+
+  augroup END
+endif " has("autocmd")
+
+" --------------------
+"  Buffer
+" --------------------
+au BufEnter * :syntax sync fromstart " ensure every file does syntax highlighting (full) 
+au BufNewFile,BufRead *.avs set syntax=avs " for avs syntax file.
+
+au GUIEnter * simalt ~x " Maximize window when enter vim
+
+" Disable auto-comment for c/cpp and vim-script
+au FileType c,cpp set comments=sO:*\ -,mO:*\ \ ,exO:*/,s1:/*,mb:*,ex:*/,f:// 
+au FileType vim set comments=sO:\"\ -,mO:\"\ \ ,eO:\"\",f:\"
+
+" --------------------------------------------------------------------------------------
+" Plugin Configurations
+" --------------------------------------------------------------------------------------
+
+" --------------------
+"  ShowMarks
+" --------------------
+let showmarks_include = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+let g:showmarks_enable = 1
+" For marks a-z
+highlight ShowMarksHLl gui=bold guibg=LightBlue guifg=Blue                      
+" For marks A-Z
+highlight ShowMarksHLu gui=bold guibg=LightRed guifg=DarkRed
+" For all other marks
+highlight ShowMarksHLo gui=bold guibg=LightYellow guifg=DarkYellow
+" For multiple marks on the same line.
+highlight ShowMarksHLm gui=bold guibg=LightGreen guifg=DarkGreen
+
+" ----------------------------------------------------------------------------                                    
+" Change current directory to the file of the buffer ( from Script#65"CD.vim"
+" au   BufEnter *   execute ":lcd " . expand("%:p:h") 
+
+" --------------------
+" VTreeExplorer
+" --------------------
+map <Leader>te :VSTreeExplore<CR>
+let treeExplVertical = 1
+let treeExplWinSize = 30
+let treeExplHidden = 1
+let treeExplDirSort = 1
+
+" --------------------
+" exUtility
+" --------------------
+nmap <silent> <a-1> :call g:ex_Highlight_Normal(1)<CR>
+nmap <silent> <a-2> :call g:ex_Highlight_Normal(2)<CR>
+nmap <silent> <a-3> :call g:ex_Highlight_Normal(3)<CR>
+
+vmap <silent> <a-1> :call g:ex_Highlight_Visual(1)<CR>
+vmap <silent> <a-2> :call g:ex_Highlight_Visual(2)<CR>
+vmap <silent> <a-3> :call g:ex_Highlight_Visual(3)<CR>
+
+map <silent> <a-4> :call g:ex_HighlightCancle(0)<CR>
+map <silent> <Leader>0 :call g:ex_HighlightCancle(0)<CR>
+map <silent> <Leader>1 :call g:ex_HighlightCancle(1)<CR>
+map <silent> <Leader>2 :call g:ex_HighlightCancle(2)<CR>
+map <silent> <Leader>3 :call g:ex_HighlightCancle(3)<CR>
+
+command -narg=? GMake call g:ex_GCCMake("<args>")
+command -narg=* VMake call g:ex_VCMake(<f-args>)
+command -narg=? Update call g:ex_UpdateVimFiles("<args>")
+
+" --------------------
+" exTagSelect
+" --------------------
+nnoremap <silent> <F7> :ExtsToggle<CR>
+nnoremap <silent> <Leader>ts :ExtsSelectToggle<CR>
+nnoremap <silent> <Leader>tt :ExtsStackToggle<CR>
+nnoremap <silent> <Leader>tg :ExtsGoDirectly<CR>
+map <silent> <Leader>] :ExtsGoDirectly<CR>
+map <silent> <Leader>tb :BackwardTagStack<CR>
+map <silent> <Leader>tf :ForwardTagStack<CR>
+let g:exTS_backto_editbuf = 0
+let g:exTS_close_when_selected = 1
+let g:exTS_window_direction = 'bel'
+
+" --------------------
+" exGlobalSearch
+" --------------------
+nnoremap <silent> <F5> :ExgsToggle<CR>
+nnoremap <silent> <Leader>gs :ExgsSelectToggle<CR>
+nnoremap <silent> <Leader>gq :ExgsQuickViewToggle<CR>
+nnoremap <silent> <Leader>gt :ExgsStackToggle<CR>
+nnoremap <silent> <Leader>gg :ExgsGoDirectly<CR>
+map <silent> <Leader>gb :BackwardSearchStack<CR>
+map <silent> <Leader>gf :ForwardSearchStack<CR>
+map <S-f> :GS 
+let g:exGS_backto_editbuf = 0
+let g:exGS_close_when_selected = 0
+let g:exGS_window_direction = 'bel'
+
+" --------------------
+" exSymbolTable
+" --------------------
+nnoremap <silent> <Leader>ss :ExslSelectToggle<CR>
+nnoremap <silent> <Leader>sq :ExslQuickViewToggle<CR>
+nnoremap <silent> <F6> :ExslToggle<CR>
+nnoremap <A-S-l> :ExslQuickSearch<CR>/
+nnoremap <silent> <Leader>sg :ExslGoDirectly<CR>
+let g:exSL_SymbolSelectCmd = 'TS'
+
+" --------------------
+" exQuickFix
+" -------------------
+nnoremap <silent> <leader>qf :ExqfSelectToggle<CR>
+nnoremap <silent> <leader>qq :ExqfQuickViewToggle<CR>
+let g:exQF_backto_editbuf = 0
+let g:exQF_close_when_selected = 0
+let g:exQF_window_direction = 'bel'
+
+" --------------------
+" exEnvironmentSetting
+" --------------------
+let g:exES_vimfile_dir = "_vimfiles"
+let g:exES_project_cmd = 'EXProject'
+
+function g:exES_UpdateEnvironment()
+    if exists( 'g:exES_PWD' )
+        silent exec 'cd ' . g:exES_PWD
+    endif
+    if exists( 'g:exES_Tag' )
+        "let &tags = &tags . ',' . g:exES_Tag
+        let &tags = g:exES_Tag
+    endif
+    if exists( 'g:exES_Project' )
+        silent exec g:exES_project_cmd.' '.g:exES_Project
+    endif
+
+    " Open Minibuffer always, re-adjust project position
+    let g:miniBufExplorerMoreThanOne = 0 
+endfunction
+
+" --------------------
+" Project || exProject
+" --------------------
+if g:exES_project_cmd == 'EXProject'
+    map <silent> <A-S-p> :EXProject<CR>
+    map <A-S-o> :EXProject<CR>:redraw<CR>/
+    map <leader>ff :EXProject<CR>:redraw<CR>/\[[^F]*\]\c.*
+    map <leader>fd :EXProject<CR>:redraw<CR>/\[F\]\c.*
+else
+    map <silent> <A-S-p> :Project<CR>
+    map <A-S-o> :Project<CR>:redraw<CR>/
+    map <leader>ff :Project<CR>:redraw<CR>/
+    map <leader>fd :Project<CR>:redraw<CR>/=
+endif
+
+" project
+nmap <silent> <F3> <Plug>ToggleProject
+let g:proj_window_width = 30
+let g:proj_window_increment = 50
+
+" exProject
+let g:exPJ_window_width_increment = 50
+let g:exPJ_defualt_filter = 'c cpp h hpp inl uc hlsl vsh psh ini mk err exe'
+
+" --------------------
+" TagList
+" --------------------
+" F4:  Switch on/off TagList
+nnoremap <silent> <F4> :TlistToggle<CR>
+
+" TagListTagName  - Used for tag names
+highlight MyTagListTagName gui=bold guifg=Black guibg=Orange 
+" TagListTagScope - Used for tag scope
+highlight MyTagListTagScope gui=NONE guifg=Blue 
+" TagListTitle    - Used for tag titles
+highlight MyTagListTitle gui=bold guifg=DarkRed guibg=LightGray 
+" TagListComment  - Used for comments
+highlight MyTagListComment guifg=DarkGreen 
+" TagListFileName - Used for filenames
+highlight MyTagListFileName gui=bold guifg=Black guibg=LightBlue
+
+"let Tlist_Ctags_Cmd = $VIM.'/vimfiles/ctags.exe' " location of ctags tool 
+let Tlist_Show_One_File = 1 " Displaying tags for only one file~
+let Tlist_Exist_OnlyWindow = 1 " if you are the last, kill yourself 
+let Tlist_Use_Right_Window = 1 " split to the right side of the screen 
+let Tlist_Sort_Type = "order" " sort by order or name
+let Tlist_Display_Prototype = 0 " do not show prototypes and not tags in the taglist window.
+let Tlist_Compart_Format = 1 " Remove extra information and blank lines from the taglist window.
+let Tlist_GainFocus_On_ToggleOpen = 0 " Jump to taglist window on open.
+let Tlist_Display_Tag_Scope = 1 " Show tag scope next to the tag name.
+let Tlist_Close_On_Select = 0 " Close the taglist window when a file or tag is selected.
+let Tlist_Enable_Fold_Column = 0 " Don't Show the fold indicator column in the taglist window.
+let Tlist_WinWidth = 40
+" let Tlist_Ctags_Cmd = 'ctags --c++-kinds=+p --fields=+iaS --extra=+q --languages=c++'
+" very slow, so I disable this
+" let Tlist_Process_File_Always = 1 " To use the :TlistShowTag and the :TlistShowPrototype commands without the taglist window and the taglist menu, you should set this variable to 1.
+":TlistShowPrototype [filename] [linenumber]
+
+" --------------------
+" MiniBufExpl
+" --------------------
+let g:miniBufExplTabWrap = 1 " make tabs show complete (no broken on two lines) 
+let g:miniBufExplModSelTarget = 1 " If you use other explorers like TagList you can (As of 6.2.8) set it at 1:
+let g:miniBufExplUseSingleClick = 1 " If you would like to single click on tabs rather than double clicking on them to goto the selected buffer. 
+let g:miniBufExplMaxSize = 1 " <max lines: defualt 0> setting this to 0 will mean the window gets as big as needed to fit all your buffers. 
+"let g:miniBufExplorerMoreThanOne = 0 " Setting this to 0 will cause the MBE window to be loaded even
+
+"let g:miniBufExplForceSyntaxEnable = 1 " There is a VIM bug that can cause buffers to show up without their highlighting. The following setting will cause MBE to
+"let g:miniBufExplMapCTabSwitchBufs = 1 
+"let g:miniBufExplMapWindowNavArrows = 1
+
+"for buffers that have NOT CHANGED and are NOT VISIBLE.
+highlight MBENormal guibg=LightGray guifg=DarkGray
+" for buffers that HAVE CHANGED and are NOT VISIBLE
+highlight MBEChanged guibg=Red guifg=DarkRed
+" buffers that have NOT CHANGED and are VISIBLE
+highlight MBEVisibleNormal term=bold cterm=bold gui=bold guibg=Gray guifg=Black
+" buffers that have CHANGED and are VISIBLE
+highlight MBEVisibleChanged term=bold cterm=bold gui=bold guibg=DarkRed guifg=Black
+
+" --------------------
+" OmniCppComplete
+" --------------------
+" set Ctrl+j in insert mode, like VS.Net
+imap <C-j> <C-X><C-O>
+" :inoremap <expr> <cr> pumvisible() ? "\<c-y>" : "\<c-g>u\<cr>" 
+
+" set completeopt as don't show menu and preview
+set completeopt=menuone
+
+" Popup menu hightLight Group
+highlight Pmenu ctermbg=13 guibg=LightGray
+highlight PmenuSel ctermbg=7 guibg=DarkBlue guifg=White
+highlight PmenuSbar ctermbg=7 guibg=DarkGray
+highlight PmenuThumb guibg=Black
+
+" use global scope search
+let OmniCpp_GlobalScopeSearch = 1
+
+" 0 = namespaces disabled
+" 1 = search namespaces in the current buffer
+" 2 = search namespaces in the current buffer and in included files
+let OmniCpp_NamespaceSearch = 1
+
+" 0 = auto
+" 1 = always show all members
+let OmniCpp_DisplayMode = 1
+
+" 0 = don't show scope in abbreviation
+" 1 = show scope in abbreviation and remove the last column
+let OmniCpp_ShowScopeInAbbr = 0
+
+" This option allows to display the prototype of a function in the abbreviation part of the popup menu.
+" 0 = don't display prototype in abbreviation
+" 1 = display prototype in abbreviation
+let OmniCpp_ShowPrototypeInAbbr = 1
+
+" This option allows to show/hide the access information ('+', '#', '-') in the popup menu.
+" 0 = hide access
+" 1 = show access
+let OmniCpp_ShowAccess = 1
+
+" This option can be use if you don't want to parse using namespace declarations in included files and want to add namespaces that are always used in your project.
+let OmniCpp_DefaultNamespaces = ["std"]
+
+" Complete Behaviour
+let OmniCpp_MayCompleteDot = 0
+let OmniCpp_MayCompleteArrow = 0
+let OmniCpp_MayCompleteScope = 0
+
+" When 'completeopt' does not contain "longest", Vim automatically select the first entry of the popup menu. You can change this behaviour with the OmniCpp_SelectFirstItem option.
+let OmniCpp_SelectFirstItem = 0
+
+" --------------------------------------------------------------------------------------
+" Other settings
+" --------------------------------------------------------------------------------------
+
+" VimTip 311: Open the folder containing the currently open file
+" http://vim.sourceforge.net/tip_view.php?tip_id=
+" 
+" Occasionally, on windows, I have files open in gvim, that the folder for 
+" that file is not open. This key map opens the folder that contains the 
+" currently open file. The expand() is so that we don't try to open the 
+" folder of an anonymous buffer, we would get an explorer error dialog in 
+" that case.
+" 
+ if has("gui_running")
+  if has("win32")
+     " Open the folder containing the currently open file. Double <CR> at end
+     " is so you don't have to hit return after command. Double quotes are
+     " not necessary in the 'explorer.exe %:p:h' section.
+     :map <silent> <C-F5> :if expand("%:p:h") != ""<CR>:!start explorer.exe %:p:h<CR>:endif<CR><CR>
+   endif
+ endif
+" 
+" Tom.
+
+
+" VimTip 329: A map for swapping words
+" http://vim.sourceforge.net/tip_view.php?tip_id=
+" 
+" Put the following map into your <.vimrc>:
+" 
+  nmap <silent> gw "_yiw:s/\(\%#\w\+\)\(\W\+\)\(\w\+\)/\3\2\1/<cr><c-o><c-l>
+" 
+" Then when you put the cursor on or in a word, press "gw", and
+" the word will be swapped with the next word.  The words may
+" even be separated by punctuation (such as "abc = def").
+"
+"
+

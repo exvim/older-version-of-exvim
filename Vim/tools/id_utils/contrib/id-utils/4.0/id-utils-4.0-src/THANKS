@@ -1,0 +1,40 @@
+`mkid' THANKS file
+
+All programs were written by Greg McGary.  Tom Horsley maintained the
+programs for a time and released mkid2 to comp.sources.unix.  The
+texinfo manual was originally written by Tom Horsley.
+
+Special thanks go to François Pinard worked tirelessly to refine
+mkid's autoconfiscation, ensure mkid's conformance to GNU standards,
+and generally pick all the nits that were fit to pick. 8^)
+
+Many people further contributed to mkid by reporting problems,
+suggesting improvements, or submitting patches.  Here is a list of
+these people.  If you contributed, but don't see your name here,
+please notify me (Greg McGary) at the address in the README file.
+Help keep this list complete and accurate.
+
+Tom Horsley		<Tom.Horsley@mail.hcsc.com>
+Wolfgang Rupprecht	<wolfgang@wsrcc.com>
+Marty Leisner		<leisner@sdsp.mc.xerox.com>
+François Pinard		<pinard@iro.umontreal.ca>
+Hal Peterson		<hrp@ironwood.cray.com>
+Jay Lawlor		<jlawlor@ptdcs2.intel.com>
+Paul Lew		<lew@omocha.tay.dec.com>
+Karl Berry		<karl@owl.hq.ileaf.com>
+Nathanael Makarevitch	<nat@nataa.frmug.fr.net>
+Rodney Brown		<rdb@mel.cocam.oz.au>
+Richard Stallman	<rms@gnu.ai.mit.edu>
+Dave Wiggins		<dpw@x.org>
+Thomas Neumann		<tom@smart.ruhr.de>
+Jim Meyering		<meyering@na-net.ornl.gov>
+Kazushi (Jam)Marukawa	<kazusi-m@is.aist-nara.ac.jp>
+Tom Tromey		<tromey@cygnus.com>
+Kaveh R. Ghazi		<ghazi@caip.rutgers.edu>
+Youki Kadobayashi	<youki-k@is.aist-nara.ac.jp>
+Monty Solomon		<monty@roscom.com>
+Ulrich Drepper		<drepper@ipd.info.uni-karlsruhe.de>
+Nelson H. F. Beebe	<beebe@math.utah.edu>
+Erick Branderhorst	<Erick.Branderhorst@asml.nl>
+John Bley		<jbb6@acpub.duke.edu>
+Marco S Hyman		<marc@snafu.org>

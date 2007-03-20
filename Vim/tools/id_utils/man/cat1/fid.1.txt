@@ -1,0 +1,37 @@
+FID(1)                   User Commands                   FID(1)
+
+
+
+
+
+NAME
+       fid - List identifiers that occur in FILENAME
+
+SYNOPSIS
+       fid [OPTION] FILENAME [FILENAME2]
+
+DESCRIPTION
+       List identifiers that occur in FILENAME, or if FILENAME2
+       is also given list the identifiers that  occur  in  both
+       files.
+
+       -f, --file=FILE
+              file name of ID database
+
+       --help display this help and exit
+
+       --version
+              output version information and exit
+
+SEE ALSO
+       The full documentation for the id-utils package is main-
+       tained as a Texinfo manual.  If the  info  and  id-utils
+       packages are properly installed, the command
+
+              info 'ID database'
+
+       should give you access to the complete manual.
+
+
+
+fid -                     August 2005                    FID(1)

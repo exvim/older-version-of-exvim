@@ -1,0 +1,327 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0049)http://vim.sourceforge.net/tips/tip.php?tip_id=64 -->
+<HTML><HEAD><TITLE>Tip #64 - Always set your working directory to the file you're editing : vim online</TITLE><LINK 
+href="Tip #64 - Always set your working directory to the file you're editing  vim online_files/style.css" 
+type=text/css rel=Stylesheet>
+<META http-equiv=Content-Type content="text/html; charset=ISO-8859-1">
+<META 
+content="Vim, Vi IMproved, text editor, home, documentation, tips, scripts, news" 
+name=KEYWORDS><LINK href="/images/vim_shortcut.ico" type=image/x-icon 
+rel="shortcut icon">
+<META content="MSHTML 6.00.2900.2963" name=GENERATOR></HEAD>
+<BODY bgColor=#ffffff leftMargin=0 topMargin=0 marginwidth="0" marginheight="0"><!-- HEADER, SPONSOR IMAGE, VIM IMAGE AND BOOK AD -->
+<TABLE borderColor=red cellSpacing=0 cellPadding=0 width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD class=lightbg colSpan=4><IMG height=5 alt="" 
+      src="Tip #64 - Always set your working directory to the file you're editing  vim online_files/spacer.gif" 
+      width=1></TD></TR>
+  <TR>
+    <TD class=lightbg>&nbsp;&nbsp;&nbsp;</TD>
+    <TD class=lightbg align=left><A 
+      href="http://vim.sourceforge.net/sponsor/index.php"><IMG 
+      alt="sponsor Vim development" 
+      src="Tip #64 - Always set your working directory to the file you're editing  vim online_files/sponsorvim.gif" 
+      border=0></A></TD>
+    <TD class=lightbg align=middle><A 
+      href="http://vim.sourceforge.net/index.php"><IMG alt="Vim logo" 
+      src="Tip #64 - Always set your working directory to the file you're editing  vim online_files/vim_header.gif" 
+      border=0></A></TD>
+    <TD class=lightbg align=right><A 
+      href="http://iccf-holland.org/click5.html"><IMG alt="Vim Book Ad" 
+      src="Tip #64 - Always set your working directory to the file you're editing  vim online_files/buyhelplearn.gif" 
+      border=0></A></TD></TR>
+  <TR>
+    <TD class=lightbg colSpan=4><IMG height=5 alt="" 
+      src="Tip #64 - Always set your working directory to the file you're editing  vim online_files/spacer.gif" 
+      width=1></TD></TR>
+  <TR>
+    <TD class=darkbg colSpan=4><IMG height=10 alt="" 
+      src="Tip #64 - Always set your working directory to the file you're editing  vim online_files/spacer.gif" 
+      width=1></TD></TR></TBODY></TABLE><!-- THE PAGE BODY: BETWEEN HEADER AND FOOTER -->
+<TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+  <COLGROUP>
+  <COL width=180>
+  <COL width=1>
+  <TBODY>
+  <TR vAlign=top>
+    <TD class=sidebar>
+      <TABLE cellSpacing=0 cellPadding=4 width=180 border=0>
+        <TBODY>
+        <TR vAlign=top>
+          <TD class=sidebar><!-- INCLUDE THE PAGE NAVIGATION -->
+            <TABLE borderColor=red cellSpacing=0 cellPadding=0 width="100%" 
+            border=0>
+              <TBODY>
+              <TR>
+                <TD><SMALL>not logged in (<A 
+                  href="http://vim.sourceforge.net/login.php">login</A>)</SMALL></TD></TR>
+              <TR>
+                <TD><IMG height=1 alt="" 
+                  src="Tip #64 - Always set your working directory to the file you're editing  vim online_files/spacer.gif" 
+                  width=1 border=0></TD></TR>
+              <TR>
+                <TD class=darkbg><IMG height=3 alt="" 
+                  src="Tip #64 - Always set your working directory to the file you're editing  vim online_files/spacer.gif" 
+                  border=0></TD></TR>
+              <TR>
+                <TD><IMG height=2 alt="" 
+                  src="Tip #64 - Always set your working directory to the file you're editing  vim online_files/spacer.gif" 
+                  width=1 border=0></TD></TR>
+              <TR>
+                <TD class=sidebarheader><A 
+                  href="http://vim.sourceforge.net/index.php">Home</A></TD></TR>
+              <TR>
+                <TD class=sidebarheader><A 
+                  href="http://vim.sourceforge.net/search.php">Search</A></TD></TR>
+              <TR>
+                <TD><IMG height=7 alt="" 
+                  src="Tip #64 - Always set your working directory to the file you're editing  vim online_files/spacer.gif" 
+                  width=1 border=0></TD></TR>
+              <TR>
+                <TD class=checker><IMG height=1 alt="" 
+                  src="Tip #64 - Always set your working directory to the file you're editing  vim online_files/spacer.gif" 
+                  border=0></TD></TR>
+              <TR>
+                <TD><IMG height=7 alt="" 
+                  src="Tip #64 - Always set your working directory to the file you're editing  vim online_files/spacer.gif" 
+                  width=1 border=0></TD></TR>
+              <TR>
+                <TD class=sidebarheader><A 
+                  href="http://vim.sourceforge.net/about.php">About 
+Vim</A></TD></TR>
+              <TR>
+                <TD class=sidebarheader><A 
+                  href="http://vim.sourceforge.net/community.php">Community</A></TD></TR>
+              <TR>
+                <TD class=sidebarheader><A 
+                  href="http://vim.sourceforge.net/news/news.php">News</A></TD></TR>
+              <TR>
+                <TD class=sidebarheader><A 
+                  href="http://vim.sourceforge.net/sponsor/index.php">Sponsoring</A></TD></TR>
+              <TR>
+                <TD class=sidebarheader><A 
+                  href="http://vim.sourceforge.net/trivia.php">Trivia</A></TD></TR>
+              <TR>
+                <TD class=sidebarheader><A 
+                  href="http://vim.sourceforge.net/docs.php">Documentation</A></TD></TR>
+              <TR>
+                <TD class=sidebarheader><A 
+                  href="http://vim.sourceforge.net/download.php">Download</A></TD></TR>
+              <TR>
+                <TD><IMG height=7 alt="" 
+                  src="Tip #64 - Always set your working directory to the file you're editing  vim online_files/spacer.gif" 
+                  width=1 border=0></TD></TR>
+              <TR>
+                <TD class=checker><IMG height=1 alt="" 
+                  src="Tip #64 - Always set your working directory to the file you're editing  vim online_files/spacer.gif" 
+                  border=0></TD></TR>
+              <TR>
+                <TD><IMG height=7 alt="" 
+                  src="Tip #64 - Always set your working directory to the file you're editing  vim online_files/spacer.gif" 
+                  width=1 border=0></TD></TR>
+              <TR>
+                <TD class=sidebarheader><A 
+                  href="http://vim.sourceforge.net/scripts/index.php">Scripts</A></TD></TR>
+              <TR>
+                <TD class=sidebarheader><A 
+                  href="http://vim.sourceforge.net/tips/index.php">Tips</A></TD></TR>
+              <TR>
+                <TD class=sidebarheader><A 
+                  href="http://vim.sourceforge.net/account/index.php">My 
+                  Account</A></TD></TR>
+              <TR>
+                <TD><IMG height=7 alt="" 
+                  src="Tip #64 - Always set your working directory to the file you're editing  vim online_files/spacer.gif" 
+                  width=1 border=0></TD></TR>
+              <TR>
+                <TD class=checker><IMG height=1 alt="" 
+                  src="Tip #64 - Always set your working directory to the file you're editing  vim online_files/spacer.gif" 
+                  border=0></TD></TR>
+              <TR>
+                <TD><IMG height=7 alt="" 
+                  src="Tip #64 - Always set your working directory to the file you're editing  vim online_files/spacer.gif" 
+                  width=1 border=0></TD></TR>
+              <TR>
+                <TD class=sidebarheader><A 
+                  href="http://vim.sourceforge.net/huh.php">Site 
+              Help</A></TD></TR></TBODY></TABLE>
+            <TABLE cellSpacing=0 cellPadding=0 width=172 border=0>
+              <TBODY>
+              <TR>
+                <TD><IMG height=8 alt="" 
+                  src="Tip #64 - Always set your working directory to the file you're editing  vim online_files/spacer.gif" 
+                  width=1 border=0></TD></TR>
+              <TR>
+                <TD class=darkbg><IMG height=3 alt="" 
+                  src="Tip #64 - Always set your working directory to the file you're editing  vim online_files/spacer.gif" 
+                  width=1></TD></TR></TBODY></TABLE><BR><!-- INCLUDE THE PAGE SIDEBAR TEXT -->&nbsp; 
+          </TD></TR></TBODY></TABLE></TD>
+    <TD class=darkbg><IMG height=1 alt="" 
+      src="Tip #64 - Always set your working directory to the file you're editing  vim online_files/spacer.gif" 
+      width=1 border=0><BR></TD>
+    <TD>
+      <TABLE borderColor=red cellSpacing=0 cellPadding=10 width="100%" 
+        border=0><TBODY>
+        <TR>
+          <TD vAlign=top>
+            <H1><IMG alt=intermediate 
+            src="Tip #64 - Always set your working directory to the file you're editing  vim online_files/intermediate.gif">&nbsp;Tip 
+            #64: Always set your working directory to the file you're 
+            editing</H1><!-- karma table -->
+            <TABLE borderColor=#000066 cellSpacing=0 cellPadding=4 border=1>
+              <TBODY>
+              <TR>
+                <TD class=lightbg><B>&nbsp;tip karma&nbsp;</B></TD>
+                <TD>&nbsp;Rating <B>119/50</B>, Viewed by 4084&nbsp; 
+              </TD></TR></TBODY></TABLE><BR>
+            <TABLE cellSpacing=0 cellPadding=0 border=0>
+              <TBODY>
+              <TR>
+                <TD class=prompt>created:</TD>
+                <TD>&nbsp;</TD>
+                <TD>March 28, 2001 9:12</TD>
+                <TD>&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+                <TD class=prompt>complexity:</TD>
+                <TD>&nbsp;</TD>
+                <TD>intermediate</TD></TR>
+              <TR>
+                <TD class=prompt>author:</TD>
+                <TD>&nbsp;</TD>
+                <TD>William Lee</TD>
+                <TD>&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+                <TD class=prompt>as of Vim:</TD>
+                <TD>&nbsp;</TD>
+                <TD>5.7</TD></TR></TBODY></TABLE>
+            <P><CODE>Sometimes I think it's helpful if your working directory is 
+            always the same as the buffer you are editing.&nbsp;&nbsp;You need 
+            to put this in your .vimrc: <BR><BR>function! CHANGE_CURR_DIR() 
+            <BR>let _dir = expand("%:p:h") <BR>exec "cd " . _dir <BR>unlet _dir 
+            <BR>endfunction <BR><BR>autocmd BufEnter * call CHANGE_CURR_DIR() 
+            <BR><BR>Doing this will make a "cd" command to your the current 
+            buffer each time you switch to it.&nbsp;&nbsp;This is actually 
+            similar to <A 
+            href="http://vim.sourceforge.net/tips/tip.php?tip_id=2">vimtip#2</A> 
+            but more automatic. <BR><BR>You should see for more details: 
+            <BR>:help autocmd <BR>:help expand <BR>:help function <BR><BR>Note: 
+            This tip was contributed by somebody on the list a while ago (sorry 
+            for no reference) and it has been extremely helpful to me. 
+            Thanks!</CODE></P><!-- rating table -->
+            <FORM name=rating><INPUT type=hidden value=64 name=tip_id> 
+            <TABLE borderColor=#000066 cellSpacing=0 cellPadding=4 border=1>
+              <TBODY>
+              <TR>
+                <TD class=lightbg><B>&nbsp;rate this tip&nbsp;</B></TD>
+                <TD vAlign=center><INPUT type=radio value=life_changing 
+                  name=rating>Life Changing <INPUT type=radio value=helpful 
+                  name=rating>Helpful <INPUT type=radio value=unfulfilling 
+                  name=rating>Unfulfilling&nbsp; <INPUT type=submit value=rate> 
+                </TD></TR></TBODY></TABLE></FORM>
+            <P><SMALL><A 
+            href="http://vim.sourceforge.net/tips/tip.php?tip_id=63">&lt;&lt;Applying 
+            substitutes to a visual block</A> | <A 
+            href="http://vim.sourceforge.net/tips/tip.php?tip_id=65">Insert line 
+            number into the actuall text of the file. &gt;&gt;</A> 
+            </SMALL><BR><BR>
+            <H1>Additional Notes</H1>
+            <FORM action=add_tip_note.php method=get><INPUT type=hidden value=64 
+            name=tip_id> 
+            <TABLE cellSpacing=4 cellPadding=3 width="100%" border=0>
+              <TBODY>
+              <TR>
+                <TD class=lightbg>Alexey Marinichev, <FONT size=-1>June 5, 
+                  2001 10:54 </FONT></TD></TR>
+              <TR>
+                <TD><TT>Autocommand that calls CHANGE_CURR_DIR can be 
+                  rewritten like this: <BR><BR>autocmd BufEnter * cd 
+                %:p:h</TT></TD></TR>
+              <TR>
+                <TD class=lightbg><B>Anonymous</B>, <FONT size=-1>July 19, 
+                  2001 12:19 </FONT></TD></TR>
+              <TR>
+                <TD><TT>Another approach is to keep VIM's starting directory, 
+                  but have the capability to easily change directory to the file 
+                  being edited.&nbsp;&nbsp;The mapping below does that. 
+                  <BR><BR>map ,cd :exe 'cd ' . expand 
+              ("%:p:h")&lt;CR&gt;</TT></TD></TR>
+              <TR>
+                <TD class=lightbg>ict@eh.org, <FONT size=-1>September 29, 2001 
+                  10:39 </FONT></TD></TR>
+              <TR>
+                <TD><TT>I've found it useful to not change the directory if 
+                  one is editing in /tmp (useful for things like editing CVS 
+                  commit entries). Suitable modification is thus: 
+                  <BR><BR>function! CHANGE_CURR_DIR() 
+                  <BR>&nbsp;&nbsp;&nbsp;&nbsp;let _dir = expand("%:p:h") 
+                  <BR>&nbsp;&nbsp;&nbsp;&nbsp;if _dir !~ '^/tmp' 
+                  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;exec "cd " . _dir 
+                  <BR>&nbsp;&nbsp;&nbsp;&nbsp;endif 
+                  <BR>&nbsp;&nbsp;&nbsp;&nbsp;unlet _dir <BR>endfunction 
+                  <BR></TT></TD></TR>
+              <TR>
+                <TD class=lightbg><B>Anonymous</B>, <FONT size=-1>January 15, 
+                  2005 19:09 </FONT></TD></TR>
+              <TR>
+                <TD><TT>The above tip is great, but it does not work with 
+                  directories that have space characters in the name. <BR>Simply 
+                  changing: <BR><BR>exec "cd " . _dir <BR><BR>to <BR><BR>exec 
+                  "cd %:p:h" <BR><BR>fixes the issue. And perhaps the initial 
+                  expand() isn't needed either?</TT></TD></TR>
+              <TR>
+                <TD><INPUT type=submit value="Add Note" name="Add Note"> 
+              </TD></TR></TBODY></TABLE></FORM><!-- finish off the framework --></TD></TR></TBODY></TABLE></TD></TR></TBODY></TABLE><!-- END OF THE PAGE BODY: BETWEEN HEADER AND FOOTER -->
+<TABLE borderColor=red cellSpacing=0 cellPadding=0 width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD colSpan=4><IMG height=5 alt="" 
+      src="Tip #64 - Always set your working directory to the file you're editing  vim online_files/spacer.gif" 
+      width=1></TD></TR>
+  <TR>
+    <TD bgColor=#000000 colSpan=4><IMG height=2 alt="" 
+      src="Tip #64 - Always set your working directory to the file you're editing  vim online_files/spacer.gif" 
+      width=1></TD></TR>
+  <TR>
+    <TD colSpan=4><IMG height=5 alt="" 
+      src="Tip #64 - Always set your working directory to the file you're editing  vim online_files/spacer.gif" 
+      width=1></TD></TR>
+  <TR>
+    <TD><IMG height=1 alt="" 
+      src="Tip #64 - Always set your working directory to the file you're editing  vim online_files/spacer.gif" 
+      width=5></TD>
+    <TD vAlign=top align=left><SMALL>If you have questions or remarks about 
+      this site, visit the <A href="http://vimonline.sf.net/">vimonline 
+      development</A> pages. Please use this site responsibly. <BR>Questions 
+      about <A href="http://www.vim.org/about.php">Vim</A> should go to 
+      vim@vim.org after searching <A 
+      href="http://groups.yahoo.com/group/vim">the archive</A>. Help Bram <A 
+      href="http://iccf-holland.org/">help Uganda</A>. </SMALL>&nbsp; &nbsp; <!-- Start of StatCounter Code -->
+      <SCRIPT language=javascript type=text/javascript>
+	var sc_project=1417324; 
+	var sc_invisible=1; 
+	var sc_partition=11; 
+	var sc_security="d41633bc"; 
+	</SCRIPT>
+
+      <SCRIPT language=javascript 
+      src="Tip #64 - Always set your working directory to the file you're editing  vim online_files/counter.js" 
+      type=text/javascript></SCRIPT>
+      <NOSCRIPT><A href="http://www.statcounter.com/" target=_blank><IMG 
+      alt="free tracking" 
+      src="Tip #64 - Always set your working directory to the file you're editing  vim online_files/counter.png" 
+      border=0></A> </NOSCRIPT><!-- End of StatCounter Code --><SMALL><A 
+      href="http://my.statcounter.com/project/standard/stats.php?project_id=1417324&amp;guest=1">stats</A> 
+      </SMALL></TD>
+    <TD vAlign=top align=right><A href="http://www.webconceptgroup.net/"><IMG 
+      height=30 alt="Sponsored by Web Concept Group Inc." 
+      src="Tip #64 - Always set your working directory to the file you're editing  vim online_files/logo_sponsor_wcg.jpg" 
+      width=131 border=0></A> <A href="http://sourceforge.net/"><IMG height=31 
+      alt="SourceForge.net Logo" 
+      src="Tip #64 - Always set your working directory to the file you're editing  vim online_files/sflogo.png" 
+      width=88 border=0></A> </TD>
+    <TD><IMG height=1 alt="" 
+      src="Tip #64 - Always set your working directory to the file you're editing  vim online_files/spacer.gif" 
+      width=5></TD></TR>
+  <TR>
+    <TD colSpan=4><IMG height=5 alt="" 
+      src="Tip #64 - Always set your working directory to the file you're editing  vim online_files/spacer.gif" 
+      width=1></TD></TR></TBODY></TABLE></BODY></HTML>

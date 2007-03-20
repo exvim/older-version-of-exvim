@@ -1,0 +1,163 @@
+id-utils NEWS - User visible changes.
+
+Version 4.0 - Nov 1, 2005, by Claudio Fontana
+
+* Modernize build system (autotools, gnulib, intl, large file support)
+* Cleaned up some code
+* Fixed some portability problems (some might remain)
+* Integrated perl support
+
+Version 3.2d - April 6, 1999, by Greg McGary
+
+* Modernize lisp/Makefile.am, replace gets with fgets.
+
+* Allocate larger scanner buffer: MIN (2MB, largest file)
+
+* compile lib/regex.c if regcomp is absent in libc.
+
+Version 3.2c - April 3, 1999, by Greg McGary
+
+* Add verbose traces to file walker: `mkid -V'
+
+* New heuristic for computing initial size of token table:
+MAX (1M, lg(n) * n * 16)
+
+Version 3.2b - March 29, 1999, by Greg McGary
+
+* Fixed assorted bugs
+
+* Remove arbitrary limit of 32767 on number of files that
+  can be scanned.  Now the number of files is only
+  limited by available virtual memory.
+
+Version 3.2a - November 22, 1998, by Greg McGary
+
+* Fixed assorted bugs
+
+Version 3.2 - August 6, 1996, by Greg McGary
+
+* Major bug in eid fixed
+
+Version 3.1 - July 17, 1996, by Greg McGary
+
+* A few more portability bugs are fixed
+
+Version 3.0m - July 9, 1996, by Greg McGary
+
+* NLS is now initialized properly
+
+* Assorted portability problems are fixed
+
+* A few bugs (one serious) are fixed
+
+Version 3.0l - skipped `l' (ell) is too easy to confuse with `1' (one)
+
+Version 3.0k - June 5, 1996, by Greg McGary
+
+* `lid's command line has been revised and expanded.  Control over output
+  formats is expanded.  Pattern searching options are now complete and
+  orthogonal: word/substring, literal/regexp, case (in)sensitivity.
+
+* The texinfo manual, id-utils.texi, is now up-to-date.
+
+* `mkid' and `xtokid' support the new `--prune' option.
+
+* `mkid' and `xtokid' now implement the `--include' and `--exclude 'options.
+
+* `lid -R grep' (a.k.a. `gid') no longer prepends a space to each line--
+  now its output is exactly like grep's.
+
+* `fid' separates tokens with spaces if output is to a termianal, and
+  otherwise with newlines.
+
+* If lid is in `brace' mode by default, it uses brace notation when
+  outputting to a terminal and separates file names with spaces otherwise.
+  If printing the token or pattern key is disabled, then file names are
+  separated with newlines.
+
+* All programs now accept directory names for the `-f, --file=' args.
+  When a directory is given, the file name "ID" is assumed.
+
+* gid.el is renamed id-utils.el and is installed in emacs's site-lisp/
+
+* Source files and directories are reorganized
+
+* Misc. bugs are fixed
+
+Version 3.0j - May 31, 1996, by Greg McGary
+
+* Pre-test versions are now designated with a lower-case letter to shorten
+  the top-level directory name to 14 chars.
+
+* `idx' has been renamed `xtokid'.
+
+* The old `pid' program has been reborn as `fnid'.
+
+* Some bugs & build problems are fixed.
+
+* Some missing prototypes are added to header files.
+
+* gcc -Wall (plus a bunch of other other warnings) is happier.
+
+* A number of idtest problems are fixed.
+
+Version 3.0.9 - May 30, 1996, by Greg McGary
+
+* The package name has been changed from `mkid' to `id-utils', and is now
+  officially a part of GNU.
+
+* Command-line arguments have been revised to conform with GNU standards.
+  Each command now processes --help and --version long arguments.
+
+* The texinfo manual is out-of-date.  Please use the `--help' option for
+  correct information about command-line arguments.
+
+* Message catalogs for French and German exist, but are out-of-date.
+
+* `mkid' and `idx' use a file-tree walker.  Give them one or more directory
+  names on the command-line, and they'll recursively descend looking for
+  source files.  lib/language.map (installe as $(prefix)/share/language.map)
+  contains patterns for mapping file names to the appropriate language scanner.
+
+* id-utils now uses automake.
+
+* gid, aid and eid are now shell-script wrappers that
+  call `lid' with the apropriate argument.
+
+* A new environment `IDPATH' contains a colon-separated list of ID file
+  names for use by `fid' and `lid'.  It is only partially implemented at
+  this time only the first ID file is actually handled, the rest are
+  ignored.
+
+* pid is temporarily gone, but will reappear soon.
+
+* iid has been removed from the distribution.
+
+* Support for non-ANSI compilers is broken.  Don't expect it to work.
+  If you use gcc, all will be well.
+
+* Miscellaneous bugs are fixed.
+
+Version 3.0 - February 1995, by Greg McGary
+
+* `mkid' uses a new efficient algorithm for building the database.  The old
+  algorithm was O(n^2) for space and would exhaust memory or lead to page
+  thrashing on very large programs.  The new algorithm is linear with the
+  size of the input for both time and space.  It is now possible to build
+  very large `mkid' databases covering many thousands of files totalling
+  tens of megabytes and containing hundreds of thousands of unique tokens.
+
+* The database header is now byte-order and word-size independent.  ID
+  files may be shared across networks of dissimilar architectures.
+
+Version 2.0 - March 1991, by Tom Horsley
+
+
+Version 1.0 - September 1987, by Greg McGary
+
+* Initial release to comp.sources.unix
+
+Local Variables:
+mode: text
+fill-column: 75
+End:

@@ -1,0 +1,1313 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0049)http://vim.sourceforge.net/tips/tip.php?tip_id=26 -->
+<HTML><HEAD><TITLE>Tip #26 - Getting rid of ^M - mixing dos and unix : vim online</TITLE><LINK 
+href="Tip #26 - Getting rid of ^M - mixing dos and unix  vim online_files/style.css" 
+type=text/css rel=Stylesheet>
+<META http-equiv=Content-Type content="text/html; charset=ISO-8859-1">
+<META 
+content="Vim, Vi IMproved, text editor, home, documentation, tips, scripts, news" 
+name=KEYWORDS><LINK href="/images/vim_shortcut.ico" type=image/x-icon 
+rel="shortcut icon">
+<META content="MSHTML 6.00.2900.3020" name=GENERATOR></HEAD>
+<BODY bgColor=#ffffff leftMargin=0 topMargin=0 marginwidth="0" marginheight="0"><!-- HEADER, SPONSOR IMAGE, VIM IMAGE AND BOOK AD -->
+<TABLE borderColor=red cellSpacing=0 cellPadding=0 width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD class=lightbg colSpan=4><IMG height=5 alt="" 
+      src="Tip #26 - Getting rid of ^M - mixing dos and unix  vim online_files/spacer.gif" 
+      width=1></TD></TR>
+  <TR>
+    <TD class=lightbg>&nbsp;&nbsp;&nbsp;</TD>
+    <TD class=lightbg align=left><A 
+      href="http://vim.sourceforge.net/sponsor/index.php"><IMG 
+      alt="sponsor Vim development" 
+      src="Tip #26 - Getting rid of ^M - mixing dos and unix  vim online_files/sponsorvim.gif" 
+      border=0></A></TD>
+    <TD class=lightbg align=middle><A 
+      href="http://vim.sourceforge.net/index.php"><IMG alt="Vim logo" 
+      src="Tip #26 - Getting rid of ^M - mixing dos and unix  vim online_files/vim_header.gif" 
+      border=0></A></TD>
+    <TD class=lightbg align=right><A 
+      href="http://iccf-holland.org/click5.html"><IMG alt="Vim Book Ad" 
+      src="Tip #26 - Getting rid of ^M - mixing dos and unix  vim online_files/buyhelplearn.gif" 
+      border=0></A></TD></TR>
+  <TR>
+    <TD class=lightbg colSpan=4><IMG height=5 alt="" 
+      src="Tip #26 - Getting rid of ^M - mixing dos and unix  vim online_files/spacer.gif" 
+      width=1></TD></TR>
+  <TR>
+    <TD class=darkbg colSpan=4><IMG height=10 alt="" 
+      src="Tip #26 - Getting rid of ^M - mixing dos and unix  vim online_files/spacer.gif" 
+      width=1></TD></TR></TBODY></TABLE><!-- THE PAGE BODY: BETWEEN HEADER AND FOOTER -->
+<TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+  <COLGROUP>
+  <COL width=180>
+  <COL width=1>
+  <TBODY>
+  <TR vAlign=top>
+    <TD class=sidebar>
+      <TABLE cellSpacing=0 cellPadding=4 width=180 border=0>
+        <TBODY>
+        <TR vAlign=top>
+          <TD class=sidebar><!-- INCLUDE THE PAGE NAVIGATION -->
+            <TABLE borderColor=red cellSpacing=0 cellPadding=0 width="100%" 
+            border=0>
+              <TBODY>
+              <TR>
+                <TD><SMALL>not logged in (<A 
+                  href="http://vim.sourceforge.net/login.php">login</A>)</SMALL></TD></TR>
+              <TR>
+                <TD><IMG height=1 alt="" 
+                  src="Tip #26 - Getting rid of ^M - mixing dos and unix  vim online_files/spacer.gif" 
+                  width=1 border=0></TD></TR>
+              <TR>
+                <TD class=darkbg><IMG height=3 alt="" 
+                  src="Tip #26 - Getting rid of ^M - mixing dos and unix  vim online_files/spacer.gif" 
+                  border=0></TD></TR>
+              <TR>
+                <TD><IMG height=2 alt="" 
+                  src="Tip #26 - Getting rid of ^M - mixing dos and unix  vim online_files/spacer.gif" 
+                  width=1 border=0></TD></TR>
+              <TR>
+                <TD class=sidebarheader><A 
+                  href="http://vim.sourceforge.net/index.php">Home</A></TD></TR>
+              <TR>
+                <TD class=sidebarheader><A 
+                  href="http://vim.sourceforge.net/search.php">Search</A></TD></TR>
+              <TR>
+                <TD><IMG height=7 alt="" 
+                  src="Tip #26 - Getting rid of ^M - mixing dos and unix  vim online_files/spacer.gif" 
+                  width=1 border=0></TD></TR>
+              <TR>
+                <TD class=checker><IMG height=1 alt="" 
+                  src="Tip #26 - Getting rid of ^M - mixing dos and unix  vim online_files/spacer.gif" 
+                  border=0></TD></TR>
+              <TR>
+                <TD><IMG height=7 alt="" 
+                  src="Tip #26 - Getting rid of ^M - mixing dos and unix  vim online_files/spacer.gif" 
+                  width=1 border=0></TD></TR>
+              <TR>
+                <TD class=sidebarheader><A 
+                  href="http://vim.sourceforge.net/about.php">About 
+Vim</A></TD></TR>
+              <TR>
+                <TD class=sidebarheader><A 
+                  href="http://vim.sourceforge.net/community.php">Community</A></TD></TR>
+              <TR>
+                <TD class=sidebarheader><A 
+                  href="http://vim.sourceforge.net/news/news.php">News</A></TD></TR>
+              <TR>
+                <TD class=sidebarheader><A 
+                  href="http://vim.sourceforge.net/sponsor/index.php">Sponsoring</A></TD></TR>
+              <TR>
+                <TD class=sidebarheader><A 
+                  href="http://vim.sourceforge.net/trivia.php">Trivia</A></TD></TR>
+              <TR>
+                <TD class=sidebarheader><A 
+                  href="http://vim.sourceforge.net/docs.php">Documentation</A></TD></TR>
+              <TR>
+                <TD class=sidebarheader><A 
+                  href="http://vim.sourceforge.net/download.php">Download</A></TD></TR>
+              <TR>
+                <TD><IMG height=7 alt="" 
+                  src="Tip #26 - Getting rid of ^M - mixing dos and unix  vim online_files/spacer.gif" 
+                  width=1 border=0></TD></TR>
+              <TR>
+                <TD class=checker><IMG height=1 alt="" 
+                  src="Tip #26 - Getting rid of ^M - mixing dos and unix  vim online_files/spacer.gif" 
+                  border=0></TD></TR>
+              <TR>
+                <TD><IMG height=7 alt="" 
+                  src="Tip #26 - Getting rid of ^M - mixing dos and unix  vim online_files/spacer.gif" 
+                  width=1 border=0></TD></TR>
+              <TR>
+                <TD class=sidebarheader><A 
+                  href="http://vim.sourceforge.net/scripts/index.php">Scripts</A></TD></TR>
+              <TR>
+                <TD class=sidebarheader><A 
+                  href="http://vim.sourceforge.net/tips/index.php">Tips</A></TD></TR>
+              <TR>
+                <TD class=sidebarheader><A 
+                  href="http://vim.sourceforge.net/account/index.php">My 
+                  Account</A></TD></TR>
+              <TR>
+                <TD><IMG height=7 alt="" 
+                  src="Tip #26 - Getting rid of ^M - mixing dos and unix  vim online_files/spacer.gif" 
+                  width=1 border=0></TD></TR>
+              <TR>
+                <TD class=checker><IMG height=1 alt="" 
+                  src="Tip #26 - Getting rid of ^M - mixing dos and unix  vim online_files/spacer.gif" 
+                  border=0></TD></TR>
+              <TR>
+                <TD><IMG height=7 alt="" 
+                  src="Tip #26 - Getting rid of ^M - mixing dos and unix  vim online_files/spacer.gif" 
+                  width=1 border=0></TD></TR>
+              <TR>
+                <TD class=sidebarheader><A 
+                  href="http://vim.sourceforge.net/huh.php">Site 
+              Help</A></TD></TR></TBODY></TABLE>
+            <TABLE cellSpacing=0 cellPadding=0 width=172 border=0>
+              <TBODY>
+              <TR>
+                <TD><IMG height=8 alt="" 
+                  src="Tip #26 - Getting rid of ^M - mixing dos and unix  vim online_files/spacer.gif" 
+                  width=1 border=0></TD></TR>
+              <TR>
+                <TD class=darkbg><IMG height=3 alt="" 
+                  src="Tip #26 - Getting rid of ^M - mixing dos and unix  vim online_files/spacer.gif" 
+                  width=1></TD></TR></TBODY></TABLE><BR><!-- INCLUDE THE PAGE SIDEBAR TEXT -->&nbsp; 
+          </TD></TR></TBODY></TABLE></TD>
+    <TD class=darkbg><IMG height=1 alt="" 
+      src="Tip #26 - Getting rid of ^M - mixing dos and unix  vim online_files/spacer.gif" 
+      width=1 border=0><BR></TD>
+    <TD>
+      <TABLE borderColor=red cellSpacing=0 cellPadding=10 width="100%" 
+        border=0><TBODY>
+        <TR>
+          <TD vAlign=top>
+            <H1><IMG alt=basic 
+            src="Tip #26 - Getting rid of ^M - mixing dos and unix  vim online_files/basic.gif">&nbsp;Tip 
+            #26: Getting rid of ^M - mixing dos and unix</H1><!-- karma table -->
+            <TABLE borderColor=#000066 cellSpacing=0 cellPadding=4 border=1>
+              <TBODY>
+              <TR>
+                <TD class=lightbg><B>&nbsp;tip karma&nbsp;</B></TD>
+                <TD>&nbsp;Rating <B>1623/640</B>, Viewed by 86799&nbsp; 
+              </TD></TR></TBODY></TABLE><BR>
+            <TABLE cellSpacing=0 cellPadding=0 border=0>
+              <TBODY>
+              <TR>
+                <TD class=prompt>created:</TD>
+                <TD>&nbsp;</TD>
+                <TD>March 5, 2001 17:00</TD>
+                <TD>&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+                <TD class=prompt>complexity:</TD>
+                <TD>&nbsp;</TD>
+                <TD>basic</TD></TR>
+              <TR>
+                <TD class=prompt>author:</TD>
+                <TD>&nbsp;</TD>
+                <TD>scrott@users.sourceforge.net</TD>
+                <TD>&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+                <TD class=prompt>as of Vim:</TD>
+                <TD>&nbsp;</TD>
+                <TD>5.7</TD></TR></TBODY></TABLE>
+            <P><CODE>If you work in a mixed environment you will often open 
+            files that have ^M's in them. An example would be this: 
+            <BR><BR>------------------------------------------------------------------ 
+            <BR>import java.util.Hashtable; ^M <BR>import java.util.Properties; 
+            ^Mimport java.io.IOException; <BR>import org.xml.sax.AttributeList; 
+            ^M <BR>import org.xml.sax.HandlerBase; ^Mimport 
+            org.xml.sax.SAXException; <BR><BR>/**^M <BR>&nbsp;&nbsp;* 
+            XMLHandler: This class parses the elements contained^M 
+            <BR>&nbsp;&nbsp;* within a XML message and builds a Hashtable^M 
+            <BR><BR>[snip] 
+            <BR>------------------------------------------------------------------ 
+            <BR><BR>Notice that some programs are not consistent in the way they 
+            insert the line breaks so you end up with some lines that have both 
+            a carrage return and a ^M and some lines that have a ^M and no 
+            carrage return (and so blend into one). There are two steps to clean 
+            this up. <BR><BR>1. replace all extraneous ^M: <BR><BR>:%s/^M$//g 
+            <BR><BR>BE SURE YOU MAKE the ^M USING "CTRL-V CTRL-M" NOT BY TYPING 
+            "CARROT M"! This expression will replace all the ^M's that have 
+            carriage returns after them with nothing. (The dollar ties the 
+            search to the end of a line) <BR><BR>2. replace all ^M's that need 
+            to have carriage returns: <BR><BR>:%s/^M/ /g <BR><BR>Once again: BE 
+            SURE YOU MAKE the ^M USING "CTRL-V CTRL-M" NOT BY TYPING "CARROT M"! 
+            This expression will replace all the ^M's that didn't have carriage 
+            returns after them with a carriage return. <BR><BR>Voila! Clean 
+            file. Map this to something if you do it frequently. <BR><BR>:help 
+            ffs - for more info on file formats <BR><BR>thanks to jonathan merz, 
+            douglas potts, and benji fisher <BR></CODE></P><!-- rating table -->
+            <FORM name=rating><INPUT type=hidden value=26 name=tip_id> 
+            <TABLE borderColor=#000066 cellSpacing=0 cellPadding=4 border=1>
+              <TBODY>
+              <TR>
+                <TD class=lightbg><B>&nbsp;rate this tip&nbsp;</B></TD>
+                <TD vAlign=center><INPUT type=radio value=life_changing 
+                  name=rating>Life Changing <INPUT type=radio value=helpful 
+                  name=rating>Helpful <INPUT type=radio value=unfulfilling 
+                  name=rating>Unfulfilling&nbsp; <INPUT type=submit value=rate> 
+                </TD></TR></TBODY></TABLE></FORM>
+            <P><SMALL><A 
+            href="http://vim.sourceforge.net/tips/tip.php?tip_id=25">&lt;&lt;color 
+            highlighting on telnet (esp w/ SecureCRT)</A> | <A 
+            href="http://vim.sourceforge.net/tips/tip.php?tip_id=27">Convert hex 
+            to dec &gt;&gt;</A> </SMALL><BR><BR>
+            <H1>Additional Notes</H1>
+            <FORM action=add_tip_note.php method=get><INPUT type=hidden value=26 
+            name=tip_id> 
+            <TABLE cellSpacing=4 cellPadding=3 width="100%" border=0>
+              <TBODY>
+              <TR>
+                <TD class=lightbg>wiwo@dcon.at, <FONT size=-1>October 22, 2001 
+                  8:51 </FONT></TD></TR>
+              <TR>
+                <TD><TT>It also works with <BR>:%s/\r//g</TT></TD></TR>
+              <TR>
+                <TD class=lightbg>rpilkey@hotmail.com, <FONT size=-1>January 
+                  29, 2002 9:01 </FONT></TD></TR>
+              <TR>
+                <TD><TT>If you want to put a map of this in your _vimrc file, 
+                  then you have to double the ^V character so that it looks like 
+                  this: <BR><BR>map M :%s/^V^V^M$//g^M <BR><BR>note: if you cut 
+                  and paste this line, it won't work.&nbsp;&nbsp;You have to 
+                  type the control characters as explained above. <BR><BR>It has 
+                  something to do with it being interpreted multiple times, I 
+                  think. <BR><BR>Roger <BR><BR><BR><BR></TT></TD></TR>
+              <TR>
+                <TD class=lightbg>mwithers@one.net, <FONT size=-1>March 10, 
+                  2002 17:41 </FONT></TD></TR>
+              <TR>
+                <TD><TT>:g/^M$/s///g - will get rid of every instance of a 
+                  line ending with the carriage returns as well. <BR><BR>You can 
+                  map this to a key, but you need to use ^V to "quote" the 
+                  carriage return and not by simply copying and pasting the 
+                  above regular expression. <BR><BR>Mark</TT></TD></TR>
+              <TR>
+                <TD class=lightbg>kbgaddis@hotmail.com, <FONT size=-1>April 1, 
+                  2002 0:15 </FONT></TD></TR>
+              <TR>
+                <TD><TT>yet another way of doing this without the search is 
+                  ':set fileformat=unix&lt;cr&gt;:w&lt;cr&gt;'... converts the 
+                  crlfs to just lfs <BR></TT></TD></TR>
+              <TR>
+                <TD class=lightbg>hello_ben@yahoo.com, <FONT size=-1>October 
+                  31, 2002 12:31 </FONT></TD></TR>
+              <TR>
+                <TD><TT>I think using this command is easier. 
+                  <BR>&nbsp;&nbsp;&nbsp;&nbsp;:set ff=unix&nbsp;&nbsp;//to unix 
+                  file <BR>&nbsp;&nbsp;&nbsp;&nbsp;:set ff=dos&nbsp;&nbsp; //to 
+                  windows file</TT></TD></TR>
+              <TR>
+                <TD class=lightbg>arnovenner@yahoo.com, <FONT size=-1>January 
+                  22, 2003 19:00 </FONT></TD></TR>
+              <TR>
+                <TD><TT>Hi, <BR>yet another way to do this in a fine manner is 
+                  made by 2 steps: <BR><BR>first: <BR>%s/\r\r/\r/g 
+                  <BR><BR>second <BR>%s/\r//g <BR><BR>It seems useless to do the 
+                  first step on the first sight, but so it keeps your linebreaks 
+                  as the document originally had - might be usefull. 
+                  <BR><BR>Arno</TT></TD></TR>
+              <TR>
+                <TD class=lightbg>winfree@gmx.de, <FONT size=-1>February 26, 
+                  2003 15:31 </FONT></TD></TR>
+              <TR>
+                <TD><TT>hello_ben@yahoo.com mentioned 
+                  <BR>&nbsp;&nbsp;&nbsp;&nbsp;:set ff=unix&nbsp;&nbsp;//to unix 
+                  file <BR>&nbsp;&nbsp;&nbsp;&nbsp;:set ff=dos&nbsp;&nbsp; //to 
+                  windows file <BR><BR>to change linebreaks. <BR>I experienced 
+                  that this will only work on correct unix/dos files. <BR>If you 
+                  have a mixture of linebreak types (if you see this ^M at 
+                  <BR>then end of several lines), ":set ff" (fileformat) will 
+                  not help you. <BR><BR></TT></TD></TR>
+              <TR>
+                <TD class=lightbg>avis@excite.com, <FONT size=-1>May 28, 2003 
+                  9:06 </FONT></TD></TR>
+              <TR>
+                <TD><TT>This is more of a question than additional tips. 
+                  <BR>How (if possible) can one remove the newline character 
+                  from the LAST line? <BR></TT></TD></TR>
+              <TR>
+                <TD class=lightbg><B>Anonymous</B>, <FONT size=-1>June 19, 
+                  2003 15:36 </FONT></TD></TR>
+              <TR>
+                <TD><TT>You should be able to do: <BR><BR>:$,$s/^M// 
+                  <BR><BR>But I have not tested that.</TT></TD></TR>
+              <TR>
+                <TD class=lightbg>ramgarden@aol.com, <FONT size=-1>June 25, 
+                  2003 6:46 </FONT></TD></TR>
+              <TR>
+                <TD><TT>When editing files on my Mac (OS X 10.2) then moving 
+                  those to my Windows box, I get the crazy control M characters 
+                  as well. I found out through trial and error the best way for 
+                  me to get rid of them (and keep the original line breaks) is 
+                  to use this command: <BR><BR>:%s/\r/\r/g <BR><BR>Basically 
+                  says to get rid of the linefeeds you have, and put in 
+                  linefeeds this system understands. <BR>Hope this helps someone 
+                  out!</TT></TD></TR>
+              <TR>
+                <TD class=lightbg><B>Anonymous</B>, <FONT size=-1>November 18, 
+                  2003 18:11 </FONT></TD></TR>
+              <TR>
+                <TD><TT>I am editing the same file under Linux, and Windows. 
+                  <BR>I want just to hide the ^M, not actually erase them from 
+                  the file. All the solutions that you suggested actually erase 
+                  the ^M. It means that when I reopen the file under Windows, 
+                  it's all messed up. If I don't change the ^M, it's painful to 
+                  watch them in Vi 6.2. under Linux. Any solutions to 
+                this?</TT></TD></TR>
+              <TR>
+                <TD class=lightbg>Anonymous, <FONT size=-1>November 26, 2003 
+                  15:31 </FONT></TD></TR>
+              <TR>
+                <TD><TT>Note that, when using Vim on Windows, you will need to 
+                  use CTRL-Q instead of CTRL-V to escape the special character 
+                  on the ex command line. <BR><BR>From the documentation 
+                  (usr_24.txt): <BR><BR>&nbsp;&nbsp;&nbsp;&nbsp; Note: 
+                  <BR>&nbsp;&nbsp;&nbsp;&nbsp; On MS-Windows CTRL-V is used to 
+                  paste text.&nbsp;&nbsp;Use CTRL-Q instead of 
+                  <BR>&nbsp;&nbsp;&nbsp;&nbsp; CTRL-V.&nbsp;&nbsp;On Unix, on 
+                  the other hand, CTRL-Q does not work on some 
+                  <BR>&nbsp;&nbsp;&nbsp;&nbsp; terminals, because it has a 
+                  special meaning.</TT></TD></TR>
+              <TR>
+                <TD class=lightbg><B>Anonymous</B>, <FONT size=-1>February 3, 
+                  2004 12:30 </FONT></TD></TR>
+              <TR>
+                <TD><TT>To the poster who is editing files on multiple 
+                  OSs:&nbsp;&nbsp;Try reading up on :help ffs.&nbsp;&nbsp;If 
+                  your files truly are correct "DOS" (carriage return+newline) 
+                  format when you open them in linux, VIM should be able to 
+                  auto-detect the newline scheme and hide the actual control 
+                  characters from you.&nbsp;&nbsp;Make sure the autodetection is 
+                  enabled, or try forcing the file format from the command line 
+                  when opening the file. <BR><BR>If you still get ^M's, then the 
+                  files you are opening have a mix of newline schemes and VIM is 
+                  very inflexible when it comes to mixing newline schemes. 
+                  <BR><BR>This mixture often happens in log/data files and 
+                  rolling files which sometimes never have a carriage return on 
+                  the last line or silly things like that which break VIM's 
+                  autodetection routine.&nbsp;&nbsp;Again try forcing the 
+                  filetype from the command line.&nbsp;&nbsp;If this fails, your 
+                  only option is to strip out the ^M's using the tips in this 
+                  section. <BR></TT></TD></TR>
+              <TR>
+                <TD class=lightbg><B>Anonymous</B>, <FONT size=-1>February 3, 
+                  2004 12:32 </FONT></TD></TR>
+              <TR>
+                <TD><TT>To the poster who is editing files on multiple 
+                  OSs:&nbsp;&nbsp;Try reading up on :help ffs.&nbsp;&nbsp;If 
+                  your files truly are correct "DOS" (carriage return+newline) 
+                  format when you open them in linux, VIM should be able to 
+                  auto-detect the newline scheme and hide the actual control 
+                  characters from you.&nbsp;&nbsp;Make sure the autodetection is 
+                  enabled, or try forcing the file format from the command line 
+                  when opening the file. <BR><BR>If you still get ^M's, then the 
+                  files you are opening have a mix of newline schemes and VIM is 
+                  very inflexible when it comes to mixing newline schemes. 
+                  <BR><BR>This mixture often happens in log/data files and 
+                  rolling files which sometimes never have a carriage return on 
+                  the last line or silly things like that which break VIM's 
+                  autodetection routine.&nbsp;&nbsp;Again try forcing the 
+                  filetype from the command line.&nbsp;&nbsp;If this fails, your 
+                  only option is to strip out the ^M's using the tips in this 
+                  section. <BR></TT></TD></TR>
+              <TR>
+                <TD class=lightbg>pagarcia@slcolombia.org, <FONT 
+                  size=-1>February 7, 2004 19:07 </FONT></TD></TR>
+              <TR>
+                <TD><TT>with: <BR>:%s/^M/\r/g <BR>works perfectly 
+              !!!</TT></TD></TR>
+              <TR>
+                <TD class=lightbg>riz85uk@hotmail.com, <FONT size=-1>June 18, 
+                  2004 18:24 </FONT></TD></TR>
+              <TR>
+                <TD><TT>if you wanted to do this to more then one file, open 
+                  the files in vim with a command like <BR>vim *.txt 
+                  <BR><BR>start recording to the q register with the command 
+                  <BR>qq <BR><BR>remove the ^M's with <BR>:%s/^M$//g <BR>:%s/^M/ 
+                  /g <BR><BR>move to the next file <BR>:wnext <BR><BR>stop 
+                  recording <BR>q <BR><BR>execute the q register ( to test it) 
+                  <BR>@q <BR><BR>if all works well run the command <BR>999@q 
+                  <BR><BR>this will execute the q register on all the opened 
+                  files, and will stop with an error when it gets to the last 
+                  line. <BR><BR>so basicaly the commansd go like this 
+                  <BR><BR>vim *.txt <BR>qq <BR>:%s/^M$//g <BR>:%s/^M/ /g 
+                  <BR>:wnext <BR>q <BR>@q <BR>999@q</TT></TD></TR>
+              <TR>
+                <TD class=lightbg><B>Anonymous</B>, <FONT size=-1>June 18, 
+                  2004 18:25 </FONT></TD></TR>
+              <TR>
+                <TD><TT>oops, line=file</TT></TD></TR>
+              <TR>
+                <TD class=lightbg>iumj@sbcglobal.net, <FONT size=-1>June 21, 
+                  2004 10:33 </FONT></TD></TR>
+              <TR>
+                <TD><TT>Just save the following script as for 
+                  example&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; dosbreaks.sh 
+                  <BR>---------------------------------------------------------------------------------------- 
+                  <BR>#!/bin/bash <BR># To replace dos linebreaks for Unix 
+                  compatibility <BR><BR>echo "This script will replace the ^M 
+                  line breaks from dos." <BR><BR>echo -n "Enter filename without 
+                  extension: " <BR>read file <BR>echo -n "Enter extension: " 
+                  <BR>read ext <BR>sed 's/\r//' $file.$ext &gt; $file2.$ext 
+                  <BR>cp -f $file2.$ext $file.$ext <BR>rm -f $file2.$ext 
+                  <BR>--------------------------------------------------------------------------------------- 
+                  <BR><BR>to run it, 
+                  type&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+                  ./dosbreaks.sh <BR><BR>basically, you can just <BR>replace the 
+                  ^M with sed <BR>sed 's/\r//' xxx.ext &gt; xxx2.ext <BR>then 
+                  copy xxx2.ext back to the original file xxx.ext <BR>and then 
+                  remove the file xxx2.ext</TT></TD></TR>
+              <TR>
+                <TD class=lightbg>iumj@sbcglobal.net, <FONT size=-1>June 21, 
+                  2004 12:19 </FONT></TD></TR>
+              <TR>
+                <TD><TT>This script is the same as before, just minus one 
+                  step. <BR><BR>#!/bin/bash <BR># To replace dos linebreaks for 
+                  Unix compatibility <BR>echo "This script will replace the ^M 
+                  line breaks from dos." <BR>echo -n "Enter filename: " <BR>read 
+                  file <BR>sed 's/\r//' $file &gt; 2$file <BR>cp -f 2$file $file 
+                  <BR>rm -f 2$file</TT></TD></TR>
+              <TR>
+                <TD class=lightbg>vpsn_99@yahoo.com, <FONT size=-1>July 28, 
+                  2004 11:00 </FONT></TD></TR>
+              <TR>
+                <TD><TT>There is this method that I generally employ. I use 
+                  the command dos2unix file file <BR>e.g. if I have a file 
+                  abc.txt with such ^M characters, simply write <BR>dos2unix 
+                  abc.txt abc.txt at command prompt.</TT></TD></TR>
+              <TR>
+                <TD class=lightbg>frank@franksworld.org, <FONT 
+                  size=-1>November 17, 2004 11:10 </FONT></TD></TR>
+              <TR>
+                <TD><TT>Heres another little script <BR>#!/bin/sh 
+                  <BR>FILE="$1" <BR># Use sed with the -i command line for 
+                  inline interpreting. <BR>sed -i '' "s/\r//g" $FILE 
+                  <BR><BR><BR><BR>This will remove the need to mv/cp the temp 
+                  files, as it preforms the replacement operation on the file 
+                  directly.</TT></TD></TR>
+              <TR>
+                <TD class=lightbg>nospam@fraggles.nl, <FONT size=-1>December 
+                  28, 2004 9:31 </FONT></TD></TR>
+              <TR>
+                <TD><TT>From the UNIX shell: tr -d "\015" &lt; inputfile &gt; 
+                  outputfile <BR><BR>E.g.: tr -d "\015" &lt; dosformatted.txt 
+                  &gt; unixformatted.txt <BR><BR>Greetz, Siert</TT></TD></TR>
+              <TR>
+                <TD class=lightbg><B>Anonymous</B>, <FONT size=-1>February 22, 
+                  2005 16:56 </FONT></TD></TR>
+              <TR>
+                <TD><TT>To the poster who asked how to write a file with no 
+                  linebreak at the end. <BR><BR>:set noeol bin <BR><BR>After 
+                  this the :w command writes the file without the last 
+                  linebreak. But generally do not do this <BR>because a 
+                  linebreak should normally always be at the end of a text file. 
+                  <BR><BR></TT></TD></TR>
+              <TR>
+                <TD class=lightbg>befuddled, <FONT size=-1>April 25, 2005 
+                  16:31 </FONT></TD></TR>
+              <TR>
+                <TD><TT>Does anyone know how to use SED to replace a string in 
+                  the middle of a line with ^M so that it creates two lines? 
+                  <BR>Can it be done? <BR><BR>eg <BR>firstnameREPLACElastname 
+                  <BR><BR>to become; <BR><BR>firstname <BR>lastname</TT></TD></TR>
+              <TR>
+                <TD class=lightbg><B>Anonymous</B>, <FONT size=-1>May 13, 2005 
+                  18:58 </FONT></TD></TR>
+              <TR>
+                <TD><TT>sed "s/^M/\n/g"&nbsp;&nbsp;replaces the ^M with a 
+                  linux newline. <BR>the ^M is written Ctrl-V Ctrl-M, not with 
+                  the carrot char.</TT></TD></TR>
+              <TR>
+                <TD class=lightbg>glaringbeast@yahoo.com, <FONT size=-1>May 
+                  26, 2005 20:49 </FONT></TD></TR>
+              <TR>
+                <TD><TT>You can also use .... dos2unix command 
+                  <BR>e.g&nbsp;&nbsp;dos2unix filename samefilename 
+                  <BR><BR>thanks <BR></TT></TD></TR>
+              <TR>
+                <TD class=lightbg>myripoff57@yahoo.com, <FONT size=-1>June 22, 
+                  2005 9:24 </FONT></TD></TR>
+              <TR>
+                <TD><TT>to address the problem of ^M ( &lt;ctrl&gt;M ) 
+                  characters in multiple files <BR>the following single line 
+                  SHell command will be helpful&nbsp;&nbsp; <BR><BR>&nbsp;&nbsp; 
+                  for name in `ls *.dat` ; do sed 's/^M//' $name &gt; 
+                  ${name/\.dat/N\.dat}&nbsp;&nbsp;;&nbsp;&nbsp;mv 
+                  ${name/\.dat/N\.dat} $name ; done <BR><BR>This example is 
+                  operating on all files like "foo.dat", temporarily storing the 
+                  result in fooN.dat <BR>and then moving the result back 
+                  foo.dat&nbsp;&nbsp; <BR>This approach seems indirect, but you 
+                  cant redirect into foo with "&gt; foo" while simultaneously 
+                  reading foo with sed <BR><BR>Of course you may make a script 
+                  file by simply adding the command line to a executable file 
+                  <BR>with the first line 
+                  header:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#!/bin/sh 
+                  <BR><BR>-- <BR>as stated preivously do remember to replace the 
+                  ^ M above with the single ctrl character</TT></TD></TR>
+              <TR>
+                <TD class=lightbg>carat@your-mailbox.com, <FONT size=-1>August 
+                  3, 2005 14:48 </FONT></TD></TR>
+              <TR>
+                <TD><TT>Not that it matters, but ^ is carat, not a 
+                  "carrot"</TT></TD></TR>
+              <TR>
+                <TD class=lightbg>FileFilter, <FONT size=-1>September 9, 2005 
+                  15:35 </FONT></TD></TR>
+              <TR>
+                <TD><TT>/* A program to strip control characters */ 
+                  <BR><BR><BR>#include &lt;stdio.h&gt; 
+                  <BR><BR>FILE&nbsp;&nbsp;&nbsp;&nbsp;*in,*tmp; <BR><BR>int 
+                  main(int argc, char *argv[]) <BR>{ 
+                  <BR>&nbsp;&nbsp;&nbsp;&nbsp;int index,count; 
+                  <BR>&nbsp;&nbsp;&nbsp;&nbsp;unsigned char byte; 
+                  <BR>&nbsp;&nbsp;&nbsp;&nbsp;printf("Hello! Are you ready to 
+                  get rid of those nasty crlf?\n"); 
+                  <BR>&nbsp;&nbsp;&nbsp;&nbsp;if(argc&lt;2) { 
+                  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;printf("You 
+                  need to specify an input file\n"); 
+                  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return 1; 
+                  <BR>&nbsp;&nbsp;&nbsp;&nbsp;} 
+                  <BR>&nbsp;&nbsp;&nbsp;&nbsp;if((tmp = 
+                  fopen("tmp.tmp","wb"))==0){ 
+                  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;printf("We 
+                  could not open the temportary file called tmp.tmp\n"); 
+                  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return 2; 
+                  <BR>&nbsp;&nbsp;&nbsp;&nbsp;} 
+                  <BR>&nbsp;&nbsp;&nbsp;&nbsp;if((in = fopen(argv[1],"rb"))==0){ 
+                  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;printf("We 
+                  could not open the input file called %s\n",argv[1]); 
+                  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return 3; 
+                  <BR>&nbsp;&nbsp;&nbsp;&nbsp;} <BR>&nbsp;&nbsp;&nbsp;&nbsp;do{ 
+                  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;count = 
+                  fread(&amp;byte,1,1,in); 
+                  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if(count 
+                  == 1){ 
+                  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if(byte!=0x0d) 
+                  fwrite(&amp;byte,1,1,tmp); 
+                  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;} 
+                  <BR>&nbsp;&nbsp;&nbsp;&nbsp;}while(count==1); 
+                  <BR>&nbsp;&nbsp;&nbsp;&nbsp;fclose(tmp); 
+                  <BR>&nbsp;&nbsp;&nbsp;&nbsp;fclose(in); 
+                  <BR>&nbsp;&nbsp;&nbsp;&nbsp;rename("tmp.tmp",argv[1]); 
+                  <BR>&nbsp;&nbsp;&nbsp;&nbsp;return 0; <BR>} <BR></TT></TD></TR>
+              <TR>
+                <TD class=lightbg>caret@your mailbox.com, <FONT 
+                  size=-1>September 19, 2005 11:59 </FONT></TD></TR>
+              <TR>
+                <TD><TT>Not that it matters but it's caret not 
+carat</TT></TD></TR>
+              <TR>
+                <TD class=lightbg>ANONYMOUS, <FONT size=-1>October 13, 2005 
+                  16:35 </FONT></TD></TR>
+              <TR>
+                <TD><TT>Thanks a lot for the tips </TT></TD></TR>
+              <TR>
+                <TD class=lightbg>mushira@gmail.com, <FONT size=-1>October 14, 
+                  2005 12:15 </FONT></TD></TR>
+              <TR>
+                <TD><TT>Hi Guys- <BR><BR>When I request a build - the main 
+                  code from VSS is downloaded by the SCM (config. Management) on 
+                  the local desk and run the build and the ftp to the Linux 
+                  server. So, the ^M characters still remain and its difficult 
+                  for users to execute the commands. <BR><BR>My question is can 
+                  I link the dos2unix or anyother thing that compress the 
+                  carriage return (^M) in the ANT build file. <BR><BR>Please do 
+                  let me know. <BR><BR>thanks, <BR>Mushir.</TT></TD></TR>
+              <TR>
+                <TD class=lightbg>spam@is.tasty, <FONT size=-1>October 22, 
+                  2005 11:29 </FONT></TD></TR>
+              <TR>
+                <TD><TT>command Crlf :%s/^M//g <BR><BR>^^^ add this to .vimrc, 
+                  problem solved</TT></TD></TR>
+              <TR>
+                <TD class=lightbg><B>Anonymous</B>, <FONT size=-1>November 19, 
+                  2005 18:10 </FONT></TD></TR>
+              <TR>
+                <TD><TT>Here's another way to do it from the command line: 
+                  <BR><BR>find . -type f |xargs grep -l ^M | xargs file | grep 
+                  -i text$ | cut -f1 -d: | xargs -I {} ksh -c "dos2unix {} {}" 
+                  <BR><BR>The ^M has to be added with ctrl+v ctrl+m.</TT></TD></TR>
+              <TR>
+                <TD class=lightbg>jkmccarthy@pacbell.net, <FONT 
+                  size=-1>December 11, 2005 14:08 </FONT></TD></TR>
+              <TR>
+                <TD><TT>Is it possible on Linux for the VIM "filetype" process 
+                  to distinguish [csh] shell scripts that have dos file formats 
+                  (i.e., with ^M at end of every line)? <BR><BR>Like others, I 
+                  also work on an Intel machine that dual boots Linux and 
+                  Windows, and since VIM on Linux can recognize DOS files and 
+                  conceal the ^M's at the ends-of-lines, several times I've 
+                  missed the [dos] file format flag displayed when VIM first 
+                  opens a file, then turned it into a shell script and wondered 
+                  why the shell script doesn't work when executed ! <BR><BR>VIM 
+                  can show "filetype" in the statusline on a persistant basis 
+                  (not just when file is opened, like display of file 
+                  format).&nbsp;&nbsp;A new "filetype.vim" and/or "scripts.vim" 
+                  version that could distinguish [csh-DOS] from [csh] filetypes 
+                  would help me greatly.&nbsp;&nbsp;Is this possible 
+                  ?&nbsp;&nbsp;Thanks!&nbsp;&nbsp;</TT></TD></TR>
+              <TR>
+                <TD class=lightbg>jkmccarthy@pacbell.net, <FONT 
+                  size=-1>December 11, 2005 14:27 </FONT></TD></TR>
+              <TR>
+                <TD><TT>Ooops ... I found my answer in <A 
+                  href="http://vim.sourceforge.net/tips/tip.php?tip_id=145">vimtip 
+                  #145</A>&nbsp;&nbsp;... VIM understands %{&amp;ff} in the 
+                  statusline for file format !!&nbsp;&nbsp;Cool....</TT></TD></TR>
+              <TR>
+                <TD class=lightbg><B>Anonymous</B>, <FONT size=-1>December 30, 
+                  2005 13:54 </FONT></TD></TR>
+              <TR>
+                <TD><TT>Another handy way to skin this cat: <BR><BR>perl -p 
+                  -i.bak -e "s/^M/\n/g" &lt;filename&gt;</TT></TD></TR>
+              <TR>
+                <TD class=lightbg>a@b.com, <FONT size=-1>January 5, 2006 14:08 
+                  </FONT></TD></TR>
+              <TR>
+                <TD><TT>Best is to use dos2unix... do not try to replace the 
+                  \r char. for all the files you can use dos2unix * 
+              <BR></TT></TD></TR>
+              <TR>
+                <TD class=lightbg><B>Anonymous</B>, <FONT size=-1>February 22, 
+                  2006 7:51 </FONT></TD></TR>
+              <TR>
+                <TD><TT>Here is another nice way to get rid of those ^M's: 
+                  <BR><BR>strings foo.txt &gt; bar.txt</TT></TD></TR>
+              <TR>
+                <TD class=lightbg><B>Anonymous</B>, <FONT size=-1>February 22, 
+                  2006 8:20 </FONT></TD></TR>
+              <TR>
+                <TD><TT>Doh! I'm an idiot forget that last post.</TT></TD></TR>
+              <TR>
+                <TD class=lightbg><B>Anonymous</B>, <FONT size=-1>March 1, 
+                  2006 10:08 </FONT></TD></TR>
+              <TR>
+                <TD><TT>Type the "&lt;" and "&gt;": <BR>tr -s "\r" "\n" &lt; 
+                  dos.txt &gt; unix.txt</TT></TD></TR>
+              <TR>
+                <TD class=lightbg>haps@bark.com, <FONT size=-1>March 14, 2006 
+                  19:56 </FONT></TD></TR>
+              <TR>
+                <TD><TT>strings file &gt; newfile does not work with 
+                  html.&nbsp;&nbsp;It misses some of the stuff. <BR><BR>dos2unix 
+                  won't work on a mixed bunch of files.&nbsp;&nbsp; <BR><BR>It 
+                  will toggle them back and forth.&nbsp;&nbsp;Use dos2unix -U * 
+                  <BR><BR>If you have the Linux version of sed, you can do sed 
+                  -i, and you won't even have to create a temp file. 
+                  <BR><BR>--HAPS</TT></TD></TR>
+              <TR>
+                <TD class=lightbg>kespinoza97@hotmail.com, <FONT size=-1>April 
+                  26, 2006 12:54 </FONT></TD></TR>
+              <TR>
+                <TD><TT>CONTROL FILE (CTL) FOR LOAD FILE FORMAT HL7 <BR>Hello 
+                  Help I have a similar situation my chain of data (FORMAT 
+                  HL7)that I must raise in oracle this in a single block that 
+                  contains several registries where the END of a registry says 
+                  to me that ^M is the sign but the second following registry 
+                  begins immediately and the CTL the taking like 1 single 
+                  registry. Like doing so that the CTL sees that the sign ^M is 
+                  the end of the 1 registry and inserts as a new registry the 
+                  following chain of data successively. <BR><BR>My question is 
+                  that instruction or command I must add in my CONTROL FILE 
+                  (ctl) to indicate to him that in the text file the sign ^M is 
+                  an End of Registry? <BR><BR>********************************** 
+                  <BR>Example of the data to raise: 
+                  <BR>********************************** 
+                  <BR>ABC|DEFE|CGER^MEWR|WEI|URWRIEIR^M4234|234|324^M 
+                  <BR>********************************** <BR>^M = END OF THE 
+                  REGISTRY <BR>fields terminated by ' | ' <BR>*** PLEASE HELP ME 
+                  I HAVE THAT LOAD FILE EN FORMAT HL7 A TABLE OF ORACLE. CONTACT 
+                  EMAIL kespinoza97@hotmail.com or kespinoza97@yahoo.es 
+                  <BR>THANKS REGARDS, <BR>K.ESPINOZA <BR>TI-CHSF-PANAMA 
+                <BR></TT></TD></TR>
+              <TR>
+                <TD class=lightbg>dimitri.floripa@terra.com.br, <FONT 
+                  size=-1>May 26, 2006 14:39 </FONT></TD></TR>
+              <TR>
+                <TD><TT>Hi, <BR><BR>I'm trying convert LINUX format to DOS. 
+                  <BR>My script: <BR><BR>tail -v /var/log/messages &gt; log.txt; 
+                  <BR>unix2dos log.txt; <BR>COMMAND=`cat log.txt`; <BR><BR>echo 
+                  -e $COMANDO |mail -s"LOG Linux by e-mail " 
+                  anonynous@sample.com <BR><BR>Otherwhise, the e-mail received 
+                  in my inbox (Outlook/Windows), the mesasge is not correctly 
+                  formated. <BR><BR>==&gt; /var/log/messages &lt;== <BR>May 24 
+                  08:48:33 ns13 sshd(pam_unix)[19480]: session opened for user 
+                  root by (uid=0) [** HERE NEED CARRIAGE RETURN 
+                  **]&nbsp;&nbsp;May 24 09:17:37 ns13 sshd(pam_unix)[19480]: 
+                  session closed for user root&nbsp;&nbsp;May 24 20:00:00 ns13 
+                  su(pam_unix)[11044]: session opened for <BR><BR>The break 
+                  lines is not present. How view the e-mail line by line (with 
+                  breaklines)? <BR><BR>Thanks, <BR><BR>Dimitri</TT></TD></TR>
+              <TR>
+                <TD class=lightbg><B>Anonymous</B>, <FONT size=-1>June 8, 2006 
+                  11:38 </FONT></TD></TR>
+              <TR>
+                <TD><TT>The best way to handle this: <BR><BR>:autocmd BufRead 
+                  * silent! %s/^M//g <BR><BR>(Ctrl-V Ctrl-M) 
+                  <BR><BR>Automatically and silently removes any carriage 
+                  returns from a file when you open it.</TT></TD></TR>
+              <TR>
+                <TD class=lightbg><B>Anonymous</B>, <FONT size=-1>June 8, 2006 
+                  11:39 </FONT></TD></TR>
+              <TR>
+                <TD><TT>Oh, I should add--that goes in .vimrc</TT></TD></TR>
+              <TR>
+                <TD class=lightbg>liam@intermedia-online.com, <FONT 
+                  size=-1>July 2, 2006 8:32 </FONT></TD></TR>
+              <TR>
+                <TD><TT>I had a bunch of HTML files that needed to be 
+                  converted, as they were all open just did the following: 
+                  <BR><BR>:bufdo! set ff=unix | update <BR><BR>Shazam! They were 
+                  all updated.</TT></TD></TR>
+              <TR>
+                <TD class=lightbg>walter@adelphia.net, <FONT size=-1>August 8, 
+                  2006 7:27 </FONT></TD></TR>
+              <TR>
+                <TD><TT>I want to do the opposite of what most folks have been 
+                  asking about here. <BR>I want vim to CONSISTENTLY show me the 
+                  ^M if I have loaded a DOS-ish file. <BR><BR>I very much need 
+                  to know if I'm working with DOS line breaks, but vim hides 
+                  this <BR>knowledge from me unless the file has a mixture of 
+                  both.&nbsp;&nbsp;I *seriously* dislike it <BR>when information 
+                  is hidden from me, and I often go happily along thinking 
+                  I'm&nbsp;&nbsp; <BR>editting a unix file, only to have it blow 
+                  up my process later because it was DOS. <BR><BR>I've tried set 
+                  ff=unix and set filetype=unix, but nothing seems to 
+                  work.&nbsp;&nbsp; <BR>If the lines all consistently end with 
+                  DOS breaks, then vim refuses to show it. <BR>Please help, I 
+                  need to see DOS breaks when they are there!! 
+              <BR><BR></TT></TD></TR>
+              <TR>
+                <TD class=lightbg>walter@adelphia.net, <FONT size=-1>August 8, 
+                  2006 7:42 </FONT></TD></TR>
+              <TR>
+                <TD><TT>Sorry, I take that back. <BR><BR>:set fileformats=unix 
+                  <BR><BR>works if I put it in the .vimrc file. <BR>I had been 
+                  trying it "live" within vim and it doesn't work there. 
+                  <BR><BR>Now I see the ^M for DOS files, even if the breaks are 
+                  not mixed. <BR><BR>I apologize for not experimenting more 
+                  before posting my plea. </TT></TD></TR>
+              <TR>
+                <TD class=lightbg>kevins@ta1.com, <FONT size=-1>August 8, 2006 
+                  23:15 </FONT></TD></TR>
+              <TR>
+                <TD><TT>OK, I am not sure where exactly to enter this 
+                  question, but it is similar to the ^M problem <BR><BR>in a CMS 
+                  program I made, I have people using word, etc to create text 
+                  and them dump it in. <BR><BR>The problem is that I am getting 
+                  &lt;85&gt; [...], &lt;91&gt;&lt;92&gt; fancy ' etc in the text 
+                  and I can't figure out how to edit/change it. <BR>Some chars 
+                  are not like by firefox and show up as &lt;#&gt; instead of 
+                  the characters.. <BR>any tips on this or help. 
+                  <BR><BR>searching anywhere for &lt;#&gt; got me nowhere and 
+                  not sure if these or UTF-8 Chars and best way to 
+                  substitute/find the chars. <BR>:%S/\x85//&nbsp;&nbsp; doesn't 
+                  seem to work ... <BR><BR>any ideas? <BR>thanks 
+Kevin</TT></TD></TR>
+              <TR>
+                <TD class=lightbg><B>Anonymous</B>, <FONT size=-1>August 9, 
+                  2006 4:38 </FONT></TD></TR>
+              <TR>
+                <TD><TT>and I'm back again, tho I wish I were not. 
+                  <BR><BR>:set fileformats=unix&nbsp;&nbsp;&nbsp;&nbsp; does 
+                  *NOT* work, whether in the .vimrc file or used while editting 
+                  the file. <BR><BR>I don't want to offend anyone, but I'm 
+                  really starting to dislike vim because it hides the ^M from me 
+                  when I very much need to see it. <BR></TT></TD></TR>
+              <TR>
+                <TD class=lightbg><B>Anonymous</B>, <FONT size=-1>August 24, 
+                  2006 10:38 </FONT></TD></TR>
+              <TR>
+                <TD><TT>I would like to change mixed mode files to DOS mode. I 
+                  tried&nbsp;&nbsp;%s/\r[^\n]/\r\n/g&nbsp;&nbsp;which changed 
+                  the carriage returns to null (\x00) characters. Could someone 
+                  explain this and help me out? <BR></TT></TD></TR>
+              <TR>
+                <TD class=lightbg><B>Anonymous</B>, <FONT size=-1>August 28, 
+                  2006 10:17 </FONT></TD></TR>
+              <TR>
+                <TD><TT>How do i strip Ctrl-M characters only if they are the 
+                  only characters in the line. I do not to remove the Ctrl-M 
+                  characters which are at the end of a line.</TT></TD></TR>
+              <TR>
+                <TD class=lightbg>houghi, <FONT size=-1>September 4, 2006 8:24 
+                  </FONT></TD></TR>
+              <TR>
+                <TD><TT>The way I replace the DOS styl CR/LF is as follows: 
+                  <BR><BR>:%s/^M/^M/g <BR><BR>As least that is what it will look 
+                  like. What I actially type without any spaces is 
+                  <BR><BR>:%s/{CTRL+v}{CTRL+M}/{CTRL+v}{CTRL+m}/g <BR><BR>Please 
+                  not the difference between the first uppercase 'M' and the 
+                  second lowercase 'm'. <BR>On the screen it will look 
+                  identical. I just am unable to map it.</TT></TD></TR>
+              <TR>
+                <TD class=lightbg>zzezzezz@yahoo.com, <FONT size=-1>September 
+                  4, 2006 15:35 </FONT></TD></TR>
+              <TR>
+                <TD><TT>Can someone show me how to just detect if a file 
+                  contains CRLF (as opposed to just LF)? <BR>Basically, I want 
+                  some sort of script that takes in 1 filename as the input and 
+                  returns -1 if it contains DOS-style CR, and returns 0 
+                  otherwise (meaning that there are only UNIX-style LF in the 
+                  file). <BR><BR>Thanks.</TT></TD></TR>
+              <TR>
+                <TD class=lightbg>conrad.newton@broadpark.no, <FONT 
+                  size=-1>September 21, 2006 1:29 </FONT></TD></TR>
+              <TR>
+                <TD><TT>Within UNIX you can test for the presence of CR as 
+                  follows: <BR><BR>grep -l '^M' filename <BR><BR>where as 
+                  mentioned previously, ^M =&nbsp;&nbsp;(Ctrl-V Ctrl-M) 
+                  <BR>Positive response:&nbsp;&nbsp;returns filename 
+                  <BR>Negative response:&nbsp;&nbsp;returns nothing</TT></TD></TR>
+              <TR>
+                <TD class=lightbg>branna@branna.com, <FONT size=-1>September 
+                  21, 2006 18:02 </FONT></TD></TR>
+              <TR>
+                <TD><TT>Greetings all: <BR><BR>I want to place either TR, sed 
+                  or dos2unix command in a script file so that I can take the 
+                  CR's out of a file before the data is sent for 
+                  processing.&nbsp;&nbsp;What is the best way to do 
+                  it.&nbsp;&nbsp;So far these commands don't seem to run from 
+                  the script.&nbsp;&nbsp;Any suggestions</TT></TD></TR>
+              <TR>
+                <TD class=lightbg>branna@branna.com, <FONT size=-1>September 
+                  22, 2006 10:45 </FONT></TD></TR>
+              <TR>
+                <TD><TT>Had to use double quotes, i.e., tr -d "\r\n" to get it 
+                  to work</TT></TD></TR>
+              <TR>
+                <TD class=lightbg>ghosh@research.ge.com, <FONT size=-1>October 
+                  16, 2006 14:31 </FONT></TD></TR>
+              <TR>
+                <TD><TT>Hi, <BR>&nbsp;&nbsp;&nbsp;&nbsp;I am trying to remove 
+                  the newline character after ^M like 
+                  <BR><BR>303010652,2006,41,SUSPENSE,A,36,0,4899,REG,INA,I could 
+                  not find the project nu <BR>er 220292_1001. This is the EVO 
+                  locomotive project. The description in old ETS <BR>ystem was - 
+                  06TRN-I RTS EVO PHM - PHM for Evo.^M <BR>^M <BR>I have been 
+                  charging my time to this project since the Feb 2006 
+                  <BR><BR>should be 
+                  <BR>303010652,2006,41,SUSPENSE,A,36,0,4899,REG,INA,I could not 
+                  find the project nu <BR>er 220292_1001. This is the EVO 
+                  locomotive project. The description in old ETS <BR>ystem was - 
+                  06TRN-I RTS EVO PHM - PHM for Evo.I have been charging my time 
+                  to this project since the Feb 2006 <BR></TT></TD></TR>
+              <TR>
+                <TD class=lightbg><B>Anonymous</B>, <FONT size=-1>October 21, 
+                  2006 16:33 </FONT></TD></TR>
+              <TR>
+                <TD><TT>This has to be one of the most important vim tips ever 
+                  for people who have to deal with multiple systems.</TT></TD></TR>
+              <TR>
+                <TD class=lightbg><B>Anonymous</B>, <FONT size=-1>October 23, 
+                  2006 15:57 </FONT></TD></TR>
+              <TR>
+                <TD><TT>On my windows system in VIM, Ctrl-v, Ctrl-m results in 
+                  ^L which of course does not match the ^M's I'm trying to 
+                  remove from the file. Any suggestions?</TT></TD></TR>
+              <TR>
+                <TD class=lightbg><B>Anonymous</B>, <FONT size=-1>November 1, 
+                  2006 12:54 </FONT></TD></TR>
+              <TR>
+                <TD><TT>Many thanks to the guy who said 's/\r/\r' as this 
+                  works in vi. <BR><BR>When using perl, I use: <BR><BR>perl -pi 
+                  -e 's/\r/\n/g' file.txt <BR><BR>This will modify the file in 
+                  place and remove all the control+M characters.</TT></TD></TR>
+              <TR>
+                <TD class=lightbg>iam@yahoo.com, <FONT size=-1>December 5, 
+                  2006 13:08 </FONT></TD></TR>
+              <TR>
+                <TD><TT>The best command to replace ^M characters is 
+                  <BR><BR>dos2ux 
+                  originalfilename&nbsp;&nbsp;&gt;&nbsp;&nbsp;newfilename 
+                  <BR><BR>dos2ux filewithctrlchar.pls &gt; 
+                  filewithoutctrlchar.pls</TT></TD></TR>
+              <TR>
+                <TD class=lightbg>Anonymous, <FONT size=-1>December 17, 2006 
+                  1:12 </FONT></TD></TR>
+              <TR>
+                <TD><TT>Hi, <BR>Thanks for this topic, it was very helpful on 
+                  control-M problem. I think for multiple files this line would 
+                  be answer (sort of previous variation of find) <BR><BR>find . 
+                  -type f -execdir dos2unix {} +</TT></TD></TR>
+              <TR>
+                <TD class=lightbg>g5kxu@mail.com, <FONT size=-1>December 25, 
+                  2006 15:16 </FONT></TD></TR>
+              <TR>
+                <TD><TT>London interface nymphs,plumb Babelizes lions 
+                  incipient hordes rakes?pigpen contently <A 
+                  href="http://www.mycaribbeanpoker.com/##-win" 
+                  target=_blank>http://www.mycaribbeanpoker.com/##-win</A>- 
+                  lying:pushdown Marlene.armer:embrace,<A 
+                  href="http://www.kenogo.com/##-gamble" 
+                  target=_blank>http://www.kenogo.com/##-gamble</A>- quaker 
+                  gentleness <A href="http://www.onvideopoker.com/##-gambling" 
+                  target=_blank>http://www.onvideopoker.com/##-gambling</A>- 
+                  spool respiration scoffed <A 
+                  href="http://www.onlinevideopokerr.com/##-gamble" 
+                  target=_blank>http://www.onlinevideopokerr.com/##-gamble</A>- 
+                  penned babying epistles!Hanford <A 
+                  href="http://www.ononlinevideopoker.com/##-casinos" 
+                  target=_blank>http://www.ononlinevideopoker.com/##-casinos</A>- 
+                  guardians,Ionicization </TT></TD></TR>
+              <TR>
+                <TD class=lightbg>uej@tech.tv, <FONT size=-1>December 25, 2006 
+                  22:24 </FONT></TD></TR>
+              <TR>
+                <TD><TT>junta exquisite hale shawl focally pulling vier heaven 
+                  Russian Franklinization <A 
+                  href="http://www.onlinekenoo.com/##-casino" 
+                  target=_blank>http://www.onlinekenoo.com/##-casino</A>- 
+                  mouthful purifies?<A 
+                  href="http://www.freeinternetvideocasino.biz/##-gambling" 
+                  target=_blank>http://www.freeinternetvideocasino.biz/##-gambling</A>- 
+                  rebelling!DeKastere forsakes <A 
+                  href="http://www.freevideopokerr.com/##-leading-Free-Video-Poker" 
+                  target=_blank>http://www.freevideopokerr.com/##-leading-Free-Video-Poker</A> 
+                  bromides depleting <A 
+                  href="http://www.the-online-video-poker-231.us/##-gamble" 
+                  target=_blank>http://www.the-online-video-poker-231.us/##-gamble</A>- 
+                  bemoans deceiving:phantoms realizations?<A 
+                  href="http://www.the-online-video-poker-1936.us/##-win" 
+                  target=_blank>http://www.the-online-video-poker-1936.us/##-win</A>- 
+                  pardon amidst <A href="http://www.05videopoker.net/##-casinos" 
+                  target=_blank>http://www.05videopoker.net/##-casinos</A>- 
+                  Rensselaer Peruvianize jewelries Lome groans,<A 
+                  href="http://www.get-video-poker.com/##-bet" 
+                  target=_blank>http://www.get-video-poker.com/##-bet</A>- 
+                  abandoning </TT></TD></TR>
+              <TR>
+                <TD class=lightbg>g2vlqkr0@see.it, <FONT size=-1>December 26, 
+                  2006 13:37 </FONT></TD></TR>
+              <TR>
+                <TD><TT>germ handles anonymity!expedient assiduous charged 
+                  mantles retrieved <A 
+                  href="http://www.casinoqz.com/##-casinos-en-espaol" 
+                  target=_blank>http://www.casinoqz.com/##-casinos-en-espaol</A>- 
+                  mutiny proceedings <A 
+                  href="http://apostandocasinobonosenlinea.xzcasino.com/##-apostando-casino-bonos-en-lnea" 
+                  target=_blank>http://apostandocasinobonosenlinea.xzcasino.com/##-apostando-casino-bonos-en-lnea</A>- 
+                  laugh musculature:satires <A 
+                  href="http://casinodeapuestasenlinea.dcasinoa.com/##-casino-de-apuestas-en-lnea" 
+                  target=_blank>http://casinodeapuestasenlinea.dcasinoa.com/##-casino-de-apuestas-en-lnea</A>- 
+                  tricking,bombs notation motorcycles parsing <A 
+                  href="http://casinosenlineaapostar.casinozc.com/##-jugar-gratis-web-casinos-en-lnea-apostar" 
+                  target=_blank>http://casinosenlineaapostar.casinozc.com/##-jugar-gratis-web-casinos-en-lnea-apostar</A> 
+                  dissipation?dismounting Helen apologetic <A 
+                  href="http://casinossegurosenlinea.casinooc.com/##-casinos-seguros-en-lnea" 
+                  target=_blank>http://casinossegurosenlinea.casinooc.com/##-casinos-seguros-en-lnea</A>- 
+                  fulfillments Dartmouth <A 
+                  href="http://forosdecasinoenlinea.dcasinoa.com/##-casinos-virtuales-portal-foros-de-casino-en-lnea" 
+                  target=_blank>http://forosdecasinoenlinea.dcasinoa.com/##-casinos-virtuales-portal-foros-de-casino-en-lnea</A> 
+                  Webber?auspiciously <A 
+                  href="http://lasvegascasinoenlinea.dcasinoa.com/##-wwcasino.net-las-vegas-casino-en-lnea" 
+                  target=_blank>http://lasvegascasinoenlinea.dcasinoa.com/##-wwcasino.net-las-vegas-casino-en-lnea</A> 
+                  aye currently read stinker distortions <A 
+                  href="http://listadecasinosenlinea.dcasinoq.com/##-lista-de-casinos-en-lnea" 
+                  target=_blank>http://listadecasinosenlinea.dcasinoq.com/##-lista-de-casinos-en-lnea</A>- 
+                  espionage L'vov forsake chanticleer Colombia <A 
+                  href="http://netellercasinosenlinea.casinoot.com/##-neteller-casinos-en-lnea" 
+                  target=_blank>http://netellercasinosenlinea.casinoot.com/##-neteller-casinos-en-lnea</A>- 
+                  mail.patrimony fairness state <A 
+                  href="http://revistasdeportesycasinos.dcasinoa.com/##-revistas-deportes-y-casinos" 
+                  target=_blank>http://revistasdeportesycasinos.dcasinoa.com/##-revistas-deportes-y-casinos</A>- 
+                  - Tons of interesdting stuff!!!</TT></TD></TR>
+              <TR>
+                <TD class=lightbg>f@see.to, <FONT size=-1>December 27, 2006 
+                  3:38 </FONT></TD></TR>
+              <TR>
+                <TD><TT>Catalan heighten flashlight housewife Priscilla 
+                  maturity reproduction encourage <A 
+                  href="http://www.mycaribeanpoker.com/online-casino-guides.html##-casino" 
+                  target=_blank>http://www.mycaribeanpoker.com/online-casino-guides.html##-casino</A>- 
+                  identifiable naiveness vagabond licensor froze <A 
+                  href="http://www.mycaribeanpoker.com/caribean-poker.html##-bet" 
+                  target=_blank>http://www.mycaribeanpoker.com/caribean-poker.html##-bet</A>- 
+                  Politburo.seethes <A 
+                  href="http://www.mycaribeanpoker.com/play-caribean-poker.html##-win" 
+                  target=_blank>http://www.mycaribeanpoker.com/play-caribean-poker.html##-win</A>- 
+                  share!corkers milker <A 
+                  href="http://www.mycaribbeanpoker.com/online-casino-sign-up-bonus.html##-win" 
+                  target=_blank>http://www.mycaribbeanpoker.com/online-casino-sign-up-bonus.html##-win</A>- 
+                  posting Apollonian?buying childlike misused:<A 
+                  href="http://www.the-caribbean-stud-poker-1706.us/caribbean-stud-pocker-bonuses.html##-casino" 
+                  target=_blank>http://www.the-caribbean-stud-poker-1706.us/caribbean-stud-pocker-bonuses.html##-casino</A>- 
+                  innocuous ode Africa,Leland <A 
+                  href="http://www.mycaribbeanpoker.com/online-casino-games-list.html##-win" 
+                  target=_blank>http://www.mycaribbeanpoker.com/online-casino-games-list.html##-win</A>- 
+                  deceptions capacitance arrogantly pilfer.<A 
+                  href="http://www.onlinecasinocaribbeanpoker.com/online-casino-caribbean-poker-odds.html##-gamble" 
+                  target=_blank>http://www.onlinecasinocaribbeanpoker.com/online-casino-caribbean-poker-odds.html##-gamble</A>- 
+                  Haskell?Amharic loans.<A 
+                  href="http://www.internetcaribbeanpoker.com/learn-internet-caribbean-poker.html##-leading-Learn-Internet-Caribbean-Poker" 
+                  target=_blank>http://www.internetcaribbeanpoker.com/learn-internet-caribbean-poker.html##-leading-Learn-Internet-Caribbean-Poker</A> 
+                  diary muddled <A 
+                  href="http://www.myonlinecasinokeno.com/no-download-online-casino-keno.html##-bet" 
+                  target=_blank>http://www.myonlinecasinokeno.com/no-download-online-casino-keno.html##-bet</A>- 
+                  consolers:arrows articulator.condensing:Cerberus:<A 
+                  href="http://www.zantetsukenonline.com/keno-listing.html##-bet" 
+                  target=_blank>http://www.zantetsukenonline.com/keno-listing.html##-bet</A>- 
+                  floors Marilyn testimonies <A 
+                  href="http://www.kenogo.com/keno-directory.html##-bet" 
+                  target=_blank>http://www.kenogo.com/keno-directory.html##-bet</A>- 
+                  colony centaur roll route commonwealth.<A 
+                  href="http://www.zantetsukenonline.com/keno-directory.html##-bet" 
+                  target=_blank>http://www.zantetsukenonline.com/keno-directory.html##-bet</A>- 
+                  comforts intervening concedes newer:Hoosierizes <A 
+                  href="http://www.the-play-video-poker-casino-1951.us/casino-play-video-poker-downloads.html##-casinos" 
+                  target=_blank>http://www.the-play-video-poker-casino-1951.us/casino-play-video-poker-downloads.html##-casinos</A>- 
+                  repeatable!domain?Slavs.Voss bights <A 
+                  href="http://www.the-play-video-poker-casino-1951.us/##-gambling" 
+                  target=_blank>http://www.the-play-video-poker-casino-1951.us/##-gambling</A>- 
+                  crawl amaze Astaire phosphates <A 
+                  href="http://www.onlinekenoo.com/online-keno-strategies.html##-gamble" 
+                  target=_blank>http://www.onlinekenoo.com/online-keno-strategies.html##-gamble</A>- 
+                  colloquy couplers exterminated <A 
+                  href="http://www.onlinekenoo.com/online-keno-guide.html##-gamble" 
+                  target=_blank>http://www.onlinekenoo.com/online-keno-guide.html##-gamble</A>- 
+                  orgiastic antagonize.Keegan <A 
+                  href="http://www.freeinternetvideocasino.biz/no-download-free-internet-casino-videopocker.html##-gamble" 
+                  target=_blank>http://www.freeinternetvideocasino.biz/no-download-free-internet-casino-videopocker.html##-gamble</A>- 
+                  Ulan Ventura invite.triangularly divest <A 
+                  href="http://www.free-internet-video-casino.biz/free-internet-casino-video-poquer-basic-strategy.html##-casino" 
+                  target=_blank>http://www.free-internet-video-casino.biz/free-internet-casino-video-poquer-basic-strategy.html##-casino</A>- 
+                  stenches syllogism.unlocked?ascension descends <A 
+                  href="http://www.free-internet-video-casino.com/free-internet-casino-video-poker-betting.html##-gamble" 
+                  target=_blank>http://www.free-internet-video-casino.com/free-internet-casino-video-poker-betting.html##-gamble</A>- 
+                  achievers Macedon virulent aerospace <A 
+                  href="http://www.downloadfreevideopokergame.com/free-video-poker-game-review.html##-casinos" 
+                  target=_blank>http://www.downloadfreevideopokergame.com/free-video-poker-game-review.html##-casinos</A>- 
+                  withstanding!facings Kewaskum!brainchild <A 
+                  href="http://www.freeinternetvideocasino.com/casino-on-line-review.html##-casinos" 
+                  target=_blank>http://www.freeinternetvideocasino.com/casino-on-line-review.html##-casinos</A>- 
+                  scalar brim <A 
+                  href="http://www.freeinternetvideocasino.com/free-internet-casino-videopoquer-exclusive-bonuses.html##-casinos" 
+                  target=_blank>http://www.freeinternetvideocasino.com/free-internet-casino-videopoquer-exclusive-bonuses.html##-casinos</A>- 
+                  hickory consultation gazing nose sheriffs <A 
+                  href="http://www.the-video-gambling-632.us/firepay-online-casino.html##-gamble" 
+                  target=_blank>http://www.the-video-gambling-632.us/firepay-online-casino.html##-gamble</A>- 
+                  ... Thanks!!!</TT></TD></TR>
+              <TR>
+                <TD class=lightbg>cajq@mail.me, <FONT size=-1>December 28, 
+                  2006 13:24 </FONT></TD></TR>
+              <TR>
+                <TD><TT>stereotype.hemispheres producer glassed 
+                  percentage?subconscious litterbug Toyota refreshes Timex <A 
+                  href="http://berthite.gws.uky.edu/bb2/Members/kelly/online-phentermine-diet-pills.html##-online-phentermine-diet-pills" 
+                  target=_blank>http://berthite.gws.uky.edu/bb2/Members/kelly/online-phentermine-diet-pills.html##-online-phentermine-diet-pills</A>- 
+                  crispness!carbolic <A 
+                  href="http://berthite.gws.uky.edu/bb2/Members/kelly/buy-cheap-phentermine.html##-buy-cheap-phentermine" 
+                  target=_blank>http://berthite.gws.uky.edu/bb2/Members/kelly/buy-cheap-phentermine.html##-buy-cheap-phentermine</A>- 
+                  carrying buzzer facades?mackerel <A 
+                  href="http://berthite.gws.uky.edu/bb2/Members/kelly/phentermine-online.html##-phentermine-online" 
+                  target=_blank>http://berthite.gws.uky.edu/bb2/Members/kelly/phentermine-online.html##-phentermine-online</A>- 
+                  ornamentation villainously Weyerhauser <A 
+                  href="http://berthite.gws.uky.edu/bb2/Members/kelly/buy-phentermine.html##-buy-phentermine" 
+                  target=_blank>http://berthite.gws.uky.edu/bb2/Members/kelly/buy-phentermine.html##-buy-phentermine</A>- 
+                  livelihood:academies translator bereft feebly?<A 
+                  href="http://berthite.gws.uky.edu/bb2/Members/kelly/cheap-phentermine.html##-cheap-phentermine" 
+                  target=_blank>http://berthite.gws.uky.edu/bb2/Members/kelly/cheap-phentermine.html##-cheap-phentermine</A>- 
+                  Queensland?escorting attainers <A 
+                  href="http://berthite.gws.uky.edu/bb2/Members/kelly/buy-phentermine-online.html##-buy-phentermine-online" 
+                  target=_blank>http://berthite.gws.uky.edu/bb2/Members/kelly/buy-phentermine-online.html##-buy-phentermine-online</A>- 
+                  mute Asians!<A 
+                  href="http://berthite.gws.uky.edu/bb2/Members/kelly/order-phentermine.html##-order-phentermine" 
+                  target=_blank>http://berthite.gws.uky.edu/bb2/Members/kelly/order-phentermine.html##-order-phentermine</A>- 
+                  eying waterfalls backpacks annulled psychological <A 
+                  href="http://berthite.gws.uky.edu/bb2/Members/kelly/online-phentermine.html##-online-phentermine" 
+                  target=_blank>http://berthite.gws.uky.edu/bb2/Members/kelly/online-phentermine.html##-online-phentermine</A>- 
+                  acacia bookcase.Ames Harvardize <A 
+                  href="http://berthite.gws.uky.edu/bb2/Members/kelly/cheap-phentermine-online.html##-cheap-phentermine-online" 
+                  target=_blank>http://berthite.gws.uky.edu/bb2/Members/kelly/cheap-phentermine-online.html##-cheap-phentermine-online</A>- 
+                  dilation:believable coiling <A 
+                  href="http://berthite.gws.uky.edu/bb2/Members/kelly/phentermine-prescription.html##-phentermine-prescription" 
+                  target=_blank>http://berthite.gws.uky.edu/bb2/Members/kelly/phentermine-prescription.html##-phentermine-prescription</A>- 
+                  instructs </TT></TD></TR>
+              <TR>
+                <TD class=lightbg>indzgj5skq7@hotmail.com, <FONT 
+                  size=-1>December 28, 2006 23:11 </FONT></TD></TR>
+              <TR>
+                <TD><TT>daze recommended attender warmly processed 
+                  Weider.shorted:possessing <A 
+                  href="http://www.mycaribbeanpoker.com/##-win" 
+                  target=_blank>http://www.mycaribbeanpoker.com/##-win</A>- 
+                  skip.informant!appraising entirety shutting <A 
+                  href="http://www.kenogo.com/##-gambling" 
+                  target=_blank>http://www.kenogo.com/##-gambling</A>- Brian 
+                  Rockford.<A href="http://www.onvideopoker.com/##-casinos" 
+                  target=_blank>http://www.onvideopoker.com/##-casinos</A>- 
+                  churchmen wetter,comma.<A 
+                  href="http://www.myonlinecaribbeanpoker.com/##-casino" 
+                  target=_blank>http://www.myonlinecaribbeanpoker.com/##-casino</A>- 
+                  contacting Shasta aging shouters collar <A 
+                  href="http://www.ononlinevideopoker.com/##-bet" 
+                  target=_blank>http://www.ononlinevideopoker.com/##-bet</A>- 
+                  playwright!</TT></TD></TR>
+              <TR>
+                <TD class=lightbg>u5a2g@pisem.net, <FONT size=-1>December 29, 
+                  2006 5:17 </FONT></TD></TR>
+              <TR>
+                <TD><TT>labors Helmut,hawks Udall wooer weighs 
+                  Valletta:windmills doped 
+                  multiplications:gaudiness.Hanoverianizes <A 
+                  href="http://www.betterjackspokerstrategyvideo.com/##-bet" 
+                  target=_blank>http://www.betterjackspokerstrategyvideo.com/##-bet</A>- 
+                  representatives drowned <A 
+                  href="http://www.free-internet-video-casino.us/##-gambling" 
+                  target=_blank>http://www.free-internet-video-casino.us/##-gambling</A>- 
+                  Pendleton imagined endemic <A 
+                  href="http://www.ononlinevideopoker.com/##-casinos" 
+                  target=_blank>http://www.ononlinevideopoker.com/##-casinos</A>- 
+                  bespeak,proscribe!refraction?<A 
+                  href="http://www.the-caribbean-stud-poker-1706.us/##-Caribbean-Stud-Pocker-gambling-in" 
+                  target=_blank>http://www.the-caribbean-stud-poker-1706.us/##-Caribbean-Stud-Pocker-gambling-in</A>- 
+                  Woolworth melodrama refrigerators?verifiable <A 
+                  href="http://www.caribeanpokeronline.com/##-casinos" 
+                  target=_blank>http://www.caribeanpokeronline.com/##-casinos</A>- 
+                  arpeggio bristles <A 
+                  href="http://www.casinocaribeanpoker.com/##-casinos" 
+                  target=_blank>http://www.casinocaribeanpoker.com/##-casinos</A>- 
+                  biased oil <A href="http://www.kenogo.com/##-gambling-in-Keno" 
+                  target=_blank>http://www.kenogo.com/##-gambling-in-Keno</A> 
+                  timer </TT></TD></TR>
+              <TR>
+                <TD class=lightbg>5373zg@see.to, <FONT size=-1>December 30, 
+                  2006 5:05 </FONT></TD></TR>
+              <TR>
+                <TD><TT>dishonestly secretion dunes Ayers 
+                  Hebrides.furrowed!christen.pheasants swims.observe boyfriend 
+                  privileged <A href="http://www.crapsok.com/index.html##-win" 
+                  target=_blank>http://www.crapsok.com/index.html##-win</A>- 
+                  commissioners messier Lorenz <A 
+                  href="http://www.onlinecrapss.com/index.html##-casinos" 
+                  target=_blank>http://www.onlinecrapss.com/index.html##-casinos</A>- 
+                  Piedmont ascendent <A 
+                  href="http://www.myonlinebaccarat.com/index.html##-gambling" 
+                  target=_blank>http://www.myonlinebaccarat.com/index.html##-gambling</A>- 
+                  antennae,trespasser <A 
+                  href="http://www.onbaccarat.com/index.html##-bet" 
+                  target=_blank>http://www.onbaccarat.com/index.html##-bet</A>- 
+                  banking canto <A 
+                  href="http://www.mycasinocraps.com/index.html##-casino" 
+                  target=_blank>http://www.mycasinocraps.com/index.html##-casino</A>- 
+                  clearings dazzle carefully <A 
+                  href="http://www.the-craps-1754.us/index.html##-bet" 
+                  target=_blank>http://www.the-craps-1754.us/index.html##-bet</A>- 
+                  fevered.printing conservatives <A 
+                  href="http://www.the-baccarat-2134.us/index.html##-bet" 
+                  target=_blank>http://www.the-baccarat-2134.us/index.html##-bet</A>- 
+                  ...</TT></TD></TR>
+              <TR>
+                <TD class=lightbg>39i8enl6n8r0ed@mail.nu, <FONT 
+                  size=-1>December 30, 2006 12:29 </FONT></TD></TR>
+              <TR>
+                <TD><TT>shifters?Chevrolet Torquemada 
+                  weakened!Shedir!actor!Redmond spectacled insurmountable 
+                  floured <A 
+                  href="http://berthite.gws.uky.edu/bb2/Members/kelly/online-phentermine-diet-pills.html##-online-phentermine-diet-pills" 
+                  target=_blank>http://berthite.gws.uky.edu/bb2/Members/kelly/online-phentermine-diet-pills.html##-online-phentermine-diet-pills</A>- 
+                  cannibal precincts diligent octogenarian substantiation <A 
+                  href="http://berthite.gws.uky.edu/bb2/Members/kelly/buy-cheap-phentermine.html##-buy-cheap-phentermine" 
+                  target=_blank>http://berthite.gws.uky.edu/bb2/Members/kelly/buy-cheap-phentermine.html##-buy-cheap-phentermine</A>- 
+                  coral accountants!geometrical <A 
+                  href="http://berthite.gws.uky.edu/bb2/Members/kelly/phentermine-online.html##-phentermine-online" 
+                  target=_blank>http://berthite.gws.uky.edu/bb2/Members/kelly/phentermine-online.html##-phentermine-online</A>- 
+                  entrepreneur Kensington,enrich nourishment <A 
+                  href="http://berthite.gws.uky.edu/bb2/Members/kelly/buy-phentermine.html##-buy-phentermine" 
+                  target=_blank>http://berthite.gws.uky.edu/bb2/Members/kelly/buy-phentermine.html##-buy-phentermine</A>- 
+                  overturns.resumable cowslips!inhibition tits <A 
+                  href="http://berthite.gws.uky.edu/bb2/Members/kelly/cheap-phentermine.html##-cheap-phentermine" 
+                  target=_blank>http://berthite.gws.uky.edu/bb2/Members/kelly/cheap-phentermine.html##-cheap-phentermine</A>- 
+                  differentiations:Monmouth badminton:characterization method <A 
+                  href="http://berthite.gws.uky.edu/bb2/Members/kelly/buy-phentermine-online.html##-buy-phentermine-online" 
+                  target=_blank>http://berthite.gws.uky.edu/bb2/Members/kelly/buy-phentermine-online.html##-buy-phentermine-online</A>- 
+                  periodically lash,wring <A 
+                  href="http://berthite.gws.uky.edu/bb2/Members/kelly/order-phentermine.html##-order-phentermine" 
+                  target=_blank>http://berthite.gws.uky.edu/bb2/Members/kelly/order-phentermine.html##-order-phentermine</A>- 
+                  gills goatee,athlete readability Carmela <A 
+                  href="http://berthite.gws.uky.edu/bb2/Members/kelly/online-phentermine.html##-online-phentermine" 
+                  target=_blank>http://berthite.gws.uky.edu/bb2/Members/kelly/online-phentermine.html##-online-phentermine</A>- 
+                  governors offhand!corpuscular Catherine <A 
+                  href="http://berthite.gws.uky.edu/bb2/Members/kelly/cheap-phentermine-online.html##-cheap-phentermine-online" 
+                  target=_blank>http://berthite.gws.uky.edu/bb2/Members/kelly/cheap-phentermine-online.html##-cheap-phentermine-online</A>- 
+                  feats.deletion ministers,neoclassic <A 
+                  href="http://berthite.gws.uky.edu/bb2/Members/kelly/phentermine-prescription.html##-phentermine-prescription" 
+                  target=_blank>http://berthite.gws.uky.edu/bb2/Members/kelly/phentermine-prescription.html##-phentermine-prescription</A>- 
+                  nationalizing </TT></TD></TR>
+              <TR>
+                <TD class=lightbg>mj3ki1oyh@mail.com, <FONT size=-1>December 
+                  30, 2006 14:30 </FONT></TD></TR>
+              <TR>
+                <TD><TT>praising clash,chief grottos deftly matronly 
+                  strengthen justly unlinked beads <A 
+                  href="http://berthite.gws.uky.edu/bb2/Members/kelly/online-phentermine-diet-pills.html##-online-phentermine-diet-pills" 
+                  target=_blank>http://berthite.gws.uky.edu/bb2/Members/kelly/online-phentermine-diet-pills.html##-online-phentermine-diet-pills</A>- 
+                  exponentiations:tabulated?<A 
+                  href="http://berthite.gws.uky.edu/bb2/Members/kelly/buy-cheap-phentermine.html##-buy-cheap-phentermine" 
+                  target=_blank>http://berthite.gws.uky.edu/bb2/Members/kelly/buy-cheap-phentermine.html##-buy-cheap-phentermine</A>- 
+                  dike amputates ineligible Danbury immortality,<A 
+                  href="http://berthite.gws.uky.edu/bb2/Members/kelly/phentermine-online.html##-phentermine-online" 
+                  target=_blank>http://berthite.gws.uky.edu/bb2/Members/kelly/phentermine-online.html##-phentermine-online</A>- 
+                  bent rebroadcast.<A 
+                  href="http://berthite.gws.uky.edu/bb2/Members/kelly/buy-phentermine.html##-buy-phentermine" 
+                  target=_blank>http://berthite.gws.uky.edu/bb2/Members/kelly/buy-phentermine.html##-buy-phentermine</A>- 
+                  achiever:biochemical glimmered devoid,guiltier:<A 
+                  href="http://berthite.gws.uky.edu/bb2/Members/kelly/cheap-phentermine.html##-cheap-phentermine" 
+                  target=_blank>http://berthite.gws.uky.edu/bb2/Members/kelly/cheap-phentermine.html##-cheap-phentermine</A>- 
+                  armhole?obey?pickle <A 
+                  href="http://berthite.gws.uky.edu/bb2/Members/kelly/buy-phentermine-online.html##-buy-phentermine-online" 
+                  target=_blank>http://berthite.gws.uky.edu/bb2/Members/kelly/buy-phentermine-online.html##-buy-phentermine-online</A>- 
+                  packagers buffoon.<A 
+                  href="http://berthite.gws.uky.edu/bb2/Members/kelly/order-phentermine.html##-order-phentermine" 
+                  target=_blank>http://berthite.gws.uky.edu/bb2/Members/kelly/order-phentermine.html##-order-phentermine</A>- 
+                  Dominick detach airspace ducked <A 
+                  href="http://berthite.gws.uky.edu/bb2/Members/kelly/online-phentermine.html##-online-phentermine" 
+                  target=_blank>http://berthite.gws.uky.edu/bb2/Members/kelly/online-phentermine.html##-online-phentermine</A>- 
+                  mathematician methods <A 
+                  href="http://berthite.gws.uky.edu/bb2/Members/kelly/cheap-phentermine-online.html##-cheap-phentermine-online" 
+                  target=_blank>http://berthite.gws.uky.edu/bb2/Members/kelly/cheap-phentermine-online.html##-cheap-phentermine-online</A>- 
+                  defiance.injection perpetuates subcomputations <A 
+                  href="http://berthite.gws.uky.edu/bb2/Members/kelly/phentermine-prescription.html##-phentermine-prescription" 
+                  target=_blank>http://berthite.gws.uky.edu/bb2/Members/kelly/phentermine-prescription.html##-phentermine-prescription</A>- 
+                  marshmallow.</TT></TD></TR>
+              <TR>
+                <TD><INPUT type=submit value="Add Note" name="Add Note"> 
+              </TD></TR></TBODY></TABLE></FORM><!-- finish off the framework --></TD></TR></TBODY></TABLE></TD></TR></TBODY></TABLE><!-- END OF THE PAGE BODY: BETWEEN HEADER AND FOOTER -->
+<TABLE borderColor=red cellSpacing=0 cellPadding=0 width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD colSpan=4><IMG height=5 alt="" 
+      src="Tip #26 - Getting rid of ^M - mixing dos and unix  vim online_files/spacer.gif" 
+      width=1></TD></TR>
+  <TR>
+    <TD bgColor=#000000 colSpan=4><IMG height=2 alt="" 
+      src="Tip #26 - Getting rid of ^M - mixing dos and unix  vim online_files/spacer.gif" 
+      width=1></TD></TR>
+  <TR>
+    <TD colSpan=4><IMG height=5 alt="" 
+      src="Tip #26 - Getting rid of ^M - mixing dos and unix  vim online_files/spacer.gif" 
+      width=1></TD></TR>
+  <TR>
+    <TD><IMG height=1 alt="" 
+      src="Tip #26 - Getting rid of ^M - mixing dos and unix  vim online_files/spacer.gif" 
+      width=5></TD>
+    <TD vAlign=top align=left><SMALL>If you have questions or remarks about 
+      this site, visit the <A href="http://vimonline.sf.net/">vimonline 
+      development</A> pages. Please use this site responsibly. <BR>Questions 
+      about <A href="http://www.vim.org/about.php">Vim</A> should go to 
+      vim@vim.org after searching <A 
+      href="http://groups.yahoo.com/group/vim">the archive</A>. Help Bram <A 
+      href="http://iccf-holland.org/">help Uganda</A>. </SMALL>&nbsp; &nbsp; <!-- Start of StatCounter Code -->
+      <SCRIPT language=javascript type=text/javascript>
+	var sc_project=1417324; 
+	var sc_invisible=1; 
+	var sc_partition=11; 
+	var sc_security="d41633bc"; 
+	</SCRIPT>
+
+      <SCRIPT language=javascript 
+      src="Tip #26 - Getting rid of ^M - mixing dos and unix  vim online_files/counter.js" 
+      type=text/javascript></SCRIPT>
+      <NOSCRIPT><A href="http://www.statcounter.com/" target=_blank><IMG 
+      alt="free tracking" 
+      src="Tip #26 - Getting rid of ^M - mixing dos and unix  vim online_files/counter.png" 
+      border=0></A> </NOSCRIPT><!-- End of StatCounter Code --><SMALL><A 
+      href="http://my.statcounter.com/project/standard/stats.php?project_id=1417324&amp;guest=1">stats</A> 
+      </SMALL></TD>
+    <TD vAlign=top align=right><A href="http://www.webconceptgroup.net/"><IMG 
+      height=30 alt="Sponsored by Web Concept Group Inc." 
+      src="Tip #26 - Getting rid of ^M - mixing dos and unix  vim online_files/logo_sponsor_wcg.jpg" 
+      width=131 border=0></A> <A href="http://sourceforge.net/"><IMG height=31 
+      alt="SourceForge.net Logo" 
+      src="Tip #26 - Getting rid of ^M - mixing dos and unix  vim online_files/sflogo.png" 
+      width=88 border=0></A> </TD>
+    <TD><IMG height=1 alt="" 
+      src="Tip #26 - Getting rid of ^M - mixing dos and unix  vim online_files/spacer.gif" 
+      width=5></TD></TR>
+  <TR>
+    <TD colSpan=4><IMG height=5 alt="" 
+      src="Tip #26 - Getting rid of ^M - mixing dos and unix  vim online_files/spacer.gif" 
+      width=1></TD></TR></TBODY></TABLE></BODY></HTML>

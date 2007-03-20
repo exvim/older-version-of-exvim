@@ -1,0 +1,95 @@
+LID(1)                   User Commands                   LID(1)
+
+
+
+
+
+NAME
+       lid - Query ID database and report results
+
+SYNOPSIS
+       lid [OPTION]... PATTERN...
+
+DESCRIPTION
+       Query  ID database and report results.  By default, out-
+       put consists of multiple lines, each line containing the
+       matched identifier followed by the list of file names in
+       which it occurs.
+
+       -f, --file=FILE
+              file name of ID database
+
+       -i, --ignore-case
+              match PATTERN case insensitively
+
+       -l, --literal
+              match PATTERN as a literal string
+
+       -r, --regexp
+              match PATTERN as a regular expression
+
+       -w, --word
+              match PATTERN as a delimited word
+
+       -s, --substring
+              match PATTERN as a substring
+
+              Note:  If  PATTERN  contains   extended   regular
+              expression metacharacters, it is interpreted as a
+              regular expression substring.  Otherwise, PATTERN
+              is interpreted as a literal word.
+
+       -k, --key=STYLE
+              STYLE is one of `token', `pattern' or `none'
+
+       -R, --result=STYLE
+              STYLE  is  one  of `filenames', `grep', `edit' or
+              `none'
+
+       -S, --separator=STYLE STYLE is one of `braces',  `space'
+       or `newline' and
+              only applies to file names  when  `--result=file-
+              names'
+
+              The above STYLE options control how query results
+              are   presented.    Defaults   are    --key=token
+              --result=filenames --separator=space
+
+       -F, --frequency=FREQ
+              find  tokens that occur FREQ times, where FREQ is
+              a range expressed as `N..M'.  If N is omitted, it
+              defaults  to  1,  if  M is omitted it defaults to
+              MAX_USHRT
+
+       -a, --ambiguous=LEN
+              find tokens whose names  are  ambiguous  for  LEN
+              chars
+
+       -x, --hex
+              only find numbers expressed as hexadecimal
+
+       -d, --decimal
+              only find numbers expressed as decimal
+
+       -o, --octal
+              only find numbers expressed as octal
+
+              By  default, searches match numbers of any radix.
+
+       --help display this help and exit
+
+       --version
+              output version information and exit
+
+SEE ALSO
+       The full documentation for the id-utils package is main-
+       tained  as  a  Texinfo manual.  If the info and id-utils
+       packages are properly installed, the command
+
+              info 'ID database'
+
+       should give you access to the complete manual.
+
+
+
+lid -                     August 2005                    LID(1)

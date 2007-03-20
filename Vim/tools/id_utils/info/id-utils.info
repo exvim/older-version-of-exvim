@@ -1,0 +1,1248 @@
+This is id-utils.info, produced by makeinfo version 4.7 from
+id-utils.texi.
+
+START-INFO-DIR-ENTRY
+* ID database: (id-utils).              Identifier database utilities.
+* mkid: (id-utils)mkid invocation.      Creating an ID database.
+* lid: (id-utils)lid invocation.        Matching words and patterns.
+* fid: (id-utils)fid invocation.        Listing a file's tokens.
+* fnid: (id-utils)fnid invocation.      Looking up file names.
+* xtokid: (id-utils)xtokid invocation.  Testing mkid scanners.
+END-INFO-DIR-ENTRY
+
+   This file documents the `id-utils' database utilities.
+
+   Copyright (C) 1996, 1999, 2000 Free Software Foundation, Inc.
+
+   Permission is granted to make and distribute verbatim copies of this
+manual provided the copyright notice and this permission notice are
+preserved on all copies.
+
+   Permission is granted to copy and distribute modified versions of
+this manual under the conditions for verbatim copying, provided that
+the entire resulting derived work is distributed under the terms of a
+permission notice identical to this one.
+
+   Permission is granted to copy and distribute translations of this
+manual into another language, under the above conditions for modified
+versions, except that this permission notice may be stated in a
+translation.
+
+
+File: id-utils.info,  Node: Top,  Next: Introduction,  Up: (dir)
+
+ID utilities
+************
+
+This manual documents version 4.0 of the ID utilities.
+
+* Menu:
+
+* Introduction::                Overview of the tools with tutorial.
+* Quick start::                 Quick start procedure.
+* Common options::              Common command-line options.
+* mkid invocation::             Creating an ID database.
+* lid invocation::              Querying an ID database by token.
+* fid invocation::              Listing a file's tokens.
+* fnid invocation::             Looking up file names.
+* xtokid invocation::           Testing language scanners.
+* Past and Future::             History and future directions.
+* Index::                       General index.
+
+
+File: id-utils.info,  Node: Introduction,  Next: Quick start,  Prev: Top,  Up: Top
+
+1 Introduction
+**************
+
+An "ID database" is a binary file containing a list of file names, a
+list of tokens, and a sparse matrix indicating which tokens appear in
+which files.
+
+   With this database and some tools to query it (described in this
+manual), many text-searching tasks become simpler and faster.  For
+example, you can list all files that reference a particular `#include'
+file throughout a huge source hierarchy, search for all the memos
+containing references to a project, or automatically invoke an editor
+on all files containing references to some function or variable.
+Anyone with a large software project to maintain, or a large set of text
+files to organize, can benefit from the ID utilities.
+
+   Although the name `ID' is short for `identifier', the ID utilities
+handle more than just identifiers; they also treat other kinds of
+tokens, most notably numeric constants, and the contents of certain
+character strings.  Thus, this manual will use the word "token" as a
+term that is inclusive of identifiers, numbers and strings.
+
+   There are several programs in the ID utilities family:
+
+`mkid'
+     scans files for tokens and builds the ID database file.
+
+`lid'
+     queries the ID database for tokens, then reports matching file
+     names or matching lines.
+
+`fid'
+     lists all tokens recorded in the database for given files, or
+     tokens common to two files.
+
+`fnid'
+     matches the file names in the database, rather than the tokens.
+
+`xtokid'
+     extracts raw tokens--helps with testing of new `mkid' scanners.
+
+
+   In addition, the ID utilities have historically provided several
+query programs which are specializations of `lid':
+
+`gid'
+     (alias for `lid -R grep') lists all lines containing the requested
+     pattern.
+
+`eid'
+     (alias for `lid -R edit') invokes an editor on all files
+     containing the requested pattern, and if possible, initiates a
+     text search for that pattern.
+
+`aid'
+     (alias for `lid -ils') treats the requested pattern as a
+     case-insensitive literal substring.
+
+
+   Please report bugs to `bug-gnu-utils@gnu.ai.mit.edu'.  Remember to
+include the version number, machine architecture, input files, and any
+other information needed to reproduce the bug: your input, what you
+expected, what you got, and why it is wrong.  Diffs are welcome, but
+please include a description of the problem as well, since this is
+sometimes difficult to infer.  *Note Bugs: (gcc)Bugs.
+
+
+File: id-utils.info,  Node: Quick start,  Next: Common options,  Prev: Introduction,  Up: Top
+
+2 Quick Start Procedure
+***********************
+
+     Unpack the distribution.
+
+     Type `./configure'
+
+     Type `make'
+
+     Type `make install' as a user with the appropriate privileges
+     (e.g., `bin' or perhaps even `root').
+
+     Type `cd /usr/include; mkid' to build an ID database covering all
+     of the system header files.
+
+     Type `lid FILE', then `gid strtok', then `aid stdout'.
+
+
+   You have just built, installed and used the most common commands of
+the GNU ID utilities.  If you ever need help remembering which system
+header files contain a particular declaration, or reference a
+particular symbol, you'll want to keep the ID file you built in
+`/usr/include' for later use.  If your working directory is elsewhere
+at the time, simply provide the `-f /usr/include' option to `lid'
+(*note Reading options::).
+
+
+File: id-utils.info,  Node: Common options,  Next: mkid invocation,  Prev: Quick start,  Up: Top
+
+3 Common command-line options
+*****************************
+
+Certain options, and regular expression syntax, are shared by various
+groupings of the ID utilities.  We describe these in the sections below,
+rather than repeating them for each program.
+
+* Menu:
+
+* Universal options::     Options common to all programs.
+* Extraction options::    Options for programs that extract tokens from source files.
+* Walker options::        Options for programs that walk file and directory trees.
+* Reading options::       Options for programs that read ID databases.
+* Writing options::       Options for programs that write ID databases.
+* File listing options::  Options for programs that list file names.
+
+
+File: id-utils.info,  Node: Universal options,  Next: Extraction options,  Up: Common options
+
+3.1 Options Common to All Programs
+==================================
+
+`--help'
+     Print a usage message listing all available options, then exit
+     successfully.
+
+`--version'
+     Print the version number, then exit successfully.
+
+
+
+File: id-utils.info,  Node: Reading options,  Next: Writing options,  Prev: Walker options,  Up: Common options
+
+3.2 Options for Programs that Read ID Databases
+===============================================
+
+`-f FILENAME'
+`--file=FILENAME'
+     FILENAME is the ID database to read when processing queries.  At
+     present, only a single `--file' option is processed, but in future
+     releases, more than one ID database may be named on the command
+     line.
+
+`$IDPATH'
+     `IDPATH' is an environment variable that contains a
+     colon-separated list of ID database names.  If this variable is
+     present, and no `--file' options are presented on the command
+     line, the ID databases named in `IDPATH' are implied.(1)
+
+
+   If no ID databases are specified either on the command line or via
+the `IDPATH' environment variable, then the ID utilities search for a
+file named `ID' in the current working directory, and then in
+successive parent directories.
+
+   ---------- Footnotes ----------
+
+   (1) At present, this feature isn't fully implemented, since only the
+first of a list of ID database names is processed.
+
+
+File: id-utils.info,  Node: Writing options,  Next: File listing options,  Prev: Reading options,  Up: Common options
+
+3.3 Options for Programs that Write ID Databases
+================================================
+
+`-o FILENAME'
+`--output=FILENAME'
+     The `--output' option names the file in which to write a new ID
+     database.  If no `--output' (or `--file') option is present, an
+     output file named `ID' is implied.
+
+`-f FILENAME'
+`--file=FILENAME'
+     This is a synonym for `--output'
+
+
+
+File: id-utils.info,  Node: Walker options,  Next: Reading options,  Prev: Extraction options,  Up: Common options
+
+3.4 Options for Programs that Walk File and Directory Trees.
+============================================================
+
+The programs `mkid' and `xtokid' accept the names of files and
+directories on the command line.  Files are scanned if there is a
+scanner available and enabled for the file's source language.
+Directories are recursively descended, searching for files whose names
+match the rules listed in the _language map_ file (*note Language
+map::).
+
+   The following option controls the file tree walker:
+
+`-p NAMES'
+`--prune=NAMES'
+     One or more file or directory names may appear in NAMES.  The file
+     tree walker will stop short at these files and directories and
+     their contents will not be scanned.
+
+
+
+File: id-utils.info,  Node: File listing options,  Prev: Writing options,  Up: Common options
+
+3.5 Options for Programs that List File Names
+=============================================
+
+The programs `lid' and `fnid' can print lists of file names as the
+result of queries.  The following option controls how these lists are
+formatted:
+
+`-S STYLE'
+`--separator=STYLE'
+     STYLE may be one of `braces', `space' or `newline'.
+
+     The STYLE of `braces' means that file names with common directory
+     prefix and common suffix are printed using the shell's brace
+     notation in order to compress the output.  For example,
+     `../src/foo.c ../src/bar.c' can be printed in brace notation as
+     `../src/{foo,bar}.c'.
+
+     The STYLEs of `space' and `newline' mean that file names are
+     separated spaces or by newlines, respectively.
+
+     If the list of files is being printed on a terminal, brace
+     notation is the default.  If not, file names are separated by
+     spaces if the KEY is included in the output, and by newlines the
+     KEY STYLE is `none' (*note lid invocation::).
+
+
+
+File: id-utils.info,  Node: Extraction options,  Next: Walker options,  Prev: Universal options,  Up: Common options
+
+3.6 Options for Programs that Scan Source Files
+===============================================
+
+`mkid' and `xtokid' walk file trees, select source files by name, and
+extract tokens from source files.  They accept the following options:
+
+`-m MAPFILE'
+`--lang-map=MAPFILE'
+     MAPFILE contains rules for determining the source languages from
+     file names *Note Language map::.
+
+`-i LANGUAGES'
+`--include=LANGUAGES'
+     The `--include' option names LANGUAGES whose source files should
+     be scanned and incorporated into the ID database.  By default, all
+     languages known to the ID utilities are enabled.
+
+`-x LANGUAGES'
+`--exclude=LANGUAGES'
+     The `--exclude' option names LANGUAGES whose source files should
+     NOT be scanned.  The default list of excluded languages is empty.
+     Note that only one of `--include' or `--exclude' may be specified
+     on the command line for a single run.
+
+`-l LANGUAGE:OPTIONS'
+`--lang-option=LANGUAGE:OPTIONS'
+     Language-specific scanners also accept options.  LANGUAGE denotes
+     the desired scanner, and OPTION are the command-line options that
+     should be passed through to it.  For example, to pass the -X
+     -COKE-BOTTLE options to the scanner for the language SWIZZLE, pass
+     this: -L SWIZZLE:"-X -COKE-BOTTLE", or this:
+     -LANG-OPTION=SWIZZLE:"-X -COKE-BOTTLE", or this: -L SWIZZLE-X -L
+     SWIZZLE:-COKE-BOTTLE.  Use the `--help' option to see the
+     command-line option summary for
+
+
+   To determine which tokens to extract from a file and store in the
+database, `mkid' calls a "scanner"; we say a scanner "recognizes" a
+particular language.  Scanners for several languages are built-in to
+`mkid'; you can add your own scanners as well, as explained in *Note
+Defining scanners::.
+
+   The ID utilities determine which scanner to use for a particular
+file by consulting the language-map file.  Scanners for several are
+already built-in to the ID utilities.  You can see which languages have
+built-in scanners, and examine their language-specific options by
+invoking `mkid --help' or `xtokid --help'.
+
+* Menu:
+
+* Language map::                Mapping file names to source languages.
+* C/C++ scanner::               For the C and C++ programming language.
+* Assembler scanner::           For assembly language.
+* Text scanner::                For documents or other non-source code.
+* Perl scanner::                For Perl language (experimental).
+* Defining scanners::           Defining new scanners in the source code.
+
+
+File: id-utils.info,  Node: Language map,  Next: C/C++ scanner,  Up: Extraction options
+
+3.6.1 Mapping file names to source languages
+--------------------------------------------
+
+The file `id-lang.map', installed by default in
+`$(prefix)/share/id-lang.map', contains rules for mapping file names to
+source languages.  Each rule comprises three parts: a shell GLOB
+pattern, a language name, and language-specific scanner options.
+
+   The special pattern `**' denotes the default source language.  This
+is the language that's assigned to file names that don't match any other
+pattern.
+
+   The special pattern `***' should be followed by a file name.  The
+named file should contain more language-map rules and is included at
+this point.
+
+   The order in which rules are presented in a language-map file is
+significant.  This order influences the order in which files are
+displayed as the result of queries.  For example, the distributed
+language-map file places all rules for C .H files ahead of .C files, so
+that in general, declarations will precede definitions in query output.
+The same thing is done for C++ and its many different source file name
+extensions.
+
+   Here is a pared-down version of the `id-lang.map' file distributed
+with the ID utilities:
+
+
+     # Default language
+     **			IGNORE	# Although this is listed first,
+     				# the default language pattern is
+     				# logically matched last.
+
+     # Backup files
+     *~			IGNORE
+     *.bak			IGNORE
+     *.bk[0-9]		IGNORE
+
+     # SCCS files
+     [sp].*			IGNORE
+
+     # list header files before code files
+     *.h			C
+     *.h.in			C
+     *.H			C++
+     *.hh			C++
+     *.hpp			C++
+     *.hxx			C++
+
+     # list C `meta' files next
+     *.l			C
+     *.lex			C
+     *.y			C
+     *.yacc			C
+
+     # list C code files after header files
+     *.c			C
+     *.C			C++
+     *.cc			C++
+     *.cpp			C++
+     *.cxx			C++
+
+     # list assembly language after C
+     *.[sS]			asm --comment=;
+     *.asm			asm --comment=;
+
+     # [nt]roff
+     *.[0-9]			roff
+     *.ms			roff
+     *.me			roff
+     *.mm			roff
+
+     # TeX and friends
+     *.tex			TeX
+     *.ltx			TeX
+     *.texi			texinfo
+     *.texinfo		texinfo
+
+
+File: id-utils.info,  Node: C/C++ scanner,  Next: Assembler scanner,  Prev: Language map,  Up: Extraction options
+
+3.6.2 C/C++ Language Scanner
+----------------------------
+
+The C scanner is the most commonly used.  Files that match the glob
+pattern `*.h', `*.c', as well as `yacc' files that match `*.y' or
+`*.yacc', and `lex' files that match `*.l' or `*.lex', are processed
+with this scanner.
+
+   Scanner-specific options (Note, these options are presented WITHOUT
+the required `-l' or `--lang-option=' prefix):
+
+`-k CHARACTER-CLASS'
+`--keep=CHARACTER-CLASS'
+     Consider the characters in CHARACTER-CLASS as valid constituents of
+     identifier names.  For example, if you are indexing C code that
+     contains `$' in some of its identifiers, you can include these by
+     using `--lang-option=C:--keep=$', or `-l C:"-k $"' (if you don't
+     like to type so much).
+
+`-i CHARACTER-CLASS'
+`--ignore=CHARACTER-CLASS'
+     Consider the characters in CHARACTER-CLASS as valid constituents of
+     identifier names, but discard all tokens containing these
+     characters.  For example, if some C code has identifiers
+     containing `$', but you don't want these cluttering up your ID
+     database, use `--lang-option=C:--ignore=$', or the terser
+     equivalent `-l C:"-i $"'.
+
+`-u'
+`--strip-underscore'
+     Strip one leading underscore from C identifiers encapsulated as
+     character strings.  This option is useful if you are indexing C
+     code that contains symbol-table name strings for systems that
+     prepend an underscore to external symbols.  By default, the
+     leading underscore is retained.
+
+
+
+File: id-utils.info,  Node: Assembler scanner,  Next: Text scanner,  Prev: C/C++ scanner,  Up: Extraction options
+
+3.6.3 Assembly Language Scanner
+-------------------------------
+
+Assembly languages use a variety of commenting conventions, and allow a
+variety of special characters to _dirty up_ local symbols, preventing
+name space conflicts with symbols defined by higher-level languages.
+Also, some compilation systems prepend an underscore to external
+symbols.  The options listed below are designed to address these
+differences.
+
+`-c CHARACTER-CLASS'
+`--comment=CHARACTER-CLASS'
+     The characters in CHARACTER-CLASS are considered left delimiters
+     for comments that extend until the end of the current line.
+
+`-k CHARACTER-CLASS'
+`--keep=CHARACTER-CLASS'
+     Consider the characters of CHARACTER-CLASS as valid constituents of
+     identifier names.  For example, if you are indexing assembly code
+     that prepends `.' to assembler directives, and prepends `%' to
+     register names, you can keep these characters in the tokens by
+     specifying `--lang-option=asm:--keep=.%', or `-l asm:"-k .%"'.
+
+`-i CHARACTER-CLASS'
+`--ignore=CHARACTER-CLASS'
+     Consider the characters of CHARACTER-CLASS as valid constituents
+     of identifier names, but discard all tokens containing these
+     characters.  For example, if you don't want to clutter your ID
+     database with assembler directives that begin with a leading `.'
+     or with assembler labels that contain `@', use
+     `--lang-option=asm:--ignore=.@', or `-l asm:"-i .@"'.
+
+`-u'
+`--strip-underscore'
+     Strip one leading underscore from identifiers.  This option is
+     useful if your compilation system prepends an underscore to
+     external symbols.  By stripping the underscore, you can
+     canonicalize such names and bring them into conformance the way
+     they are expressed in the C language.  By default, the leading
+     underscore is retained.
+
+`-n'
+`--no-cpp'
+     Do not recognize C preprocessor directives.  By default, such
+     lines are handled in the same way as they are by the C language
+     scanner.
+
+
+
+File: id-utils.info,  Node: Text scanner,  Next: Perl scanner,  Prev: Assembler scanner,  Up: Extraction options
+
+3.6.4 Text Scanner
+------------------
+
+The plain text scanner is intended for human-language documents, or as
+the scanner of last resort for files that have no scanner that is more
+specific.  It is customizable to the extent that character classes can
+be designated as token constituents or as token delimiters.  The default
+token constituents are the alpha-numerics; all other characters are
+considered token delimiters.
+
+`-i CHARACTER-CLASS'
+`--include=CHARACTER-CLASS'
+     Include characters belonging to CHARACTER-CLASS in tokens.
+
+`-x CHARACTER-CLASS'
+`--exclude=CHARACTER-CLASS'
+     Exclude characters belonging to CHARACTER-CLASS from tokens, i.e.,
+     treat them as token delimiters.
+
+
+
+File: id-utils.info,  Node: Perl scanner,  Next: Defining scanners,  Prev: Text scanner,  Up: Extraction options
+
+3.6.5 Perl Scanner
+------------------
+
+(EXPERIMENTAL)
+
+   The perl scanner is intended for perl-language documents. Tokens are
+all words, Perl Keywords are included. Comments & string declarations
+are ignored, as well as the documentation.  It is customizable to the
+extent that character classes can be designated as token constituents
+or as token delimiters.  The default token constituents are the
+alpha-numerics; all other characters are considered token delimiters.
+
+`-i CHARACTER-CLASS'
+`--include=CHARACTER-CLASS'
+     Include characters belonging to CHARACTER-CLASS in tokens.
+
+`-x CHARACTER-CLASS'
+`--exclude=CHARACTER-CLASS'
+     Exclude characters belonging to CHARACTER-CLASS from tokens, i.e.,
+     treat them as token delimiters.
+
+`-d'
+`--dtags'
+     Include tokens from the documentation.  By default, the tokens in
+     the documentation are ignored.
+
+
+
+File: id-utils.info,  Node: Defining scanners,  Prev: Perl scanner,  Up: Extraction options
+
+3.6.6 Defining New Scanners in the Source Code
+----------------------------------------------
+
+To add a new scanner in source code, you should add a new section to the
+file `scanners.c'.  It might be easiest to clone one of the existing
+scanners and modify it as necessary.  For the hypothetical language
+FOO, you must define the functions `get_token_foo', `parse_args_foo',
+`help_me_foo', as well as the tables `long_options_foo' and `args_foo'.
+If your scanner is modeled after one of the existing scanners, you'll
+also need a character-attribute table `ctype_foo'.
+
+   This is not a terribly difficult programming task, but it requires
+recompiling and installing the new version of `mkid' and `xtokid'.  You
+should use `xtokid' to test the operation of the new scanner.
+
+   Once these functions and tables are ready, add function prototypes
+and an entry to the `languages_0' table near the beginning of the file.
+
+   Be warned that the existing scanners are built for speed, not
+elegance or readability.  You might wish to create a new scanner that's
+easier to read and understand if you don't feel that speed is so
+important.
+
+
+File: id-utils.info,  Node: mkid invocation,  Next: lid invocation,  Prev: Common options,  Up: Top
+
+4 `mkid': Creating an ID Database
+*********************************
+
+`mkid' builds an ID database.  It accepts the names of files and/or
+directories on the command line, selects files that have an enabled
+scanner, then extracts and stores tokens from those files.  The
+resulting ID database is architecture- and byte-order-independent so it
+can be shared among all systems.
+
+   The primary virtues of `mkid' are speed and high capacity.  The size
+of the source trees it can index is limited only by available system
+memory.  `mkid''s indexing algorithm is very space-efficient and
+exhibits excellent locality-of-reference, and so is capable of
+operating with a working-set size that is only half the size of its
+virtual address space.  A typical UNIX-like operating system with 16
+megabytes of system memory should be able to build an ID database
+covering approximately 12,000-14,000 source files totaling
+approximately 50-100 Megabytes.  A 66 MHz 486 computer can build such a
+large ID database in approximately 10-15 minutes.
+
+   In a future release, `mkid' will be able to incrementally update an
+ID database much faster than it can build one from scratch.  Until this
+feature becomes available, it might be a good idea to schedule a `cron'
+job to regularly update large ID databases during off-hours.
+
+   `mkid' writes the ID file, therefore it accepts the `--output' (and
+`--file') options as described in *Note Writing options::.  `mkid'
+extracts tokens from source files, therefore it accepts the
+`--lang-map', `--include', `--exclude', and `--lang-option' options, as
+well as the language-specific scanner options, all of which are
+described in *Note Extraction options::.  `mkid' walks file trees,
+therefore it handles file and directory names on its command line and
+the `--prune' option as described in *Note Walker options::.
+
+   In addition, `mkid' accepts the following command-line options:
+
+`-s'
+`--statistics'
+     `mkid' reports statistics about resource usage at the end of its
+     run.
+
+`-v'
+`--verbose'
+     `mkid' reports statistics about each file as it is scanned, and
+     about the resource usage of its indexing algorithm at regular
+     intervals.
+
+
+
+File: id-utils.info,  Node: lid invocation,  Next: fid invocation,  Prev: mkid invocation,  Up: Top
+
+5 `lid': Querying an ID Database by Token
+*****************************************
+
+The `lid' program accepts PATTERNS on the command line which it matches
+against the tokens stored in an ID database.  The interpretation of a
+PATTERN is determined by the makeup of the PATTERN string itself, or
+can be overridden by command-line options.  If a PATTERN contains
+regular expression meta-characters, it is used to perform a
+regular-expression substring search.  If no such meta-characters are
+present, PATTERN is used to perform a literal word search.  (By
+default, all searches are sensitive to alphabetic case.)  If no PATTERN
+is supplied on the command line, `lid' lists every entry in the ID
+database.
+
+   `lid' reads the ID database, therefore it accepts the `--file'
+option, and consults the `IDPATH' environment variable, as described in
+*Note Reading options::.  `lid' lists file names, therefore it accepts
+the `--separator' option, as described in *Note File listing options::.
+
+   In addition, `lid' accepts the following command-line options:
+
+`-i'
+`--ignore-case'
+     Ignoring differences in alphabetic case between the PATTERN and
+     the tokens in the ID database.
+
+`-l'
+`--literal'
+     Match PATTERN as a literal string.  Use this option if PATTERN
+     contains regular-expression meta-characters, but you don't wish to
+     perform a regular-expression search.
+
+`-r'
+`--regexp'
+     Match PATTERN as an _extended_ regular expression(1).  Use this
+     option if no regular-expression expression meta-characters are
+     present in PATTERN, but you wish to force a regular-expression
+     search (note: in this case, a _literal substring_ search might be
+     faster).
+
+`-w'
+`--word'
+     Match PATTERN using a word-delimited (non substring) search.  This
+     is the default for literal searches.
+
+`-s'
+`--substring'
+     Match PATTERN using a substring (non word-delimited) search.  This
+     is the default for regular expression searches.
+
+`-k STYLE'
+`--key=STYLE'
+     STYLE can be one of `token', `pattern' or `none'.  This option
+     controls how the subject of the query is presented.  This is best
+     illustrated by example:
+
+          $ lid --key=token '^dest.'
+          destaddr       libsys/memcpy.c
+          destination    libsys/regex.c
+          destlst        libsys/rx.c
+          destpos        libsys/rx.c
+          destset        libsys/rx.h libsys/rx.c
+
+          $ lid --key=pattern '^dest.'
+          ^dest.         libsys/rx.h libsys/{memcpy,regex,rx}.c
+
+          $ lid --key=none '^dest.'
+          libsys/rx.h libsys/{memcpy,regex,rx}.c
+
+     When `--key' is either `token' or `pattern', the first column of
+     output is a TOKEN or PATTERN, respectively.  When `--key' is
+     `none', neither of these is printed, and the file name list begins
+     immediately.  The default is `token'.
+
+`-R STYLE'
+`--result=STYLE'
+     STYLE can be one of `filenames', `grep', `edit' or `none'.  This
+     option controls how the value associated with the query's KEY
+     presented.  When STYLE is `filenames', a list of file names is
+     printed (this is the default).  When STYLE is `grep', the lines
+     that match PATTERN are printed in the same format as `egrep -n'.
+     When STYLE is `edit', the file names are passed to an editor, and
+     if possible PATTERN is passed as an initial search string (*note
+     eid invocation::).  When STYLE is `none', the file names are not
+     processed in any way.  This can be useful if you wish to see what
+     tokens match a PATTERN, but don't care about where they reside.
+
+`-d'
+`-o'
+`-x'
+     These options may be used in any combination to specify the radix
+     of numeric matches.  `-d' allows matching on decimal numbers, `-o'
+     on octal numbers, and `-x' on hexadecimal numbers.  Any
+     combination of these options may be used.  The default is to match
+     all three radixes.
+
+`-F RANGE'
+`--frequency=RANGE'
+     Match tokens whose occurrence count falls in RANGE.  RANGE may be
+     expressed as a single number N, or as a range N`..'M.  Either
+     limit of the range may be omitted (e.g., `..'M, or N..`..').  If
+     the lower limit N is omitted, it defaults to `1'.  If the upper
+     limit is omitted, it defaults in the present implementation to
+     `65535', the maximum value of an unsigned 16-bit integer.
+
+     Particularly useful queries are `lid -F1', which helps locate
+     identifiers that are defined but never used, or are used but never
+     defined.  Similarly, `lid -F2' can help find functions that possess
+     a prototype declaration and a definition, but are never called.
+
+`-a NUMBER'
+`--ambiguous=NUMBER'
+     List identifiers (not numbers) that are ambiguous for the first
+     NUMBER characters.  This feature might be in useful when porting
+     programs to ancient pea-brained compilers that don't support long
+     identifier names.  However, the best long-term option is to set
+     such systems on fire.
+
+
+* Menu:
+
+* lid aliases::                 Aliases for specialized lid queries
+* Emacs gid interface::         GNU Emacs query interface
+* eid invocation::              Invoking an editor on query results
+
+   ---------- Footnotes ----------
+
+   (1) Extended regular expressions are the same as those accepted by
+`egrep'.
+
+
+File: id-utils.info,  Node: lid aliases,  Next: Emacs gid interface,  Up: lid invocation
+
+5.1 Aliases for Specialized `lid' Queries
+=========================================
+
+Historically, the ID utilities have provided several query interfaces
+which are specializations of `lid' (*note lid invocation::).
+
+`gid'
+     (alias for `lid -R grep') lists all lines containing the requested
+     pattern.
+
+`eid'
+     (alias for `lid -R edit') invokes an editor on all files
+     containing the requested pattern, and optionally initiates a text
+     search for that pattern.
+
+`aid'
+     (alias for `lid -ils') treats the requested pattern as a
+     case-insensitive literal substring.
+
+
+
+File: id-utils.info,  Node: Emacs gid interface,  Next: eid invocation,  Prev: lid aliases,  Up: lid invocation
+
+5.2 GNU Emacs query interface
+=============================
+
+The `id-utils' source distribution comes with a file `id-utils.el',
+which defines a GNU Emacs interface to `gid'.  To install it, put
+`id-utils.el' somewhere that Emacs will find it (i.e., in your
+`load-path') and put
+
+     (autoload 'gid "gid" nil t)
+
+in one of Emacs' initialization files, e.g., `~/.emacs'.  You will then
+be able to use `M-x gid' to run the command.
+
+   The `gid' function prompts you with the word around point.  If you
+want to search for something else, simply delete the line and type the
+pattern of interest.
+
+   The function then runs the `gid' program in a `*compilation*'
+buffer, so the normal `next-error' function can be used to visit all
+the places the identifier is found (*note Compilation:
+(emacs)Compilation.).
+
+
+File: id-utils.info,  Node: eid invocation,  Prev: Emacs gid interface,  Up: lid invocation
+
+5.3 `eid': Invoking an Editor on Query Results
+==============================================
+
+`lid -R edit' is an editing interface for the ID utilities that is most
+commonly used with `vi'.  Emacs users should use the interface defined
+in `id-utils.el' (*note Emacs gid interface::).  The ID utilities
+include an alias called `eid', and for the sake of brevity, we'll use
+this alias for the remainder of this section.  `eid' performs a
+`lid'-style, then asks if you wish to edit the files.  If your query
+yields more than one line of output, you will be prompted after each
+line.  This is the prompt you'll see:
+
+     Edit? [y1-9^S/nq]
+
+You may respond with:
+
+`y'
+     Edit all files listed.
+
+`1...9'
+     Edit all files starting at the N + 1'st file.
+
+`/STRING or CTRL-SREGEXP'
+     Search into the file list, and begin editing with the first file
+     name that matches the regular expression REGEXP.
+
+`n'
+     Don't edit any files.  If another line of query output is pending,
+     advance to that line, for which another `Edit?' prompt will appear.
+
+`q'
+     Quit--don't edit any files, and don't process any more lines of
+     query output.
+
+
+   Here is an example:
+
+     prompt$ eid FILE \^print
+     FILE           {ansi2knr,fid,filenames,idfile,idx,lid,misc,...}.c
+     Edit? [y1-9^S/nq] n
+     ^print         {ansi2knr,fid,getopt,getopt1,lid,mkid,regex,scanners}.c
+     Edit? [y1-9^S/nq] 2
+
+This will start editing at `getopt'.c.
+
+   `eid' invokes the editor defined by the environment variable
+`VISUAL'.  If `VISUAL' is undefined, it uses the environment variable
+`EDITOR' instead.  If `EDITOR' is undefined, it defaults to `vi'.  It
+is possible for `eid' to pass the editor an initial search pattern so
+that your cursor will immediately alight on the token of interest.
+This feature is controlled by the following environment variables:
+
+`EIDARG'
+     A printf(3) format string for the editor argument to search for the
+     matching token.  For `vi', this should be `+/%s/'.
+
+`EIDLDEL'
+     The regular-expression meta-character(s) for delimiting the
+     beginning of a word (the ``eid' Left DELimiter').  `eid' inserts
+     this in front of the matching token when a word-search is desired.
+     For `vi', this should be `\<'.
+
+`EIDRDEL'
+     The regular-expression meta-character(s) for delimiting the end of
+     a word (the ``eid' Right DELimiter').  `eid' inserts this in end
+     of the matching token when a word-search is desired.  For `vi',
+     this should be `\>'.
+
+
+
+File: id-utils.info,  Node: fid invocation,  Next: fnid invocation,  Prev: lid invocation,  Up: Top
+
+6 `fid': Listing a file's tokens
+********************************
+
+`fid' prints the tokens found in a given file.  If two file names are
+passed on the command line, `fid' prints the tokens that are common to
+both files (i.e., the _set intersection_ of the two token sets).
+
+   `fid' reads the ID database, therefore it accepts the `--file'
+option, and consults the `IDPATH' environment variable, as described in
+*Note Reading options::.
+
+   If the standard output is attached to a terminal, the printed tokens
+are separated by spaces.  Otherwise, the tokens are printed one per
+line.
+
+
+File: id-utils.info,  Node: fnid invocation,  Next: xtokid invocation,  Prev: fid invocation,  Up: Top
+
+7 `fnid': Looking up filenames
+******************************
+
+`fnid' queries the list of file names stored in the ID database.  It
+accepts shell _wildcard_ patterns on the command line.  If no pattern
+is supplied, `*' is implied.  `fnid' prints the file names that match
+the given patterns.
+
+   `fnid' prints file names, and as such accepts the `--separator'
+option as described in *Note File listing options::.
+
+   For example, the command:
+
+     fnid \*.c
+
+lists all the `.c' files in the database.  (The `\' here protects the
+`*' from being expanded by the shell.)
+
+
+File: id-utils.info,  Node: xtokid invocation,  Next: Past and Future,  Prev: fnid invocation,  Up: Top
+
+8 `xtokid': Testing Language Scanners
+*************************************
+
+`xtokid' accepts the names of files and/or directories on the command
+line, then extracts and prints a stream of tokens from those files for
+which it has a valid, enabled scanner.  This is useful primarily for
+debugging new `mkid' scanners (*note Defining scanners::).
+
+   `xtokid' extracts tokens from source files, therefore it accepts the
+`--lang-map', `--include', `--exclude', and `--lang-option' options, as
+well as the language-specific scanner options, all of which are
+described in *Note Extraction options::.  `xtokid' walks file trees,
+therefore it handles file and directory names on its command line and
+the `--prune' option as described in *Note Walker options::.
+
+   The name `xtokid' indicates that it is the "eXtract TOKens ID
+utility".
+
+
+File: id-utils.info,  Node: Past and Future,  Next: Index,  Prev: xtokid invocation,  Up: Top
+
+9 Past and Future
+*****************
+
+Greg McGary conceived of the ideas behind the ID utilities when he
+began working on the Unix kernel in 1984.  He needed a navigation tool
+to help him find his way around the expansive, unfamiliar landscape.
+The first `id-utils'-like tools were shell scripts, and produced an
+ASCII database that looks much like the output of `lid ".*"'.  It took
+over an hour on a VAX 11/750 to build a database for a 4.1BSD derived
+kernel.  The first version of `lid' used the UNIX system utility
+`look', modified to handle very long lines.
+
+   In 1986, Greg rewrote the shell scripts in C to improve performance.
+Build times for the ID file were shortened by an order of magnitude.
+The ID utilities were first posted to `comp.sources.unix' in September
+1987 under the name `id'.
+
+   Over the next few years, several versions diverged from the original
+source.  Tom Horsley at Harris Computer Systems Division stepped forward
+to take over maintenance and integrated some of the fixes from divergent
+versions.  A first release of the renamed `mkid' version 2 was posted
+to `alt.sources' near the end of 1990.  At that time, Tom wrote a
+Texinfo manual with the encouragement of the net community.  (Tom
+especially thanks Doug Scofield and Bill Leonard whom he dragooned into
+helping proofread and edit--they found several problems in the initial
+version.)  Karl Berry revamped the manual for Texinfo style, indexing,
+and organization in 1995.
+
+   In January 1995, Greg McGary reemerged as the primary maintainer and
+launched development of `mkid' version 3, whose primary new feature is
+an efficient algorithm for building databases that is linear in both
+time and space over the size of the input text.  (The old algorithm was
+quadratic in space so it was incapable of handling very large source
+trees.)  For the first time, the code was released under the GNU Public
+License.
+
+   In June 1996, the package was renamed again to `id-utils' and was
+released for the first time under FSF copyright as part of the GNU
+system.  All programs had their command-line arguments completely
+revised.  The `mkid' and `xtokid' programs also gained a file-tree
+walker, so that directory names can be passed on the command line
+instead of the names of every individual file.  Greg reorganized and
+rewrote most of the Texinfo manual to reflect these changes.
+
+   Future releases of `id-utils' might include:
+
+     an optional coupling with GNU `grep', so that `grep' can use an ID
+     database for hints
+
+     a `cscope' work-alike query interface
+
+     incremental update of the ID database.
+
+
+
+File: id-utils.info,  Node: Index,  Prev: Past and Future,  Up: Top
+
+Index
+*****
+
+ [index ]
+* Menu:
+
+* *compilation* Emacs buffer:            Emacs gid interface. (line  20)
+* --ambiguous:                           lid invocation.      (line 115)
+* --comment:                             Assembler scanner.   (line  15)
+* --dtags:                               Perl scanner.        (line  26)
+* --exclude <1>:                         Perl scanner.        (line  21)
+* --exclude <2>:                         Text scanner.        (line  19)
+* --exclude:                             Extraction options.  (line  22)
+* --file <1>:                            Writing options.     (line  14)
+* --file:                                Reading options.     (line   8)
+* --frequency:                           lid invocation.      (line 101)
+* --help:                                Universal options.   (line   7)
+* --ignore <1>:                          Assembler scanner.   (line  28)
+* --ignore:                              C/C++ scanner.       (line  24)
+* --ignore-case:                         lid invocation.      (line  26)
+* --include <1>:                         Perl scanner.        (line  17)
+* --include <2>:                         Text scanner.        (line  15)
+* --include:                             Extraction options.  (line  16)
+* --keep <1>:                            Assembler scanner.   (line  20)
+* --keep:                                C/C++ scanner.       (line  16)
+* --lang-map:                            Extraction options.  (line  11)
+* --lang-option:                         Extraction options.  (line  29)
+* --lang-option=asm:--comment:           Assembler scanner.   (line  15)
+* --lang-option=asm:--ignore:            Assembler scanner.   (line  28)
+* --lang-option=asm:--keep:              Assembler scanner.   (line  20)
+* --lang-option=asm:--no-cpp:            Assembler scanner.   (line  46)
+* --lang-option=asm:--strip-underscore:  Assembler scanner.   (line  37)
+* --lang-option=asm:-c:                  Assembler scanner.   (line  15)
+* --lang-option=asm:-i:                  Assembler scanner.   (line  28)
+* --lang-option=asm:-k:                  Assembler scanner.   (line  20)
+* --lang-option=asm:-n:                  Assembler scanner.   (line  46)
+* --lang-option=asm:-u:                  Assembler scanner.   (line  37)
+* --lang-option=C:--ignore:              C/C++ scanner.       (line  24)
+* --lang-option=C:--keep:                C/C++ scanner.       (line  16)
+* --lang-option=C:--strip-underscore:    C/C++ scanner.       (line  33)
+* --lang-option=C:-i:                    C/C++ scanner.       (line  24)
+* --lang-option=C:-k:                    C/C++ scanner.       (line  16)
+* --lang-option=C:-u:                    C/C++ scanner.       (line  33)
+* --lang-option=perl:--dtags:            Perl scanner.        (line  26)
+* --lang-option=perl:--exclude:          Perl scanner.        (line  21)
+* --lang-option=perl:--include:          Perl scanner.        (line  17)
+* --lang-option=perl:-d:                 Perl scanner.        (line  26)
+* --lang-option=perl:-i:                 Perl scanner.        (line  17)
+* --lang-option=perl:-x:                 Perl scanner.        (line  21)
+* --lang-option=text:--exclude:          Text scanner.        (line  19)
+* --lang-option=text:--include:          Text scanner.        (line  15)
+* --lang-option=text:-i:                 Text scanner.        (line  15)
+* --lang-option=text:-x:                 Text scanner.        (line  19)
+* --literal:                             lid invocation.      (line  31)
+* --no-cpp:                              Assembler scanner.   (line  46)
+* --output:                              Writing options.     (line   8)
+* --prune:                               Walker options.      (line  17)
+* --regexp:                              lid invocation.      (line  37)
+* --result:                              lid invocation.      (line  79)
+* --separator:                           File listing options.
+                                                              (line  12)
+* --statistics:                          mkid invocation.     (line  41)
+* --strip-underscore <1>:                Assembler scanner.   (line  37)
+* --strip-underscore:                    C/C++ scanner.       (line  33)
+* --substring:                           lid invocation.      (line  50)
+* --verbose:                             mkid invocation.     (line  46)
+* --version:                             Universal options.   (line  11)
+* --word:                                lid invocation.      (line  45)
+* -a:                                    lid invocation.      (line 115)
+* -c:                                    Assembler scanner.   (line  15)
+* -d <1>:                                lid invocation.      (line  93)
+* -d:                                    Perl scanner.        (line  26)
+* -F:                                    lid invocation.      (line 101)
+* -f <1>:                                Writing options.     (line  14)
+* -f:                                    Reading options.     (line   8)
+* -i <1>:                                lid invocation.      (line  26)
+* -i <2>:                                Perl scanner.        (line  17)
+* -i <3>:                                Text scanner.        (line  15)
+* -i <4>:                                Assembler scanner.   (line  28)
+* -i <5>:                                C/C++ scanner.       (line  24)
+* -i:                                    Extraction options.  (line  16)
+* -k <1>:                                lid invocation.      (line  55)
+* -k <2>:                                Assembler scanner.   (line  20)
+* -k:                                    C/C++ scanner.       (line  16)
+* -l <1>:                                lid invocation.      (line  31)
+* -l:                                    Extraction options.  (line  29)
+* -l asm:--comment:                      Assembler scanner.   (line  15)
+* -l asm:--dtags:                        Perl scanner.        (line  26)
+* -l asm:--ignore:                       Assembler scanner.   (line  28)
+* -l asm:--keep:                         Assembler scanner.   (line  20)
+* -l asm:--no-cpp:                       Assembler scanner.   (line  46)
+* -l asm:--strip-underscore:             Assembler scanner.   (line  37)
+* -l asm:-c:                             Assembler scanner.   (line  15)
+* -l asm:-d:                             Perl scanner.        (line  26)
+* -l asm:-i:                             Assembler scanner.   (line  28)
+* -l asm:-k:                             Assembler scanner.   (line  20)
+* -l asm:-n:                             Assembler scanner.   (line  46)
+* -l asm:-u:                             Assembler scanner.   (line  37)
+* -l C:--ignore:                         C/C++ scanner.       (line  24)
+* -l C:--keep:                           C/C++ scanner.       (line  16)
+* -l C:--strip-underscore:               C/C++ scanner.       (line  33)
+* -l C:-i:                               C/C++ scanner.       (line  24)
+* -l C:-k:                               C/C++ scanner.       (line  16)
+* -l C:-u:                               C/C++ scanner.       (line  33)
+* -l perl:--exclude:                     Perl scanner.        (line  21)
+* -l perl:--include:                     Perl scanner.        (line  17)
+* -l perl:-i:                            Perl scanner.        (line  17)
+* -l perl:-x:                            Perl scanner.        (line  21)
+* -l text:--exclude:                     Text scanner.        (line  19)
+* -l text:--include:                     Text scanner.        (line  15)
+* -l text:-i:                            Text scanner.        (line  15)
+* -l text:-x:                            Text scanner.        (line  19)
+* -m:                                    Extraction options.  (line  11)
+* -n:                                    Assembler scanner.   (line  46)
+* -o <1>:                                lid invocation.      (line  93)
+* -o:                                    Writing options.     (line   8)
+* -p:                                    Walker options.      (line  17)
+* -R:                                    lid invocation.      (line  79)
+* -r:                                    lid invocation.      (line  37)
+* -s <1>:                                lid invocation.      (line  50)
+* -s:                                    mkid invocation.     (line  41)
+* -S:                                    File listing options.
+                                                              (line  12)
+* -u <1>:                                Assembler scanner.   (line  37)
+* -u:                                    C/C++ scanner.       (line  33)
+* -v:                                    mkid invocation.     (line  46)
+* -w:                                    lid invocation.      (line  45)
+* -x <1>:                                lid invocation.      (line  93)
+* -x <2>:                                Perl scanner.        (line  21)
+* -x <3>:                                Text scanner.        (line  19)
+* -x:                                    Extraction options.  (line  22)
+* alphabetic case, ignoring differences in: lid invocation.   (line  26)
+* ambiguous identifier names, finding:   lid invocation.      (line 115)
+* architecture-independence:             mkid invocation.     (line   6)
+* assembler scanner:                     Assembler scanner.   (line   6)
+* assembly language scanner:             Assembler scanner.   (line   6)
+* beginning-of-word editor argument:     eid invocation.      (line  60)
+* Berry, Karl:                           Past and Future.     (line  20)
+* bugs, reporting:                       Introduction.        (line  62)
+* C scanner, predefined:                 C/C++ scanner.       (line   6)
+* common command-line options:           Common options.      (line   6)
+* creating databases:                    mkid invocation.     (line   6)
+* cron:                                  mkid invocation.     (line  23)
+* cscope:                                Past and Future.     (line  47)
+* databases, creating:                   mkid invocation.     (line   6)
+* eid:                                   eid invocation.      (line   6)
+* EIDARG:                                eid invocation.      (line  56)
+* EIDLDEL:                               eid invocation.      (line  60)
+* EIDRDEL:                               eid invocation.      (line  66)
+* Emacs interface to gid:                Emacs gid interface. (line   6)
+* end-of-word editor argument:           eid invocation.      (line  66)
+* exclude languages:                     Extraction options.  (line  22)
+* fid:                                   fid invocation.      (line   6)
+* file name separator:                   File listing options.
+                                                              (line  12)
+* file tree pruning:                     Walker options.      (line  17)
+* filenames, matching:                   fnid invocation.     (line   6)
+* fnid:                                  fnid invocation.     (line   6)
+* future:                                Past and Future.     (line  47)
+* gid Emacs function:                    Emacs gid interface. (line  16)
+* grep:                                  Past and Future.     (line  47)
+* help, online:                          Universal options.   (line   7)
+* history:                               Past and Future.     (line   6)
+* Horsley, Tom:                          Past and Future.     (line  20)
+* ID database file name <1>:             Writing options.     (line   8)
+* ID database file name:                 Reading options.     (line   8)
+* ID database, definition of:            Introduction.        (line   6)
+* ID file format:                        mkid invocation.     (line   6)
+* id-utils.el interface to Emacs:        Emacs gid interface. (line   6)
+* ignoring differences in alphabetic case: lid invocation.    (line  26)
+* include languages:                     Extraction options.  (line  16)
+* introduction:                          Introduction.        (line   6)
+* language map file:                     Extraction options.  (line  11)
+* language-specific option:              Extraction options.  (line  29)
+* languages_0:                           Defining scanners.   (line   6)
+* left delimiter editor argument:        eid invocation.      (line  60)
+* Leonard, Bill:                         Past and Future.     (line  20)
+* load-path:                             Emacs gid interface. (line   6)
+* look and mkid 1:                       Past and Future.     (line   6)
+* matching filenames:                    fnid invocation.     (line   6)
+* McGary, Greg:                          Past and Future.     (line   6)
+* mkid progress:                         mkid invocation.     (line  46)
+* numeric matches, specifying radix of:  lid invocation.      (line  93)
+* overview:                              Introduction.        (line   6)
+* perl scanner:                          Perl scanner.        (line   6)
+* radix of numeric matches, specifying:  lid invocation.      (line  93)
+* right delimiter editor argument:       eid invocation.      (line  66)
+* scanners:                              Extraction options.  (line  39)
+* scanners, defining in source code:     Defining scanners.   (line   6)
+* scanners.c:                            Defining scanners.   (line   6)
+* Scofield, Doug:                        Past and Future.     (line  20)
+* search for token, initial:             eid invocation.      (line  56)
+* sharing ID files:                      mkid invocation.     (line   6)
+* single matches, showing:               lid invocation.      (line 101)
+* statistics:                            mkid invocation.     (line  41)
+* text scanner:                          Text scanner.        (line   6)
+* tokens common to two files:            fid invocation.      (line   6)
+* tokens in a file:                      fid invocation.      (line   6)
+* version number, finding:               Universal options.   (line  11)
+
+
+
+Tag Table:
+Node: Top1272
+Node: Introduction2022
+Node: Quick start4554
+Node: Common options5483
+Node: Universal options6282
+Node: Reading options6616
+Ref: Reading options-Footnote-17620
+Node: Writing options7744
+Node: Walker options8249
+Node: File listing options9093
+Node: Extraction options10189
+Node: Language map12810
+Node: C/C++ scanner14985
+Node: Assembler scanner16605
+Node: Text scanner18711
+Node: Perl scanner19524
+Node: Defining scanners20509
+Node: mkid invocation21735
+Node: lid invocation24017
+Ref: lid invocation-Footnote-129303
+Node: lid aliases29383
+Node: Emacs gid interface30066
+Node: eid invocation30988
+Node: fid invocation33576
+Node: fnid invocation34264
+Node: xtokid invocation34940
+Node: Past and Future35879
+Node: Index38576
+
+End Tag Table

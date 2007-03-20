@@ -1,0 +1,211 @@
+Making check in m4
+make[1]: Entering directory `/cygdrive/j/Devel/id-utils/4.0-1/id-utils-4.0/m4'
+make[1]: Niets te doen voor `check'.
+make[1]: Leaving directory `/cygdrive/j/Devel/id-utils/4.0-1/id-utils-4.0/m4'
+Making check in intl
+make[1]: Entering directory `/cygdrive/j/Devel/id-utils/4.0-1/id-utils-4.0/intl'
+make[1]: Niets te doen voor `check'.
+make[1]: Leaving directory `/cygdrive/j/Devel/id-utils/4.0-1/id-utils-4.0/intl'
+Making check in lib
+make[1]: Entering directory `/cygdrive/j/Devel/id-utils/4.0-1/id-utils-4.0/lib'
+make  check-am
+make[2]: Entering directory `/cygdrive/j/Devel/id-utils/4.0-1/id-utils-4.0/lib'
+make[2]: Niets te doen voor `check-am'.
+make[2]: Leaving directory `/cygdrive/j/Devel/id-utils/4.0-1/id-utils-4.0/lib'
+make[1]: Leaving directory `/cygdrive/j/Devel/id-utils/4.0-1/id-utils-4.0/lib'
+Making check in libidu
+make[1]: Entering directory `/cygdrive/j/Devel/id-utils/4.0-1/id-utils-4.0/libidu'
+make[1]: Niets te doen voor `check'.
+make[1]: Leaving directory `/cygdrive/j/Devel/id-utils/4.0-1/id-utils-4.0/libidu'
+Making check in src
+make[1]: Entering directory `/cygdrive/j/Devel/id-utils/4.0-1/id-utils-4.0/src'
+make[1]: Niets te doen voor `check'.
+make[1]: Leaving directory `/cygdrive/j/Devel/id-utils/4.0-1/id-utils-4.0/src'
+Making check in lisp
+make[1]: Entering directory `/cygdrive/j/Devel/id-utils/4.0-1/id-utils-4.0/lisp'
+make[2]: Entering directory `/cygdrive/j/Devel/id-utils/4.0-1/id-utils-4.0/lisp'
+WARNING: Warnings can be ignored. :-)
+if test "no" != no; then \
+  set x; \
+  list='id-utils.el'; for p in $list; do \
+    if test -f "$p"; then d=; else d="../../id-utils-4.0-src/lisp/"; fi; \
+    set x "$@" "$d$p"; shift; \
+  done; \
+  shift; \
+  EMACS="no" /bin/sh ../../id-utils-4.0-src/elisp-comp "$@" || exit 1; \
+else : ; fi
+make[2]: Leaving directory `/cygdrive/j/Devel/id-utils/4.0-1/id-utils-4.0/lisp'
+make[1]: Leaving directory `/cygdrive/j/Devel/id-utils/4.0-1/id-utils-4.0/lisp'
+Making check in doc
+make[1]: Entering directory `/cygdrive/j/Devel/id-utils/4.0-1/id-utils-4.0/doc'
+make[1]: Niets te doen voor `check'.
+make[1]: Leaving directory `/cygdrive/j/Devel/id-utils/4.0-1/id-utils-4.0/doc'
+Making check in testsuite
+make[1]: Entering directory `/cygdrive/j/Devel/id-utils/4.0-1/id-utils-4.0/testsuite'
+make  check-TESTS
+make[2]: Entering directory `/cygdrive/j/Devel/id-utils/4.0-1/id-utils-4.0/testsuite'
+make[3]: Entering directory `/cygdrive/j/Devel/id-utils/4.0-1/id-utils-4.0/testsuite'
+/bin/sh ../../id-utils-4.0-src/testsuite/consistency ../../id-utils-4.0-src ../src
+../src/mkid -m ../../id-utils-4.0-src/libidu/id-lang.map ../../id-utils-4.0-src
+mv: cannot stat `ID.fid': No such file or directory
+Oops!  xtokid and lid disagree--look in ID.bad-{xtokid,lid}
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/intl/eval-plural.h
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/intl/gettextP.h
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/intl/gmo.h
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/intl/hash-string.h
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/intl/loadinfo.h
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/intl/localcharset.h
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/intl/os2compat.h
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/intl/plural-exp.h
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/intl/printf-args.h
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/intl/printf-parse.h
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/intl/relocatable.h
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/intl/vasnprintf.h
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/intl/vasnwprintf.h
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/intl/wprintf-parse.h
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/intl/xsize.h
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/lib/__fpending.h
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/lib/alloca_.h
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/lib/closeout.h
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/lib/error.h
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/lib/exclude.h
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/lib/exit.h
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/lib/exitfail.h
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/lib/fnmatch_.h
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/lib/getcwd.h
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/lib/getopt_.h
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/lib/getopt_int.h
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/lib/gettext.h
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/lib/intprops.h
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/lib/inttostr.h
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/lib/lstat.h
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/lib/mbchar.h
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/lib/mbuiter.h
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/lib/mempcpy.h
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/lib/obstack.h
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/lib/pathmax.h
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/lib/quotearg.h
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/lib/regex.h
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/lib/regex_internal.h
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/lib/stat-macros.h
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/lib/stdbool_.h
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/lib/strcase.h
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/lib/strdup.h
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/lib/strnlen1.h
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/lib/strpbrk.h
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/lib/strsep.h
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/lib/strstr.h
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/lib/xalloc.h
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/lib/xgetcwd.h
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/libidu/dynvec.h
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/libidu/hash.h
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/libidu/idfile.h
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/libidu/iduglobal.h
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/libidu/scanners.h
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/libidu/tokflags.h
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/libidu/xnls.h
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/config.h.in
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/intl/libgnuintl.h.in
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/intl/plural.y
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/intl/bindtextdom.c
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/intl/dcgettext.c
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/intl/dcigettext.c
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/intl/dcngettext.c
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/intl/dgettext.c
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/intl/dngettext.c
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/intl/explodename.c
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/intl/finddomain.c
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/intl/gettext.c
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/intl/intl-compat.c
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/intl/l10nflist.c
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/intl/langprefs.c
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/intl/loadmsgcat.c
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/intl/localcharset.c
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/intl/localealias.c
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/intl/localename.c
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/intl/log.c
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/intl/ngettext.c
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/intl/os2compat.c
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/intl/osdep.c
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/intl/plural-exp.c
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/intl/plural.c
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/intl/printf-args.c
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/intl/printf-parse.c
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/intl/printf.c
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/intl/relocatable.c
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/intl/textdomain.c
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/intl/vasnprintf.c
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/lib/__fpending.c
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/lib/alloca.c
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/lib/atexit.c
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/lib/closeout.c
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/lib/error.c
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/lib/exclude.c
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/lib/exitfail.c
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/lib/fnmatch.c
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/lib/fnmatch_loop.c
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/lib/getcwd.c
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/lib/getopt.c
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/lib/getopt1.c
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/lib/imaxtostr.c
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/lib/inttostr.c
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/lib/lstat.c
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/lib/malloc.c
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/lib/mbchar.c
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/lib/memchr.c
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/lib/memcpy.c
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/lib/mempcpy.c
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/lib/memset.c
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/lib/obstack.c
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/lib/offtostr.c
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/lib/quotearg.c
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/lib/realloc.c
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/lib/regcomp.c
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/lib/regex.c
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/lib/regex_internal.c
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/lib/regexec.c
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/lib/strcasecmp.c
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/lib/strcspn.c
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/lib/strdup.c
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/lib/strncasecmp.c
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/lib/strnlen1.c
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/lib/strpbrk.c
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/lib/strsep.c
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/lib/strstr.c
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/lib/umaxtostr.c
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/lib/xalloc-die.c
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/lib/xgetcwd.c
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/lib/xmalloc.c
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/libidu/dynvec.c
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/libidu/fnprint.c
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/libidu/hash.c
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/libidu/idfile.c
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/libidu/idread.c
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/libidu/idwrite.c
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/libidu/scanners.c
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/libidu/walker.c
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/src/fid.c
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/src/fnid.c
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/src/lid.c
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/src/mkid.c
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/src/xtokid.c
+Good.  xtokid and fid agree for ../../id-utils-4.0-src/testsuite/single_file_token_bug.c
+../src/mkid -m ../../id-utils-4.0-src/libidu/id-lang.map
+j:\Devel\id-utils\4.0-1\id-utils-4.0\src\mkid.exe: nothing to do
+Good.  No crash when dealing with single file
+Some checks failed.
+make[3]: [consistency-real] Error 1 (ignored)
+make[3]: Leaving directory `/cygdrive/j/Devel/id-utils/4.0-1/id-utils-4.0/testsuite'
+PASS: consistency
+==================
+All 1 tests passed
+==================
+make[2]: Leaving directory `/cygdrive/j/Devel/id-utils/4.0-1/id-utils-4.0/testsuite'
+make[1]: Leaving directory `/cygdrive/j/Devel/id-utils/4.0-1/id-utils-4.0/testsuite'
+Making check in po
+make[1]: Entering directory `/cygdrive/j/Devel/id-utils/4.0-1/id-utils-4.0/po'
+make[1]: Niets te doen voor `check'.
+make[1]: Leaving directory `/cygdrive/j/Devel/id-utils/4.0-1/id-utils-4.0/po'
+make[1]: Entering directory `/cygdrive/j/Devel/id-utils/4.0-1/id-utils-4.0'
+make[1]: Niets te doen voor `check-am'.
+make[1]: Leaving directory `/cygdrive/j/Devel/id-utils/4.0-1/id-utils-4.0'
