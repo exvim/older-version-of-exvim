@@ -1852,6 +1852,9 @@ au BufNewFile,BufRead *.uc			setf uc
 " High Level Shader Language
 au BufNewFile,BufRead *.hlsl,*.fx,*.cg,*.vsh,*.psh       setf hlsl
 
+" Max Script
+au BufNewFile,BufRead *.ms  setf maxscript
+
 " Updatedb
 au BufNewFile,BufRead /etc/updatedb.conf	setf updatedb
 

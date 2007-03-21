@@ -59,9 +59,9 @@ syn keyword hlslType            sampler texture filter
 syn match   hlslType            "address[u,v,w]"
 
 " Define the default highlighting.
-if version >= 508 || !exists("did_cpp_syntax_inits")
+if version >= 508 || !exists("did_hlsl_syntax_inits")
   if version < 508
-    let did_cpp_syntax_inits = 1
+    let did_hlsl_syntax_inits = 1
     command -nargs=+ HiLink hi link <args>
   else
     command -nargs=+ HiLink hi def link <args>

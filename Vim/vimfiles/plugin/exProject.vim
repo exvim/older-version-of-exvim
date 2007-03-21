@@ -387,7 +387,7 @@ function! s:exPJ_QuickRefreshProject() " <<<
     silent exec 'normal $vaB[{v'
     let fold_start = line("'<")
     let fold_end = line("'>")
-    let space_cout = (g:ex_GetFoldLevel(line('.'))+1)*2
+    let space_cout = (g:ex_GetFoldLevel(line('.'))+1)*2+1
     let pattern_dot = repeat('.', space_cout)
     let file_pattern = pattern_dot . '-\[.\]'
 
