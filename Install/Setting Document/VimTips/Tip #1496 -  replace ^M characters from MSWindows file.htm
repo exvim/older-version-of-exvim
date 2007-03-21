@@ -1,0 +1,328 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+
+
+
+  <link rel="Stylesheet" type="text/css" href="Tip%20%231496%20-%20%20replace%20%5EM%20characters%20from%20MSWindows%20file_files/style.css"><title>Tip #1496 - replace ^M characters from MSWindows file : vim online</title>
+  
+  <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+  <meta name="KEYWORDS" content="Vim, Vi IMproved, text editor, home, documentation, tips, scripts, news">
+  <link rel="shortcut icon" type="image/x-icon" href="http://vim.sourceforge.net/images/vim_shortcut.ico"></head><body topmargin="0" leftmargin="0" bgcolor="#ffffff" marginheight="0" marginwidth="0"> 
+
+<!-- HEADER, SPONSOR IMAGE, VIM IMAGE AND BOOK AD -->
+<table border="0" bordercolor="red" cellpadding="0" cellspacing="0" width="100%">
+  <tbody><tr>
+    <td colspan="4" class="lightbg"><img src="Tip%20%231496%20-%20%20replace%20%5EM%20characters%20from%20MSWindows%20file_files/spacer.gif" alt="" height="5" width="1"></td>
+  </tr>
+  <tr>
+  <td class="lightbg">&nbsp;&nbsp;&nbsp;</td>
+  <td class="lightbg" align="left"><a href="http://vim.sourceforge.net/sponsor/index.php"><img src="Tip%20%231496%20-%20%20replace%20%5EM%20characters%20from%20MSWindows%20file_files/sponsorvim.gif" alt="sponsor Vim development" border="0"></a></td>
+    <td class="lightbg" align="center"><a href="http://vim.sourceforge.net/index.php"><img src="Tip%20%231496%20-%20%20replace%20%5EM%20characters%20from%20MSWindows%20file_files/vim_header.gif" alt="Vim logo" border="0"></a></td>
+    <td class="lightbg" align="right"><a href="http://iccf-holland.org/click5.html"><img src="Tip%20%231496%20-%20%20replace%20%5EM%20characters%20from%20MSWindows%20file_files/buyhelplearn.gif" alt="Vim Book Ad" border="0"></a></td>
+  </tr>
+  <tr>
+    <td colspan="4" class="lightbg"><img src="Tip%20%231496%20-%20%20replace%20%5EM%20characters%20from%20MSWindows%20file_files/spacer.gif" alt="" height="5" width="1"></td>
+  </tr>
+  <tr>
+    <td colspan="4" class="darkbg"><img src="Tip%20%231496%20-%20%20replace%20%5EM%20characters%20from%20MSWindows%20file_files/spacer.gif" alt="" height="10" width="1"></td>
+  </tr>
+</tbody></table>
+<!-- THE PAGE BODY: BETWEEN HEADER AND FOOTER -->
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <col width="180">
+  <col width="1">
+
+  <tbody><tr valign="top">
+    <td class="sidebar">
+      <table border="0" cellpadding="4" cellspacing="0" width="180">
+        <tbody><tr valign="top">
+          <td class="sidebar">
+
+<!-- INCLUDE THE PAGE NAVIGATION -->
+<table border="0" bordercolor="red" cellpadding="0" cellspacing="0" width="100%">
+    <tbody><tr>
+        <td><small>not logged in (<a href="http://vim.sourceforge.net/login.php">login</a>)</small></td>
+    </tr>
+    <tr>
+        <td><img src="Tip%20%231496%20-%20%20replace%20%5EM%20characters%20from%20MSWindows%20file_files/spacer.gif" alt="" border="0" height="1" width="1"></td>
+    </tr>
+    <tr>
+        <td class="darkbg"><img src="Tip%20%231496%20-%20%20replace%20%5EM%20characters%20from%20MSWindows%20file_files/spacer.gif" alt="" border="0" height="3"></td>
+    </tr>
+    <tr>
+        <td><img src="Tip%20%231496%20-%20%20replace%20%5EM%20characters%20from%20MSWindows%20file_files/spacer.gif" alt="" border="0" height="2" width="1"></td>
+    </tr>
+        <tr>
+            <td class="sidebarheader"><a href="http://vim.sourceforge.net/index.php">Home</a></td>
+        </tr>
+        <tr>
+            <td class="sidebarheader"><a href="http://vim.sourceforge.net/search.php">Search</a></td>
+        </tr>
+    <tr>
+        <td><img src="Tip%20%231496%20-%20%20replace%20%5EM%20characters%20from%20MSWindows%20file_files/spacer.gif" alt="" border="0" height="7" width="1"></td>
+    </tr>
+    <tr>
+        <td class="checker"><img src="Tip%20%231496%20-%20%20replace%20%5EM%20characters%20from%20MSWindows%20file_files/spacer.gif" alt="" border="0" height="1"></td>
+    </tr>
+    <tr>
+        <td><img src="Tip%20%231496%20-%20%20replace%20%5EM%20characters%20from%20MSWindows%20file_files/spacer.gif" alt="" border="0" height="7" width="1"></td>
+    </tr>
+        <tr>
+            <td class="sidebarheader"><a href="http://vim.sourceforge.net/about.php">About Vim</a></td>
+        </tr>
+        <tr>
+            <td class="sidebarheader"><a href="http://vim.sourceforge.net/community.php">Community</a></td>
+        </tr>
+        <tr>
+            <td class="sidebarheader"><a href="http://vim.sourceforge.net/news/news.php">News</a></td>
+        </tr>
+        <tr>
+            <td class="sidebarheader"><a href="http://vim.sourceforge.net/sponsor/index.php">Sponsoring</a></td>
+        </tr>
+        <tr>
+            <td class="sidebarheader"><a href="http://vim.sourceforge.net/trivia.php">Trivia</a></td>
+        </tr>
+        <tr>
+            <td class="sidebarheader"><a href="http://vim.sourceforge.net/docs.php">Documentation</a></td>
+        </tr>
+        <tr>
+            <td class="sidebarheader"><a href="http://vim.sourceforge.net/download.php">Download</a></td>
+        </tr>
+    <tr>
+        <td><img src="Tip%20%231496%20-%20%20replace%20%5EM%20characters%20from%20MSWindows%20file_files/spacer.gif" alt="" border="0" height="7" width="1"></td>
+    </tr>
+    <tr>
+        <td class="checker"><img src="Tip%20%231496%20-%20%20replace%20%5EM%20characters%20from%20MSWindows%20file_files/spacer.gif" alt="" border="0" height="1"></td>
+    </tr>
+    <tr>
+        <td><img src="Tip%20%231496%20-%20%20replace%20%5EM%20characters%20from%20MSWindows%20file_files/spacer.gif" alt="" border="0" height="7" width="1"></td>
+    </tr>
+        <tr>
+            <td class="sidebarheader"><a href="http://vim.sourceforge.net/scripts/index.php">Scripts</a></td>
+        </tr>
+        <tr>
+            <td class="sidebarheader"><a href="http://vim.sourceforge.net/tips/index.php">Tips</a></td>
+        </tr>
+        <tr>
+            <td class="sidebarheader"><a href="http://vim.sourceforge.net/account/index.php">My Account</a></td>
+        </tr>
+    <tr>
+        <td><img src="Tip%20%231496%20-%20%20replace%20%5EM%20characters%20from%20MSWindows%20file_files/spacer.gif" alt="" border="0" height="7" width="1"></td>
+    </tr>
+    <tr>
+        <td class="checker"><img src="Tip%20%231496%20-%20%20replace%20%5EM%20characters%20from%20MSWindows%20file_files/spacer.gif" alt="" border="0" height="1"></td>
+    </tr>
+    <tr>
+        <td><img src="Tip%20%231496%20-%20%20replace%20%5EM%20characters%20from%20MSWindows%20file_files/spacer.gif" alt="" border="0" height="7" width="1"></td>
+    </tr>
+        <tr>
+            <td class="sidebarheader"><a href="http://vim.sourceforge.net/huh.php">Site Help</a></td>
+        </tr>
+</tbody></table>
+
+            <table border="0" cellpadding="0" cellspacing="0" width="172">
+              <tbody><tr><td><img src="Tip%20%231496%20-%20%20replace%20%5EM%20characters%20from%20MSWindows%20file_files/spacer.gif" alt="" border="0" height="8" width="1"></td></tr>
+              <tr><td class="darkbg"><img src="Tip%20%231496%20-%20%20replace%20%5EM%20characters%20from%20MSWindows%20file_files/spacer.gif" alt="" height="3" width="1"></td></tr>
+            </tbody></table>
+            <br>
+
+<!-- INCLUDE THE PAGE SIDEBAR TEXT -->
+&nbsp;
+
+          </td>
+        </tr>
+      </tbody></table>
+    </td>
+
+    <td class="darkbg"><img src="Tip%20%231496%20-%20%20replace%20%5EM%20characters%20from%20MSWindows%20file_files/spacer.gif" alt="" border="0" height="1" width="1"><br></td>
+    <td>
+      <table border="0" bordercolor="red" cellpadding="10" cellspacing="0" width="100%">
+        <tbody><tr>
+          <td valign="top">
+
+
+
+<h1><img src="Tip%20%231496%20-%20%20replace%20%5EM%20characters%20from%20MSWindows%20file_files/basic.gif" alt="basic">&nbsp;Tip #1496: replace ^M characters from MSWindows file</h1>
+
+<!-- karma table -->
+<table border="1" bordercolor="#000066" cellpadding="4" cellspacing="0">
+<tbody><tr>
+  <td class="lightbg"><b>&nbsp;tip karma&nbsp;</b></td>
+  <td>
+    &nbsp;Rating <b>9/9</b>, Viewed by 857&nbsp;
+  </td>
+</tr>
+</tbody></table>
+
+<br>
+
+<table border="0" cellpadding="0" cellspacing="0">
+  <tbody><tr>
+    <td class="prompt">created:</td>
+    <td>&nbsp;</td>
+    <td>January 31, 2007 13:56</td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+    <td class="prompt">complexity:</td>
+    <td>&nbsp;</td>
+    <td>basic</td>
+  </tr>
+  <tr>
+    <td class="prompt">author:</td>
+    <td>&nbsp;</td>
+    <td>ritesh wadekar</td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+    <td class="prompt">as of Vim:</td>
+    <td>&nbsp;</td>
+    <td>5.7</td>
+  </tr>
+</tbody></table>
+
+<p><code>Windows files has line feed and carriage return. When such
+files are copied to *nix like OS, vim / vi shows ^M characters at the
+end of each line.
+<br>
+<br>To get rid of those ^M use:
+<br>
+<br>1,$ s/^M//gc
+<br>or
+<br>% s/^M//gc
+<br>
+<br>To type ^M hit ctrl+v first and then M.</code></p>
+
+<!-- rating table -->
+<form name="rating">
+  <input name="tip_id" value="1496" type="hidden">
+  <table border="1" bordercolor="#000066" cellpadding="4" cellspacing="0">
+    <tbody><tr>
+      <td class="lightbg"><b>&nbsp;rate this tip&nbsp;</b></td>
+      <td valign="middle">
+	<input name="rating" value="life_changing" type="radio">Life Changing
+	<input name="rating" value="helpful" type="radio">Helpful
+	<input name="rating" value="unfulfilling" type="radio">Unfulfilling&nbsp;
+	<input value="rate" type="submit">
+      </td>
+    </tr>
+  </tbody></table>
+</form>
+<p>
+<small>
+          <a href="http://vim.sourceforge.net/tips/tip.php?tip_id=1495">&lt;&lt;&nbsp;Wrap a Visual hilight in an arbitrary HTML tag</a> | 
+                <a href="http://vim.sourceforge.net/tips/tip.php?tip_id=1497">convert between C /* */ comments and C++ // comments&nbsp;&gt;&gt;</a> 
+    </small>
+
+<br>
+<br>
+</p><h1>Additional Notes</h1>
+
+<table border="0" cellpadding="3" cellspacing="4" width="100%">
+    	<tbody><tr>
+	  <td class="lightbg">
+	    	    <b>Anonymous</b>, 
+	    	    <font size="-1"> January 31, 2007 14:11 </font>
+	  </td>
+	</tr>
+	<tr>
+	  <td><tt>For ^M hit CTL-v then CTL-M or CTL-v enter
+
+	  </tt></td>
+	</tr>
+    	<tr>
+	  <td class="lightbg">
+	    	    <b>Anonymous</b>, 
+	    	    <font size="-1"> January 31, 2007 14:24 </font>
+	  </td>
+	</tr>
+	<tr>
+	  <td><tt>one of the oldest topics ever, see <a href="http://vim.sourceforge.net/tips/tip.php?tip_id=26">vimtip #26</a>
+
+	  </tt></td>
+	</tr>
+    	<tr>
+	  <td class="lightbg">
+	    	    <b>Anonymous</b>, 
+	    	    <font size="-1"> January 31, 2007 23:28 </font>
+	  </td>
+	</tr>
+	<tr>
+	  <td><tt>Note that, for people using Vim with Windows keybindings, CTRL-V is (naturally) the paste operation;
+<br>so, to produce a ^M, you have to type CTRL-Q then CTRL-M
+<br>
+
+	  </tt></td>
+	</tr>
+    
+    <tr>
+      <td>
+	<form method="get" action="add_tip_note.php">
+	<input name="tip_id" value="1496" type="hidden">
+	<input name="Add Note" value="Add Note" type="submit">
+        </form>
+      </td>
+    </tr>
+
+</tbody></table>
+<!-- finish off the framework -->
+          </td>
+        </tr>
+      </tbody></table>
+    </td>
+  </tr>
+</tbody></table>
+
+<!-- END OF THE PAGE BODY: BETWEEN HEADER AND FOOTER -->
+
+<table border="0" bordercolor="red" cellpadding="0" cellspacing="0" width="100%">
+  <tbody><tr><td colspan="4"><img src="Tip%20%231496%20-%20%20replace%20%5EM%20characters%20from%20MSWindows%20file_files/spacer.gif" alt="" height="5" width="1"></td></tr>
+  <tr><td colspan="4" bgcolor="#000000"><img src="Tip%20%231496%20-%20%20replace%20%5EM%20characters%20from%20MSWindows%20file_files/spacer.gif" alt="" height="2" width="1"></td></tr>
+  <tr><td colspan="4"><img src="Tip%20%231496%20-%20%20replace%20%5EM%20characters%20from%20MSWindows%20file_files/spacer.gif" alt="" height="5" width="1"></td></tr>
+  <tr>
+    <td><img src="Tip%20%231496%20-%20%20replace%20%5EM%20characters%20from%20MSWindows%20file_files/spacer.gif" alt="" height="1" width="5"></td>
+
+    <td align="left" valign="top"><small>
+      If you have questions or remarks about this site, visit the
+      <a href="http://vimonline.sf.net/">vimonline development</a> pages.
+      Please use this site responsibly.
+      <br> 
+      
+      Questions about <a href="http://www.vim.org/about.php">Vim</a> should go
+      to vim@vim.org after searching
+      <a href="http://groups.yahoo.com/group/vim">the archive</a>.
+      Help Bram <a href="http://iccf-holland.org/">help Uganda</a>.
+      </small>
+	&nbsp;
+	&nbsp;
+
+	<!-- Start of StatCounter Code -->
+	<script type="text/javascript" language="javascript">
+	var sc_project=1417324; 
+	var sc_invisible=1; 
+	var sc_partition=11; 
+	var sc_security="d41633bc"; 
+	</script>
+
+	<script type="text/javascript" language="javascript" src="Tip%20%231496%20-%20%20replace%20%5EM%20characters%20from%20MSWindows%20file_files/counter.js"></script><noscript><a
+href="http://www.statcounter.com/" target="_blank"><img
+src="http://c12.statcounter.com/counter.php?sc_project=1417324&java=0&security=d41633bc&invisible=0"
+alt="free tracking" border="0"></a> </noscript>
+	<!-- End of StatCounter Code -->
+	<small>
+	<a href="http://my.statcounter.com/project/standard/stats.php?project_id=1417324&amp;guest=1">stats</a>
+	</small>
+    </td>
+
+    <td align="right" valign="top">
+      	<a href="http://www.webconceptgroup.net/"><img src="Tip%20%231496%20-%20%20replace%20%5EM%20characters%20from%20MSWindows%20file_files/logo_sponsor_wcg.jpg" alt="Sponsored by Web Concept Group Inc." border="0" height="30" width="131"></a>
+	<a href="http://sourceforge.net/"><img src="Tip%20%231496%20-%20%20replace%20%5EM%20characters%20from%20MSWindows%20file_files/sflogo.png" alt="SourceForge.net Logo" border="0" height="31" width="88"></a>
+    </td>
+
+    <td><img src="Tip%20%231496%20-%20%20replace%20%5EM%20characters%20from%20MSWindows%20file_files/spacer.gif" alt="" height="1" width="5"></td>
+  </tr>
+
+    
+  <tr><td colspan="4"><img src="Tip%20%231496%20-%20%20replace%20%5EM%20characters%20from%20MSWindows%20file_files/spacer.gif" alt="" height="5" width="1"></td>
+  
+  </tr>
+</tbody></table>
+
+</body></html>
