@@ -168,28 +168,14 @@ function s:Grep_Cfiles()
     exec ":grep -r --include=\"*.cpp\" --include=\"*.c\" --include=\"*.hpp\" --include=\"*.h\" " . l_str . " *"
 endfunction
 
-" functions use in F<1-12> key mapping
-function! InsertIF() range
-    let lstline = a:lastline + 1 
-    call append( a:lastline , "#endif")
-    call append( a:firstline -1 , "#if 0")
-    exec ":" . lstline
-endfunction
-function! InsertRemoveCmt() range
-    if (strpart(getline('.'),0,2) == "//")
-        exec ":" . a:firstline . "," . a:lastline . "s\/^\\\/\\\/\/\/"
-    else
-        exec ":" . a:firstline . "," . a:lastline . "s\/^\/\\\/\\\/\/"
-    endif
-endfunction
 
 " F12: Insert '#if 0' and '#endif' between the selection
-vmap <F12> :call InsertIF()<CR>
-" F11: delete the '#if 0' and '#endif' when cursor in the defines block.
-map <F11> <ESC>[#dd]#dd<C-o>
+vmap <F12> :call g:ex_InsertIFZero()<CR>
+nmap <F12> :call g:ex_RemoveIFZero()<CR>
+
 
 " F9:  Insert/Remove C++ Comment ("//") before all the lines of the selection
-vmap <F9> :call InsertRemoveCmt()<CR>
+vmap <F11> :call g:ex_InsertRemoveCmt()<CR>
 
 " F8:  Set Search pattern highlight on/off
 nmap <F8> :let @/=""<CR>
@@ -245,69 +231,9 @@ vnoremap > >gv
 map <kPlus>	zo
 map <kMinus> zc
 
-" VimTip #1119: How to use Vim like an IDE
-" delete the buffer; keep windows; create a scratch buffer if no buffers left 
-" Using this Kwbd function (:call Kwbd(1)) will make Vim behave like an IDE; or maybe even better. 
-function Kwbd(kwbdStage) 
-    if(a:kwbdStage == 1) 
-        if(!buflisted(winbufnr(0))) 
-            bd! 
-            return 
-        endif 
-        let g:kwbdBufNum = bufnr("%") 
-        let g:kwbdWinNum = winnr() 
-        windo call Kwbd(2) 
-        execute "normal " . g:kwbdWinNum . "" 
-        let g:buflistedLeft = 0 
-        let g:bufFinalJump = 0 
-        let l:nBufs = bufnr("$") 
-        let l:i = 1 
-        while(l:i <= l:nBufs) 
-            if(l:i != g:kwbdBufNum) 
-                if(buflisted(l:i)) 
-                    let g:buflistedLeft = g:buflistedLeft + 1 
-                else 
-                    if(bufexists(l:i) && !strlen(bufname(l:i)) && !g:bufFinalJump) 
-                        let g:bufFinalJump = l:i 
-                    endif 
-                endif 
-            endif 
-            let l:i = l:i + 1 
-        endwhile 
-        if(!g:buflistedLeft) 
-            if(g:bufFinalJump) 
-                windo if(buflisted(winbufnr(0))) | execute "b! " . g:bufFinalJump | endif 
-            else 
-                enew 
-                let l:newBuf = bufnr("%") 
-                windo if(buflisted(winbufnr(0))) | execute "b! " . l:newBuf | endif 
-            endif 
-            execute "normal " . g:kwbdWinNum . "" 
-        endif 
-        if(buflisted(g:kwbdBufNum) || g:kwbdBufNum == bufnr("%")) 
-            execute "bd! " . g:kwbdBufNum 
-        endif 
-        if(!g:buflistedLeft) 
-            set buflisted 
-            set bufhidden=delete 
-            set buftype=nofile 
-            setlocal noswapfile 
-            normal athis is the scratch buffer 
-        endif 
-    else 
-        if(bufnr("%") == g:kwbdBufNum) 
-            let prevbufvar = bufnr("#") 
-            if(prevbufvar > 0 && buflisted(prevbufvar) && prevbufvar != g:kwbdBufNum) 
-                b # 
-            else 
-                bn 
-            endif 
-        endif 
-    endif 
-endfunction 
-" map Kwbd(1) to \bd will close buffer and keep window
-nmap <Leader>bd :call Kwbd(1)<CR>
-nmap <C-F4> :call Kwbd(1)<CR>
+" map g:ex_Kwbd(1) to \bd will close buffer and keep window
+nmap <Leader>bd :call g:ex_Kwbd(1)<CR>
+nmap <C-F4> :call g:ex_Kwbd(1)<CR>
 
 
 " --------------------------------------------------------------------------------------

@@ -275,10 +275,46 @@ endfunction " >>>
 " ------------------------
 "  string functions
 " ------------------------
+" --ex_AlignDigit--
 function! g:ex_AlignDigit( align_nr, digit ) " <<<
     let print_fmt = '%'.a:align_nr.'d'
     let str_digit = printf(print_fmt,a:digit)
     retur substitute(str_digit,' ', '0','g')
+endfunction " >>>
+
+" --ex_InsertIFZero--
+function! g:ex_InsertIFZero() range " <<<
+    let lstline = a:lastline + 1 
+    call append( a:lastline , "#endif")
+    call append( a:firstline -1 , "#if 0")
+    exec ":" . lstline
+endfunction " >>>
+
+" --ex_RemoveIFZero--
+function! g:ex_RemoveIFZero() range " <<<
+    let cur_line = getline(".")
+    while match(cur_line, "#if.*0") == -1
+        silent normal [#
+        let cur_line = getline(".")
+    endwhile
+    silent normal dd]#
+    let cur_line = getline(".")
+    if match(cur_line, "#else") != -1
+        silent normal dd]#dd
+        silent exec "normal \<c-o>\<c-o>\<c-o>"
+    else
+        silent normal dd
+        silent exec "normal \<c-o>\<c-o>"
+    endif
+endfunction " >>>
+
+" --ex_InsertRemoveCmt--
+function! g:ex_InsertRemoveCmt() range " <<<
+    if (strpart(getline('.'),0,2) == "//")
+        exec ":" . a:firstline . "," . a:lastline . "s\/^\\\/\\\/\/\/"
+    else
+        exec ":" . a:firstline . "," . a:lastline . "s\/^\/\\\/\\\/\/"
+    endif
 endfunction " >>>
 
 " ------------------------
@@ -311,6 +347,69 @@ function! g:ex_GotoLastEditBuffer() " <<<
         call g:ex_WarningMsg("Buffer: " .bufname(bufnr).  " can't be accessed.")
     endif
 endfunction " >>>
+
+" --ex_Kwbd--
+" VimTip #1119: How to use Vim like an IDE
+" delete the buffer; keep windows; create a scratch buffer if no buffers left 
+" Using this Kwbd function (:call Kwbd(1)) will make Vim behave like an IDE; or maybe even better. 
+function g:ex_Kwbd(kwbdStage) 
+    if(a:kwbdStage == 1) 
+        if(!buflisted(winbufnr(0))) 
+            bd! 
+            return 
+        endif 
+        let g:kwbdBufNum = bufnr("%") 
+        let g:kwbdWinNum = winnr() 
+        windo call g:ex_Kwbd(2) 
+        execute "normal " . g:kwbdWinNum . "" 
+        let g:buflistedLeft = 0 
+        let g:bufFinalJump = 0 
+        let l:nBufs = bufnr("$") 
+        let l:i = 1 
+        while(l:i <= l:nBufs) 
+            if(l:i != g:kwbdBufNum) 
+                if(buflisted(l:i)) 
+                    let g:buflistedLeft = g:buflistedLeft + 1 
+                else 
+                    if(bufexists(l:i) && !strlen(bufname(l:i)) && !g:bufFinalJump) 
+                        let g:bufFinalJump = l:i 
+                    endif 
+                endif 
+            endif 
+            let l:i = l:i + 1 
+        endwhile 
+        if(!g:buflistedLeft) 
+            if(g:bufFinalJump) 
+                windo if(buflisted(winbufnr(0))) | execute "b! " . g:bufFinalJump | endif 
+            else 
+                enew 
+                let l:newBuf = bufnr("%") 
+                windo if(buflisted(winbufnr(0))) | execute "b! " . l:newBuf | endif 
+            endif 
+            execute "normal " . g:kwbdWinNum . "" 
+        endif 
+        if(buflisted(g:kwbdBufNum) || g:kwbdBufNum == bufnr("%")) 
+            execute "bd! " . g:kwbdBufNum 
+        endif 
+        if(!g:buflistedLeft) 
+            set buflisted 
+            set bufhidden=delete 
+            set buftype=nofile 
+            setlocal noswapfile 
+            normal athis is the scratch buffer 
+        endif 
+    else 
+        if(bufnr("%") == g:kwbdBufNum) 
+            let prevbufvar = bufnr("#") 
+            if(prevbufvar > 0 && buflisted(prevbufvar) && prevbufvar != g:kwbdBufNum) 
+                b # 
+            else 
+                bn 
+            endif 
+        endif 
+    endif 
+endfunction 
+
 
 " ------------------------
 "  file functions
