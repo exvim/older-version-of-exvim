@@ -292,7 +292,9 @@ endfunction " >>>
 
 " --ex_RemoveIFZero--
 function! g:ex_RemoveIFZero() range " <<<
-    let cur_line = getline(".")
+    let save_cursor = getpos(".")
+    let save_line = getline(".")
+    let cur_line = save_line
     while match(cur_line, "#if.*0") == -1
         silent normal [#
         let cur_line = getline(".")
@@ -301,11 +303,13 @@ function! g:ex_RemoveIFZero() range " <<<
     let cur_line = getline(".")
     if match(cur_line, "#else") != -1
         silent normal dd]#dd
-        silent exec "normal \<c-o>\<c-o>\<c-o>"
     else
         silent normal dd
-        silent exec "normal \<c-o>\<c-o>"
     endif
+
+    silent call setpos('.', save_cursor)
+    silent call search(save_line, 'b')
+    silent call cursor(line('.'), save_cursor[2])
 endfunction " >>>
 
 " --ex_InsertRemoveCmt--
