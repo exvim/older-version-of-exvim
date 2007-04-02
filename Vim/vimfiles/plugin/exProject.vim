@@ -639,11 +639,11 @@ function! s:exPJ_GotoSelectResult(edit_cmd) " <<<
     let file_type = strpart( full_path_name, strridx(full_path_name,'.')+1 )
     if file_type == 'err'
         echon 'load quick fix list: ' . full_path_name . "\r"
-        silent wincmd p
+        silent call g:ex_GotoEditBuffer()
         silent exec 'QF '.full_path_name
     elseif file_type == 'mk'
         echon 'set make file: ' . full_path_name . "\r"
-        silent wincmd p
+        silent call g:ex_GotoEditBuffer()
         silent exec a:edit_cmd.' '.full_path_name
         " do not show it in buffer list
         silent! setlocal bufhidden=hide
@@ -651,12 +651,14 @@ function! s:exPJ_GotoSelectResult(edit_cmd) " <<<
         silent! setlocal nobuflisted
     elseif file_type == 'exe'
         echon 'debug: ' . full_path_name . "\r"
-        silent wincmd p
+        silent call g:ex_GotoEditBuffer()
         silent call g:ex_Debug( full_path_name )
     else " default
         " put the edit file
         echon full_path_name . "\r"
-        silent wincmd p
+        " XXX: change method to ex_GotoEditBuffer
+        " silent wincmd p
+        silent call g:ex_GotoEditBuffer()
         silent exec a:edit_cmd.' '.full_path_name
     endif
     if !g:exPJ_backto_editbuf
