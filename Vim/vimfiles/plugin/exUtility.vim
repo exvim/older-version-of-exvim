@@ -30,10 +30,6 @@ let s:ex_editbuf_num = ""
 let s:ex_level_list = []
 " >>>
 
-" -------------------------------------------------------------------------
-"  function part
-" -------------------------------------------------------------------------
-
 " ------------------------
 "  window functions
 " ------------------------
@@ -329,6 +325,14 @@ endfunction " >>>
 " Record current buf num when leave
 function! g:ex_RecordCurrentBufNum() " <<<
     let s:ex_editbuf_num = bufnr('%')
+endfunction " >>>
+
+" --ex_UpdateCurrentBuffer--
+"  Update current buffer
+function! g:ex_UpdateCurrentBuffer() " <<<
+    if exists(':UMiniBufExplorer')
+        silent exe "UMiniBufExplorer"
+    endif
 endfunction " >>>
 
 " --ex_GotoEditBuffer--

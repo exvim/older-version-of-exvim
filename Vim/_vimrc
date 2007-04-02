@@ -290,6 +290,7 @@ endif " has("autocmd")
 " --------------------
 au BufEnter * :syntax sync fromstart " ensure every file does syntax highlighting (full) 
 au BufNewFile,BufRead *.avs set syntax=avs " for avs syntax file.
+au BufWritePost * call g:ex_UpdateCurrentBuffer() 
 
 au GUIEnter * simalt ~x " Maximize window when enter vim
 
