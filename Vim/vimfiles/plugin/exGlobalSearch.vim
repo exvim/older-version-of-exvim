@@ -261,6 +261,13 @@ function! s:exGS_GoDirect() " <<<
     let @s = reg_s
 endfunction " >>>
 
+" TODO
+" --exGS_GlobalSubstitute
+function! s:exGS_GlobalSubstitute( pat, sub, flag ) " <<<
+
+    substitute( xxxxxx, a:pat, a:sub, a:flag )
+endfunction " >>>
+
 " ------------------------------
 "  select window part
 " ------------------------------
@@ -310,6 +317,10 @@ function! g:exGS_InitSelectWindow() " <<<
 
     " autocmd
     au CursorMoved <buffer> :call g:ex_HighlightSelectLine()
+
+    " command
+    " TODO
+    command -buffer -nargs=1 SUB call s:exGS_GetGlobalSearchResult('<args>', '-s', 0)
 endfunction " >>>
 
 " --exGS_GotoSelectLine--
@@ -643,6 +654,10 @@ function! g:exGS_InitQuickViewWindow() " <<<
 
     " autocmd
     au CursorMoved <buffer> :call g:ex_HighlightSelectLine()
+
+    " command
+    " TODO
+    command -buffer -nargs=1 SUB call s:exGS_GetGlobalSearchResult('<args>', '-s', 0)
 endfunction " >>>
 
 " --exGS_UpdateQuickViewWindow--
