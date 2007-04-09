@@ -1850,7 +1850,7 @@ au BufNewFile,BufRead /etc/udev/cdsymlinks.conf	setf sh
 au BufNewFile,BufRead *.uc			setf uc
 
 " High Level Shader Language
-au BufNewFile,BufRead *.hlsl,*.fx,*.cg,*.vsh,*.psh, *.shd       setf hlsl
+au BufNewFile,BufRead *.hlsl,*.fx,*.cg,*.vsh,*.psh,*.shd       setf hlsl
 
 " Max Script
 au BufNewFile,BufRead *.ms  setf maxscript
