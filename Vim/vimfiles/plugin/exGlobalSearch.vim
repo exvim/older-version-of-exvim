@@ -173,7 +173,7 @@ function! s:exGS_Goto() " <<<
     let file_name = strpart(line, 0, idx) " escape(strpart(line, 0, idx), ' ')
     if findfile(file_name) == ''
         call g:ex_WarningMsg( file_name . ' not found' )
-        return
+        return 0
     endif
     let line = strpart(line, idx+1)
 
@@ -228,7 +228,7 @@ function! s:exGS_Goto() " <<<
             if winnr() != winnum
                 exe winnum . 'wincmd w'
             endif
-            return
+            return 1
         endif
     else
         let winnum = bufwinnr(title)
@@ -238,6 +238,7 @@ function! s:exGS_Goto() " <<<
         close
         call g:ex_GotoEditBuffer()
     endif
+    return 1
 endfunction " >>>
 
 
@@ -264,9 +265,27 @@ endfunction " >>>
 " TODO
 " --exGS_GlobalSubstitute
 function! s:exGS_GlobalSubstitute( pat, sub, flag ) " <<<
-
-    substitute( xxxxxx, a:pat, a:sub, a:flag )
+    silent normal gg
+    let last_line = line("$")
+    let cur_line_idx = 0
+    let cur_line = ''
+    while cur_line_idx <= last_line
+        let s:exGS_select_idx = line(".")
+        if s:exGS_Goto()
+            silent call g:ex_GotoEditBuffer()
+            let cur_line = substitute( getline("."), a:pat, a:sub, a:flag )
+            silent call setline( ".", cur_line )
+            echon cur_line . "\r"
+            silent call g:ex_GotoEditBuffer()
+        endif
+        let cur_line_idx += 1
+        silent normal j
+    endwhile
 endfunction " >>>
+
+function g:ex_test( pat, sub, flag )
+   call s:exGS_GlobalSubstitute( a:pat, a:sub, a:flag )
+endfunction
 
 " ------------------------------
 "  select window part
@@ -320,7 +339,7 @@ function! g:exGS_InitSelectWindow() " <<<
 
     " command
     " TODO
-    command -buffer -nargs=1 SUB call s:exGS_GetGlobalSearchResult('<args>', '-s', 0)
+    command -buffer -nargs=1 SUB call s:exGS_GlobalSubstitute('<args>', '-s', 0)
 endfunction " >>>
 
 " --exGS_GotoSelectLine--
@@ -657,7 +676,7 @@ function! g:exGS_InitQuickViewWindow() " <<<
 
     " command
     " TODO
-    command -buffer -nargs=1 SUB call s:exGS_GetGlobalSearchResult('<args>', '-s', 0)
+    command -buffer -nargs=1 SUB call s:exGS_GlobalSubstitute('<args>', '-s', 0)
 endfunction " >>>
 
 " --exGS_UpdateQuickViewWindow--
