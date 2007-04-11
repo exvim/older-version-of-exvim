@@ -262,8 +262,7 @@ function! s:exGS_GoDirect() " <<<
     let @s = reg_s
 endfunction " >>>
 
-" TODO
-" --exGS_GlobalSubstitute
+" --exGS_GlobalSubstitute--
 function! s:exGS_GlobalSubstitute( pat, sub, flag ) " <<<
     silent normal gg
     let last_line = line("$")
@@ -274,7 +273,9 @@ function! s:exGS_GlobalSubstitute( pat, sub, flag ) " <<<
         if s:exGS_Goto()
             silent call g:ex_GotoEditBuffer()
             let cur_line = substitute( getline("."), a:pat, a:sub, a:flag )
-            silent call setline( ".", cur_line )
+            if cur_line != getline(".")
+                silent call setline( ".", cur_line )
+            endif
             echon cur_line . "\r"
             silent call g:ex_GotoEditBuffer()
         endif
@@ -283,9 +284,21 @@ function! s:exGS_GlobalSubstitute( pat, sub, flag ) " <<<
     endwhile
 endfunction " >>>
 
-function g:ex_test( pat, sub, flag )
-   call s:exGS_GlobalSubstitute( a:pat, a:sub, a:flag )
-endfunction
+" -- exGS_ParseSubcmd--
+function s:exGS_ParseSubcmd(cmd) " <<<
+    let slash_idx_1 = stridx( a:cmd, "/" )
+    let slash_idx_2 = strridx( a:cmd, "/" )
+
+    let pat = strpart(a:cmd, 0, slash_idx_1 )
+    let sub = strpart( a:cmd, slash_idx_1+1, slash_idx_2-slash_idx_1-1 )
+    let flag = ""
+    if slash_idx_1 != slash_idx_2
+        let flag = strpart( a:cmd, slash_idx_2+1 )
+    endif
+
+    echo pat . ' ' . sub . ' ' . flag
+    call s:exGS_GlobalSubstitute( pat, sub, flag )
+endfunction " >>>
 
 " ------------------------------
 "  select window part
@@ -338,8 +351,7 @@ function! g:exGS_InitSelectWindow() " <<<
     au CursorMoved <buffer> :call g:ex_HighlightSelectLine()
 
     " command
-    " TODO
-    command -buffer -nargs=1 SUB call s:exGS_GlobalSubstitute('<args>', '-s', 0)
+    command -buffer -nargs=1 SUB call s:exGS_ParseSubcmd('<args>')
 endfunction " >>>
 
 " --exGS_GotoSelectLine--
@@ -675,8 +687,7 @@ function! g:exGS_InitQuickViewWindow() " <<<
     au CursorMoved <buffer> :call g:ex_HighlightSelectLine()
 
     " command
-    " TODO
-    command -buffer -nargs=1 SUB call s:exGS_GlobalSubstitute('<args>', '-s', 0)
+    command -buffer -nargs=1 SUB call s:exGS_ParseSubcmd('<args>')
 endfunction " >>>
 
 " --exGS_UpdateQuickViewWindow--
