@@ -173,7 +173,7 @@ function! s:exGS_Goto() " <<<
     let file_name = strpart(line, 0, idx) " escape(strpart(line, 0, idx), ' ')
     if findfile(file_name) == ''
         call g:ex_WarningMsg( file_name . ' not found' )
-        return
+        return 0
     endif
     let line = strpart(line, idx+1)
 
@@ -228,7 +228,7 @@ function! s:exGS_Goto() " <<<
             if winnr() != winnum
                 exe winnum . 'wincmd w'
             endif
-            return
+            return 1
         endif
     else
         let winnum = bufwinnr(title)
@@ -238,6 +238,7 @@ function! s:exGS_Goto() " <<<
         close
         call g:ex_GotoEditBuffer()
     endif
+    return 1
 endfunction " >>>
 
 
@@ -259,6 +260,44 @@ function! s:exGS_GoDirect() " <<<
     exe 'normal "syiw'
     call s:exGS_GetGlobalSearchResult(@s, '-s', 1)
     let @s = reg_s
+endfunction " >>>
+
+" --exGS_GlobalSubstitute--
+function! s:exGS_GlobalSubstitute( pat, sub, flag ) " <<<
+    silent normal gg
+    let last_line = line("$")
+    let cur_line_idx = 0
+    let cur_line = ''
+    while cur_line_idx <= last_line
+        let s:exGS_select_idx = line(".")
+        if s:exGS_Goto()
+            silent call g:ex_GotoEditBuffer()
+            let cur_line = substitute( getline("."), a:pat, a:sub, a:flag )
+            if cur_line != getline(".")
+                silent call setline( ".", cur_line )
+            endif
+            echon cur_line . "\r"
+            silent call g:ex_GotoEditBuffer()
+        endif
+        let cur_line_idx += 1
+        silent normal j
+    endwhile
+endfunction " >>>
+
+" -- exGS_ParseSubcmd--
+function s:exGS_ParseSubcmd(cmd) " <<<
+    let slash_idx_1 = stridx( a:cmd, "/" )
+    let slash_idx_2 = strridx( a:cmd, "/" )
+
+    let pat = strpart(a:cmd, 0, slash_idx_1 )
+    let sub = strpart( a:cmd, slash_idx_1+1, slash_idx_2-slash_idx_1-1 )
+    let flag = ""
+    if slash_idx_1 != slash_idx_2
+        let flag = strpart( a:cmd, slash_idx_2+1 )
+    endif
+
+    echo pat . ' ' . sub . ' ' . flag
+    call s:exGS_GlobalSubstitute( pat, sub, flag )
 endfunction " >>>
 
 " ------------------------------
@@ -310,6 +349,9 @@ function! g:exGS_InitSelectWindow() " <<<
 
     " autocmd
     au CursorMoved <buffer> :call g:ex_HighlightSelectLine()
+
+    " command
+    command -buffer -nargs=1 SUB call s:exGS_ParseSubcmd('<args>')
 endfunction " >>>
 
 " --exGS_GotoSelectLine--
@@ -643,6 +685,9 @@ function! g:exGS_InitQuickViewWindow() " <<<
 
     " autocmd
     au CursorMoved <buffer> :call g:ex_HighlightSelectLine()
+
+    " command
+    command -buffer -nargs=1 SUB call s:exGS_ParseSubcmd('<args>')
 endfunction " >>>
 
 " --exGS_UpdateQuickViewWindow--

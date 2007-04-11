@@ -777,7 +777,7 @@ function! g:ex_Browse(dir, filter) " <<<
     " for level in s:ex_level_list
     "     let full_path = level.short_dir.'/'.full_path
     " endfor
-    " echon full_path."\r"
+    " echomsg full_path . "\r"
     " ++++++++++++++++++++++++++++++++++
 endfunction " >>>
 
