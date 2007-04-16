@@ -53,6 +53,10 @@
 *.cpp			text
 *.cxx			text
 
+*.hlsl          text
+*.vsh           text
+*.psh           text
+
 #ChangeLog*		Cdoc
 #
 #*.[sS]			asm --comment=;
