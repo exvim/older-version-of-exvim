@@ -65,7 +65,13 @@ endif
 
 " set defualt filter
 if !exists('g:exPJ_defualt_filter')
-    let g:exPJ_defualt_filter = 'c cpp h hpp inl uc hlsl vsh psh ini mk err exe'
+    let g:exPJ_defualt_filter  = 'c cpp cxx '
+    let g:exPJ_defualt_filter .= 'h hpp inl '
+    let g:exPJ_defualt_filter .= 'uc '
+    let g:exPJ_defualt_filter .= 'hlsl vsh psh '
+    let g:exPJ_defualt_filter .= 'dox doxygen '
+    let g:exPJ_defualt_filter .= 'ini cfg '
+    let g:exPJ_defualt_filter .= 'mk err exe '
 endif
 " -------------------------------
 " local variable initialization
