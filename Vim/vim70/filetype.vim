@@ -1855,6 +1855,9 @@ au BufNewFile,BufRead *.hlsl,*.fx,*.cg,*.vsh,*.psh,*.shd       setf hlsl
 " Max Script
 au BufNewFile,BufRead *.ms  setf maxscript
 
+" Doxygen Comment
+au BufNewFile,BufRead *.dox,*.doxygen       setf cpp.doxygen
+
 " Updatedb
 au BufNewFile,BufRead /etc/updatedb.conf	setf updatedb
 
