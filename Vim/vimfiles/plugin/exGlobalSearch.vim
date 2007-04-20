@@ -287,6 +287,10 @@ endfunction " >>>
 " -- exGS_ParseSubcmd--
 function s:exGS_ParseSubcmd(cmd) " <<<
     let slash_idx_1 = stridx( a:cmd, "/" )
+    while a:cmd[slash_idx_1-1] == '\'
+        let slash_idx_1 = stridx( a:cmd, "/", slash_idx_1 + 1 )
+    endwhile
+
     let slash_idx_2 = strridx( a:cmd, "/" )
 
     let pat = strpart(a:cmd, 0, slash_idx_1 )
