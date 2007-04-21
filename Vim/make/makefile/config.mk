@@ -12,12 +12,11 @@
 Configuration = Debug
 
 
-# Configuration Name
+# Platform Name
 # parameter: Linux
 # 			 Win32
 # 			 All
-Platform = Linux
-
+Platform = Win32
 
 # ----------------------------------------------------------
 #  Advance User Define
@@ -45,14 +44,20 @@ AR := $(SILENT_CMD)ar
 ECHO := $(SILENT_CMD)echo
 SMAKE := $(SILENT_CMD)$(MAKE) $(SILENT_MK)
 
+# Command Path Choose
+ifeq ($(Platform),Linux)
+CMD_PATH_LINUX := 
+else
+CMD_PATH_LINUX := c:/msys/1.0/bin/
+endif
+
 # Linux Commands
-RM := $(SILENT_CMD)rm -f
-RMDIR := $(SILENT_CMD)rmdir
-MKDIR := $(SILENT_CMD)mkdir -p
-CAT := $(SILENT_CMD)cat
+RM := $(SILENT_CMD)$(CMD_PATH_LINUX)rm -f
+RMDIR := $(SILENT_CMD)$(CMD_PATH_LINUX)rmdir
+MKDIR := $(SILENT_CMD)$(CMD_PATH_LINUX)mkdir -p
+CAT := $(SILENT_CMD)$(CMD_PATH_LINUX)cat
 
 # Windows Commands
 DEVENV := $(SILENT_CMD)devenv
 CLS := $(SILENT_CMD)cls # this is the dos command, temp exist here
 COPY := $(SILENT_CMD)copy
-

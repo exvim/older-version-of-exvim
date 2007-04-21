@@ -186,7 +186,11 @@ target: $(FullPath_Target)
 clean-target:
 	$(ECHO)
 	$(ECHO) delete target:
+ifeq ($(Platform),Linux)
 	@for item in $(FullPath_Target); do echo "    |--"   $$item; done
+else
+	@for %%i in ($(FullPath_Target)) do (echo     \--   %%i)
+endif
 	$(RM) $(FullPath_Target)
 # single
 $(Target): $(FullPath_Target)
@@ -195,11 +199,15 @@ $(Target): $(FullPath_Target)
 # FIXME consider dll
 $(FullPath_Target): $(FullPath_Objs)
 	$(ECHO) linking:
+ifeq ($(Platform),Linux)
 	@for obj in $(filter %.o,$^); do echo "    |--"   $$obj; done
+else
+	@for %%i in ($(filter %.o,$^)) do (echo     \--   %%i)
+endif
 	$(MKDIR) $(TargetDir)
 	$(MKDIR) $(ErrDir)
 	$(ECHO) > $(ErrDir)/$(Target).err
-	$(ECHO) --[.]Link-- >> $(ErrDir)/$(Target).err
+	$(ECHO) --[$(Project)]Link-- >> $(ErrDir)/$(Target).err
 ifneq ($(ProjectType),exe)
 	$(AR) r $@ $(filter %.o,$^) 2>>$(ErrDir)/$(Target).err
 else
@@ -224,7 +232,11 @@ deps: $(FullPath_AllDeps)
 clean-deps: 
 	$(ECHO)
 	$(ECHO) delete deps:
+ifeq ($(Platform),Linux)
 	@for item in $(FullPath_AllDeps); do echo "    |--"   $$item; done
+else
+	@for %%i in ($(FullPath_AllDeps)) do (echo     \--   %%i)
+endif
 	$(RM) $(FullPath_AllDeps)
 # single
 $(Deps):
@@ -271,7 +283,11 @@ clean-pchs:
 	$(ECHO)
 	$(ECHO) delete pchs:
 ifneq ($(FullPath_Pchs),)
+ifeq ($(Platform),Linux)
 	@for item in $(FullPath_Pchs); do echo "    |--"   $$item; done
+else
+	@for %%i in ($(FullPath_Pchs)) do (echo     \--   %%i)
+endif
 	$(RM) $(FullPath_Pchs)
 endif
 
@@ -280,7 +296,7 @@ $(FullPath_Pchs):
 	$(MKDIR) $(ErrDir)
 	$(ECHO) compiling $(basename $@)...
 	$(ECHO) > $(ErrDir)/$(patsubst %/,%,$(notdir $@)).err
-	$(ECHO) --[.]$(patsubst %/,%,$(notdir $@))-- >> $(ErrDir)/$(patsubst %/,%,$(notdir $@)).err
+	$(ECHO) --[$(Project)]$(patsubst %/,%,$(notdir $@))-- >> $(ErrDir)/$(patsubst %/,%,$(notdir $@)).err
 	$(CC) -c $(CFlags) $(basename $@) 2>>$(ErrDir)/$(patsubst %/,%,$(notdir $@)).err
 
 # -------------------
@@ -292,7 +308,11 @@ objs: $(FullPath_Objs)
 clean-objs:
 	$(ECHO)
 	$(ECHO) delete objs:
+ifeq ($(Platform),Linux)
 	@for item in $(FullPath_Objs); do echo "    |--"   $$item; done
+else
+	@for %%i in ($(FullPath_Objs)) do (echo     \--   %%i)
+endif
 	$(RM) $(FullPath_Objs)
 # single
 $(Objs):
@@ -309,7 +329,7 @@ $(ObjDir)/%.o: %.cpp $(FullPath_Pchs)
 	$(MKDIR) $(ErrDir)
 	$(ECHO) compiling $<...
 	$(ECHO) > $(ErrDir)/$*.o.err
-	$(ECHO) --[.]$*.cpp-- >> $(ErrDir)/$*.o.err
+	$(ECHO) --[$(Project)]$*.cpp-- >> $(ErrDir)/$*.o.err
 	$(CC) -c $(CFlags) $< -o $@ 2>>$(ErrDir)/$*.o.err 
 
 # c files
@@ -318,7 +338,7 @@ $(ObjDir)/%.o: %.c $(FullPath_Pchs)
 	$(MKDIR) $(ErrDir)
 	$(ECHO) compiling $<...
 	$(ECHO) > $(ErrDir)/$*.o.err
-	$(ECHO) --[.]$*.c-- >> $(ErrDir)/$*.o.err
+	$(ECHO) --[$(Project)]$*.c-- >> $(ErrDir)/$*.o.err
 	$(CC) -c $(CFlags) $< -o $@ 2>>$(ErrDir)/$*.o.err 
 
 # -------------------
@@ -330,7 +350,11 @@ clean-errs:
 	$(ECHO)
 	$(ECHO) delete errs:
 ifneq ($(FullPath_Errs),)
+ifeq ($(Platform),Linux)
 	@for item in $(FullPath_Errs); do echo "    |--"   $$item; done
+else
+	@for %%i in ($(FullPath_Errs)) do (echo     \--   %%i)
+endif
 else
 	$(ECHO) "    |--"
 endif
