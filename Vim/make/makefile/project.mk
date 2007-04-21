@@ -42,7 +42,7 @@ include ../config.mk
 
 # Parent Working Directory
 PWD ?= ..
-OutDir := $(PWD)/_makes
+OutDir := $(PWD)/_gmakes
 
 # Configuration Pre-define
 ifeq ($(Configuration),Debug)
@@ -212,7 +212,7 @@ endif
 ifneq ($(ProjectType),exe)
 	$(AR) r $@ $(filter %.o,$^) 2>>$(ErrDir)/$(Target).err
 else
-	$(CC) $(LFlags) $(filter %.o,$^) -o $@ 2>>$(ErrDir)/$(Target).err
+	$(CC) $(filter %.o,$^) $(LFlags) -o $@ 2>>$(ErrDir)/$(Target).err
 endif
 	$(ECHO) generate $(@)
 ifeq ($(FullPath_PchDeps),)
