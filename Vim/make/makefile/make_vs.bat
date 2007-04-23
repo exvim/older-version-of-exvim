@@ -11,33 +11,33 @@ if "%1"=="" goto Finish
 
 :Build
 echo Creating Directory...
-mkdir .\_makes\Logs\BuildLogs
+mkdir .\_vmakes\Logs\BuildLogs
 echo %1: %2-%4 %3
-if "%4" == "" ( devenv %2 /Build %3 | gawk -f "c:\Program Files\Vim\make\gawk\prg_ConvertLog.awk" > .\_makes\Logs\BuildLogs\make_vs.err
+if "%4" == "" ( devenv %2 /Build %3 | gawk -f "c:\Program Files\Vim\make\gawk\prg_ConvertLog.awk" > .\_vmakes\Logs\BuildLogs\make_vs.err
 ) else ( 
-devenv %2 /Build %3 /Project %4 | gawk -f "c:\Program Files\Vim\make\gawk\prg_ConvertLog.awk" > .\_makes\Logs\BuildLogs\%4_vs.err
+devenv %2 /Build %3 /Project %4 | gawk -f "c:\Program Files\Vim\make\gawk\prg_ConvertLog.awk" > .\_vmakes\Logs\BuildLogs\%4_vs.err
 )
 goto Finish
 
 :Rebuild
 echo Creating Directory...
-mkdir .\_makes\Logs\BuildLogs
+mkdir .\_vmakes\Logs\BuildLogs
 echo %1: %2-%4 %3
-mkdir .\_makes\Logs\BuildLogs
-if "%4" == "" ( devenv %2 /Rebuild %3 | gawk -f "c:\Program Files\Vim\make\gawk\prg_ConvertLog.awk" > .\_makes\Logs\BuildLogs\make_vs.err
+mkdir .\_vmakes\Logs\BuildLogs
+if "%4" == "" ( devenv %2 /Rebuild %3 | gawk -f "c:\Program Files\Vim\make\gawk\prg_ConvertLog.awk" > .\_vmakes\Logs\BuildLogs\make_vs.err
 ) else ( 
-devenv %2 /Rebuild %3 /Project %4 | gawk -f "c:\Program Files\Vim\make\gawk\prg_ConvertLog.awk" > .\_makes\Logs\BuildLogs\%4_vs.err
+devenv %2 /Rebuild %3 /Project %4 | gawk -f "c:\Program Files\Vim\make\gawk\prg_ConvertLog.awk" > .\_vmakes\Logs\BuildLogs\%4_vs.err
 )
 goto Finish
 
 :Clean
 echo Creating Directory...
-mkdir .\_makes\Logs\BuildLogs
+mkdir .\_vmakes\Logs\BuildLogs
 echo %1: %2-%4 %3
-mkdir .\_makes\Logs\BuildLogs
-if "%4" == "" ( devenv %2 /Clean %3 | gawk -f "c:\Program Files\Vim\make\gawk\prg_ConvertLog.awk" > .\_makes\Logs\BuildLogs\make_vs.err
+mkdir .\_vmakes\Logs\BuildLogs
+if "%4" == "" ( devenv %2 /Clean %3 | gawk -f "c:\Program Files\Vim\make\gawk\prg_ConvertLog.awk" > .\_vmakes\Logs\BuildLogs\make_vs.err
 ) else ( 
-devenv %2 /Clean %3 /Project %4 | gawk -f "c:\Program Files\Vim\make\gawk\prg_ConvertLog.awk" > .\_makes\Logs\BuildLogs\%4_vs.err
+devenv %2 /Clean %3 /Project %4 | gawk -f "c:\Program Files\Vim\make\gawk\prg_ConvertLog.awk" > .\_vmakes\Logs\BuildLogs\%4_vs.err
 )
 goto Finish
 
