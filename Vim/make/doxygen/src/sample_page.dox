@@ -1,0 +1,9 @@
+/** \page PageName PageTitle
+  Page Text.
+  \section SectionName SectionTitle
+  Section Text.
+  \subsection SubsectionName SubsectionTitle
+  Subsection Text.
+  \a Command_leader_a_word
+  \addindex addindex_Index
+*/
