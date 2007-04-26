@@ -8,6 +8,7 @@
 # Configuration Name
 # parameter: Debug
 # 			 Release
+# 			 FinalRelease
 # 			 All
 Configuration = Debug
 

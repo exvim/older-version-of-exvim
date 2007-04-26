@@ -46,10 +46,17 @@ OutDir := $(PWD)/_gmakes
 
 # Configuration Pre-define
 ifeq ($(Configuration),Debug)
-PreDefs += Debug
+PreDefs += DEBUG
+PreDefs += _DEBUG
 else 
 ifeq ($(Configuration),Release)
-PreDefs += Release
+PreDefs += RELEASE
+PreDefs += _RELEASE
+else
+ifeq ($(Configuration),FinalRelease)
+PreDefs += FINAL_RELEASE
+PreDefs += _FINAL_RELEASE
+endif
 endif
 endif
 
