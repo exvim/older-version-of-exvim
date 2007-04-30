@@ -1,9 +1,18 @@
-/** \page PageName PageTitle
-  Page Text.
+/** 
+  \mainpage MainPageTitle
+  Main Page Text.
+
   \section SectionName SectionTitle
   Section Text.
+
   \subsection SubsectionName SubsectionTitle
   Subsection Text.
+
+  \par ParagraphTitle:
+  Paragraph Text.
+
+  ==========================================================
+
   \a Command_leader_a_word
-  \addindex addindex_Index
+
 */
