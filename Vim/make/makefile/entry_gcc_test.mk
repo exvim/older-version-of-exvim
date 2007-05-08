@@ -13,7 +13,7 @@ PWD := .
 
 # Project Name
 Project := Test
-ProjectType := Test
+ProjectType := exe
 
 # Include Path
 IncDirs += .
