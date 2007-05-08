@@ -305,7 +305,7 @@ function! s:exQF_GetQuickFixResult( file_name ) " <<<
         endif
 
         " load the quick fix list
-        if s:exQF_compile_dir != ''
+        if s:exQF_compile_dir != '' && isdirectory(s:exQF_compile_dir) != ''
             let cur_dir = getcwd()
             silent exec 'cd '.s:exQF_compile_dir
             silent exec "cg " . full_file_name
