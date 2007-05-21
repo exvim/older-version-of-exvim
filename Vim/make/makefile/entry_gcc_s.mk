@@ -43,33 +43,6 @@ LFlag_Spec += # (sample: -L"C:/Program Files/Microsoft DirectX SDK/Lib/x86")
 PWD ?= .
 OutDir := $(PWD)/_gmakes
 
-# Configuration Pre-define
-ifeq ($(Configuration),Debug)
-PreDefs += DEBUG
-PreDefs += _DEBUG
-else 
-ifeq ($(Configuration),Release)
-PreDefs += RELEASE
-PreDefs += _RELEASE
-else
-ifeq ($(Configuration),FinalRelease)
-PreDefs += FINAL_RELEASE
-PreDefs += _FINAL_RELEASE
-endif
-endif
-endif
-
-# Platform Pre-defeine
-ifeq ($(Platform),Linux)
-PreDefs += LINUX
-else 
-ifeq ($(Platform),Win32)
-PreDefs += WIN
-PreDefs += WIN32
-PreDefs += WINDOWS
-endif
-endif
-
 # ----------------------------------------------------------
 #  Rules
 # ----------------------------------------------------------

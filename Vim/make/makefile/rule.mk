@@ -2,7 +2,7 @@
 # ayacai [at] 163 [dot] com
 
 # ----------------------------------------------------------
-#  Generate Target
+#  Pre-generate Target
 # ----------------------------------------------------------
 
 # -------------------
@@ -78,8 +78,44 @@ FullPath_Target := $(TargetDir)/$(Target)
 ErrDir := $(OutDir)/Logs/BuildLogs/$(Configuration)/$(Project)
 FullPath_Errs := $(wildcard $(ErrDir)/*.err)
 
+
+# ----------------------------------------------------------
+#  Compiler Flags
+# ----------------------------------------------------------
+
 # -------------------
-#  Compiler Flag
+#  Pre-define
+# -------------------
+
+# Configuration Pre-define
+ifeq ($(Configuration),Debug)
+PreDefs += DEBUG
+PreDefs += _DEBUG
+else 
+ifeq ($(Configuration),Release)
+PreDefs += RELEASE
+PreDefs += _RELEASE
+else
+ifeq ($(Configuration),FinalRelease)
+PreDefs += FINAL_RELEASE
+PreDefs += _FINAL_RELEASE
+endif
+endif
+endif
+
+# Platform Pre-defeine
+ifeq ($(Platform),Linux)
+PreDefs += LINUX
+else 
+ifeq ($(Platform),Win32)
+PreDefs += WIN
+PreDefs += WIN32
+PreDefs += WINDOWS
+endif
+endif
+
+# -------------------
+#  Generate Flag
 # -------------------
 
 # General Flag
@@ -98,11 +134,14 @@ Flag_Debug :=
 Flag_Opt := -O1
 endif 
 
-
 # Compile Flag
 CFlags := $(Flag_Debug) $(Flag_Opt) $(Flag_PreDef) $(Flag_Inc) $(CFlag_Spec)
 # Link Flag
 LFlags := $(Flag_LibDir) $(Flag_Lib) $(LFlag_Spec)
+
+# -------------------
+#  VPATH
+# -------------------
 
 VPATH := $(IncDirs)
 VPATH += $(SrcDirs)
