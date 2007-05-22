@@ -16,6 +16,8 @@ Configuration = Debug
 # Platform Name
 # parameter: Linux
 # 			 Win32
+# 			 Xenon
+# 			 PS3
 # 			 All
 Platform = Win32
 
@@ -62,3 +64,25 @@ CAT := $(SILENT_CMD)$(CMD_PATH_LINUX)cat
 DEVENV := $(SILENT_CMD)devenv
 CLS := $(SILENT_CMD)cls # this is the dos command, temp exist here
 COPY := $(SILENT_CMD)copy
+
+# Executable File Name
+ifeq ($(Platform),Win32)
+EXE_NAME := exe
+else
+ifeq ($(Platform),Linux)
+EXE_NAME := exe
+else
+ifeq ($(Platform),Xenon)
+EXE_NAME := xex
+else
+ifeq ($(Platform),PS3)
+EXE_NAME := elf
+else #default
+EXE_NAME := exe
+endif
+endif
+endif
+endif
+
+# After Build Even
+AFTER_BUILD := # programme after target been built. ( this is default one for all project )

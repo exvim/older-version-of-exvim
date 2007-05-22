@@ -44,6 +44,9 @@ include ../config.mk
 PWD ?= ..
 OutDir := $(PWD)/_gmakes
 
+# After Build Even
+AFTER_BUILD := # programme after target been built. ( this is the project specific one )
+
 # ----------------------------------------------------------
 #  Rules
 # ----------------------------------------------------------

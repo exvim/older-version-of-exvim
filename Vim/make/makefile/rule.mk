@@ -61,12 +61,12 @@ FullPath_AllDeps := $(FullPath_Deps) $(FullPath_PchDeps)
 # -------------------
 
 # Target File Output Path & Name
-ifneq ($(ProjectType),exe)
-TargetDir := $(OutDir)/Libs/$(Configuration)
-Target := lib$(Project).$(ProjectType)
-else
+ifeq ($(ProjectType),$(EXE_NAME))
 TargetDir := $(OutDir)/Bin/$(Configuration)
 Target := $(Project).$(ProjectType)
+else
+TargetDir := $(OutDir)/Libs/$(Configuration)
+Target := lib$(Project).$(ProjectType)
 endif
 FullPath_Target := $(TargetDir)/$(Target)
 
@@ -190,10 +190,10 @@ endif
 	$(MKDIR) $(ErrDir)
 	$(ECHO) > $(ErrDir)/$(Target).err
 	$(ECHO) --[$(Project)]Link-- >> $(ErrDir)/$(Target).err
-ifneq ($(ProjectType),exe)
-	$(AR) r $@ $(filter %.o,$^) 2>>$(ErrDir)/$(Target).err
-else
+ifeq ($(ProjectType),$(EXE_NAME))
 	$(CC) $(filter %.o,$^) $(LFlags) -o $@ 2>>$(ErrDir)/$(Target).err
+else
+	$(AR) r $@ $(filter %.o,$^) 2>>$(ErrDir)/$(Target).err
 endif
 	$(ECHO) generate $(@)
 ifeq ($(FullPath_PchDeps),)
@@ -204,6 +204,7 @@ else
 	$(CAT) $(ErrDir)/*.o.err >> $(ErrDir)/../$(Project).err
 	$(CAT) $(ErrDir)/$(Target).err >> $(ErrDir)/../$(Project).err
 endif
+	$(AFTER_BUILD)
 
 # -------------------
 # Dependence Rules
