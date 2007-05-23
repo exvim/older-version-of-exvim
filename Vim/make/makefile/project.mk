@@ -45,7 +45,7 @@ PWD ?= ..
 OutDir := $(PWD)/_gmakes
 
 # After Build Even
-AFTER_BUILD := # programme after target been built. ( this is the project specific one )
+AFTER_BUILD = # programme after target been built, this is the project specific one (sample: make_fself $(@) $(basename $(@)).self)
 
 # ----------------------------------------------------------
 #  Rules

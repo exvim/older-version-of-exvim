@@ -85,4 +85,4 @@ endif
 endif
 
 # After Build Even
-AFTER_BUILD := # programme after target been built. ( this is default one for all project )
+AFTER_BUILD = # programme after target been built, this is the project specific one (sample: make_fself $(@) $(basename $(@)).self)
