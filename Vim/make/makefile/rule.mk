@@ -105,12 +105,28 @@ endif
 
 # Platform Pre-defeine
 ifeq ($(Platform),Linux)
+PreDefs += __LINUX__
+PreDefs += _LINUX
 PreDefs += LINUX
 else 
 ifeq ($(Platform),Win32)
-PreDefs += WIN
+PreDefs += __WIN32__
+PreDefs += _WIN32
 PreDefs += WIN32
+PreDefs += WIN
 PreDefs += WINDOWS
+else 
+ifeq ($(Platform),Xenon)
+PreDefs += __XENON__
+PreDefs += _XENON
+PreDefs += XENON
+else 
+ifeq ($(Platform),PS3)
+PreDefs += __PS3__
+PreDefs += _PS3
+PreDefs += PS3
+endif
+endif
 endif
 endif
 

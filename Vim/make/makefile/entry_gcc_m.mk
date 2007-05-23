@@ -2,11 +2,14 @@
 # ayacai [at] 163 [dot] com
 
 # ----------------------------------------------------------
-#  User Define
+#  Global Configuration
 # ----------------------------------------------------------
-
 # include general config
 include config.mk
+
+# ----------------------------------------------------------
+#  User Define
+# ----------------------------------------------------------
 
 # Sub-Directry names as known as project names
 Prjs += # The Sub-Dir name

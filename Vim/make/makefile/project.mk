@@ -2,6 +2,12 @@
 # ayacai [at] 163 [dot] com
 
 # ----------------------------------------------------------
+#  Global Configuration
+# ----------------------------------------------------------
+# include general config
+include ../config.mk
+
+# ----------------------------------------------------------
 #  User Define
 # ----------------------------------------------------------
 
@@ -31,10 +37,6 @@ Libs += # lib-file-name (sample: libSDK.lib-->SDK)
 # Some space-depent directory flag can't generate automatically, use this instead
 CFlag_Spec += # (sample: -I"C:/Program Files/Microsoft DirectX SDK/Include")
 LFlag_Spec += # (sample: -L"C:/Program Files/Microsoft DirectX SDK/Lib/x86")
-
-# include general config
-# (sample: include ../config.mk)
-include ../config.mk
 
 # ----------------------------------------------------------
 #  Addvance User Define

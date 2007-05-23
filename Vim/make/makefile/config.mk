@@ -19,7 +19,7 @@ Configuration = Debug
 # 			 Xenon
 # 			 PS3
 # 			 All
-Platform = Win32
+Platform = PS3
 
 # ----------------------------------------------------------
 #  Advance User Define
@@ -38,10 +38,36 @@ else
 SILENT_MK :=
 endif
 
+# Executable File Name
 # Choose the compiler
-CC := $(SILENT_CMD)g++
 # Choose the linker
+ifeq ($(Platform),Win32)
+EXE_NAME := exe
+CC := $(SILENT_CMD)g++
 AR := $(SILENT_CMD)ar
+else
+ifeq ($(Platform),Linux)
+EXE_NAME := exe
+CC := $(SILENT_CMD)g++
+AR := $(SILENT_CMD)ar
+else
+ifeq ($(Platform),Xenon)
+EXE_NAME := xex
+CC := $(SILENT_CMD)g++
+AR := $(SILENT_CMD)ar
+else
+ifeq ($(Platform),PS3)
+EXE_NAME := elf
+CC := $(SILENT_CMD)ppu-lv2-g++
+AR := $(SILENT_CMD)ppu-lv2-ar
+else #default
+EXE_NAME := exe
+CC := $(SILENT_CMD)g++
+AR := $(SILENT_CMD)ar
+endif
+endif
+endif
+endif
 
 # General Commands
 ECHO := $(SILENT_CMD)echo
@@ -64,25 +90,6 @@ CAT := $(SILENT_CMD)$(CMD_PATH_LINUX)cat
 DEVENV := $(SILENT_CMD)devenv
 CLS := $(SILENT_CMD)cls # this is the dos command, temp exist here
 COPY := $(SILENT_CMD)copy
-
-# Executable File Name
-ifeq ($(Platform),Win32)
-EXE_NAME := exe
-else
-ifeq ($(Platform),Linux)
-EXE_NAME := exe
-else
-ifeq ($(Platform),Xenon)
-EXE_NAME := xex
-else
-ifeq ($(Platform),PS3)
-EXE_NAME := elf
-else #default
-EXE_NAME := exe
-endif
-endif
-endif
-endif
 
 # After Build Even
 AFTER_BUILD = # programme after target been built, this is the project specific one (sample: make_fself $(@) $(basename $(@)).self)

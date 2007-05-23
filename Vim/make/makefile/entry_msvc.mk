@@ -2,11 +2,14 @@
 # ayacai [at] 163 [dot] com
 
 # ----------------------------------------------------------
-#  User Define
+#  Global Configuration
 # ----------------------------------------------------------
-
 # include general config
 include config.mk
+
+# ----------------------------------------------------------
+#  User Define
+# ----------------------------------------------------------
 
 # The Solution Name
 Sln = # The Solution Name
