@@ -184,7 +184,7 @@ target: $(FullPath_Target)
 clean-target:
 	$(ECHO)
 	$(ECHO) delete target:
-ifeq ($(Platform),Linux)
+ifeq ($(CURRENT_OS),Linux)
 	@for item in $(FullPath_Target); do echo "    |--"   $$item; done
 else
 	@for %%i in ($(FullPath_Target)) do (echo     \--   %%i)
@@ -197,7 +197,7 @@ $(Target): $(FullPath_Target)
 # FIXME consider dll
 $(FullPath_Target): $(FullPath_Objs)
 	$(ECHO) linking:
-ifeq ($(Platform),Linux)
+ifeq ($(CURRENT_OS),Linux)
 	@for obj in $(filter %.o,$^); do echo "    |--"   $$obj; done
 else
 	@for %%i in ($(filter %.o,$^)) do (echo     \--   %%i)
@@ -231,7 +231,7 @@ deps: $(FullPath_AllDeps)
 clean-deps: 
 	$(ECHO)
 	$(ECHO) delete deps:
-ifeq ($(Platform),Linux)
+ifeq ($(CURRENT_OS),Linux)
 	@for item in $(FullPath_AllDeps); do echo "    |--"   $$item; done
 else
 	@for %%i in ($(FullPath_AllDeps)) do (echo     \--   %%i)
@@ -282,7 +282,7 @@ clean-pchs:
 	$(ECHO)
 	$(ECHO) delete pchs:
 ifneq ($(FullPath_Pchs),)
-ifeq ($(Platform),Linux)
+ifeq ($(CURRENT_OS),Linux)
 	@for item in $(FullPath_Pchs); do echo "    |--"   $$item; done
 else
 	@for %%i in ($(FullPath_Pchs)) do (echo     \--   %%i)
@@ -307,7 +307,7 @@ objs: $(FullPath_Objs)
 clean-objs:
 	$(ECHO)
 	$(ECHO) delete objs:
-ifeq ($(Platform),Linux)
+ifeq ($(CURRENT_OS),Linux)
 	@for item in $(FullPath_Objs); do echo "    |--"   $$item; done
 else
 	@for %%i in ($(FullPath_Objs)) do (echo     \--   %%i)
@@ -349,7 +349,7 @@ clean-errs:
 	$(ECHO)
 	$(ECHO) delete errs:
 ifneq ($(FullPath_Errs),)
-ifeq ($(Platform),Linux)
+ifeq ($(CURRENT_OS),Linux)
 	@for item in $(FullPath_Errs); do echo "    |--"   $$item; done
 else
 	@for %%i in ($(FullPath_Errs)) do (echo     \--   %%i)

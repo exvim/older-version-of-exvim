@@ -2,6 +2,15 @@
 # ayacai [at] 163 [dot] com
 
 # ----------------------------------------------------------
+#  System Auto Dectect
+# ----------------------------------------------------------
+ifeq ($(@shell uname), Linux)
+CURRENT_OS := Linux
+else
+CURRENT_OS := Win32
+endif
+
+# ----------------------------------------------------------
 #  User Define
 # ----------------------------------------------------------
 
@@ -19,7 +28,7 @@ Configuration = Debug
 # 			 Xenon
 # 			 PS3
 # 			 All
-Platform = PS3
+Platform = Linux
 
 # ----------------------------------------------------------
 #  Advance User Define
@@ -74,8 +83,8 @@ ECHO := $(SILENT_CMD)echo
 SMAKE := $(SILENT_CMD)$(MAKE) $(SILENT_MK)
 
 # Command Path Choose
-ifeq ($(Platform),Linux)
-CMD_PATH_LINUX := 
+ifeq ($(CURRENT_OS),Linux)
+CMD_PATH_LINUX :=
 else
 CMD_PATH_LINUX := c:/msys/1.0/bin/
 endif
