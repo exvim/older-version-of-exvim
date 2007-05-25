@@ -6,6 +6,11 @@
 # ----------------------------------------------------------
 
 # -------------------
+#  Out Directory
+# -------------------
+OutDir := $(PWD)/_gmakes/$(Platform)
+
+# -------------------
 #  Include
 # -------------------
 
@@ -28,7 +33,7 @@ Srcs := $(notdir $(FullPath_Srcs))
 # -------------------
 
 # Object File Output Path
-ObjDir := $(OutDir)/Objs/$(Configuration)/$(Project)
+ObjDir := $(OutDir)/$(Configuration)/Objs/$(Project)
 
 # Object File Output Names
 Objs := $(patsubst %.c,%.o,$(patsubst %.cpp,%.o,$(Srcs)))
@@ -41,7 +46,7 @@ FullPath_Objs := $(addprefix $(ObjDir)/,$(Objs))
 # -------------------
 
 # Dependence File Output Path
-DepDir := $(OutDir)/Deps/$(Project)
+DepDir := $(OutDir)/$(Configuration)/Deps/$(Project)
 
 # Dependence File Output Names
 Deps := $(patsubst %.o,%.d,$(Objs))
@@ -62,10 +67,10 @@ FullPath_AllDeps := $(FullPath_Deps) $(FullPath_PchDeps)
 
 # Target File Output Path & Name
 ifeq ($(ProjectType),$(EXE_NAME))
-TargetDir := $(OutDir)/Bin/$(Configuration)
-Target := $(Project).$(ProjectType)
+TargetDir := $(OutDir)/$(Configuration)/Bin
+Target := $(Project)_$(Configuration).$(ProjectType)
 else
-TargetDir := $(OutDir)/Libs/$(Configuration)
+TargetDir := $(OutDir)/$(Configuration)/Libs
 Target := lib$(Project).$(ProjectType)
 endif
 FullPath_Target := $(TargetDir)/$(Target)
@@ -75,7 +80,7 @@ FullPath_Target := $(TargetDir)/$(Target)
 # -------------------
 
 # Error File Output Path
-ErrDir := $(OutDir)/Logs/BuildLogs/$(Configuration)/$(Project)
+ErrDir := $(OutDir)/$(Configuration)/Logs/BuildLogs/$(Project)
 FullPath_Errs := $(wildcard $(ErrDir)/*.err)
 
 

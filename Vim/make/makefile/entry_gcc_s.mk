@@ -44,7 +44,6 @@ LFlag_Spec += # (sample: -L"C:/Program Files/Microsoft DirectX SDK/Lib/x86")
 
 # Parent Working Directory
 PWD ?= .
-OutDir := $(PWD)/_gmakes
 
 # ----------------------------------------------------------
 #  Rules
