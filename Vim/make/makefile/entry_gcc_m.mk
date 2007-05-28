@@ -2,61 +2,75 @@
 # ayacai [at] 163 [dot] com
 
 # ----------------------------------------------------------
-#  Global Configuration
-# ----------------------------------------------------------
-# include general config
-include config.mk
-
-# ----------------------------------------------------------
 #  User Define
 # ----------------------------------------------------------
 
-# Sub-Directry names as known as project names
-Prjs += # The Sub-Dir name
+# include general config
+include config.mk
+
+# Sub-Directry names as known as project names for batched projects
+Batched_Prjs += # The Sub-Dir name
+
+# Sub-Directry names as known as project names for stand-alone projects
+StandAlone_Prjs += # The Sub-Dir name
 
 # ----------------------------------------------------------
 #  Advance User Define
 # ----------------------------------------------------------
 
-# Project Commands
-PrjCmds := $(addsuffix /%,$(Prjs))
-PrjCmd_All := $(addsuffix /all,$(Prjs))
-PrjCmd_Clean := $(addsuffix /clean-all,$(Prjs))
-PrjCmd_Rebuild := $(addsuffix /rebuild,$(Prjs))
+# Batched Project Commands
+Batched_Prj_Cmds := $(addsuffix /%,$(Batched_Prjs))
+Batched_Prj_Cmd_All := $(addsuffix /all,$(Batched_Prjs))
+Batched_Prj_Cmd_Clean := $(addsuffix /clean-all,$(Batched_Prjs))
+Batched_Prj_Cmd_Rebuild := $(addsuffix /rebuild,$(Batched_Prjs))
+
+# Stand-alone Project Commands
+StandAlone_Prj_Cmds := $(addsuffix /%,$(StandAlone_Prjs))
+StandAlone_Prj_Cmd_All := $(addsuffix /all,$(StandAlone_Prjs))
+StandAlone_Prj_Cmd_Clean := $(addsuffix /clean-all,$(StandAlone_Prjs))
+StandAlone_Prj_Cmd_Rebuild := $(addsuffix /rebuild,$(StandAlone_Prjs))
+
+# All Project Commands
+Prjs := $(Batched_Prjs) $(StandAlone_Prjs)
+Prj_Cmds := $(Batched_Prj_Cmds) $(StandAlone_Prj_Cmds)
+Prj_Cmd_All := $(Batched_Prj_Cmd_All) $(StandAlone_Prj_Cmd_All)
+Prj_Cmd_Clean := $(Batched_Prj_Cmd_Clean) $(StandAlone_Prj_Cmd_Clean)
+Prj_Cmd_Rebuild := $(Batched_Prj_Cmd_Rebuild) $(StandAlone_Prj_Cmd_Rebuild)
+
 
 # ----------------------------------------------------------
 #  Rules
 # ----------------------------------------------------------
 
 .PHONY: all clean-all rebuild
-all: |$(PrjCmd_All)
-clean-all: |$(PrjCmd_Clean)
+all: |$(Batched_Prj_Cmd_All)
+clean-all: |$(Batched_Prj_Cmd_Clean)
 rebuild: |clean-all all
 
-.PHONY: $(Prjs) $(PrjCmds)
+.PHONY: $(Prjs) $(Prj_Cmds) $(Prj_Cmd_All) $(Prj_Cmd_Clean) $(Prj_Cmd_Rebuild)
 $(Prjs):
 	$(ECHO) Making Project-$@...
 	$(SMAKE) -C$@ -f$@.mk
 	$(ECHO) Project-$@ making done
 
-$(PrjCmds):
+$(Prj_Cmds):
 	$(ECHO) Project: $(dir $@)
 	$(ECHO) Command: $(notdir $@)
 	$(SMAKE) -C$(dir $@) -f$(patsubst %/,%,$(dir $@)).mk $(notdir $@)
  
-$(PrjCmd_All):
+$(Prj_Cmd_All):
 	$(ECHO)
 	$(ECHO) Project: $(dir $@)
 	$(ECHO) Command: $(notdir $@)
 	$(SMAKE) -C$(dir $@) -f$(patsubst %/,%,$(dir $@)).mk $(notdir $@)
  
-$(PrjCmd_Clean):
+$(Prj_Cmd_Clean):
 	$(ECHO)
 	$(ECHO) Project: $(dir $@)
 	$(ECHO) Command: $(notdir $@)
 	$(SMAKE) -C$(dir $@) -f$(patsubst %/,%,$(dir $@)).mk $(notdir $@)
  
-$(PrjCmd_Rebuild):
+$(Prj_Cmd_Rebuild):
 	$(ECHO)
 	$(ECHO) Project: $(dir $@)
 	$(ECHO) Command: $(notdir $@)
