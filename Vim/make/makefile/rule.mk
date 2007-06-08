@@ -255,27 +255,45 @@ $(DepDir)/%.d: %.cpp
 	$(ECHO) creating $@...
 	$(MKDIR) $(DepDir)
 	$(RM) $@
+ifeq ($(CompileMode),Fast)
+	$(CC) -M $(CFlags) $< -o $@.tmp
+	@sed "s,\($*\)\.o[ :]*,$(ObjDir)/\1.o: ,g" < $@.tmp > $@
+	$(RM) $@.tmp
+else
 	$(CC) -M $(CFlags) $< -o $@.tmp
 	@sed "s,\($*\)\.o[ :]*,$(ObjDir)/\1.o $@: ,g" < $@.tmp > $@
 	$(RM) $@.tmp
+endif
 
 # c files
 $(DepDir)/%.d: %.c
 	$(ECHO) creating $@...
 	$(MKDIR) $(DepDir)
 	$(RM) $@
+ifeq ($(CompileMode),Fast)
+	$(CC) -M $(CFlags) $< -o $@.tmp
+	@sed "s,\($*\)\.o[ :]*,$(ObjDir)/\1.o: ,g" < $@.tmp > $@
+	$(RM) $@.tmp
+else
 	$(CC) -M $(CFlags) $< -o $@.tmp
 	@sed "s,\($*\)\.o[ :]*,$(ObjDir)/\1.o $@: ,g" < $@.tmp > $@
 	$(RM) $@.tmp
+endif
 
 # commands-pch-deps
 $(DepDir)/%.h.d: %.h
 	$(ECHO) creating $@...
 	$(MKDIR) $(DepDir)
 	$(RM) $@
+ifeq ($(CompileMode),Fast)
+	$(CC) -M $(CFlags) $< -o $@.tmp
+	@sed "s,\($*\)\.o[ :]*,$<.gch: ,g" < $@.tmp > $@
+	$(RM) $@.tmp
+else
 	$(CC) -M $(CFlags) $< -o $@.tmp
 	@sed "s,\($*\)\.o[ :]*,$<.gch $@: ,g" < $@.tmp > $@
 	$(RM) $@.tmp
+endif
 
 # -------------------
 # PCH Rules

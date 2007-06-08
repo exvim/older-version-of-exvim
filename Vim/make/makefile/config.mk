@@ -28,7 +28,13 @@ Configuration = Debug
 # 			 Xenon
 # 			 PS3
 # 			 All
-Platform = Linux
+Platform = Win32
+
+
+# Compile Mode
+# parameter: Safe
+# 		     Fast
+CompileMode = Fast
 
 # ----------------------------------------------------------
 #  Advance User Define
