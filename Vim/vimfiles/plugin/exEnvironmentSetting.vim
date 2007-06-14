@@ -48,7 +48,7 @@ function! s:exES_WriteDefaultTemplate() " <<<
     else
         silent call add(_list, 'Project='._cwd.'/'._dir_name.'/'._project_name.'.vimprojects')
     endif
-    silent call add(_list, 'Tag='._cwd.'/'._dir_name.'/tags')
+    silent call add(_list, 'Tag='._cwd.'/tags')
     silent call add(_list, 'ID=./'._dir_name.'/ID')
     silent call add(_list, 'Symbol='._cwd.'/'._dir_name.'/symbol')
 

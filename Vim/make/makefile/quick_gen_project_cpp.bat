@@ -5,11 +5,11 @@ mkdir _vimfiles
 
 : tags
 echo Creating Tags...
-ctags -o./_vimfiles/tags -R --c++-kinds=+p --fields=+iaS --extra=+q --languages=c++ --langmap=c++:+.inl -I
+ctags -o./tags -R --c++-kinds=+p --fields=+iaS --extra=+q --languages=c++ --langmap=c++:+.inl -I
 
 : symbol
 echo Creating Symbols...
-gawk -f "c:\Program Files\Vim\make\gawk\prg_NoStripSymbol.awk" ./_vimfiles/tags>./_vimfiles/symbol
+gawk -f "c:\Program Files\Vim\make\gawk\prg_NoStripSymbol.awk" ./tags>./_vimfiles/symbol
 
 : ID
 echo Creating IDs...
