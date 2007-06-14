@@ -1849,15 +1849,6 @@ au BufNewFile,BufRead /etc/udev/cdsymlinks.conf	setf sh
 " UnrealScript
 au BufNewFile,BufRead *.uc			setf uc
 
-" High Level Shader Language
-au BufNewFile,BufRead *.hlsl,*.fx,*.cg,*.vsh,*.psh,*.shd       setf hlsl
-
-" Max Script
-au BufNewFile,BufRead *.ms  setf maxscript
-
-" Doxygen Comment
-au BufNewFile,BufRead *.dox,*.doxygen       setf cpp.doxygen
-
 " Updatedb
 au BufNewFile,BufRead /etc/updatedb.conf	setf updatedb
 
@@ -2030,6 +2021,19 @@ au BufNewFile,BufRead *.zsql			call s:SQL()
 
 " Z80 assembler asz80
 au BufNewFile,BufRead *.z8a			setf z8a
+
+" ======================== User Define File Type =============================
+
+" High Level Shader Language
+au BufNewFile,BufRead *.hlsl,*.fx,*.cg,*.vsh,*.psh,*.shd       setf hlsl
+
+" Max Script
+au BufNewFile,BufRead *.ms  setf maxscript
+
+" Doxygen Comment
+au BufNewFile,BufRead *.dox,*.doxygen       setf cpp.doxygen
+
+" ============================================================================
 
 augroup END
 
