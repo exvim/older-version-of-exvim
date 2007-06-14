@@ -46,7 +46,7 @@ else
   SynColor Special	term=bold cterm=NONE ctermfg=DarkMagenta ctermbg=NONE gui=NONE guifg=SlateBlue guibg=NONE
   SynColor Identifier	term=underline cterm=NONE ctermfg=DarkCyan ctermbg=NONE gui=NONE guifg=DarkCyan guibg=NONE
   SynColor Statement	term=bold cterm=NONE ctermfg=Brown ctermbg=NONE gui=NONE guifg=Blue guibg=NONE
-  SynColor PreProc	term=underline cterm=NONE ctermfg=DarkMagenta ctermbg=NONE gui=NONE guifg=Blue guibg=NONE
+  SynColor PreProc	term=underline cterm=NONE ctermfg=DarkMagenta ctermbg=NONE gui=NONE guifg=Purple guibg=NONE
   SynColor Type		term=underline cterm=NONE ctermfg=DarkGreen ctermbg=NONE gui=NONE guifg=Blue guibg=NONE
   SynColor Underlined	term=underline cterm=underline ctermfg=DarkMagenta gui=underline guifg=SlateBlue
   SynColor Ignore	term=NONE cterm=NONE ctermfg=white ctermbg=NONE gui=NONE guifg=bg guibg=NONE
