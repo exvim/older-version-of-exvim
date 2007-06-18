@@ -5,7 +5,7 @@ mkdir _vimfiles
 
 : tags
 echo Creating Tags...
-ctags -o./tags -R --c++-kinds=+p --fields=+iaS --extra=+q --languages=c++ --langmap=c:+.inl -I
+ctags -o./tags -R --c++-kinds=+p --fields=+iaS --extra=+q --languages=c,c++ --langmap=c++:+.inl -I
 
 : symbol
 echo Creating Symbols...
