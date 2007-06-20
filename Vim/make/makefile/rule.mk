@@ -58,8 +58,17 @@ FullPath_PchDeps := $(addprefix $(DepDir)/,$(PchDeps))
 FullPath_AllDeps := $(FullPath_Deps) $(FullPath_PchDeps)
 
 # -------------------
-#  Libaray
+#  Dependence Library
 # -------------------
+
+# Dependence Libraries
+Libs := $(PrjLibs) $(ExtLibs)
+
+# Project Compile Dependence Libraries Output Path
+PrjLibDir := $(OutDir)/$(Configuration)/Libs
+
+# Project compile dependence libraries with Full Path
+FullPath_PrjLibs := $(addprefix $(PrjLibDir)/lib,$(addsuffix .a,$(PrjLibs)))
 
 # -------------------
 #  Target
@@ -200,7 +209,7 @@ $(Target): $(FullPath_Target)
 
 # commands-target
 # FIXME consider dll
-$(FullPath_Target): $(FullPath_Objs)
+$(FullPath_Target): $(FullPath_Objs) $(FullPath_PrjLibs)
 	$(ECHO) linking:
 ifeq ($(CURRENT_OS),Linux)
 	@for obj in $(filter %.o,$^); do echo "    |--"   $$obj; done

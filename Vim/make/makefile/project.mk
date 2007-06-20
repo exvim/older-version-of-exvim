@@ -27,11 +27,12 @@ FullPath_PchDeps += # relative-address/header-file-name (sample: ./Incs/pch-head
 # Source Path
 SrcDirs += # relative-address (sample: ./Srcs)
 
-# Dependent Libaray File Paths
+# Dependent Library File Paths
 LibDirs += # relative-address (sample: ../Third-Part-Libs)
 
-# Dependent Libaray File Names
-Libs += # lib-file-name (sample: libSDK.lib-->SDK)
+# Dependent Library File Names
+PrjLibs += # lib-file-name (sample: libSDK.a-->SDK) This is libs for project compile depence
+ExtLibs += # lib-file-name (sample: libSDK.a-->SDK) This is libs for external libaraies
 
 # Special Flags
 # Some space-depent directory flag can't generate automatically, use this instead
