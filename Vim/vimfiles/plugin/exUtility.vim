@@ -291,15 +291,47 @@ function! g:ex_RemoveIFZero() range " <<<
     let save_cursor = getpos(".")
     let save_line = getline(".")
     let cur_line = save_line
+
+    let if_lnum = -1
+    let else_lnum = -1
+    let endif_lnum = -1
+
+    " found '#if 0' first
     while match(cur_line, "#if.*0") == -1
         silent normal [#
         let cur_line = getline(".")
+        let lnum = line(".")
+        if lnum == 0
+            if match(cur_line, "#if.*0") == -1
+                call g:ex_WarningMsg(" not #if 0 matched")
+                return
+            endif
+        endif
     endwhile
-    silent normal dd]#
+
+    " record the line
+    let if_lnum = line(".")
+    silent normal ]#
     let cur_line = getline(".")
     if match(cur_line, "#else") != -1
-        silent normal dd]#dd
+        let else_lnum = line(".")
+        silent normal ]#
+        let endif_lnum = line(".")
     else
+        let endif_lnum = line(".")
+    endif
+
+    " delete the if/else/endif
+    if endif_lnum != -1
+        silent exe "normal ". endif_lnum ."G"
+        silent normal dd
+    endif
+    if else_lnum != -1
+        silent exe "normal ". else_lnum ."G"
+        silent normal dd
+    endif
+    if if_lnum != -1
+        silent exe "normal ". if_lnum ."G"
         silent normal dd
     endif
 

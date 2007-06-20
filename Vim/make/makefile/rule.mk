@@ -107,10 +107,12 @@ PreDefs += DEBUG
 PreDefs += _DEBUG
 else 
 ifeq ($(Configuration),Release)
+PreDefs += NDEBUG
 PreDefs += RELEASE
 PreDefs += _RELEASE
 else
 ifeq ($(Configuration),FinalRelease)
+PreDefs += NDEBUG
 PreDefs += FINAL_RELEASE
 PreDefs += _FINAL_RELEASE
 endif
@@ -136,7 +138,7 @@ ifeq ($(Platform),Xenon)
 PreDefs += __XENON__
 PreDefs += _XENON
 PreDefs += XENON
-PreDefs += WIN32
+PreDefs += _XBOX
 PreDefs += _EX_XENON
 else 
 ifeq ($(Platform),PS3)
