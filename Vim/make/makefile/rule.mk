@@ -122,6 +122,7 @@ ifeq ($(Platform),Linux)
 PreDefs += __LINUX__
 PreDefs += _LINUX
 PreDefs += LINUX
+PreDefs += _EX_LINUX
 else 
 ifeq ($(Platform),Win32)
 PreDefs += __WIN32__
@@ -129,16 +130,20 @@ PreDefs += _WIN32
 PreDefs += WIN32
 PreDefs += WIN
 PreDefs += WINDOWS
+PreDefs += _EX_WIN32
 else 
 ifeq ($(Platform),Xenon)
 PreDefs += __XENON__
 PreDefs += _XENON
 PreDefs += XENON
+PreDefs += WIN32
+PreDefs += _EX_XENON
 else 
 ifeq ($(Platform),PS3)
 PreDefs += __PS3__
 PreDefs += _PS3
 PreDefs += PS3
+PreDefs += _EX_PS3
 endif
 endif
 endif
