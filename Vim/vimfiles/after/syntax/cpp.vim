@@ -40,12 +40,13 @@ syn keyword exType              UINT INT UINT8 INT8 UINT16 INT16 UINT32 INT32 UI
 syn keyword exType              FLOAT DOUBLE
 syn keyword exType              CHAR WCHAR TCHAR TEXT
 syn keyword exType              INLINE
-syn keyword exType              BOOL TRUE FALSE
+syn keyword exType              BOOL
 syn keyword exStatement         ex_malloc ex_malloc_use ex_malloc_nomanage
 syn keyword exStatement         ex_realloc ex_realloc_use ex_realloc_nomanage
 syn keyword exStatement         ex_free ex_free_use ex_free_nomanage
 syn keyword exStatement         ex_new ex_new_use ex_new_nomange ex_new_in
 syn keyword exStatement         ex_delete ex_delete_use ex_delete_nomange ex_delete_in
+syn keyword exBoolean		TRUE FALSE
 " ==========================================
 
 " The minimum and maximum operators in GNU C++
@@ -72,6 +73,7 @@ if version >= 508 || !exists("did_cpp_syntax_inits")
   " ==========================================
   HiLink exType                 Type
   HiLink exStatement            Statement
+  HiLink exBoolean              Boolean
   " ==========================================
   delcommand HiLink
 endif
