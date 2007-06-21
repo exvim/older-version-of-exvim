@@ -39,7 +39,7 @@ syn keyword exType              SIZE_T
 syn keyword exType              UINT INT UINT8 INT8 UINT16 INT16 UINT32 INT32 UINT64 INT64
 syn keyword exType              FLOAT DOUBLE
 syn keyword exType              CHAR WCHAR TCHAR TEXT
-syn keyword exType              INLINE
+syn keyword exType              INLINE NOINLINE
 syn keyword exType              BOOL
 syn keyword exStatement         ex_malloc ex_malloc_use ex_malloc_nomanage
 syn keyword exStatement         ex_realloc ex_realloc_use ex_realloc_nomanage
