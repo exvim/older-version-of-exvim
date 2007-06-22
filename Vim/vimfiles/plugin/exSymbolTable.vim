@@ -109,7 +109,9 @@ function! s:exSL_OpenWindow( short_title ) " <<<
     endif
 
     " refresh the window
-    silent exec "e"
+    if s:exSL_short_title == 'Select'
+        silent exec "e"
+    endif
 endfunction " >>>
 
 " --exSL_ResizeWindow--
@@ -168,7 +170,9 @@ function! s:exSL_ToggleWindow( short_title ) " <<<
     endif
 
     " refresh the window
-    silent exec "e"
+    if s:exSL_short_title == 'Select'
+        silent exec "e"
+    endif
 endfunction " >>>
 
 " --exSL_SwitchWindow
