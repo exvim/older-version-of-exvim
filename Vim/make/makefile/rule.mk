@@ -225,7 +225,7 @@ else
 endif
 	$(MKDIR) $(TargetDir)
 	$(MKDIR) $(ErrDir)
-	$(ECHO) > $(ErrDir)/$(Target).err
+	$(ECHO) - > $(ErrDir)/$(Target).err
 	$(ECHO) --[$(Project)]Link-- >> $(ErrDir)/$(Target).err
 ifeq ($(ProjectType),$(EXE_NAME))
 	$(CC) $(filter %.o,$^) $(LFlags) -o $@ 2>>$(ErrDir)/$(Target).err
@@ -333,7 +333,7 @@ endif
 $(FullPath_Pchs):
 	$(MKDIR) $(ErrDir)
 	$(ECHO) compiling $(basename $@)...
-	$(ECHO) > $(ErrDir)/$(patsubst %/,%,$(notdir $@)).err
+	$(ECHO) - > $(ErrDir)/$(patsubst %/,%,$(notdir $@)).err
 	$(ECHO) --[$(Project)]$(patsubst %/,%,$(notdir $@))-- >> $(ErrDir)/$(patsubst %/,%,$(notdir $@)).err
 	$(CC) -c $(CFlags) $(basename $@) 2>>$(ErrDir)/$(patsubst %/,%,$(notdir $@)).err
 
@@ -366,7 +366,7 @@ $(ObjDir)/%.o: %.cpp $(FullPath_Pchs)
 	$(MKDIR) $(ObjDir)
 	$(MKDIR) $(ErrDir)
 	$(ECHO) compiling $<...
-	$(ECHO) > $(ErrDir)/$*.o.err
+	$(ECHO) - > $(ErrDir)/$*.o.err
 	$(ECHO) --[$(Project)]$*.cpp-- >> $(ErrDir)/$*.o.err
 	$(CC) -c $(CFlags) $< -o $@ 2>>$(ErrDir)/$*.o.err 
 
@@ -375,7 +375,7 @@ $(ObjDir)/%.o: %.c $(FullPath_Pchs)
 	$(MKDIR) $(ObjDir)
 	$(MKDIR) $(ErrDir)
 	$(ECHO) compiling $<...
-	$(ECHO) > $(ErrDir)/$*.o.err
+	$(ECHO) - > $(ErrDir)/$*.o.err
 	$(ECHO) --[$(Project)]$*.c-- >> $(ErrDir)/$*.o.err
 	$(CC) -c $(CFlags) $< -o $@ 2>>$(ErrDir)/$*.o.err 
 
