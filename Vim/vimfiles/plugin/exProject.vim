@@ -651,10 +651,12 @@ function! s:exPJ_GotoSelectResult(edit_cmd) " <<<
         echon 'set make file: ' . full_path_name . "\r"
         silent call g:ex_GotoEditBuffer()
         silent exec a:edit_cmd.' '.full_path_name
-        " do not show it in buffer list
-        silent! setlocal bufhidden=hide
-        silent! setlocal noswapfile
-        silent! setlocal nobuflisted
+        """"""""""""""""""""""""""""""""""""""
+        " do not show it in buffer list // jwu: show them have more convienience
+        " silent! setlocal bufhidden=hide
+        " silent! setlocal noswapfile
+        " silent! setlocal nobuflisted
+        """"""""""""""""""""""""""""""""""""""
     elseif file_type == 'exe'
         echon 'debug: ' . full_path_name . "\r"
         silent call g:ex_GotoEditBuffer()
