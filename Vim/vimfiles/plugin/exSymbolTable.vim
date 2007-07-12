@@ -107,11 +107,6 @@ function! s:exSL_OpenWindow( short_title ) " <<<
     else
         call g:ex_OpenWindow( title, g:exSL_window_direction, g:exSL_window_height, g:exSL_use_vertical_window, g:exSL_edit_mode, s:exSL_backto_editbuf, 'g:exSL_Init'.s:exSL_short_title.'Window', 'g:exSL_Update'.s:exSL_short_title.'Window' )
     endif
-
-    " refresh the window
-    if s:exSL_short_title == 'Select'
-        silent exec "e"
-    endif
 endfunction " >>>
 
 " --exSL_ResizeWindow--
@@ -167,11 +162,6 @@ function! s:exSL_ToggleWindow( short_title ) " <<<
         call g:ex_ToggleWindow( title, g:exSL_window_direction, g:exSL_window_width, g:exSL_use_vertical_window, 'none', s:exSL_backto_editbuf, 'g:exSL_Init'.s:exSL_short_title.'Window', 'g:exSL_Update'.s:exSL_short_title.'Window' )
     else
         call g:ex_ToggleWindow( title, g:exSL_window_direction, g:exSL_window_height, g:exSL_use_vertical_window, 'none', s:exSL_backto_editbuf, 'g:exSL_Init'.s:exSL_short_title.'Window', 'g:exSL_Update'.s:exSL_short_title.'Window' )
-    endif
-
-    " refresh the window
-    if s:exSL_short_title == 'Select'
-        silent exec "e"
     endif
 endfunction " >>>
 
@@ -330,6 +320,8 @@ function! g:exSL_InitSelectWindow() " <<<
     " set buffer no modifiable
     silent! setlocal nomodifiable
     silent! setlocal nonumber
+    " this will help Update symbol relate with it.
+    silent! setlocal buftype=
     
     " key map
     nnoremap <buffer> <silent> <Return>   \|:call <SID>exSL_ShowPickedResult(getline('.'))<CR>
