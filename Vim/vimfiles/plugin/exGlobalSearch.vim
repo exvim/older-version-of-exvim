@@ -191,7 +191,7 @@ function! s:exGS_Goto() " <<<
 
     " jump to the pattern if the code have been modified
     let pattern = strpart(line, idx+2)
-    let pattern = '\V' . pattern
+    let pattern = '\V' . substitute( pattern, '\', '\\\', "g" )
     if search(pattern, 'w') == 0
         call g:ex_WarningMsg('search pattern not found: ' . pattern)
     endif

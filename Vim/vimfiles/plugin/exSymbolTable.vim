@@ -240,15 +240,23 @@ endfunction " >>>
 " --exSL_CopyPickedLine--
 " copy the quick view result with search pattern
 function! s:exSL_CopyPickedLine( search_pattern ) " <<<
+    let use_pattern = 1
     if a:search_pattern == ''
         let search_pattern = @/
+        let use_pattern = 1
     else
         let search_pattern = a:search_pattern
+        let use_pattern = 0
     endif
     if search_pattern == ''
         call g:ex_WarningMsg('search pattern not exists')
         return
     else
+        " if we don't use \r to pick line, we will meet ~xxx in some case
+        if use_pattern == 0
+            let search_pattern = '\V' . substitute( search_pattern, '\', '\\\', "g" )
+        endif
+
         " save current cursor position
         let save_cursor = getpos(".")
         silent call cursor( 1, 1 )

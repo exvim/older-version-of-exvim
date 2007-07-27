@@ -1,4 +1,5 @@
 !/^!_TAG/{
+    FS = "[\t]";
     KeyStr = $1;
     Mask[KeyStr] = KeyStr;
 }

@@ -279,13 +279,17 @@ function! s:exTS_GetTagSelectResult(tag, direct_jump) " <<<
     let s:exTS_tag_state_tmp.entry_file_name = bufname(bufnr)
     let s:exTS_tag_state_tmp.entry_cursor_pos = cursor_pos
     let s:exTS_tag_state_tmp.stack_preview = stack_preview
+
     if s:exTS_ignore_case && (match(in_tag, '\u') == -1)
+        let in_tag = substitute( in_tag, '\', '\\\', "g" )
         echomsg 'parsing ' . in_tag . '...(ignore case)'
-        let tag_list = taglist('^'.in_tag.'$')
+        let tag_list = taglist('\V\^'.in_tag.'\$')
     else
+        let in_tag = substitute( in_tag, '\', '\\\', "g" )
         echomsg 'parsing ' . in_tag . '...(no ignore case)'
-        let tag_list = taglist('^\C'.in_tag.'$')
+        let tag_list = taglist('\V\^\C'.in_tag.'\$')
     endif
+
     let result = ''
     if empty(tag_list)
         let result = 'Error detected while processing'
