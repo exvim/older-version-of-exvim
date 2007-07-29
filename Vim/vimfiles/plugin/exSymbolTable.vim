@@ -239,7 +239,7 @@ endfunction " >>>
 
 " --exSL_CopyPickedLine--
 " copy the quick view result with search pattern
-function! s:exSL_CopyPickedLine( search_pattern ) " <<<
+function! s:exSL_CopyPickedLine( search_pattern, by_word ) " <<<
     let use_pattern = 1
     if a:search_pattern == ''
         let search_pattern = @/
@@ -254,7 +254,11 @@ function! s:exSL_CopyPickedLine( search_pattern ) " <<<
     else
         " if we don't use \r to pick line, we will meet ~xxx in some case
         if use_pattern == 0
-            let search_pattern = '\V' . substitute( search_pattern, '\', '\\\', "g" )
+            if a:by_word == 1
+                let search_pattern = '\<' . '\V' . substitute( search_pattern, '\', '\\\', "g" ) . '\>'
+            else
+                let search_pattern = '\V' . substitute( search_pattern, '\', '\\\', "g" )
+            endif
         endif
 
         " save current cursor position
@@ -285,7 +289,7 @@ function! s:exSL_ShowPickedResult( search_pattern ) " <<<
     endif
 
     " copy picked result
-    call s:exSL_CopyPickedLine( a:search_pattern )
+    call s:exSL_CopyPickedLine( a:search_pattern, 0 )
     call s:exSL_SwitchWindow('QuickView')
     silent exec 'normal Gdgg'
     let s:exGS_quick_view_idx = 1
@@ -311,7 +315,7 @@ function! s:exSL_GetAndShowPickedResult() " <<<
     " copy picked result
     let s:exSL_quick_view_idx = 1
     call s:exSL_SwitchWindow("Select")
-    call s:exSL_CopyPickedLine( '\<'.search_pattern.'\>' )
+    call s:exSL_CopyPickedLine( search_pattern, 1 )
     call s:exSL_SwitchWindow('QuickView')
     silent exec 'normal Gdgg'
     silent put = s:exSL_picked_search_result
