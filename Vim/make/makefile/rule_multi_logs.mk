@@ -89,9 +89,8 @@ FullPath_Target := $(TargetDir)/$(Target)
 # -------------------
 
 # Error File Output Path
-ErrDir := $(OutDir)/$(Configuration)/Logs/BuildLogs
-FullPath_Errs := $(ErrDir)/$(Project).err
-ErrLogName := ErrorLog.err
+ErrDir := $(OutDir)/$(Configuration)/Logs/BuildLogs/$(Project)
+FullPath_Errs := $(wildcard $(ErrDir)/*.err)
 
 
 # ----------------------------------------------------------
@@ -193,7 +192,7 @@ VPATH += $(TargetDir)
 # All Rules
 # -------------------
 .PHONY: all clean-all rebuild
-all: |clean-errs $(FullPath_Target)
+all: $(FullPath_Target)
 clean-all: |clean-deps clean-pchs clean-objs clean-errs clean-target
 rebuild: |clean-all all
 
@@ -226,15 +225,22 @@ else
 endif
 	$(MKDIR) $(TargetDir)
 	$(MKDIR) $(ErrDir)
-	$(ECHO) - > $(ErrDir)/$(ErrLogName)
-	$(ECHO) --[$(Project)]Link-- >> $(ErrDir)/$(ErrLogName)
+	$(ECHO) - > $(ErrDir)/$(Target).err
+	$(ECHO) --[$(Project)]Link-- >> $(ErrDir)/$(Target).err
 ifeq ($(ProjectType),$(EXE_NAME))
-	$(CC) $(filter %.o,$^) $(LFlags) -o $@ 2>>$(ErrDir)/$(ErrLogName)
+	$(CC) $(filter %.o,$^) $(LFlags) -o $@ 2>>$(ErrDir)/$(Target).err
 else
-	$(AR) r $@ $(filter %.o,$^) 2>>$(ErrDir)/$(ErrLogName)
+	$(AR) r $@ $(filter %.o,$^) 2>>$(ErrDir)/$(Target).err
 endif
 	$(ECHO) generate $(@)
-	$(CAT) $(ErrDir)/$(ErrLogName) >> $(ErrDir)/$(Project).err
+ifeq ($(FullPath_PchDeps),)
+	$(CAT) $(ErrDir)/*.o.err > $(ErrDir)/../$(Project).err
+	$(CAT) $(ErrDir)/$(Target).err >> $(ErrDir)/../$(Project).err
+else
+	$(CAT) $(ErrDir)/*.gch.err > $(ErrDir)/../$(Project).err
+	$(CAT) $(ErrDir)/*.o.err >> $(ErrDir)/../$(Project).err
+	$(CAT) $(ErrDir)/$(Target).err >> $(ErrDir)/../$(Project).err
+endif
 	$(AFTER_BUILD)
 
 # -------------------
@@ -327,10 +333,9 @@ endif
 $(FullPath_Pchs):
 	$(MKDIR) $(ErrDir)
 	$(ECHO) compiling $(basename $@)...
-	$(ECHO) - > $(ErrDir)/$(ErrLogName)
-	$(ECHO) --[$(Project)]$(patsubst %/,%,$(notdir $@))-- >> $(ErrDir)/$(ErrLogName)
-	$(CC) -c $(CFlags) $(basename $@) 2>>$(ErrDir)/$(ErrLogName)
-	$(CAT) $(ErrDir)/$(ErrLogName) >> $(ErrDir)/$(Project).err
+	$(ECHO) - > $(ErrDir)/$(patsubst %/,%,$(notdir $@)).err
+	$(ECHO) --[$(Project)]$(patsubst %/,%,$(notdir $@))-- >> $(ErrDir)/$(patsubst %/,%,$(notdir $@)).err
+	$(CC) -c $(CFlags) $(basename $@) 2>>$(ErrDir)/$(patsubst %/,%,$(notdir $@)).err
 
 # -------------------
 # Object Rules
@@ -361,20 +366,18 @@ $(ObjDir)/%.o: %.cpp $(FullPath_Pchs)
 	$(MKDIR) $(ObjDir)
 	$(MKDIR) $(ErrDir)
 	$(ECHO) compiling $<...
-	$(ECHO) - > $(ErrDir)/$(ErrLogName)
-	$(ECHO) --[$(Project)]$*.cpp-- >> $(ErrDir)/$(ErrLogName)
-	$(CC) -c $(CFlags) $< -o $@ 2>>$(ErrDir)/$(ErrLogName) 
-	$(CAT) $(ErrDir)/$(ErrLogName) >> $(ErrDir)/$(Project).err
+	$(ECHO) - > $(ErrDir)/$*.o.err
+	$(ECHO) --[$(Project)]$*.cpp-- >> $(ErrDir)/$*.o.err
+	$(CC) -c $(CFlags) $< -o $@ 2>>$(ErrDir)/$*.o.err 
 
 # c files
 $(ObjDir)/%.o: %.c $(FullPath_Pchs)
 	$(MKDIR) $(ObjDir)
 	$(MKDIR) $(ErrDir)
 	$(ECHO) compiling $<...
-	$(ECHO) - > $(ErrDir)/$(ErrLogName)
-	$(ECHO) --[$(Project)]$*.c-- >> $(ErrDir)/$(ErrLogName)
-	$(CC) -c $(CFlags) $< -o $@ 2>>$(ErrDir)/$(ErrLogName) 
-	$(CAT) $(ErrDir)/$(ErrLogName) >> $(ErrDir)/$(Project).err
+	$(ECHO) - > $(ErrDir)/$*.o.err
+	$(ECHO) --[$(Project)]$*.c-- >> $(ErrDir)/$*.o.err
+	$(CC) -c $(CFlags) $< -o $@ 2>>$(ErrDir)/$*.o.err 
 
 # -------------------
 # Output Rules
