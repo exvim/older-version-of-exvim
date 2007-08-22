@@ -293,7 +293,7 @@ endfunction
 function! g:ex_PutHeader()
     execute 'normal ' . 'gg'
     execute 'normal ' . 'O' .   "// ======================================================================================\<CR>"
-    execute 'normal ' . '^c$' . "// File         : " . g:ex_ShortFileName(bufname('.')) . "\<CR>"
+    execute 'normal ' . '^c$' . "// File         : " . g:ex_ShortFileName(bufname('%')) . "\<CR>"
     execute 'normal ' . '^c$' . "// Author       : Wu Jie \<CR>"
     execute 'normal ' . '^c$' . "// Description  : \<CR>"
     execute 'normal ' . '^c$' . "// ======================================================================================"
