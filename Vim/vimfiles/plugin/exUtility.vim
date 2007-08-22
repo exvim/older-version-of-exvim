@@ -271,6 +271,35 @@ endfunction " >>>
 " ------------------------
 "  string functions
 " ------------------------
+
+" --ex_PutLine--
+function! g:ex_PutLine( len, line_type )
+    let plen = a:len - strlen(getline('.'))
+    if (plen > 0)
+        execute 'normal ' plen . 'A' . a:line_type
+    endif
+endfunction
+
+" --ex_PutDefine--
+function! g:ex_PutDefine()
+    execute 'normal ' . 'o' .   "/**\<CR>"
+    execute 'normal ' . '^c$' . " * =======================================\<CR>"
+    execute 'normal ' . '^c$' . " * \<CR>"
+    execute 'normal ' . '^c$' . " * =======================================\<CR>"
+    execute 'normal ' . '^c$' . " */"
+endfunction
+
+" --ex_PutHeader--
+function! g:ex_PutHeader()
+    execute 'normal ' . 'gg'
+    execute 'normal ' . 'O' .   "// ======================================================================================\<CR>"
+    execute 'normal ' . '^c$' . "// File         : " . g:ex_ShortFileName(bufname('.')) . "\<CR>"
+    execute 'normal ' . '^c$' . "// Author       : Wu Jie \<CR>"
+    execute 'normal ' . '^c$' . "// Description  : \<CR>"
+    execute 'normal ' . '^c$' . "// ======================================================================================"
+    execute 'normal ' . 'o'
+endfunction
+
 " --ex_AlignDigit--
 function! g:ex_AlignDigit( align_nr, digit ) " <<<
     let print_fmt = '%'.a:align_nr.'d'
@@ -454,6 +483,17 @@ endfunction
 " ------------------------
 "  file functions
 " ------------------------
+
+" --ex_ShortFileName--
+" Convert full file name into short filename(without directory)
+function! g:ex_ShortFileName(full_file_name) " <<<
+    let idx = strridx(a:full_file_name, '\')
+    if idx != -1
+        return strpart(a:full_file_name, idx+1)
+    else
+        return a:full_file_name
+    endif
+endfunction ">>>
 
 " --ex_ConvertFileName--
 " Convert full file name into the format: file_name (directory)
