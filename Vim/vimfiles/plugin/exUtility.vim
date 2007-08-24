@@ -283,21 +283,21 @@ endfunction
 " --ex_PutDefine--
 function! g:ex_PutDefine()
     execute 'normal ' . 'o' .   "/**\<CR>"
-    execute 'normal ' . '^c$' . " * =======================================\<CR>"
-    execute 'normal ' . '^c$' . " * \<CR>"
-    execute 'normal ' . '^c$' . " * =======================================\<CR>"
-    execute 'normal ' . '^c$' . " */"
+    execute 'normal ' . "\<Home>c$" . " * =======================================\<CR>"
+    execute 'normal ' . "\<Home>c$" . " * \<CR>"
+    execute 'normal ' . "\<Home>c$" . " * =======================================\<CR>"
+    execute 'normal ' . "\<Home>c$" . " */"
 endfunction
 
 " --ex_PutHeader--
 function! g:ex_PutHeader()
-    execute 'normal ' . 'gg'
-    execute 'normal ' . 'O' .   "// ======================================================================================\<CR>"
-    execute 'normal ' . '^c$' . "// File         : " . g:ex_ShortFileName(bufname('%')) . "\<CR>"
-    execute 'normal ' . '^c$' . "// Author       : Wu Jie \<CR>"
-    execute 'normal ' . '^c$' . "// Description  : \<CR>"
-    execute 'normal ' . '^c$' . "// ======================================================================================"
-    execute 'normal ' . 'o'
+    execute 'normal ' . "gg"
+    execute 'normal ' . "O" .   "// ======================================================================================\<CR>"
+    execute 'normal ' . "\<Home>c$" . "// File         : " . g:ex_ShortFileName(bufname('%')) . "\<CR>"
+    execute 'normal ' . "\<Home>c$" . "// Author       : Wu Jie \<CR>"
+    execute 'normal ' . "\<Home>c$" . "// Description  : \<CR>"
+    execute 'normal ' . "\<Home>c$" . "// ======================================================================================"
+    execute 'normal ' . "o"
 endfunction
 
 " --ex_AlignDigit--

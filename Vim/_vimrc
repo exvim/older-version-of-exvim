@@ -351,13 +351,8 @@ command -narg=* VMake call g:ex_VCMake(<f-args>)
 command -narg=? Update call g:ex_UpdateVimFiles("<args>")
 
 noremap <Leader>line <ESC>:call g:ex_PutLine(86, '-')<CR>
-inoremap <Leader>line <ESC>:call g:ex_PutLine(86, '-')<CR>
-
 noremap <Leader>def <ESC>:call g:ex_PutDefine()<CR>
-inoremap <Leader>def <ESC>:call g:ex_PutDefine()<CR>
-
 noremap <Leader>head <ESC>:call g:ex_PutHeader()<CR>
-inoremap <Leader>head <ESC>:call g:ex_PutHeader()<CR>
 
 " --------------------
 " exTagSelect
