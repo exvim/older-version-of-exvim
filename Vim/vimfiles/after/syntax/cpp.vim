@@ -44,7 +44,7 @@ syn keyword exType              UBOOL
 syn keyword exStatement         ex_malloc ex_malloc_use ex_malloc_nomanage
 syn keyword exStatement         ex_realloc ex_realloc_use ex_realloc_nomanage
 syn keyword exStatement         ex_free ex_free_use ex_free_nomanage
-syn keyword exStatement         ex_new ex_new_use ex_new_nomanage ex_new_in ex_new_insert
+syn keyword exStatement         ex_new ex_new_use ex_new_nomanage ex_new_in ex_new_add ex_new_insert
 syn keyword exStatement         ex_delete ex_delete_use ex_delete_nomanage ex_delete_in
 syn keyword exStatement         ex_delete_array ex_delete_array_use ex_delete_array_nomanage
 syn keyword exBoolean		TRUE FALSE
