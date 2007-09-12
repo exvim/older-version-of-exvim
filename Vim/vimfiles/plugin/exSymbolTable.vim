@@ -239,7 +239,7 @@ endfunction " >>>
 
 " --exSL_CopyPickedLine--
 " copy the quick view result with search pattern
-function! s:exSL_CopyPickedLine( search_pattern, by_word ) " <<<
+function! s:exSL_CopyPickedLine( search_pattern, by_word, inverse_search ) " <<<
     let use_pattern = 1
     if a:search_pattern == ''
         let search_pattern = @/
@@ -268,7 +268,11 @@ function! s:exSL_CopyPickedLine( search_pattern, by_word ) " <<<
         " copy picked result
         let s:exSL_picked_search_result = ''
         let cmd = 'let s:exSL_picked_search_result = s:exSL_picked_search_result . "\n" . getline(".")'
-        silent exec 'g/' . search_pattern . '/' . cmd
+        if a:inverse_search
+            silent exec 'v/' . search_pattern . '/' . cmd
+        else
+            silent exec 'g/' . search_pattern . '/' . cmd
+        endif
 
         " go back to the original position
         silent call setpos(".", save_cursor)
@@ -277,7 +281,7 @@ endfunction " >>>
 
 " --exSL_ShowPickedResult--
 "  show the picked result in the quick view window
-function! s:exSL_ShowPickedResult( search_pattern ) " <<<
+function! s:exSL_ShowPickedResult( search_pattern, inverse_search ) " <<<
     " assignment the title
     if s:exSL_short_title == 'Select'
         call g:ex_HighlightConfirmLine()
@@ -289,7 +293,7 @@ function! s:exSL_ShowPickedResult( search_pattern ) " <<<
     endif
 
     " copy picked result
-    call s:exSL_CopyPickedLine( a:search_pattern, 0 )
+    call s:exSL_CopyPickedLine( a:search_pattern, 0, a:inverse_search )
     call s:exSL_SwitchWindow('QuickView')
     silent exec 'normal Gdgg'
     let s:exGS_quick_view_idx = 1
@@ -315,7 +319,7 @@ function! s:exSL_GetAndShowPickedResult() " <<<
     " copy picked result
     let s:exSL_quick_view_idx = 1
     call s:exSL_SwitchWindow("Select")
-    call s:exSL_CopyPickedLine( search_pattern, 1 )
+    call s:exSL_CopyPickedLine( search_pattern, 1, 0 )
     call s:exSL_SwitchWindow('QuickView')
     silent exec 'normal Gdgg'
     silent put = s:exSL_picked_search_result
@@ -336,13 +340,14 @@ function! g:exSL_InitSelectWindow() " <<<
     silent! setlocal buftype=
     
     " key map
-    nnoremap <buffer> <silent> <Return>   \|:call <SID>exSL_ShowPickedResult(getline('.'))<CR>
+    nnoremap <buffer> <silent> <Return>   \|:call <SID>exSL_ShowPickedResult(getline('.'), 0)<CR>
     nnoremap <buffer> <silent> <Space>   :call <SID>exSL_ResizeWindow()<CR>
     nnoremap <buffer> <silent> <ESC>   :call <SID>exSL_ToggleWindow('Select')<CR>
     nnoremap <buffer> <silent> <C-Left>   :call <SID>exSL_SwitchWindow('QuickView')<CR>
     nnoremap <buffer> <silent> <C-Right>   :call <SID>exSL_SwitchWindow('Select')<CR>
 
-    nnoremap <buffer> <silent> <Leader>r :call <SID>exSL_ShowPickedResult('')<CR>
+    nnoremap <buffer> <silent> <Leader>r :call <SID>exSL_ShowPickedResult('', 0)<CR>
+    nnoremap <buffer> <silent> <Leader>d :call <SID>exSL_ShowPickedResult('', 1)<CR>
     nnoremap <buffer> <silent> <Leader>gg :call <SID>exSL_GotoResultInSelectWindow()<CR>
 
     " autocmd
@@ -381,7 +386,8 @@ function! g:exSL_InitQuickViewWindow() " <<<
     nnoremap <buffer> <silent> <C-Left>   :call <SID>exSL_SwitchWindow('QuickView')<CR>
     nnoremap <buffer> <silent> <C-Right>   :call <SID>exSL_SwitchWindow('Select')<CR>
 
-    nnoremap <buffer> <silent> <Leader>r :call <SID>exSL_ShowPickedResult('')<CR>
+    nnoremap <buffer> <silent> <Leader>r :call <SID>exSL_ShowPickedResult('', 0)<CR>
+    nnoremap <buffer> <silent> <Leader>d :call <SID>exSL_ShowPickedResult('', 1)<CR>
 
     " autocmd
     au CursorMoved <buffer> :call g:ex_HighlightSelectLine()
@@ -416,7 +422,8 @@ command ExslToggle call s:exSL_ToggleWindow('')
 command ExslGoDirectly call s:exSL_GetAndShowPickedResult()
 
 " quick view command
-command -nargs=1 SLPR call s:exSL_ShowPickedResult('<args>')
+command -nargs=1 SLPR call s:exSL_ShowPickedResult('<args>',0)
+command -nargs=1 SLPD call s:exSL_ShowPickedResult('<args>',1)
 
 " Ignore case setting
 command SLigc call s:exSL_SetIgnoreCase(1)
