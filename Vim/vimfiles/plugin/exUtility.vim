@@ -1136,13 +1136,13 @@ endfunction " >>>
 
 " --ex_Highlight_Text--
 " hightlight match_nr with text
-function! g:ex_Highlight_Text(match_nr, text ) " <<<
+function! g:ex_Highlight_Text(match_nr, args) " <<<
     let cur_line = line(".")
     let cur_col = col(".")
     " Clear previously selected name
     silent exe a:match_nr . 'match none'
 
-    exe a:match_nr . 'match ex_SynHL' . a:match_nr . ' ' . a:text
+    exe a:match_nr . 'match ex_SynHL' . a:match_nr . ' ' . '"' . a:args . '"'
     silent call cursor(cur_line, cur_col)
 endfunction " >>>
 
