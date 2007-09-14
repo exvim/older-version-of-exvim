@@ -340,6 +340,10 @@ vmap <silent> <a-1> :call g:ex_Highlight_Visual(1)<CR>
 vmap <silent> <a-2> :call g:ex_Highlight_Visual(2)<CR>
 vmap <silent> <a-3> :call g:ex_Highlight_Visual(3)<CR>
 
+command -narg=? HL1 call g:ex_Highlight_Normal(1, "<args>")
+command -narg=? HL2 call g:ex_Highlight_Normal(2, "<args>")
+command -narg=? HL3 call g:ex_Highlight_Normal(3, "<args>")
+
 map <silent> <a-4> :call g:ex_HighlightCancle(0)<CR>
 map <silent> <Leader>0 :call g:ex_HighlightCancle(0)<CR>
 map <silent> <Leader>1 :call g:ex_HighlightCancle(1)<CR>
