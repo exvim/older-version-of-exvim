@@ -1,0 +1,269 @@
+*SpellChecker.txt*		SpellChecker	Last change:	2003 Mar. 09
+
+Author:		Ajit J. Thakkar (ajit_at_unb_dot_ca)
+URL:		http://www.unb.ca/chem/ajit/vim.htm
+
+SpellChecker					*SpellChecker*
+
+1. Overview				|SpellChecker-overview|
+2. Installation				|SpellChecker-installation|
+3. Usage				|SpellChecker-usage|
+4. Customization			|SpellChecker-customization|
+5. Design				|SpellChecker-design|
+6. Limitations and future development	|SpellChecker-limitations|
+7. Credits				|SpellChecker-credits|
+
+==============================================================================
+1. Overview					*SpellChecker-overview*
+
+SpellChecker.vim is a plugin that uses Vim's syntax highlighting facility to
+help spot spelling errors. The lexicon consists of approximately 53,700
+English words, including about 2,700 proper names and 50 acronyms. Three
+dialects are supported: American (US), British (UK), and Canadian (CA). The
+words common to all dialects plus the British words are a subset of Brian
+Kelk's word list <http://www.bckelk.uklinux.net/words/wlist.html>.
+
+SpellChecker highlights both misspelled words and spellings corresponding to a
+dialect different from the one selected. This helps to ensure that the
+selected dialect has been used consistently throughout a document.
+
+In addition to a global user dictionary (english_user.vim) used for all
+documents, each directory may contain a project-specific dictionary that is
+used only when documents in that directory are being spell-checked.
+Buffer-local commands, key mappings and menus are provided for turning spell
+checking on and off, for moving through the errors with or without dialogs,
+changing dialects, adding and removing words to the global user and local
+project dictionaries, for accepting words for the current document only, for
+modifying all occurrences of a word, and for querying SpellChecker settings.
+==============================================================================
+2. Installation					*SpellChecker-installation*
+
+1. Unzip Spellchecker.zip, preserving directory structure, into either
+$HOME/.vim for unix or $HOME\vimfiles for MSWindows. Make sure that
+Spellchecker.vim is in the plugin subdirectory, the english.vim,
+english_dialects.vim, and english_special.vim files are in the dict
+subdirectory, and spellchecker.txt is in the doc subdirectory of
+$HOME/.vim or $HOME\vimfiles as the case may be. Do ":help
+add-plugin", ":help add-global-plugin" and ":help runtimepath" for more
+details about Vim plugins.
+
+2. Do
+:helptags ~/.vim/doc (for unix)
+or
+:helptags ~\vimfiles\doc (for MSWindows)
+to rebuild the tags file. Do ":help add-local-help" for more details.
+
+3. Restart vim
+
+4. Do :help SpellChecker or otherwise read spellchecker.txt to learn
+about usage and customization.
+==============================================================================
+3. Usage						*SpellChecker-usage*
+
+Command summary~
+The fundamental mode of operation is via commands. Key mappings and menus (for
+the GUI) are provided as alternative means of issuing the commands. The key
+mappings use <Leader>, which is \ by default.
+ Command		Key mapping	Action ~
+:SPCheck		<Leader>sc	Turn spell checking on/off
+:SPInteract		<Leader>si	Interactively step through errors
+:SPHarvest		<Leader>sh	Harvest all errors to user dictionary
+					in a single step
+	The three commands above may be all some users need.
+
+:SPNext			<Leader>sn	Move to next error
+:SPPrevious		<Leader>sp	Move to previous error
+:SPModify		<Leader>sm	Modify all occurrences of cursor word 
+:SPAllow		<Leader>sa	Allow word in current document
+:SPLocalSave		<Leader>sl	Save word in local project dictionary
+					dirname_words.vim
+:SPGlobalSave		<Leader>sg	Save word in global user dictionary
+					english_user.vim
+:SPRemove		<Leader>sr	Remove word from any user dictionary
+
+:SPDialect		<Leader>sd	Change dialect
+:SPQuery		<Leader>sq	Query SpellChecker settings
+:SPFormal		<Leader>sf	Toggle "allow word contractions"
+
+Deprecated command~
+:SPOff (<Leader>so)	Use :SPCheck instead
+
+Commands no longer available~
+Use :SPInteract instead of
+:SPSave	(<Leader>ss)
+:SPToggleScanMode (<Leader>st)
+
+Unless you have other user-defined commands with similar names, the first
+three letters (all uppercase) are enough to activate the commands.
+
+Popup menu~
+If you have >
+	set mousemodel=popup_setpos
+in your vimrc, then after spellchecker has been invoked, right-clicking on a
+word will pop up a menu offering various actions that can be performed on that
+word.
+
+Why are there so many dictionaries?~
+SpellChecker uses as many as five dictionaries for each document it checks.
+There are three "system" dictionaries (english.vim, english_dialects.vim,
+english_special.vim) that are always used. SpellChecker will also consult two
+user dictionaries if they exist or are created during a SpellChecker session.
+The global user dictionary is called english_user.vim and is used for all
+documents. The fifth dictionary is a directory-local dictionary called
+dirname_words.vim which is used only for documents that reside in the dirname
+directory.
+
+It is intended that the global user dictionary be a collection of normal
+English words that are too rare or specialized to have made it into the
+"system" dictionaries. For example, my global user dictionary contains words
+like metastable, hypervirial and Ajit. Directory-local dictionaries are
+intended to be collections of acronyms, words and quasi-words that are known
+only to likely readers of the documents in that directory. For example, the
+dictionary local to the directory in which I work on documentation for
+SpellChecker contains "words" like SpellChecker, plugin and vim.
+
+Saving to the global user dictionary (:SPG or \sg) saves to english_user.vim
+Saving to the local  user dictionary (:SPL or \sl) saves to dirname_words.vim
+Words containing an upper-case letter are saved in a case-sensitive fashion.
+
+english_user.vim can reside in any dict directory in vim's runtime path (:he
+rtp). dirname_words.vim must reside in the directory where it is to be used.
+dirname is the lowest-level name for that directory. For example, the
+dictionary stored in and used for documents in $HOME/work/write/2003/january
+is called january_words.vim.
+
+Spell-checking comments in source code~
+Comments in various computer languages can be spell-checked if that language's
+vim syntax file is set up to have its comment syntax group contain a cluster.
+The vim syntax languages that currently support this include: amiga, bash,
+bib, c, cpp, csh, dcl, fortran, ksh, latex, sh, tex, and vim.
+If you need to spell check comments in a program written in a different
+computer language, please ask that vim syntax file's maintainer to add the
+support mentioned above.
+
+Coexistence with other highlighting~
+SpellChecker does not do a "syntax clear", so you can use it on top of other
+highlighting. On the other hand, most syntax highlighting files do use "syntax
+clear" so resetting syntax, (by changing buffers or filetype, for example)
+will clear SpellChecker's highlighting.
+==============================================================================
+4. Customization				*SpellChecker-customization*
+
+Dialect choice ~
+If all your documents are written in American English, then there is nothing
+you need to do. If all your documents are written in British English, then >
+	let dialect='UK'
+in your vimrc file. If your documents are written in Canadian English, then
+add >
+	let dialect='CA'
+to your vimrc file.
+
+If you write documents in more than one dialect, then set your primary dialect
+in the vimrc file as described above. Then documents in a dialect other than
+your primary one can be automatically identified if one of the first
+&modelines (default five, see |modelines|) lines of your document contains a
+directive such as >
+	dialect=US
+For example, in a LaTeX document this line could begin with % and therefore be
+a comment. The dialect can also be changed on the fly by the :SPDialect
+command, or the equivalent key mapping or menu item.
+
+Word Contractions ~
+Several word contractions, such as I'll, are recognized as correct spellings.
+This can be disabled in all your documents by adding >
+	let formal=1
+to your vimrc file.
+
+User dictionary ~
+The global user dictionary must be named english_user.vim. It can be placed in
+a dict subdirectory anywhere in your runtime path, and does not need to be in
+the same location as the main dictionaries (english.vim, etc.). User
+dictionaries created for engspchk.vim will work if you rename them to
+english_user.vim. If you do not have a user dictionary, then one will be
+created in the same location as the supplied dictionaries when you first save
+a word to it.
+
+Project-specific dictionaries ~
+A user-defined name for the project-specific dictionary can be chosen by
+placing a directive among the first &modelines (default five, see |modelines|)
+lines of your document; for example  a directive such as >
+	project_file=gos
+will lead to the local project-specific dictionary being named gos_words.vim.
+If a file called project_words.vim exists in a directory, it is used as the
+local dictionary for compatibility with old versions of SpellChecker.
+
+Colors~
+The highlighting for spelling errors and spelling variants can be customized
+for gvim by adding commands such as >
+	hi BadWord guifg=Black guibg=LightGreen
+	hi Variant guifg=Black guibg=White
+to your vimrc. For console mode, ctermfg and ctermbg need to be set instead.
+
+Key mappings~
+<Leader> is \ by default but can be set according to the user's preferences in
+the vimrc file. If you want to disable the key mappings, perhaps in order to
+define different ones, then add the following to your vimrc file >
+	let no_spellchecker_maps=1
+Another way to disable the key mappings is to put >
+	let no_plugin_maps=1
+in your vimrc but note that this will disable key mappings in all default
+ftplugins (e.g. ftplugin/mail.vim) and other plugins that honor this
+convention.
+
+Autocommands~
+If you want SpellChecker to start checking as soon as you open a document,
+consider adding an autocommand to your vimrc. For example, >
+	au BufRead,BufNewFile *.tex SPCheck
+will do the trick for all files with a tex extension. Change *.tex to match
+the extensions that you need. Another example is >
+	au BufRead,BufNewFile * if &ft ==? 'mail' | SPCheck | endif
+==============================================================================
+5. Design						*SpellChecker-design*
+
+The design is based on the following premises:
+
+a) Consistency in spelling is important. The spelling in a document should
+conform to a single dialect. A word should be spelled in the same way
+throughout a document even when it has more than one accepted spelling.
+Therefore, variant spellings and spellings that are correct in a dialect other
+than the chosen one are highlighted as "todo" items. Moreover, adding variant
+spellings to the permanent user dictionary is made inconvenient to help ensure
+that this only happens when the user has made a well-considered decision to do
+so. Hitting a key to add a word to a user dictionary is not always a
+well-considered decision.
+
+b) The words that occur in most documents are drawn from a relatively small
+core vocabulary that is widely known among users of the language, and possibly
+also from a specialist vocabulary that is known primarily among those
+knowledgeable in the subject area of the document. Therefore, the primary
+lexicon used for spell checking should contain only the core vocabulary.
+Arcane words in the lexicon often hinder the task of finding spelling errors.
+For example, inadvertently typing "ort he" instead of "or the" will not be
+spotted if the spell checker's lexicon includes the rarely-used word "ort".
+Specialist vocabulary should be covered by optional add-on specialist
+lexicons, by the global user dictionary, or by project-specific dictionaries.
+==============================================================================
+6. Limitations and future development		*SpellChecker-limitations*
+
+SpellChecker.vim requires Vim 6.0 or later compiled with +syntax, and run with
+at least "set nocompatible" in the vimrc. No facility for suggesting
+alternative spellings is currently provided. It may be added later.
+
+You cannot spellcheck files named english_user.vim or *_words.vim
+If you need to do so, just rename them first.
+
+The current development priorities are add-on lexicons for slang, and for
+technical disciplines such as physics, mathematics, chemistry and computer
+science.
+
+If you have suitable word lists for other languages, please contact the author
+for assistance in using them with SpellChecker.vim. Hooks have been built
+into the code to facilitate the addition of other languages.
+==============================================================================
+7. Credits					*SpellChecker-credits*
+
+None of this would be possible without Vim which was created by the efforts of
+Bram Moolenaar and the other Vim developers. SpellChecker.vim was inspired by
+Charles Campbell's engspchk.vim
+==============================================================================
+vim:tw=78:ts=8:ft=help:norl:
