@@ -56,6 +56,10 @@
 *.hlsl          text
 *.vsh           text
 *.psh           text
+*.fx            text
+*.fxh           text
+*.cg            text
+*.shd           text
 
 #ChangeLog*		Cdoc
 #
