@@ -16,7 +16,8 @@ OutDir := $(PWD)/_gmakes/$(Platform)
 
 # Precompiled Headers
 # FIXME Compiler choose gch or pch
-FullPath_Pchs := $(addsuffix .gch,$(FullPath_PchDeps))
+PchDir := $(addsuffix .gch,$(FullPath_PchDeps))
+FullPath_Pchs := $(addsuffix _$(Platform)_$(Configuration).h.gch,$(addprefix $(PchDir)/,$(basename $(notdir $(FullPath_PchDeps)))))
 
 # -------------------
 #  Source
@@ -50,7 +51,7 @@ DepDir := $(OutDir)/$(Configuration)/Deps/$(Project)
 
 # Dependence File Output Names
 Deps := $(patsubst %.o,%.d,$(Objs))
-PchDeps := $(patsubst %.gch,%.d,$(notdir $(FullPath_Pchs)))
+PchDeps := $(patsubst %.gch,%.d,$(notdir $(PchDir)))
 
 # Dependence File With Full Path
 FullPath_Deps := $(addprefix $(DepDir)/,$(Deps))
@@ -62,7 +63,7 @@ FullPath_AllDeps := $(FullPath_Deps) $(FullPath_PchDeps)
 # -------------------
 
 # Dependence Libraries
-Libs := $(PrjLibs) $(ExtLibs)
+Libs := $(PrjLibs) $(ExtLibs) 
 
 # Project Compile Dependence Libraries Output Path
 PrjLibDir := $(OutDir)/$(Configuration)/Libs
@@ -326,10 +327,11 @@ endif
 # commands-pchs
 $(FullPath_Pchs):
 	$(MKDIR) $(ErrDir)
+	$(MKDIR) $(PchDir)
 	$(ECHO) compiling $(basename $@)...
 	$(ECHO) - > $(ErrDir)/$(ErrLogName)
 	$(ECHO) --[$(Project)]$(patsubst %/,%,$(notdir $@))-- >> $(ErrDir)/$(ErrLogName)
-	$(CC) -c $(CFlags) $(basename $@) 2>>$(ErrDir)/$(ErrLogName)
+	$(CC) -c $(CFlags) $(basename $(PchDir)) -o $@ 2>>$(ErrDir)/$(ErrLogName)
 	$(CAT) $(ErrDir)/$(ErrLogName) >> $(ErrDir)/$(Project).err
 
 # -------------------
