@@ -293,7 +293,7 @@ endfunction
 function! g:ex_PutHeader()
     execute 'normal ' . "gg"
     execute 'normal ' . "O" .   "// ======================================================================================\<CR>"
-    execute 'normal ' . "\<Home>c$" . "// File         : " . g:ex_ShortFileName(bufname('%')) . "\<CR>"
+    execute 'normal ' . "\<Home>c$" . "// File         : " . fnamemodify(expand('%'), ":t") . "\<CR>"
     execute 'normal ' . "\<Home>c$" . "// Author       : Wu Jie \<CR>"
     execute 'normal ' . "\<Home>c$" . "// Description  : \<CR>"
     execute 'normal ' . "\<Home>c$" . "// ======================================================================================"
@@ -484,26 +484,10 @@ endfunction
 "  file functions
 " ------------------------
 
-" --ex_ShortFileName--
-" Convert full file name into short filename(without directory)
-function! g:ex_ShortFileName(full_file_name) " <<<
-    let idx = strridx(a:full_file_name, '\')
-    if idx != -1
-        return strpart(a:full_file_name, idx+1)
-    else
-        return a:full_file_name
-    endif
-endfunction ">>>
-
 " --ex_ConvertFileName--
 " Convert full file name into the format: file_name (directory)
 function! g:ex_ConvertFileName(full_file_name) " <<<
-    let idx = strridx(a:full_file_name, '\')
-    if idx != -1
-        return strpart(a:full_file_name, idx+1) . ' (' . strpart(a:full_file_name, 0, idx) . ')'
-    else
-        return a:full_file_name . ' (' . '.)'
-    endif
+    return fnamemodify( a:full_file_name, ":t" ) . ' (' . fnamemodify( a:full_file_name, ":h" ) . ')'    
 endfunction ">>>
 
 " --ex_GetFullFileName--

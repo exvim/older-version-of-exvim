@@ -37,9 +37,8 @@ endif
 " --exES_WriteDefaultTemplate--
 function! s:exES_WriteDefaultTemplate() " <<<
     let _cwd = substitute( getcwd(), "\\", "\/", "g" )
-    "let _project_name = strpart( _cwd, strridx(_cwd, "/")+1 )
-    let _project_name = strpart( bufname('%'), 0, strridx(bufname('%'), ".") )
     let _dir_name = g:exES_vimfile_dir
+    let _project_name = fnamemodify( expand('%'), ":t:r" )  
     let _list = []
 
     silent call add(_list, 'PWD='._cwd)

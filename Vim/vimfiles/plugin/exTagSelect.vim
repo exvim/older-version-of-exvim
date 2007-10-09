@@ -622,7 +622,7 @@ endfunction " >>>
 command -nargs=1 TS call s:exTS_GetTagSelectResult('<args>', 0)
 command BackwardTagStack call s:exTS_Stack_GotoTag(s:exTS_stack_idx-1, 'to_entry')
 command ForwardTagStack call s:exTS_Stack_GotoTag(s:exTS_stack_idx+1, 'to_tag')
-command TAGS call call s:exTS_SwitchWindow('Stack')
+command TAGS call s:exTS_SwitchWindow('Stack')
 command ExtsSelectToggle call s:exTS_ToggleWindow('Select')
 command ExtsStackToggle call s:exTS_ToggleWindow('Stack')
 command ExtsToggle call s:exTS_ToggleWindow('')

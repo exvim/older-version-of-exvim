@@ -61,6 +61,8 @@
 *.cg            text
 *.shd           text
 
+*.vim           text
+
 #ChangeLog*		Cdoc
 #
 #*.[sS]			asm --comment=;
