@@ -704,7 +704,8 @@ endfunction " >>>
 " --ex_Browse--
 function! g:ex_Browse(dir, filter) " <<<
     " get short_dir
-    let short_dir = strpart( a:dir, strridx(a:dir,'\')+1 )
+    " let short_dir = strpart( a:dir, strridx(a:dir,'\')+1 )
+    let short_dir = fnamemodify( a:dir, ":t" )
 
     " if directory
     if isdirectory(a:dir) == 1
@@ -800,7 +801,8 @@ function! g:ex_Browse(dir, filter) " <<<
             silent put! = end_space " . end_fold
         endif
         " put it
-        let file_type = strpart( short_dir, strridx(short_dir,'.')+1, 1 )
+        " let file_type = strpart( short_dir, strridx(short_dir,'.')+1, 1 )
+        let file_type = strpart( fnamemodify( short_dir, ":e" ), 0, 1 )
         silent put! = space.'['.file_type.']'.short_dir . end_fold
         return 0
     else

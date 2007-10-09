@@ -625,7 +625,7 @@ function! s:exPJ_GotoSelectResult(edit_cmd) " <<<
 
     " recursively make full path
     let level_pattern = repeat('.',fold_level-1)
-    while fold_level > 0
+    while fold_level > 1 " don't parse level:0
         let fold_level -= 1
         let level_pattern = repeat('.',fold_level*2)
         let fold_pattern = '^'.level_pattern.'-\[F\]'
@@ -639,6 +639,7 @@ function! s:exPJ_GotoSelectResult(edit_cmd) " <<<
     silent call cursor(s:exPJ_cursor_line,s:exPJ_cursor_col)
 
     " simplify the file name
+    let full_path_name = fnamemodify( full_path_name, ":p" )
     let full_path_name = escape(simplify(full_path_name),' ')
 
     " switch file_type
