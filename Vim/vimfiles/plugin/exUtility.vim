@@ -546,7 +546,8 @@ endfunction " >>>
 " --ex_BrowseWithEmtpy--
 function! g:ex_BrowseWithEmtpy(dir, filter) " <<<
     " get short_dir
-    let short_dir = strpart( a:dir, strridx(a:dir,'\')+1 )
+    "let short_dir = strpart( a:dir, strridx(a:dir,'\')+1 )
+    let short_dir = fnamemodify( a:dir, ":t" )
     if short_dir == ''
         let short_dir = a:dir
     endif
@@ -579,7 +580,8 @@ function! g:ex_BrowseWithEmtpy(dir, filter) " <<<
     " judge if it is a dir
     if isdirectory(a:dir) == 0
         " put it
-        let file_type = strpart( short_dir, strridx(short_dir,'.')+1, 1 )
+        " let file_type = strpart( short_dir, strridx(short_dir,'.')+1, 1 )
+        let file_type = strpart( fnamemodify( short_dir, ":e" ), 0, 1 )
         silent put = space.'['.file_type.']'.short_dir  . end_fold
         " if file_end enter a new line for it
         if end_fold != ''

@@ -362,6 +362,11 @@ function! s:exPJ_QuickRefreshProject() " <<<
     endif
     let short_dir = full_path_name
 
+    " fold_level 0 will not set path name
+    if fold_level == 0
+        let full_path_name = ''
+    endif
+
     " save the position
     let s:exPJ_cursor_line = line('.')
     let s:exPJ_cursor_col = col('.')
@@ -371,7 +376,7 @@ function! s:exPJ_QuickRefreshProject() " <<<
     if fold_level == 0
         let need_set_list = 0
     else
-        while fold_level > 0
+        while fold_level > 1
             let fold_level -= 1
             let level_pattern = repeat('.',fold_level*2)
             let fold_pattern = '^'.level_pattern.'-\[F\]'
@@ -386,7 +391,9 @@ function! s:exPJ_QuickRefreshProject() " <<<
     silent call cursor(s:exPJ_cursor_line,s:exPJ_cursor_col)
 
     " simplify the file name
+    let full_path_name = fnamemodify( full_path_name, ":p" )
     let full_path_name = escape(simplify(full_path_name),' ')
+    let full_path_name = strpart( full_path_name, 0, strlen(full_path_name)-1 )
     echon "Update directory: " . full_path_name . "\r"
 
     " select it first to record in '<,'>
@@ -459,6 +466,11 @@ function! s:exPJ_RefreshProject() " <<<
     endif
     let short_dir = full_path_name
 
+    " fold_level 0 will not set path name
+    if fold_level == 0
+        let full_path_name = ''
+    endif
+
     " save the position
     let s:exPJ_cursor_line = line('.')
     let s:exPJ_cursor_col = col('.')
@@ -468,7 +480,7 @@ function! s:exPJ_RefreshProject() " <<<
     if fold_level == 0
         let need_set_list = 0
     else
-        while fold_level > 0
+        while fold_level > 1
             let fold_level -= 1
             let level_pattern = repeat('.',fold_level*2)
             let fold_pattern = '^'.level_pattern.'-\[F\]'
@@ -483,7 +495,9 @@ function! s:exPJ_RefreshProject() " <<<
     silent call cursor(s:exPJ_cursor_line,s:exPJ_cursor_col)
 
     " simplify the file name
+    let full_path_name = fnamemodify( full_path_name, ":p" )
     let full_path_name = escape(simplify(full_path_name),' ')
+    let full_path_name = strpart( full_path_name, 0, strlen(full_path_name)-1 )
     echon "Update directory: " . full_path_name . "\r"
 
     " set level list if not the root dir
