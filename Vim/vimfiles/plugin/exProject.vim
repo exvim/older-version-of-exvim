@@ -643,7 +643,8 @@ function! s:exPJ_GotoSelectResult(edit_cmd) " <<<
     let full_path_name = escape(simplify(full_path_name),' ')
 
     " switch file_type
-    let file_type = strpart( full_path_name, strridx(full_path_name,'.')+1 )
+    " let file_type = strpart( full_path_name, strridx(full_path_name,'.')+1 )
+    let file_type = fnamemodify( full_path_name, ":e" )
     if file_type == 'err'
         echon 'load quick fix list: ' . full_path_name . "\r"
         silent call g:ex_GotoEditBuffer()
