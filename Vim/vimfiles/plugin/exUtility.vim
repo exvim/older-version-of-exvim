@@ -139,6 +139,11 @@ function! g:ex_InitWindow(init_func_name) " <<<
         autocmd WinLeave * call g:ex_RecordCurrentBufNum()
     augroup end
 
+    " avoid cwd change problem
+    if exists( 'g:exES_PWD' )
+        au BufEnter * silent exec 'lcd ' . g:exES_PWD
+    endif
+
     if a:init_func_name != 'none'
         exe 'call ' . a:init_func_name . '()'
     endif

@@ -292,6 +292,10 @@ au BufEnter * :syntax sync fromstart " ensure every file does syntax highlightin
 au BufNewFile,BufRead *.avs set syntax=avs " for avs syntax file.
 au BufWritePost * call g:ex_UpdateCurrentBuffer() 
 
+" FIXME: may have some problem
+" change the pwd when enter the other buffer 
+" au BufEnter * execute ":lcd " . expand("%:p:h") 
+
 au GUIEnter * simalt ~x " Maximize window when enter vim
 
 " Disable auto-comment for c/cpp and vim-script
