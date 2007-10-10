@@ -597,22 +597,26 @@ endfunction " >>>
 
 " --exTS_Stack_GoDirect--
 function! s:exTS_Stack_GoDirect() " <<<
-    let cur_line = getline(".")
-    let idx = match(cur_line, '\S')
-    let cur_line = strpart(cur_line, idx)
-    let idx = match(cur_line, ':')
-    let stack_idx = eval(strpart(cur_line, 0, idx))
-    call g:ex_HighlightConfirmLine()
+    if line(".") > 1
+        let cur_line = getline(".")
+        let idx = match(cur_line, '\S')
+        let cur_line = strpart(cur_line, idx)
+        let idx = match(cur_line, ':')
+        let stack_idx = eval(strpart(cur_line, 0, idx))
+        call g:ex_HighlightConfirmLine()
 
-    " if select idx > old idx, jump to tag. else jump to entry
-    if stack_idx > s:exTS_stack_idx
-        call s:exTS_Stack_GotoTag(stack_idx, 'to_tag')
-        let s:exTS_last_jump_method = "to_tag"
-    elseif stack_idx < s:exTS_stack_idx
-        call s:exTS_Stack_GotoTag(stack_idx, 'to_entry')
-        let s:exTS_last_jump_method = "to_entry"
+        " if select idx > old idx, jump to tag. else jump to entry
+        if stack_idx > s:exTS_stack_idx
+            call s:exTS_Stack_GotoTag(stack_idx, 'to_tag')
+            let s:exTS_last_jump_method = "to_tag"
+        elseif stack_idx < s:exTS_stack_idx
+            call s:exTS_Stack_GotoTag(stack_idx, 'to_entry')
+            let s:exTS_last_jump_method = "to_entry"
+        else
+            call s:exTS_Stack_GotoTag(stack_idx, s:exTS_last_jump_method)
+        endif
     else
-        call s:exTS_Stack_GotoTag(stack_idx, s:exTS_last_jump_method)
+        call g:ex_WarningMsg("Can't jump in this line")
     endif
 endfunction " >>>
 
