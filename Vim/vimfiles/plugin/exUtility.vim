@@ -21,7 +21,7 @@ highlight def ex_SynHL2 gui=none guibg=LightMagenta
 highlight def ex_SynHL3 gui=none guibg=LightRed
 
 " store the highlight strings
-let s:ex_HighLightText = []
+let s:ex_HighLightText = ["","","",""]
 
 " local script vairable initialization
 let s:ex_editbuf_name = ""
@@ -1127,7 +1127,6 @@ function! g:ex_Highlight_Normal(match_nr) " <<<
     exe 'normal "hyiw'
     if @h == s:ex_HighLightText[a:match_nr]
         call g:ex_HighlightCancle(a:match_nr)
-        let s:ex_HighLightText[a:match_nr] = ''
     else
         exe a:match_nr . 'match ex_SynHL' . a:match_nr . ' ' . '/\<'.@h.'\>/'
         let s:ex_HighLightText[a:match_nr] = @h
@@ -1147,7 +1146,6 @@ function! g:ex_Highlight_Text(match_nr, args) " <<<
     exe a:match_nr . 'match ex_SynHL' . a:match_nr . ' ' . '"' . a:args . '"'
     if a:args == s:ex_HighLightText[a:match_nr]
         call g:ex_HighlightCancle(a:match_nr)
-        let s:ex_HighLightText[a:match_nr] = ''
     else
         let s:ex_HighLightText[a:match_nr] = a:args
         silent call cursor(cur_line, cur_col)
@@ -1179,7 +1177,6 @@ function! g:ex_Highlight_Visual(match_nr) " <<<
     endif
     if pat == s:ex_HighLightText[a:match_nr]
         call g:ex_HighlightCancle(a:match_nr)
-        let s:ex_HighLightText[a:match_nr] = ''
     else
         exe a:match_nr . 'match ex_SynHL' . a:match_nr . ' ' . pat
         let s:ex_HighLightText[a:match_nr] = pat
@@ -1196,8 +1193,12 @@ function! g:ex_HighlightCancle(match_nr) " <<<
         1match none
         2match none
         3match none
+        let s:ex_HighLightText[1] = ''
+        let s:ex_HighLightText[2] = ''
+        let s:ex_HighLightText[3] = ''
     else
         silent exe a:match_nr . 'match none'
+        let s:ex_HighLightText[a:match_nr] = ''
     endif
     silent call cursor(cur_line, cur_col)
 endfunction " >>>
