@@ -56,6 +56,7 @@ highlight DiffDelete term=bold cterm=bold ctermfg=Red ctermbg=LightRed gui=bold 
 highlight DiffChange term=bold ctermbg=LightBlue guibg=LightBlue
 highlight DiffText term=reverse cterm=bold ctermbg=Yellow gui=bold guibg=Yellow
 highlight LineNr term=underline cterm=none ctermfg=DarkRed gui=none guifg=Brown
+highlight Visual term=reverse ctermbg=LightGray guibg=LightGray
 
 " --------------------
 "  Vim UI
