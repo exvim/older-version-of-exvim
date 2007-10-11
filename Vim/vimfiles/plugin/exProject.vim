@@ -696,6 +696,8 @@ function! s:exPJ_GotoSelectResult(edit_cmd) " <<<
         silent call g:ex_GotoEditBuffer()
         silent exec a:edit_cmd.' '.full_path_name
     endif
+
+    "
     if !g:exPJ_backto_editbuf
         let winnum = bufwinnr(s:exPJ_select_title)
         if winnr() != winnum

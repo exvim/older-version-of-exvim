@@ -415,6 +415,7 @@ function! s:exTS_GotoTagSelectResult() " <<<
     endif
 
     " jump by command
+    call g:ex_GotoEditBuffer()
     let s:exTS_tag_select_idx = tag_idx
     call g:ex_GotoExCommand( g:ex_MatchTagFile( s:exTS_tag_file_list, s:exTS_tag_stack_list[s:exTS_stack_idx].tag_list[tag_idx-1].filename ), s:exTS_tag_stack_list[s:exTS_stack_idx].tag_list[tag_idx-1].cmd )
     "call g:ex_GotoExCommand( s:exTS_tag_state_{s:exTS_stack_idx}.tag_list[tag_idx-1].filename, s:exTS_tag_state_{s:exTS_stack_idx}.tag_list[tag_idx-1].cmd )

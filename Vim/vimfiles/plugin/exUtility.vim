@@ -140,8 +140,6 @@ function! g:ex_InitWindow(init_func_name) " <<<
     " Define the ex autocommands
     augroup ex_auto_cmds
         autocmd WinLeave * call g:ex_RecordCurrentBufNum()
-        autocmd BufLeave * call g:ex_RecordCurrentBufNum()
-        autocmd BufWinLeave * call g:ex_RecordCurrentBufNum()
     augroup end
 
     " avoid cwd change problem
