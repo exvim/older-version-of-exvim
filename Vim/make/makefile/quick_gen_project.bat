@@ -15,10 +15,8 @@ gawk -f "c:\Program Files\Vim\make\gawk\prg_NoStripSymbol.awk" ./tags>./_vimfile
 echo Creating IDs...
 mkid --include="text"
 rem mkid --include="C C++"
-echo Copy ID to ./_vimfiles/ID
-copy ID "./_vimfiles/ID"
-echo Delete ./ID
-del ID
+echo Move ID to ./_vimfiles/ID
+move ID "./_vimfiles/ID"
 
 :Finish
 echo Finish
