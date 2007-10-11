@@ -298,11 +298,11 @@ $(DepDir)/%.h.d: %.h
 	$(RM) $@
 ifeq ($(CompileMode),Fast)
 	$(CC) -M $(CFlags) $< -o $@.tmp
-	@sed "s,\($*\)\.o[ :]*,$<.gch: ,g" < $@.tmp > $@
+	@sed "s,\($*\)\.o[ :]*,$(FullPath_Pchs): ,g" < $@.tmp > $@
 	$(RM) $@.tmp
 else
 	$(CC) -M $(CFlags) $< -o $@.tmp
-	@sed "s,\($*\)\.o[ :]*,$<.gch $@: ,g" < $@.tmp > $@
+	@sed "s,\($*\)\.o[ :]*,$(FullPath_Pchs) $@: ,g" < $@.tmp > $@
 	$(RM) $@.tmp
 endif
 

@@ -16,7 +16,8 @@ OutDir := $(PWD)/_gmakes/$(Platform)
 
 # Precompiled Headers
 # FIXME Compiler choose gch or pch
-FullPath_Pchs := $(addsuffix .gch,$(FullPath_PchDeps))
+PchDir := $(addsuffix .gch,$(FullPath_PchDeps))
+FullPath_Pchs := $(addsuffix _$(Platform)_$(Configuration).h.gch,$(addprefix $(PchDir)/,$(basename $(notdir $(FullPath_PchDeps)))))
 
 # -------------------
 #  Source
@@ -50,7 +51,7 @@ DepDir := $(OutDir)/$(Configuration)/Deps/$(Project)
 
 # Dependence File Output Names
 Deps := $(patsubst %.o,%.d,$(Objs))
-PchDeps := $(patsubst %.gch,%.d,$(notdir $(FullPath_Pchs)))
+PchDeps := $(patsubst %.gch,%.d,$(notdir $(PchDir)))
 
 # Dependence File With Full Path
 FullPath_Deps := $(addprefix $(DepDir)/,$(Deps))
@@ -192,7 +193,7 @@ VPATH += $(TargetDir)
 # All Rules
 # -------------------
 .PHONY: all clean-all rebuild
-all: $(FullPath_Target)
+all: |clean-errs $(FullPath_Target)
 clean-all: |clean-deps clean-pchs clean-objs clean-errs clean-target
 rebuild: |clean-all all
 
@@ -303,11 +304,11 @@ $(DepDir)/%.h.d: %.h
 	$(RM) $@
 ifeq ($(CompileMode),Fast)
 	$(CC) -M $(CFlags) $< -o $@.tmp
-	@sed "s,\($*\)\.o[ :]*,$<.gch: ,g" < $@.tmp > $@
+	@sed "s,\($*\)\.o[ :]*,$(FullPath_Pchs): ,g" < $@.tmp > $@
 	$(RM) $@.tmp
 else
 	$(CC) -M $(CFlags) $< -o $@.tmp
-	@sed "s,\($*\)\.o[ :]*,$<.gch $@: ,g" < $@.tmp > $@
+	@sed "s,\($*\)\.o[ :]*,$(FullPath_Pchs) $@: ,g" < $@.tmp > $@
 	$(RM) $@.tmp
 endif
 
@@ -332,6 +333,7 @@ endif
 # commands-pchs
 $(FullPath_Pchs):
 	$(MKDIR) $(ErrDir)
+	$(MKDIR) $(PchDir)
 	$(ECHO) compiling $(basename $@)...
 	$(ECHO) - > $(ErrDir)/$(patsubst %/,%,$(notdir $@)).err
 	$(ECHO) --[$(Project)]$(patsubst %/,%,$(notdir $@))-- >> $(ErrDir)/$(patsubst %/,%,$(notdir $@)).err
