@@ -221,14 +221,21 @@ function! g:exPJ_InitSelectWindow() " <<<
     " +++++++++++++++++++++++++++++++
 
     " syntax highlight
-    syntax match exPJ_SynDir '\[F\]'
-    syntax match exPJ_SynFile '\[[^F]*\]'
+    syntax match exPJ_SynDir '\[\CF\]'
     syntax match exPJ_TreeLine '\( |\)\+-*\ze'
+    syntax match exPJ_SynFile '\[[^\CF]*\]'
+    syntax match exPJ_SynSrcFile '\[c\]'
+    syntax match exPJ_SynHeaderFile '\[\(h\|i\)\]'
+    syntax match exPJ_SynErrorFile '\[e\]'
     
     highlight def exPJ_SynDir gui=bold guifg=Brown term=bold cterm=bold ctermfg=DarkRed
-    highlight def exPJ_SynFile gui=none guifg=Blue term=none cterm=none ctermfg=Blue
     highlight def exPJ_TreeLine gui=none guifg=DarkGray term=none cterm=none ctermfg=Gray
     highlight def exPJ_SelectLine gui=none guibg=LightCyan term=none cterm=none ctermbg=LightCyan
+
+    highlight def exPJ_SynFile gui=none guifg=Magenta term=none cterm=none ctermfg=Magenta
+    highlight def exPJ_SynSrcFile gui=none guifg=Blue term=none cterm=none ctermfg=Blue
+    highlight def exPJ_SynHeaderFile gui=none guifg=DarkGreen term=none cterm=none ctermfg=DarkGreen
+    highlight def exPJ_SynErrorFile gui=none guifg=Red term=none cterm=none ctermfg=Red
 
     " key map
     nnoremap <silent> <buffer> <Return>   :call <SID>exPJ_GotoSelectResult('e')<CR>
