@@ -1204,6 +1204,18 @@ function! g:ex_HighlightCancle(match_nr) " <<<
 endfunction " >>>
 
 " ------------------------
+"  Syntax functions
+" ------------------------
+
+" --ex_CreateMacroSyntax--
+" Create Macro Syntax file for macro temp highlight
+" TODO
+function! g:ex_CreateMacroSyntax( macro_pattern ) " <<<
+    " syntax clear groupname
+    " syntax macro template
+endfunction " >>>
+
+" ------------------------
 "  Debug functions
 " ------------------------
 
