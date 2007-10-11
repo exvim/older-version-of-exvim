@@ -230,9 +230,9 @@ function! g:exQF_InitSelectWindow() " <<<
     syntax match exQF_SynLineNumber '\d\+:'
     syntax match exQF_SynLineNumber '(\d\+)'
 
-    highlight def exQF_SynFileTag gui=none guifg=DarkRed guibg=LightGray
-    highlight def exQF_SynFileName gui=none guifg=Blue 
-    highlight def exQF_SynLineNumber gui=none guifg=Brown 
+    highlight def exQF_SynFileTag term=none cterm=none ctermfg=DarkRed ctermbg=LightGray gui=none guifg=DarkRed guibg=LightGray
+    highlight def exQF_SynFileName term=none cterm=none ctermfg=Blue gui=none guifg=Blue 
+    highlight def exQF_SynLineNumber term=none cterm=none ctermfg=DarkRed gui=none guifg=Brown 
 
     " key map
     nnoremap <buffer> <silent> <Return>   \|:call <SID>exQF_GotoInSelectWindow()<CR>
@@ -376,9 +376,9 @@ function! g:exQF_InitQuickViewWindow() " <<<
     syntax match exQF_SynLineNumber '(\d\+)'
     syntax match exQF_SynLineNumber ':\d\+'
 
-    highlight def exQF_SynFileName gui=none guifg=Blue 
-    highlight def exQF_SynSearchPattern gui=bold guifg=DarkRed guibg=LightGray
-    highlight def exQF_SynLineNumber gui=none guifg=Brown 
+    highlight def exQF_SynFileName term=none cterm=none ctermfg=Blue gui=none guifg=Blue 
+    highlight def exQF_SynSearchPattern term=blod cterm=bold ctermfg=DarkRed ctermbg=LightGray gui=bold guifg=DarkRed guibg=LightGray
+    highlight def exQF_SynLineNumber term=none cterm=none ctermfg=Brown gui=none guifg=Brown 
 
     " key map
     nnoremap <buffer> <silent> <Return>   \|:call <SID>exQF_GotoInQuickViewWindow()<CR>

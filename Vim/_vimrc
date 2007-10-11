@@ -51,10 +51,11 @@ set nowrap " I don't like this, cause in split window mode, it feel strange
 " I prefer this 
 "set guifont=NSimSun:cGB2312
 set guifont=Lucida_Console:h9
-highlight DiffAdd term=bold ctermbg=9 guibg=LightGreen
-highlight DiffDelete term=bold ctermfg=9 ctermbg=11 gui=bold guifg=Red guibg=LightRed
-highlight DiffChange term=bold ctermbg=13 guibg=LightBlue
-highlight DiffText term=reverse cterm=bold ctermbg=12 gui=bold guibg=Yellow
+highlight DiffAdd ctermbg=LightGreen guibg=LightGreen
+highlight DiffDelete term=bold cterm=bold ctermfg=Red ctermbg=LightRed gui=bold guifg=Red guibg=LightRed
+highlight DiffChange term=bold ctermbg=LightBlue guibg=LightBlue
+highlight DiffText term=reverse cterm=bold ctermbg=Yellow gui=bold guibg=Yellow
+highlight LineNr term=underline cterm=none ctermfg=DarkRed gui=none guifg=Brown
 
 " --------------------
 "  Vim UI
@@ -312,13 +313,13 @@ au FileType vim set comments=sO:\"\ -,mO:\"\ \ ,eO:\"\",f:\"
 let showmarks_include = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 let g:showmarks_enable = 1
 " For marks a-z
-highlight ShowMarksHLl gui=bold guibg=LightBlue guifg=Blue                      
+highlight ShowMarksHLl term=bold cterm=bold ctermbg=LightBlue ctermfg=Blue gui=bold guibg=LightBlue guifg=Blue                      
 " For marks A-Z
-highlight ShowMarksHLu gui=bold guibg=LightRed guifg=DarkRed
+highlight ShowMarksHLu term=bold cterm=bold ctermbg=LightRed ctermfg=DarkRed gui=bold guibg=LightRed guifg=DarkRed
 " For all other marks
-highlight ShowMarksHLo gui=bold guibg=LightYellow guifg=DarkYellow
+highlight ShowMarksHLo term=bold cterm=bold ctermbg=LightYellow ctermfg=DarkYellow gui=bold guibg=LightYellow guifg=DarkYellow
 " For multiple marks on the same line.
-highlight ShowMarksHLm gui=bold guibg=LightGreen guifg=DarkGreen
+highlight ShowMarksHLm term=bold cterm=bold ctermbg=LightGreen ctermfg=DarkGreen gui=bold guibg=LightGreen guifg=DarkGreen
 
 " ----------------------------------------------------------------------------                                    
 " Change current directory to the file of the buffer ( from Script#65"CD.vim"
@@ -469,15 +470,15 @@ let g:exPJ_defualt_filter .= 'mk err exe '
 nnoremap <silent> <F4> :TlistToggle<CR>
 
 " TagListTagName  - Used for tag names
-highlight MyTagListTagName gui=bold guifg=Black guibg=Orange 
+highlight MyTagListTagName term=bold cterm=bold ctermfg=Black ctermbg=DarkYellow gui=bold guifg=Black guibg=Orange 
 " TagListTagScope - Used for tag scope
-highlight MyTagListTagScope gui=NONE guifg=Blue 
+highlight MyTagListTagScope term=NONE cterm=NONE ctermfg=Blue gui=NONE guifg=Blue 
 " TagListTitle    - Used for tag titles
-highlight MyTagListTitle gui=bold guifg=DarkRed guibg=LightGray 
+highlight MyTagListTitle term=bold cterm=bold ctermfg=DarkRed ctermbg=LightGray gui=bold guifg=DarkRed guibg=LightGray 
 " TagListComment  - Used for comments
-highlight MyTagListComment guifg=DarkGreen 
+highlight MyTagListComment ctermfg=DarkGreen guifg=DarkGreen 
 " TagListFileName - Used for filenames
-highlight MyTagListFileName gui=bold guifg=Black guibg=LightBlue
+highlight MyTagListFileName term=bold cterm=bold ctermfg=Black ctermbg=LightBlue gui=bold guifg=Black guibg=LightBlue
 
 "let Tlist_Ctags_Cmd = $VIM.'/vimfiles/ctags.exe' " location of ctags tool 
 let Tlist_Show_One_File = 1 " Displaying tags for only one file~
@@ -511,13 +512,13 @@ let g:miniBufExplMaxSize = 1 " <max lines: defualt 0> setting this to 0 will mea
 "let g:miniBufExplMapWindowNavArrows = 1
 
 "for buffers that have NOT CHANGED and are NOT VISIBLE.
-highlight MBENormal guibg=LightGray guifg=DarkGray
+highlight MBENormal ctermbg=LightGray ctermfg=DarkGray guibg=LightGray guifg=DarkGray
 " for buffers that HAVE CHANGED and are NOT VISIBLE
-highlight MBEChanged guibg=Red guifg=DarkRed
+highlight MBEChanged ctermbg=Red ctermfg=DarkRed guibg=Red guifg=DarkRed
 " buffers that have NOT CHANGED and are VISIBLE
-highlight MBEVisibleNormal term=bold cterm=bold gui=bold guibg=Gray guifg=Black
+highlight MBEVisibleNormal term=bold cterm=bold ctermbg=Gray ctermfg=Black gui=bold guibg=Gray guifg=Black
 " buffers that have CHANGED and are VISIBLE
-highlight MBEVisibleChanged term=bold cterm=bold gui=bold guibg=DarkRed guifg=Black
+highlight MBEVisibleChanged term=bold cterm=bold ctermbg=DarkRed ctermfg=Black gui=bold guibg=DarkRed guifg=Black
 
 " --------------------
 " OmniCppComplete
@@ -530,10 +531,10 @@ imap <C-j> <C-X><C-O>
 set completeopt=menuone
 
 " Popup menu hightLight Group
-highlight Pmenu ctermbg=13 guibg=LightGray
-highlight PmenuSel ctermbg=7 guibg=DarkBlue guifg=White
-highlight PmenuSbar ctermbg=7 guibg=DarkGray
-highlight PmenuThumb guibg=Black
+highlight Pmenu ctermbg=LightGray guibg=LightGray
+highlight PmenuSel ctermbg=DarkBlue ctermfg=White guibg=DarkBlue guifg=White
+highlight PmenuSbar ctermbg=DarkGray guibg=DarkGray
+highlight PmenuThumb ctermbg=Black guibg=Black
 
 " use global scope search
 let OmniCpp_GlobalScopeSearch = 1

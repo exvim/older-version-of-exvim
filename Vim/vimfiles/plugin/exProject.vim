@@ -214,8 +214,8 @@ function! g:exPJ_InitSelectWindow() " <<<
     silent! setlocal foldlevel=9999
     syntax match exPJ_SynFoldStart '{'
     syntax match exPJ_SynFoldEnd '}'
-    highlight def exPJ_SynFoldStart gui=none guifg=background
-    highlight def exPJ_SynFoldEnd gui=none guifg=background
+    highlight def exPJ_SynFoldStart gui=none guifg=background term=none cterm=none ctermfg=DarkGray
+    highlight def exPJ_SynFoldEnd gui=none guifg=background term=none cterm=none ctermfg=DarkGray
     " highlight def exPJ_SynFoldStart gui=none guifg=black
     " highlight def exPJ_SynFoldEnd gui=none guifg=black
     " +++++++++++++++++++++++++++++++
@@ -225,10 +225,10 @@ function! g:exPJ_InitSelectWindow() " <<<
     syntax match exPJ_SynFile '\[[^F]*\]'
     syntax match exPJ_TreeLine '\( |\)\+-*\ze'
     
-    highlight def exPJ_SynDir gui=bold guifg=Brown
-    highlight def exPJ_SynFile gui=none guifg=Blue
-    highlight def exPJ_TreeLine gui=none guifg=DarkGray
-    highlight def exPJ_SelectLine gui=none guibg=LightCyan
+    highlight def exPJ_SynDir gui=bold guifg=Brown term=bold cterm=bold ctermfg=DarkRed
+    highlight def exPJ_SynFile gui=none guifg=Blue term=none cterm=none ctermfg=Blue
+    highlight def exPJ_TreeLine gui=none guifg=DarkGray term=none cterm=none ctermfg=Gray
+    highlight def exPJ_SelectLine gui=none guibg=LightCyan term=none cterm=none ctermbg=LightCyan
 
     " key map
     nnoremap <silent> <buffer> <Return>   :call <SID>exPJ_GotoSelectResult('e')<CR>

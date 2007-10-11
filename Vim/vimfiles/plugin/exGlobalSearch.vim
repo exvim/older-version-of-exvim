@@ -317,9 +317,9 @@ function! g:exGS_InitSelectWindow() " <<<
     syntax match exGS_SynSearchPattern '^----------.\+----------'
     syntax match exGS_SynLineNumber '\d\+:'
 
-    highlight def exGS_SynFileName gui=none guifg=Blue 
-    highlight def exGS_SynSearchPattern gui=bold guifg=DarkRed guibg=LightGray
-    highlight def exGS_SynLineNumber gui=none guifg=Brown 
+    highlight def exGS_SynFileName gui=none guifg=Blue term=none cterm=none ctermfg=Blue
+    highlight def exGS_SynSearchPattern gui=bold guifg=DarkRed guibg=LightGray term=bold cterm=bold ctermfg=DarkRed ctermbg=LightGray
+    highlight def exGS_SynLineNumber gui=none guifg=Brown term=none cterm=none ctermfg=DarkRed
 
     " key map
     nnoremap <buffer> <silent> <Return>   \|:call <SID>exGS_GotoInSelectWindow()<CR>

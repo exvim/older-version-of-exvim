@@ -181,9 +181,9 @@ function! g:exTS_InitSelectWindow() " <<<
     syntax match exTS_SynTagName '^\S\+$'
     syntax match exTS_SynSearchPattern '^        \S.*$'
 
-    highlight def exTS_SynFileName gui=none guifg=Blue 
-    highlight def exTS_SynTagName gui=bold guifg=DarkRed guibg=LightGray
-    highlight def exTS_SynSearchPattern gui=none guifg=Black 
+    highlight def exTS_SynFileName term=none cterm=none ctermfg=Blue gui=none guifg=Blue 
+    highlight def exTS_SynTagName term=bold cterm=bold ctermfg=DarkRed ctermbg=LightGray gui=bold guifg=DarkRed guibg=LightGray
+    highlight def exTS_SynSearchPattern term=none cterm=none ctermfg=Black gui=none guifg=Black 
 
     " key map
     nnoremap <buffer> <silent> <Return>   \|:call <SID>exTS_GotoTagSelectResult()<CR>
@@ -452,10 +452,10 @@ function! g:exTS_InitStackWindow() " <<<
     syntax match exTS_SynJumpSymbol '======>'
     syntax match exTS_SynStackTitle '#.\+TAG NAME.\+ENTRY POINT PREVIEW'
 
-    highlight def exTS_SynJumpMethodTS gui=none guifg=Red 
-    highlight def exTS_SynJumpMethodTG gui=none guifg=Blue 
-    highlight def exTS_SynJumpSymbol gui=none guifg=DarkGreen
-    highlight def exTS_SynStackTitle gui=bold guifg=Brown
+    highlight def exTS_SynJumpMethodTS term=none cterm=none ctermfg=Red gui=none guifg=Red 
+    highlight def exTS_SynJumpMethodTG term=none cterm=none ctermfg=Blue gui=none guifg=Blue 
+    highlight def exTS_SynJumpSymbol term=none cterm=none ctermfg=DarkGreen gui=none guifg=DarkGreen
+    highlight def exTS_SynStackTitle term=bold cterm=bold ctermfg=DarkYellow gui=bold guifg=Brown
 
     " map keys
     nnoremap <buffer> <silent> <Return>   \|:call <SID>exTS_Stack_GoDirect()<CR>
