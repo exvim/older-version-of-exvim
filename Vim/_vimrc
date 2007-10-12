@@ -51,12 +51,20 @@ set nowrap " I don't like this, cause in split window mode, it feel strange
 " I prefer this 
 "set guifont=NSimSun:cGB2312
 set guifont=Lucida_Console:h9
+
+" highlight diff
 highlight DiffAdd ctermbg=LightGreen guibg=LightGreen
 highlight DiffDelete term=bold cterm=bold ctermfg=Red ctermbg=LightRed gui=bold guifg=Red guibg=LightRed
 highlight DiffChange term=bold ctermbg=LightBlue guibg=LightBlue
 highlight DiffText term=reverse cterm=bold ctermbg=Yellow gui=bold guibg=Yellow
+
+" highlight line number and visual
 highlight LineNr term=underline cterm=none ctermfg=DarkRed gui=none guifg=Brown
 highlight Visual term=reverse ctermbg=LightGray guibg=LightGray
+
+" highlight #if 0 using my own highlight define
+highlight exMacroDisable term=none cterm=none ctermfg=DarkGray gui=none guifg=DarkGray
+highlight link cCppOut exMacroDisable                
 
 " --------------------
 "  Vim UI
@@ -238,6 +246,14 @@ nmap <Leader>bd :call g:ex_Kwbd(1)<CR>
 nmap <C-F4> :call g:ex_Kwbd(1)<CR>
 
 
+" VimTip 329: A map for swapping words
+" http://vim.sourceforge.net/tip_view.php?tip_id=
+" Then when you put the cursor on or in a word, press "\sw", and
+" the word will be swapped with the next word.  The words may
+" even be separated by punctuation (such as "abc = def").
+nmap <silent> <leader>sw "_yiw:s/\(\%#\w\+\)\(\W\+\)\(\w\+\)/\3\2\1/<cr><c-o>
+
+
 " --------------------------------------------------------------------------------------
 " Command
 " --------------------------------------------------------------------------------------
@@ -411,6 +427,11 @@ nnoremap <silent> <leader>qq :ExqfQuickViewToggle<CR>
 let g:exQF_backto_editbuf = 0
 let g:exQF_close_when_selected = 0
 let g:exQF_window_direction = 'bel'
+
+" --------------------
+" exMacroHightlight
+" --------------------
+nnoremap <silent> <Leader>aa :ExmhSelectToggle<CR>
 
 " --------------------
 " exEnvironmentSetting
@@ -597,18 +618,4 @@ let OmniCpp_SelectFirstItem = 0
  endif
 " 
 " Tom.
-
-
-" VimTip 329: A map for swapping words
-" http://vim.sourceforge.net/tip_view.php?tip_id=
-" 
-" Put the following map into your <.vimrc>:
-" 
-  nmap <silent> gw "_yiw:s/\(\%#\w\+\)\(\W\+\)\(\w\+\)/\3\2\1/<cr><c-o><c-l>
-" 
-" Then when you put the cursor on or in a word, press "gw", and
-" the word will be swapped with the next word.  The words may
-" even be separated by punctuation (such as "abc = def").
-"
-"
 

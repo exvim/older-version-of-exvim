@@ -162,12 +162,6 @@ endfunction " >>>
 " init_func_name: 'none', 'function_name'
 " call_func_name: 'none', 'function_name'
 function! g:ex_OpenWindow( buffer_name, window_direction, window_size, use_vertical, edit_mode, backto_editbuf, init_func_name, call_func_name ) " <<<
-    " Get the filename and filetype for the specified buffer
-    let s:ex_editbuf_name = fnamemodify(bufname('%'), ':p')
-    let s:ex_editbuf_ftype = getbufvar('%', '&filetype')
-    let s:ex_editbuf_lnum = line('.')
-    let s:ex_editbuf_num = bufnr('%')
-
     " If the window is open, jump to it
     let winnum = bufwinnr(a:buffer_name)
     if winnum != -1
@@ -184,6 +178,12 @@ function! g:ex_OpenWindow( buffer_name, window_direction, window_size, use_verti
 
         return
     endif
+
+    " Get the filename and filetype for the specified buffer
+    let s:ex_editbuf_name = fnamemodify(bufname('%'), ':p')
+    let s:ex_editbuf_ftype = getbufvar('%', '&filetype')
+    let s:ex_editbuf_lnum = line('.')
+    let s:ex_editbuf_num = bufnr('%')
 
     " Open window
     call g:ex_CreateWindow( a:buffer_name, a:window_direction, a:window_size, a:use_vertical, a:edit_mode, a:init_func_name )
