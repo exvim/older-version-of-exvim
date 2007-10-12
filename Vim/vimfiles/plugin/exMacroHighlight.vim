@@ -69,13 +69,16 @@ endif
 " -------------------------------
 " local variable initialization
 " -------------------------------
+
 " title
 let s:exMH_select_title = "__exMH_SelectWindow__"
 let s:exMH_short_title = 'Select'
+let s:exMH_cur_filename = ''
 
 " general
 let s:exMH_backto_editbuf = 0
 let s:exMH_get_macro_file = 1
+let s:exMH_macro_list = []
 
 " select
 let s:exMH_select_idx = 1
@@ -89,10 +92,35 @@ let s:exMH_select_idx = 1
 " --exMH_OpenWindow--
 " Open exMacroHighlight select window 
 function! s:exMH_OpenWindow( short_title ) " <<<
-    if a:short_title != ''
-        let s:exMH_short_title = a:short_title
+    " if s:exMH_cur_filename don't load, we load and do MH init 
+    if s:exMH_cur_filename == ''
+        if exists('g:exES_Macro')
+            call s:exMH_InitMacroList(g:exES_Macro)
+        else
+            call g:ex_WarningMsg('macro file not found, please create one in vimentry')
+            call s:exMH_InitMacroList(s:exMH_select_title)
+        endif
     endif
+
+    " if need switch window
+    if a:short_title != ''
+        if s:exMH_short_title != a:short_title
+            let _title = '__exMH_' . s:exMH_short_title . 'Window__'
+            if s:exMH_short_title == 'Select'
+                let _title = s:exMH_cur_filename
+            endif
+            if bufwinnr(_title) != -1
+                call g:ex_CloseWindow(_title)
+            endif
+            let s:exMH_short_title = a:short_title
+        endif
+    endif
+
     let title = '__exMH_' . s:exMH_short_title . 'Window__'
+    " toggle exMH window
+    if a:short_title == 'Select'
+        let title = s:exMH_cur_filename
+    endif
     " open window
     if g:exMH_use_vertical_window
         call g:ex_OpenWindow( title, g:exMH_window_direction, g:exMH_window_width, g:exMH_use_vertical_window, g:exMH_edit_mode, s:exMH_backto_editbuf, 'g:exMH_Init'.s:exMH_short_title.'Window', 'g:exMH_Update'.s:exMH_short_title.'Window' )
@@ -114,35 +142,35 @@ endfunction " >>>
 " --exMH_ToggleWindow--
 " Toggle the window
 function! s:exMH_ToggleWindow( short_title ) " <<<
-    " read the file first
-    if s:exMH_get_macro_file
-        let s:exMH_get_macro_file = 0
+    " if s:exMH_cur_filename don't load, we load and do MH init 
+    if s:exMH_cur_filename == ''
         if exists('g:exES_Macro')
-            let s:exMH_select_title = g:exES_Macro
+            call s:exMH_InitMacroList(g:exES_Macro)
         else
-            call g:ex_WarningMsg('not found macro highlight file')
+            call g:ex_WarningMsg('macro file not found, please create one in vimentry')
+            call s:exMH_InitMacroList(s:exMH_select_title)
         endif
-    endif
-
-    " assignment the title
-    if s:exMH_short_title == 'Select'
-        let s:exMH_cur_title = s:exMH_select_title
-    " elseif s:exMH_short_title == 'QuickView'
-    "     let s:exMH_cur_title = s:exMH_quick_view_title
     endif
 
     " if need switch window
     if a:short_title != ''
         if s:exMH_short_title != a:short_title
-            if bufwinnr('__exMH_' . s:exMH_short_title . 'Window__') != -1
-                call g:ex_CloseWindow('__exMH_' . s:exMH_short_title . 'Window__')
+            let _title = '__exMH_' . s:exMH_short_title . 'Window__'
+            if s:exMH_short_title == 'Select'
+                let _title = s:exMH_cur_filename
+            endif
+            if bufwinnr(_title) != -1
+                call g:ex_CloseWindow(_title)
             endif
             let s:exMH_short_title = a:short_title
         endif
     endif
 
-    " toggle exMH window
     let title = '__exMH_' . s:exMH_short_title . 'Window__'
+    " toggle exMH window
+    if a:short_title == 'Select'
+        let title = s:exMH_cur_filename
+    endif
     if g:exMH_use_vertical_window
         call g:ex_ToggleWindow( title, g:exMH_window_direction, g:exMH_window_width, g:exMH_use_vertical_window, 'none', s:exMH_backto_editbuf, 'g:exMH_Init'.s:exMH_short_title.'Window', 'g:exMH_Update'.s:exMH_short_title.'Window' )
     else
@@ -150,12 +178,57 @@ function! s:exMH_ToggleWindow( short_title ) " <<<
     endif
 endfunction " >>>
 
-" --exMH_SwitchWindow
+" --exMH_SwitchWindow--
 function! s:exMH_SwitchWindow( short_title ) " <<<
     let title = '__exMH_' . a:short_title . 'Window__'
+    if a:short_title == 'Select'
+        let title = s:exMH_cur_filename
+    endif
     if bufwinnr(title) == -1
         call s:exMH_ToggleWindow(a:short_title)
     endif
+endfunction " >>>
+
+" --exMH_InitMacroList--
+function! s:exMH_InitMacroList(macrofile_name) " <<<
+    let s:exMH_cur_filename = a:macrofile_name
+    if filereadable(s:exMH_cur_filename) == 1
+        let s:exMH_macro_list = readfile(s:exMH_cur_filename)
+    endif
+
+    " define syntax
+    call s:exMH_DefineSyntax()
+
+    " highlight link
+    hi def link exCppSkip exCppOut
+    hi def link exCppOut2 exCppOut
+    hi def link exCppOut  exMacroDisable
+
+    " define autocmd for update syntax
+    autocmd BufEnter * call s:exMH_UpdateSyntax()
+endfunction " >>>
+
+" --exMH_DefineSyntax--
+function! s:exMH_DefineSyntax() " <<<
+    "let macro_pattern = ''
+    "for macro in s:exMH_macro_list
+    "    macro_pattern = macro . '\|'
+    "endfor
+
+    " update macro pattern
+    let macro_pattern = '\(FUCK\|HELLO\|ME\)'
+    let start_pattern = '^\s*\(%:\|#\)\s*\(if\|ifdef\)\s\+' . macro_pattern .'\+\>'
+
+    " update the syntax
+    exec 'syn region exCppOut  start=' . '"' . start_pattern . '"' . ' end=".\@=\|$" contains=exCppOut2'
+    exec 'syn region exCppOut2 contained start=' . '"' . macro_pattern . '"' . ' end="^\s*\(%:\|#\)\s*\(endif\>\|else\>\|elif\>\)" contains=exCppSkip'
+    exec 'syn region exCppSkip contained start="^\s*\(%:\|#\)\s*\(if\>\|ifdef\>\|ifndef\>\)" skip="\\$" end="^\s*\(%:\|#\)\s*endif\>" contains=exCppSkip'
+endfunction " >>>
+
+" --exMH_UpdateSyntax--
+function! s:exMH_UpdateSyntax() " <<<
+    syntax clear exCppOut exCppOut2 exCppSkip
+    silent call s:exMH_DefineSyntax() 
 endfunction " >>>
 
 " ------------------------------

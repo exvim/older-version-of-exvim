@@ -272,8 +272,6 @@ function! g:ex_ResizeWindow( use_vertical, original_size, increase_size ) " <<<
         endif
         silent exe 'resize ' . new_size
     endif
-
-
 endfunction " >>>
 
 " ------------------------
