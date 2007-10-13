@@ -200,11 +200,14 @@ function! s:exMH_InitMacroList(macrofile_name) " <<<
     call s:exMH_DefineSyntax()
 
     " highlight link
+    " 
     hi def link exCppSkip   exCppOut
     hi def link exCppOut2   exCppOut
-    hi def link exCppNegOut exCppOut
     hi def link exCppOut    exMacroDisable
-    hi def link exCppNotOut cPreProc
+
+    "
+    hi def link exCppNegOut exCppOut
+    hi def link exCppNotOut Normal
 
     " define autocmd for update syntax
     autocmd BufEnter * call s:exMH_UpdateSyntax()
@@ -218,7 +221,7 @@ function! s:exMH_DefineSyntax() " <<<
     "endfor
 
     " update macro pattern
-    let macro_pattern = '\(FUCK\|HELLO\|ME\)'
+    let macro_pattern = '\(EX_DEBUG\|EX_WIN32\)'
     let start_pattern = '^\s*\(%:\|#\)\s*\(if\|ifdef\)\s\+' . macro_pattern .'\+\>'
 
     " update the syntax
@@ -226,13 +229,14 @@ function! s:exMH_DefineSyntax() " <<<
     exec 'syn region exCppOut2 contained start=' . '"' . macro_pattern . '"' . ' end="^\s*\(%:\|#\)\s*\(endif\>\|else\>\|elif\>\)" contains=exCppSkip'
     exec 'syn region exCppSkip contained start="^\s*\(%:\|#\)\s*\(if\>\|ifdef\>\|ifndef\>\)" skip="\\$" end="^\s*\(%:\|#\)\s*endif\>" contains=exCppSkip'
 
-    " update macro pattern
-    let macro_pattern = '\(FUCK\|HELLO\|ME\)'
+    " update negative macro pattern
+    let macro_pattern = '\(EX_DEBUG\|EX_WIN32\)'
     let start_pattern = '^\s*\(%:\|#\)\s*\(ifndef\)\s\+' . macro_pattern .'\+\>'
 
-    " update the syntax
-    exec 'syn region exCppNotOut start=' . '"' . start_pattern . '"' . ' skip=\TestClass\' . ' end="^\s*\(%:\|#\)\s*\(endif\>\)" contains=exCppNegOut keepend'
-    exec 'syn region exCppNegOut contained start="^\s*\(%:\|#\)\s*\(else\>\|elif\>\)"' .  ' end="^\s*\(%:\|#\)\s*\(endif\>\|else\>\|elif\>\)" contains=exCppSkip'
+    " update negative the syntax
+    exec 'syn cluster exPreProcGroup contains=@cPreProcGroup,exCppOut,exCppOut2,exCppSkip'
+    exec 'syn region exCppNotOut matchgroup=cPreProc start=' . '"' . start_pattern . '"' . ' end="^\s*\(%:\|#\)\s*\(endif\>\)" contains=ALLBUT,@exPreProcGroup'
+    exec 'syn region exCppNegOut contained start="^\s*\(%:\|#\)\s*\(else\>\|elif\>\)"' .  ' end="^\s*\(%:\|#\)\s*\(endif\>\|else\>\|elif\>\)" keepend contains=exCppSkip'
 endfunction " >>>
 
 " --exMH_UpdateSyntax--

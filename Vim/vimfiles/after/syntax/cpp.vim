@@ -1,7 +1,11 @@
+" ==========================================
 " Vim syntax file
 " Language:	C++ externtions
 " Maintainer:	Wu Jie
 " Last Change:	2007/10/12
+" ==========================================
+
+" the extertion syntax define
 
 " ==========================================
 " EX_ENGINE extentions
@@ -20,9 +24,6 @@ syn keyword exStatement         ex_delete_array ex_delete_array_use ex_delete_ar
 syn keyword exBoolean		TRUE FALSE
 " ==========================================
 
-" The minimum and maximum operators in GNU C++
-syn match cppMinMax "[<>]?"
-
 " Default highlighting
 if version >= 508 || !exists("did_cpp_syntax_inits")
   if version < 508
@@ -32,6 +33,7 @@ if version >= 508 || !exists("did_cpp_syntax_inits")
     command -nargs=+ HiLink hi def link <args>
   endif
   " ==========================================
+  " EX_ENGINE extentions
   HiLink exType                 Type
   HiLink exStatement            Statement
   HiLink exBoolean              Boolean

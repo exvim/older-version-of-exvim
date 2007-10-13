@@ -88,7 +88,7 @@ set showfulltag " ???
 set guioptions+=b " Present the bottom scrollbar when the longest visible line exceen the window
 
 " disable menu & toolbar
-" set guioptions-=m
+set guioptions-=m
 set guioptions-=T
 
 "set encoding=japan
@@ -509,9 +509,10 @@ let Tlist_Use_Right_Window = 1 " split to the right side of the screen
 let Tlist_Sort_Type = "order" " sort by order or name
 let Tlist_Display_Prototype = 0 " do not show prototypes and not tags in the taglist window.
 let Tlist_Compart_Format = 1 " Remove extra information and blank lines from the taglist window.
-let Tlist_GainFocus_On_ToggleOpen = 0 " Jump to taglist window on open.
+let Tlist_GainFocus_On_ToggleOpen = 1 " Jump to taglist window on open.
 let Tlist_Display_Tag_Scope = 1 " Show tag scope next to the tag name.
 let Tlist_Close_On_Select = 0 " Close the taglist window when a file or tag is selected.
+let Tlist_BackToEditBuffer = 0 " If no close on select, let the user choose back to edit buffer or not
 let Tlist_Enable_Fold_Column = 0 " Don't Show the fold indicator column in the taglist window.
 let Tlist_WinWidth = 40
 let Tlist_Compact_Format = 1 " do not show help
@@ -594,6 +595,16 @@ let OmniCpp_MayCompleteScope = 0
 
 " When 'completeopt' does not contain "longest", Vim automatically select the first entry of the popup menu. You can change this behaviour with the OmniCpp_SelectFirstItem option.
 let OmniCpp_SelectFirstItem = 0
+
+" --------------------
+" tregisters
+" --------------------
+nnoremap <silent> <Leader>rr :TRegisters<CR>
+
+" --------------------
+" tselectbuffer
+" --------------------
+noremap <leader><bb> :TSelectBuffer<CR>
 
 " --------------------------------------------------------------------------------------
 " Other settings

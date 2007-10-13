@@ -168,6 +168,12 @@ if !exists('loaded_taglist')
         let Tlist_WinIncreament = 100
     endif
 
+    " jwu added 
+    " Back to edit buffer
+    if !exists('Tlist_BackToEditBuffer')
+        let Tlist_BackToEditBuffer = 0
+    endif
+
     " Display tag prototypes or tag names in the taglist window
     if !exists('Tlist_Display_Prototype')
         let Tlist_Display_Prototype = 0
@@ -1591,9 +1597,11 @@ function! s:Tlist_Window_Init()
     nnoremap <buffer> <silent> u :call <SID>Tlist_Window_Update_File()<CR>
     nnoremap <buffer> <silent> d :call <SID>Tlist_Remove_File(-1, 1)<CR>
 
-    " jwu modify hot-key to space
+    " jwu modify&add hot-key to space
     " nnoremap <buffer> <silent> x :call <SID>Tlist_Window_Zoom()<CR>
     nnoremap <buffer> <silent> <Space> :call <SID>Tlist_Window_Zoom()<CR>
+    nnoremap <buffer> <silent> <ESC> :call <SID>Tlist_Window_Close()<CR>
+    au CursorMoved <buffer> :call g:ex_HighlightSelectLine()
 
     nnoremap <buffer> <silent> [[ :call <SID>Tlist_Window_Move_To_File(-1)<CR>
     nnoremap <buffer> <silent> <BS> :call <SID>Tlist_Window_Move_To_File(-1)<CR>
@@ -2532,11 +2540,22 @@ function! s:Tlist_Window_Close()
     endif
 
     if winnr() == winnum
+        " jwu added to fix jump error
+        let last_buf_num = bufnr('#') 
+
         " Already in the taglist window. Close it and return
         if winbufnr(2) != -1
             " If a window other than the taglist window is open,
             " then only close the taglist window.
             close
+        endif
+
+        " jwu added to fix jump error
+        " Need to jump back to the original window only if we are not
+        " already in that window
+        let winnum = bufwinnr(last_buf_num)
+        if winnr() != winnum
+            exe winnum . 'wincmd w'
         endif
     else
         " Goto the taglist window, close it and then come back to the
@@ -2544,6 +2563,7 @@ function! s:Tlist_Window_Close()
         let curbufnr = bufnr('%')
         exe winnum . 'wincmd w'
         close
+
         " Need to jump back to the original window only if we are not
         " already in that window
         let winnum = bufwinnr(curbufnr)
@@ -3360,6 +3380,18 @@ function! s:Tlist_Window_Jump_To_Tag(win_ctrl)
     endif
 
     call s:Tlist_Window_Open_File(a:win_ctrl, s:tlist_{fidx}_filename, tagpat)
+
+    " jwu added to stick in the taglist window
+    " back to edit buffer
+    if !g:Tlist_Close_On_Select
+        if !g:Tlist_BackToEditBuffer
+            let winnum = bufwinnr(g:TagList_title)
+            if winnr() != winnum
+                exe winnum . 'wincmd w'
+            endif
+            return 1
+        endif
+    endif
 endfunction
 
 " Tlist_Window_Show_Info()
