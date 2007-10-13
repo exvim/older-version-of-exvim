@@ -2571,6 +2571,9 @@ function! s:Tlist_Window_Close()
             exe winnum . 'wincmd w'
         endif
     endif
+
+    " jwu added to clear highlight object
+    call g:ex_ClearObjectHighlight()
 endfunction
 
 " Tlist_Window_Mark_File_Window
@@ -3382,6 +3385,8 @@ function! s:Tlist_Window_Jump_To_Tag(win_ctrl)
     call s:Tlist_Window_Open_File(a:win_ctrl, s:tlist_{fidx}_filename, tagpat)
 
     " jwu added to stick in the taglist window
+    " hilight the object line
+    call g:ex_HighlightObjectLine()
     " back to edit buffer
     if !g:Tlist_Close_On_Select
         if !g:Tlist_BackToEditBuffer

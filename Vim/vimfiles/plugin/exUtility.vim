@@ -20,6 +20,10 @@ highlight def ex_SynHL1 gui=none guibg=LightCyan term=none cterm=none ctermbg=Li
 highlight def ex_SynHL2 gui=none guibg=LightMagenta term=none cterm=none ctermbg=LightMagenta
 highlight def ex_SynHL3 gui=none guibg=LightRed term=none cterm=none ctermbg=LightRed
 
+highlight def ex_SynSelectLine gui=none guibg=LightCyan term=none cterm=none ctermbg=LightCyan
+highlight def ex_SynConfirmLine gui=none guibg=Orange term=none cterm=none ctermbg=DarkYellow
+highlight def ex_SynObjectLine gui=none guibg=Orange term=none cterm=none ctermbg=DarkYellow
+
 " store the highlight strings
 let s:ex_HighLightText = ["","","",""]
 
@@ -131,10 +135,6 @@ function! g:ex_InitWindow(init_func_name) " <<<
 
     " Define hightlighting
     syntax match ex_SynError '^Error:.*'
-
-    highlight def ex_SynSelectLine gui=none guibg=LightCyan term=none cterm=none ctermbg=LightCyan
-    highlight def ex_SynConfirmLine gui=none guibg=Orange term=none cterm=none ctermbg=DarkYellow
-    highlight def ex_SynObjectLine gui=none guibg=Orange term=none cterm=none ctermbg=DarkYellow
     highlight def ex_SynError gui=none guifg=White guibg=Red term=none cterm=none ctermfg=White ctermbg=Red
 
     " Define the ex autocommands
