@@ -62,7 +62,7 @@ endif
 
 " go and close exTagSelect window
 if !exists('g:exGS_stack_close_when_selected')
-    let g:exGS_stack_close_when_selected = 1
+    let g:exGS_stack_close_when_selected = 0
 endif
 
 " set edit mode
@@ -396,9 +396,9 @@ endfunction " >>>
 " search_pattern = ''
 " search_method = -s / -r / -w
 function! s:exGS_GetGlobalSearchResult(search_pattern, search_method, direct_jump) " <<<
-    if &filetype == "ex_filetype"
-        silent exec "normal \<Esc>"
-    endif
+    "if &filetype == "ex_filetype"
+    "    silent exec "normal \<Esc>"
+    "endif
 
     " TODO different mode, same things
     " open and goto search window first
@@ -549,11 +549,16 @@ function! s:exGS_ShowStackList() " <<<
     " clear screen
     silent exec 'normal Gdgg'
 
-    " show stack list
+    " put an empty line first
+    silent put = ''
+
+    " put the title
     let tag_name = 'PATTERN'
     let stack_preview = 'ENTRY POINT PREVIEW'
     let str_line = printf(" #  %-54s%s", tag_name, stack_preview)
     silent put = str_line
+
+    " put the stack
     let idx = 0
     for state in s:exGS_search_stack_list
         let str_line = printf("%2d: %-40s ======> %s", idx, state.pattern, state.stack_preview)
@@ -616,11 +621,16 @@ function! s:exGS_Stack_GotoTag( idx, jump_method ) " <<<
 
     " go back if needed
     if !g:exGS_stack_close_when_selected
+        " highlight the select object in edit buffer
+        call g:ex_HighlightObjectLine()
+        exe 'normal zz'
+
+        "
         if !g:exGS_backto_editbuf
             let winnum = bufwinnr(s:exGS_stack_title)
             if winnr() != winnum
                 exe winnum . 'wincmd w'
-            endif
+
             return
         endif
     else

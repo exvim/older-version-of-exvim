@@ -162,6 +162,11 @@ endfunction " >>>
 " init_func_name: 'none', 'function_name'
 " call_func_name: 'none', 'function_name'
 function! g:ex_OpenWindow( buffer_name, window_direction, window_size, use_vertical, edit_mode, backto_editbuf, init_func_name, call_func_name ) " <<<
+    " if current editor buf is a plugin file type
+    if &filetype == "ex_filetype"
+        silent exec "normal \<Esc>"
+    endif
+
     " If the window is open, jump to it
     let winnum = bufwinnr(a:buffer_name)
     if winnum != -1

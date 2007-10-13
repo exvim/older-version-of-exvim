@@ -287,6 +287,7 @@ function! s:exQF_GetQuickFixResult( file_name ) " <<<
     endif
     if findfile(full_file_name) != ''
         " if we have other exUtility window, close it
+        " this code can't be disable, or the window jump will be wrong
         if &filetype == "ex_filetype"
             silent exec "normal \<Esc>"
         endif

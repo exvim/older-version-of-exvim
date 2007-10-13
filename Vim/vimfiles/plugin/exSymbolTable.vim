@@ -193,9 +193,9 @@ endfunction " >>>
 " --exSL_GetSymbolListResult--
 " search result directly
 function! s:exSL_GetSymbolListResult( symbol ) " <<<
-    if &filetype == "ex_filetype"
-        silent exec "normal \<Esc>"
-    endif
+    "if &filetype == "ex_filetype"
+    "    silent exec "normal \<Esc>"
+    "endif
 
     " open symbol select window
     let sl_winnr = bufwinnr(s:exSL_select_title)
@@ -222,9 +222,9 @@ endfunction " >>>
 " --exSL_QuickSearch--
 " use quick search
 function! s:exSL_QuickSearch() " <<<
-    if &filetype == "ex_filetype"
-        silent exec "normal \<Esc>"
-    endif
+    "if &filetype == "ex_filetype"
+    "    silent exec "normal \<Esc>"
+    "endif
 
     " open symbol select window
     let sl_winnr = bufwinnr(s:exSL_select_title)
@@ -312,9 +312,9 @@ function! s:exSL_GetAndShowPickedResult() " <<<
     let @a = reg_a
 
     "
-    if &filetype == "ex_filetype"
-        silent exec "normal \<Esc>"
-    endif
+    "if &filetype == "ex_filetype"
+    "    silent exec "normal \<Esc>"
+    "endif
 
     " copy picked result
     let s:exSL_quick_view_idx = 1

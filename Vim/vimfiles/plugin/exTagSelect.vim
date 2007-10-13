@@ -62,6 +62,11 @@ if !exists('g:exTS_close_when_selected')
     let g:exTS_close_when_selected = 0
 endif
 
+" go and close exTagStack window
+if !exists('g:exTS_stack_close_when_selected')
+    let g:exTS_stack_close_when_selected = 0
+endif
+
 " set edit mode
 " 'none', 'append', 'replace'
 if !exists('g:exTS_edit_mode')
@@ -246,9 +251,9 @@ endfunction
 " --exTS_GetTagSelectResult--
 "  Get the result of a word and use :ts record the result
 function! s:exTS_GetTagSelectResult(tag, direct_jump) " <<<
-    if &filetype == "ex_filetype"
-        silent exec "normal \<Esc>"
-    endif
+    "if &filetype == "ex_filetype"
+    "    silent exec "normal \<Esc>"
+    "endif
 
     let in_tag = strpart( a:tag, match(a:tag, '\S') )
     if match(in_tag, '^\(\t\|\s\)') != -1
@@ -509,10 +514,16 @@ endfunction " >>>
 " --exTS_ShowTagStack()--
 " Show the tag stack list in current window
 function! s:exTS_ShowTagStack() " <<<
+    " put an empty line first
+    silent put = ''
+
+    " put the title
     let tag_name = 'TAG NAME'
     let stack_preview = 'ENTRY POINT PREVIEW'
     let str_line = printf(" #  %-54s%s", tag_name, stack_preview)
     silent put = str_line
+
+    " put the stack
     let idx = 0
     for state in s:exTS_tag_stack_list
         "silent put = idx . ': ' . s:exTS_tag_state_{idx}.tag_name . '  ====>  ' . s:exTS_tag_state_{idx}.stack_preview
@@ -578,7 +589,12 @@ function! s:exTS_Stack_GotoTag( idx, jump_method ) " <<<
     endif
 
     " go back if needed
-    if !g:exTS_close_when_selected
+    if !g:exTS_stack_close_when_selected
+        " highlight the select object in edit buffer
+        call g:ex_HighlightObjectLine()
+        exe 'normal zz'
+
+        "
         if !g:exTS_backto_editbuf
             let winnum = bufwinnr(s:exTS_stack_title)
             if winnr() != winnum
