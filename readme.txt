@@ -11,6 +11,8 @@ SearchComplete-1.1
 ShowMarks-2.2
 TagList-4.4
 Visincr-1.3
+code_complete-2.7
+surround-1.27
 exUtility-6.0.0
 
 ---------Thomas.Link--------
