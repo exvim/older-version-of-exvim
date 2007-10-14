@@ -284,24 +284,24 @@ endfunction " >>>
 " ------------------------
 
 " --ex_PutLine--
-function! g:ex_PutLine( len, line_type )
+function! g:ex_PutLine( len, line_type ) " <<<
     let plen = a:len - strlen(getline('.'))
     if (plen > 0)
         execute 'normal ' plen . 'A' . a:line_type
     endif
-endfunction
+endfunction " >>>
 
 " --ex_PutDefine--
-function! g:ex_PutDefine()
+function! g:ex_PutDefine() " <<<
     execute 'normal ' . 'o' .   "/**\<CR>"
     execute 'normal ' . "\<Home>c$" . " * =======================================\<CR>"
     execute 'normal ' . "\<Home>c$" . " * \<CR>"
     execute 'normal ' . "\<Home>c$" . " * =======================================\<CR>"
     execute 'normal ' . "\<Home>c$" . " */"
-endfunction
+endfunction " >>>
 
 " --ex_PutHeader--
-function! g:ex_PutHeader()
+function! g:ex_PutHeader() " <<<
     execute 'normal ' . "gg"
     execute 'normal ' . "O" .   "// ======================================================================================\<CR>"
     execute 'normal ' . "\<Home>c$" . "// File         : " . fnamemodify(expand('%'), ":t") . "\<CR>"
@@ -309,7 +309,7 @@ function! g:ex_PutHeader()
     execute 'normal ' . "\<Home>c$" . "// Description  : \<CR>"
     execute 'normal ' . "\<Home>c$" . "// ======================================================================================"
     execute 'normal ' . "o"
-endfunction
+endfunction " >>>
 
 " --ex_AlignDigit--
 function! g:ex_AlignDigit( align_nr, digit ) " <<<
@@ -432,7 +432,7 @@ endfunction " >>>
 " VimTip #1119: How to use Vim like an IDE
 " delete the buffer; keep windows; create a scratch buffer if no buffers left 
 " Using this Kwbd function (:call Kwbd(1)) will make Vim behave like an IDE; or maybe even better. 
-function g:ex_Kwbd(kwbdStage) 
+function g:ex_Kwbd(kwbdStage) " <<<
     if(a:kwbdStage == 1) 
         if(!buflisted(winbufnr(0))) 
             bd! 
@@ -488,7 +488,7 @@ function g:ex_Kwbd(kwbdStage)
             endif 
         endif 
     endif 
-endfunction 
+endfunction  " >>>
 
 
 " ------------------------
@@ -1069,13 +1069,13 @@ function! g:ex_UpdateVimFiles( type ) " <<<
 endfunction " >>>
 
 " --ex_Debug()--
-function! g:ex_Debug( exe_name )
+function! g:ex_Debug( exe_name ) " <<<
     if glob(a:exe_name) == ''
         call g:ex_WarningMsg('file: ' . a:exe_name . ' not found')
     else
         silent exec '!insight ' . a:exe_name
     endif
-endfunction
+endfunction " >>>
 
 " ------------------------
 "  Hightlight functions

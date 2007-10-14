@@ -598,11 +598,13 @@ inoremap <silent> <Plug>ISurround  <C-R>=<SID>insert(1)<CR>
 if !exists("g:surround_no_mappings") || ! g:surround_no_mappings
     nmap          ds   <Plug>Dsurround
     nmap          cs   <Plug>Csurround
-    nmap          ys   <Plug>Ysurround
-    nmap          yS   <Plug>YSurround
-    nmap          yss  <Plug>Yssurround
-    nmap          ySs  <Plug>YSsurround
-    nmap          ySS  <Plug>YSsurround
+
+    " jwu disable this. lead to y visual error
+    "nmap          ys   <Plug>Ysurround
+    "nmap          yS   <Plug>YSurround
+    "nmap          yss  <Plug>Yssurround
+    "nmap          ySs  <Plug>YSsurround
+    "nmap          ySS  <Plug>YSsurround
     if !hasmapto("<Plug>Vsurround","v")
         if exists(":xmap")
             xmap  s    <Plug>Vsurround

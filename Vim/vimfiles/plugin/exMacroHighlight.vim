@@ -79,6 +79,7 @@ let s:exMH_cur_filename = ''
 let s:exMH_backto_editbuf = 0
 let s:exMH_get_macro_file = 1
 let s:exMH_macro_list = []
+let s:exMH_define_list = [[],[]] " 0: not define group, 1: define group
 
 " select
 let s:exMH_select_idx = 1
@@ -192,9 +193,13 @@ endfunction " >>>
 " --exMH_InitMacroList--
 function! s:exMH_InitMacroList(macrofile_name) " <<<
     let s:exMH_cur_filename = a:macrofile_name
+    let line_list = []
     if filereadable(s:exMH_cur_filename) == 1
-        let s:exMH_macro_list = readfile(s:exMH_cur_filename)
+        let line_list = readfile(s:exMH_cur_filename)
     endif
+
+    " update macro list
+    call s:exMH_UpdateMacroList(line_list)
 
     " define syntax
     call s:exMH_DefineSyntax()
@@ -211,6 +216,53 @@ function! s:exMH_InitMacroList(macrofile_name) " <<<
 
     " define autocmd for update syntax
     autocmd BufEnter * call s:exMH_UpdateSyntax()
+endfunction " >>>
+
+" --exMH_UpdateMacroList--
+function! s:exMH_UpdateMacroList(line_list) " <<<
+    " clear the macro list and define list first
+    if !empty(s:exMH_macro_list)
+        call remove(s:exMH_macro_list,0)
+    endif
+    if !empty(s:exMH_define_list)
+        call remove(s:exMH_define_list,0)
+    endif
+
+    " init group index and group item index
+    let group_idx = -1
+    let group_list = []
+    
+    " loop the line_list
+    for line in a:line_list
+        " skip empty line
+        if line == ''
+            continue
+        endif
+
+        " skip empty line 2
+        if match( line, "\s\+" ) != -1
+            continue
+        endif
+
+        " get group mark
+        if match( line, "^Macro Group:" ) != -1
+            let group_idx += 1
+            call add( s:exMH_macro_list, group_list ) " add the last group to macro list
+            if !empty(group_list)
+                call remove(group_list) " clear group list for next group
+            endif
+            continue
+        endif
+
+        " put macro item to the group 
+        if match( line, "\t\S.*" ) != -1
+            let macro = substitute( line, " ", "", "g" ) " skip whitespace
+            call add( group_list, macro )
+
+            let is_define = (macro[0] == '*')
+            call add( s:exMH_define_list[is_define], macro )
+        endif
+    endfor
 endfunction " >>>
 
 " --exMH_DefineSyntax--
@@ -241,7 +293,8 @@ endfunction " >>>
 
 " --exMH_UpdateSyntax--
 function! s:exMH_UpdateSyntax() " <<<
-    syntax clear exCppOut exCppOut2 exCppSkip
+    " make syntax cluster for easy clear
+    syntax clear exCppOut exCppOut2 exCppSkip exCppNotOut exCppNegOut
     silent call s:exMH_DefineSyntax() 
 endfunction " >>>
 
@@ -268,6 +321,7 @@ function! g:exMH_InitSelectWindow() " <<<
 
     " autocmd
     au CursorMoved <buffer> :call g:ex_HighlightSelectLine()
+    au BufWrite <buffer> call s:exMH_UpdateMacroList(getline(1,'$'))
 endfunction " >>>
 
 " --exMH_UpdateSelectWindow--

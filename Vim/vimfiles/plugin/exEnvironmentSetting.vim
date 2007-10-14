@@ -86,7 +86,9 @@ function! g:exES_SetEnvironment() " <<<
         for Line in getline(1, '$')
             let SettingList = split(Line, "=")
             if len(SettingList)>=2
-                exec "let g:exES_".SettingList[0]."='".escape(SettingList[1], ' ')."'"
+                " exec "let g:exES_".SettingList[0]."='".escape(SettingList[1], ' ')."'"
+                " since '\ ' will get error in win32, just disable it here
+                exec "let g:exES_".SettingList[0]."='".SettingList[1]."'" 
             endif
         endfor
 
