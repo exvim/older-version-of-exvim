@@ -654,4 +654,4 @@ command TSigc call s:exTS_SetIgnoreCase(1)
 command TSnoigc call s:exTS_SetIgnoreCase(0)
 
 finish
-" vim600: set foldmethod=marker foldmarker=<<<,>>> foldlevel=1:
+" vim: set foldmethod=marker foldmarker=<<<,>>> foldlevel=1:

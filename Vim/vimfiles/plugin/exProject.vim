@@ -714,4 +714,4 @@ command -narg=? EXProject call s:exPJ_OpenProject("<args>")
 command ExpjSelectToggle call s:exPJ_ToggleWindow('Select')
 
 finish
-" vim600: set foldmethod=marker foldmarker=<<<,>>> foldlevel=1:
+" vim: set foldmethod=marker foldmarker=<<<,>>> foldlevel=1:

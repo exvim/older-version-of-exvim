@@ -108,8 +108,8 @@ set backspace=indent,eol,start " allow backspacing over everything in insert mod
 " indent options
 "  see help cinoptions-values for more details
 set	cinoptions=>s,e0,n0,f0,{0,}0,^0,:0,=s,l0,b0,g0,hs,ps,ts,is,+s,c3,C0,0,(0,us,U0,w0,W0,m0,j0,)20,*30
-" default '0{,0},0),:,0#,!^F,o,O,e' disable 0# to not ident when writting macro
-set cinkeys="0{,0},0),:,!^F,o,O,e"
+" default '0{,0},0),:,0#,!^F,o,O,e' disable 0# for not ident preprocess
+set cinkeys=0{,0},0),:,!^F,o,O,e
 
 " Official diff settings
 set diffexpr=MyDiff()
@@ -434,6 +434,8 @@ let g:exQF_window_direction = 'bel'
 " exMacroHightlight
 " --------------------
 nnoremap <silent> <Leader>aa :ExmhSelectToggle<CR>
+nnoremap <silent> <Leader>ae :ExmhHL 1 <CR>
+nnoremap <silent> <Leader>ad :ExmhHL 0 <CR>
 
 " --------------------
 " exEnvironmentSetting
@@ -451,6 +453,9 @@ function g:exES_UpdateEnvironment()
     endif
     if exists( 'g:exES_Project' )
         silent exec g:exES_project_cmd.' '.g:exES_Project
+    endif
+    if exists( 'g:exES_Macro' )
+        silent call g:exMH_InitMacroList(g:exES_Macro)
     endif
 
     " Open Minibuffer always, re-adjust project position

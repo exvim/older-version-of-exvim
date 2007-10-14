@@ -1231,4 +1231,4 @@ function! g:ex_WarningMsg(msg) " <<<
 endfunction " >>>
 
 finish
-" vim600: set foldmethod=marker foldmarker=<<<,>>> foldlevel=1:
+" vim: set foldmethod=marker foldmarker=<<<,>>> foldlevel=1:

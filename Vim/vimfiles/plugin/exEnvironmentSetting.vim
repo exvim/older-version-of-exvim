@@ -108,4 +108,4 @@ au BufEnter *.vimentry call g:exES_SetEnvironment()
 
 
 finish
-" vim600: set foldmethod=marker foldmarker=<<<,>>> foldlevel=1:
+" vim: set foldmethod=marker foldmarker=<<<,>>> foldlevel=1:

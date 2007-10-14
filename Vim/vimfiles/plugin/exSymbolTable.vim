@@ -434,4 +434,4 @@ command SLigc call s:exSL_SetIgnoreCase(1)
 command SLnoigc call s:exSL_SetIgnoreCase(0)
 
 finish
-" vim600: set foldmethod=marker foldmarker=<<<,>>> foldlevel=1:
+" vim: set foldmethod=marker foldmarker=<<<,>>> foldlevel=1:
