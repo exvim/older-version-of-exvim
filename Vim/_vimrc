@@ -31,6 +31,9 @@ set history=50 " keep 50 lines of command line history
 set clipboard=unnamed " use clipboard register '*' for all y, d, c, p ops 
 set updatetime=1000 " default = 4000
 set autoread " auto read same-file change ( better for vc/vim change )
+" enlarge maxmempattern from 1000 to ... (2000000 will give it without limit)
+set maxmempattern=1000
+
 
 " --------------------------------------------------------------------------------------
 " Variable settings ( set all )
@@ -109,7 +112,7 @@ set backspace=indent,eol,start " allow backspacing over everything in insert mod
 "  see help cinoptions-values for more details
 set	cinoptions=>s,e0,n0,f0,{0,}0,^0,:0,=s,l0,b0,g0,hs,ps,ts,is,+s,c3,C0,0,(0,us,U0,w0,W0,m0,j0,)20,*30
 " default '0{,0},0),:,0#,!^F,o,O,e' disable 0# for not ident preprocess
-set cinkeys=0{,0},0),:,!^F,o,O,e
+" set cinkeys=0{,0},0),:,!^F,o,O,e
 
 " Official diff settings
 set diffexpr=MyDiff()
