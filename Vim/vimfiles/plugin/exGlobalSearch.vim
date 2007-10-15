@@ -595,11 +595,13 @@ function! s:exGS_Stack_GotoTag( idx, jump_method ) " <<<
     endif
 
     " open and go to stack window first
+    let background_op = 0
     if bufwinnr(s:exGS_stack_title) == -1
         let old_setting = g:exTS_backto_editbuf
         let g:exGS_backto_editbuf = 0
         call s:exGS_ToggleWindow('Stack')
         let g:exGS_backto_editbuf = old_setting
+        let background_op = 1
     else
         call g:exGS_UpdateStackWindow()
     endif
@@ -620,7 +622,7 @@ function! s:exGS_Stack_GotoTag( idx, jump_method ) " <<<
     endif
 
     " go back if needed
-    if !g:exGS_stack_close_when_selected
+    if !g:exGS_stack_close_when_selected && !background_op
         " highlight the select object in edit buffer
         call g:ex_HighlightObjectLine()
         exe 'normal zz'
@@ -630,7 +632,7 @@ function! s:exGS_Stack_GotoTag( idx, jump_method ) " <<<
             let winnum = bufwinnr(s:exGS_stack_title)
             if winnr() != winnum
                 exe winnum . 'wincmd w'
-
+            endif
             return
         endif
     else
