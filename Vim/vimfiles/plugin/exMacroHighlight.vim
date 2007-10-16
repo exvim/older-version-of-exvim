@@ -218,7 +218,7 @@ function! g:exMH_InitMacroList(macrofile_name) " <<<
     hi def link exMacroInside       Normal
 
     " define autocmd for update syntax
-    autocmd BufEnter * call s:exMH_UpdateSyntax()
+    autocmd BufEnter *.h,*.hh,*.hpp,*.hxx,*.inl,*.H,*.c,*.cc,*.cpp,*.cxx,*.c++,*.C,*.hlsl,*.fx,*.fxh,*.cg,*.vsh,*.psh,*.shd call s:exMH_UpdateSyntax()
 endfunction " >>>
 
 " --exMH_UpdateMacroList--
