@@ -208,6 +208,7 @@ function! g:exMH_InitMacroList(macrofile_name) " <<<
     call s:exMH_DefineSyntax()
 
     " highlight link
+    hi def link exCppSkip           exMacroDisable
     hi def link exIfDisable         exMacroDisable
     hi def link exIfnDisable        exMacroDisable
     hi def link exIfDisableStart    exMacroDisable
@@ -316,29 +317,17 @@ function! s:exMH_DefineSyntax() " <<<
     let elifn_enable_pattern  = elifn_pattern . undef_macro_pattern . end_pattern
     let elifn_disable_pattern = elifn_pattern . def_macro_pattern . end_pattern
 
-    " -------------------------- 
-    " update def the syntax
-    " exec 'syn region exCppOut  start=' . '"' . if_disable_start_pattern . '"' . ' end=".\@=\|$" oneline contains=exCppOut2'
-    " exec 'syn region exCppOut2 contained start=' . '"' . def_macro_pattern . '"' . ' end="^\s*\(%:\|#\)\s*\(endif\>\|else\>\|elif\>\)" contains=exCppSkip'
-    " exec 'syn region exCppSkip contained start="^\s*\(%:\|#\)\s*\(if\>\|ifdef\>\|ifndef\>\)" skip="\\$" end="^\s*\(%:\|#\)\s*endif\>" contains=exCppSkip'
-
-     "syntax clear exCppOut exCppOut2
-     "exec 'syn region	exCppOut		start="^\s*\(%:\|#\)\s*if\s\+MAMA\+\>" end=".\@=\|$" contains=cCppOut2'
-     "exec 'syn region	exCppOut2	contained start="MAMA" end="^\s*\(%:\|#\)\s*\(endif\>\|else\>\|elif\>\)" contains=cSpaceError,cCppSkip'
-     "syn cluster cParenGroup add=exCppOut,exCppOut2
-     "syn cluster cPreProcGroup add=exCppOut,exCppOut2
-     "syn cluster cMultiGroup add=exCppOut,exCppOut2
-     "hi def link exCppOut exMacroDisable
-     "hi def link exCppOut2 exMacroDisable
-    " -------------------------- 
-
     " TODO: send to pre define
-    exec 'syn cluster exEnableExcludeGroup contains=cErrInParen,cUserLabel,cCppSkip,cCppOut2,exIfDisable,exIfnDisable'
     " exec 'syn cluster exEnableExcludeGroup contains=cCppSkip,cCppOut2,exIfDisable,exIfnDisable'
-    exec 'syn region exElseDisable contained start="^\s*\(%:\|#\)\s*\(else\>\|elif\>\)"' .  ' end="^\s*\(%:\|#\)\s*\(endif\>\|else\>\|elif\>\)" keepend contains=cCppSkip'
-    exec 'syn region exMacroInside contained start="^\s*\(%:\|#\)\s*\(if\>\|ifdef\>\|ifndef\>\)" skip="\\$" end="^\s*\(%:\|#\)\s*endif\>" keepend contains=ALLBUT,@exEnableExcludeGroup,exElseDisable' 
+    exec 'syn cluster exEnableExcludeGroup contains=cErrInParen,cUserLabel,cCppSkip,cCppOut2,exIfDisable,exIfnDisable'
+    exec 'syn region exCppSkip contained start="^\s*\(%:\|#\)\s*\(if\>\|ifdef\>\|ifndef\>\)" skip="\\$" end="^\s*\(%:\|#\)\s*endif\>" extend contains=cSpaceError,exCppSkip'
+    exec 'syn region exElseDisable contained start="^\s*\(%:\|#\)\s*\(else\>\|elif\>\)" end="^\s*\(%:\|#\)\s*\(endif\>\|else\>\|elif\>\)" keepend contains=exCppSkip'
+    exec 'syn region exMacroInside contained start="^\s*\(%:\|#\)\s*\(if\>\|ifdef\>\|ifndef\>\)" skip="\\$" end="^\s*\(%:\|#\)\s*endif\>" extend contains=@exEnableContainedGroup'
 
-    exec 'syn cluster exEnableContainedGroup contains=ALLBUT,@exEnableExcludeGroup'
+    " exec 'syn cluster exEnableContainedGroup contains=ALLBUT,@exEnableExcludeGroup'
+    exec 'syn cluster exEnableContainedGroup contains=cStatement,cLabel,cConditional,cRepeat,cString,cCppString,cCharacter,cSpecialError,cSpecialCharacter,cSpaceError,cBlock,cParen,cParenError,cParen,cBracket,cNumbers,cComment,cCommentL,cCommentError,cOperator,cStatement,cType,cStructure,cStorageClass,cConstant,cPreCondit,cCppOut,cInclude,cDefine,cPreProc,cMulti,cUserCont,cBitField'
+    exec 'syn cluster exEnableContainedGroup add=exElseDisable,exMacroInside'
+    exec 'syn cluster exEnableContainedGroup add=exIfDisableStart,exIfnDisableStart'
 
     " if ---------------
     " if enable(def_macro) else disable
@@ -356,9 +345,9 @@ function! s:exMH_DefineSyntax() " <<<
     exec 'syn region exIfnDisable contained start=' . '"' . def_macro_pattern . '"' . ' end="^\s*\(%:\|#\)\s*\(endif\>\|else\>\|elif\>\)" contains=cCppSkip'
 
     " add if to cluster
-    syn cluster cParenGroup add=exIfEnable,exIfDisableStart,exIfDisable,exIfnEnable,exIfnDisableStart,exIfnDisable,exElseDisable,exMacroInside
-    syn cluster cPreProcGroup add=exIfEnable,exIfDisableStart,exIfDisable,exIfnEnable,exIfnDisableStart,exIfnDisable,exElseDisable,exMacroInside
-    syn cluster cMultiGroup add=exIfEnable,exIfDisableStart,exIfDisable,exIfnEnable,exIfnDisableStart,exIfnDisable,exElseDisable,exMacroInside
+    syn cluster cParenGroup add=exIfEnable,exIfDisableStart,exIfDisable,exIfnEnable,exIfnDisableStart,exIfnDisable
+    syn cluster cPreProcGroup add=exIfEnable,exIfDisableStart,exIfDisable,exIfnEnable,exIfnDisableStart,exIfnDisable
+    syn cluster cMultiGroup add=exIfEnable,exIfDisableStart,exIfDisable,exIfnEnable,exIfnDisableStart,exIfnDisable
 
     " elif ---------------
     " elif enable(def_macro) else disable
