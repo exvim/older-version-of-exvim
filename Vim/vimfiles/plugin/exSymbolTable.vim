@@ -295,11 +295,11 @@ function! s:exSL_ShowPickedResult( search_pattern, inverse_search ) " <<<
     " copy picked result
     call s:exSL_CopyPickedLine( a:search_pattern, 0, a:inverse_search )
     call s:exSL_SwitchWindow('QuickView')
-    silent exec 'normal Gdgg'
+    silent exec 'normal! Gdgg'
     let s:exGS_quick_view_idx = 1
     call g:ex_HighlightConfirmLine()
     silent put = s:exSL_picked_search_result
-    silent exec 'normal ggdd'
+    silent exec 'normal! ggdd'
 endfunction " >>>
 
 " --exSL_GetAndShowPickedResult--
@@ -307,7 +307,7 @@ endfunction " >>>
 function! s:exSL_GetAndShowPickedResult() " <<<
     " get search pattern
     let reg_a = @a
-    exe 'normal "ayiw'
+    exe 'normal! "ayiw'
     let search_pattern = @a
     let @a = reg_a
 
@@ -321,9 +321,9 @@ function! s:exSL_GetAndShowPickedResult() " <<<
     call s:exSL_SwitchWindow("Select")
     call s:exSL_CopyPickedLine( search_pattern, 1, 0 )
     call s:exSL_SwitchWindow('QuickView')
-    silent exec 'normal Gdgg'
+    silent exec 'normal! Gdgg'
     silent put = s:exSL_picked_search_result
-    silent exec 'normal ggdd'
+    silent exec 'normal! ggdd'
 endfunction " >>>
 
 " ------------------------------

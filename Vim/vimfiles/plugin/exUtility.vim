@@ -287,28 +287,28 @@ endfunction " >>>
 function! g:ex_PutLine( len, line_type ) " <<<
     let plen = a:len - strlen(getline('.'))
     if (plen > 0)
-        execute 'normal ' plen . 'A' . a:line_type
+        execute 'normal! ' plen . 'A' . a:line_type
     endif
 endfunction " >>>
 
 " --ex_PutDefine--
 function! g:ex_PutDefine() " <<<
-    execute 'normal ' . 'o' .   "/**\<CR>"
-    execute 'normal ' . "\<Home>c$" . " * =======================================\<CR>"
-    execute 'normal ' . "\<Home>c$" . " * \<CR>"
-    execute 'normal ' . "\<Home>c$" . " * =======================================\<CR>"
-    execute 'normal ' . "\<Home>c$" . " */"
+    execute 'normal! ' . 'o' .   "/**\<CR>"
+    execute 'normal! ' . "\<Home>c$" . " * =======================================\<CR>"
+    execute 'normal! ' . "\<Home>c$" . " * \<CR>"
+    execute 'normal! ' . "\<Home>c$" . " * =======================================\<CR>"
+    execute 'normal! ' . "\<Home>c$" . " */"
 endfunction " >>>
 
 " --ex_PutHeader--
 function! g:ex_PutHeader() " <<<
-    execute 'normal ' . "gg"
-    execute 'normal ' . "O" .   "// ======================================================================================\<CR>"
-    execute 'normal ' . "\<Home>c$" . "// File         : " . fnamemodify(expand('%'), ":t") . "\<CR>"
-    execute 'normal ' . "\<Home>c$" . "// Author       : Wu Jie \<CR>"
-    execute 'normal ' . "\<Home>c$" . "// Description  : \<CR>"
-    execute 'normal ' . "\<Home>c$" . "// ======================================================================================"
-    execute 'normal ' . "o"
+    execute 'normal! ' . "gg"
+    execute 'normal! ' . "O" .   "// ======================================================================================\<CR>"
+    execute 'normal! ' . "\<Home>c$" . "// File         : " . fnamemodify(expand('%'), ":t") . "\<CR>"
+    execute 'normal! ' . "\<Home>c$" . "// Author       : Wu Jie \<CR>"
+    execute 'normal! ' . "\<Home>c$" . "// Description  : \<CR>"
+    execute 'normal! ' . "\<Home>c$" . "// ======================================================================================"
+    execute 'normal! ' . "o"
 endfunction " >>>
 
 " --ex_AlignDigit--
@@ -338,7 +338,7 @@ function! g:ex_RemoveIFZero() range " <<<
 
     " found '#if 0' first
     while match(cur_line, "#if.*0") == -1
-        silent normal [#
+        silent normal! [#
         let cur_line = getline(".")
         let lnum = line(".")
         if lnum == 0
@@ -351,11 +351,11 @@ function! g:ex_RemoveIFZero() range " <<<
 
     " record the line
     let if_lnum = line(".")
-    silent normal ]#
+    silent normal! ]#
     let cur_line = getline(".")
     if match(cur_line, "#else") != -1
         let else_lnum = line(".")
-        silent normal ]#
+        silent normal! ]#
         let endif_lnum = line(".")
     else
         let endif_lnum = line(".")
@@ -363,16 +363,16 @@ function! g:ex_RemoveIFZero() range " <<<
 
     " delete the if/else/endif
     if endif_lnum != -1
-        silent exe "normal ". endif_lnum ."G"
-        silent normal dd
+        silent exe "normal! ". endif_lnum ."G"
+        silent normal! dd
     endif
     if else_lnum != -1
-        silent exe "normal ". else_lnum ."G"
-        silent normal dd
+        silent exe "normal! ". else_lnum ."G"
+        silent normal! dd
     endif
     if if_lnum != -1
-        silent exe "normal ". if_lnum ."G"
-        silent normal dd
+        silent exe "normal! ". if_lnum ."G"
+        silent normal! dd
     endif
 
     silent call setpos('.', save_cursor)
@@ -421,7 +421,7 @@ function! g:ex_GotoLastEditBuffer() " <<<
     " check if buffer existed and listed
     let bufnr = bufnr("#")
     if buflisted(bufnr) && bufloaded(bufnr) && bufexists(bufnr)
-        "silent exec "normal M"
+        "silent exec "normal! M"
         silent exec bufnr."b!"
     else
         call g:ex_WarningMsg("Buffer: " .bufname(bufnr).  " can't be accessed.")
@@ -903,7 +903,7 @@ function! g:ex_GotoSearchPattern(full_file_name, search_pattern) " <<<
     endif
 
     " set the text at the middle
-    exe 'normal zz'
+    exe 'normal! zz'
 
     return 1
 endfunction " >>>
@@ -937,7 +937,7 @@ function! g:ex_GotoExCommand(full_file_name, ex_cmd) " <<<
     endif
 
     " set the text at the middle
-    exe 'normal zz'
+    exe 'normal! zz'
 
     return 1
 endfunction " >>>
@@ -953,7 +953,7 @@ function! g:ex_GotoTagNumber(tag_number) " <<<
     silent exec a:tag_number . "tr!"
 
     " set the text at the middle
-    exe 'normal zz'
+    exe 'normal! zz'
 endfunction " >>>
 
 " --ex_GotoPos--
@@ -969,7 +969,7 @@ function! g:ex_GotoPos(poslist) " <<<
     call setpos('.', a:poslist)
 
     " set the text at the middle
-    exe 'normal zz'
+    exe 'normal! zz'
 endfunction " >>>
 
 " ------------------------
@@ -1127,7 +1127,7 @@ function! g:ex_Highlight_Normal(match_nr) " <<<
     silent exe a:match_nr . 'match none'
 
     let reg_h = @h
-    exe 'normal "hyiw'
+    exe 'normal! "hyiw'
     if @h == s:ex_HighLightText[a:match_nr]
         call g:ex_HighlightCancle(a:match_nr)
     else

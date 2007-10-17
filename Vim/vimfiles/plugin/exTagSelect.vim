@@ -210,7 +210,7 @@ function! g:exTS_UpdateSelectWindow() " <<<
         let reg_tmp = @t
         silent exe 'normal! G"tdgg'
         silent put = s:exTS_tag_stack_list[s:exTS_stack_idx].output_result
-        silent exec 'normal gg"tdd'
+        silent exec 'normal! gg"tdd'
         let @t = reg_tmp
     endif
 
@@ -235,12 +235,12 @@ function! s:exTS_SelectCursorMoved()
             if line('.') == line('$')
                 break
             endif
-            silent exec 'normal j'
+            silent exec 'normal! j'
         else
             if line('.') == 1
                 break
             endif
-            silent exec 'normal k'
+            silent exec 'normal! k'
         endif
     endwhile
 
@@ -357,11 +357,11 @@ function! s:exTS_GetTagSelectResult(tag, direct_jump) " <<<
 
     " copy full parsed text to register a
     let reg_t = @t
-    silent exe 'normal gg'
-    silent exe 'normal "tyG'
+    silent exe 'normal! gg'
+    silent exe 'normal! "tyG'
 
     " go to first then highlight
-    silent exe 'normal gg'
+    silent exe 'normal! gg'
     let tag_pattern = '^\s*1:'
     call search( tag_pattern, 'w')
     call g:ex_HighlightSelectLine()
@@ -440,7 +440,7 @@ endfunction " >>>
 " --exTS_GoDirect--
 function! s:exTS_GoDirect() " <<<
     let reg_t = @t
-    exe 'normal "tyiw'
+    exe 'normal! "tyiw'
     call s:exTS_GetTagSelectResult(@t, 1)
     let @t = reg_t
 endfunction " >>>
@@ -532,7 +532,7 @@ function! s:exTS_ShowTagStack() " <<<
         let idx += 1
     endfor
     let reg_tmp = @t
-    silent exec 'normal gg"tdd'
+    silent exec 'normal! gg"tdd'
     let @t = reg_tmp
 endfunction " >>>
 
@@ -587,14 +587,14 @@ function! s:exTS_Stack_GotoTag( idx, jump_method ) " <<<
             call g:ex_GotoExCommand( g:ex_MatchTagFile( s:exTS_tag_file_list, s:exTS_tag_stack_list[s:exTS_stack_idx].tag_list[tag_idx-1].filename ), s:exTS_tag_stack_list[s:exTS_stack_idx].tag_list[tag_idx-1].cmd )
             "call g:ex_GotoExCommand( s:exTS_tag_state_{s:exTS_stack_idx}.tag_list[tag_idx-1].filename, s:exTS_tag_state_{s:exTS_stack_idx}.tag_list[tag_idx-1].cmd )
         endif
-        exe 'normal zz'
+        exe 'normal! zz'
     endif
 
     " go back if needed
     if !g:exTS_stack_close_when_selected && !background_op
         " highlight the select object in edit buffer
         call g:ex_HighlightObjectLine()
-        exe 'normal zz'
+        exe 'normal! zz'
 
         "
         if !g:exTS_backto_editbuf

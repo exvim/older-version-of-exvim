@@ -191,7 +191,7 @@ function! s:exQF_Goto(idx) " <<<
     call g:ex_GotoEditBuffer()
     silent exec "cr".idx
     call g:ex_HighlightObjectLine()
-    exe 'normal zz'
+    exe 'normal! zz'
 
     " go back if needed
     let title = '__exQF_' . s:exQF_short_title . 'Window__'
@@ -265,7 +265,7 @@ function! g:exQF_UpdateSelectWindow() " <<<
         silent redir @e
         silent exec "cl"
         silent redir END
-        silent exec "normal Gdgg"
+        silent exec "normal! Gdgg"
         silent put = @e
         let @e = reg_e
     endif
@@ -332,7 +332,7 @@ function! s:exQF_GetQuickFixResult( file_name ) " <<<
             let g:exQF_backto_editbuf = old_opt
             silent! exec '%s/\r//g'
             silent! exec "w!"
-            silent! exec 'normal gg'
+            silent! exec 'normal! gg'
         else
             exe gs_winnr . 'wincmd w'
         endif
@@ -407,7 +407,7 @@ function! g:exQF_UpdateQuickViewWindow() " <<<
         silent redir @q
         silent! exec 'cl'
         silent redir END
-        silent exec "normal Gdgg"
+        silent exec "normal! Gdgg"
         silent put! = @q
         let @q = reg_q
     endif
@@ -450,12 +450,12 @@ function! s:exQF_CopyPickedLine( search_pattern, line_start, line_end, search_me
         " clear down lines
         if a:line_end < line('$')
             silent call cursor( a:line_end, 1 )
-            silent exec 'normal jdG'
+            silent exec 'normal! jdG'
         endif
         " clear up lines
         if a:line_start > 1
             silent call cursor( a:line_start, 1 )
-            silent exec 'normal kdgg'
+            silent exec 'normal! kdgg'
         endif
         silent call cursor( 1, 1 )
 
@@ -465,16 +465,16 @@ function! s:exQF_CopyPickedLine( search_pattern, line_start, line_end, search_me
 
         " clear pattern result
         while search('----------.\+----------', 'w') != 0
-            silent exec 'normal dd'
+            silent exec 'normal! dd'
         endwhile
 
         " copy picked result
         let reg_q = @q
-        silent exec 'normal gg"qyG'
+        silent exec 'normal! gg"qyG'
         let s:exQF_picked_search_result = @q
         let @q = reg_q
         " recover
-        silent exec 'normal u'
+        silent exec 'normal! u'
 
         " this two algorithm was slow
         " -------------------------
@@ -502,13 +502,13 @@ function! s:exQF_ShowPickedResult( search_pattern, line_start, line_end, edit_mo
     call s:exQF_CopyPickedLine( a:search_pattern, a:line_start, a:line_end, a:search_method )
     call s:exQF_SwitchWindow('QuickView')
     if a:edit_mode == 'replace'
-        silent exec 'normal Gdgg'
+        silent exec 'normal! Gdgg'
         silent put = s:exQF_quick_view_search_pattern
         "silent put = s:exQF_fold_start
         silent put = s:exQF_picked_search_result
         "silent put = s:exQF_fold_end
     elseif a:edit_mode == 'append'
-        silent exec 'normal G'
+        silent exec 'normal! G'
         silent put = ''
         silent put = s:exQF_quick_view_search_pattern
         "silent put = s:exQF_fold_start

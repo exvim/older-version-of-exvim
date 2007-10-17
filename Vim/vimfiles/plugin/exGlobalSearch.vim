@@ -197,7 +197,7 @@ function! s:exGS_Goto() " <<<
     endif
 
     call g:ex_HighlightObjectLine()
-    exe 'normal zz'
+    exe 'normal! zz'
 
     " push tag state to tag stack
     if s:exGS_need_push_search_result
@@ -257,14 +257,14 @@ endfunction " >>>
 " --exGS_GoDirect--
 function! s:exGS_GoDirect() " <<<
     let reg_s = @s
-    exe 'normal "syiw'
+    exe 'normal! "syiw'
     call s:exGS_GetGlobalSearchResult(@s, '-s', 1)
     let @s = reg_s
 endfunction " >>>
 
 " --exGS_GlobalSubstitute--
 function! s:exGS_GlobalSubstitute( pat, sub, flag ) " <<<
-    silent normal gg
+    silent normal! gg
     let last_line = line("$")
     let cur_line_idx = 0
     let cur_line = ''
@@ -280,7 +280,7 @@ function! s:exGS_GlobalSubstitute( pat, sub, flag ) " <<<
             silent call g:ex_GotoEditBuffer()
         endif
         let cur_line_idx += 1
-        silent normal j
+        silent normal! j
     endwhile
 endfunction " >>>
 
@@ -451,7 +451,7 @@ function! s:exGS_GetGlobalSearchResult(search_pattern, search_method, direct_jum
     let search_result = '----------' . a:search_pattern . '----------' . "\n" . search_result
 
     " clear screen and put new result
-    silent exec 'normal Gdgg'
+    silent exec 'normal! Gdgg'
     call g:ex_HighlightConfirmLine()
     let line_num = line('.')
     silent put = search_result
@@ -547,7 +547,7 @@ function! s:exGS_ShowStackList() " <<<
     endif
 
     " clear screen
-    silent exec 'normal Gdgg'
+    silent exec 'normal! Gdgg'
 
     " put an empty line first
     silent put = ''
@@ -566,7 +566,7 @@ function! s:exGS_ShowStackList() " <<<
         let idx += 1
     endfor
     let reg_tmp = @t
-    silent exec 'normal gg"tdd'
+    silent exec 'normal! gg"tdd'
     let @t = reg_tmp
 endfunction " >>>
 
@@ -618,14 +618,14 @@ function! s:exGS_Stack_GotoTag( idx, jump_method ) " <<<
             silent exec 'e ' . s:exGS_search_stack_list[s:exGS_stack_idx].pattern_file_name
             call setpos('.', s:exGS_search_stack_list[s:exGS_stack_idx].pattern_cursor_pos)
         endif
-        exe 'normal zz'
+        exe 'normal! zz'
     endif
 
     " go back if needed
     if !g:exGS_stack_close_when_selected && !background_op
         " highlight the select object in edit buffer
         call g:ex_HighlightObjectLine()
-        exe 'normal zz'
+        exe 'normal! zz'
 
         "
         if !g:exGS_backto_editbuf
@@ -783,12 +783,12 @@ function! s:exGS_CopyPickedLine( search_pattern, line_start, line_end, search_me
         " clear down lines
         if a:line_end < line('$')
             silent call cursor( a:line_end, 1 )
-            silent exec 'normal jdG'
+            silent exec 'normal! jdG'
         endif
         " clear up lines
         if a:line_start > 1
             silent call cursor( a:line_start, 1 )
-            silent exec 'normal kdgg'
+            silent exec 'normal! kdgg'
         endif
         silent call cursor( 1, 1 )
 
@@ -806,16 +806,16 @@ function! s:exGS_CopyPickedLine( search_pattern, line_start, line_end, search_me
 
         " clear pattern result
         while search('----------.\+----------', 'w') != 0
-            silent exec 'normal dd'
+            silent exec 'normal! dd'
         endwhile
 
         " copy picked result
         let reg_t = @t
-        silent exec 'normal gg"tyG'
+        silent exec 'normal! gg"tyG'
         let s:exGS_picked_search_result = @t
         let @t = reg_t
         " recover
-        silent exec 'normal u'
+        silent exec 'normal! u'
 
         " this two algorithm was slow
         " -------------------------
@@ -843,7 +843,7 @@ function! s:exGS_ShowPickedResult( search_pattern, line_start, line_end, edit_mo
     call s:exGS_CopyPickedLine( a:search_pattern, a:line_start, a:line_end, a:search_method, a:inverse_search )
     call s:exGS_SwitchWindow('QuickView')
     if a:edit_mode == 'replace'
-        silent exec 'normal Gdgg'
+        silent exec 'normal! Gdgg'
         let s:exGS_quick_view_idx = 1
         call g:ex_HighlightConfirmLine()
         silent put = s:exGS_quick_view_search_pattern
@@ -851,7 +851,7 @@ function! s:exGS_ShowPickedResult( search_pattern, line_start, line_end, edit_mo
         silent put = s:exGS_picked_search_result
         silent put = s:exGS_fold_end
     elseif a:edit_mode == 'append'
-        silent exec 'normal G'
+        silent exec 'normal! G'
         silent put = ''
         silent put = s:exGS_quick_view_search_pattern
         silent put = s:exGS_fold_start

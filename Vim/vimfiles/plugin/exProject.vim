@@ -404,7 +404,7 @@ function! s:exPJ_QuickRefreshProject() " <<<
     echon "Update directory: " . full_path_name . "\r"
 
     " select it first to record in '<,'>
-    silent exec 'normal $vaB[{v'
+    silent exec 'normal! $vaB[{v'
     let fold_start = line("'<")
     let fold_end = line("'>")
     let space_cout = (g:ex_GetFoldLevel(line('.'))+1)*2+1
@@ -419,7 +419,7 @@ function! s:exPJ_QuickRefreshProject() " <<<
 
         let idx = stridx(cur_line, '}')
         if idx == -1
-            silent exec "normal ddk"
+            silent exec "normal! ddk"
             let fold_end -= 1
             let line_idx = search(file_pattern)
         else
@@ -512,8 +512,8 @@ function! s:exPJ_RefreshProject() " <<<
         silent call g:ex_SetLevelList(line('.'), 1)
     endif
     " delete the whole fold
-    silent exec "normal zc"
-    silent exec "normal 2dd"
+    silent exec "normal! zc"
+    silent exec "normal! 2dd"
     " broswing
     silent call g:ex_Browse(full_path_name,g:ex_GetFileFilterPattern(filter))
     " reset level list
@@ -540,7 +540,7 @@ function! s:exPJ_RefreshProject() " <<<
         silent call setline('.', start_part . short_dir . end_part)
     else
         " delete the first empty line then go to the root dir
-        silent exec "normal ggddj"
+        silent exec "normal! ggddj"
     endif
 endfunction " >>>
 
@@ -548,7 +548,7 @@ endfunction " >>>
 function! s:exPJ_CreateNewFile() " <<<
     let reg_t = @t
     if foldclosed('.') != -1
-        silent exec 'normal j"tyy"t2p$a-[]'
+        silent exec 'normal! j"tyy"t2p$a-[]'
         return
     endif
 
@@ -556,9 +556,9 @@ function! s:exPJ_CreateNewFile() " <<<
     if match(cur_line, '\C\[F\]') != -1 " if this is directory
         let idx = stridx(cur_line, '}')
         if idx == -1
-            silent exec 'normal j"tyy"tP'
+            silent exec 'normal! j"tyy"tP'
             silent call search('[')
-            silent exec 'normal "tc$[]'
+            silent exec 'normal! "tc$[]'
         else
             let surfix = strpart(cur_line,idx-1)
             silent call setline('.',strpart(cur_line,0,idx-1))
@@ -569,9 +569,9 @@ function! s:exPJ_CreateNewFile() " <<<
     else " else if this is file
         let idx = stridx(cur_line, '}')
         if idx == -1
-            silent exec 'normal "tyyj"tP'
+            silent exec 'normal! "tyyj"tP'
             silent call search('[')
-            silent exec 'normal "tc$[]'
+            silent exec 'normal! "tc$[]'
         else
             let surfix = strpart(cur_line,idx-1)
             silent call setline('.',strpart(cur_line,0,idx-1))
@@ -587,7 +587,7 @@ endfunction " >>>
 function! s:exPJ_CreateNewFold() " <<<
     let reg_t = @t
     if foldclosed('.') != -1
-        silent exec 'normal j"tyy"t2p$a-[]'
+        silent exec 'normal! j"tyy"t2p$a-[]'
         return
     endif
 
@@ -595,13 +595,13 @@ function! s:exPJ_CreateNewFold() " <<<
     if match(cur_line, '\C\[F\]') != -1 " if this is directory
         let idx = stridx(cur_line, '}')
         if idx == -1
-            silent exec 'normal j"tyy"tP'
+            silent exec 'normal! j"tyy"tP'
             silent call search('[')
-            silent exec "normal c$[F] { }"
+            silent exec "normal! c$[F] { }"
 
-            silent exec "normal yyjP"
+            silent exec "normal! yyjP"
             silent call search('-')
-            silent exec 'normal "tc$'
+            silent exec 'normal! "tc$'
         else
             let surfix = strpart(cur_line,idx-1)
             silent call setline('.',strpart(cur_line,0,idx-1))
@@ -609,16 +609,16 @@ function! s:exPJ_CreateNewFold() " <<<
             put = file_line
             silent call search(']')
 
-            silent exec 'normal "tyyj"tP'
+            silent exec 'normal! "tyyj"tP'
             silent call search('|-')
-            silent exec "normal c$"
+            silent exec "normal! c$"
         endif
     " else " else if this is file
     "     let idx = stridx(cur_line, '}')
     "     if idx == -1
-    "         silent exec 'normal "tyyj"tP'
+    "         silent exec 'normal! "tyyj"tP'
     "         silent call search('[')
-    "         silent exec 'normal "tc$[F] { }'
+    "         silent exec 'normal! "tc$[F] { }'
     "     else
     "         let surfix = strpart(cur_line,idx-1)
     "         silent call setline('.',strpart(cur_line,0,idx-1))
