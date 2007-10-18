@@ -344,6 +344,7 @@ function! s:exMH_DefineSyntax() " <<<
     " if enable(def_macro) else disable
     " the exIfEnable/exIfnEnable share the end with exElseDisable, so use keepend avoid
     " bug in Paren ( ... ) the end Paren will always show error cause the keepend endup Paren check the extend here to avoid this
+    " bug in like /* #if enable #else */
     exec 'syn region exIfEnableStart start=' . '"' . if_enable_pattern . '"' . ' end=".\@=\|$" contains=exIfEnable'
     exec 'syn region exIfEnable matchgroup=cPreProc contained start=' . '"' . def_macro_pattern . end_pattern . '"' . ' end="^\s*\(%:\|#\)\s*\(endif\>\)" extend keepend contains=exElseDisable,@exEnableContainedGroup'
     "exec 'syn region exIfEnable matchgroup=cPreProc start=' . '"' . if_enable_pattern . '"' . ' end="^\s*\(%:\|#\)\s*\(endif\>\)" keepend contains=exElseDisable,@exEnableContainedGroup'
