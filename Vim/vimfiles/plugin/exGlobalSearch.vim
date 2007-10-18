@@ -160,7 +160,10 @@ endfunction " >>>
 function! s:exGS_SwitchWindow( short_title ) " <<<
     let title = '__exGS_' . a:short_title . 'Window__'
     if bufwinnr(title) == -1
+        let tmp_backup = g:exGS_backto_editbuf
+        let g:exGS_backto_editbuf = 0
         call s:exGS_ToggleWindow(a:short_title)
+        let g:exGS_backto_editbuf = tmp_backup
     endif
 endfunction " >>>
 
