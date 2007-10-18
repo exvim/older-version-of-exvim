@@ -691,7 +691,6 @@ function! s:exPJ_GotoSelectResult(edit_cmd) " <<<
     else " default
         " put the edit file
         echon full_path_name . "\r"
-        " XXX: change method to ex_GotoEditBuffer
         " silent wincmd p
         silent call g:ex_GotoEditBuffer()
         silent exec a:edit_cmd.' '.full_path_name

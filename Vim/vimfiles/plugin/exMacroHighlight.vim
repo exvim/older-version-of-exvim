@@ -290,32 +290,25 @@ endfunction " >>>
 " --exMH_DefineSyntax--
 function! s:exMH_DefineSyntax() " <<<
     " update def macro pattern
-    if len(s:exMH_define_list[1]) != 0
-        let def_macro_pattern = '\('
-        for def_macro in s:exMH_define_list[1]
-            let def_macro_pattern = def_macro_pattern . '\<' . def_macro . '\>' . '\|'
-        endfor
-        let def_macro_pattern = strpart( def_macro_pattern, 0, strlen(def_macro_pattern)-2 ) . '\)'
-    else
-        let def_macro_pattern = '__EXMH_NO_DEF_MACRO__'
-    endif
+    let def_macro_pattern = '\(\<1\>'
+    for def_macro in s:exMH_define_list[1]
+        let def_macro_pattern = def_macro_pattern . '\|\<' . def_macro . '\>'
+    endfor
+    let def_macro_pattern = def_macro_pattern . '\)'
 
     " update ndef macro pattern
-    if len(s:exMH_define_list[0]) != 0
-        let undef_macro_pattern = '\('
-        for undef_macro in s:exMH_define_list[0]
-            let undef_macro_pattern = undef_macro_pattern . '\<' . undef_macro . '\>' . '\|'
-        endfor
-        let undef_macro_pattern = strpart( undef_macro_pattern, 0, strlen(undef_macro_pattern)-2 ) . '\)'
-    else
-        let undef_macro_pattern = '__EXMH_NO_NDEF_MACRO__'
-    endif
+    " FIXME: #if ( USE_SHADOWS == 0 )
+    let undef_macro_pattern = '\(\<0\>'
+    for undef_macro in s:exMH_define_list[0]
+        let undef_macro_pattern = undef_macro_pattern . '\|\<' . undef_macro . '\>'
+    endfor
+    let undef_macro_pattern =  undef_macro_pattern . '\)'
 
     " predefine patterns
-    let if_pattern = '^\s*\(%:\|#\)\s*\(if\s\+(*\s*\(.*==\s*\)*\|ifdef\s\+(*\s*\|if\s\+defined\s*(*\s*\)'
-    let ifn_pattern = '^\s*\(%:\|#\)\s*\(ifndef\s\+\|if\s\+!\s*\(defined\)*\s*(*\s*\|if\s\+(*\s*.*!=\s*\)'
-    let elif_pattern = '^\s*\(%:\|#\)\s*\(elif\s\+(*\s*\(.*==\s*\)*\|elif\s\+defined\s*(*\s*\)'
-    let elifn_pattern = '^\s*\(%:\|#\)\s*\(elif\s\+!\s*\(defined\)*\s*(*\s*\|elif\s\+(*\s*\(.*!=\s*\)*\)'
+    let if_pattern = '^\s*\(%:\|#\)\s*\(if\s\+(*\s*\(.*==\s*\)*\|ifdef\s\+(*\s*\|if\s\+(*defined\s*(*\s*\)'
+    let ifn_pattern = '^\s*\(%:\|#\)\s*\(ifndef\s\+\|if\s\+!\s*\((*defined\)*\s*(*\s*\|if\s\+(*\s*.*!=\s*\)'
+    let elif_pattern = '^\s*\(%:\|#\)\s*\(elif\s\+(*\s*\(.*==\s*\)*\|elif\s\+(*defined\s*(*\s*\)'
+    let elifn_pattern = '^\s*\(%:\|#\)\s*\(elif\s\+!\s*\((*defined\)*\s*(*\s*\|elif\s\+(*\s*\(.*!=\s*\)*\)'
     let end_pattern = '\s*)*'
 
     " define enable/disable start pattern
@@ -331,9 +324,7 @@ function! s:exMH_DefineSyntax() " <<<
 
     " --------------------
     " TODO: send to pre define
-    " exec 'syn cluster exEnableExcludeGroup contains=cCppSkip,cCppOut2,exIfDisable,exIfnDisable'
-    " exec 'syn cluster exEnableExcludeGroup contains=cErrInParen,cUserLabel,cCppSkip,cCppOut2,exIfDisable,exIfnDisable'
-
+    " exMacroInside will including the cCppOut. So define cCppOut in exIfDisable
     exec 'syn region exMacroInside contained matchgroup=cPreProc start="^\s*\(%:\|#\)\s*\(if\>\|ifdef\>\|ifndef\>\).*\/\/"rs=e-2 start="^\s*\(%:\|#\)\s*\(if\>\|ifdef\>\|ifndef\>\).*" skip="\\$" end="^\s*\(%:\|#\)\s*endif\>" extend contains=@exEnableContainedGroup'
     exec 'syn match exPreCondit display "^\s*\(%:\|#\)\s*\(else\|elif\)\>.*"'
 
@@ -342,39 +333,43 @@ function! s:exMH_DefineSyntax() " <<<
     exec 'syn region exCppSkip contained start="^\s*\(%:\|#\)\s*\(if\>\|ifdef\>\|ifndef\>\)" skip="\\$" end="^\s*\(%:\|#\)\s*endif\>" extend contains=cSpaceError,exCppSkip'
 
     " --------------------
-
-    " exec 'syn cluster exEnableContainedGroup contains=ALLBUT,@exEnableExcludeGroup'
-    "exec 'syn cluster exEnableContainedGroup contains=exMacroInside'
-    "exec 'syn cluster exEnableContainedGroup contains=cStatement,cLabel,cConditional,cRepeat,cString,cCppString,cCharacter,cSpecialError,cSpecialCharacter,cSpaceError,cBlock,cParen,cParenError,cParen,cBracket,cNumbers,cComment,cCommentL,cCommentError,cOperator,cStatement,cType,cStructure,cStorageClass,cConstant,cPreCondit,cCppOut,cInclude,cDefine,cPreProc,cMulti,cUserCont,cBitField'
-    "cPreCondit
-    exec 'syn cluster exEnableContainedGroup contains=cStatement,cLabel,cConditional,cRepeat,cString,cCppString,cCharacter,cSpecialError,cSpecialCharacter,cSpaceError,cBlock,cParen,cParenError,cParen,cBracket,cNumbers,cComment,cCommentL,cCommentError,cOperator,cStatement,cType,cStructure,cStorageClass,cConstant,cCppOut,cInclude,cDefine,cPreProc,cMulti,cUserCont,cBitField'
+    "exec 'syn cluster exEnableContainedGroup contains=cStatement,cLabel,cConditional,cRepeat,cString,cCppString,cCharacter,cSpecialError,cSpecialCharacter,cSpaceError,cBlock,cParen,cParenError,cBracket,cNumbers,cComment,cCommentL,cCommentError,cOperator,cType,cStructure,cStorageClass,cConstant,cPreCondit,cCppOut,cInclude,cDefine,cPreProc,cMulti,cUserCont,cBitField'
+    " the cPreCondit conflict with exMacroInside, use exPreCondit instead
+    exec 'syn cluster exEnableContainedGroup contains=cStatement,cLabel,cConditional,cRepeat,cString,cCppString,cCharacter,cSpecialError,cSpecialCharacter,cSpaceError,cBlock,cParen,cParenError,cBracket,cNumbers,cComment,cCommentL,cCommentError,cOperator,cType,cStructure,cStorageClass,cConstant,cCppOut,cInclude,cDefine,cPreProc,cMulti,cUserCont,cBitField'
     exec 'syn cluster exEnableContainedGroup add=cppStatement,cppAccess,cppType,cppExceptions,cppOperator,cppCast,cppStorageClass,cppStructure,cppNumber,cppBoolean,cppMinMax'
     exec 'syn cluster exEnableContainedGroup add=exPreCondit,exMacroInside'
-    exec 'syn cluster exEnableContainedGroup add=exIfDisableStart,exIfnDisableStart'
+    exec 'syn cluster exEnableContainedGroup add=exIfDisableStart,exIfnDisableStart,exIfEnableStart,exIfnEnableStart'
 
     " if ---------------
     " if enable(def_macro) else disable
-    "exec 'syn region exIfEnableStart start=' . '"' . if_enable_pattern . '"' . ' end=".\@=\|$" contains=exIfEnable'
-    "exec 'syn region exIfEnable matchgroup=cPreProc contained start=' . '"' . def_macro_pattern . end_pattern . '"' . ' end="^\s*\(%:\|#\)\s*\(endif\>\)" keepend contains=exElseDisable,@exEnableContainedGroup'
-    exec 'syn region exIfEnable matchgroup=cPreProc start=' . '"' . if_enable_pattern . '"' . ' end="^\s*\(%:\|#\)\s*\(endif\>\)" keepend contains=exElseDisable,@exEnableContainedGroup'
+    " the exIfEnable/exIfnEnable share the end with exElseDisable, so use keepend avoid
+    " bug in Paren ( ... ) the end Paren will always show error cause the keepend endup Paren check the extend here to avoid this
+    exec 'syn region exIfEnableStart start=' . '"' . if_enable_pattern . '"' . ' end=".\@=\|$" contains=exIfEnable'
+    exec 'syn region exIfEnable matchgroup=cPreProc contained start=' . '"' . def_macro_pattern . end_pattern . '"' . ' end="^\s*\(%:\|#\)\s*\(endif\>\)" extend keepend contains=exElseDisable,@exEnableContainedGroup'
+    "exec 'syn region exIfEnable matchgroup=cPreProc start=' . '"' . if_enable_pattern . '"' . ' end="^\s*\(%:\|#\)\s*\(endif\>\)" keepend contains=exElseDisable,@exEnableContainedGroup'
 
     " if! enable(undef_macro) else disable
-    "exec 'syn region exIfnEnableStart start=' . '"' . ifn_enable_pattern . '"' . ' end=".\@=\|$" contains=exIfnEnable'
-    "exec 'syn region exIfnEnable matchgroup=cPreProc contained start=' . '"' . undef_macro_pattern . end_pattern . '"' . ' end="^\s*\(%:\|#\)\s*\(endif\>\)" keepend contains=exElseDisable,@exEnableContainedGroup'
-    exec 'syn region exIfnEnable matchgroup=cPreProc start=' . '"' . ifn_enable_pattern . '"' . ' end="^\s*\(%:\|#\)\s*\(endif\>\)" keepend contains=exElseDisable,@exEnableContainedGroup'
+    exec 'syn region exIfnEnableStart start=' . '"' . ifn_enable_pattern . '"' . ' end=".\@=\|$" contains=exIfnEnable'
+    exec 'syn region exIfnEnable matchgroup=cPreProc contained start=' . '"' . undef_macro_pattern . end_pattern . '"' . ' end="^\s*\(%:\|#\)\s*\(endif\>\)" extend keepend contains=exElseDisable,@exEnableContainedGroup'
+    "exec 'syn region exIfnEnable matchgroup=cPreProc start=' . '"' . ifn_enable_pattern . '"' . ' end="^\s*\(%:\|#\)\s*\(endif\>\)" keepend contains=exElseDisable,@exEnableContainedGroup'
 
     " if disable(undef_macro) else define
     exec 'syn region exIfDisableStart start=' . '"' . if_disable_pattern . '"' . ' end=".\@=\|$" contains=exIfDisable'
-    exec 'syn region exIfDisable contained start=' . '"' . undef_macro_pattern . '"' . '  end="^\s*\(%:\|#\)\s*\(endif\>\|else\>\|elif\>\)" contains=cCppSkip'
+    exec 'syn region exIfDisable contained start=' . '"' . undef_macro_pattern . '"' . '  end="^\s*\(%:\|#\)\s*\(endif\>\|else\>\|elif\>\)" extend contains=cCppSkip'
 
     " if! disable(def_macro) else define
     exec 'syn region exIfnDisableStart start=' . '"' . ifn_disable_pattern . '"' . ' end=".\@=\|$" contains=exIfnDisable'
-    exec 'syn region exIfnDisable contained start=' . '"' . def_macro_pattern . '"' . ' end="^\s*\(%:\|#\)\s*\(endif\>\|else\>\|elif\>\)" contains=cCppSkip'
+    exec 'syn region exIfnDisable contained start=' . '"' . def_macro_pattern . '"' . ' end="^\s*\(%:\|#\)\s*\(endif\>\|else\>\|elif\>\)" extend contains=cCppSkip'
 
     " add if to cluster
-    syn cluster cParenGroup add=exIfEnable,exIfDisableStart,exIfDisable,exIfnEnable,exIfnDisableStart,exIfnDisable,exCppSkip,exMacroInside
-    syn cluster cPreProcGroup add=exIfEnable,exIfDisableStart,exIfDisable,exIfnEnable,exIfnDisableStart,exIfnDisable,exCppSkip,exMacroInside
-    syn cluster cMultiGroup add=exIfEnable,exIfDisableStart,exIfDisable,exIfnEnable,exIfnDisableStart,exIfnDisable,exCppSkip,exMacroInside
+    " syn cluster cParenGroup add=exIfEnable,exIfDisableStart,exIfDisable,exIfnEnable,exIfnDisableStart,exIfnDisable,exCppSkip,exMacroInside,exElseDisable
+    " syn cluster cPreProcGroup add=exIfEnable,exIfDisableStart,exIfDisable,exIfnEnable,exIfnDisableStart,exIfnDisable,exCppSkip,exMacroInside,exElseDisable
+    " syn cluster cMultiGroup add=exIfEnable,exIfDisableStart,exIfDisable,exIfnEnable,exIfnDisableStart,exIfnDisable,exCppSkip,exMacroInside,exElseDisable
+
+    " don't add exIfxxxStart in, or we will lose effect in Paren --> ( ... )
+    syn cluster cParenGroup add=exIfEnable,exIfDisable,exIfnEnable,exIfnDisable,exCppSkip,exMacroInside,exElseDisable
+    syn cluster cPreProcGroup add=exIfEnable,exIfDisable,exIfnEnable,exIfnDisable,exCppSkip,exMacroInside,exElseDisable
+    syn cluster cMultiGroup add=exIfEnable,exIfDisable,exIfnEnable,exIfnDisable,exCppSkip,exMacroInside,exElseDisable
 
     " elif ---------------
     " elif enable(def_macro) else disable
@@ -400,7 +395,7 @@ endfunction " >>>
 " --exMH_UpdateSyntax--
 function! s:exMH_UpdateSyntax() " <<<
     " clear syntax group for re-define
-    syntax clear exIfDisable exIfEnable exIfnEnable exIfnDisable exIfDisableStart exIfnDisableStart exElseDisable 
+    syntax clear exIfDisableStart exIfDisable exIfnDisableStart exIfnDisable exIfEnableStart exIfEnable exIfnEnableStart exIfnEnable exElseDisable 
 
     " TODO, not clean this, move the define to predefine block
     syntax clear exPreCondit exMacroInside exElseDisable exCppSkip 
