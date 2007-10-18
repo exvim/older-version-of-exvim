@@ -254,9 +254,10 @@ endfunction
 " --exTS_GetTagSelectResult--
 "  Get the result of a word and use :ts record the result
 function! s:exTS_GetTagSelectResult(tag, direct_jump) " <<<
-    "if &filetype == "ex_filetype"
-    "    silent exec "normal \<Esc>"
-    "endif
+    " this will fix the jump error when tagselect in the same window
+    if &filetype == "ex_filetype"
+        silent exec "normal \<Esc>"
+    endif
 
     let in_tag = strpart( a:tag, match(a:tag, '\S') )
     if match(in_tag, '^\(\t\|\s\)') != -1

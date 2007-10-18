@@ -399,9 +399,10 @@ endfunction " >>>
 " search_pattern = ''
 " search_method = -s / -r / -w
 function! s:exGS_GetGlobalSearchResult(search_pattern, search_method, direct_jump) " <<<
-    "if &filetype == "ex_filetype"
-    "    silent exec "normal \<Esc>"
-    "endif
+    " this will fix the jump error when tagselect in the same window
+    if &filetype == "ex_filetype"
+        silent exec "normal \<Esc>"
+    endif
 
     " TODO different mode, same things
     " open and goto search window first
