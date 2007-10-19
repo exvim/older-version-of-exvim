@@ -342,17 +342,15 @@ function! s:exMH_DefineSyntax() " <<<
 
     " if ---------------
     " if enable(def_macro) else disable
-    " the exIfEnable/exIfnEnable share the end with exElseDisable, so use keepend avoid
-    " bug in Paren ( ... ) the end Paren will always show error cause the keepend endup Paren check the extend here to avoid this
-    " bug in like /* #if enable #else */
+    " keepend: the exIfEnable/exIfnEnable share the end with exElseDisable, use keepend to tell exElseDisable always inside the exIfEnable/exIfnEnable 
+    " entend: in exIfEnable( Paren ( ... ) ) the end Paren will always show error cause the keepend also endup Paren check. the extend tell cParen it will continue
+    " skip: in exIfEnable( /* #if enable #endif */ ), the skip tell the exIfEnable to find the end by skip the skip_pattern
     exec 'syn region exIfEnableStart start=' . '"' . if_enable_pattern . '"' . ' end=".\@=\|$" contains=exIfEnable'
-    exec 'syn region exIfEnable matchgroup=cPreProc contained start=' . '"' . def_macro_pattern . end_pattern . '"' . ' end="^\s*\(%:\|#\)\s*\(endif\>\)" extend keepend contains=exElseDisable,@exEnableContainedGroup'
-    "exec 'syn region exIfEnable matchgroup=cPreProc start=' . '"' . if_enable_pattern . '"' . ' end="^\s*\(%:\|#\)\s*\(endif\>\)" keepend contains=exElseDisable,@exEnableContainedGroup'
+    exec 'syn region exIfEnable matchgroup=cPreProc contained start=' . '"' . def_macro_pattern . end_pattern . '"' . ' skip="#endif\>\_[^\(\/\*\)]*\*\/" end="^\s*\(%:\|#\)\s*\(endif\>\)" extend keepend contains=exElseDisable,@exEnableContainedGroup'
 
     " if! enable(undef_macro) else disable
     exec 'syn region exIfnEnableStart start=' . '"' . ifn_enable_pattern . '"' . ' end=".\@=\|$" contains=exIfnEnable'
-    exec 'syn region exIfnEnable matchgroup=cPreProc contained start=' . '"' . undef_macro_pattern . end_pattern . '"' . ' end="^\s*\(%:\|#\)\s*\(endif\>\)" extend keepend contains=exElseDisable,@exEnableContainedGroup'
-    "exec 'syn region exIfnEnable matchgroup=cPreProc start=' . '"' . ifn_enable_pattern . '"' . ' end="^\s*\(%:\|#\)\s*\(endif\>\)" keepend contains=exElseDisable,@exEnableContainedGroup'
+    exec 'syn region exIfnEnable matchgroup=cPreProc contained start=' . '"' . undef_macro_pattern . end_pattern . '"' . ' skip="#endif\>\_[^\(\/\*\)]*\*\/" end="^\s*\(%:\|#\)\s*\(endif\>\)" extend keepend contains=exElseDisable,@exEnableContainedGroup'
 
     " if disable(undef_macro) else define
     exec 'syn region exIfDisableStart start=' . '"' . if_disable_pattern . '"' . ' end=".\@=\|$" contains=exIfDisable'
@@ -361,11 +359,6 @@ function! s:exMH_DefineSyntax() " <<<
     " if! disable(def_macro) else define
     exec 'syn region exIfnDisableStart start=' . '"' . ifn_disable_pattern . '"' . ' end=".\@=\|$" contains=exIfnDisable'
     exec 'syn region exIfnDisable contained start=' . '"' . def_macro_pattern . '"' . ' end="^\s*\(%:\|#\)\s*\(endif\>\|else\>\|elif\>\)" extend contains=cCppSkip'
-
-    " add if to cluster
-    " syn cluster cParenGroup add=exIfEnable,exIfDisableStart,exIfDisable,exIfnEnable,exIfnDisableStart,exIfnDisable,exCppSkip,exMacroInside,exElseDisable
-    " syn cluster cPreProcGroup add=exIfEnable,exIfDisableStart,exIfDisable,exIfnEnable,exIfnDisableStart,exIfnDisable,exCppSkip,exMacroInside,exElseDisable
-    " syn cluster cMultiGroup add=exIfEnable,exIfDisableStart,exIfDisable,exIfnEnable,exIfnDisableStart,exIfnDisable,exCppSkip,exMacroInside,exElseDisable
 
     " don't add exIfxxxStart in, or we will lose effect in Paren --> ( ... )
     syn cluster cParenGroup add=exIfEnable,exIfDisable,exIfnEnable,exIfnDisable,exCppSkip,exMacroInside,exElseDisable
