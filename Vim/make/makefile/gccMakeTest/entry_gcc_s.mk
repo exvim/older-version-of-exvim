@@ -15,17 +15,17 @@ include config.mk
 PWD := .
 
 # Project Name
-Project := Test
-ProjectType := exe
+Project := # current directory name
+ProjectType := # choose: a,lib,so,dll,exe
 
 # Include Path
-IncDirs += .
+IncDirs += # relative-address (sample: ./Incs)
 
 # Precompiled Headers Dependence Headers
 FullPath_PchDeps += # relative-address/header-file-name (sample: ./Incs/pch-header.h)
 
 # Source Path
-SrcDirs += .
+SrcDirs += # relative-address (sample: ./Srcs)
 
 # Dependent Libaray File Paths
 LibDirs += # relative-address (sample: ../Third-Part-Libs)
