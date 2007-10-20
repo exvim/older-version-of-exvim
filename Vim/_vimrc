@@ -27,10 +27,12 @@ filetype plugin on " enable loading the plugin for appropriate file type
 set shellredir=>%s\ 2>&1
 
 set history=50 " keep 50 lines of command line history
-"set isk+=$,%,#,- " none of these should be word dividers 
-set clipboard=unnamed " use clipboard register '*' for all y, d, c, p ops 
 set updatetime=1000 " default = 4000
 set autoread " auto read same-file change ( better for vc/vim change )
+
+"set isk+=$,%,#,- " none of these should be word dividers 
+" don't use this, cause some times select put will be error. Insead use c-y c-p to copy in/out 
+"set clipboard=unnamed " use clipboard register '*' for all y, d, c, p ops 
 " enlarge maxmempattern from 1000 to ... (2000000 will give it without limit)
 set maxmempattern=1000
 
@@ -183,13 +185,15 @@ function s:Grep_Cfiles()
     exec ":grep -r --include=\"*.cpp\" --include=\"*.c\" --include=\"*.hpp\" --include=\"*.h\" " . l_str . " *"
 endfunction
 
+" general copy/paste.
+map <c-y> "*y
+map <c-p> "*p
 
 " F12: Insert '#if 0' and '#endif' between the selection
 vmap <F12> :call g:ex_InsertIFZero()<CR>
 nmap <F12> :call g:ex_RemoveIFZero()<CR>
 
-
-" F9:  Insert/Remove C++ Comment ("//") before all the lines of the selection
+" F11:  Insert/Remove C++ Comment ("//") before all the lines of the selection
 vmap <F11> :call g:ex_InsertRemoveCmt()<CR>
 
 " F8:  Set Search pattern highlight on/off
@@ -315,9 +319,9 @@ au BufEnter * :syntax sync fromstart " ensure every file does syntax highlightin
 au BufNewFile,BufRead *.avs set syntax=avs " for avs syntax file.
 au BufWritePost * call g:ex_UpdateCurrentBuffer() 
 
-" FIXME: may have some problem
-" change the pwd when enter the other buffer 
-" au BufEnter * execute ":lcd " . expand("%:p:h") 
+" FIXME: may have some problems with exUtility
+" Change current directory to the file of the buffer ( from Script#65"CD.vim"
+" au   BufEnter *   execute ":lcd " . expand("%:p:h") 
 
 au GUIEnter * simalt ~x " Maximize window when enter vim
 
@@ -343,9 +347,8 @@ highlight ShowMarksHLo term=bold cterm=bold ctermbg=LightYellow ctermfg=DarkYell
 " For multiple marks on the same line.
 highlight ShowMarksHLm term=bold cterm=bold ctermbg=LightGreen ctermfg=DarkGreen gui=bold guibg=LightGreen guifg=DarkGreen
 
-" ----------------------------------------------------------------------------                                    
-" Change current directory to the file of the buffer ( from Script#65"CD.vim"
-" au   BufEnter *   execute ":lcd " . expand("%:p:h") 
+" quick remove mark
+nmap <F9> \mh
 
 " --------------------
 " VTreeExplorer
@@ -388,7 +391,6 @@ noremap <Leader>head <ESC>:call g:ex_PutHeader()<CR>
 " --------------------
 " exTagSelect
 " --------------------
-nnoremap <silent> <F7> :ExtsToggle<CR>
 nnoremap <silent> <Leader>ts :ExtsSelectToggle<CR>
 nnoremap <silent> <Leader>tt :ExtsStackToggle<CR>
 nnoremap <silent> <Leader>tg :ExtsGoDirectly<CR>
@@ -402,7 +404,6 @@ let g:exTS_window_direction = 'bel'
 " --------------------
 " exGlobalSearch
 " --------------------
-nnoremap <silent> <F5> :ExgsToggle<CR>
 nnoremap <silent> <Leader>gs :ExgsSelectToggle<CR>
 nnoremap <silent> <Leader>gq :ExgsQuickViewToggle<CR>
 nnoremap <silent> <Leader>gt :ExgsStackToggle<CR>
