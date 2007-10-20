@@ -81,6 +81,14 @@ let s:exMH_get_macro_file = 1
 let s:exMH_macro_list = []
 let s:exMH_define_list = [[],[]] " 0: not define group, 1: define group
 let s:exMH_IsEnable = 0
+let s:exMH_Debug = 0
+
+" predefine patterns
+let s:if_pattern = '^\s*\(%:\|#\)\s*\(if\s\+(*\s*\(.*==\s*\)*\|ifdef\s\+(*\s*\|if\s\+(*defined\s*(*\s*\)'
+let s:ifn_pattern = '^\s*\(%:\|#\)\s*\(ifndef\s\+\|if\s\+!\s*\((*defined\)*\s*(*\s*\|if\s\+(*\s*.*!=\s*\)'
+let s:elif_pattern = '^\s*\(%:\|#\)\s*\(elif\s\+(*\s*\(.*==\s*\)*\|elif\s\+(*defined\s*(*\s*\)'
+let s:elifn_pattern = '^\s*\(%:\|#\)\s*\(elif\s\+!\s*\((*defined\)*\s*(*\s*\|elif\s\+(*\s*.*!=\s*\)'
+let s:end_pattern = '\s*)*.*'
 
 " select
 let s:exMH_select_idx = 1
@@ -207,28 +215,41 @@ function! g:exMH_InitMacroList(macrofile_name) " <<<
     " define syntax
     call s:exMH_DefineSyntax()
 
-    " highlight link
-    " TODO: for DEBUG
-    " hi def link exCppSkip           Error
-    hi def link exCppSkip           exMacroDisable
+    " for debug highlight link
+    if s:exMH_Debug == 1
+        " inside pattern
+        hi link exCppSkip           exMacroDisable
+        hi link exMacroInside       Normal
+        hi link exPreCondit         cPreProc
 
-    hi def link exIfDisable         exMacroDisable
-    hi def link exIfnDisable        exMacroDisable
-    hi def link exIfDisableStart    exMacroDisable
-    hi def link exIfnDisableStart   exMacroDisable
-    " TODO: for DEBUG
-    " hi def link exElseDisable       Todo
-    hi def link exElseDisable       exMacroDisable
+        " else disable/enable
+        hi link exElseDisable       exMacroDisable
+        hi link exElseEnable        Normal
 
-    hi def link exIfEnableStart     cPreProc
-    hi def link exIfEnable          Normal
-    hi def link exIfnEnableStart    cPreProc
-    hi def link exIfnEnable         Normal
+        " if/ifn eanble
+        hi link exIfEnableStart     cPreProc
+        hi link exIfEnable          Normal
+        hi link exIfnEnableStart    cPreProc
+        hi link exIfnEnable         Normal
 
-    " TODO: for DEBUG
-    " hi def link exMacroInside       IncSearch
-    hi def link exMacroInside       Normal
-    hi def link exPreCondit         cPreProc
+        " if/ifn disable
+        hi link exIfDisable         exMacroDisable
+        hi link exIfDisableStart    exMacroDisable
+        hi link exIfnDisable        exMacroDisable
+        hi link exIfnDisableStart   exMacroDisable
+
+        " elif/elifn enable
+        hi link exElifEnableStart   cPreProc
+        hi link exElifEnable        Normal
+        hi link exElifnEnableStart  cPreProc
+        hi link exElifnEnable       Normal
+
+        " elif/elifn disable
+        hi link exElifDisableStart  exMacroDisable 
+        hi link exElifDisable       exMacroDisable 
+        hi link exElifnDisableStart exMacroDisable 
+        hi link exElifnDisable      exMacroDisable 
+    endif
 
     " define autocmd for update syntax
     autocmd BufEnter *.h,*.hh,*.hpp,*.hxx,*.inl,*.H,*.c,*.cc,*.cpp,*.cxx,*.c++,*.C,*.hlsl,*.fx,*.fxh,*.cg,*.vsh,*.psh,*.shd call s:exMH_UpdateSyntax()
@@ -304,95 +325,72 @@ function! s:exMH_DefineSyntax() " <<<
     endfor
     let undef_macro_pattern =  undef_macro_pattern . '\)'
 
-    " predefine patterns
-    let if_pattern = '^\s*\(%:\|#\)\s*\(if\s\+(*\s*\(.*==\s*\)*\|ifdef\s\+(*\s*\|if\s\+(*defined\s*(*\s*\)'
-    let ifn_pattern = '^\s*\(%:\|#\)\s*\(ifndef\s\+\|if\s\+!\s*\((*defined\)*\s*(*\s*\|if\s\+(*\s*.*!=\s*\)'
-    let elif_pattern = '^\s*\(%:\|#\)\s*\(elif\s\+(*\s*\(.*==\s*\)*\|elif\s\+(*defined\s*(*\s*\)'
-    let elifn_pattern = '^\s*\(%:\|#\)\s*\(elif\s\+!\s*\((*defined\)*\s*(*\s*\|elif\s\+(*\s*\(.*!=\s*\)*\)'
-    let end_pattern = '\s*)*'
-
     " define enable/disable start pattern
-    let if_enable_pattern   = if_pattern . def_macro_pattern . end_pattern
-    let if_disable_pattern  = if_pattern . undef_macro_pattern . end_pattern
-    let ifn_enable_pattern  = ifn_pattern . undef_macro_pattern . end_pattern
-    let ifn_disable_pattern = ifn_pattern . def_macro_pattern . end_pattern
+    let if_enable_pattern   = s:if_pattern . def_macro_pattern . s:end_pattern
+    let if_disable_pattern  = s:if_pattern . undef_macro_pattern . s:end_pattern
+    let ifn_enable_pattern  = s:ifn_pattern . undef_macro_pattern . s:end_pattern
+    let ifn_disable_pattern = s:ifn_pattern . def_macro_pattern . s:end_pattern
 
-    let elif_enable_pattern   = elif_pattern . def_macro_pattern . end_pattern
-    let elif_disable_pattern  = elif_pattern . undef_macro_pattern . end_pattern
-    let elifn_enable_pattern  = elifn_pattern . undef_macro_pattern . end_pattern
-    let elifn_disable_pattern = elifn_pattern . def_macro_pattern . end_pattern
+    let elif_enable_pattern   = s:elif_pattern . def_macro_pattern . s:end_pattern
+    let elif_disable_pattern  = s:elif_pattern . undef_macro_pattern . s:end_pattern
+    let elifn_enable_pattern  = s:elifn_pattern . undef_macro_pattern . s:end_pattern
+    let elifn_disable_pattern = s:elifn_pattern . def_macro_pattern . s:end_pattern
 
-    " --------------------
-    " TODO: send to pre define
-    " exMacroInside will including the cCppOut. So define cCppOut in exIfDisable
-    exec 'syn region exMacroInside contained matchgroup=cPreProc start="^\s*\(%:\|#\)\s*\(if\>\|ifdef\>\|ifndef\>\).*\/\/"rs=e-2 start="^\s*\(%:\|#\)\s*\(if\>\|ifdef\>\|ifndef\>\).*" skip="\\$" end="^\s*\(%:\|#\)\s*endif\>" extend contains=@exEnableContainedGroup'
-    exec 'syn match exPreCondit display "^\s*\(%:\|#\)\s*\(else\|elif\)\>.*"'
+    " ------------ simple document -------------
 
-    " the bug is the exElseDisable and exIfxEnable share the same end.
-    exec 'syn region exElseDisable contained start="^\s*\(%:\|#\)\s*\(else\>\|elif\>\)" skip="\\$" end="^\s*\(%:\|#\)\s*\(else\>\|elif\>\)" keepend contains=exCppSkip'
-    exec 'syn region exCppSkip contained start="^\s*\(%:\|#\)\s*\(if\>\|ifdef\>\|ifndef\>\)" skip="\\$" end="^\s*\(%:\|#\)\s*endif\>" extend contains=cSpaceError,exCppSkip'
-
-    " --------------------
-    "exec 'syn cluster exEnableContainedGroup contains=cStatement,cLabel,cConditional,cRepeat,cString,cCppString,cCharacter,cSpecialError,cSpecialCharacter,cSpaceError,cBlock,cParen,cParenError,cBracket,cNumbers,cComment,cCommentL,cCommentError,cOperator,cType,cStructure,cStorageClass,cConstant,cPreCondit,cCppOut,cInclude,cDefine,cPreProc,cMulti,cUserCont,cBitField'
-    " the cPreCondit conflict with exMacroInside, use exPreCondit instead
-    exec 'syn cluster exEnableContainedGroup contains=cStatement,cLabel,cConditional,cRepeat,cString,cCppString,cCharacter,cSpecialError,cSpecialCharacter,cSpaceError,cBlock,cParen,cParenError,cBracket,cNumbers,cComment,cCommentL,cCommentError,cOperator,cType,cStructure,cStorageClass,cConstant,cCppOut,cInclude,cDefine,cPreProc,cMulti,cUserCont,cBitField'
-    exec 'syn cluster exEnableContainedGroup add=cppStatement,cppAccess,cppType,cppExceptions,cppOperator,cppCast,cppStorageClass,cppStructure,cppNumber,cppBoolean,cppMinMax'
-    exec 'syn cluster exEnableContainedGroup add=exPreCondit,exMacroInside'
-    exec 'syn cluster exEnableContainedGroup add=exIfDisableStart,exIfnDisableStart,exIfEnableStart,exIfnEnableStart'
-
-    " if ---------------
-    " if enable(def_macro) else disable
+    "  exIfEnable/exIfnEnable
     " keepend: the exIfEnable/exIfnEnable share the end with exElseDisable, use keepend to tell exElseDisable always inside the exIfEnable/exIfnEnable 
     " entend: in exIfEnable( Paren ( ... ) ) the end Paren will always show error cause the keepend also endup Paren check. the extend tell cParen it will continue
     " skip: in exIfEnable( /* #if enable #endif */ ), the skip tell the exIfEnable to find the end by skip the skip_pattern
+
+    " --------------- exIfEnable ---------------
+    " if enable(def_macro) else disable
     exec 'syn region exIfEnableStart start=' . '"' . if_enable_pattern . '"' . ' end=".\@=\|$" contains=exIfEnable'
-    exec 'syn region exIfEnable matchgroup=cPreProc contained start=' . '"' . def_macro_pattern . end_pattern . '"' . ' skip="#endif\>\_[^\(\/\*\)]*\*\/" end="^\s*\(%:\|#\)\s*\(endif\>\)" extend keepend contains=exElseDisable,@exEnableContainedGroup'
+    exec 'syn region exIfEnable contained extend keepend matchgroup=cPreProc start=' . '"' . def_macro_pattern . s:end_pattern . '"' . ' skip="#endif\>\_[^\(\/\*\)]*\*\/" end="^\s*\(%:\|#\)\s*\(endif\>\)" contains=exElseDisable,@exEnableContainedGroup'
 
-    " if! enable(undef_macro) else disable
+    " --------------- exElifEnable ---------------
+    " elif enable(def_macro) else disable
+    exec 'syn region exElifEnableStart contained start=' . '"' . elif_enable_pattern . '"' . ' end=".\@=\|$" contains=exElifEnable'
+    exec 'syn region exElifEnable contained matchgroup=cPreProc start=' . '"' . def_macro_pattern . s:end_pattern . '"' . ' skip="#endif\>\_[^\(\/\*\)]*\*\/" end="^\s*\(%:\|#\)\s*\(endif\>\)" contains=exElseDisable,@exEnableContainedGroup'
+
+    " --------------- exIfnEnable ---------------
+    " ifn enable(undef_macro) else disable
     exec 'syn region exIfnEnableStart start=' . '"' . ifn_enable_pattern . '"' . ' end=".\@=\|$" contains=exIfnEnable'
-    exec 'syn region exIfnEnable matchgroup=cPreProc contained start=' . '"' . undef_macro_pattern . end_pattern . '"' . ' skip="#endif\>\_[^\(\/\*\)]*\*\/" end="^\s*\(%:\|#\)\s*\(endif\>\)" extend keepend contains=exElseDisable,@exEnableContainedGroup'
+    exec 'syn region exIfnEnable contained extend keepend matchgroup=cPreProc start=' . '"' . undef_macro_pattern . s:end_pattern . '"' . ' skip="#endif\>\_[^\(\/\*\)]*\*\/" end="^\s*\(%:\|#\)\s*\(endif\>\)" contains=exElseDisable,@exEnableContainedGroup'
 
+    " --------------- exElifnEnable ---------------
+    " elifn enable(def_macro) else disable
+    exec 'syn region exElifnEnableStart contained start=' . '"' . elifn_enable_pattern . '"' . ' end=".\@=\|$" contains=exElifnEnable'
+    exec 'syn region exElifnEnable contained matchgroup=cPreProc start=' . '"' . undef_macro_pattern . s:end_pattern . '"' . ' skip="#endif\>\_[^\(\/\*\)]*\*\/" end="^\s*\(%:\|#\)\s*\(endif\>\)" contains=exElseDisable,@exEnableContainedGroup'
+
+    " --------------- exIfDisable ---------------
     " if disable(undef_macro) else define
     exec 'syn region exIfDisableStart start=' . '"' . if_disable_pattern . '"' . ' end=".\@=\|$" contains=exIfDisable'
-    exec 'syn region exIfDisable contained start=' . '"' . undef_macro_pattern . '"' . '  end="^\s*\(%:\|#\)\s*\(endif\>\|else\>\|elif\>\)" extend contains=cCppSkip'
+    exec 'syn region exIfDisable contained extend keepend start=' . '"' . undef_macro_pattern . s:end_pattern . '"' . ' skip="#endif\>\_[^\(\/\*\)]*\*\/" end="^\s*\(%:\|#\)\s*\(endif\>\)" contains=exCppSkip,exElseEnable,exElifEnableStart,exElifnEnableStart'
 
-    " if! disable(def_macro) else define
-    exec 'syn region exIfnDisableStart start=' . '"' . ifn_disable_pattern . '"' . ' end=".\@=\|$" contains=exIfnDisable'
-    exec 'syn region exIfnDisable contained start=' . '"' . def_macro_pattern . '"' . ' end="^\s*\(%:\|#\)\s*\(endif\>\|else\>\|elif\>\)" extend contains=cCppSkip'
-
-    " don't add exIfxxxStart in, or we will lose effect in Paren --> ( ... )
-    syn cluster cParenGroup add=exIfEnable,exIfDisable,exIfnEnable,exIfnDisable,exCppSkip,exMacroInside,exElseDisable
-    syn cluster cPreProcGroup add=exIfEnable,exIfDisable,exIfnEnable,exIfnDisable,exCppSkip,exMacroInside,exElseDisable
-    syn cluster cMultiGroup add=exIfEnable,exIfDisable,exIfnEnable,exIfnDisable,exCppSkip,exMacroInside,exElseDisable
-
-    " elif ---------------
-    " elif enable(def_macro) else disable
-    "exec 'syn region exElifEnable matchgroup=cPreProc start=' . '"' . elif_enable_pattern . '"' . ' end="^\s*\(%:\|#\)\s*\(endif\>\)" keepend contains=ALLBUT,@exEnableExcludeGroup'
-
+    " --------------- exElifDisable ---------------
     " elif disable(undef_macro) else define
-    "exec 'syn region exElifDisableStart start=' . '"' . elif_disable_pattern . '"' . ' end=".\@=\|$" contains=exElifDisable'
-    "exec 'syn region exElifDisable contained start=' . '"' . undef_macro_pattern . '"' . '  matchgroup=cPreProc end="^\s*\(%:\|#\)\s*\(endif\>\|else\>\)" contains=cCppSkip'
+    exec 'syn region exElifDisableStart contained start=' . '"' . elif_disable_pattern . '"' . ' end=".\@=\|$" contains=exElifDisable'
+    exec 'syn region exElifDisable contained start=' . '"' . undef_macro_pattern . s:end_pattern . '"' . ' skip="#endif\>\_[^\(\/\*\)]*\*\/" end="^\s*\(%:\|#\)\s*\(endif\>\)" contains=exCppSkip,exElseDisable,exElifEnableStart,exElifnEnableStart'
 
-    " elif! enable(undef_macro) else disable
-    "exec 'syn region exElifnEnable matchgroup=cPreProc start=' . '"' . elifn_enable_pattern . '"' . ' end="^\s*\(%:\|#\)\s*\(endif\>\)" keepend contains=ALLBUT,@exEnableExcludeGroup'
+    " --------------- exIfnDisable ---------------
+    " ifn disable(def_macro) else define
+    exec 'syn region exIfnDisableStart start=' . '"' . ifn_disable_pattern . '"' . ' end=".\@=\|$" contains=exIfnDisable'
+    exec 'syn region exIfnDisable contained extend keepend start=' . '"' . def_macro_pattern . s:end_pattern . '"' . ' skip="#endif\>\_[^\(\/\*\)]*\*\/" end="^\s*\(%:\|#\)\s*\(endif\>\)" contains=exCppSkip,exElseEnable,exElifEnableStart,exElifnEnableStart'
 
-    " elif! disable(def_macro) else define
-    "exec 'syn region exElifnDisableStart start=' . '"' . elifn_disable_pattern . '"' . ' end=".\@=\|$" contains=exElifnDisable'
-    "exec 'syn region exElifnDisable contained start=' . '"' . def_macro_pattern . '"' . ' matchgroup=cPreProc end="^\s*\(%:\|#\)\s*\(endif\>\|else\>\)" contains=cCppSkip'
-
-    " add elif to cluster
-    "syn cluster cParenGroup add=exElifEnable,exElifDisableStart,exElifDisable,exElifnEnable,exElifnDisableStart,exElifnDisable
-    "syn cluster cPreProcGroup add=exElifEnable,exElifDisableStart,exElifDisable,exElifnEnable,exElifnDisableStart,exElifnDisable
-    "syn cluster cMultiGroup add=exElifEnable,exElifDisableStart,exElifDisable,exElifnEnable,exElifnDisableStart,exElifnDisable
+    " --------------- exElifnDisable ---------------
+    " elif disable(undef_macro) else define
+    exec 'syn region exElifnDisableStart contained start=' . '"' . elifn_disable_pattern . '"' . ' end=".\@=\|$" contains=exElifnDisable'
+    exec 'syn region exElifnDisable contained start=' . '"' . def_macro_pattern . s:end_pattern . '"' . ' skip="#endif\>\_[^\(\/\*\)]*\*\/" end="^\s*\(%:\|#\)\s*\(endif\>\)" contains=exCppSkip,exElseDisable,exElifEnableStart,exElifnEnableStart'
 endfunction " >>>
 
 " --exMH_UpdateSyntax--
 function! s:exMH_UpdateSyntax() " <<<
     " clear syntax group for re-define
-    syntax clear exIfDisableStart exIfDisable exIfnDisableStart exIfnDisable exIfEnableStart exIfEnable exIfnEnableStart exIfnEnable exElseDisable 
-
-    " TODO, not clean this, move the define to predefine block
-    syntax clear exPreCondit exMacroInside exElseDisable exCppSkip 
+    syntax clear exIfEnableStart exIfEnable exIfnEnableStart exIfnEnable
+    syntax clear exIfDisableStart exIfDisable exIfnDisableStart exIfnDisable 
+    syntax clear exElifEnableStart exElifEnable exElifnEnableStart exElifnEnable
+    syntax clear exElifDisableStart exElifDisable exElifnDisableStart exElifnDisable
 
     " if enable syntax
     if s:exMH_IsEnable == 1
