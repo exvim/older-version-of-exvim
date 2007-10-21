@@ -695,6 +695,9 @@ function! <SID>StartExplorer(sticky, delBufNum)
     call <SID>DEBUG('No current buffer to search for',9)
   endif
 
+  " jwu add to let the selected buffer always in half of the screen
+  exec "normal! lzszH"
+
   let &report  = l:save_rep
   let &showcmd = l:save_sc
 
@@ -871,7 +874,8 @@ function! <SID>FindCreateWindow(bufName, forceEdge, isExplorer, doDebug)
       setlocal buftype=nofile
       setlocal bufhidden=delete
       if g:miniBufExplVSplit == 0
-        setlocal wrap
+        " jwu modify
+        setlocal nowrap
       else
         setlocal nowrap
         exec('setlocal winwidth='.g:miniBufExplMinSize)
@@ -951,12 +955,13 @@ function! <SID>ResizeWindow()
         endif
       endif
     else
-      exec("setlocal textwidth=".l:width)
-      normal gg
-      normal gq}
-      normal G
+      " jwu remove this to let the buffer tab in one line only
+      "exec("setlocal textwidth=".l:width)
+      "normal gg
+      "normal gq}
+      "normal G
       let l:height = line('.')
-      normal gg
+      "normal gg
     endif
   
     " enforce max window height

@@ -71,6 +71,9 @@ function! g:exES_SetEnvironment() " <<<
     silent! setlocal noswapfile
     silent! setlocal nobuflisted
 
+    " record edit buffer
+    silent! call g:ex_RecordCurrentBufNum()
+
     let _file_name = bufname("%")
     if match(_file_name,"vimentry") != -1
         if empty( readfile(_file_name) )
