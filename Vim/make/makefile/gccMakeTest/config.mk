@@ -37,6 +37,30 @@ Platform = Win32
 CompileMode = Fast
 
 # ----------------------------------------------------------
+#  Compiler & Linker Choose 
+# ----------------------------------------------------------
+
+# Compiler
+# parameter: g++ 			( gcc_version_3 )
+#  			 g++-sjlj 		( gcc_version_4 compiled by sjlj )
+# 			 ppu-lv2-g++ 	( gcc_ps3 )
+# 			 cl 			( msvc )
+COMPILER_WIN32=g++-sjlj
+COMPILER_LINUX=g++-sjlj
+COMPILER_XENON=g++-sjlj
+COMPILER_PS3=ppu-lv2-g++
+
+# Linker
+# parameter: ar 			( archive )
+#  			 ld 			( gcc linker )
+# 			 ppu-lv2-ar 	( ps3 linker )
+# 			 link 			( msvc linker )
+LINKER_WIN32=ar
+LINKER_LINUX=ar
+LINKER_XENON=ar
+LINKER_PS3=ppu-lv2-ar
+
+# ----------------------------------------------------------
 #  Advance User Define
 # ----------------------------------------------------------
 
@@ -58,23 +82,23 @@ endif
 # Choose the linker
 ifeq ($(Platform),Win32)
 EXE_NAME := exe
-CC := $(SILENT_CMD)g++
-AR := $(SILENT_CMD)ar
+CC := $(SILENT_CMD)$(COMPILER_WIN32)
+AR := $(SILENT_CMD)$(LINKER_WIN32)
 else
 ifeq ($(Platform),Linux)
 EXE_NAME := exe
-CC := $(SILENT_CMD)g++
-AR := $(SILENT_CMD)ar
+CC := $(SILENT_CMD)$(COMPILER_LINUX)
+AR := $(SILENT_CMD)$(LINKER_LINUX)
 else
 ifeq ($(Platform),Xenon)
 EXE_NAME := xex
-CC := $(SILENT_CMD)g++
-AR := $(SILENT_CMD)ar
+CC := $(SILENT_CMD)$(COMPILER_XENON)
+AR := $(SILENT_CMD)$(LINKER_XENON)
 else
 ifeq ($(Platform),PS3)
 EXE_NAME := elf
-CC := $(SILENT_CMD)ppu-lv2-g++
-AR := $(SILENT_CMD)ppu-lv2-ar
+CC := $(SILENT_CMD)$(COMPILER_PS3)
+AR := $(SILENT_CMD)$(LINKER_PS3)
 else #default
 EXE_NAME := exe
 CC := $(SILENT_CMD)g++
