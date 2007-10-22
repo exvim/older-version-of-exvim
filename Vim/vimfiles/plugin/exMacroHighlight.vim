@@ -91,6 +91,7 @@ let s:exMH_Debug = 1
 "let s:elif_pattern = '^\s*\%(%:\|#\)\s*\%(elif\s\+(*\s*\%(defined\)*\s*(*\s*\%(\s*\S*\s*==\s*\)*\)'
 "let s:elifn_pattern = '^\s*\%(%:\|#\)\s*\%(elif\s\+!\s*\%((*defined\)*\s*(*\s*\|elif\s\+(*\s*\S*\s*!=\s*\)'
 " ---------------------------------
+" FIXME: if pattern like UNKNOWN_MACRO || DISABLE_MACRO, this will always be false, let this situation unmatch
 let s:if_pattern = '^\s*\%(%:\|#\)\s*\%(if\s\+\%(.*\%(||\|&&\)\s*\)*(*\s*\%(defined\)*\s*(*\s*\%(\s*\S*\s*==\s*\)*\|ifdef\s\+(*\s*\)'
 let s:ifn_pattern = '^\s*\%(%:\|#\)\s*\%(if\s\+\%(.*\%(||\|&&\)\s*\)*!\s*(*\s*\%(defined\)*\s*(*\s*\|if\s\+\%(.*\%(||\|&&\)\s*\)*(*\s*\S*\s*!=\s*\|ifndef\s\+(*\s*\)'
 let s:elif_pattern = '^\s*\%(%:\|#\)\s*\%(elif\s\+\%(.*\%(||\|&&\)\s*\)*(*\s*\%(defined\)*\s*(*\s*\%(\s*\S*\s*==\s*\)*\)'
@@ -221,7 +222,7 @@ function! g:exMH_InitMacroList(macrofile_name) " <<<
     endif
 
     " update macro list
-    call s:exMH_UpdateMacroList(line_list)
+    call s:exMH_UpdateMacroList(line_list,0)
 
     " define syntax
     call s:exMH_DefineSyntax()
@@ -267,7 +268,7 @@ function! g:exMH_InitMacroList(macrofile_name) " <<<
 endfunction " >>>
 
 " --exMH_UpdateMacroList--
-function! s:exMH_UpdateMacroList(line_list) " <<<
+function! s:exMH_UpdateMacroList(line_list,save_file) " <<<
     " clear the macro list and define list first
     if !empty(s:exMH_macro_list)
         call remove(s:exMH_macro_list,0,-1)
@@ -317,6 +318,13 @@ function! s:exMH_UpdateMacroList(line_list) " <<<
             endif
         endif
     endfor
+
+    " save the macro file if needed
+    if a:save_file
+        if fnamemodify( bufname("%"), ":p:t" ) ==# fnamemodify( s:exMH_cur_filename, ":p:t" )
+            silent exec "w!"
+        endif
+    endif
 endfunction " >>>
 
 " --exMH_DefineSyntax--
@@ -454,7 +462,8 @@ function! g:exMH_InitSelectWindow() " <<<
 
     " autocmd
     au CursorMoved <buffer> :call g:ex_HighlightSelectLine()
-    au BufWrite <buffer> call s:exMH_UpdateMacroList(getline(1,'$'))
+    au BufWrite <buffer> call s:exMH_UpdateMacroList(getline(1,'$'),0)
+    au BufHidden <buffer> call s:exMH_UpdateMacroList(getline(1,'$'),1)
 
     " set indent
     silent! setlocal cindent
