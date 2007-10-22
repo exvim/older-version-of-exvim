@@ -316,31 +316,26 @@ endfunction " >>>
 " --exMH_DefineSyntax--
 function! s:exMH_DefineSyntax() " <<<
     " update def macro pattern
-    " FIXME: we have if/ifn, so can't just add here
-    "let def_macro_pattern = '\(.*||\s*\(defined\)*\s*(*\s*\(\S*\s*==\s*\)*\)*'
-    "let def_macro_pattern .= '\(\<1\>'
+    " TODO: we have if/ifn, so can't just add here
+    "let or_pattern = '\(.*||\s*\(defined\)*\s*(*\s*\(\S*\s*==\s*\)*\)*'
+    " TODO: we have if/ifn, so can't just add here
+    "let add_pattern = '\(.*&&\s*\(defined\)*\s*(*\s*\(\S*\s*!=\s*\)*\)*'
 
     let def_macro_pattern = '\%(\%(\%(==\|!=\)\s*\)\@<!\<1\>'
     for def_macro in s:exMH_define_list[1]
         let def_macro_pattern .= '\|\<' . def_macro . '\>'
     endfor
     let def_macro_pattern .= '\)'
-    " FIXME: the first & will be stop, find a way to match &&
-    let def_macro_pattern .= s:end_pattern . '[^&]*$' 
+    let def_macro_pattern .= s:end_pattern . '\(.[^&]\|[^&]\)*$' " if you really writing something too-stupid, it the performance slow down. like you write 'XX_MACRO |  |  |  |   || balabalabala'
 
     " update ndef macro pattern
-    " FIXME: we have if/ifn, so can't just add here
-    "let undef_macro_pattern = '\(.*&&\s*\(defined\)*\s*(*\s*\(\S*\s*!=\s*\)*\)*'
-    "let undef_macro_pattern .= '\(\<0\>'
-
     " the \(==\|!=\)\$<! pattern will stop parseing the 0 as == 0. this will fix the bug like #if ( EX_NOT_IN_MACRO_FILE == 0 ) become match
     let undef_macro_pattern = '\%(\%(\%(==\|!=\)\s*\)\@<!\<0\>'
     for undef_macro in s:exMH_define_list[0]
         let undef_macro_pattern .= '\|\<' . undef_macro . '\>'
     endfor
     let undef_macro_pattern .= '\)'
-    " FIXME: the first | will be stop, find a way to match ||
-    let undef_macro_pattern .= s:end_pattern . '[^|]*$'
+    let undef_macro_pattern .= s:end_pattern . '\(.[^|]\|[^|]\)*$' " if you really writing something too-stupid, the performance will slow down. like you write 'XX_MACRO &  &  &  &   && balabalabala'
 
     " define enable/disable start pattern
     let if_enable_pattern   = s:if_pattern . def_macro_pattern

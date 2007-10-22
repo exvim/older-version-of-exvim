@@ -15,7 +15,19 @@ let loaded_exscript=1
 "  variable part
 " -------------------------------------------------------------------------
 " Initialization <<<
-" gloable variable initialization
+" -------------------------------
+" gloable varialbe initialization
+" -------------------------------
+" store the plugins buffer name, so we can ensure not recore name as edit-buffer
+if !exists('g:exUT_plugin_list')
+    let g:exUT_plugin_list = []
+endif
+
+" -------------------------------
+" local variable initialization
+" -------------------------------
+
+" 
 highlight def ex_SynHL1 gui=none guibg=LightCyan term=none cterm=none ctermbg=LightCyan
 highlight def ex_SynHL2 gui=none guibg=LightMagenta term=none cterm=none ctermbg=LightMagenta
 highlight def ex_SynHL3 gui=none guibg=LightRed term=none cterm=none ctermbg=LightRed
@@ -102,6 +114,11 @@ function! g:ex_CreateWindow( buffer_name, window_direction, window_size, use_ver
         exe 'normal! G'
     elseif a:edit_mode == 'replace'
         exe 'normal! ggdG'
+    endif
+
+    " after create the window, record the bufname into the plugin list
+    if index( g:exUT_plugin_list, bufname("%") ) == -1
+        silent call add(g:exUT_plugin_list, fnamemodify(a:buffer_name,":p:t"))
     endif
 
 endfunction " >>>
@@ -396,7 +413,9 @@ endfunction " >>>
 " --ex_RecordCurrentBufNum--
 " Record current buf num when leave
 function! g:ex_RecordCurrentBufNum() " <<<
-    let s:ex_editbuf_num = bufnr('%')
+    if index( g:exUT_plugin_list, bufname("%") ) == -1
+        let s:ex_editbuf_num = bufnr('%')
+    endif
 endfunction " >>>
 
 " --ex_UpdateCurrentBuffer--
@@ -1207,18 +1226,6 @@ function! g:ex_HighlightCancle(match_nr) " <<<
 endfunction " >>>
 
 " ------------------------
-"  Syntax functions
-" ------------------------
-
-" --ex_CreateMacroSyntax--
-" Create Macro Syntax file for macro temp highlight
-" TODO
-function! g:ex_CreateMacroSyntax( macro_pattern ) " <<<
-    " syntax clear groupname
-    " syntax macro template
-endfunction " >>>
-
-" ------------------------
 "  Debug functions
 " ------------------------
 
@@ -1229,6 +1236,15 @@ function! g:ex_WarningMsg(msg) " <<<
     echomsg a:msg
     echohl None
 endfunction " >>>
+
+" fix vim bug.
+" when you use clipboard=unnamed, and you have two vim-windows, visual-copy 
+" in window-1, then visual-copy in window-2, then visual-paste again. it is wrong
+function! g:ex_VisualPasteFixed()
+    silent call getreg('*')
+    " silent normal! gvpgvy " <-- this let you be the win32 copy/paste style
+    silent normal! gvp
+endfunction
 
 finish
 " vim: set foldmethod=marker foldmarker=<<<,>>> foldlevel=1:

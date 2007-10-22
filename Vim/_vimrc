@@ -31,8 +31,7 @@ set updatetime=1000 " default = 4000
 set autoread " auto read same-file change ( better for vc/vim change )
 
 "set isk+=$,%,#,- " none of these should be word dividers 
-" don't use this, cause some times select put will be error. Insead use c-y c-p to copy in/out 
-"set clipboard=unnamed " use clipboard register '*' for all y, d, c, p ops 
+set clipboard=unnamed " use clipboard register '*'(unnamed) for all y, d, c, p ops, use autoselect to avoid selection p bugs.
 " enlarge maxmempattern from 1000 to ... (2000000 will give it without limit)
 set maxmempattern=1000
 
@@ -185,10 +184,16 @@ function s:Grep_Cfiles()
     exec ":grep -r --include=\"*.cpp\" --include=\"*.c\" --include=\"*.hpp\" --include=\"*.h\" " . l_str . " *"
 endfunction
 
-" general copy/paste.
-map <c-y> "*y
-map <c-p> "*p
-map <c-s-p> "*P
+" define the copy/paste judged by clipboard
+if &clipboard ==# "unnamed"
+    " fix the visual paste bug in vim
+    vnoremap p :call g:ex_VisualPasteFixed()<CR>
+else
+    " general copy/paste.
+    map <c-y> "*y
+    map <c-p> "*p
+    map <c-s-p> "*P
+endif
 
 " F12: Insert '#if 0' and '#endif' between the selection
 vmap <F12> :call g:ex_InsertIFZero()<CR>
@@ -389,6 +394,10 @@ command -narg=? Update call g:ex_UpdateVimFiles("<args>")
 noremap <Leader>line <ESC>:call g:ex_PutLine(86, '-')<CR>
 noremap <Leader>def <ESC>:call g:ex_PutDefine()<CR>
 noremap <Leader>head <ESC>:call g:ex_PutHeader()<CR>
+
+" add plugin we use to prevent them record as edit-buffer
+let g:exUT_plugin_list = ["-MiniBufExplorer-","__Tag_List__"] 
+
 
 " --------------------
 " exTagSelect
