@@ -260,6 +260,15 @@ map <kMinus> zc
 nmap <Leader>bd :call g:ex_Kwbd(1)<CR>
 nmap <C-F4> :call g:ex_Kwbd(1)<CR>
 
+" map Up & Down to gj & gk, helpful for wrap text edit
+map <Up> gk
+map <Down> gj
+
+" map for completion see :help ins-completion for whole completions
+" search tags 
+imap <c-]> <C-X><C-]> 
+" search in current files, preview first. remove the original c-p
+imap <c-p> <C-X><C-P>
 
 " VimTip 329: A map for swapping words
 " http://vim.sourceforge.net/tip_view.php?tip_id=
@@ -459,8 +468,10 @@ let g:exES_vimfile_dir = "_vimfiles"
 let g:exES_project_cmd = 'EXProject'
 
 function g:exES_UpdateEnvironment()
-    if !exists( 'g:exES_PWD' )
+    if exists( 'g:exES_PWD' )
         silent exec 'cd ' . g:exES_PWD
+        " make the gf go everywhere in the project
+        silent exec "set path+=" . g:exES_PWD . "/**" 
     endif
     if exists( 'g:exES_Tag' )
         "let &tags = &tags . ',' . g:exES_Tag

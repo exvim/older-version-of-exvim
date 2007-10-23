@@ -399,7 +399,8 @@ function! s:exPJ_QuickRefreshProject() " <<<
 
     " simplify the file name
     let full_path_name = fnamemodify( full_path_name, ":p" )
-    let full_path_name = escape(simplify(full_path_name),' ')
+    " do not escape, or the directory with white-space can't be found
+    "let full_path_name = escape(simplify(full_path_name),' ')
     let full_path_name = strpart( full_path_name, 0, strlen(full_path_name)-1 )
     echon "Update directory: " . full_path_name . "\r"
 
@@ -503,7 +504,8 @@ function! s:exPJ_RefreshProject() " <<<
 
     " simplify the file name
     let full_path_name = fnamemodify( full_path_name, ":p" )
-    let full_path_name = escape(simplify(full_path_name),' ')
+    " do not escape, or the directory with white-space can't be found
+    "let full_path_name = escape(simplify(full_path_name),' ')
     let full_path_name = strpart( full_path_name, 0, strlen(full_path_name)-1 )
     echon "Update directory: " . full_path_name . "\r"
 
