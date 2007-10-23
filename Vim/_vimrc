@@ -471,7 +471,7 @@ function g:exES_UpdateEnvironment()
     if exists( 'g:exES_PWD' )
         silent exec 'cd ' . g:exES_PWD
         " make the gf go everywhere in the project
-        silent exec "set path+=" . g:exES_PWD . "/**" 
+        silent exec "set path+=" . escape(g:exES_PWD, " ") . "/**" 
     endif
     if exists( 'g:exES_Tag' )
         "let &tags = &tags . ',' . g:exES_Tag

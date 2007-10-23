@@ -49,9 +49,9 @@ syn cluster exEnableContainedGroup add=exElifEnableStart,exElifnEnableStart,exEl
 
 " add to original c_syntax groups
 " don't add exXXXStart in, or we will lose effect in Paren --> ( ... )
-syn cluster cParenGroup add=exCppSkip,exMacroInside,exIfEnable,exIfDisable,exIfnEnable,exIfnDisable,exElifEnable,exElifnEnable,exElifDisable,exElifnDisable,exElseDisable,exElseEnable
-syn cluster cPreProcGroup add=exCppSkip,exMacroInside,exIfEnable,exIfDisable,exIfnEnable,exIfnDisable,exElifEnable,exElifnEnable,exElifDisable,exElifnDisable,exElseDisable,exElseEnable
-syn cluster cMultiGroup add=exCppSkip,exMacroInside,exIfEnable,exIfDisable,exIfnEnable,exIfnDisable,exElifEnable,exElifnEnable,exElifDisable,exElifnDisable,exElseDisable,exElseEnable
+syn cluster cParenGroup add=exCppSkip,exMacroInside,exIfEnable,exIfDisable,exIfnEnable,exIfnDisable,exElifEnable,exElifnEnable,exElifDisable,exElifnDisable,exElseDisable,exElseEnable,exAndEnable,exAndnotEnable,exOrDisable,exOrnotDisable
+syn cluster cPreProcGroup add=exCppSkip,exMacroInside,exIfEnable,exIfDisable,exIfnEnable,exIfnDisable,exElifEnable,exElifnEnable,exElifDisable,exElifnDisable,exElseDisable,exElseEnable,exAndEnable,exAndnotEnable,exOrDisable,exOrnotDisable
+syn cluster cMultiGroup add=exCppSkip,exMacroInside,exIfEnable,exIfDisable,exIfnEnable,exIfnDisable,exElifEnable,exElifnEnable,exElifDisable,exElifnDisable,exElseDisable,exElseEnable,exAndEnable,exAndnotEnable,exOrDisable,exOrnotDisable 
 
 " define groups
 " group seems may slow down the perforce, especially in run-time
@@ -93,6 +93,12 @@ if version >= 508 || !exists("did_cpp_syntax_inits")
   " else disable/enable
   HiLink exElseDisable          exMacroDisable
   HiLink exElseEnable           Normal
+
+  " logic 
+  HiLink exAndEnable            Normal
+  HiLink exAndnotEnable         Normal
+  HiLink exOrDisable            exMacroDisable
+  HiLink exOrnotDisable         exMacroDisable
 
   " if/ifn eanble
   HiLink exIfEnableStart        cPreProc

@@ -97,27 +97,42 @@ let s:exMH_select_idx = 1
 "let s:elifn_pattern = '^\s*\%(%:\|#\)\s*\%(elif\s\+!\s*\%((*defined\)*\s*(*\s*\|elif\s\+(*\s*\S*\s*!=\s*\)'
 " ---------------------------------
 " FIXME: if pattern like UNKNOWN_MACRO || DISABLE_MACRO, this will always be false, let this situation unmatch
-let s:if_pattern = '^\s*\%(%:\|#\)\s*\%(if\s\+\%(.*\%(||\|&&\)\s*\)*(*\s*\%(defined\)*\s*(*\s*\%(\s*\S*\s*==\s*\)*\|ifdef\s\+(*\s*\)'
-let s:ifn_pattern = '^\s*\%(%:\|#\)\s*\%(if\s\+\%(.*\%(||\|&&\)\s*\)*!\s*(*\s*\%(defined\)*\s*(*\s*\|if\s\+\%(.*\%(||\|&&\)\s*\)*(*\s*\S*\s*!=\s*\|ifndef\s\+(*\s*\)'
-let s:elif_pattern = '^\s*\%(%:\|#\)\s*\%(elif\s\+\%(.*\%(||\|&&\)\s*\)*(*\s*\%(defined\)*\s*(*\s*\%(\s*\S*\s*==\s*\)*\)'
-let s:elifn_pattern = '^\s*\%(%:\|#\)\s*\%(elif\s\+\%(.*\%(||\|&&\)\s*\)*!\s*\%((*defined\)*\s*(*\s*\|elif\s\+\%(.*\%(||\|&&\)\s*\)*(*\s*\S*\s*!=\s*\)'
+"let s:if_pattern = '^\s*\%(%:\|#\)\s*\%(if\s\+\%(.*\%(||\|&&\)\s*\)*(*\s*\%(defined\)*\s*(*\s*\%(\s*\S*\s*==\s*\)*\|ifdef\s\+(*\s*\)'
+"let s:ifn_pattern = '^\s*\%(%:\|#\)\s*\%(if\s\+\%(.*\%(||\|&&\)\s*\)*!\s*(*\s*\%(defined\)*\s*(*\s*\|if\s\+\%(.*\%(||\|&&\)\s*\)*(*\s*\S*\s*!=\s*\|ifndef\s\+(*\s*\)'
+"let s:elif_pattern = '^\s*\%(%:\|#\)\s*\%(elif\s\+\%(.*\%(||\|&&\)\s*\)*(*\s*\%(defined\)*\s*(*\s*\%(\s*\S*\s*==\s*\)*\)'
+"let s:elifn_pattern = '^\s*\%(%:\|#\)\s*\%(elif\s\+\%(.*\%(||\|&&\)\s*\)*!\s*\%((*defined\)*\s*(*\s*\|elif\s\+\%(.*\%(||\|&&\)\s*\)*(*\s*\S*\s*!=\s*\)'
 " ---------------------------------
-let s:end_pattern = '\s*)*.*' " end_pattern used in syntax region define start
-let s:end_not_and_pattern = '\s*)*\s*\%(.[^&]\|[^&]\)*$' " if you really writing something too-stupid, the performance will slow down. like you write 'XX_MACRO &  &  &  &   && balabalabala'
-let s:end_not_or_pattern = '\s*)*\s*\%(.[^|]\|[^|]\)*$'  " if you really writing something too-stupid, it the performance slow down. like you write 'XX_MACRO |  |  |  |   || balabalabala'
+let s:if_or_pattern     = '^\s*\%(%:\|#\)\s*\%(if\s\+\%(.*||\s*\)*(*\s*\%(defined\)*\s*(*\s*\%(\s*\S*\s*==\s*\)*\|ifdef\s\+(*\s*\)'
+let s:if_and_pattern    = '^\s*\%(%:\|#\)\s*\%(if\s\+\%(.*&&\s*\)*(*\s*\%(defined\)*\s*(*\s*\%(\s*\S*\s*==\s*\)*\|ifdef\s\+(*\s*\)'
+let s:ifn_or_pattern    = '^\s*\%(%:\|#\)\s*\%(if\s\+\%(.*||\s*\)*!\s*(*\s*\%(defined\)*\s*(*\s*\|if\s\+\%(.*||\s*\)*(*\s*\S*\s*!=\s*\|ifndef\s\+(*\s*\)'
+let s:ifn_and_pattern   = '^\s*\%(%:\|#\)\s*\%(if\s\+\%(.*&&\s*\)*!\s*(*\s*\%(defined\)*\s*(*\s*\|if\s\+\%(.*&&\s*\)*(*\s*\S*\s*!=\s*\|ifndef\s\+(*\s*\)'
+
+let s:elif_or_pattern   = '^\s*\%(%:\|#\)\s*\%(elif\s\+\%(.*||\s*\)*(*\s*\%(defined\)*\s*(*\s*\%(\s*\S*\s*==\s*\)*\)'
+let s:elif_and_pattern  = '^\s*\%(%:\|#\)\s*\%(elif\s\+\%(.*&&\s*\)*(*\s*\%(defined\)*\s*(*\s*\%(\s*\S*\s*==\s*\)*\)'
+let s:elifn_or_pattern  = '^\s*\%(%:\|#\)\s*\%(elif\s\+\%(.*||\s*\)*!\s*(*\s*\%(defined\)*\s*(*\s*\|elif\s\+\%(.*||\s*\)*(*\s*\S*\s*!=\s*\)'
+let s:elifn_and_pattern = '^\s*\%(%:\|#\)\s*\%(elif\s\+\%(.*&&\s*\)*!\s*(*\s*\%(defined\)*\s*(*\s*\|elif\s\+\%(.*&&\s*\)*(*\s*\S*\s*!=\s*\)'
+" ---------------------------------
+let s:or_pattern   = '\s\+.*||\s*(*\s*\%(defined\)*\s*(*\s*\%(\s*\S*\s*==\s*\)*'
+let s:and_pattern  = '\s\+.*&&\s*(*\s*\%(defined\)*\s*(*\s*\%(\s*\S*\s*==\s*\)*'
+let s:orn_pattern  = '\s\+.*||\s*\%(!\s*(*\s*\%(defined\)*\s*(*\s*\|(*\s*\S*\s*!=\s*\)'
+let s:andn_pattern = '\s\+.*&&\s*\%(!\s*(*\s*\%(defined\)*\s*(*\s*\|(*\s*\S*\s*!=\s*\)'
+" ---------------------------------
+let s:end_pattern = '\s*)*.*$' " end_pattern used in syntax region define start
+let s:end_not_and_pattern = '\s*)*\s*\%(&[^&]\|[^&]\)*$' " the [^&] will stop martch in xxx &, but the &[^&] will let this martch pass until && coming
+let s:end_not_or_pattern  = '\s*)*\s*\%(|[^|]\|[^|]\)*$' " same as above
 " ---------------------------------
 let s:def_macro_pattern = '\%(\%(\%(==\|!=\)\s*\)\@<!\<1\>\)'
 let s:undef_macro_pattern = '\%(\%(\%(==\|!=\)\s*\)\@<!\<0\>\)'
 " ---------------------------------
-let s:if_enable_pattern   = s:if_pattern . s:def_macro_pattern . s:end_not_and_pattern
-let s:if_disable_pattern  = s:if_pattern  . s:undef_macro_pattern . s:end_not_or_pattern
-let s:ifn_enable_pattern  = s:ifn_pattern . s:undef_macro_pattern . s:end_not_and_pattern
-let s:ifn_disable_pattern = s:ifn_pattern . s:def_macro_pattern . s:end_not_or_pattern
+let s:if_enable_pattern   = s:if_or_pattern . s:def_macro_pattern . s:end_pattern
+let s:if_disable_pattern  = s:if_and_pattern  . s:undef_macro_pattern . s:end_pattern
+let s:ifn_enable_pattern  = s:ifn_or_pattern . s:undef_macro_pattern . s:end_pattern
+let s:ifn_disable_pattern = s:ifn_and_pattern . s:def_macro_pattern . s:end_pattern
 
-let s:elif_enable_pattern   = s:elif_pattern . s:def_macro_pattern . s:end_not_and_pattern
-let s:elif_disable_pattern  = s:elif_pattern . s:undef_macro_pattern . s:end_not_or_pattern
-let s:elifn_enable_pattern  = s:elifn_pattern . s:undef_macro_pattern . s:end_not_and_pattern
-let s:elifn_disable_pattern = s:elifn_pattern . s:def_macro_pattern . s:end_not_or_pattern
+let s:elif_enable_pattern   = s:elif_or_pattern . s:def_macro_pattern . s:end_pattern
+let s:elif_disable_pattern  = s:elif_and_pattern . s:undef_macro_pattern . s:end_pattern
+let s:elifn_enable_pattern  = s:elifn_or_pattern . s:undef_macro_pattern . s:end_pattern
+let s:elifn_disable_pattern = s:elifn_and_pattern . s:def_macro_pattern . s:end_pattern
 " >>>
 
 " -------------------------------------------------------------------------
@@ -251,6 +266,12 @@ function! g:exMH_InitMacroList(macrofile_name) " <<<
         hi link exElseDisable       exMacroDisable
         hi link exElseEnable        Normal
 
+        " logic 
+        hi link exAndEnable         Normal
+        hi link exAndnotEnable      Normal
+        hi link exOrDisable         exMacroDisable
+        hi link exOrnotDisable      exMacroDisable
+
         " if/ifn eanble
         hi link exIfEnableStart     cPreProc
         hi link exIfEnable          Normal
@@ -265,7 +286,7 @@ function! g:exMH_InitMacroList(macrofile_name) " <<<
 
         " elif/elifn enable
         hi link exElifEnableStart   cPreProc
-        hi link exElifEnable        Normal
+        hi link exElifEnable        Error
         hi link exElifnEnableStart  cPreProc
         hi link exElifnEnable       Normal
 
@@ -370,15 +391,15 @@ function! s:exMH_UpdateMacroPattern() " <<<
     let s:undef_macro_pattern .= '\)'
 
     " define enable/disable start pattern
-    let s:if_enable_pattern   = s:if_pattern . s:def_macro_pattern . s:end_not_and_pattern
-    let s:if_disable_pattern  = s:if_pattern  . s:undef_macro_pattern . s:end_not_or_pattern
-    let s:ifn_enable_pattern  = s:ifn_pattern . s:undef_macro_pattern . s:end_not_and_pattern
-    let s:ifn_disable_pattern = s:ifn_pattern . s:def_macro_pattern . s:end_not_or_pattern
+    let s:if_enable_pattern   = s:if_or_pattern . s:def_macro_pattern . s:end_pattern
+    let s:if_disable_pattern  = s:if_and_pattern  . s:undef_macro_pattern . s:end_pattern
+    let s:ifn_enable_pattern  = s:ifn_or_pattern . s:undef_macro_pattern . s:end_pattern
+    let s:ifn_disable_pattern = s:ifn_and_pattern . s:def_macro_pattern . s:end_pattern
 
-    let s:elif_enable_pattern   = s:elif_pattern . s:def_macro_pattern . s:end_not_and_pattern
-    let s:elif_disable_pattern  = s:elif_pattern . s:undef_macro_pattern . s:end_not_or_pattern
-    let s:elifn_enable_pattern  = s:elifn_pattern . s:undef_macro_pattern . s:end_not_and_pattern
-    let s:elifn_disable_pattern = s:elifn_pattern . s:def_macro_pattern . s:end_not_or_pattern
+    let s:elif_enable_pattern   = s:elif_or_pattern . s:def_macro_pattern . s:end_pattern
+    let s:elif_disable_pattern  = s:elif_and_pattern . s:undef_macro_pattern . s:end_pattern
+    let s:elifn_enable_pattern  = s:elifn_or_pattern . s:undef_macro_pattern . s:end_pattern
+    let s:elifn_disable_pattern = s:elifn_and_pattern . s:def_macro_pattern . s:end_pattern
 endfunction " >>>
 
 " --exMH_DefineSyntax--
@@ -390,45 +411,52 @@ function! s:exMH_DefineSyntax() " <<<
     " entend: in exIfEnable( Paren ( ... ) ) the end Paren will always show error cause the keepend also endup Paren check. the extend tell cParen it will continue
     " skip: in exIfEnable( /* #if enable #endif */ ), the skip tell the exIfEnable to find the end by skip the skip_pattern
 
+    " --------------- exLogicPatterns ---------------
+    exec 'syn region exAndEnable contained extend keepend matchgroup=cPreProc start=' . '"' . s:and_pattern . s:def_macro_pattern . s:end_pattern . '"' . ' skip="#endif\>\_[^\%(\/\*\)]*\*\/" end="^\s*\%(%:\|#\)\s*\%(endif\>\)" contains=exElseDisable,@exEnableContainedGroup'
+    exec 'syn region exAndnotEnable contained extend keepend matchgroup=cPreProc start=' . '"' . s:andn_pattern . s:undef_macro_pattern . s:end_pattern . '"' . ' skip="#endif\>\_[^\%(\/\*\)]*\*\/" end="^\s*\%(%:\|#\)\s*\%(endif\>\)" contains=exElseDisable,@exEnableContainedGroup'
+    exec 'syn region exOrDisable contained extend keepend start=' . '"' . s:or_pattern . s:undef_macro_pattern . s:end_pattern . '"' . ' skip="#endif\>\_[^\%(\/\*\)]*\*\/" end="^\s*\%(%:\|#\)\s*\%(endif\>\)" contains=exCppSkip,exElseEnable,exElifEnableStart,exElifnEnableStart'
+    exec 'syn region exOrnotDisable contained extend keepend start=' . '"' . s:orn_pattern . s:def_macro_pattern . s:end_pattern . '"' . ' skip="#endif\>\_[^\%(\/\*\)]*\*\/" end="^\s*\%(%:\|#\)\s*\%(endif\>\)" contains=exCppSkip,exElseEnable,exElifEnableStart,exElifnEnableStart'
+
     " --------------- exIfEnable ---------------
     " if enable(def_macro) else disable
-    exec 'syn region exIfEnableStart start=' . '"' . s:if_enable_pattern . '"' . ' end=".\@=\|$" contains=exIfEnable'
-    exec 'syn region exIfEnable contained extend keepend matchgroup=cPreProc start=' . '"' . s:def_macro_pattern . s:end_pattern . '"' . ' skip="#endif\>\_[^\%(\/\*\)]*\*\/" end="^\s*\%(%:\|#\)\s*\%(endif\>\)" contains=exElseDisable,@exEnableContainedGroup'
+    exec 'syn region exIfEnableStart start=' . '"' . s:if_enable_pattern . '"' . ' end=".\@=\|$" contains=exIfEnable,exAndEnable,exAndnotEnable'
+    exec 'syn region exIfEnable contained extend keepend matchgroup=cPreProc start=' . '"' . s:def_macro_pattern . s:end_not_and_pattern . '"' . ' skip="#endif\>\_[^\%(\/\*\)]*\*\/" end="^\s*\%(%:\|#\)\s*\%(endif\>\)" contains=exElseDisable,@exEnableContainedGroup'
 
     " --------------- exElifEnable ---------------
     " elif enable(def_macro) else disable
-    exec 'syn region exElifEnableStart contained start=' . '"' . s:elif_enable_pattern . '"' . ' end=".\@=\|$" contains=exElifEnable'
-    exec 'syn region exElifEnable contained matchgroup=cPreProc start=' . '"' . s:def_macro_pattern . s:end_pattern . '"' . ' skip="#endif\>\_[^\%(\/\*\)]*\*\/" end="^\s*\%(%:\|#\)\s*\%(endif\>\)" contains=exElseDisable,@exEnableContainedGroup'
+    exec 'syn region exElifEnableStart contained start=' . '"' . s:elif_enable_pattern . '"' . ' end=".\@=\|$" contains=exElifEnable,exAndEnable,exAndnotEnable'
+    " add elif_or_pattern will fix a bug that #elif MACRO_ENABLE && !MACRO_ENABLE
+    exec 'syn region exElifEnable contained matchgroup=cPreProc start=' . '"' . s:elif_or_pattern . s:def_macro_pattern . s:end_not_and_pattern . '"' . ' skip="#endif\>\_[^\%(\/\*\)]*\*\/" end="^\s*\%(%:\|#\)\s*\%(endif\>\)" contains=exElseDisable,@exEnableContainedGroup'
 
     " --------------- exIfnEnable ---------------
     " ifn enable(undef_macro) else disable
-    exec 'syn region exIfnEnableStart start=' . '"' . s:ifn_enable_pattern . '"' . ' end=".\@=\|$" contains=exIfnEnable'
-    exec 'syn region exIfnEnable contained extend keepend matchgroup=cPreProc start=' . '"' . s:undef_macro_pattern . s:end_pattern . '"' . ' skip="#endif\>\_[^\%(\/\*\)]*\*\/" end="^\s*\%(%:\|#\)\s*\%(endif\>\)" contains=exElseDisable,@exEnableContainedGroup'
+    exec 'syn region exIfnEnableStart start=' . '"' . s:ifn_enable_pattern . '"' . ' end=".\@=\|$" contains=exIfnEnable,exAndEnable,exAndnotEnable'
+    exec 'syn region exIfnEnable contained extend keepend matchgroup=cPreProc start=' . '"' . s:undef_macro_pattern . s:end_not_and_pattern . '"' . ' skip="#endif\>\_[^\%(\/\*\)]*\*\/" end="^\s*\%(%:\|#\)\s*\%(endif\>\)" contains=exElseDisable,@exEnableContainedGroup'
 
     " --------------- exElifnEnable ---------------
     " elifn enable(def_macro) else disable
-    exec 'syn region exElifnEnableStart contained start=' . '"' . s:elifn_enable_pattern . '"' . ' end=".\@=\|$" contains=exElifnEnable'
-    exec 'syn region exElifnEnable contained matchgroup=cPreProc start=' . '"' . s:undef_macro_pattern . s:end_pattern . '"' . ' skip="#endif\>\_[^\%(\/\*\)]*\*\/" end="^\s*\%(%:\|#\)\s*\%(endif\>\)" contains=exElseDisable,@exEnableContainedGroup'
+    exec 'syn region exElifnEnableStart contained start=' . '"' . s:elifn_enable_pattern . '"' . ' end=".\@=\|$" contains=exElifnEnable,exAndEnable,exAndnotEnable'
+    exec 'syn region exElifnEnable contained matchgroup=cPreProc start=' . '"' . s:undef_macro_pattern . s:end_not_and_pattern . '"' . ' skip="#endif\>\_[^\%(\/\*\)]*\*\/" end="^\s*\%(%:\|#\)\s*\%(endif\>\)" contains=exElseDisable,@exEnableContainedGroup'
 
     " --------------- exIfDisable ---------------
     " if disable(undef_macro) else define
-    exec 'syn region exIfDisableStart start=' . '"' . s:if_disable_pattern . '"' . ' end=".\@=\|$" contains=exIfDisable'
-    exec 'syn region exIfDisable contained extend keepend start=' . '"' . s:undef_macro_pattern . s:end_pattern . '"' . ' skip="#endif\>\_[^\%(\/\*\)]*\*\/" end="^\s*\%(%:\|#\)\s*\%(endif\>\)" contains=exCppSkip,exElseEnable,exElifEnableStart,exElifnEnableStart'
+    exec 'syn region exIfDisableStart start=' . '"' . s:if_disable_pattern . '"' . ' end=".\@=\|$" contains=exIfDisable,exOrDisable,exOrnotDisable'
+    exec 'syn region exIfDisable contained extend keepend start=' . '"' . s:undef_macro_pattern . s:end_not_or_pattern . '"' . ' skip="#endif\>\_[^\%(\/\*\)]*\*\/" end="^\s*\%(%:\|#\)\s*\%(endif\>\)" contains=exCppSkip,exElseEnable,exElifEnableStart,exElifnEnableStart'
 
     " --------------- exElifDisable ---------------
     " elif disable(undef_macro) else define
-    exec 'syn region exElifDisableStart contained start=' . '"' . s:elif_disable_pattern . '"' . ' end=".\@=\|$" contains=exElifDisable'
-    exec 'syn region exElifDisable contained start=' . '"' . s:undef_macro_pattern . s:end_pattern . '"' . ' skip="#endif\>\_[^\%(\/\*\)]*\*\/" end="^\s*\%(%:\|#\)\s*\%(endif\>\)" contains=exCppSkip,exElseDisable,exElifEnableStart,exElifnEnableStart'
+    exec 'syn region exElifDisableStart contained start=' . '"' . s:elif_disable_pattern . '"' . ' end=".\@=\|$" contains=exElifDisable,exOrDisable,exOrnotDisable'
+    exec 'syn region exElifDisable contained start=' . '"' . s:undef_macro_pattern . s:end_not_or_pattern . '"' . ' skip="#endif\>\_[^\%(\/\*\)]*\*\/" end="^\s*\%(%:\|#\)\s*\%(endif\>\)" contains=exCppSkip,exElseDisable,exElifEnableStart,exElifnEnableStart'
 
     " --------------- exIfnDisable ---------------
     " ifn disable(def_macro) else define
-    exec 'syn region exIfnDisableStart start=' . '"' . s:ifn_disable_pattern . '"' . ' end=".\@=\|$" contains=exIfnDisable'
-    exec 'syn region exIfnDisable contained extend keepend start=' . '"' . s:def_macro_pattern . s:end_pattern . '"' . ' skip="#endif\>\_[^\%(\/\*\)]*\*\/" end="^\s*\%(%:\|#\)\s*\%(endif\>\)" contains=exCppSkip,exElseEnable,exElifEnableStart,exElifnEnableStart'
+    exec 'syn region exIfnDisableStart start=' . '"' . s:ifn_disable_pattern . '"' . ' end=".\@=\|$" contains=exIfnDisable,exOrDisable,exOrnotDisable'
+    exec 'syn region exIfnDisable contained extend keepend start=' . '"' . s:def_macro_pattern . s:end_not_or_pattern . '"' . ' skip="#endif\>\_[^\%(\/\*\)]*\*\/" end="^\s*\%(%:\|#\)\s*\%(endif\>\)" contains=exCppSkip,exElseEnable,exElifEnableStart,exElifnEnableStart'
 
     " --------------- exElifnDisable ---------------
     " elif disable(undef_macro) else define
-    exec 'syn region exElifnDisableStart contained start=' . '"' . s:elifn_disable_pattern . '"' . ' end=".\@=\|$" contains=exElifnDisable'
-    exec 'syn region exElifnDisable contained start=' . '"' . s:def_macro_pattern . s:end_pattern . '"' . ' skip="#endif\>\_[^\%(\/\*\)]*\*\/" end="^\s*\%(%:\|#\)\s*\%(endif\>\)" contains=exCppSkip,exElseDisable,exElifEnableStart,exElifnEnableStart'
+    exec 'syn region exElifnDisableStart contained start=' . '"' . s:elifn_disable_pattern . '"' . ' end=".\@=\|$" contains=exElifnDisable,exOrDisable,exOrnotDisable'
+    exec 'syn region exElifnDisable contained start=' . '"' . s:def_macro_pattern . s:end_not_or_pattern . '"' . ' skip="#endif\>\_[^\%(\/\*\)]*\*\/" end="^\s*\%(%:\|#\)\s*\%(endif\>\)" contains=exCppSkip,exElseDisable,exElifEnableStart,exElifnEnableStart'
 endfunction " >>>
 
 " --exMH_UpdateSyntax--
@@ -444,6 +472,7 @@ function! s:exMH_UpdateSyntax() " <<<
     let s:exMH_ForceUpdate = 0
 
     " clear syntax group for re-define
+    syntax clear exAndEnable exAndnotEnable exOrDisable exOrnotDisable
     syntax clear exIfEnableStart exIfEnable exIfnEnableStart exIfnEnable
     syntax clear exIfDisableStart exIfDisable exIfnDisableStart exIfnDisable 
     syntax clear exElifEnableStart exElifEnable exElifnEnableStart exElifnEnable
