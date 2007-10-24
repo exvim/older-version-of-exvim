@@ -51,6 +51,7 @@ function! s:exES_WriteDefaultTemplate() " <<<
     silent call add(_list, 'ID=./'._dir_name.'/ID')
     silent call add(_list, 'Symbol='._cwd.'/'._dir_name.'/symbol')
     silent call add(_list, 'Macro='._cwd.'/'._dir_name.'/macro')
+    silent call add(_list, 'Cscope='._cwd.'/'._dir_name.'/cscope.out')
 
     let sln_list = split(glob("*.sln"))
     if empty(sln_list) != 1

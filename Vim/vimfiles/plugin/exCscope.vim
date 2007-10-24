@@ -316,8 +316,10 @@ endfunction " >>>
 function! g:exCS_InitSelectWindow() " <<<
     setlocal number
     
+    " don't show any message
+	setlocal nocsverb
     " connect cscope files
-    silent exec "cscope add cscope.out"
+    silent exec "cscope add " . g:exES_Cscope
 	silent! setlocal cscopequickfix=s-,c-,d-,i-,t-,e-
 
     " syntax highlight
