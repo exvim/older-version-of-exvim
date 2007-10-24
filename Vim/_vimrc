@@ -224,6 +224,9 @@ map <silent><Leader><Tab> :call g:ex_GotoEditBuffer()<CR>
 " for the exUtility Plugin
 map <silent><Leader><ESC> :call g:ex_GotoEditBuffer()<CR><ESC>
 
+" change the original file jump method to this one
+nnoremap gf :call g:ex_QuickFileJump()<CR>
+
 " VimTip #401: A mapping for easy switching between buffers
 map <silent> <C-Right> :bn!<CR>
 map! <silent> <C-Right> :bn!<CR>
@@ -266,9 +269,9 @@ map <Down> gj
 
 " map for completion see :help ins-completion for whole completions
 " search tags 
-imap <c-]> <C-X><C-]> 
+inoremap <c-]> <C-X><C-]>
 " search in current files, preview first. remove the original c-p
-imap <c-p> <C-X><C-P>
+inoremap <c-p> <C-X><C-P>
 
 " VimTip 329: A map for swapping words
 " http://vim.sourceforge.net/tip_view.php?tip_id=
@@ -446,6 +449,19 @@ nnoremap <silent> <Leader>sg :ExslGoDirectly<CR>
 let g:exSL_SymbolSelectCmd = 'TS'
 
 " --------------------
+" exCscope
+" --------------------
+nnoremap <silent> <Leader>cs :ExcsSelectToggle<CR>
+nnoremap <silent> <Leader>cq :ExcsQuickViewToggle<CR>
+nnoremap <silent> <Leader>ct :ExcsStackToggle<CR>
+nnoremap <silent> <Leader>cg :ExcsGoDirectly<CR>
+map <silent> <Leader>cb :BackwardSearchStack<CR>
+map <silent> <Leader>cf :ForwardSearchStack<CR>
+let g:exCS_backto_editbuf = 0
+let g:exCS_close_when_selected = 0
+let g:exCS_window_direction = 'bel'
+
+" --------------------
 " exQuickFix
 " -------------------
 nnoremap <silent> <leader>qf :ExqfSelectToggle<CR>
@@ -470,8 +486,6 @@ let g:exES_project_cmd = 'EXProject'
 function g:exES_UpdateEnvironment()
     if exists( 'g:exES_PWD' )
         silent exec 'cd ' . g:exES_PWD
-        " make the gf go everywhere in the project
-        silent exec "set path+=" . escape(g:exES_PWD, " ") . "/**" 
     endif
     if exists( 'g:exES_Tag' )
         "let &tags = &tags . ',' . g:exES_Tag
@@ -632,7 +646,7 @@ let OmniCpp_SelectFirstItem = 0
 " --------------------
 " tregisters
 " --------------------
-nnoremap <silent> <Leader>rr :TRegisters<CR>
+command REG call TRegisters()
 
 " --------------------
 " tselectbuffer

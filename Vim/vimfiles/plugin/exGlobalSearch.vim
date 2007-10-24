@@ -65,6 +65,11 @@ if !exists('g:exGS_stack_close_when_selected')
     let g:exGS_stack_close_when_selected = 0
 endif
 
+" use syntax highlight for search result
+if !exists('g:exGS_highlight_result')
+    let g:exGS_highlight_result = 0
+endif
+
 " set edit mode
 " 'none', 'append', 'replace'
 if !exists('g:exGS_edit_mode')
@@ -314,15 +319,33 @@ endfunction " >>>
 " --exGS_InitSelectWindow--
 " Init exGlobalSearch window
 function! g:exGS_InitSelectWindow() " <<<
-    set number
-    " syntax highlight
-    syntax match exGS_SynFileName '^[^:]*:'
-    syntax match exGS_SynSearchPattern '^----------.\+----------'
-    syntax match exGS_SynLineNumber '\d\+:'
+    setlocal number
 
-    highlight def exGS_SynFileName gui=none guifg=Blue term=none cterm=none ctermfg=Blue
-    highlight def exGS_SynSearchPattern gui=bold guifg=DarkRed guibg=LightGray term=bold cterm=bold ctermfg=DarkRed ctermbg=LightGray
-    highlight def exGS_SynLineNumber gui=none guifg=Brown term=none cterm=none ctermfg=DarkRed
+    " syntax highlight
+    if g:exGS_highlight_result
+        " this will load the syntax highlight as cpp for search result
+        silent exec "so $VIM/vimfiles/after/syntax/exUtility.vim"
+
+        "
+        syntax region exGS_SynFileName start="^[^:]*" end=":" oneline
+        syntax region exGS_SynSearchPattern start="^----------" end="----------"
+        syntax match exGS_SynLineNumber '\d\+:'
+
+        "
+        highlight def exGS_SynFileName gui=none guifg=DarkBlue term=none cterm=none ctermfg=DarkBlue
+        highlight def exGS_SynSearchPattern gui=bold guifg=DarkRed guibg=LightGray term=bold cterm=bold ctermfg=DarkRed ctermbg=LightGray
+        highlight def exGS_SynLineNumber gui=none guifg=Red term=none cterm=none ctermfg=Red
+    else
+        "
+        syntax region exGS_SynFileName start="^[^:]*" end=":" oneline
+        syntax region exGS_SynSearchPattern start="^----------" end="----------"
+        syntax match exGS_SynLineNumber '\d\+:'
+
+        "
+        highlight def exGS_SynFileName gui=none guifg=Blue term=none cterm=none ctermfg=Blue
+        highlight def exGS_SynSearchPattern gui=bold guifg=DarkRed guibg=LightGray term=bold cterm=bold ctermfg=DarkRed ctermbg=LightGray
+        highlight def exGS_SynLineNumber gui=none guifg=Brown term=none cterm=none ctermfg=Brown
+    endif
 
     " key map
     nnoremap <buffer> <silent> <Return>   \|:call <SID>exGS_GotoInSelectWindow()<CR>
@@ -333,44 +356,44 @@ function! g:exGS_InitSelectWindow() " <<<
     nnoremap <buffer> <silent> <C-Right>   :call <SID>exGS_SwitchWindow('Select')<CR>
     nnoremap <buffer> <silent> <C-Left>   :call <SID>exGS_SwitchWindow('QuickView')<CR>
 
-    nnoremap <buffer> <silent> <Leader>r :call <SID>exGS_ShowPickedResultNormalMode('', 'replace', 'pattern', 0)<CR>
-    nnoremap <buffer> <silent> <Leader>d :call <SID>exGS_ShowPickedResultNormalMode('', 'replace', 'pattern', 1)<CR>
-    nnoremap <buffer> <silent> <Leader>ar :call <SID>exGS_ShowPickedResultNormalMode('', 'append', 'pattern', 0)<CR>
-    nnoremap <buffer> <silent> <Leader>ad :call <SID>exGS_ShowPickedResultNormalMode('', 'append', 'pattern', 1)<CR>
-    nnoremap <buffer> <silent> <Leader>nr :call <SID>exGS_ShowPickedResultNormalMode('', 'new', 'pattern', 0)<CR>
-    nnoremap <buffer> <silent> <Leader>nd :call <SID>exGS_ShowPickedResultNormalMode('', 'new', 'pattern', 1)<CR>
-    vnoremap <buffer> <silent> <Leader>r <ESC>:call <SID>exGS_ShowPickedResultVisualMode('', 'replace', 'pattern', 0)<CR>
-    vnoremap <buffer> <silent> <Leader>d <ESC>:call <SID>exGS_ShowPickedResultVisualMode('', 'replace', 'pattern', 1)<CR>
-    vnoremap <buffer> <silent> <Leader>ar <ESC>:call <SID>exGS_ShowPickedResultVisualMode('', 'append', 'pattern', 0)<CR>
-    vnoremap <buffer> <silent> <Leader>ad <ESC>:call <SID>exGS_ShowPickedResultVisualMode('', 'append', 'pattern', 1)<CR>
-    vnoremap <buffer> <silent> <Leader>nr <ESC>:call <SID>exGS_ShowPickedResultVisualMode('', 'new', 'pattern', 0)<CR>
-    vnoremap <buffer> <silent> <Leader>nd <ESC>:call <SID>exGS_ShowPickedResultVisualMode('', 'new', 'pattern', 1)<CR>
+    nnoremap <buffer> <silent> <LocalLeader>r :call <SID>exGS_ShowPickedResultNormalMode('', 'replace', 'pattern', 0)<CR>
+    nnoremap <buffer> <silent> <LocalLeader>d :call <SID>exGS_ShowPickedResultNormalMode('', 'replace', 'pattern', 1)<CR>
+    nnoremap <buffer> <silent> <LocalLeader>ar :call <SID>exGS_ShowPickedResultNormalMode('', 'append', 'pattern', 0)<CR>
+    nnoremap <buffer> <silent> <LocalLeader>ad :call <SID>exGS_ShowPickedResultNormalMode('', 'append', 'pattern', 1)<CR>
+    nnoremap <buffer> <silent> <LocalLeader>nr :call <SID>exGS_ShowPickedResultNormalMode('', 'new', 'pattern', 0)<CR>
+    nnoremap <buffer> <silent> <LocalLeader>nd :call <SID>exGS_ShowPickedResultNormalMode('', 'new', 'pattern', 1)<CR>
+    vnoremap <buffer> <silent> <LocalLeader>r <ESC>:call <SID>exGS_ShowPickedResultVisualMode('', 'replace', 'pattern', 0)<CR>
+    vnoremap <buffer> <silent> <LocalLeader>d <ESC>:call <SID>exGS_ShowPickedResultVisualMode('', 'replace', 'pattern', 1)<CR>
+    vnoremap <buffer> <silent> <LocalLeader>ar <ESC>:call <SID>exGS_ShowPickedResultVisualMode('', 'append', 'pattern', 0)<CR>
+    vnoremap <buffer> <silent> <LocalLeader>ad <ESC>:call <SID>exGS_ShowPickedResultVisualMode('', 'append', 'pattern', 1)<CR>
+    vnoremap <buffer> <silent> <LocalLeader>nr <ESC>:call <SID>exGS_ShowPickedResultVisualMode('', 'new', 'pattern', 0)<CR>
+    vnoremap <buffer> <silent> <LocalLeader>nd <ESC>:call <SID>exGS_ShowPickedResultVisualMode('', 'new', 'pattern', 1)<CR>
 
-    nnoremap <buffer> <silent> <Leader>fr :call <SID>exGS_ShowPickedResultNormalMode('', 'replace', 'file', 0)<CR>
-    nnoremap <buffer> <silent> <Leader>fd :call <SID>exGS_ShowPickedResultNormalMode('', 'replace', 'file', 1)<CR>
-    nnoremap <buffer> <silent> <Leader>far :call <SID>exGS_ShowPickedResultNormalMode('', 'append', 'file', 0)<CR>
-    nnoremap <buffer> <silent> <Leader>fad :call <SID>exGS_ShowPickedResultNormalMode('', 'append', 'file', 1)<CR>
-    nnoremap <buffer> <silent> <Leader>fnr :call <SID>exGS_ShowPickedResultNormalMode('', 'new', 'file', 0)<CR>
-    nnoremap <buffer> <silent> <Leader>fnd :call <SID>exGS_ShowPickedResultNormalMode('', 'new', 'file', 1)<CR>
-    vnoremap <buffer> <silent> <Leader>fr <ESC>:call <SID>exGS_ShowPickedResultVisualMode('', 'replace', 'file', 0)<CR>
-    vnoremap <buffer> <silent> <Leader>fd <ESC>:call <SID>exGS_ShowPickedResultVisualMode('', 'replace', 'file', 1)<CR>
-    vnoremap <buffer> <silent> <Leader>far <ESC>:call <SID>exGS_ShowPickedResultVisualMode('', 'append', 'file', 0)<CR>
-    vnoremap <buffer> <silent> <Leader>fad <ESC>:call <SID>exGS_ShowPickedResultVisualMode('', 'append', 'file', 1)<CR>
-    vnoremap <buffer> <silent> <Leader>fnr <ESC>:call <SID>exGS_ShowPickedResultVisualMode('', 'new', 'file', 0)<CR>
-    vnoremap <buffer> <silent> <Leader>fnd <ESC>:call <SID>exGS_ShowPickedResultVisualMode('', 'new', 'file')<CR>
+    nnoremap <buffer> <silent> <LocalLeader>fr :call <SID>exGS_ShowPickedResultNormalMode('', 'replace', 'file', 0)<CR>
+    nnoremap <buffer> <silent> <LocalLeader>fd :call <SID>exGS_ShowPickedResultNormalMode('', 'replace', 'file', 1)<CR>
+    nnoremap <buffer> <silent> <LocalLeader>far :call <SID>exGS_ShowPickedResultNormalMode('', 'append', 'file', 0)<CR>
+    nnoremap <buffer> <silent> <LocalLeader>fad :call <SID>exGS_ShowPickedResultNormalMode('', 'append', 'file', 1)<CR>
+    nnoremap <buffer> <silent> <LocalLeader>fnr :call <SID>exGS_ShowPickedResultNormalMode('', 'new', 'file', 0)<CR>
+    nnoremap <buffer> <silent> <LocalLeader>fnd :call <SID>exGS_ShowPickedResultNormalMode('', 'new', 'file', 1)<CR>
+    vnoremap <buffer> <silent> <LocalLeader>fr <ESC>:call <SID>exGS_ShowPickedResultVisualMode('', 'replace', 'file', 0)<CR>
+    vnoremap <buffer> <silent> <LocalLeader>fd <ESC>:call <SID>exGS_ShowPickedResultVisualMode('', 'replace', 'file', 1)<CR>
+    vnoremap <buffer> <silent> <LocalLeader>far <ESC>:call <SID>exGS_ShowPickedResultVisualMode('', 'append', 'file', 0)<CR>
+    vnoremap <buffer> <silent> <LocalLeader>fad <ESC>:call <SID>exGS_ShowPickedResultVisualMode('', 'append', 'file', 1)<CR>
+    vnoremap <buffer> <silent> <LocalLeader>fnr <ESC>:call <SID>exGS_ShowPickedResultVisualMode('', 'new', 'file', 0)<CR>
+    vnoremap <buffer> <silent> <LocalLeader>fnd <ESC>:call <SID>exGS_ShowPickedResultVisualMode('', 'new', 'file')<CR>
 
-    nnoremap <buffer> <silent> <Leader>gr :call <SID>exGS_ShowPickedResultNormalMode('', 'replace', '', 0)<CR>
-    nnoremap <buffer> <silent> <Leader>gd :call <SID>exGS_ShowPickedResultNormalMode('', 'replace', '', 1)<CR>
-    nnoremap <buffer> <silent> <Leader>gar :call <SID>exGS_ShowPickedResultNormalMode('', 'append', '', 0)<CR>
-    nnoremap <buffer> <silent> <Leader>gad :call <SID>exGS_ShowPickedResultNormalMode('', 'append', '', 1)<CR>
-    nnoremap <buffer> <silent> <Leader>gnr :call <SID>exGS_ShowPickedResultNormalMode('', 'new', '', 0)<CR>
-    nnoremap <buffer> <silent> <Leader>gnd :call <SID>exGS_ShowPickedResultNormalMode('', 'new', '', 1)<CR>
-    vnoremap <buffer> <silent> <Leader>gr <ESC>:call <SID>exGS_ShowPickedResultVisualMode('', 'replace', '', 0)<CR>
-    vnoremap <buffer> <silent> <Leader>gd <ESC>:call <SID>exGS_ShowPickedResultVisualMode('', 'replace', '', 1)<CR>
-    vnoremap <buffer> <silent> <Leader>gar <ESC>:call <SID>exGS_ShowPickedResultVisualMode('', 'append', '', 0)<CR>
-    vnoremap <buffer> <silent> <Leader>gad <ESC>:call <SID>exGS_ShowPickedResultVisualMode('', 'append', '', 1)<CR>
-    vnoremap <buffer> <silent> <Leader>gnr <ESC>:call <SID>exGS_ShowPickedResultVisualMode('', 'new', '', 0)<CR>
-    vnoremap <buffer> <silent> <Leader>gnd <ESC>:call <SID>exGS_ShowPickedResultVisualMode('', 'new', '', 1)<CR>
+    nnoremap <buffer> <silent> <LocalLeader>gr :call <SID>exGS_ShowPickedResultNormalMode('', 'replace', '', 0)<CR>
+    nnoremap <buffer> <silent> <LocalLeader>gd :call <SID>exGS_ShowPickedResultNormalMode('', 'replace', '', 1)<CR>
+    nnoremap <buffer> <silent> <LocalLeader>gar :call <SID>exGS_ShowPickedResultNormalMode('', 'append', '', 0)<CR>
+    nnoremap <buffer> <silent> <LocalLeader>gad :call <SID>exGS_ShowPickedResultNormalMode('', 'append', '', 1)<CR>
+    nnoremap <buffer> <silent> <LocalLeader>gnr :call <SID>exGS_ShowPickedResultNormalMode('', 'new', '', 0)<CR>
+    nnoremap <buffer> <silent> <LocalLeader>gnd :call <SID>exGS_ShowPickedResultNormalMode('', 'new', '', 1)<CR>
+    vnoremap <buffer> <silent> <LocalLeader>gr <ESC>:call <SID>exGS_ShowPickedResultVisualMode('', 'replace', '', 0)<CR>
+    vnoremap <buffer> <silent> <LocalLeader>gd <ESC>:call <SID>exGS_ShowPickedResultVisualMode('', 'replace', '', 1)<CR>
+    vnoremap <buffer> <silent> <LocalLeader>gar <ESC>:call <SID>exGS_ShowPickedResultVisualMode('', 'append', '', 0)<CR>
+    vnoremap <buffer> <silent> <LocalLeader>gad <ESC>:call <SID>exGS_ShowPickedResultVisualMode('', 'append', '', 1)<CR>
+    vnoremap <buffer> <silent> <LocalLeader>gnr <ESC>:call <SID>exGS_ShowPickedResultVisualMode('', 'new', '', 0)<CR>
+    vnoremap <buffer> <silent> <LocalLeader>gnd <ESC>:call <SID>exGS_ShowPickedResultVisualMode('', 'new', '', 1)<CR>
 
     " autocmd
     au CursorMoved <buffer> :call g:ex_HighlightSelectLine()
@@ -676,20 +699,46 @@ endfunction " >>>
 " --exGS_InitQuickViewWindow--
 " Init exGlobalSearch select window
 function! g:exGS_InitQuickViewWindow() " <<<
-    set number
-    set foldmethod=marker foldmarker=<<<<<<,>>>>>> foldlevel=1
-    " syntax highlight
-    syntax match exGS_SynFileName '^[^:]*:'
-    syntax match exGS_SynSearchPattern '^----------.\+----------'
-    syntax match exGS_SynLineNumber '\d\+:'
-    syntax match exGS_SynFoldStart '<<<<<<'
-    syntax match exGS_SynFoldEnd '>>>>>>'
+    setlocal number
+    setlocal foldmethod=marker foldmarker=<<<<<<,>>>>>> foldlevel=1
 
-    highlight def exGS_SynFileName gui=none guifg=Blue 
-    highlight def exGS_SynSearchPattern gui=bold guifg=DarkRed guibg=LightGray
-    highlight def exGS_SynLineNumber gui=none guifg=Brown 
-    highlight def exGS_SynFoldStart gui=none guifg=DarkGreen
-    highlight def exGS_SynFoldEnd gui=none guifg=DarkGreen
+    " syntax highlight
+    if g:exGS_highlight_result
+        " this will load the syntax highlight as cpp for search result
+        silent exec "so $VIM/vimfiles/after/syntax/exUtility.vim"
+
+        "
+        syntax region exGS_SynFileName start="^[^:]*" end=":" oneline
+        syntax region exGS_SynSearchPattern start="^----------" end="----------"
+        syntax match exGS_SynLineNumber '\d\+:'
+
+        "
+        highlight def exGS_SynFileName gui=none guifg=DarkBlue term=none cterm=none ctermfg=DarkBlue
+        highlight def exGS_SynSearchPattern gui=bold guifg=DarkRed guibg=LightGray term=bold cterm=bold ctermfg=DarkRed ctermbg=LightGray
+        highlight def exGS_SynLineNumber gui=none guifg=Red term=none cterm=none ctermfg=Red
+
+        "
+        syntax match exGS_SynFoldStart '<<<<<<'
+        syntax match exGS_SynFoldEnd '>>>>>>'
+        highlight def exGS_SynFoldStart gui=none guifg=DarkGreen term=none cterm=none ctermfg=DarkGreen
+        highlight def exGS_SynFoldEnd gui=none guifg=DarkGreen term=none cterm=none ctermfg=DarkGreen
+    else
+        "
+        syntax region exGS_SynFileName start="^[^:]*" end=":" oneline
+        syntax region exGS_SynSearchPattern start="^----------" end="----------"
+        syntax match exGS_SynLineNumber '\d\+:'
+
+        "
+        highlight def exGS_SynFileName gui=none guifg=Blue term=none cterm=none ctermfg=Blue
+        highlight def exGS_SynSearchPattern gui=bold guifg=DarkRed guibg=LightGray term=bold cterm=bold ctermfg=DarkRed ctermbg=LightGray
+        highlight def exGS_SynLineNumber gui=none guifg=Brown term=none cterm=none ctermfg=Brown
+
+        "
+        syntax match exGS_SynFoldStart '<<<<<<'
+        syntax match exGS_SynFoldEnd '>>>>>>'
+        highlight def exGS_SynFoldStart gui=none guifg=DarkGreen term=none cterm=none ctermfg=DarkGreen
+        highlight def exGS_SynFoldEnd gui=none guifg=DarkGreen term=none cterm=none ctermfg=DarkGreen
+    endif
 
     " key map
     nnoremap <buffer> <silent> <Return>   \|:call <SID>exGS_GotoInQuickViewWindow()<CR>

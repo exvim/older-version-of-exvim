@@ -32,7 +32,7 @@ highlight def ex_SynHL1 gui=none guibg=LightCyan term=none cterm=none ctermbg=Li
 highlight def ex_SynHL2 gui=none guibg=LightMagenta term=none cterm=none ctermbg=LightMagenta
 highlight def ex_SynHL3 gui=none guibg=LightRed term=none cterm=none ctermbg=LightRed
 
-highlight def ex_SynSelectLine gui=none guibg=LightCyan term=none cterm=none ctermbg=LightCyan
+highlight def ex_SynSelectLine gui=none guibg=#bfffff term=none cterm=none ctermbg=LightCyan
 highlight def ex_SynConfirmLine gui=none guibg=Orange term=none cterm=none ctermbg=DarkYellow
 highlight def ex_SynObjectLine gui=none guibg=Orange term=none cterm=none ctermbg=DarkYellow
 
@@ -869,6 +869,30 @@ function! g:ex_Browse(dir, filter) " <<<
     " endfor
     " echomsg full_path . "\r"
     " ++++++++++++++++++++++++++++++++++
+endfunction " >>>
+
+" --ex_GetFoldLevel--
+function! g:ex_QuickFileJump() " <<<
+    " make the gf go everywhere in the project
+    if exists( 'g:exES_PWD' )
+        let tmp_reg = @t
+        normal! "tyiW
+        let file_name = substitute( @t, '"', '', "g" )
+        let @t = tmp_reg
+        echomsg "searching file: " . file_name
+        let path = escape(g:exES_PWD, " ") . "/**;"
+        let full_path_file = findfile( file_name, path ) 
+
+        " if we found the file
+        if full_path_file != ""
+            silent exec "e " . full_path_file 
+            echon full_path_file . "\r"
+        else
+            call g:ex_WarningMsg("file not found")
+        endif
+    else
+        normal! gf
+    endif
 endfunction " >>>
 
 " ------------------------

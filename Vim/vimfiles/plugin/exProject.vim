@@ -230,7 +230,7 @@ function! g:exPJ_InitSelectWindow() " <<<
     
     highlight def exPJ_SynDir gui=bold guifg=Brown term=bold cterm=bold ctermfg=DarkRed
     highlight def exPJ_TreeLine gui=none guifg=DarkGray term=none cterm=none ctermfg=Gray
-    highlight def exPJ_SelectLine gui=none guibg=LightCyan term=none cterm=none ctermbg=LightCyan
+    highlight def link exPJ_SelectLine ex_SynSelectLine
 
     highlight def exPJ_SynFile gui=none guifg=Magenta term=none cterm=none ctermfg=Magenta
     highlight def exPJ_SynSrcFile gui=none guifg=Blue term=none cterm=none ctermfg=Blue

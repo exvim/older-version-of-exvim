@@ -366,7 +366,7 @@ endfunction " >>>
 " --exQF_InitQuickViewWindow--
 " Init exQuickFix select window
 function! g:exQF_InitQuickViewWindow() " <<<
-    set number
+    setlocal number
     " syntax highlight
     syntax match exQF_SynFileName '^[^:]*:'
     syntax match exQF_SynSearchPattern '^----------.\+----------'

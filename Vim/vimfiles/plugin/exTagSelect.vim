@@ -67,6 +67,11 @@ if !exists('g:exTS_stack_close_when_selected')
     let g:exTS_stack_close_when_selected = 0
 endif
 
+" use syntax highlight for search result
+if !exists('g:exTS_highlight_result')
+    let g:exTS_highlight_result = 0
+endif
+
 " set edit mode
 " 'none', 'append', 'replace'
 if !exists('g:exTS_edit_mode')
@@ -182,16 +187,32 @@ endfunction " >>>
 " --exTS_InitSelectWindow--
 " Init exTagSelect window
 function! g:exTS_InitSelectWindow() " <<<
+    " load the tagfiles
     let s:exTS_tag_file_list = tagfiles()
 
     " syntax highlight
-    syntax match exTS_SynFileName '^\S\+\s(.\+)$'
-    syntax match exTS_SynTagName '^\S\+$'
-    syntax match exTS_SynSearchPattern '^        \S.*$'
+    if g:exTS_highlight_result
+        " this will load the syntax highlight as cpp for search result
+        silent exec "so $VIM/vimfiles/after/syntax/exUtility.vim"
 
-    highlight def exTS_SynFileName term=none cterm=none ctermfg=Blue gui=none guifg=Blue 
-    highlight def exTS_SynTagName term=bold cterm=bold ctermfg=DarkRed ctermbg=LightGray gui=bold guifg=DarkRed guibg=LightGray
-    highlight def exTS_SynSearchPattern term=none cterm=none ctermfg=Black gui=none guifg=Black 
+        "
+        syntax match exTS_SynFileName '^\S\+\s(.\+)$'
+        syntax match exTS_SynTagName '^\S\+$'
+
+        "
+        highlight def exTS_SynTagName term=bold cterm=bold ctermfg=DarkRed ctermbg=LightGray gui=bold guifg=DarkRed guibg=LightGray
+        highlight def exTS_SynFileName term=underline cterm=underline ctermfg=LightBlue gui=underline guifg=SlateBlue
+    else
+        "
+        syntax match exTS_SynFileName '^\S\+\s(.\+)$'
+        syntax match exTS_SynTagName '^\S\+$'
+        syntax match exTS_SynSearchPattern '^        \S.*$'
+
+        "
+        highlight def exTS_SynTagName term=bold cterm=bold ctermfg=DarkRed ctermbg=LightGray gui=bold guifg=DarkRed guibg=LightGray
+        highlight def exTS_SynFileName term=none cterm=none ctermfg=Blue gui=none guifg=Blue
+        highlight def exTS_SynSearchPattern term=none cterm=none ctermfg=Black gui=none guifg=Black 
+    endif
 
     " key map
     nnoremap <buffer> <silent> <Return>   \|:call <SID>exTS_GotoTagSelectResult()<CR>
@@ -353,6 +374,8 @@ function! s:exTS_GetTagSelectResult(tag, direct_jump) " <<<
             let quick_view = file_list[line_num]
             let quick_view = strpart( quick_view, match(quick_view, '\S') )
         endif
+        " this will change the \/\/ to //
+        let quick_view = substitute( quick_view, '\\/', '/', "g" )
         silent put = '        ' . idx . ': ' . quick_view
         let idx += 1
         let pre_tag_name = tag_info.name

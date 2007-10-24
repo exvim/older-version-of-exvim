@@ -314,7 +314,12 @@ endfunction " >>>
 " --exCS_InitSelectWindow--
 " Init exGlobalSearch window
 function! g:exCS_InitSelectWindow() " <<<
-    set number
+    setlocal number
+    
+    " connect cscope files
+    silent exec "cscope add cscope.out"
+	silent! setlocal cscopequickfix=s-,c-,d-,i-,t-,e-
+
     " syntax highlight
     syntax match exCS_SynFileName '^[^:]*:'
     syntax match exCS_SynSearchPattern '^----------.\+----------'
@@ -404,24 +409,18 @@ function! s:exCS_GetGlobalSearchResult(search_pattern, search_method, direct_jum
         silent exec "normal \<Esc>"
     endif
 
-    " TODO different mode, same things
+    " save cursor postion
+    let save_cursor = getpos(".")
+
+    " start processing cscope
+    echomsg 'cscope parsing ' . a:search_pattern . '...(ignore case)'
+    let search_cmd = 'cscope find d ' . a:search_pattern
+    silent exec search_cmd
+    call setpos('.', save_cursor)
+
     " open and goto search window first
     let gs_winnr = bufwinnr(s:exCS_select_title)
-
     let bufnr = bufnr('%')
-    " save the entry point
-    let cursor_pos = getpos(".")
-    let stack_preview = getline(".")
-    let stack_preview = strpart( stack_preview, match(stack_preview, '\S') )
-    if a:direct_jump == 0
-        let stack_preview = '[GS] ' . stack_preview
-    else
-        let stack_preview = '[GG] ' . stack_preview
-    endif
-    let s:exCS_search_state_tmp.entry_file_name = bufname(bufnr)
-    let s:exCS_search_state_tmp.entry_cursor_pos = cursor_pos
-    let s:exCS_search_state_tmp.stack_preview = stack_preview
-
     if gs_winnr == -1
         " open window
         let old_opt = g:exCS_backto_editbuf
@@ -432,38 +431,29 @@ function! s:exCS_GetGlobalSearchResult(search_pattern, search_method, direct_jum
         exe gs_winnr . 'wincmd w'
     endif
 
-    " if the search pattern is same as the last one, open the window
-    if a:search_pattern !=# s:exCS_search_stack_list[s:exCS_stack_idx].pattern && s:exCS_need_search_again != 1
-        let s:exCS_need_push_search_result = 1
-        let s:exCS_select_idx = 1
-    else
-        let s:exCS_need_push_search_result = 0
-        let s:exCS_select_idx = 1
-        let s:exCS_need_search_again = 0
-    endif
+    " processing search result
+    let result_list = getqflist()
+    let pattern_title = '----------' . a:search_pattern . '----------' . "\n"
+    silent put = pattern_title 
 
-    " TODO file path
-    " let search_cmd = 'lid --file=' . g:exES_ID . ' --result=grep ' . a:search_pattern
-    if s:exCS_ignore_case && (match(a:search_pattern, '\u') == -1)
-        echomsg 'search ' . a:search_pattern . '...(ignore case)'
-        let search_cmd = 'lid --result=grep -i -f' . g:exES_ID . ' ' . a:search_method . ' ' . a:search_pattern
-    else
-        echomsg 'search ' . a:search_pattern . '...(no ignore case)'
-        let search_cmd = 'lid --result=grep -f' . g:exES_ID . ' ' . a:search_method . ' ' . a:search_pattern
-    endif
-    let search_result = system(search_cmd)
-    let search_result = '----------' . a:search_pattern . '----------' . "\n" . search_result
+    " {'lnum': 255, 'bufnr': 6, 'col': 0, 'valid': 1, 'vcol': 0, 'nr': -1, 'type': '', 'pattern': '', 'text': '<<assert>> assert(_ul_SMapIndex < GRD_k_ShadowMapsCount);'}
+    " {'lnum': 278, 'bufnr': 6, 'col': 0, 'valid': 1, 'vcol': 0, 'nr': -1, 'type': '', 'pattern': '', 'text': '<<eComputeShadowMatrices>> me_ProjectionType = _po_ShadowLight->eComputeShadowMatrices(&mm_ViewInvMatrix, &mm_ProjMatrix, fSMapAspect, &mst_SceneAABBox);'}
+    for item in result_list
+        let text_line = " " . bufname(item.bufnr) . ":" . item.lnum . ":" . item.text . "\n"
+        silent put = text_line 
+    endfor
+    "silent put = string(result_list)
 
-    " clear screen and put new result
-    silent exec 'normal! Gdgg'
-    call g:ex_HighlightConfirmLine()
-    let line_num = line('.')
-    silent put = search_result
+    "" clear screen and put new resultgetqflist()getqflist()getqflist()
+    "silent exec 'normal! Gdgg'
+    "call g:ex_HighlightConfirmLine()
+    "let line_num = line('.')
+    "silent put = search_result
 
-    " Init search state
-    let s:exCS_search_state_tmp.pattern = a:search_pattern
-    let s:exCS_select_idx = line_num+1
-    silent call cursor( line_num+1, 1 )
+    "" Init search state
+    "let s:exCS_search_state_tmp.pattern = a:search_pattern
+    "let s:exCS_select_idx = line_num+1
+    "silent call cursor( line_num+1, 1 )
 endfunction " >>>
 
 " ------------------------------
@@ -676,8 +666,8 @@ endfunction " >>>
 " --exCS_InitQuickViewWindow--
 " Init exGlobalSearch select window
 function! g:exCS_InitQuickViewWindow() " <<<
-    set number
-    set foldmethod=marker foldmarker=<<<<<<,>>>>>> foldlevel=1
+    setlocal number
+    setlocal foldmethod=marker foldmarker=<<<<<<,>>>>>> foldlevel=1
     " syntax highlight
     syntax match exCS_SynFileName '^[^:]*:'
     syntax match exCS_SynSearchPattern '^----------.\+----------'
@@ -895,14 +885,14 @@ endfunction " >>>
 " -------------------------------------------------------------------------
 " Command part
 " -------------------------------------------------------------------------
-"command -nargs=1 GS call s:exCS_GetGlobalSearchResult('<args>', '-s', 0)
+command -nargs=1 CS call s:exCS_GetGlobalSearchResult('<args>', '-s', 0)
 "command -nargs=1 GSW call s:exCS_GetGlobalSearchResult('<args>', '-w', 0)
 "command -nargs=1 GSR call s:exCS_GetGlobalSearchResult('<args>', '-r', 0)
-"command ExgsToggle call s:exCS_ToggleWindow('')
-"command ExgsSelectToggle call s:exCS_ToggleWindow('Select')
-"command ExgsStackToggle call s:exCS_ToggleWindow('Stack')
-"command ExgsQuickViewToggle call s:exCS_ToggleWindow('QuickView')
-"command ExgsGoDirectly call s:exCS_GoDirect()
+command ExcsToggle call s:exCS_ToggleWindow('')
+command ExcsSelectToggle call s:exCS_ToggleWindow('Select')
+command ExcsStackToggle call s:exCS_ToggleWindow('Stack')
+command ExcsQuickViewToggle call s:exCS_ToggleWindow('QuickView')
+command ExcsGoDirectly call s:exCS_GoDirect()
 "command BackwardSearchStack call s:exCS_Stack_GotoTag(s:exCS_stack_idx-1, 'to_entry')
 "command ForwardSearchStack call s:exCS_Stack_GotoTag(s:exCS_stack_idx+1, 'to_tag')
 "
