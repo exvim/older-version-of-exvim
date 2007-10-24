@@ -81,7 +81,7 @@ let s:exMH_get_macro_file = 1
 let s:exMH_macro_list = []
 let s:exMH_define_list = [[],[]] " 0: not define group, 1: define group
 let s:exMH_IsEnable = 0
-let s:exMH_Debug = 1
+let s:exMH_Debug = 0
 let s:exMH_LastUpdateBuffer = -1
 let s:exMH_ForceUpdate = 1
 
@@ -286,7 +286,7 @@ function! g:exMH_InitMacroList(macrofile_name) " <<<
 
         " elif/elifn enable
         hi link exElifEnableStart   cPreProc
-        hi link exElifEnable        Error
+        hi link exElifEnable        Normal
         hi link exElifnEnableStart  cPreProc
         hi link exElifnEnable       Normal
 
@@ -436,7 +436,8 @@ function! s:exMH_DefineSyntax() " <<<
     " --------------- exElifnEnable ---------------
     " elifn enable(def_macro) else disable
     exec 'syn region exElifnEnableStart contained start=' . '"' . s:elifn_enable_pattern . '"' . ' end=".\@=\|$" contains=exElifnEnable,exAndEnable,exAndnotEnable'
-    exec 'syn region exElifnEnable contained matchgroup=cPreProc start=' . '"' . s:undef_macro_pattern . s:end_not_and_pattern . '"' . ' skip="#endif\>\_[^\%(\/\*\)]*\*\/" end="^\s*\%(%:\|#\)\s*\%(endif\>\)" contains=exElseDisable,@exEnableContainedGroup'
+    " add elifn_or_pattern will fix a bug that #elif !MACRO_ENABLE && MACRO_ENABLE
+    exec 'syn region exElifnEnable contained matchgroup=cPreProc start=' . '"' . s:elifn_or_pattern . s:undef_macro_pattern . s:end_not_and_pattern . '"' . ' skip="#endif\>\_[^\%(\/\*\)]*\*\/" end="^\s*\%(%:\|#\)\s*\%(endif\>\)" contains=exElseDisable,@exEnableContainedGroup'
 
     " --------------- exIfDisable ---------------
     " if disable(undef_macro) else define
