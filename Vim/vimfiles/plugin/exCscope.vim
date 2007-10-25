@@ -264,7 +264,7 @@ function! g:exCS_InitSelectWindow() " <<<
         "
         syntax region exCS_SynFileName start="^[^:]*" end=":" oneline
         syntax region exCS_SynSearchPattern start="^----------" end="----------"
-        syntax match exCS_SynLineNumber '\d\+:'
+        syntax match exCS_SynLineNumber '<\d\+>'
         syntax match exCS_SynQfNumber '^ \[\d\+\]'
 
         "
@@ -276,13 +276,13 @@ function! g:exCS_InitSelectWindow() " <<<
         "
         syntax region exCS_SynFileName start="^[^:]*" end=":" oneline
         syntax region exCS_SynSearchPattern start="^----------" end="----------"
-        syntax match exCS_SynLineNumber '\d\+:'
+        syntax match exCS_SynLineNumber '<\d\+>'
         syntax match exCS_SynQfNumber '^ \[\d\+\]'
 
         "
         highlight def exCS_SynFileName gui=none guifg=Blue term=none cterm=none ctermfg=Blue
         highlight def exCS_SynSearchPattern gui=bold guifg=DarkRed guibg=LightGray term=bold cterm=bold ctermfg=DarkRed ctermbg=LightGray
-        highlight def exCS_SynLineNumber gui=none guifg=Brown term=none cterm=none ctermfg=Brown
+        highlight def exCS_SynLineNumber gui=none guifg=Red term=none cterm=none ctermfg=Red
         highlight def exCS_SynQfNumber gui=none guifg=Brown term=none cterm=none ctermfg=Brown
     endif
 
@@ -376,14 +376,21 @@ function! s:exCS_GetSearchResult(search_pattern, search_method, direct_jump) " <
         let g:exCS_window_direction = 'bel'
     endif
 
-    " save cursor postion
-    let save_cursor = getpos(".")
-
     " start processing cscope
-    echomsg 'cscope parsing ' . a:search_pattern . '...(ignore case)'
+    echon 'cscope parsing ' . a:search_pattern . '...(ignore case)' . "\r"
     let search_cmd = 'cscope find ' . a:search_method . ' ' . a:search_pattern
-    silent exec search_cmd
-    call setpos('.', save_cursor)
+    try
+        silent exec search_cmd
+    catch /^Vim\%((\a\+)\)\=:E259/
+        "call g:ex_WarningMsg("no matches found for " . a:search_pattern )
+        echohl WarningMsg
+        echon "no matches found for " . a:search_pattern . "\r"
+        echohl None
+        return
+    endtry
+
+    " go back 
+    silent exec "normal! \<c-o>"
 
     " open and goto search window first
     let gs_winnr = bufwinnr(s:exCS_select_title)
@@ -688,6 +695,7 @@ command ExcsQuickViewToggle call s:exCS_ToggleWindow('QuickView')
 command CSDD call s:exCS_GoDirect('d')
 command CSCD call s:exCS_GoDirect('c')
 command CSID call s:exCS_GoDirect('i')
+command CSIC call s:exCS_GetSearchResult(fnamemodify( bufname("%"), ":p:t" ), 'i', 0)
 command CSSD call s:exCS_GoDirect('s')
 command CSGD call s:exCS_GoDirect('g')
 command CSED call s:exCS_GoDirect('e')

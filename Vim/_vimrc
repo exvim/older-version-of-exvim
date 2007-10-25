@@ -31,7 +31,10 @@ set updatetime=1000 " default = 4000
 set autoread " auto read same-file change ( better for vc/vim change )
 
 "set isk+=$,%,#,- " none of these should be word dividers 
-set clipboard=unnamed " use clipboard register '*'(unnamed) for all y, d, c, p ops, use autoselect to avoid selection p bugs.
+
+" there have a bug with visual copy, shows the there is nothing in register *
+"set clipboard=unnamed " use clipboard register '*'(unnamed) for all y, d, c, p ops, use autoselect to avoid selection p bugs.
+
 " enlarge maxmempattern from 1000 to ... (2000000 will give it without limit)
 set maxmempattern=1000
 
@@ -187,7 +190,7 @@ endfunction
 " define the copy/paste judged by clipboard
 if &clipboard ==# "unnamed"
     " fix the visual paste bug in vim
-    vnoremap p :call g:ex_VisualPasteFixed()<CR>
+    vnoremap <silent>p :call g:ex_VisualPasteFixed()<CR>
 else
     " general copy/paste.
     map <c-y> "*y
@@ -451,10 +454,15 @@ let g:exSL_SymbolSelectCmd = 'TS'
 " --------------------
 " exCscope
 " --------------------
+nnoremap <silent> <F2> :CSIC<CR>
+nnoremap <silent> <Leader>ci :CSID<CR>
+" TODO
+"nnoremap <silent> <F3> :CSDD<CR>
+nnoremap <silent> <Leader>cd :CSDD<CR>
+nnoremap <silent> <Leader>cc :CSCD<CR>
+
 nnoremap <silent> <Leader>cs :ExcsSelectToggle<CR>
 nnoremap <silent> <Leader>cq :ExcsQuickViewToggle<CR>
-nnoremap <silent> <Leader>ct :ExcsStackToggle<CR>
-nnoremap <silent> <Leader>cg :ExcsGoDirectly<CR>
 map <silent> <Leader>cb :BackwardSearchStack<CR>
 map <silent> <Leader>cf :ForwardSearchStack<CR>
 let g:exCS_backto_editbuf = 0

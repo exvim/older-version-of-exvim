@@ -1249,6 +1249,7 @@ endfunction " >>>
 " fix vim bug.
 " when you use clipboard=unnamed, and you have two vim-windows, visual-copy 
 " in window-1, then visual-copy in window-2, then visual-paste again. it is wrong
+" FIXME: this will let the "ap useless
 function! g:ex_VisualPasteFixed()
     silent call getreg('*')
     " silent normal! gvpgvy " <-- this let you be the win32 copy/paste style
