@@ -552,7 +552,7 @@ let g:exPJ_defualt_filter .= 'mk err exe '
 nnoremap <silent> <F4> :TlistToggle<CR>
 
 " TagListTagName  - Used for tag names
-highlight MyTagListTagName term=bold cterm=bold ctermfg=Black ctermbg=DarkYellow gui=bold guifg=Black guibg=Orange 
+highlight MyTagListTagName term=bold cterm=none ctermfg=Black ctermbg=DarkYellow gui=none guifg=Black guibg=#ffe4b3
 " TagListTagScope - Used for tag scope
 highlight MyTagListTagScope term=NONE cterm=NONE ctermfg=Blue gui=NONE guifg=Blue 
 " TagListTitle    - Used for tag titles

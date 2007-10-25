@@ -223,7 +223,12 @@ function! s:exCS_GoDirect( search_method ) " <<<
     let save_pos = getpos(".")
     if a:search_method ==# 'i' " including file
         exe 'normal! "syiW'
-        let @s = fnamemodify( substitute( @s, '"', '', "g" ), ":p:t" )
+        if @s =~# '^\".*\"$'
+            let @s = fnamemodify( substitute( @s, '"', '', "g" ), ":p:t" )
+        else
+            silent call setpos(".", save_pos )
+            exe 'normal! "syiw'
+        endif
     else
         exe 'normal! "syiw'
     endif
@@ -359,6 +364,9 @@ function! s:exCS_GetSearchResult(search_pattern, search_method, direct_jump) " <
         silent exec "normal \<Esc>"
     endif
 
+    " jump back to edit buffer first
+    call g:ex_GotoEditBuffer()
+
     " change window for suitable search method
     if a:search_method =~# '\(d\|i\)'
         let g:exCS_use_vertical_window = 1
@@ -367,7 +375,6 @@ function! s:exCS_GetSearchResult(search_pattern, search_method, direct_jump) " <
         let g:exCS_use_vertical_window = 0
         let g:exCS_window_direction = 'bel'
     endif
-
 
     " save cursor postion
     let save_cursor = getpos(".")

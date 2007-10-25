@@ -33,16 +33,13 @@ highlight def ex_SynHL2 gui=none guibg=LightMagenta term=none cterm=none ctermbg
 highlight def ex_SynHL3 gui=none guibg=LightRed term=none cterm=none ctermbg=LightRed
 
 highlight def ex_SynSelectLine gui=none guibg=#bfffff term=none cterm=none ctermbg=LightCyan
-highlight def ex_SynConfirmLine gui=none guibg=Orange term=none cterm=none ctermbg=DarkYellow
-highlight def ex_SynObjectLine gui=none guibg=Orange term=none cterm=none ctermbg=DarkYellow
+highlight def ex_SynConfirmLine gui=none guibg=#ffe4b3 term=none cterm=none ctermbg=DarkYellow
+highlight def ex_SynObjectLine gui=none guibg=#ffe4b3 term=none cterm=none ctermbg=DarkYellow
 
 " store the highlight strings
 let s:ex_HighLightText = ["","","",""]
 
 " local script vairable initialization
-let s:ex_editbuf_name = ""
-let s:ex_editbuf_ftype = ""
-let s:ex_editbuf_lnum = ""
 let s:ex_editbuf_num = ""
 
 " file browse
@@ -204,12 +201,6 @@ function! g:ex_OpenWindow( buffer_name, window_direction, window_size, use_verti
         return
     endif
 
-    " Get the filename and filetype for the specified buffer
-    let s:ex_editbuf_name = fnamemodify(bufname('%'), ':p')
-    let s:ex_editbuf_ftype = getbufvar('%', '&filetype')
-    let s:ex_editbuf_lnum = line('.')
-    let s:ex_editbuf_num = bufnr('%')
-
     " Open window
     call g:ex_CreateWindow( a:buffer_name, a:window_direction, a:window_size, a:use_vertical, a:edit_mode, a:init_func_name )
 
@@ -220,10 +211,7 @@ function! g:ex_OpenWindow( buffer_name, window_direction, window_size, use_verti
     if a:backto_editbuf
         " Need to jump back to the original window only if we are not
         " already in that window
-        let winnum = bufwinnr(s:ex_editbuf_num)
-        if winnr() != winnum
-            exe winnum . 'wincmd w'
-        endif
+        call g:ex_GotoEditBuffer()
     endif
 endfunction " >>>
 
@@ -463,7 +451,7 @@ function! g:ex_SwitchBuffer() " <<<
     if winnr() == bufwinnr(s:ex_editbuf_num)
         exe winnr("#") . 'wincmd w'
     else
-        silent call g:ex_GotoEditBuffer()
+        call g:ex_GotoEditBuffer()
     endif
 endfunction " >>>
 
@@ -948,10 +936,7 @@ endfunction ">>>
 " Goto the position by file name and search pattern
 function! g:ex_GotoSearchPattern(full_file_name, search_pattern) " <<<
     " check and jump to the buffer first
-    let winnum = bufwinnr(s:ex_editbuf_num)
-    if winnr() != winnum
-        exe winnum . 'wincmd w'
-    endif
+    call g:ex_GotoEditBuffer()
 
     " start jump
     let file_name = escape(a:full_file_name, ' ')
@@ -977,10 +962,7 @@ endfunction " >>>
 " Goto the position by file name and search pattern
 function! g:ex_GotoExCommand(full_file_name, ex_cmd) " <<<
     " check and jump to the buffer first
-    let winnum = bufwinnr(s:ex_editbuf_num)
-    if winnr() != winnum
-        exe winnum . 'wincmd w'
-    endif
+    call g:ex_GotoEditBuffer()
 
     " start jump
     let file_name = escape(a:full_file_name, ' ')
@@ -1010,10 +992,7 @@ endfunction " >>>
 " --ex_GotoTagNumber--
 function! g:ex_GotoTagNumber(tag_number) " <<<
     " check and jump to the buffer first
-    let winnum = bufwinnr(s:ex_editbuf_num)
-    if winnr() != winnum
-        exe winnum . 'wincmd w'
-    endif
+    call g:ex_GotoEditBuffer()
 
     silent exec a:tag_number . "tr!"
 
@@ -1025,10 +1004,7 @@ endfunction " >>>
 " Goto the pos by position list
 function! g:ex_GotoPos(poslist) " <<<
     " check and jump to the buffer first
-    let winnum = bufwinnr(s:ex_editbuf_num)
-    if winnr() != winnum
-        exe winnum . 'wincmd w'
-    endif
+    call g:ex_GotoEditBuffer()
 
     " TODO must have buffer number or buffer name
     call setpos('.', a:poslist)
