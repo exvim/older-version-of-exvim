@@ -56,14 +56,6 @@ rem create symbols
 echo Creating Symbols...
 gawk -f "c:\Program Files\Vim\make\gawk\prg_NoStripSymbol.awk" ./tags>./_vimfiles/symbol
 
-:ID
-rem create IDs
-echo Creating IDs...
-mkid --include="text"
-rem mkid --include="C C++"
-echo Move ID to ./_vimfiles/ID
-move ID "./_vimfiles/ID"
-
 :CSCOPE
 rem create cscope files
 echo Creating cscope.files...
@@ -71,7 +63,16 @@ dir /s /b %FILEFILTER% > cscope.files
 echo Creating cscope.out...
 cscope -b
 move cscope.files "./_vimfiles/cscope.files"
+gawk -f "c:\Program Files\Vim\make\gawk\prg_Win32FileName.awk" ./tags>./_vimfiles/symbol
 move cscope.out "./_vimfiles/cscope.out"
+
+:ID
+rem create IDs
+echo Creating IDs...
+mkid --include="text"
+rem mkid --include="C C++"
+echo Move ID to ./_vimfiles/ID
+move ID "./_vimfiles/ID"
 
 :FINISH
 rem finish process

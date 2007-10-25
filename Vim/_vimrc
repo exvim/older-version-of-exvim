@@ -219,10 +219,10 @@ map <S-Left> <C-W><Left>
 map! <S-Left> <C-W><Left>
 map <S-Right> <C-W><Right>
 map! <S-Right> <C-W><Right>
-map <silent><Leader><Tab> :call g:ex_GotoEditBuffer()<CR>
+map <silent><Leader><Tab> :call g:ex_SwitchBuffer()<CR>
 
 " for the exUtility Plugin
-map <silent><Leader><ESC> :call g:ex_GotoEditBuffer()<CR><ESC>
+map <silent><Leader><ESC> :call g:ex_SwitchBuffer()<CR><ESC>
 
 " change the original file jump method to this one
 nnoremap gf :call g:ex_QuickFileJump()<CR>

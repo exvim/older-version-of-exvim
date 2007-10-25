@@ -1,0 +1,10 @@
+
+rem ----------- mkid -----------------
+mkid --include="C C++" rem used for c/c++ only, remove comment text, strings
+mkid --exclude="text" rem don't generate id for txt
+mkid --include="text" rem this is special for my own lang-map, treat everything as text, for including comment and strings
+
+rem ----------- lid -----------------
+lid --result=grep -s/-r/-w
+
+rem vim: set ft=dosbatch:

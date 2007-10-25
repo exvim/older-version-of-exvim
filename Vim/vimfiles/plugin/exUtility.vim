@@ -447,6 +447,16 @@ function! g:ex_GotoLastEditBuffer() " <<<
     endif
 endfunction " >>>
 
+" --ex_GotoLastEditBuffer--
+function! g:ex_SwitchBuffer() " <<<
+    " if current window is same as edit buffer window, jump to last edit window
+    if winnr() == bufwinnr(s:ex_editbuf_num)
+        exe winnr("#") . 'wincmd w'
+    else
+        silent call g:ex_GotoEditBuffer()
+    endif
+endfunction " >>>
+
 " --ex_Kwbd--
 " VimTip #1119: How to use Vim like an IDE
 " delete the buffer; keep windows; create a scratch buffer if no buffers left 
