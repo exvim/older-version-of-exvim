@@ -117,7 +117,7 @@ function! g:ex_CreateWindow( buffer_name, window_direction, window_size, use_ver
     endif
 
     " after create the window, record the bufname into the plugin list
-    if index( g:exUT_plugin_list, bufname("%") ) == -1
+    if index( g:exUT_plugin_list, fnamemodify(a:buffer_name,":p:t") ) == -1
         silent call add(g:exUT_plugin_list, fnamemodify(a:buffer_name,":p:t"))
     endif
 
@@ -184,6 +184,9 @@ function! g:ex_OpenWindow( buffer_name, window_direction, window_size, use_verti
         silent exec "normal \<Esc>"
     endif
 
+    " go to edit buffer first, then open the window, this will avoid some bugs
+    call g:ex_GotoEditBuffer()
+
     " If the window is open, jump to it
     let winnum = bufwinnr(a:buffer_name)
     if winnum != -1
@@ -233,36 +236,43 @@ function! g:ex_CloseWindow( buffer_name ) " <<<
         call g:ex_WarningMsg('Error: ' . a:buffer_name . ' window is not open')
         return
     endif
-    
-    if winnr() == winnum
-        let last_buf_num = bufnr('#') 
-        " Already in the window. Close it and return
-        if winbufnr(2) != -1
-            " If a window other than the a:buffer_name window is open,
-            " then only close the a:buffer_name window.
-            close
-        endif
 
-        " Need to jump back to the original window only if we are not
-        " already in that window
-        let winnum = bufwinnr(last_buf_num)
-        if winnr() != winnum
-            exe winnum . 'wincmd w'
-        endif
-    else
-        " Goto the a:buffer_name window, close it and then come back to the 
-        " original window
-        let cur_buf_num = bufnr('%')
-        exe winnum . 'wincmd w'
-        close
-        " Need to jump back to the original window only if we are not
-        " already in that window
-        let winnum = bufwinnr(cur_buf_num)
-        if winnr() != winnum
-            exe winnum . 'wincmd w'
-        endif
-    endif
+    " close window
+    exe winnum . 'wincmd w'
+    close
+
+    " go back to edit buffer
+    call g:ex_GotoEditBuffer()
     call g:ex_ClearObjectHighlight()
+    
+    "if winnr() == winnum
+    "    let last_buf_num = bufnr('#') 
+    "    " Already in the window. Close it and return
+    "    if winbufnr(2) != -1
+    "        " If a window other than the a:buffer_name window is open,
+    "        " then only close the a:buffer_name window.
+    "        close
+    "    endif
+
+    "    " Need to jump back to the original window only if we are not
+    "    " already in that window
+    "    let winnum = bufwinnr(last_buf_num)
+    "    if winnr() != winnum
+    "        exe winnum . 'wincmd w'
+    "    endif
+    "else
+    "    " Goto the a:buffer_name window, close it and then come back to the 
+    "    " original window
+    "    let cur_buf_num = bufnr('%')
+    "    exe winnum . 'wincmd w'
+    "    close
+    "    " Need to jump back to the original window only if we are not
+    "    " already in that window
+    "    let winnum = bufwinnr(cur_buf_num)
+    "    if winnr() != winnum
+    "        exe winnum . 'wincmd w'
+    "    endif
+    "endif
 endfunction " >>>
 
 " --ex_ToggleWindow--
@@ -413,7 +423,7 @@ endfunction " >>>
 " --ex_RecordCurrentBufNum--
 " Record current buf num when leave
 function! g:ex_RecordCurrentBufNum() " <<<
-    if index( g:exUT_plugin_list, bufname("%") ) == -1
+    if index( g:exUT_plugin_list, fnamemodify(bufname("%"),":p:t") ) == -1
         let s:ex_editbuf_num = bufnr('%')
     endif
 endfunction " >>>
@@ -886,7 +896,9 @@ function! g:ex_QuickFileJump() " <<<
     " make the gf go everywhere in the project
     if exists( 'g:exES_PWD' )
         let tmp_reg = @t
+        let save_pos = getpos(".")
         normal! "tyiW
+        silent call setpos(".", save_pos )
         let file_name = substitute( @t, '"', '', "g" )
         let @t = tmp_reg
         echomsg "searching file: " . file_name
@@ -1085,37 +1097,24 @@ endfunction " >>>
 " --ex_UpdateVimFiles()--
 "  type: ID,symbol,tag,none=all
 function! g:ex_UpdateVimFiles( type ) " <<<
-    " create folder if not exists
-    if g:exES_vimfile_dir != ''
-        if finddir(g:exES_vimfile_dir) == ''
-            silent call mkdir(g:exES_vimfile_dir)
-        endif
-    else
-        call g:ex_WarningMsg("pls specified g:exES_vimfile_dir")
-    endif
-
     " exec bat
+    let quick_gen_bat = glob('quick_gen_project*.bat') 
     if a:type == ""
-        let quick_gen_bat = glob('quick_gen_project*.bat') 
         if quick_gen_bat != ''
             silent exec "!" . quick_gen_bat
         else
             call g:ex_WarningMsg("quick_gen_project*.bat not found")
         endif
     elseif a:type == "ID"
-        echo "Creating IDs..."
-        silent exec '!mkid --include="text"'
-        echo "Copy ID to ./_vimfiles/ID"
-        silent exec '!copy ID "./_vimfiles/ID"'
-        echo "Delete ./ID"
-        silent exec '!del ID'
-        echo "Finish"
+        silent exec "!" . quick_gen_bat . " id"
     elseif a:type == "symbol"
-        echo "Creating Symbols..."
-        silent exec '!gawk -f "c:\Program Files\Vim\make\gawk\prg_NoStripSymbol.awk" ./_vimfiles/tags>./_vimfiles/symbol'
+        silent exec "!" . quick_gen_bat . " symbol"
     elseif a:type == "tag"
-        echo "Creating Tags..."
-        silent exec '!ctags -o./_vimfiles/tags -R --c++-kinds=+p --fields=+iaS --extra=+q --languages=c++ --langmap=c:+.inl -I'
+        silent exec "!" . quick_gen_bat . " tag"
+    elseif a:type == "cscope"
+        silent exec "cscope kill " . g:exES_Cscope
+        silent exec "!" . quick_gen_bat . " cscope"
+        silent exec "cscope add " . g:exES_Cscope
     else
         call g:ex_WarningMsg("do not found update-type: " . a:type )
     endif

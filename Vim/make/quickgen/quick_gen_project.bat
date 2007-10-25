@@ -3,7 +3,7 @@
 rem preprocess arguments
 set LANGTYPE=ALL
 set FILEFILTER="*.c *.cpp *.cxx *.h *.hpp *.inl *.uc *.hlsl *.vsh *.psh *.fx *.fxh *.cg *.shd"
-if /I "%1"=="" goto START
+if /I "%1"=="all" goto START
 if /I "%1"=="c" goto C_ONLY
 if /I "%1"=="cpp" goto CPP_ONLY
 if /I "%1"=="general" goto GENERAL
@@ -42,29 +42,40 @@ rem create directory first
 echo Create Diretory: _vimfiles
 mkdir _vimfiles
 
+rem choose the generate mode
+if /I "%2"=="" goto TAG
+if /I "%2"=="tag" goto TAG
+if /I "%2"=="symbol" goto SYMBOL
+if /I "%2"=="cscope" goto CSCOPE
+if /I "%2"=="id" goto ID
+
 :TAG
 rem create tags
 echo Creating Tags...
-if /I "%LANGTYPE%"=="C_ONLY" ctags -o./tags -R --c++-kinds=+p --fields=+iaS --extra=+q --languages=c --langmap=c++:+.inl
-if /I "%LANGTYPE%"=="CPP_ONLY" ctags -o./tags -R --c++-kinds=+p --fields=+iaS --extra=+q --languages=c++ --langmap=c++:+.inl
-if /I "%LANGTYPE%"=="GENERAL" ctags -o./tags -R --c++-kinds=+p --fields=+iaS --extra=+q --languages=c,c++ --langmap=c++:+.inl
-if /I "%LANGTYPE%"=="VIM" ctags -o./tags -R  --fields=+iaS --extra=+q --languages=vim
-if /I "%LANGTYPE%"=="ALL" ctags -o./tags -R --c++-kinds=+p --fields=+iaS --extra=+q
+if /I "%LANGTYPE%"=="C_ONLY" ctags -o./_tags -R --c++-kinds=+p --fields=+iaS --extra=+q --languages=c --langmap=c++:+.inl
+if /I "%LANGTYPE%"=="CPP_ONLY" ctags -o./_tags -R --c++-kinds=+p --fields=+iaS --extra=+q --languages=c++ --langmap=c++:+.inl
+if /I "%LANGTYPE%"=="GENERAL" ctags -o./_tags -R --c++-kinds=+p --fields=+iaS --extra=+q --languages=c,c++ --langmap=c++:+.inl
+if /I "%LANGTYPE%"=="VIM" ctags -o./_tags -R  --fields=+iaS --extra=+q --languages=vim
+if /I "%LANGTYPE%"=="ALL" ctags -o./_tags -R --c++-kinds=+p --fields=+iaS --extra=+q
+move /Y ".\_tags" ".\tags"
+if /I "%2"=="tag" goto FINISH
 
 :SYMBOL
 rem create symbols
 echo Creating Symbols...
-gawk -f "c:\Program Files\Vim\make\gawk\prg_NoStripSymbol.awk" ./tags>./_vimfiles/symbol
+gawk -f "c:\Program Files\Vim\make\gawk\prg_NoStripSymbol.awk" ./tags>./_vimfiles/_symbol
+move /Y ".\_vimfiles\_symbol" ".\_vimfiles\symbol"
+if /I "%2"=="symbol" goto FINISH
 
 :CSCOPE
 rem create cscope files
 echo Creating cscope.files...
-dir /s /b %FILEFILTER% > cscope.files
+dir /s /b %FILEFILTER%|sed "s,\(.*\),\"\1\",g" > cscope.files
 echo Creating cscope.out...
 cscope -b
-move cscope.files "./_vimfiles/cscope.files"
-gawk -f "c:\Program Files\Vim\make\gawk\prg_Win32FileName.awk" ./tags>./_vimfiles/symbol
-move cscope.out "./_vimfiles/cscope.out"
+move /Y cscope.files ".\_vimfiles\cscope.files"
+move /Y cscope.out ".\_vimfiles\cscope.out"
+if /I "%2"=="cscope" goto FINISH
 
 :ID
 rem create IDs
@@ -72,7 +83,8 @@ echo Creating IDs...
 mkid --include="text"
 rem mkid --include="C C++"
 echo Move ID to ./_vimfiles/ID
-move ID "./_vimfiles/ID"
+move /Y ID ".\_vimfiles\ID"
+if /I "%2"=="id" goto FINISH
 
 :FINISH
 rem finish process

@@ -265,9 +265,12 @@ endfunction " >>>
 " --exGS_GoDirect--
 function! s:exGS_GoDirect() " <<<
     let reg_s = @s
+    let save_pos = getpos(".")
     exe 'normal! "syiw'
-    call s:exGS_GetGlobalSearchResult(@s, '-s', 1)
+    silent call setpos(".", save_pos )
+    let search_text = @s
     let @s = reg_s
+    call s:exGS_GetGlobalSearchResult(search_text, '-s', 1)
 endfunction " >>>
 
 " --exGS_GlobalSubstitute--

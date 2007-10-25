@@ -60,15 +60,15 @@ if !exists('g:exCS_close_when_selected')
     let g:exCS_close_when_selected = 0
 endif
 
-" go and close exTagSelect window
-if !exists('g:exCS_stack_close_when_selected')
-    let g:exCS_stack_close_when_selected = 0
-endif
-
 " set edit mode
 " 'none', 'append', 'replace'
 if !exists('g:exCS_edit_mode')
     let g:exCS_edit_mode = 'replace'
+endif
+
+" use syntax highlight for search result
+if !exists('g:exCS_highlight_result')
+    let g:exCS_highlight_result = 0
 endif
 
 " -------------------------------
@@ -77,7 +77,6 @@ endif
 
 " title
 let s:exCS_select_title = '__exCS_SelectWindow__'
-let s:exCS_stack_title = '__exCS_StackWindow__'
 let s:exCS_quick_view_title = '__exCS_QuickViewWindow__'
 let s:exCS_short_title = 'Select'
 
@@ -89,14 +88,6 @@ let s:exCS_need_search_again = 0
 
 " select variable
 let s:exCS_select_idx = 1
-
-" stack variable
-let s:exCS_need_update_stack_window = 0
-let s:exCS_stack_idx = 0
-let s:exCS_search_state_tmp = {'pattern':'', 'pattern_cursor_pos':[-1,-1,-1,-1], 'pattern_file_name':'', 'entry_cursor_pos':[-1,-1,-1,-1], 'entry_file_name':'', 'stack_preview':''}
-let s:exCS_search_stack_list = [{'pattern':'exCS_StartPoint', 'pattern_cursor_pos':[-1,-1,-1,-1], 'pattern_file_name':'', 'entry_cursor_pos':[-1,-1,-1,-1], 'entry_file_name':'', 'stack_preview':''}]
-let s:exCS_need_push_search_result = 0
-let s:exCS_last_jump_method = "to_tag"
 
 " quick view variable
 let s:exCS_quick_view_idx = 1
@@ -156,7 +147,7 @@ function! s:exCS_ToggleWindow( short_title ) " <<<
     endif
 endfunction " >>>
 
-" --exCS_SwitchWindow
+" --exCS_SwitchWindow--
 function! s:exCS_SwitchWindow( short_title ) " <<<
     let title = '__exCS_' . a:short_title . 'Window__'
     if bufwinnr(title) == -1
@@ -167,61 +158,42 @@ function! s:exCS_SwitchWindow( short_title ) " <<<
     endif
 endfunction " >>>
 
+" --exCS_ConnectCscopeFile--
+function! g:exCS_ConnectCscopeFile() " <<<
+    " don't show any message
+	setlocal nocsverb
+    " connect cscope files
+    silent exec "cscope add " . g:exES_Cscope
+	silent! setlocal cscopequickfix=s-,c-,d-,i-,t-,e-
+endfunction " >>>
+
 " --exCS_Goto--
 "  goto select line
 function! s:exCS_Goto() " <<<
+    " check if the line can jump
     let line = getline('.')
-    " get file name
-    let idx = stridx(line, ":")
-    let file_name = strpart(line, 0, idx) " escape(strpart(line, 0, idx), ' ')
-    if findfile(file_name) == ''
-        call g:ex_WarningMsg( file_name . ' not found' )
+    if line !~ '^ \[\d\+\]'
+        call g:ex_WarningMsg("could not jump")
         return 0
     endif
-    let line = strpart(line, idx+1)
 
-    " get line number
-    let idx = stridx(line, ":")
-    let line_num  = eval(strpart(line, 0, idx))
+    " get the quick fix idx and item
+    let start_idx = stridx(line,"[")+1
+    let end_idx = stridx(line,"]")
+    let qf_idx = str2nr( strpart(line, start_idx, end_idx-start_idx) )
+    let qf_list = getqflist()
+    let qf_item = qf_list[qf_idx]
 
     " start jump
     call g:ex_GotoEditBuffer()
-    if bufnr('%') != bufnr(file_name)
-        exe 'silent e ' . file_name
+    if bufnr('%') != qf_item.bufnr
+        exe 'silent e ' . bufname(qf_item.bufnr)
     endif
-    call cursor(line_num, 1)
-    let cursor_pos = getpos(".")
+    call cursor( qf_item.lnum, qf_item.col )
 
-    " jump to the pattern if the code have been modified
-    let pattern = strpart(line, idx+2)
-    let pattern = '\V' . substitute( pattern, '\', '\\\', "g" )
-    if search(pattern, 'w') == 0
-        call g:ex_WarningMsg('search pattern not found: ' . pattern)
-    endif
-
+    " confirm highlight
     call g:ex_HighlightObjectLine()
     exe 'normal! zz'
-
-    " push tag state to tag stack
-    if s:exCS_need_push_search_result
-        let s:exCS_need_push_search_result = 0
-
-        " set last stack_idx states
-        let s:exCS_search_stack_list[s:exCS_stack_idx].entry_file_name = s:exCS_search_state_tmp.entry_file_name 
-        let s:exCS_search_stack_list[s:exCS_stack_idx].entry_cursor_pos = s:exCS_search_state_tmp.entry_cursor_pos
-        let s:exCS_search_stack_list[s:exCS_stack_idx].stack_preview = s:exCS_search_state_tmp.stack_preview
-
-        " push stack
-        let s:exCS_search_state_tmp.entry_file_name = ''
-        let s:exCS_search_state_tmp.entry_cursor_pos = [-1,-1,-1,-1]
-        let s:exCS_search_state_tmp.stack_preview = ''
-        let s:exCS_search_state_tmp.pattern_file_name = file_name
-        let s:exCS_search_state_tmp.pattern_cursor_pos = cursor_pos
-        call s:exCS_PushStack(s:exCS_search_state_tmp)
-    else
-        let s:exCS_search_stack_list[s:exCS_stack_idx].pattern_file_name = file_name
-        let s:exCS_search_stack_list[s:exCS_stack_idx].pattern_cursor_pos = cursor_pos
-    endif
 
     " go back if needed
     let title = '__exCS_' . s:exCS_short_title . 'Window__'
@@ -244,67 +216,22 @@ function! s:exCS_Goto() " <<<
     return 1
 endfunction " >>>
 
-
-" --exCS_SetCase--
-"  set if ignore case
-function! s:exCS_SetIgnoreCase(ignore_case) " <<<
-    let s:exCS_ignore_case = a:ignore_case
-    let s:exCS_need_search_again = 1
-    if a:ignore_case
-        echomsg 'exCS ignore case'
-    else
-        echomsg 'exCS no ignore case'
-    endif
-endfunction " >>>
-
 " --exCS_GoDirect--
-function! s:exCS_GoDirect() " <<<
+function! s:exCS_GoDirect( search_method ) " <<<
     let reg_s = @s
-    exe 'normal! "syiw'
-    call s:exCS_GetGlobalSearchResult(@s, '-s', 1)
-    let @s = reg_s
-endfunction " >>>
 
-" --exCS_GlobalSubstitute--
-function! s:exCS_GlobalSubstitute( pat, sub, flag ) " <<<
-    silent normal! gg
-    let last_line = line("$")
-    let cur_line_idx = 0
-    let cur_line = ''
-    while cur_line_idx <= last_line
-        let s:exCS_select_idx = line(".")
-        if s:exCS_Goto()
-            silent call g:ex_GotoEditBuffer()
-            let cur_line = substitute( getline("."), a:pat, a:sub, a:flag )
-            if cur_line != getline(".")
-                silent call setline( ".", cur_line )
-            endif
-            echon cur_line . "\r"
-            silent call g:ex_GotoEditBuffer()
-        endif
-        let cur_line_idx += 1
-        silent normal! j
-    endwhile
-endfunction " >>>
-
-" -- exCS_ParseSubcmd--
-function s:exCS_ParseSubcmd(cmd) " <<<
-    let slash_idx_1 = stridx( a:cmd, "/" )
-    while a:cmd[slash_idx_1-1] == '\'
-        let slash_idx_1 = stridx( a:cmd, "/", slash_idx_1 + 1 )
-    endwhile
-
-    let slash_idx_2 = strridx( a:cmd, "/" )
-
-    let pat = strpart(a:cmd, 0, slash_idx_1 )
-    let sub = strpart( a:cmd, slash_idx_1+1, slash_idx_2-slash_idx_1-1 )
-    let flag = ""
-    if slash_idx_1 != slash_idx_2
-        let flag = strpart( a:cmd, slash_idx_2+1 )
+    let save_pos = getpos(".")
+    if a:search_method ==# 'i' " including file
+        exe 'normal! "syiW'
+        let @s = fnamemodify( substitute( @s, '"', '', "g" ), ":p:t" )
+    else
+        exe 'normal! "syiw'
     endif
+    silent call setpos(".", save_pos )
+    let search_text = @s
+    let @s = reg_s
 
-    echo pat . ' ' . sub . ' ' . flag
-    call s:exCS_GlobalSubstitute( pat, sub, flag )
+    call s:exCS_GetSearchResult(search_text, a:search_method, 1)
 endfunction " >>>
 
 " ------------------------------
@@ -314,31 +241,55 @@ endfunction " >>>
 " --exCS_InitSelectWindow--
 " Init exGlobalSearch window
 function! g:exCS_InitSelectWindow() " <<<
-    setlocal number
+    silent! setlocal nonumber
     
-    " don't show any message
-	setlocal nocsverb
-    " connect cscope files
-    silent exec "cscope add " . g:exES_Cscope
-	silent! setlocal cscopequickfix=s-,c-,d-,i-,t-,e-
+    " if no scope connect yet, connect it
+    if !exists('g:exES_Cscope')
+        let g:exES_Cscope = './_vimfiles/cscope.out'
+    endif
+    if cscope_connection(4, "cscope.out", g:exES_Cscope ) == 0
+        call g:exCS_ConnectCscopeFile()
+    endif
 
     " syntax highlight
-    syntax match exCS_SynFileName '^[^:]*:'
-    syntax match exCS_SynSearchPattern '^----------.\+----------'
-    syntax match exCS_SynLineNumber '\d\+:'
+    if g:exCS_highlight_result
+        " this will load the syntax highlight as cpp for search result
+        silent exec "so $VIM/vimfiles/after/syntax/exUtility.vim"
 
-    highlight def exCS_SynFileName gui=none guifg=Blue term=none cterm=none ctermfg=Blue
-    highlight def exCS_SynSearchPattern gui=bold guifg=DarkRed guibg=LightGray term=bold cterm=bold ctermfg=DarkRed ctermbg=LightGray
-    highlight def exCS_SynLineNumber gui=none guifg=Brown term=none cterm=none ctermfg=DarkRed
+        "
+        syntax region exCS_SynFileName start="^[^:]*" end=":" oneline
+        syntax region exCS_SynSearchPattern start="^----------" end="----------"
+        syntax match exCS_SynLineNumber '\d\+:'
+        syntax match exCS_SynQfNumber '^ \[\d\+\]'
+
+        "
+        highlight def exCS_SynFileName gui=none guifg=DarkBlue term=none cterm=none ctermfg=DarkBlue
+        highlight def exCS_SynSearchPattern gui=bold guifg=DarkRed guibg=LightGray term=bold cterm=bold ctermfg=DarkRed ctermbg=LightGray
+        highlight def exCS_SynLineNumber gui=none guifg=Red term=none cterm=none ctermfg=Red
+        highlight def exCS_SynQfNumber gui=none guifg=Red term=none cterm=none ctermfg=Red
+    else
+        "
+        syntax region exCS_SynFileName start="^[^:]*" end=":" oneline
+        syntax region exCS_SynSearchPattern start="^----------" end="----------"
+        syntax match exCS_SynLineNumber '\d\+:'
+        syntax match exCS_SynQfNumber '^ \[\d\+\]'
+
+        "
+        highlight def exCS_SynFileName gui=none guifg=Blue term=none cterm=none ctermfg=Blue
+        highlight def exCS_SynSearchPattern gui=bold guifg=DarkRed guibg=LightGray term=bold cterm=bold ctermfg=DarkRed ctermbg=LightGray
+        highlight def exCS_SynLineNumber gui=none guifg=Brown term=none cterm=none ctermfg=Brown
+        highlight def exCS_SynQfNumber gui=none guifg=Brown term=none cterm=none ctermfg=Brown
+    endif
 
     " key map
     nnoremap <buffer> <silent> <Return>   \|:call <SID>exCS_GotoInSelectWindow()<CR>
     nnoremap <buffer> <silent> <Space>   :call <SID>exCS_ResizeWindow()<CR>
     nnoremap <buffer> <silent> <ESC>   :call <SID>exCS_ToggleWindow('Select')<CR>
 
-    nnoremap <buffer> <silent> <C-Up>   :call <SID>exCS_SwitchWindow('Stack')<CR>
     nnoremap <buffer> <silent> <C-Right>   :call <SID>exCS_SwitchWindow('Select')<CR>
     nnoremap <buffer> <silent> <C-Left>   :call <SID>exCS_SwitchWindow('QuickView')<CR>
+
+    " TODO: shrink text for d method
 
     nnoremap <buffer> <silent> <Leader>r :call <SID>exCS_ShowPickedResultNormalMode('', 'replace', 'pattern', 0)<CR>
     nnoremap <buffer> <silent> <Leader>d :call <SID>exCS_ShowPickedResultNormalMode('', 'replace', 'pattern', 1)<CR>
@@ -381,9 +332,6 @@ function! g:exCS_InitSelectWindow() " <<<
 
     " autocmd
     au CursorMoved <buffer> :call g:ex_HighlightSelectLine()
-
-    " command
-    command -buffer -nargs=1 SUB call s:exCS_ParseSubcmd('<args>')
 endfunction " >>>
 
 " --exCS_GotoSelectLine--
@@ -401,22 +349,32 @@ function! g:exCS_UpdateSelectWindow() " <<<
     call g:ex_HighlightConfirmLine()
 endfunction " >>>
 
-" --exCS_GetGlobalSearchResult--
+" --exCS_GetSearchResult--
 " Get Global Search Result
 " search_pattern = ''
 " search_method = -s / -r / -w
-function! s:exCS_GetGlobalSearchResult(search_pattern, search_method, direct_jump) " <<<
+function! s:exCS_GetSearchResult(search_pattern, search_method, direct_jump) " <<<
     " this will fix the jump error when tagselect in the same window
     if &filetype == "ex_filetype"
         silent exec "normal \<Esc>"
     endif
+
+    " change window for suitable search method
+    if a:search_method =~# '\(d\|i\)'
+        let g:exCS_use_vertical_window = 1
+        let g:exCS_window_direction = 'botright'
+    else
+        let g:exCS_use_vertical_window = 0
+        let g:exCS_window_direction = 'bel'
+    endif
+
 
     " save cursor postion
     let save_cursor = getpos(".")
 
     " start processing cscope
     echomsg 'cscope parsing ' . a:search_pattern . '...(ignore case)'
-    let search_cmd = 'cscope find d ' . a:search_pattern
+    let search_cmd = 'cscope find ' . a:search_method . ' ' . a:search_pattern
     silent exec search_cmd
     call setpos('.', save_cursor)
 
@@ -433,233 +391,59 @@ function! s:exCS_GetGlobalSearchResult(search_pattern, search_method, direct_jum
         exe gs_winnr . 'wincmd w'
     endif
 
+    " clear screen and put new result
+    silent exec 'normal! Gdgg'
+
     " processing search result
     let result_list = getqflist()
-    let pattern_title = '----------' . a:search_pattern . '----------' . "\n"
+    let pattern_title = '----------' . a:search_pattern . '----------'
     silent put = pattern_title 
 
     " {'lnum': 255, 'bufnr': 6, 'col': 0, 'valid': 1, 'vcol': 0, 'nr': -1, 'type': '', 'pattern': '', 'text': '<<assert>> assert(_ul_SMapIndex < GRD_k_ShadowMapsCount);'}
-    " {'lnum': 278, 'bufnr': 6, 'col': 0, 'valid': 1, 'vcol': 0, 'nr': -1, 'type': '', 'pattern': '', 'text': '<<eComputeShadowMatrices>> me_ProjectionType = _po_ShadowLight->eComputeShadowMatrices(&mm_ViewInvMatrix, &mm_ProjMatrix, fSMapAspect, &mst_SceneAABBox);'}
-    for item in result_list
-        let text_line = " " . bufname(item.bufnr) . ":" . item.lnum . ":" . item.text . "\n"
-        silent put = text_line 
-    endfor
-    "silent put = string(result_list)
 
-    "" clear screen and put new resultgetqflist()getqflist()getqflist()
-    "silent exec 'normal! Gdgg'
-    "call g:ex_HighlightConfirmLine()
-    "let line_num = line('.')
-    "silent put = search_result
-
-    "" Init search state
-    "let s:exCS_search_state_tmp.pattern = a:search_pattern
-    "let s:exCS_select_idx = line_num+1
-    "silent call cursor( line_num+1, 1 )
-endfunction " >>>
-
-" ------------------------------
-"  stack window part
-" ------------------------------
-" --exCS_InitStackWindow--
-" Init exGlobalSearch select window
-function! g:exCS_InitStackWindow() " <<<
-    " syntax highlight
-    syntax match exCS_SynJumpMethodGS '\[GS]'
-    syntax match exCS_SynJumpMethodGG '\[GG]'
-    syntax match exCS_SynJumpSymbol '======>'
-    syntax match exCS_SynStackTitle '#.\+PATTERN.\+ENTRY POINT PREVIEW'
-
-    highlight def exCS_SynJumpMethodGS gui=none guifg=Red 
-    highlight def exCS_SynJumpMethodGG gui=none guifg=Blue 
-    highlight def exCS_SynJumpSymbol gui=none guifg=DarkGreen
-    highlight def exCS_SynStackTitle gui=bold guifg=Brown
-
-    " key map
-    nnoremap <buffer> <silent> <Return>   \|:call <SID>exCS_Stack_GoDirect()<CR>
-    nnoremap <buffer> <silent> <Space>   :call <SID>exCS_ResizeWindow()<CR>
-    nnoremap <buffer> <silent> <ESC>   :call <SID>exCS_ToggleWindow('Stack')<CR>
-
-    nnoremap <buffer> <silent> <C-Up>   :call <SID>exCS_SwitchWindow('Stack')<CR>
-    nnoremap <buffer> <silent> <C-Right>   :call <SID>exCS_SwitchWindow('Select')<CR>
-    nnoremap <buffer> <silent> <C-Left>   :call <SID>exCS_SwitchWindow('QuickView')<CR>
-
-    " autocmd
-    au CursorMoved <buffer> :call g:ex_HighlightSelectLine()
-endfunction " >>>
-
-" --exCS_UpdateStackWindow--
-" Update exGlobalSearch stack window 
-function! g:exCS_UpdateStackWindow() " <<<
-    " if need update stack window 
-    if s:exCS_need_update_stack_window
-        let s:exCS_need_update_stack_window = 0
-        call s:exCS_ShowStackList()
+    if a:search_method ==# 'd' " calling function
+        let qf_idx = 0
+        for item in result_list
+            let start_idx = stridx( item.text, "<<")+2
+            let end_idx = stridx( item.text, ">>")
+            let len = end_idx - start_idx
+            let text_line = printf(" [%03d] %-40s | %s", qf_idx, strpart( item.text, start_idx, len ), strpart( item.text, end_idx+2 ) )
+            silent put = text_line 
+            let qf_idx += 1
+        endfor
+    elseif a:search_method ==# 'c' " called function
+        let qf_idx = 0
+        for item in result_list
+            let start_idx = stridx( item.text, "<<")+2
+            let end_idx = stridx( item.text, ">>")
+            let len = end_idx - start_idx
+            let text_line = printf(" [%03d] %-40s | %s", qf_idx, strpart( item.text, start_idx, len ), strpart( item.text, end_idx+2 ) )
+            silent put = text_line 
+            let qf_idx += 1
+        endfor
+    elseif a:search_method ==# 'i' " including file
+        let qf_idx = 0
+        for item in result_list
+            let convert_file_name = g:ex_ConvertFileName( bufname(item.bufnr) )
+            let start_idx = stridx( convert_file_name, "(")
+            let short_name = strpart( convert_file_name, 0, start_idx )
+            let path_name = strpart( convert_file_name, start_idx )
+            let text_line = printf(" [%03d] %-36s <%02d> %s", qf_idx, short_name, item.lnum, path_name )
+            silent put = text_line 
+            let qf_idx += 1
+        endfor
+    elseif a:search_method ==# 's' " C symbol
+        let i = 1
+    elseif a:search_method ==# 'g' " definition
+        let i = 1
+    elseif a:search_method ==# 'e' " egrep
+        let i = 1
     endif
 
-    let pattern = s:exCS_stack_idx . ':'
-    if search( pattern, 'w') == 0
-        call g:ex_WarningMsg('Pattern not found')
-        return
-    endif
-    call g:ex_HighlightConfirmLine()
-endfunction " >>>
-
-" --exCS_PushStack--
-" Push the result into stack
-function! s:exCS_PushStack( search_state ) " <<<
-    let list_len = len(s:exCS_search_stack_list)
-    if list_len > s:exCS_stack_idx+1
-        call remove(s:exCS_search_stack_list, s:exCS_stack_idx+1, list_len-1)
-        let s:exCS_stack_idx += 1
-    else
-        let s:exCS_stack_idx += 1
-    endif
-    let search_state = copy(a:search_state)
-    call add(s:exCS_search_stack_list,search_state)
-
-    let s:exCS_need_update_stack_window = 1
-endfunction " >>>
-
-" --exCS_SetStack--
-" Set current stack value
-function! s:exCS_SetStack( search_state ) " <<<
-    let s:exCS_search_stack_list[s:exCS_stack_idx] = copy( a:search_state )
-endfunction " >>>
-
-" --exCS_ShowStackList--
-" Show the stack list in stack window
-function! s:exCS_ShowStackList() " <<<
-    " open and goto search window first
-    let gs_winnr = bufwinnr(s:exCS_stack_title)
-    if gs_winnr == -1
-        " open window
-        let old_opt = g:exCS_backto_editbuf
-        let g:exCS_backto_editbuf = 0
-        call s:exCS_ToggleWindow('Stack')
-        let g:exCS_backto_editbuf = old_opt
-    else
-        exe gs_winnr . 'wincmd w'
-    endif
-
-    " clear screen
-    silent exec 'normal! Gdgg'
-
-    " put an empty line first
-    silent put = ''
-
-    " put the title
-    let tag_name = 'PATTERN'
-    let stack_preview = 'ENTRY POINT PREVIEW'
-    let str_line = printf(" #  %-54s%s", tag_name, stack_preview)
-    silent put = str_line
-
-    " put the stack
-    let idx = 0
-    for state in s:exCS_search_stack_list
-        let str_line = printf("%2d: %-40s ======> %s", idx, state.pattern, state.stack_preview)
-        silent put = str_line
-        let idx += 1
-    endfor
-    let reg_tmp = @t
-    silent exec 'normal! gg"tdd'
-    let @t = reg_tmp
-endfunction " >>>
-
-" --exCS_Stack_GotoTag--
-" Go to idx tags
-" jump_method : 'to_tag', to_entry
-function! s:exCS_Stack_GotoTag( idx, jump_method ) " <<<
-    let jump_method = a:jump_method
-    let list_len = len(s:exCS_search_stack_list)
-    " if idx < 0, return
-    if a:idx < 0
-        call g:ex_WarningMsg('at the top of exSearchStack')
-        let s:exCS_stack_idx = 0
-        return
-    elseif a:idx > list_len-1
-        call g:ex_WarningMsg('at the bottom of exSearchStack')
-        let s:exCS_stack_idx = list_len-1
-        return
-    endif
-
-    let s:exCS_stack_idx = a:idx
-    let need_jump = 1
-    " start point always use to_entry method
-    if s:exCS_stack_idx == 0
-        let jump_method = 'to_entry'
-    endif
-
-    " open and go to stack window first
-    let background_op = 0
-    if bufwinnr(s:exCS_stack_title) == -1
-        let old_setting = g:exTS_backto_editbuf
-        let g:exCS_backto_editbuf = 0
-        call s:exCS_ToggleWindow('Stack')
-        let g:exCS_backto_editbuf = old_setting
-        let background_op = 1
-    else
-        call g:exCS_UpdateStackWindow()
-    endif
-
-    " start parsing
-    if need_jump == 1
-        " go by tag_idx
-        if jump_method == 'to_entry'
-            call g:ex_GotoEditBuffer()
-            silent exec 'e ' . s:exCS_search_stack_list[s:exCS_stack_idx].entry_file_name
-            call setpos('.', s:exCS_search_stack_list[s:exCS_stack_idx].entry_cursor_pos)
-        else
-            call g:ex_GotoEditBuffer()
-            silent exec 'e ' . s:exCS_search_stack_list[s:exCS_stack_idx].pattern_file_name
-            call setpos('.', s:exCS_search_stack_list[s:exCS_stack_idx].pattern_cursor_pos)
-        endif
-        exe 'normal! zz'
-    endif
-
-    " go back if needed
-    if !g:exCS_stack_close_when_selected && !background_op
-        " highlight the select object in edit buffer
-        call g:ex_HighlightObjectLine()
-        exe 'normal! zz'
-
-        "
-        if !g:exCS_backto_editbuf
-            let winnum = bufwinnr(s:exCS_stack_title)
-            if winnr() != winnum
-                exe winnum . 'wincmd w'
-            endif
-            return
-        endif
-    else
-        let winnum = bufwinnr(s:exCS_stack_title)
-        if winnr() != winnum
-            exe winnum . 'wincmd w'
-        endif
-        close
-        call g:ex_GotoEditBuffer()
-    endif
-endfunction " >>>
-
-" --exCS_Stack_GoDirect--
-function! s:exCS_Stack_GoDirect() " <<<
-    let cur_line = getline(".")
-    let idx = match(cur_line, '\S')
-    let cur_line = strpart(cur_line, idx)
-    let idx = match(cur_line, ':')
-    let stack_idx = eval(strpart(cur_line, 0, idx))
-    call g:ex_HighlightConfirmLine()
-
-    " if select idx > old idx, jump to tag. else jump to entry
-    if stack_idx > s:exCS_stack_idx
-        call s:exCS_Stack_GotoTag(stack_idx, 'to_tag')
-        let s:exCS_last_jump_method = "to_tag"
-    elseif stack_idx < s:exCS_stack_idx
-        call s:exCS_Stack_GotoTag(stack_idx, 'to_entry')
-        let s:exCS_last_jump_method = "to_entry"
-    else
-        call s:exCS_Stack_GotoTag(stack_idx, s:exCS_last_jump_method)
-    endif
+    " Init search state
+    let line_num = search(pattern_title)
+    let s:exCS_select_idx = line_num+1
+    silent call cursor( s:exCS_select_idx, 1 )
 endfunction " >>>
 
 " ------------------------------
@@ -668,7 +452,7 @@ endfunction " >>>
 " --exCS_InitQuickViewWindow--
 " Init exGlobalSearch select window
 function! g:exCS_InitQuickViewWindow() " <<<
-    setlocal number
+    silent! setlocal nonumber
     setlocal foldmethod=marker foldmarker=<<<<<<,>>>>>> foldlevel=1
     " syntax highlight
     syntax match exCS_SynFileName '^[^:]*:'
@@ -688,7 +472,6 @@ function! g:exCS_InitQuickViewWindow() " <<<
     nnoremap <buffer> <silent> <Space>   :call <SID>exCS_ResizeWindow()<CR>
     nnoremap <buffer> <silent> <ESC>   :call <SID>exCS_ToggleWindow('QuickView')<CR>
 
-    nnoremap <buffer> <silent> <C-Up>   :call <SID>exCS_SwitchWindow('Stack')<CR>
     nnoremap <buffer> <silent> <C-Right>   :call <SID>exCS_SwitchWindow('Select')<CR>
     nnoremap <buffer> <silent> <C-Left>   :call <SID>exCS_SwitchWindow('QuickView')<CR>
 
@@ -733,13 +516,10 @@ function! g:exCS_InitQuickViewWindow() " <<<
 
     " autocmd
     au CursorMoved <buffer> :call g:ex_HighlightSelectLine()
-
-    " command
-    command -buffer -nargs=1 SUB call s:exCS_ParseSubcmd('<args>')
 endfunction " >>>
 
 " --exCS_UpdateQuickViewWindow--
-" Update exGlobalSearch stack window 
+" Update exGlobalSearch QuickView window 
 function! g:exCS_UpdateQuickViewWindow() " <<<
     silent call cursor(s:exCS_quick_view_idx, 1)
     call g:ex_HighlightConfirmLine()
@@ -887,29 +667,23 @@ endfunction " >>>
 " -------------------------------------------------------------------------
 " Command part
 " -------------------------------------------------------------------------
-command -nargs=1 CS call s:exCS_GetGlobalSearchResult('<args>', '-s', 0)
-"command -nargs=1 GSW call s:exCS_GetGlobalSearchResult('<args>', '-w', 0)
-"command -nargs=1 GSR call s:exCS_GetGlobalSearchResult('<args>', '-r', 0)
+command -nargs=1 CSD call s:exCS_GetSearchResult('<args>', 'd', 0)
+command -nargs=1 CSC call s:exCS_GetSearchResult('<args>', 'c', 0)
+command -nargs=1 CSI call s:exCS_GetSearchResult('<args>', 'i', 0)
+command -nargs=1 CSS call s:exCS_GetSearchResult('<args>', 's', 0)
+command -nargs=1 CSG call s:exCS_GetSearchResult('<args>', 'g', 0)
+command -nargs=1 CSE call s:exCS_GetSearchResult('<args>', 'e', 0)
+
 command ExcsToggle call s:exCS_ToggleWindow('')
 command ExcsSelectToggle call s:exCS_ToggleWindow('Select')
-command ExcsStackToggle call s:exCS_ToggleWindow('Stack')
 command ExcsQuickViewToggle call s:exCS_ToggleWindow('QuickView')
-command ExcsGoDirectly call s:exCS_GoDirect()
-"command BackwardSearchStack call s:exCS_Stack_GotoTag(s:exCS_stack_idx-1, 'to_entry')
-"command ForwardSearchStack call s:exCS_Stack_GotoTag(s:exCS_stack_idx+1, 'to_tag')
-"
-"" quick view command
-"command -nargs=1 GSPR call s:exCS_ShowPickedResult('<args>', 'replace', '', 0 )
-"command -nargs=1 GSPRI call s:exCS_ShowPickedResult('<args>', 'replace', '', 1 )
-"command -nargs=1 GSPA call s:exCS_ShowPickedResult('<args>', 'append', '', 0 )
-"command -nargs=1 GSPAI call s:exCS_ShowPickedResult('<args>', 'append', '', 1 )
-"command -nargs=1 GSPN call s:exCS_ShowPickedResult('<args>', 'new', '', 0 )
-"command -nargs=1 GSPNI call s:exCS_ShowPickedResult('<args>', 'new', '', 1 )
-"
-"" Ignore case setting
-"command GSigc call s:exCS_SetIgnoreCase(1)
-"command GSnoigc call s:exCS_SetIgnoreCase(0)
 
+command CSDD call s:exCS_GoDirect('d')
+command CSCD call s:exCS_GoDirect('c')
+command CSID call s:exCS_GoDirect('i')
+command CSSD call s:exCS_GoDirect('s')
+command CSGD call s:exCS_GoDirect('g')
+command CSED call s:exCS_GoDirect('e')
 
 finish
 " vim: set foldmethod=marker foldmarker=<<<,>>> foldlevel=1:

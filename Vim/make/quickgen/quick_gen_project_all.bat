@@ -1,1 +1,1 @@
-"c:\Program Files\Vim\make\quickgen\quick_gen_project.bat"
+"c:\Program Files\Vim\make\quickgen\quick_gen_project.bat" all %1

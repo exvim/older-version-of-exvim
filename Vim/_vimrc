@@ -460,6 +460,7 @@ map <silent> <Leader>cf :ForwardSearchStack<CR>
 let g:exCS_backto_editbuf = 0
 let g:exCS_close_when_selected = 0
 let g:exCS_window_direction = 'bel'
+let g:exCS_window_width = 48
 
 " --------------------
 " exQuickFix
@@ -484,18 +485,30 @@ let g:exES_vimfile_dir = "_vimfiles"
 let g:exES_project_cmd = 'EXProject'
 
 function g:exES_UpdateEnvironment()
+    " set parent working directory
     if exists( 'g:exES_PWD' )
         silent exec 'cd ' . g:exES_PWD
     endif
+
+    " set tag file path
     if exists( 'g:exES_Tag' )
         "let &tags = &tags . ',' . g:exES_Tag
         let &tags = escape(g:exES_Tag, " ")
     endif
+
+    " open exProject window
     if exists( 'g:exES_Project' )
         silent exec g:exES_project_cmd.' '.g:exES_Project
     endif
+
+    " init macro list
     if exists( 'g:exES_Macro' )
         silent call g:exMH_InitMacroList(g:exES_Macro)
+    endif
+
+    " connect cscope file
+    if exists( 'g:exES_Cscope' )
+        silent call g:exCS_ConnectCscopeFile()
     endif
 
     " Open Minibuffer always, re-adjust project position

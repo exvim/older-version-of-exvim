@@ -441,22 +441,23 @@ function! s:exMH_DefineSyntax() " <<<
 
     " --------------- exIfDisable ---------------
     " if disable(undef_macro) else define
-    exec 'syn region exIfDisableStart start=' . '"' . s:if_disable_pattern . '"' . ' end=".\@=\|$" contains=exIfDisable,exOrDisable,exOrnotDisable'
+    " to contains exIfEnable,exIfnEnable to avoid bugs that #if DISABLE || ENABLE, cause the DISABLE syntax is define after ENABLE, so it have the priority
+    exec 'syn region exIfDisableStart start=' . '"' . s:if_disable_pattern . '"' . ' end=".\@=\|$" contains=exIfDisable,exOrDisable,exOrnotDisable,exIfEnable,exIfnEnable'
     exec 'syn region exIfDisable contained extend keepend start=' . '"' . s:undef_macro_pattern . s:end_not_or_pattern . '"' . ' skip="#endif\>\_[^\%(\/\*\)]*\*\/" end="^\s*\%(%:\|#\)\s*\%(endif\>\)" contains=exCppSkip,exElseEnable,exElifEnableStart,exElifnEnableStart'
 
     " --------------- exElifDisable ---------------
     " elif disable(undef_macro) else define
-    exec 'syn region exElifDisableStart contained start=' . '"' . s:elif_disable_pattern . '"' . ' end=".\@=\|$" contains=exElifDisable,exOrDisable,exOrnotDisable'
+    exec 'syn region exElifDisableStart contained start=' . '"' . s:elif_disable_pattern . '"' . ' end=".\@=\|$" contains=exElifDisable,exOrDisable,exOrnotDisable,exElifEnable,exElifnEnable'
     exec 'syn region exElifDisable contained start=' . '"' . s:undef_macro_pattern . s:end_not_or_pattern . '"' . ' skip="#endif\>\_[^\%(\/\*\)]*\*\/" end="^\s*\%(%:\|#\)\s*\%(endif\>\)" contains=exCppSkip,exElseDisable,exElifEnableStart,exElifnEnableStart'
 
     " --------------- exIfnDisable ---------------
     " ifn disable(def_macro) else define
-    exec 'syn region exIfnDisableStart start=' . '"' . s:ifn_disable_pattern . '"' . ' end=".\@=\|$" contains=exIfnDisable,exOrDisable,exOrnotDisable'
+    exec 'syn region exIfnDisableStart start=' . '"' . s:ifn_disable_pattern . '"' . ' end=".\@=\|$" contains=exIfnDisable,exOrDisable,exOrnotDisable,exIfEnable,exIfnEnable'
     exec 'syn region exIfnDisable contained extend keepend start=' . '"' . s:def_macro_pattern . s:end_not_or_pattern . '"' . ' skip="#endif\>\_[^\%(\/\*\)]*\*\/" end="^\s*\%(%:\|#\)\s*\%(endif\>\)" contains=exCppSkip,exElseEnable,exElifEnableStart,exElifnEnableStart'
 
     " --------------- exElifnDisable ---------------
     " elif disable(undef_macro) else define
-    exec 'syn region exElifnDisableStart contained start=' . '"' . s:elifn_disable_pattern . '"' . ' end=".\@=\|$" contains=exElifnDisable,exOrDisable,exOrnotDisable'
+    exec 'syn region exElifnDisableStart contained start=' . '"' . s:elifn_disable_pattern . '"' . ' end=".\@=\|$" contains=exElifnDisable,exOrDisable,exOrnotDisable,exElifEnable,exElifnEnable'
     exec 'syn region exElifnDisable contained start=' . '"' . s:def_macro_pattern . s:end_not_or_pattern . '"' . ' skip="#endif\>\_[^\%(\/\*\)]*\*\/" end="^\s*\%(%:\|#\)\s*\%(endif\>\)" contains=exCppSkip,exElseDisable,exElifEnableStart,exElifnEnableStart'
 endfunction " >>>
 
@@ -597,7 +598,7 @@ function! s:exMH_SelectConfirm() " <<<
 
         " update syntax immediately
         call g:ex_GotoEditBuffer()
-        call g:ex_GotoEditBuffer()
+        call g:ex_SwitchBuffer()
         return
     endif
 
@@ -667,7 +668,7 @@ function! s:exMH_SelectConfirm() " <<<
 
     " update syntax immediately
     call g:ex_GotoEditBuffer()
-    call g:ex_GotoEditBuffer()
+    call g:ex_SwitchBuffer()
 
 endfunction " >>>
 
