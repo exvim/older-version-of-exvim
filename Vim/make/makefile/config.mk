@@ -1,5 +1,7 @@
-# Copyright (C) 2006 Johnny
-# ayacai [at] 163 [dot] com
+############################################################
+## Copyright (C) 2006 Johnny
+## ayacai [at] 163 [dot] com
+############################################################
 
 # ----------------------------------------------------------
 #  System Auto Dectect
@@ -37,7 +39,7 @@ Platform = Win32
 CompileMode = Fast
 
 # ----------------------------------------------------------
-#  Compiler & Linker Choose 
+#  C/Cpp Compiler & Linker Choose 
 # ----------------------------------------------------------
 
 # Compiler
@@ -45,20 +47,20 @@ CompileMode = Fast
 #  			 g++-sjlj 		( gcc_version_4 compiled by sjlj )
 # 			 ppu-lv2-g++ 	( gcc_ps3 )
 # 			 cl 			( msvc )
-COMPILER_WIN32=g++-sjlj
-COMPILER_LINUX=g++-sjlj
-COMPILER_XENON=g++-sjlj
-COMPILER_PS3=ppu-lv2-g++
+CPP_COMPILER_WIN32=g++-sjlj
+CPP_COMPILER_LINUX=g++-sjlj
+CPP_COMPILER_XENON=g++-sjlj
+CPP_COMPILER_PS3=ppu-lv2-g++
 
 # Linker
 # parameter: ar 			( archive )
 #  			 ld 			( gcc linker )
 # 			 ppu-lv2-ar 	( ps3 linker )
 # 			 link 			( msvc linker )
-LINKER_WIN32=ar
-LINKER_LINUX=ar
-LINKER_XENON=ar
-LINKER_PS3=ppu-lv2-ar
+CPP_LINKER_WIN32=ar
+CPP_LINKER_LINUX=ar
+CPP_LINKER_XENON=ar
+CPP_LINKER_PS3=ppu-lv2-ar
 
 # ----------------------------------------------------------
 #  Advance User Define
@@ -82,23 +84,23 @@ endif
 # Choose the linker
 ifeq ($(Platform),Win32)
 EXE_NAME := exe
-CC := $(SILENT_CMD)$(COMPILER_WIN32)
-AR := $(SILENT_CMD)$(LINKER_WIN32)
+CC := $(SILENT_CMD)$(CPP_COMPILER_WIN32)
+AR := $(SILENT_CMD)$(CPP_LINKER_WIN32)
 else
 ifeq ($(Platform),Linux)
 EXE_NAME := exe
-CC := $(SILENT_CMD)$(COMPILER_LINUX)
-AR := $(SILENT_CMD)$(LINKER_LINUX)
+CC := $(SILENT_CMD)$(CPP_COMPILER_LINUX)
+AR := $(SILENT_CMD)$(CPP_LINKER_LINUX)
 else
 ifeq ($(Platform),Xenon)
 EXE_NAME := xex
-CC := $(SILENT_CMD)$(COMPILER_XENON)
-AR := $(SILENT_CMD)$(LINKER_XENON)
+CC := $(SILENT_CMD)$(CPP_COMPILER_XENON)
+AR := $(SILENT_CMD)$(CPP_LINKER_XENON)
 else
 ifeq ($(Platform),PS3)
 EXE_NAME := elf
-CC := $(SILENT_CMD)$(COMPILER_PS3)
-AR := $(SILENT_CMD)$(LINKER_PS3)
+CC := $(SILENT_CMD)$(CPP_COMPILER_PS3)
+AR := $(SILENT_CMD)$(CPP_LINKER_PS3)
 else #default
 EXE_NAME := exe
 CC := $(SILENT_CMD)g++
