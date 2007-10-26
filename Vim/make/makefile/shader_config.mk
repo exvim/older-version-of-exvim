@@ -121,9 +121,6 @@ VS_LINUX=vs_3_0
 VS_XENON=vs_3_0
 VS_PS3=vs_3_0
 
-# VS Entrypoint Name
-VS_ENTRY=VS_Main
-
 # ----------------------------------------------------------
 #  Pixel Shader Compile Detail
 # ----------------------------------------------------------
@@ -141,9 +138,6 @@ PS_LINUX=ps_3_0
 PS_XENON=ps_3_0
 PS_PS3=ps_3_0
 
-# PS Entrypoint Name
-PS_ENTRY=PS_Main
-
 # ----------------------------------------------------------
 #  Geometry Shader Compile Detail
 # ----------------------------------------------------------
@@ -155,9 +149,6 @@ GS_WIN32=gs_4_0
 GS_LINUX=gs_4_0
 GS_XENON=gs_4_0
 GS_PS3=gs_4_0
-
-# GS Entrypoint Name
-GS_ENTRY=GS_Main
 
 # ----------------------------------------------------------
 #  FX Shader Compile Detail
@@ -171,9 +162,6 @@ FX_WIN32=fx_4_0
 FX_LINUX=fx_4_0
 FX_XENON=fx_4_0
 FX_PS3=fx_4_0
-
-# FX Entrypoint Name
-FX_ENTRY=FX_Main
 
 # ----------------------------------------------------------
 #  Advance User Define

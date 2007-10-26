@@ -18,28 +18,32 @@ PWD := # relative-address (sample: ..)
 
 # Project Name
 Project := # current directory name
-ProjectType := # choose: a,lib,so,dll,exe
 
 # Include Path
 IncDirs += # relative-address (sample: ./Incs)
 
-# Precompiled Headers Dependence Headers
-FullPath_PchDeps += # relative-address/header-file-name (sample: ./Incs/pch-header.h)
-
 # Source Path
 SrcDirs += # relative-address (sample: ./Srcs)
-
-# Dependent Library File Paths
-LibDirs += # relative-address (sample: ../Third-Part-Libs)
-
-# Dependent Library File Names
-PrjLibs += # lib-file-name (sample: libSDK.a-->SDK) This is libs for project compile depence
-ExtLibs += # lib-file-name (sample: libSDK.a-->SDK) This is libs for external libaraies
 
 # Special Flags
 # Some space-depent directory flag can't generate automatically, use this instead
 CFlag_Spec += # (sample: -I"C:/Program Files/Microsoft DirectX SDK/Include")
-LFlag_Spec += # (sample: -L"C:/Program Files/Microsoft DirectX SDK/Lib/x86")
+
+# ----------------------------------------------------------
+#  Shader Entrypoint Name
+# ----------------------------------------------------------
+
+# VS Entrypoint Name
+VS_ENTRY=VS_Main
+
+# PS Entrypoint Name
+PS_ENTRY=PS_Main
+
+# GS Entrypoint Name
+GS_ENTRY=GS_Main
+
+# FX Entrypoint Name
+FX_ENTRY=FX_Main
 
 # ----------------------------------------------------------
 #  Addvance User Define
