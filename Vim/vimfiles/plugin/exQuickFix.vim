@@ -378,7 +378,7 @@ function! g:exQF_InitQuickViewWindow() " <<<
     syntax match exQF_SynLineNumber ':\d\+'
 
     highlight def exQF_SynFileName term=none cterm=none ctermfg=Blue gui=none guifg=Blue 
-    highlight def exQF_SynSearchPattern term=blod cterm=bold ctermfg=DarkRed ctermbg=LightGray gui=bold guifg=DarkRed guibg=LightGray
+    highlight def exQF_SynSearchPattern term=bold cterm=bold ctermfg=DarkRed ctermbg=LightGray gui=bold guifg=DarkRed guibg=LightGray
     highlight def exQF_SynLineNumber term=none cterm=none ctermfg=Brown gui=none guifg=Brown 
 
     " key map

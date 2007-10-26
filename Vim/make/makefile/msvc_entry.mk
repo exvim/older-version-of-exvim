@@ -7,7 +7,7 @@
 #  Global Configuration
 # ----------------------------------------------------------
 # include general config
-include config.mk
+include msvc_config.mk
 
 # ----------------------------------------------------------
 #  User Define

@@ -8,7 +8,7 @@
 # ----------------------------------------------------------
 
 # include general config
-include config.mk
+include shader_config.mk
 
 # Sub-Directry names as known as project names for batched projects
 Batched_Prjs += # The Sub-Dir name

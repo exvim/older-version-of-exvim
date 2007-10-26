@@ -30,13 +30,19 @@ set history=50 " keep 50 lines of command line history
 set updatetime=1000 " default = 4000
 set autoread " auto read same-file change ( better for vc/vim change )
 
+" XXX
 "set isk+=$,%,#,- " none of these should be word dividers 
 
+" FIXME
 " there have a bug with visual copy, shows the there is nothing in register *
 "set clipboard=unnamed " use clipboard register '*'(unnamed) for all y, d, c, p ops, use autoselect to avoid selection p bugs.
 
 " enlarge maxmempattern from 1000 to ... (2000000 will give it without limit)
 set maxmempattern=1000
+
+" set quick fix error format
+" default errorformat = %f(%l) : %t%*\D%n: %m,%*[^"]"%f"%*\D%l: %m,%f(%l) : %m,%*[^ ] %f %l: %m,%f:%l:%c:%m,%f(%l):%m,%f:%l:%m,%f|%l| %m
+set errorformat+=%f(%l\\,%c):\ %m " fxc shader error-format
 
 
 " --------------------------------------------------------------------------------------
@@ -403,6 +409,7 @@ map <silent> <Leader>2 :call g:ex_HighlightCancle(2)<CR>
 map <silent> <Leader>3 :call g:ex_HighlightCancle(3)<CR>
 
 command -narg=? GMake call g:ex_GCCMake("<args>")
+command -narg=? SMake call g:ex_ShaderMake("<args>")
 command -narg=* VMake call g:ex_VCMake(<f-args>)
 command -narg=? Update call g:ex_UpdateVimFiles("<args>")
 
@@ -456,8 +463,7 @@ let g:exSL_SymbolSelectCmd = 'TS'
 " --------------------
 nnoremap <silent> <F2> :CSIC<CR>
 nnoremap <silent> <Leader>ci :CSID<CR>
-" TODO
-"nnoremap <silent> <F3> :CSDD<CR>
+nnoremap <silent> <F3> :ExcsParseFunction<CR>
 nnoremap <silent> <Leader>cd :CSDD<CR>
 nnoremap <silent> <Leader>cc :CSCD<CR>
 
@@ -538,8 +544,9 @@ else
     map <leader>fd :Project<CR>:redraw<CR>/=
 endif
 
-" project
-nmap <silent> <F3> <Plug>ToggleProject
+" project 
+" F3 used in cscope local function parse
+"nmap <silent> <F3> <Plug>ToggleProject
 let g:proj_window_width = 30
 let g:proj_window_increment = 50
 

@@ -236,7 +236,117 @@ function! s:exCS_GoDirect( search_method ) " <<<
     let search_text = @s
     let @s = reg_s
 
-    call s:exCS_GetSearchResult(search_text, a:search_method, 1)
+    call s:exCS_GetSearchResult(search_text, a:search_method)
+endfunction " >>>
+
+" --exCS_ShowQuickFixResult--
+function! s:exCS_ShowQuickFixResult( search_method ) " <<<
+    " processing search result
+    let result_list = getqflist()
+
+    " processing result
+    if a:search_method ==# 'da' " all calling function
+        let last_bufnr = -1
+        let qf_idx = 0
+        for item in result_list
+            if last_bufnr != item.bufnr
+                let convert_file_name = g:ex_ConvertFileName( bufname(item.bufnr) )
+                silent put = convert_file_name 
+                let last_bufnr = item.bufnr
+            endif
+            let start_idx = stridx( item.text, "<<")+2
+            let end_idx = stridx( item.text, ">>")
+            let len = end_idx - start_idx
+            let text_line = printf(" [%03d] %-40s | <%04d> %s", qf_idx, strpart( item.text, start_idx, len ), item.lnum, strpart( item.text, end_idx+2 ) )
+            silent put = text_line 
+            let qf_idx += 1
+        endfor
+    elseif a:search_method ==# 'ds' " select calling function
+        " TODO: " ::\S\+\_s\+(
+        let cur_bufnr = g:ex_GetEditBufferNum()
+        let qf_idx = 0
+        for item in result_list
+            if cur_bufnr == item.bufnr
+                let start_idx = stridx( item.text, "<<")+2
+                let end_idx = stridx( item.text, ">>")
+                let len = end_idx - start_idx
+                let text_line = printf(" [%03d] %-40s | <%04d> %s", qf_idx, strpart( item.text, start_idx, len ), item.lnum, strpart( item.text, end_idx+2 ) )
+                silent put = text_line 
+            endif
+            let qf_idx += 1
+        endfor
+    elseif a:search_method ==# 'c' " called function
+        let qf_idx = 0
+        for item in result_list
+            let start_idx = stridx( item.text, "<<")+2
+            let end_idx = stridx( item.text, ">>")
+            let len = end_idx - start_idx
+            let text_line = printf(" [%03d] %-40s | %s", qf_idx, strpart( item.text, start_idx, len ), strpart( item.text, end_idx+2 ) )
+            silent put = text_line 
+            let qf_idx += 1
+        endfor
+    elseif a:search_method ==# 'i' " including file
+        let qf_idx = 0
+        for item in result_list
+            let convert_file_name = g:ex_ConvertFileName( bufname(item.bufnr) )
+            let start_idx = stridx( convert_file_name, "(")
+            let short_name = strpart( convert_file_name, 0, start_idx )
+            let path_name = strpart( convert_file_name, start_idx )
+            let text_line = printf(" [%03d] %-36s <%02d> %s", qf_idx, short_name, item.lnum, path_name )
+            silent put = text_line 
+            let qf_idx += 1
+        endfor
+    elseif a:search_method ==# 's' " C symbol
+        let qf_idx = 0
+        for item in result_list
+            let end_idx = stridx( item.text, ">>")
+            let text_line = printf(" [%03d]%s<%d> %s", qf_idx, bufname(item.bufnr), item.lnum, strpart( item.text, end_idx+3 ) )
+            silent put = text_line 
+            let qf_idx += 1
+        endfor
+    elseif a:search_method ==# 'g' " definition
+        let qf_idx = 0
+        for item in result_list
+            let end_idx = stridx( item.text, ">>")
+            let text_line = printf(" [%03d]%s<%d> %s", qf_idx, bufname(item.bufnr), item.lnum, strpart( item.text, end_idx+3 ) )
+            silent put = text_line 
+            let qf_idx += 1
+        endfor
+    elseif a:search_method ==# 'e' " egrep
+        let qf_idx = 0
+        for item in result_list
+            let end_idx = stridx( item.text, ">>")
+            let text_line = printf(" [%03d]%s<%d> %s", qf_idx, bufname(item.bufnr), item.lnum, strpart( item.text, end_idx+3 ) )
+            silent put = text_line 
+            let qf_idx += 1
+        endfor
+    else
+        call g:ex_WarningMsg("Wrong search method")
+        return
+    endif
+endfunction " >>>
+
+
+" --exCS_ParseFunction--
+function! s:exCS_ParseFunction() " <<<
+    " if we have taglist use it
+    if exists(':Tlist')
+        silent exec "TlistUpdate"
+        let search_text = Tlist_Get_Tagname_By_Line()
+        if search_text == ""
+            call g:ex_WarningMsg("pattern not found, you're not in a function")
+            return
+        endif
+    else
+        let reg_s = @s
+
+        let save_pos = getpos(".")
+        exe 'normal! "syiw'
+        silent call setpos(".", save_pos )
+        let search_text = @s
+        let @s = reg_s
+    endif
+    call s:exCS_GetSearchResult(search_text, 'ds')
 endfunction " >>>
 
 " ------------------------------
@@ -262,7 +372,7 @@ function! g:exCS_InitSelectWindow() " <<<
         silent exec "so $VIM/vimfiles/after/syntax/exUtility.vim"
 
         "
-        syntax region exCS_SynFileName start="^[^:]*" end=":" oneline
+        syntax match exCS_SynFileName '^.*\s\+(.*)$'
         syntax region exCS_SynSearchPattern start="^----------" end="----------"
         syntax match exCS_SynLineNumber '<\d\+>'
         syntax match exCS_SynQfNumber '^ \[\d\+\]'
@@ -274,7 +384,7 @@ function! g:exCS_InitSelectWindow() " <<<
         highlight def exCS_SynQfNumber gui=none guifg=Red term=none cterm=none ctermfg=Red
     else
         "
-        syntax region exCS_SynFileName start="^[^:]*" end=":" oneline
+        syntax match exCS_SynFileName '^.*\s\+(.*)$'
         syntax region exCS_SynSearchPattern start="^----------" end="----------"
         syntax match exCS_SynLineNumber '<\d\+>'
         syntax match exCS_SynQfNumber '^ \[\d\+\]'
@@ -358,7 +468,7 @@ endfunction " >>>
 " Get Global Search Result
 " search_pattern = ''
 " search_method = -s / -r / -w
-function! s:exCS_GetSearchResult(search_pattern, search_method, direct_jump) " <<<
+function! s:exCS_GetSearchResult(search_pattern, search_method) " <<<
     " this will fix the jump error when tagselect in the same window
     if &filetype == "ex_filetype"
         silent exec "normal \<Esc>"
@@ -377,7 +487,6 @@ function! s:exCS_GetSearchResult(search_pattern, search_method, direct_jump) " <
     endif
 
     " start processing cscope
-    echon 'cscope parsing ' . a:search_pattern . '...(ignore case)' . "\r"
     let search_cmd = 'cscope find ' . a:search_method . ' ' . a:search_pattern
     try
         silent exec search_cmd
@@ -409,50 +518,9 @@ function! s:exCS_GetSearchResult(search_pattern, search_method, direct_jump) " <
     silent exec 'normal! Gdgg'
 
     " processing search result
-    let result_list = getqflist()
     let pattern_title = '----------' . a:search_pattern . '----------'
     silent put = pattern_title 
-
-    " {'lnum': 255, 'bufnr': 6, 'col': 0, 'valid': 1, 'vcol': 0, 'nr': -1, 'type': '', 'pattern': '', 'text': '<<assert>> assert(_ul_SMapIndex < GRD_k_ShadowMapsCount);'}
-
-    if a:search_method ==# 'd' " calling function
-        let qf_idx = 0
-        for item in result_list
-            let start_idx = stridx( item.text, "<<")+2
-            let end_idx = stridx( item.text, ">>")
-            let len = end_idx - start_idx
-            let text_line = printf(" [%03d] %-40s | %s", qf_idx, strpart( item.text, start_idx, len ), strpart( item.text, end_idx+2 ) )
-            silent put = text_line 
-            let qf_idx += 1
-        endfor
-    elseif a:search_method ==# 'c' " called function
-        let qf_idx = 0
-        for item in result_list
-            let start_idx = stridx( item.text, "<<")+2
-            let end_idx = stridx( item.text, ">>")
-            let len = end_idx - start_idx
-            let text_line = printf(" [%03d] %-40s | %s", qf_idx, strpart( item.text, start_idx, len ), strpart( item.text, end_idx+2 ) )
-            silent put = text_line 
-            let qf_idx += 1
-        endfor
-    elseif a:search_method ==# 'i' " including file
-        let qf_idx = 0
-        for item in result_list
-            let convert_file_name = g:ex_ConvertFileName( bufname(item.bufnr) )
-            let start_idx = stridx( convert_file_name, "(")
-            let short_name = strpart( convert_file_name, 0, start_idx )
-            let path_name = strpart( convert_file_name, start_idx )
-            let text_line = printf(" [%03d] %-36s <%02d> %s", qf_idx, short_name, item.lnum, path_name )
-            silent put = text_line 
-            let qf_idx += 1
-        endfor
-    elseif a:search_method ==# 's' " C symbol
-        let i = 1
-    elseif a:search_method ==# 'g' " definition
-        let i = 1
-    elseif a:search_method ==# 'e' " egrep
-        let i = 1
-    endif
+    silent call s:exCS_ShowQuickFixResult(a:search_method)
 
     " Init search state
     let line_num = search(pattern_title)
@@ -543,7 +611,6 @@ endfunction " >>>
 "  goto select line
 function! s:exCS_GotoInQuickViewWindow() " <<<
     let s:exCS_quick_view_idx = line(".")
-    " TODO save history idx
     call g:ex_HighlightConfirmLine()
     call s:exCS_Goto()
 endfunction " >>>
@@ -681,21 +748,22 @@ endfunction " >>>
 " -------------------------------------------------------------------------
 " Command part
 " -------------------------------------------------------------------------
-command -nargs=1 CSD call s:exCS_GetSearchResult('<args>', 'd', 0)
-command -nargs=1 CSC call s:exCS_GetSearchResult('<args>', 'c', 0)
-command -nargs=1 CSI call s:exCS_GetSearchResult('<args>', 'i', 0)
-command -nargs=1 CSS call s:exCS_GetSearchResult('<args>', 's', 0)
-command -nargs=1 CSG call s:exCS_GetSearchResult('<args>', 'g', 0)
-command -nargs=1 CSE call s:exCS_GetSearchResult('<args>', 'e', 0)
+command -nargs=1 CSD call s:exCS_GetSearchResult('<args>', 'da')
+command -nargs=1 CSC call s:exCS_GetSearchResult('<args>', 'c')
+command -nargs=1 CSI call s:exCS_GetSearchResult('<args>', 'i')
+command -nargs=1 CSS call s:exCS_GetSearchResult('<args>', 's')
+command -nargs=1 CSG call s:exCS_GetSearchResult('<args>', 'g')
+command -nargs=1 CSE call s:exCS_GetSearchResult('<args>', 'e')
 
 command ExcsToggle call s:exCS_ToggleWindow('')
 command ExcsSelectToggle call s:exCS_ToggleWindow('Select')
 command ExcsQuickViewToggle call s:exCS_ToggleWindow('QuickView')
+command ExcsParseFunction call s:exCS_ParseFunction()
 
-command CSDD call s:exCS_GoDirect('d')
+command CSDD call s:exCS_GoDirect('da')
 command CSCD call s:exCS_GoDirect('c')
 command CSID call s:exCS_GoDirect('i')
-command CSIC call s:exCS_GetSearchResult(fnamemodify( bufname("%"), ":p:t" ), 'i', 0)
+command CSIC call s:exCS_GetSearchResult(fnamemodify( bufname("%"), ":p:t" ), 'i')
 command CSSD call s:exCS_GoDirect('s')
 command CSGD call s:exCS_GoDirect('g')
 command CSED call s:exCS_GoDirect('e')

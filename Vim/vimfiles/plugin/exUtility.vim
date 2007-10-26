@@ -433,6 +433,11 @@ function! g:ex_GotoEditBuffer() " <<<
     endif
 endfunction " >>>
 
+" --ex_GetEditBufferNum--
+function! g:ex_GetEditBufferNum() " <<<
+    return s:ex_editbuf_num
+endfunction " >>>
+
 " --ex_GotoLastEditBuffer--
 function! g:ex_GotoLastEditBuffer() " <<<
     " check if buffer existed and listed
@@ -1022,7 +1027,20 @@ function! g:ex_GCCMake(args) " <<<
     " save all file for compile first
     silent exec "wa!"
 
-    let entry_file = glob('entry_gcc*.mk') 
+    let entry_file = glob('gcc_entry*.mk') 
+    if entry_file != ''
+        exec "!make -f" . entry_file . " " . a:args
+    else
+        call g:ex_WarningMsg("entry file not found")
+    endif
+endfunction " >>>
+
+" --ex_ShaderMake()--
+function! g:ex_ShaderMake(args) " <<<
+    " save all file for compile first
+    silent exec "wa!"
+
+    let entry_file = glob('shader_entry*.mk') 
     if entry_file != ''
         exec "!make -f" . entry_file . " " . a:args
     else

@@ -7,7 +7,7 @@
 #  Global Configuration
 # ----------------------------------------------------------
 # include general config
-include ../config.mk
+include ../shader_config.mk
 
 # ----------------------------------------------------------
 #  User Define
@@ -55,4 +55,4 @@ AFTER_BUILD = # programme after target been built, this is the project specific 
 #  Rules
 # ----------------------------------------------------------
 
-include ../rule.mk
+include ../shader_rule.mk

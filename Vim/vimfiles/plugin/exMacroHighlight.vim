@@ -298,7 +298,9 @@ function! g:exMH_InitMacroList(macrofile_name) " <<<
     endif
 
     " define autocmd for update syntax
-    autocmd BufEnter *.h,*.hh,*.hpp,*.hxx,*.inl,*.H,*.c,*.cc,*.cpp,*.cxx,*.c++,*.C,*.hlsl,*.fx,*.fxh,*.cg,*.vsh,*.psh,*.shd call s:exMH_UpdateSyntax()
+    " TODO: the shader still have problem
+    " *.hlsl,*.fx,*.fxh,*.cg,*.vsh,*.psh,*.shd
+    autocmd BufEnter *.h,*.hh,*.hpp,*.hxx,*.inl,*.H,*.c,*.cc,*.cpp,*.cxx,*.c++,*.C call s:exMH_UpdateSyntax()
 endfunction " >>>
 
 " --exMH_UpdateMacroList--

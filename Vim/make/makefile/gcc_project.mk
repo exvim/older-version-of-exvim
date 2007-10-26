@@ -7,14 +7,14 @@
 #  Global Configuration
 # ----------------------------------------------------------
 # include general config
-include config.mk
+include ../gcc_config.mk
 
 # ----------------------------------------------------------
 #  User Define
 # ----------------------------------------------------------
 
 # Parent Working Directory
-PWD := .
+PWD := # relative-address (sample: ..)
 
 # Project Name
 Project := # current directory name
@@ -29,7 +29,7 @@ FullPath_PchDeps += # relative-address/header-file-name (sample: ./Incs/pch-head
 # Source Path
 SrcDirs += # relative-address (sample: ./Srcs)
 
-# Dependent Libaray File Paths
+# Dependent Library File Paths
 LibDirs += # relative-address (sample: ../Third-Part-Libs)
 
 # Dependent Library File Names
@@ -46,10 +46,13 @@ LFlag_Spec += # (sample: -L"C:/Program Files/Microsoft DirectX SDK/Lib/x86")
 # ----------------------------------------------------------
 
 # Parent Working Directory
-PWD ?= .
+PWD ?= ..
+
+# After Build Even
+AFTER_BUILD = # programme after target been built, this is the project specific one (sample: make_fself $(@) $(basename $(@)).self)
 
 # ----------------------------------------------------------
 #  Rules
 # ----------------------------------------------------------
 
-include rule.mk
+include ../gcc_rule.mk
