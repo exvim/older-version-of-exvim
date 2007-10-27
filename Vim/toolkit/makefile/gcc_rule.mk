@@ -1,7 +1,5 @@
-############################################################
-## Copyright (C) 2006 Johnny
-## ayacai [at] 163 [dot] com
-############################################################
+# Copyright (C) 2006 Johnny
+# ayacai [at] 163 [dot] com
 
 # ----------------------------------------------------------
 #  Pre-generate Target
@@ -17,9 +15,8 @@ OutDir := $(PWD)/_gmakes/$(Platform)
 # -------------------
 
 # Precompiled Headers
-# FIXME Compiler choose gch or pch
-PchDir := $(addsuffix .gch,$(FullPath_PchDeps))
-FullPath_Pchs := $(addsuffix _$(Platform)_$(Configuration).h.gch,$(addprefix $(PchDir)/,$(basename $(notdir $(FullPath_PchDeps)))))
+GchDir := $(addsuffix .gch,$(FullPath_GchDeps))
+FullPath_Gchs := $(addsuffix _$(Platform)_$(Configuration).h.gch,$(addprefix $(GchDir)/,$(basename $(notdir $(FullPath_GchDeps)))))
 
 # -------------------
 #  Source
@@ -53,19 +50,19 @@ DepDir := $(OutDir)/$(Configuration)/Deps/$(Project)
 
 # Dependence File Output Names
 Deps := $(patsubst %.o,%.d,$(Objs))
-PchDeps := $(patsubst %.gch,%.d,$(notdir $(PchDir)))
+GchDeps := $(patsubst %.gch,%.d,$(notdir $(GchDir)))
 
 # Dependence File With Full Path
 FullPath_Deps := $(addprefix $(DepDir)/,$(Deps))
-FullPath_PchDeps := $(addprefix $(DepDir)/,$(PchDeps))
-FullPath_AllDeps := $(FullPath_Deps) $(FullPath_PchDeps)
+FullPath_GchDeps := $(addprefix $(DepDir)/,$(GchDeps))
+FullPath_AllDeps := $(FullPath_Deps) $(FullPath_GchDeps)
 
 # -------------------
 #  Dependence Library
 # -------------------
 
 # Dependence Libraries
-Libs := $(PrjLibs) $(ExtLibs) 
+Libs := $(PrjLibs) $(ExtLibs)
 
 # Project Compile Dependence Libraries Output Path
 PrjLibDir := $(OutDir)/$(Configuration)/Libs
@@ -82,8 +79,16 @@ ifeq ($(ProjectType),$(EXE_NAME))
 TargetDir := $(OutDir)/$(Configuration)/Bin
 Target := $(Project)_$(Configuration).$(ProjectType)
 else
+ifeq ($(ProjectType),a)
 TargetDir := $(OutDir)/$(Configuration)/Libs
 Target := lib$(Project).$(ProjectType)
+else
+ifeq ($(ProjectType),dll)
+TargetDir := $(OutDir)/$(Configuration)/Libs
+Target := $(Project).$(ProjectType)
+libTarget := lib$(Project).a
+endif
+endif
 endif
 FullPath_Target := $(TargetDir)/$(Target)
 
@@ -155,6 +160,12 @@ endif
 endif
 endif
 
+# Build as DLL or not
+ifeq ($(ProjectType),dll)
+PreDefs += DLL
+PreDefs += _DLL
+endif
+
 # -------------------
 #  Generate Flag
 # -------------------
@@ -164,6 +175,11 @@ Flag_PreDef := $(addprefix -D,$(PreDefs))
 Flag_Inc := $(addprefix -I,$(IncDirs))
 Flag_LibDir := $(addprefix -L,$(LibDirs))
 Flag_Lib := $(addprefix -l,$(Libs))
+ifeq ($(ProjectType),dll)
+Flag_BuildDll := -shared -Wl,--out-implib,$(TargetDir)/$(libTarget)
+else
+Flag_BuildDll :=
+endif
 
 # Debug Flag ( choose debug or not )
 # Optimization Flag ( -O0:disable -O/-O1:general opt -O2:advance opt -O3:all opt )
@@ -178,7 +194,7 @@ endif
 # Compile Flag
 CFlags := $(Flag_Debug) $(Flag_Opt) $(Flag_PreDef) $(Flag_Inc) $(CFlag_Spec)
 # Link Flag
-LFlags := $(Flag_LibDir) $(Flag_Lib) $(LFlag_Spec)
+LFlags := $(Flag_LibDir) $(Flag_Lib) $(Flag_BuildDll) $(LFlag_Spec)
 
 # -------------------
 #  VPATH
@@ -197,7 +213,7 @@ VPATH += $(TargetDir)
 # -------------------
 .PHONY: all clean-all rebuild
 all: |clean-errs $(FullPath_Target)
-clean-all: |clean-deps clean-pchs clean-objs clean-errs clean-target
+clean-all: |clean-deps clean-gchs clean-objs clean-errs clean-target
 rebuild: |clean-all all
 
 # -------------------
@@ -215,11 +231,13 @@ else
 	@for %%i in ($(FullPath_Target)) do (echo     \--   %%i)
 endif
 	$(RM) $(FullPath_Target)
+ifeq ($(ProjectType),dll)
+	$(RM) $(TargetDir)/$(libTarget)
+endif
 # single
 $(Target): $(FullPath_Target)
 
 # commands-target
-# FIXME consider dll
 $(FullPath_Target): $(FullPath_Objs) $(FullPath_PrjLibs)
 	$(ECHO) linking:
 ifeq ($(CURRENT_OS),Linux)
@@ -234,7 +252,13 @@ endif
 ifeq ($(ProjectType),$(EXE_NAME))
 	$(CC) $(filter %.o,$^) $(LFlags) -o $@ 2>>$(ErrDir)/$(ErrLogName)
 else
+ifeq ($(ProjectType),a)
 	$(AR) r $@ $(filter %.o,$^) 2>>$(ErrDir)/$(ErrLogName)
+else
+ifeq ($(ProjectType),dll)
+	$(CC) $(filter %.o,$^) $(LFlags) -o $@ 2>>$(ErrDir)/$(ErrLogName)
+endif
+endif
 endif
 	$(ECHO) generate $(@)
 	$(CAT) $(ErrDir)/$(ErrLogName) >> $(ErrDir)/$(Project).err
@@ -293,47 +317,47 @@ else
 	$(RM) $@.tmp
 endif
 
-# commands-pch-deps
+# commands-gch-deps
 $(DepDir)/%.h.d: %.h
 	$(ECHO) creating $@...
 	$(MKDIR) $(DepDir)
 	$(RM) $@
 ifeq ($(CompileMode),Fast)
 	$(CC) -M $(CFlags) $< -o $@.tmp
-	@sed "s,\($*\)\.o[ :]*,$(FullPath_Pchs): ,g" < $@.tmp > $@
+	@sed "s,\($*\)\.o[ :]*,$(FullPath_Gchs): ,g" < $@.tmp > $@
 	$(RM) $@.tmp
 else
 	$(CC) -M $(CFlags) $< -o $@.tmp
-	@sed "s,\($*\)\.o[ :]*,$(FullPath_Pchs) $@: ,g" < $@.tmp > $@
+	@sed "s,\($*\)\.o[ :]*,$(FullPath_Gchs) $@: ,g" < $@.tmp > $@
 	$(RM) $@.tmp
 endif
 
 # -------------------
-# PCH Rules
+# GCH Rules
 # -------------------
-.PHONY: pchs clean-pchs
+.PHONY: gchs clean-gchs
 # all
-pchs: $(FullPath_Pchs)
-clean-pchs: 
+gchs: $(FullPath_Gchs)
+clean-gchs: 
 	$(ECHO)
-	$(ECHO) delete pchs:
-ifneq ($(FullPath_Pchs),)
+	$(ECHO) delete gchs:
+ifneq ($(FullPath_Gchs),)
 ifeq ($(CURRENT_OS),Linux)
-	@for item in $(FullPath_Pchs); do echo "    |--"   $$item; done
+	@for item in $(FullPath_Gchs); do echo "    |--"   $$item; done
 else
-	@for %%i in ($(FullPath_Pchs)) do (echo     \--   %%i)
+	@for %%i in ($(FullPath_Gchs)) do (echo     \--   %%i)
 endif
-	$(RM) $(FullPath_Pchs)
+	$(RM) $(FullPath_Gchs)
 endif
 
-# commands-pchs
-$(FullPath_Pchs):
+# commands-gchs
+$(FullPath_Gchs):
 	$(MKDIR) $(ErrDir)
-	$(MKDIR) $(PchDir)
+	$(MKDIR) $(GchDir)
 	$(ECHO) compiling $(basename $@)...
 	$(ECHO) - > $(ErrDir)/$(ErrLogName)
 	$(ECHO) --[$(Project)]$(patsubst %/,%,$(notdir $@))-- >> $(ErrDir)/$(ErrLogName)
-	$(CC) -c $(CFlags) $(basename $(PchDir)) -o $@ 2>>$(ErrDir)/$(ErrLogName)
+	$(CC) -c $(CFlags) $(basename $(GchDir)) -o $@ 2>>$(ErrDir)/$(ErrLogName)
 	$(CAT) $(ErrDir)/$(ErrLogName) >> $(ErrDir)/$(Project).err
 
 # -------------------
@@ -361,7 +385,7 @@ clean-%.o:
 # commands-objs
 # cpp files
 -include $(FullPath_AllDeps)
-$(ObjDir)/%.o: %.cpp $(FullPath_Pchs)
+$(ObjDir)/%.o: %.cpp $(FullPath_Gchs)
 	$(MKDIR) $(ObjDir)
 	$(MKDIR) $(ErrDir)
 	$(ECHO) compiling $<...
@@ -371,7 +395,7 @@ $(ObjDir)/%.o: %.cpp $(FullPath_Pchs)
 	$(CAT) $(ErrDir)/$(ErrLogName) >> $(ErrDir)/$(Project).err
 
 # c files
-$(ObjDir)/%.o: %.c $(FullPath_Pchs)
+$(ObjDir)/%.o: %.c $(FullPath_Gchs)
 	$(MKDIR) $(ObjDir)
 	$(MKDIR) $(ErrDir)
 	$(ECHO) compiling $<...

@@ -24,7 +24,7 @@ ProjectType := # choose: a,lib,so,dll,exe
 IncDirs += # relative-address (sample: ./Incs)
 
 # Precompiled Headers Dependence Headers
-FullPath_PchDeps += # relative-address/header-file-name (sample: ./Incs/pch-header.h)
+FullPath_GchDeps += # relative-address/header-file-name (sample: ./Incs/gch-header.h)
 
 # Source Path
 SrcDirs += # relative-address (sample: ./Srcs)

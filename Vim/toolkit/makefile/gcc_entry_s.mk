@@ -25,7 +25,7 @@ IncDirs += .
 IncDirs += # relative-address (sample: ./Incs)
 
 # Precompiled Headers Dependence Headers
-FullPath_PchDeps += # relative-address/header-file-name (sample: ./Incs/pch-header.h)
+FullPath_GchDeps += # relative-address/header-file-name (sample: ./Incs/Gch-header.h)
 
 # Source Path
 SrcDirs += .
