@@ -1,9 +1,0 @@
-
-" --------- date_generator --------
-strftime("%Y-%m-%d_%a")
-
-" --------- dir_convertor --------
-%s/\//\\/g " Linux->Windows 
-%s/\\/\//g " Windows->Linux 
-
-" vim: set ft=vim:
