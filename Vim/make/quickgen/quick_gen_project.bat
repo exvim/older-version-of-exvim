@@ -63,7 +63,7 @@ if /I "%2"=="tag" goto FINISH
 :SYMBOL
 rem create symbols
 echo Creating Symbols...
-gawk -f "c:\Program Files\Vim\make\gawk\prg_NoStripSymbol.awk" ./tags>./_vimfiles/_symbol
+gawk -f "%EX_DEV%\Vim\toolkit\gawk\prg_NoStripSymbol.awk" ./tags>./_vimfiles/_symbol
 move /Y ".\_vimfiles\_symbol" ".\_vimfiles\symbol"
 if /I "%2"=="symbol" goto FINISH
 
