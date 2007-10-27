@@ -175,6 +175,7 @@ set grepformat=%f:%l:%m
 " --------------------
 "  Syntax
 " --------------------
+let c_gnu = 1
 let c_no_curly_error = 1
 "let c_no_bracket_error = 1
 
