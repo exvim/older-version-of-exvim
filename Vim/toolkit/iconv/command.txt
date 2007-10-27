@@ -1,0 +1,5 @@
+
+rem ----------- MSVC build log convert -----------------
+iconv -c -f ucs-2le -t ASCII BuildLog.htm > BuildLog.err
+
+rem vim: set ft=dosbatch:
