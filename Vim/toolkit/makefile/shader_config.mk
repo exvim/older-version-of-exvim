@@ -37,7 +37,7 @@ SMAKE := $(SILENT_CMD)$(MAKE) $(SILENT_MK)
 ifeq ($(CURRENT_OS),Linux)
 CMD_PATH_LINUX :=
 else
-CMD_PATH_LINUX := c:/msys/1.0/bin/
+CMD_PATH_LINUX := $(EX_DEV)/msys/1.0/bin/
 endif
 
 # Linux Commands
