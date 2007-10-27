@@ -68,7 +68,8 @@ move /Y ".\_vimfiles\_symbol" ".\_vimfiles\symbol"
 if /I "%2"=="symbol" goto FINISH
 
 :CSCOPE
-rem create cscope files
+rem create cscope files but if LANGTYPE is vim, we don't needt to create cscope
+if /I "%LANGTYPE%"=="VIM" goto ID
 echo Creating cscope.files...
 dir /s /b %FILEFILTER%|sed "s,\(.*\),\"\1\",g" > cscope.files
 echo Creating cscope.out...
