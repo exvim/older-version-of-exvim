@@ -29,7 +29,7 @@ syn keyword exBoolean		TRUE FALSE
 
 " the cPreCondit conflict with exMacroInside, use exPreCondit instead
 syn region exMacroInside contained matchgroup=cPreProc start="^\s*\(%:\|#\)\s*\(if\>\|ifdef\>\|ifndef\>\).*\/\/"rs=e-2 start="^\s*\(%:\|#\)\s*\(if\>\|ifdef\>\|ifndef\>\).*" skip="\\$" end="^\s*\(%:\|#\)\s*endif\>" extend contains=@exEnableContainedGroup
-syn match exPreCondit display "^\s*\(%:\|#\)\s*\(else\|elif\)\>.*"
+syn match exPreCondit display "^\s*\(%:\|#\)\s*\(else\|elif\)\>.*" contains=cComment,cCommentL
 
 " the bug is the exElseDisable and exIfxEnable share the same end.
 syn region exElseDisable contained start="^\s*\(%:\|#\)\s*else\>" skip="\\$" end="^\s*\(%:\|#\)\s*endif\>" keepend contains=exCppSkip
