@@ -15,8 +15,8 @@ OutDir := $(PWD)/_gmakes/$(Platform)
 # -------------------
 
 # Precompiled Headers
-GchDir := $(addsuffix .gch,$(FullPath_GchDeps))
-FullPath_Gchs := $(addsuffix _$(Platform)_$(Configuration).h.gch,$(addprefix $(GchDir)/,$(basename $(notdir $(FullPath_GchDeps)))))
+GchDir := $(addsuffix .gch,$(FullPath_GchSrcs))
+FullPath_Gchs := $(addsuffix _$(Platform)_$(Configuration).h.gch,$(addprefix $(GchDir)/,$(basename $(notdir $(FullPath_GchSrcs)))))
 
 # -------------------
 #  Source
