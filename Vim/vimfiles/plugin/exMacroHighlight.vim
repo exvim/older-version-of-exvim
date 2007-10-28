@@ -78,7 +78,6 @@ let s:exMH_cur_filename = ''
 " general
 let s:exMH_backto_editbuf = 0
 let s:exMH_get_macro_file = 1
-let s:exMH_macro_list = []
 let s:exMH_define_list = [[],[]] " 0: not define group, 1: define group
 let s:exMH_IsEnable = 0
 let s:exMH_Debug = 0
@@ -306,9 +305,6 @@ endfunction " >>>
 " --exMH_UpdateMacroList--
 function! s:exMH_UpdateMacroList(line_list,save_file) " <<<
     " clear the macro list and define list first
-    if !empty(s:exMH_macro_list)
-        call remove(s:exMH_macro_list,0,-1)
-    endif
     if !empty(s:exMH_define_list)
         if !empty(s:exMH_define_list[0])
             call remove(s:exMH_define_list[0],0,-1)
@@ -318,12 +314,10 @@ function! s:exMH_UpdateMacroList(line_list,save_file) " <<<
         endif
         call remove(s:exMH_define_list,0,-1)
     endif
-    let s:exMH_macro_list = []
     let s:exMH_define_list = [[],[]]
 
     " init group index and group item index
-    let group_idx = -1
-    let group_list = []
+    let skip_group = 0
     
     " loop the line_list
     for line in a:line_list
@@ -339,24 +333,24 @@ function! s:exMH_UpdateMacroList(line_list,save_file) " <<<
 
         " get group mark
         if line =~# ":"
-            let group_idx += 1
-            call add( s:exMH_macro_list, group_list ) " add the last group to macro list
-            if !empty(group_list)
-                call remove(group_list,0,-1) " clear group list for next group
+            if line =~# ': \[x\]'
+                let skip_group = 1
+            else
+                let skip_group = 0
             endif
             continue
         endif
 
         " put macro item to the group 
-        if match( line, '   .\S.*' ) != -1
-            let macro = substitute( line, " ", "", "g" ) " skip whitespace
-            call add( group_list, macro )
-
-            let is_define = (macro =~# '\*')
-            if is_define
-                call add( s:exMH_define_list[is_define], strpart(macro,1) )
-            else
-                call add( s:exMH_define_list[is_define], macro )
+        if skip_group == 0
+            if line =~# '   .\S.*'
+                let macro = substitute( line, " ", "", "g" ) " skip whitespace
+                let is_define = (macro =~# '\*')
+                if is_define
+                    call add( s:exMH_define_list[is_define], strpart(macro,1) )
+                else
+                    call add( s:exMH_define_list[is_define], macro )
+                endif
             endif
         endif
     endfor
@@ -544,13 +538,13 @@ function! g:exMH_InitSelectWindow() " <<<
     silent! setlocal indentkeys+=<:> 
 
     " syntax highlight
-    syntax match exMH_GroupName '^.*:'
+    syntax match exMH_GroupNameEnable '^.*:\s*'
+    syntax match exMH_GroupNameDisable '^.*:\s\+\[x\]'
     syntax match exMH_MacroEnable '^...\zs\*\S\+$'
     syntax match exMH_MacroDisable '^....\zs\S\+$'
 
-    highlight def exMH_GroupName term=bold cterm=bold ctermfg=DarkRed ctermbg=LightGray gui=bold guifg=DarkRed guibg=LightGray
-    "highlight def exMH_MacroEnable term=none cterm=none ctermfg=DarkMagenta gui=none guifg=Purple
-    "highlight def exMH_MacroDisable term=none cterm=none ctermfg=DarkGray gui=none guifg=DarkGray 
+    highlight def exMH_GroupNameEnable term=bold cterm=bold ctermfg=DarkRed ctermbg=LightGray gui=bold guifg=DarkRed guibg=LightGray
+    highlight def exMH_GroupNameDisable term=bold cterm=bold ctermfg=Red ctermbg=DarkGray gui=bold guifg=DarkGray guibg=LightGray
     highlight def link exMH_MacroEnable cPreProc
     highlight def link exMH_MacroDisable exMacroDisable
 endfunction " >>>
@@ -568,8 +562,31 @@ function! s:exMH_SelectConfirm() " <<<
     let line = getline(".")
 
     " if this is a group title
-    if line =~# ':'
-        call g:ex_WarningMsg("Can't select macro group title")
+    if line =~# ':\s*$'
+        let group = getline('.')
+        let on_to_off = substitute( group, ':', ': \[x\]', "g" ) 
+        silent call setline( '.', on_to_off )
+
+        " ------------------------------------------------------
+        " directly update the macro list
+        call s:exMH_UpdateMacroList(getline(1,'$'),0)
+
+        " update syntax immediately
+        call g:ex_GotoEditBuffer()
+        call g:ex_SwitchBuffer()
+        return
+    elseif line =~# ': \[x\]'
+        let group = getline('.')
+        let off_to_on = substitute( group, ': \[x\]', ':', "g" ) 
+        silent call setline( '.', off_to_on )
+
+        " ------------------------------------------------------
+        " directly update the macro list
+        call s:exMH_UpdateMacroList(getline(1,'$'),0)
+
+        " update syntax immediately
+        call g:ex_GotoEditBuffer()
+        call g:ex_SwitchBuffer()
         return
     endif
 
@@ -588,15 +605,6 @@ function! s:exMH_SelectConfirm() " <<<
         " ------------------------------------------------------
         " directly update the macro list
         call s:exMH_UpdateMacroList(getline(1,'$'),0)
-        " ------------------------------------------------------
-        "" update define list on to off
-        "call add( s:exMH_define_list[0], on_to_off ) " add to off
-        "" remove from to on
-        "let idx = index( s:exMH_define_list[1], on_to_off )
-        "if idx >= 0
-        "    call remove( s:exMH_define_list[1], idx ) 
-        "endif
-        " ------------------------------------------------------
 
         " update syntax immediately
         call g:ex_GotoEditBuffer()
