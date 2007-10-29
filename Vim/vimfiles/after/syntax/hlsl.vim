@@ -1,8 +1,9 @@
+" ==========================================
 " Vim syntax file
-" Language:	High Level Shader Language
-" Maintainer:	Johnny
-" Credits:	Based on the uc.vim syntax file by Mark Ferrell
-" Last change:	2006 Sep 31
+" Language:	hlsl syntax highlight
+" Maintainer:	Wu Jie
+" Last Change:	2007/10/12
+" ==========================================
 
 if version < 600
   syntax clear
@@ -13,8 +14,10 @@ endif
 " Read the C syntax to start with
 if version < 600
   so <sfile>:p:h/c.vim
+  so $VIM/vimfiles/after/syntax/c.vim
 else
   runtime! syntax/c.vim
+  runtime! $VIM/vimfiles/after/syntax/c.vim
   unlet b:current_syntax
 endif
 
@@ -57,6 +60,13 @@ syntax case ignore
 syn match   hlslType            "\<\(Texture\|sampler\)[1-3]D\>"
 syn keyword hlslType            sampler texture filter
 syn match   hlslType            "address[u,v,w]"
+
+" ==========================================
+" exMacroHighlight Predeined Syntax
+" ==========================================
+
+" add hlsl enable group
+syn cluster exEnableContainedGroup add=hlslStorage,hlslType,hlslShaderType,hlslBaseFunction,hlslBaseFunction,hlslFunction
 
 " Define the default highlighting.
 if version >= 508 || !exists("did_hlsl_syntax_inits")

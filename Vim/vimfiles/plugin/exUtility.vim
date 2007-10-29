@@ -41,6 +41,7 @@ let s:ex_HighLightText = ["","","",""]
 
 " local script vairable initialization
 let s:ex_editbuf_num = ""
+let s:ex_pluginbuf_num = ""
 
 " file browse
 let s:ex_level_list = []
@@ -411,8 +412,11 @@ endfunction " >>>
 " --ex_RecordCurrentBufNum--
 " Record current buf num when leave
 function! g:ex_RecordCurrentBufNum() " <<<
-    if index( g:exUT_plugin_list, fnamemodify(bufname("%"),":p:t") ) == -1
+    let short_bufname = fnamemodify(bufname("%"),":p:t")
+    if index( g:exUT_plugin_list, short_bufname ) == -1
         let s:ex_editbuf_num = bufnr('%')
+    elseif short_bufname !=# "-MiniBufExplorer-"
+        let s:ex_pluginbuf_num = bufnr('%')
     endif
 endfunction " >>>
 
@@ -428,6 +432,15 @@ endfunction " >>>
 function! g:ex_GotoEditBuffer() " <<<
     " check and jump to the buffer first
     let winnum = bufwinnr(s:ex_editbuf_num)
+    if winnr() != winnum
+        exe winnum . 'wincmd w'
+    endif
+endfunction " >>>
+
+" --ex_GotoPluginBuffer--
+function! g:ex_GotoPluginBuffer() " <<<
+    " check and jump to the buffer first
+    let winnum = bufwinnr(s:ex_pluginbuf_num)
     if winnr() != winnum
         exe winnum . 'wincmd w'
     endif
@@ -454,7 +467,7 @@ endfunction " >>>
 function! g:ex_SwitchBuffer() " <<<
     " if current window is same as edit buffer window, jump to last edit window
     if winnr() == bufwinnr(s:ex_editbuf_num)
-        exe winnr("#") . 'wincmd w'
+        call g:ex_GotoPluginBuffer()
     else
         call g:ex_GotoEditBuffer()
     endif
@@ -892,7 +905,7 @@ function! g:ex_QuickFileJump() " <<<
         let save_pos = getpos(".")
         normal! "tyiW
         silent call setpos(".", save_pos )
-        let file_name = substitute( @t, '"', '', "g" )
+        let file_name = substitute( @t, '\("\|<\|>\)', '', "g" )
         let @t = tmp_reg
         echomsg "searching file: " . file_name
         let path = escape(g:exES_PWD, " ") . "/**;"
