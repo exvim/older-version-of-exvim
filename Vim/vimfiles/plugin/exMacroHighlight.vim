@@ -81,8 +81,6 @@ let s:exMH_get_macro_file = 1
 let s:exMH_define_list = [[],[]] " 0: not define group, 1: define group
 let s:exMH_IsEnable = 0
 let s:exMH_Debug = 0
-let s:exMH_LastUpdateBuffer = -1
-let s:exMH_ForceUpdate = 1
 
 " select
 let s:exMH_select_idx = 1
@@ -364,9 +362,6 @@ function! s:exMH_UpdateMacroList(line_list,save_file) " <<<
 
     " update the macro patterns
     call s:exMH_UpdateMacroPattern()
-
-    " need to force update
-    let s:exMH_ForceUpdate = 1
 endfunction " >>>
 
 " --exMH_UpdateMacroPattern--
@@ -459,16 +454,6 @@ endfunction " >>>
 
 " --exMH_UpdateSyntax--
 function! s:exMH_UpdateSyntax() " <<<
-    " if we not force update and the buffer have been update last time, return
-    let cur_bufnr = bufnr("%")
-    if (s:exMH_LastUpdateBuffer == cur_bufnr) && !s:exMH_ForceUpdate
-        return
-    endif
-
-    " record update buffer and remove force update effect cause we have update it
-    let s:exMH_LastUpdateBuffer = cur_bufnr
-    let s:exMH_ForceUpdate = 0
-
     " clear syntax group for re-define
     syntax clear exAndEnable exAndnotEnable exOrDisable exOrnotDisable
     syntax clear exIfEnableStart exIfEnable exIfnEnableStart exIfnEnable
@@ -501,7 +486,6 @@ function s:exMH_SyntaxHL(b_enable) " <<<
     else
         echomsg "Macro Higlight: OFF "
     endif
-    let s:exMH_ForceUpdate = 1
     call s:exMH_UpdateSyntax()
 endfunction " >>>
 

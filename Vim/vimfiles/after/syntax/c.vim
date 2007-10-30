@@ -9,17 +9,17 @@
 " the extertion syntax define
 " ==========================================
 " EX_ENGINE extentions
-syn keyword exType              SIZE_T
-syn keyword exType              UINT INT UINT8 INT8 UINT16 INT16 UINT32 INT32 UINT64 INT64
-syn keyword exType              FLOAT DOUBLE
-syn keyword exType              CHAR WCHAR TCHAR TEXT
-syn keyword exType              INLINE NOINLINE
-syn keyword exType              UBOOL
-syn keyword exStatement         ex_malloc ex_malloc_use ex_malloc_nomanage
-syn keyword exStatement         ex_realloc ex_realloc_use ex_realloc_nomanage
-syn keyword exStatement         ex_free ex_free_use ex_free_nomanage
-syn keyword exStatement         ex_stack_malloc
-syn keyword exBoolean		TRUE FALSE
+syn keyword cType              SIZE_T
+syn keyword cType              UINT INT UINT8 INT8 UINT16 INT16 UINT32 INT32 UINT64 INT64
+syn keyword cType              FLOAT DOUBLE
+syn keyword cType              CHAR WCHAR TCHAR TEXT
+syn keyword cType              INLINE NOINLINE
+syn keyword cType              UBOOL
+syn keyword cStatement         ex_malloc ex_malloc_use ex_malloc_nomanage
+syn keyword cStatement         ex_realloc ex_realloc_use ex_realloc_nomanage
+syn keyword cStatement         ex_free ex_free_use ex_free_nomanage
+syn keyword cStatement         ex_stack_malloc
+syn keyword cConstant	       TRUE FALSE
 
 " ==========================================
 " exMacroHighlight Predeined Syntax
@@ -54,9 +54,9 @@ syn cluster cMultiGroup add=exCppSkip,exMacroInside,exIfEnable,exIfDisable,exIfn
 " ------------------------------------------
 " EX_ENGINE hilight defines
 " ------------------------------------------
-hi def link exType                 Type
-hi def link exStatement            Statement
-hi def link exBoolean              Boolean
+hi def link cType                 Type
+hi def link cStatement            Statement
+hi def link cConstant             Boolean
 
 " ------------------------------------------
 " exMacroHilight hilight defines
