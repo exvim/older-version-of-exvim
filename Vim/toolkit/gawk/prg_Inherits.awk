@@ -1,4 +1,7 @@
-BEGIN { print "digraph INHERITS {" }
+BEGIN { 
+    print "digraph INHERITS {" 
+    print "\trankdir=LR;"
+}
 /inherits:/{
     FS="[\t]"
     for ( i = NF; i >= 1; i = i - 1) {
