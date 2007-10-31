@@ -1108,7 +1108,9 @@ function! g:ex_UpdateVimFiles( type ) " <<<
     let quick_gen_bat = glob('quick_gen_project*.bat') 
     if a:type == ""
         if quick_gen_bat != ''
+            silent exec "cscope kill " . g:exES_Cscope
             silent exec "!" . quick_gen_bat
+            silent exec "cscope add " . g:exES_Cscope
         else
             call g:ex_WarningMsg("quick_gen_project*.bat not found")
         endif
@@ -1116,6 +1118,8 @@ function! g:ex_UpdateVimFiles( type ) " <<<
         silent exec "!" . quick_gen_bat . " id"
     elseif a:type == "symbol"
         silent exec "!" . quick_gen_bat . " symbol"
+    elseif a:type == "inherits"
+        silent exec "!" . quick_gen_bat . " inherits"
     elseif a:type == "tag"
         silent exec "!" . quick_gen_bat . " tag"
     elseif a:type == "cscope"
