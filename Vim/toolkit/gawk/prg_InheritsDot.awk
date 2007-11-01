@@ -1,3 +1,7 @@
+BEGIN { 
+    print "digraph INHERITS {" 
+    print "\trankdir=LR;"
+}
 /inherits:/{
     FS="[\t]"
     for ( i = NF; i >= 1; i = i - 1) {
@@ -5,15 +9,10 @@
             str_parents=$i
             sub(/inherits:/,"",str_parents)
             split(str_parents,parent_list,",")
-            for ( i in parent_list ) {
-                line = sprintf( "\"%s\" -> \"%s\"", parent_list[i], $1 )
-                Mask[line] = line;
-            }
+            for ( i in parent_list )
+                print "\t\""parent_list[i]"\" -> \""$1"\";"
             break
         }
     }
 }
-END{
-    for ( i in Mask )
-        print(Mask[i])
-}
+END { print "}" }

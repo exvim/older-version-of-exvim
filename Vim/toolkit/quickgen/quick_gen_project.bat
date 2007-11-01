@@ -96,7 +96,7 @@ if /I "%LANGTYPE%"=="VIM" goto CSCOPE
 if /I "%LANGTYPE%"=="C_ONLY" goto CSCOPE
 echo Creating Inherits...
 gawk -f "%EX_DEV%\Vim\toolkit\gawk\prg_Inherits.awk" ./tags>./_vimfiles/_inherits
-move /Y ".\_vimfiles\_inherits" ".\_vimfiles\inherits.dot"
+move /Y ".\_vimfiles\_inherits" ".\_vimfiles\inherits"
 if /I "%2"=="inherits" goto FINISH
 
 :CSCOPE

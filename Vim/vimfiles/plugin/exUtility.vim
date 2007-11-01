@@ -1270,6 +1270,110 @@ function! g:ex_HighlightCancle(match_nr) " <<<
 endfunction " >>>
 
 " ------------------------
+"  Inherits functions
+" ------------------------
+
+" --ex_GenInheritsDot--
+"
+function! g:ex_GenInheritsDot( pattern, gen_method ) " <<<
+    " TODO: modify this
+    let inherits_file = "./_vimfiles/inherits"
+    let inherits_dot = "./_vimfiles/inherits.dot"
+
+    let file_list = readfile( inherits_file )
+
+    " init value
+    let s:pattern_list = []
+    let inherits_list = []
+
+    " judge method
+    if a:gen_method == "all"
+        let parent_pattern = "->.*" . a:pattern
+        let children_pattern = a:pattern . ".*->"
+
+        " first filter
+        let parent_inherits_list = filter( copy(file_list), 'v:val =~ parent_pattern' )
+        let inherits_list += parent_inherits_list
+        let children_inherits_list = filter( copy(file_list), 'v:val =~ children_pattern' )
+        let inherits_list += children_inherits_list
+
+        " processing inherits
+        let inherits_list += g:ex_RecursiveGetParent( parent_inherits_list, file_list )
+        let inherits_list += g:ex_RecursiveGetChildren( children_inherits_list, file_list )
+    else
+        if a:gen_method == "parent"
+            let pattern = "->.*" . a:pattern
+        elseif a:gen_method == "children"
+            let pattern = a:pattern . ".*->"
+        endif
+
+        " first filter
+        let inherits_list += filter( copy(file_list), 'v:val =~ pattern' )
+
+        " processing inherits
+        if a:gen_method == "parent"
+            let inherits_list += g:ex_RecursiveGetParent( inherits_list, file_list )
+        elseif a:gen_method == "children"
+            let inherits_list += g:ex_RecursiveGetChildren( inherits_list, file_list )
+        endif
+    endif
+
+    " add dot gamma
+    let inherits_list = ["digraph INHERITS {", "rankdir=LR;"] + inherits_list
+    let inherits_list += ["}"]
+    unlet s:pattern_list
+
+    " write file
+    call writefile(inherits_list, inherits_dot, "b")
+endfunction " >>>
+
+" --ex_RecursiveGetChildren--
+function! g:ex_RecursiveGetChildren(inherits_list, file_list) " <<<
+    let result_list = []
+    for inherit in a:inherits_list
+        " change to parent pattern
+        let pattern = strpart( inherit, stridx(inherit,"->")+3 ) . ' ->'
+
+        " skip parsed pattern
+        if index( s:pattern_list, pattern ) >= 0
+            continue
+        endif
+        call add( s:pattern_list, pattern )
+
+        " add children list
+        let children_list = filter( copy(a:file_list), 'v:val =~# pattern' )
+        let result_list += children_list 
+
+        " recursive the children
+        let result_list += g:ex_RecursiveGetChildren( children_list, a:file_list ) 
+    endfor
+    return result_list
+endfunction " >>>
+
+" --ex_RecursiveGetParent--
+function! g:ex_RecursiveGetParent(inherits_list, file_list) " <<<
+    let result_list = []
+    for inherit in a:inherits_list
+        " change to child pattern
+        let pattern =  '-> ' . strpart( inherit, 0, stridx(inherit,"->")-1 )
+
+        " skip parsed pattern
+        if index( s:pattern_list, pattern ) >= 0
+            continue
+        endif
+        call add( s:pattern_list, pattern )
+
+        " add pattern list
+        let parent_list = filter( copy(a:file_list), 'v:val =~# pattern' )
+        let result_list += parent_list 
+
+        " recursive the parent
+        let result_list += g:ex_RecursiveGetParent( parent_list, a:file_list ) 
+    endfor
+    return result_list
+endfunction " >>>
+
+" ------------------------
 "  Debug functions
 " ------------------------
 
@@ -1285,11 +1389,11 @@ endfunction " >>>
 " when you use clipboard=unnamed, and you have two vim-windows, visual-copy 
 " in window-1, then visual-copy in window-2, then visual-paste again. it is wrong
 " FIXME: this will let the "ap useless
-function! g:ex_VisualPasteFixed()
+function! g:ex_VisualPasteFixed() " <<<
     silent call getreg('*')
     " silent normal! gvpgvy " <-- this let you be the win32 copy/paste style
     silent normal! gvp
-endfunction
+endfunction " >>>
 
 finish
 " vim: set foldmethod=marker foldmarker=<<<,>>> foldlevel=1:
