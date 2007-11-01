@@ -213,7 +213,7 @@ VPATH += $(TargetDir)
 # -------------------
 .PHONY: all clean-all rebuild
 all: |clean-errs $(FullPath_Target)
-clean-all: |clean-deps clean-gchs clean-objs clean-errs clean-target
+clean-all: |clean-gchs clean-objs clean-errs clean-target
 rebuild: |clean-all all
 
 # -------------------
