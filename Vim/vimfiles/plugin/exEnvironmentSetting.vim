@@ -52,6 +52,7 @@ function! s:exES_WriteDefaultTemplate() " <<<
     silent call add(_list, 'Symbol='._cwd.'/'._dir_name.'/symbol')
     silent call add(_list, 'Macro='._cwd.'/'._dir_name.'/macro')
     silent call add(_list, 'Cscope='._cwd.'/'._dir_name.'/cscope.out')
+    silent call add(_list, 'Inherits='._cwd.'/'._dir_name.'/inherits')
 
     let sln_list = split(glob("*.sln"))
     if empty(sln_list) != 1
@@ -96,10 +97,18 @@ function! g:exES_SetEnvironment() " <<<
             endif
         endfor
 
+        " create _vimfiles directory
         if finddir(g:exES_PWD.'/'.g:exES_vimfile_dir) == ''
             silent call mkdir(g:exES_PWD.'/'.g:exES_vimfile_dir)
         endif
 
+        " create _inherits directory
+        let inherit_directory_path = g:exES_PWD.'/'.g:exES_vimfile_dir.'/_inherits' 
+        if finddir(inherit_directory_path) == ''
+            silent call mkdir(inherit_directory_path)
+        endif
+
+        " update environment
         if exists('*g:exES_UpdateEnvironment')
             call g:exES_UpdateEnvironment()
         endif

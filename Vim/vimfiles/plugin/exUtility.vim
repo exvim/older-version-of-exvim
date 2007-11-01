@@ -1276,10 +1276,22 @@ endfunction " >>>
 " --ex_GenInheritsDot--
 "
 function! g:ex_GenInheritsDot( pattern, gen_method ) " <<<
-    " TODO: modify this
-    let inherits_file = "./_vimfiles/inherits"
-    let inherits_dot = "./_vimfiles/inherits.dot"
+    " find inherits file
+    if exists( g:exES_Inherits )
+        let inherits_file = g:exES_Inherits
+    else
+        let inherits_file = "./_vimfiles/inherits"
+    endif
 
+    " create inherit dot file path
+    let inherit_directory_path = g:exES_PWD.'/'.g:exES_vimfile_dir.'/_inherits/' 
+    if finddir(inherit_directory_path) == ''
+        silent call mkdir(inherit_directory_path)
+    endif
+    let pattern_fname = substitute( a:pattern, "[^0-9A-Za-z_:]", "", "g" ) . "_" . a:gen_method
+    let inherits_dot_file = inherit_directory_path . pattern_fname . ".dot"
+
+    " read the inherits file
     let file_list = readfile( inherits_file )
 
     " init value
@@ -1298,8 +1310,8 @@ function! g:ex_GenInheritsDot( pattern, gen_method ) " <<<
         let inherits_list += children_inherits_list
 
         " processing inherits
-        let inherits_list += g:ex_RecursiveGetParent( parent_inherits_list, file_list )
-        let inherits_list += g:ex_RecursiveGetChildren( children_inherits_list, file_list )
+        let inherits_list += s:ex_RecursiveGetParent( parent_inherits_list, file_list )
+        let inherits_list += s:ex_RecursiveGetChildren( children_inherits_list, file_list )
     else
         if a:gen_method == "parent"
             let pattern = "->.*" . a:pattern
@@ -1312,9 +1324,9 @@ function! g:ex_GenInheritsDot( pattern, gen_method ) " <<<
 
         " processing inherits
         if a:gen_method == "parent"
-            let inherits_list += g:ex_RecursiveGetParent( inherits_list, file_list )
+            let inherits_list += s:ex_RecursiveGetParent( inherits_list, file_list )
         elseif a:gen_method == "children"
-            let inherits_list += g:ex_RecursiveGetChildren( inherits_list, file_list )
+            let inherits_list += s:ex_RecursiveGetChildren( inherits_list, file_list )
         endif
     endif
 
@@ -1324,11 +1336,13 @@ function! g:ex_GenInheritsDot( pattern, gen_method ) " <<<
     unlet s:pattern_list
 
     " write file
-    call writefile(inherits_list, inherits_dot, "b")
+    call writefile(inherits_list, inherits_dot_file, "b")
+    let dot_cmd = "!dot " . inherits_dot_file . " -Tpng -o" . inherit_directory_path . pattern_fname . ".png"
+    silent exec dot_cmd
 endfunction " >>>
 
 " --ex_RecursiveGetChildren--
-function! g:ex_RecursiveGetChildren(inherits_list, file_list) " <<<
+function! s:ex_RecursiveGetChildren(inherits_list, file_list) " <<<
     let result_list = []
     for inherit in a:inherits_list
         " change to parent pattern
@@ -1345,13 +1359,13 @@ function! g:ex_RecursiveGetChildren(inherits_list, file_list) " <<<
         let result_list += children_list 
 
         " recursive the children
-        let result_list += g:ex_RecursiveGetChildren( children_list, a:file_list ) 
+        let result_list += s:ex_RecursiveGetChildren( children_list, a:file_list ) 
     endfor
     return result_list
 endfunction " >>>
 
 " --ex_RecursiveGetParent--
-function! g:ex_RecursiveGetParent(inherits_list, file_list) " <<<
+function! s:ex_RecursiveGetParent(inherits_list, file_list) " <<<
     let result_list = []
     for inherit in a:inherits_list
         " change to child pattern
@@ -1368,7 +1382,7 @@ function! g:ex_RecursiveGetParent(inherits_list, file_list) " <<<
         let result_list += parent_list 
 
         " recursive the parent
-        let result_list += g:ex_RecursiveGetParent( parent_list, a:file_list ) 
+        let result_list += s:ex_RecursiveGetParent( parent_list, a:file_list ) 
     endfor
     return result_list
 endfunction " >>>

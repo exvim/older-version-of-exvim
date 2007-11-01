@@ -415,13 +415,17 @@ command -narg=? SMake call g:ex_ShaderMake("<args>")
 command -narg=* VMake call g:ex_VCMake(<f-args>)
 command -narg=? Update call g:ex_UpdateVimFiles("<args>")
 
+" inherits genreate
+command -narg=1 GV call g:ex_GenInheritsDot('<args>',"all")
+command -narg=1 GVP call g:ex_GenInheritsDot('<args>',"parent")
+command -narg=1 GVC call g:ex_GenInheritsDot('<args>',"children")
+
 noremap <Leader>line <ESC>:call g:ex_PutLine(86, '-')<CR>
 noremap <Leader>def <ESC>:call g:ex_PutDefine()<CR>
 noremap <Leader>head <ESC>:call g:ex_PutHeader()<CR>
 
 " add plugin we use to prevent them record as edit-buffer
 let g:exUT_plugin_list = ["-MiniBufExplorer-","__Tag_List__"] 
-
 
 " --------------------
 " exTagSelect
