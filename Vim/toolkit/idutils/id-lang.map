@@ -34,25 +34,26 @@
 # C dependencies created by automake
 */.deps/*		IGNORE
 
+# c/cpp header files
 *.h			    text
+*.h++           text
 *.h.in			text
 *.H			    text
 *.hh			text
+*.hp			text
 *.hpp			text
 *.hxx			text
 *.inl           text
 
-*.l			    text
-*.lex			text
-*.y			    text
-*.yacc			text
-
+# c/cpp srouce files
 *.c			    text
 *.C			    text
 *.cc			text
+*.cp			text
 *.cpp			text
 *.cxx			text
 
+# shader files
 *.hlsl          text
 *.vsh           text
 *.psh           text
@@ -61,47 +62,24 @@
 *.cg            text
 *.shd           text
 
+# python files
+*.py            text
+*.pyx           text
+*.pxd           text
+*.scons         text
+
+# asmble files
+*.asm           text
+*.ASM           text
+*.s             text
+*.S             text
+
+# vim files
 *.vim           text
 
-#ChangeLog*		Cdoc
-#
-#*.[sS]			asm --comment=;
-#*.asm			asm --comment=;
-#
-## for GameEngine Script and Other importants
-#*.uc            Unreal
-#*.hlsl          Shader
-#*.vsh           Shader
-#*.psh           Shader
-#
-## [nt]roff
-#*.[0-9]			roff
-#*.ms			roff
-#*.me			roff
-#*.mm			roff
-#
-#*.tex			TeX
-#*.ltx			TeX
-#*.texi			texinfo
-#*.texinfo		texinfo
-#
-## portable object (i18n)
-#*.po			po
-#
-#*.el			elisp
-#
-#*.am			make
-#Makefile		make
-#Makefile.*		make
-#
-#*.doc			text
-#*.txt			text
-#*.o 			text
-#
-#*.m4			m4
-#
-#*.pl			perl
-#*.pm			perl
-#
-#*.gz			FILTER gzip -d <%s
-#*.Z			    FILTER gzip -d <%s
+# misc file
+*.l			    text
+*.lex			text
+*.y			    text
+*.yacc			text
+
