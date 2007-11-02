@@ -142,6 +142,7 @@ endfunction
 set cindent shiftwidth=4 " Set cindent on to autoinent when editing C/C++ file, with 4 shift width
 set tabstop=4 " Set tabstop to 4 characters
 set expandtab " Set expandtab on, the tab will be change to space automaticaly
+au BufEnter *.py,*.pyw set noexpandtab " if edit python scripts, don't use expandtab
 
 " Set Number format to null(default is octal) , when press CTRL-A on number
 " like 007, it would not become 010
@@ -561,9 +562,11 @@ let g:exPJ_defualt_filter  = 'c cpp cxx '
 let g:exPJ_defualt_filter .= 'h hpp inl '
 let g:exPJ_defualt_filter .= 'uc '
 let g:exPJ_defualt_filter .= 'hlsl vsh psh fx fxh cg shd '
+let g:exPJ_defualt_filter .= 'py pyw '
+let g:exPJ_defualt_filter .= 'vim awk '
 let g:exPJ_defualt_filter .= 'dox doxygen '
 let g:exPJ_defualt_filter .= 'ini cfg '
-let g:exPJ_defualt_filter .= 'mk err exe '
+let g:exPJ_defualt_filter .= 'mk err exe bat '
 
 " --------------------
 " TagList
