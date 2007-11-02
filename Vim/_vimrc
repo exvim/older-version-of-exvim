@@ -201,7 +201,6 @@ if &clipboard ==# "unnamed"
 else
     " general copy/paste.
     map <a-y> "*y
-    map <a-y><a-y> "*yy
     map <a-p> "*p
     map <c-p> "*P
 endif

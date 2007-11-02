@@ -103,7 +103,7 @@ function! g:exES_SetEnvironment() " <<<
         endif
 
         " create _inherits directory
-        let inherit_directory_path = g:exES_PWD.'/'.g:exES_vimfile_dir.'/_inherits' 
+        let inherit_directory_path = g:exES_PWD.'/'.g:exES_vimfile_dir.'/_hierarchies' 
         if finddir(inherit_directory_path) == ''
             silent call mkdir(inherit_directory_path)
         endif

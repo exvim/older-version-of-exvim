@@ -108,7 +108,6 @@ rem create inherits
 rem =======================================
 if /I "%LANGTYPE%"=="VIM" goto CSCOPE
 if /I "%LANGTYPE%"=="C_ONLY" goto CSCOPE
-if /I "%LANGTYPE%"=="PYTHON" goto CSCOPE
 echo Creating Inherits...
 gawk -f "%EX_DEV%\Vim\toolkit\gawk\prg_Inherits.awk" ./tags>./_vimfiles/_inherits
 move /Y ".\_vimfiles\_inherits" ".\_vimfiles\inherits"

@@ -1284,7 +1284,7 @@ function! g:ex_GenInheritsDot( pattern, gen_method ) " <<<
     endif
 
     " create inherit dot file path
-    let inherit_directory_path = g:exES_PWD.'/'.g:exES_vimfile_dir.'/_inherits/' 
+    let inherit_directory_path = g:exES_PWD.'/'.g:exES_vimfile_dir.'/_hierarchies/' 
     if finddir(inherit_directory_path) == ''
         silent call mkdir(inherit_directory_path)
     endif
