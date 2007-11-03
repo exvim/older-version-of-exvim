@@ -143,19 +143,11 @@ PreDefs += WIN
 PreDefs += WINDOWS
 PreDefs += _EX_WIN32
 else 
-ifeq ($(Platform),Xenon)
-PreDefs += __XENON__
-PreDefs += _XENON
-PreDefs += XENON
-PreDefs += _XBOX
-PreDefs += _EX_XENON
-else 
 ifeq ($(Platform),PS3)
 PreDefs += __PS3__
 PreDefs += _PS3
 PreDefs += PS3
 PreDefs += _EX_PS3
-endif
 endif
 endif
 endif
@@ -170,15 +162,37 @@ endif
 #  Generate Flag
 # -------------------
 
-# General Flag
+# pre-define
 Flag_PreDef := $(addprefix -D,$(PreDefs))
+
+# includes
 Flag_Inc := $(addprefix -I,$(IncDirs))
+
+# libaray directory
 Flag_LibDir := $(addprefix -L,$(LibDirs))
+
+# libaray link
 Flag_Lib := $(addprefix -l,$(Libs))
+
+# build as dll
 ifeq ($(ProjectType),dll)
 Flag_BuildDll := -shared -Wl,--out-implib,$(TargetDir)/$(libTarget)
 else
 Flag_BuildDll :=
+endif
+
+# built-in function
+# mmx
+ifeq ($(USE_MMX),1)
+Flag_BuiltIn_Functions += -mmmx
+endif
+# sse
+ifeq ($(USE_SSE),1)
+Flag_BuiltIn_Functions += -msse
+endif
+# sse3
+ifeq ($(USE_SSE3),1)
+Flag_BuiltIn_Functions += -msse3
 endif
 
 # Debug Flag ( choose debug or not )
@@ -192,7 +206,7 @@ Flag_Opt := -O1
 endif 
 
 # Compile Flag
-CFlags := $(Flag_Debug) $(Flag_Opt) $(Flag_PreDef) $(Flag_Inc) $(CFlag_Spec)
+CFlags := $(Flag_Debug) $(Flag_Opt) $(Flag_PreDef) $(Flag_Inc) $(Flag_BuiltIn_Functions) $(CFlag_Spec)
 # Link Flag
 LFlags := $(Flag_LibDir) $(Flag_Lib) $(Flag_BuildDll) $(LFlag_Spec)
 

@@ -27,7 +27,6 @@ Configuration = Debug
 # Platform Name
 # parameter: Linux
 # 			 Win32
-# 			 Xenon
 # 			 PS3
 # 			 All
 Platform = Win32
@@ -49,7 +48,6 @@ CompileMode = Fast
 # 			 cl 			( msvc )
 CPP_COMPILER_WIN32=g++-sjlj
 CPP_COMPILER_LINUX=g++-sjlj
-CPP_COMPILER_XENON=g++-sjlj
 CPP_COMPILER_PS3=ppu-lv2-g++
 
 # Linker
@@ -59,8 +57,33 @@ CPP_COMPILER_PS3=ppu-lv2-g++
 # 			 link 			( msvc linker )
 CPP_LINKER_WIN32=ar
 CPP_LINKER_LINUX=ar
-CPP_LINKER_XENON=ar
 CPP_LINKER_PS3=ppu-lv2-ar
+
+# ----------------------------------------------------------
+#  Machine built-in functions
+# ----------------------------------------------------------
+
+ifeq ($(Platform),Win32) # x86
+USE_MMX := 1
+USE_SSE := 1
+USE_SSE3 := 1
+else
+ifeq ($(Platform),Linux) # x86
+USE_MMX := 1
+USE_SSE := 1
+USE_SSE3 := 1
+else
+ifeq ($(Platform),PS3) # power pc
+USE_MMX := 0
+USE_SSE := 0
+USE_SSE3 := 0
+else #default
+USE_MMX := 1
+USE_SSE := 1
+USE_SSE3 := 1
+endif
+endif
+endif
 
 # ----------------------------------------------------------
 #  Advance User Define
@@ -92,11 +115,6 @@ EXE_NAME := exe
 CC := $(SILENT_CMD)$(CPP_COMPILER_LINUX)
 AR := $(SILENT_CMD)$(CPP_LINKER_LINUX)
 else
-ifeq ($(Platform),Xenon)
-EXE_NAME := xex
-CC := $(SILENT_CMD)$(CPP_COMPILER_XENON)
-AR := $(SILENT_CMD)$(CPP_LINKER_XENON)
-else
 ifeq ($(Platform),PS3)
 EXE_NAME := elf
 CC := $(SILENT_CMD)$(CPP_COMPILER_PS3)
@@ -105,7 +123,6 @@ else #default
 EXE_NAME := exe
 CC := $(SILENT_CMD)g++
 AR := $(SILENT_CMD)ar
-endif
 endif
 endif
 endif
