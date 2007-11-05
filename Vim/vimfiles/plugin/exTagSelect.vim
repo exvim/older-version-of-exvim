@@ -365,10 +365,10 @@ function! s:exTS_GetTagSelectResult(tag, direct_jump) " <<<
         endif
         " put search patterns
         let quick_view = ''
-        if match( tag_info.cmd, '^\/\^' ) != -1
+        if tag_info.cmd =~# '^\/\^' 
             let quick_view = strpart( tag_info.cmd, 2, strlen(tag_info.cmd)-4 )
             let quick_view = strpart( quick_view, match(quick_view, '\S') )
-        elseif match( tag_info.cmd, '^\d\+' ) != -1
+        elseif tag_info.cmd =~# '^\d\+'
             let file_list = readfile(g:ex_MatchTagFile( s:exTS_tag_file_list, tag_info.filename))
             let line_num = eval(tag_info.cmd) - 1 
             let quick_view = file_list[line_num]

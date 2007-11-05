@@ -989,17 +989,12 @@ function! g:ex_GotoExCommand(full_file_name, ex_cmd) " <<<
     endif
 
     " cursor jump
-    " if ex_cmd is digital, just set pos of it
-    if match( a:ex_cmd, '^\/\^' ) != -1
-        let pattern = strpart(a:ex_cmd, 2, strlen(a:ex_cmd)-4)
-        let pattern = '\V\^' . pattern . (pattern[len(pattern)-1] == '$' ? '\$' : '')
-        if search(pattern, 'w') == 0
-            call g:ex_WarningMsg('search pattern not found: ' . pattern)
-            return 0
-        endif
-    elseif match( a:ex_cmd, '^\d\+' ) != -1
+    try
         silent exe a:ex_cmd
-    endif
+    catch /^Vim\%((\a\+)\)\=:E486/
+        call g:ex_WarningMsg('search pattern not found: ' . pattern)
+        return 0
+    endtry
 
     " set the text at the middle
     exe 'normal! zz'
