@@ -420,9 +420,9 @@ command -narg=1 GV call g:ex_GenInheritsDot('<args>',"all")
 command -narg=1 GVP call g:ex_GenInheritsDot('<args>',"parent")
 command -narg=1 GVC call g:ex_GenInheritsDot('<args>',"children")
 
-noremap <Leader>line <ESC>:call g:ex_PutLine(86, '-')<CR>
-noremap <Leader>def <ESC>:call g:ex_PutDefine()<CR>
-noremap <Leader>head <ESC>:call g:ex_PutHeader()<CR>
+command LINE call g:ex_PutLine(86, '-')
+command DEF call g:ex_PutDefine()
+command HEADER call g:ex_PutHeader()
 
 " add plugin we use to prevent them record as edit-buffer
 let g:exUT_plugin_list = ["-MiniBufExplorer-","__Tag_List__"] 
