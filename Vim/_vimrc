@@ -260,7 +260,7 @@ map <C-Down> ]c
 " map <C-b> :buffers<CR>:e #
 
 " Like J, I make a de-joint for command mode
-nmap <C-j> a<CR><ESC>
+nmap <C-]> a<CR><ESC>
 
 " Enhance '<' '>' , do not need to reselect the block after shift it.
 vnoremap < <gv
@@ -280,7 +280,7 @@ map <Down> gj
 
 " map for completion see :help ins-completion for whole completions
 " search tags 
-inoremap <c-]> <C-X><C-]>
+inoremap <c-j> <C-X><C-]>
 " search in current files, preview first. remove the original c-p
 inoremap <c-p> <C-X><C-P>
 
