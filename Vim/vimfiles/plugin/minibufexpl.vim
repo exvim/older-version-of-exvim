@@ -1059,75 +1059,75 @@ endfunction
 " last time this was called and 0 otherwise.
 "
 function! <SID>BuildBufferList(delBufNum, updateBufList)
-  call <SID>DEBUG('Entering BuildBufferList()',10)
+    call <SID>DEBUG('Entering BuildBufferList()',10)
 
-  let l:NBuffers = bufnr('$')     " Get the number of the last buffer.
-  let l:i = 0                     " Set the buffer index to zero.
+    let l:NBuffers = bufnr('$')     " Get the number of the last buffer.
+    let l:i = 0                     " Set the buffer index to zero.
 
-  let l:fileNames = ''
-  let l:maxTabWidth = 0
+    let l:fileNames = ''
+    let l:maxTabWidth = 0
 
-  " Loop through every buffer less than the total number of buffers.
-  while(l:i <= l:NBuffers)
-    let l:i = l:i + 1
-   
-    " If we have a delBufNum and it is the current
-    " buffer then ignore the current buffer. 
-    " Otherwise, continue.
-    if (a:delBufNum == -1 || l:i != a:delBufNum)
-      " Make sure the buffer in question is listed.
-      if(getbufvar(l:i, '&buflisted') == 1)
-        " Get the name of the buffer.
-        let l:BufName = bufname(l:i)
-        " Check to see if the buffer is a blank or not. If the buffer does have
-        " a name, process it.
-        if(strlen(l:BufName))
-          " Only show modifiable buffers (The idea is that we don't 
-          " want to show Explorers)
-          if (getbufvar(l:i, '&modifiable') == 1 && BufName != '-MiniBufExplorer-')
-            
-            " Get filename & Remove []'s & ()'s
-            let l:shortBufName = fnamemodify(l:BufName, ":t")                  
-            let l:shortBufName = substitute(l:shortBufName, '[][()]', '', 'g') 
-            let l:tab = '['.l:i.':'.l:shortBufName.']'
+    " Loop through every buffer less than the total number of buffers.
+    while(l:i <= l:NBuffers)
+        let l:i = l:i + 1
 
-            " If the buffer is open in a window mark it
-            if bufwinnr(l:i) != -1
-              let l:tab = l:tab . '*'
+        " If we have a delBufNum and it is the current
+        " buffer then ignore the current buffer. 
+        " Otherwise, continue.
+        if (a:delBufNum == -1 || l:i != a:delBufNum)
+            " Make sure the buffer in question is listed.
+            if(getbufvar(l:i, '&buflisted') == 1)
+                " Get the name of the buffer.
+                let l:BufName = bufname(l:i)
+                " Check to see if the buffer is a blank or not. If the buffer does have
+                " a name, process it.
+                if(strlen(l:BufName))
+                    " Only show modifiable buffers (The idea is that we don't 
+                    " want to show Explorers)
+                    if (getbufvar(l:i, '&modifiable') == 1 && BufName != '-MiniBufExplorer-')
+
+                        " Get filename & Remove []'s & ()'s
+                        let l:shortBufName = fnamemodify(l:BufName, ":t")                  
+                        let l:shortBufName = substitute(l:shortBufName, '[][()]', '', 'g') 
+                        let l:tab = '['.l:i.':'.l:shortBufName.']'
+
+                        " If the buffer is open in a window mark it
+                        if bufwinnr(l:i) != -1
+                            let l:tab = l:tab . '*'
+                        endif
+
+                        " If the buffer is modified then mark it
+                        if(getbufvar(l:i, '&modified') == 1)
+                            let l:tab = l:tab . '+'
+                        endif
+
+                        let l:maxTabWidth = <SID>Max(strlen(l:tab), l:maxTabWidth)
+                        let l:fileNames = l:fileNames.l:tab
+
+                        " If horizontal and tab wrap is turned on we need to add spaces
+                        if g:miniBufExplVSplit == 0
+                            if g:miniBufExplTabWrap != 0
+                                let l:fileNames = l:fileNames.' '
+                            endif
+                            " If not horizontal we need a newline
+                        else
+                            let l:fileNames = l:fileNames . "\n"
+                        endif
+                    endif
+                endif
             endif
-
-            " If the buffer is modified then mark it
-            if(getbufvar(l:i, '&modified') == 1)
-              let l:tab = l:tab . '+'
-            endif
-
-            let l:maxTabWidth = <SID>Max(strlen(l:tab), l:maxTabWidth)
-            let l:fileNames = l:fileNames.l:tab
-
-            " If horizontal and tab wrap is turned on we need to add spaces
-            if g:miniBufExplVSplit == 0
-              if g:miniBufExplTabWrap != 0
-                let l:fileNames = l:fileNames.' '
-              endif
-            " If not horizontal we need a newline
-            else
-              let l:fileNames = l:fileNames . "\n"
-            endif
-          endif
         endif
-      endif
-    endif
-  endwhile
+    endwhile
 
-  if (g:miniBufExplBufList != l:fileNames)
-    if (a:updateBufList)
-      let g:miniBufExplBufList = l:fileNames
-      let s:maxTabWidth = l:maxTabWidth
+    if (g:miniBufExplBufList != l:fileNames)
+        if (a:updateBufList)
+            let g:miniBufExplBufList = l:fileNames
+            let s:maxTabWidth = l:maxTabWidth
+        endif
+        return 1
+    else
+        return 0
     endif
-    return 1
-  else
-    return 0
-  endif
 
 endfunction
 
