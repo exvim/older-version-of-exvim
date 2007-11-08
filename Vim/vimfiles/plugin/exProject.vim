@@ -708,11 +708,58 @@ function! s:exPJ_GotoSelectResult(edit_cmd) " <<<
     endif
 endfunction " >>>
 
+" --exPJ_GotoSelectResult--
+function! s:exPJ_GotoCurrentFile() " <<<
+    " get current buffer name then jump
+    let cur_bufname = bufname("%")
+
+    " go to the project window
+    silent call s:exPJ_OpenProject("")
+    " go to the top to begin search
+    silent normal! gg
+
+    " split the bufname into list
+    let search_patterns = split( cur_bufname, '\' )
+    let max_count = len( search_patterns )
+
+    """
+    let pattern_found = 0
+    while !pattern_found
+        " search file by name.
+        if search( search_patterns[max_count-1], "cW" ) > 0
+            " re-check by directory search
+            let idx = max_count - 2
+            while idx >= 0
+                " search the directory one by one
+                if search( search_patterns[idx], "cnbW" ) > 0
+                    let idx -= 1
+                else
+                    let idx = max_count - 2
+                    echo "break"
+                    break
+                endif
+            endwhile
+
+            " if we match the directory hierarchy, we stop search, else
+            " re-search next same file-name
+            if idx == -1
+                let pattern_found = 1
+            else
+                continue
+            endif
+        else
+            call g:ex_WarningMsg("the file: " . search_patterns[max_count-1] . " not found in the project tree")
+            return
+        endif
+    endwhile
+endfunction " >>>
+
 " -------------------------------------------------------------------------
 " Command part
 " -------------------------------------------------------------------------
 command -narg=? EXProject call s:exPJ_OpenProject("<args>")
 command ExpjSelectToggle call s:exPJ_ToggleWindow('Select')
+command ExpjGotoCurrentFile call s:exPJ_GotoCurrentFile()
 
 finish
 " vim: set foldmethod=marker foldmarker=<<<,>>> foldlevel=1:

@@ -187,13 +187,14 @@ let c_no_curly_error = 1
 " Don't use Ex mode, use Q for formatting
 map Q gq  
 
+" XXX: currently it is no-use
 " Set new Rgrep as the grep to search patterns on the C/C++ files as default
-command -nargs=+ Rgrep :grep -r --include="*.cpp" --include="*.c" --include="*.hpp" --include="*.h" <q-args> *
-map <Leader>fc :call <SID>Grep_Cfiles()<CR>
-function s:Grep_Cfiles()
-    let l_str=input("Input the keyword to be searched: ")
-    exec ":grep -r --include=\"*.cpp\" --include=\"*.c\" --include=\"*.hpp\" --include=\"*.h\" " . l_str . " *"
-endfunction
+"command -nargs=+ Rgrep :grep -r --include="*.cpp" --include="*.c" --include="*.hpp" --include="*.h" <q-args> *
+"map <Leader>fc :call <SID>Grep_Cfiles()<CR>
+"function s:Grep_Cfiles()
+"    let l_str=input("Input the keyword to be searched: ")
+"    exec ":grep -r --include=\"*.cpp\" --include=\"*.c\" --include=\"*.hpp\" --include=\"*.h\" " . l_str . " *"
+"endfunction
 
 " define the copy/paste judged by clipboard
 if &clipboard ==# "unnamed"
@@ -543,6 +544,7 @@ if g:exES_project_cmd == 'EXProject'
     map <A-S-o> :EXProject<CR>:redraw<CR>/
     map <leader>ff :EXProject<CR>:redraw<CR>/\[[^F]*\]\c.*
     map <leader>fd :EXProject<CR>:redraw<CR>/\[F\]\c.*
+    map <leader>fc :ExpjGotoCurrentFile<CR>
 else
     map <silent> <A-S-p> :Project<CR>
     map <A-S-o> :Project<CR>:redraw<CR>/
