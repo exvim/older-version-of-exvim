@@ -719,36 +719,54 @@ function! s:exPJ_GotoCurrentFile() " <<<
     silent normal! gg
 
     " split the bufname into list
-    let search_patterns = split( cur_bufname, '\' )
-    let max_count = len( search_patterns )
+    let file_name = fnamemodify( cur_bufname, ":t" )
+
+    " store position if we don't find, restore to the position
+    let cursor_line = line('.')
+    let cursor_col = col('.')
 
     """
     let pattern_found = 0
     while !pattern_found
         " search file by name.
-        if search( search_patterns[max_count-1], "cW" ) > 0
-            " re-check by directory search
-            let idx = max_count - 2
-            while idx >= 0
-                " search the directory one by one
-                if search( search_patterns[idx], "cnbW" ) > 0
-                    let idx -= 1
+        if search( file_name, "W" ) > 0
+
+            " get full_path_name
+            " -----------------------------
+            " initial variable
+            let s:exPJ_cursor_line = line('.')
+            let s:exPJ_cursor_col = col('.')
+            let fold_level = g:ex_GetFoldLevel(s:exPJ_cursor_line)
+            let full_path_name = s:exPJ_GetName(s:exPJ_cursor_line)
+
+            " recursively make full path
+            let level_pattern = repeat('.',fold_level-1)
+            while fold_level > 1 " don't parse level:0
+                let fold_level -= 1
+                let level_pattern = repeat('.',fold_level*2)
+                let fold_pattern = '^'.level_pattern.'-\[F\]'
+                if search(fold_pattern,'b')
+                    let full_path_name = s:exPJ_GetName(line('.')).'/'.full_path_name
                 else
-                    let idx = max_count - 2
-                    echo "break"
+                    call g:ex_WarningMsg('Fold not found')
                     break
                 endif
             endwhile
+            silent call cursor(s:exPJ_cursor_line,s:exPJ_cursor_col)
 
-            " if we match the directory hierarchy, we stop search, else
-            " re-search next same file-name
-            if idx == -1
+            " simplify the file name
+            let full_path_name = fnamemodify( full_path_name, ":p" )
+            " -----------------------------
+
+            " re-check by directory search
+            if full_path_name =~# escape(cur_bufname,'\')
                 let pattern_found = 1
             else
                 continue
             endif
         else
-            call g:ex_WarningMsg("the file: " . search_patterns[max_count-1] . " not found in the project tree")
+            silent call cursor( cursor_line, cursor_col )
+            call g:ex_WarningMsg("the file: " . cur_bufname . " not found in the project tree")
             return
         endif
     endwhile
