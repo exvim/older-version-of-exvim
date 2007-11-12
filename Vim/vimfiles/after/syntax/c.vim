@@ -11,10 +11,14 @@
 " EX_ENGINE extentions
 syn keyword cType              SIZE_T
 syn keyword cType              UINT INT UINT8 INT8 UINT16 INT16 UINT32 INT32 UINT64 INT64
+syn keyword cType              uint uint8 int8 uint16 int16 uint32 int32 uint64 int64
 syn keyword cType              FLOAT DOUBLE
+syn keyword cType              f32 f64
 syn keyword cType              CHAR WCHAR TCHAR TEXT
+syn keyword cType              wchar tchar
 syn keyword cType              INLINE NOINLINE
-syn keyword cType              UBOOL
+syn keyword cType              vec_f32_t
+syn keyword cType              BOOL UBOOL
 syn keyword cStatement         ex_malloc ex_malloc_use ex_malloc_nomanage
 syn keyword cStatement         ex_realloc ex_realloc_use ex_realloc_nomanage
 syn keyword cStatement         ex_free ex_free_use ex_free_nomanage

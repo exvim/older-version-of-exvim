@@ -327,6 +327,13 @@ function! g:ex_PutHeader() " <<<
     execute 'normal! ' . "o"
 endfunction " >>>
 
+" --ex_PutMain--
+function! g:ex_PutMain() " <<<
+    execute 'normal! ' . 'o' .   "int main( int argv, char* argc[] )\<CR>"
+    execute 'normal! ' . "\<Home>c$" . " {\<CR>"
+    execute 'normal! ' . "\<Home>c$" . " }"
+endfunction " >>>
+
 " --ex_AlignDigit--
 function! g:ex_AlignDigit( align_nr, digit ) " <<<
     let print_fmt = '%'.a:align_nr.'d'
@@ -759,6 +766,11 @@ function! g:ex_SetLevelList( line_num, by_next_line ) " <<<
     echo s:ex_level_list
 endfunction " >>>
 
+" --ex_FileNameSort--
+function! g:ex_FileNameSort( i1, i2 ) " <<<
+    return a:i1 ==? a:i2 ? 0 : a:i1 >? a:i2 ? 1 : -1
+endfunction " >>>
+
 " --ex_Browse--
 function! g:ex_Browse(dir, filter) " <<<
     " get short_dir
@@ -769,6 +781,7 @@ function! g:ex_Browse(dir, filter) " <<<
     if isdirectory(a:dir) == 1
         " split the first level to file_list
         let file_list = split(globpath(a:dir,'*'),'\n')
+        silent call sort( file_list, "g:ex_FileNameSort" )
 
         " sort and filter the list as we want (file|dir )
         let list_idx = 0

@@ -284,11 +284,11 @@ function! s:exGS_GlobalSubstitute( pat, sub, flag ) " <<<
         if s:exGS_Goto()
             silent call g:ex_GotoEditBuffer()
             let cur_line = substitute( getline("."), a:pat, a:sub, a:flag )
-            if cur_line != getline(".")
+            if cur_line !=# getline(".")
                 silent call setline( ".", cur_line )
             endif
             echon cur_line . "\r"
-            silent call g:ex_GotoEditBuffer()
+            silent call g:ex_GotoPluginBuffer()
         endif
         let cur_line_idx += 1
         silent normal! j

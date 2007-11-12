@@ -424,6 +424,7 @@ command -narg=1 GVC call g:ex_GenInheritsDot('<args>',"children")
 command LINE call g:ex_PutLine(86, '-')
 command DEF call g:ex_PutDefine()
 command HEADER call g:ex_PutHeader()
+command MAIN call g:ex_PutMain()
 
 " add plugin we use to prevent them record as edit-buffer
 let g:exUT_plugin_list = ["-MiniBufExplorer-","__Tag_List__"] 
@@ -560,7 +561,7 @@ let g:proj_window_increment = 50
 
 " exProject
 let g:exPJ_window_width_increment = 50
-let g:exPJ_defualt_filter  = 'c cxx c++ C '
+let g:exPJ_defualt_filter  = 'c cpp cxx c++ C '
 let g:exPJ_defualt_filter .= 'h H hh hxx hpp inl '
 let g:exPJ_defualt_filter .= 'uc '
 let g:exPJ_defualt_filter .= 'hlsl vsh psh fx fxh cg shd '
