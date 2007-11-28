@@ -1004,7 +1004,7 @@ function! g:ex_GotoExCommand(full_file_name, ex_cmd) " <<<
     " cursor jump
     try
         silent exe a:ex_cmd
-    catch /^Vim\%((\a\+)\)\=:E486/
+    catch /^Vim\%((\a\+)\)\=:E/
         " if ex_cmd is not digital, try jump again manual
         if match( a:ex_cmd, '^\/\^' ) != -1
             let pattern = strpart(a:ex_cmd, 2, strlen(a:ex_cmd)-4)
