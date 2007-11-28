@@ -11,6 +11,7 @@ if /I "%1"=="cpp" goto CPP_ONLY
 if /I "%1"=="python" goto PYTHON
 if /I "%1"=="general" goto GENERAL
 if /I "%1"=="vim" goto VIM
+if /I "%1"=="html" goto HTML
 
 rem =======================================
 rem set variables
@@ -46,10 +47,10 @@ set LANGTYPE=VIM
 set FILEFILTER=*.vim
 goto START
 
-rem all settings
-:VIM
-set LANGTYPE=ALL
-set FILEFILTER=*.*
+rem html settings
+:HTML
+set LANGTYPE=HTML
+set FILEFILTER=*.html *.htm *.shtml *.stm
 goto START
 
 rem =======================================
@@ -89,48 +90,51 @@ if /I "%LANGTYPE%"=="CPP_ONLY" ctags -o./_tags -R --c++-kinds=+p --fields=+iaS -
 if /I "%LANGTYPE%"=="PYTHON" ctags -o./_tags -R --fields=+iaS --extra=+q --languages=python
 if /I "%LANGTYPE%"=="GENERAL" ctags -o./_tags -R --c++-kinds=+p --fields=+iaS --extra=+q --languages=c,c++,python --langmap=c++:+.inl
 if /I "%LANGTYPE%"=="VIM" ctags -o./_tags -R  --fields=+iaS --extra=+q --languages=vim
+if /I "%LANGTYPE%"=="HTML" ctags -o./_tags -R  --fields=+iaS --extra=+q --languages=html
 if /I "%LANGTYPE%"=="ALL" ctags -o./_tags -R --c++-kinds=+p --fields=+iaS --extra=+q
 move /Y ".\_tags" ".\tags"
-if /I "%2"=="tag" goto FINISH
 
 :SYMBOL
 rem =======================================
 rem create symbols
 rem =======================================
+if /I "%2"=="tag" goto FINISH
 echo Creating Symbols...
 gawk -f "%EX_DEV%\Vim\toolkit\gawk\prg_NoStripSymbol.awk" ./tags>./_vimfiles/_symbol
 move /Y ".\_vimfiles\_symbol" ".\_vimfiles\symbol"
-if /I "%2"=="symbol" goto FINISH
 
 :INHERITS
 rem =======================================
 rem create inherits
 rem =======================================
-if /I "%LANGTYPE%"=="VIM" goto CSCOPE
+if /I "%2"=="symbol" goto FINISH
 if /I "%LANGTYPE%"=="C_ONLY" goto CSCOPE
+if /I "%LANGTYPE%"=="VIM" goto CSCOPE
+if /I "%LANGTYPE%"=="HTML" goto CSCOPE
 echo Creating Inherits...
 gawk -f "%EX_DEV%\Vim\toolkit\gawk\prg_Inherits.awk" ./tags>./_vimfiles/_inherits
 move /Y ".\_vimfiles\_inherits" ".\_vimfiles\inherits"
-if /I "%2"=="inherits" goto FINISH
 
 :CSCOPE
 rem =======================================
 rem create cscope files but if LANGTYPE is vim, we don't needt to create cscope
 rem =======================================
-if /I "%LANGTYPE%"=="VIM" goto ID
+if /I "%2"=="inherits" goto FINISH
 if /I "%LANGTYPE%"=="PYTHON" goto ID
+if /I "%LANGTYPE%"=="VIM" goto ID
+if /I "%LANGTYPE%"=="HTML" goto ID
 echo Creating cscope.files...
 dir /s /b %FILEFILTER%|sed "s,\(.*\),\"\1\",g" > cscope.files
 echo Creating cscope.out...
 cscope -b
 move /Y cscope.files ".\_vimfiles\cscope.files"
 move /Y cscope.out ".\_vimfiles\cscope.out"
-if /I "%2"=="cscope" goto FINISH
 
 :ID
 rem =======================================
 rem create IDs
 rem =======================================
+if /I "%2"=="cscope" goto FINISH
 echo Creating IDs...
 mkid --include="text"
 rem mkid --include="C C++"
