@@ -217,10 +217,13 @@ vmap <F11> :call g:ex_InsertRemoveCmt()<CR>
 " F8:  Set Search pattern highlight on/off
 nmap <F8> :let @/=""<CR>
 
-" F3:  Switch to Japanese Mode 
-" nmap <F3> :set guifont=MS_Gothic:cSHIFTJIS<CR>:set encoding=cp932<CR>
-" F2:  Switch to Chinese Mode (Both Enconding and uiFont)
-" nmap <F2> :set guifont=NSimSun:cGB2312<CR>:set encoding=cp936<CR>
+" A-F1:  Switch to English Mode (Both Enconding and uiFont)
+set guifont=Lucida_Console:h9
+nmap <A-F1> :set guifont=Lucida_Console:h9<CR>:set encoding=latin1<CR>
+" A-F2:  Switch to Chinese Mode (Both Enconding and uiFont)
+nmap <A-F2> :set guifont=NSimSun:cGB2312<CR>:set encoding=cp936<CR>
+" A-F3:  Switch to Japanese Mode 
+nmap <A-F3> :set guifont=MS_Gothic:cSHIFTJIS<CR>:set encoding=cp932<CR>
 
 " map Ctrl-Tab to switch window
 map <S-Up> <C-W><Up>
