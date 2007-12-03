@@ -770,6 +770,9 @@ function! s:exPJ_GotoCurrentFile() " <<<
             return
         endif
     endwhile
+
+    " if find, set the text line in the middel of the window
+    silent normal! zz
 endfunction " >>>
 
 " -------------------------------------------------------------------------
