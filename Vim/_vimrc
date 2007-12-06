@@ -42,6 +42,7 @@ set maxmempattern=1000
 
 " set quick fix error format
 " default errorformat = %f(%l) : %t%*\D%n: %m,%*[^"]"%f"%*\D%l: %m,%f(%l) : %m,%*[^ ] %f %l: %m,%f:%l:%c:%m,%f(%l):%m,%f:%l:%m,%f|%l| %m
+set errorformat+=\>%f(%l)\ :\ %t%*\\D%n:\ %m " msvc 2005 error-format
 set errorformat+=%f(%l\\,%c):\ %m " fxc shader error-format
 
 

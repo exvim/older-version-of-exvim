@@ -228,7 +228,10 @@ function! g:ex_CloseWindow( buffer_name ) " <<<
 
     " close window
     exe winnum . 'wincmd w'
-    close
+    " if this is not the only window
+    if winbufnr(2) != -1
+        close
+    endif
 
     " go back to edit buffer
     call g:ex_GotoEditBuffer()

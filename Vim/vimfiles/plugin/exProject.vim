@@ -674,7 +674,7 @@ function! s:exPJ_GotoSelectResult(edit_cmd) " <<<
     let file_type = fnamemodify( full_path_name, ":e" )
     if file_type == 'err'
         echon 'load quick fix list: ' . full_path_name . "\r"
-        silent call g:ex_GotoEditBuffer()
+        silent call g:ex_GotoPluginBuffer()
         silent exec 'QF '.full_path_name
     elseif file_type == 'mk'
         echon 'set make file: ' . full_path_name . "\r"

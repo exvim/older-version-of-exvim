@@ -189,7 +189,11 @@ function! s:exQF_Goto(idx) " <<<
 
     " start jump
     call g:ex_GotoEditBuffer()
-    silent exec "cr".idx
+    try
+        silent exec "cr".idx
+    catch /^Vim\%((\a\+)\)\=:E42/
+        call g:ex_WarningMsg('No Errors')
+    endtry
     call g:ex_HighlightObjectLine()
     exe 'normal! zz'
 
