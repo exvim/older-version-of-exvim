@@ -226,7 +226,7 @@ endfunction " >>>
 function! g:exQF_InitSelectWindow() " <<<
     silent! setlocal number
     silent! setlocal autoread
-    silent! setlocal buftype=nowrite
+    silent! setlocal buftype=
     " syntax highlight
     syntax match exQF_SynFileTag '^--\[.\+\].\+--'
     syntax match exQF_SynFileName '^[^:]*:'
