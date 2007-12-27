@@ -442,7 +442,7 @@ endfunction " >>>
 function! g:ex_GotoEditBuffer() " <<<
     " check and jump to the buffer first
     let winnum = bufwinnr(s:ex_editbuf_num)
-    if winnr() != winnum
+    if winnr() != winnum && winnum != -1 " this will fix the jump error in the vimentry buffer, cause the winnum for vimentry buffer will be -1
         exe winnum . 'wincmd w'
     endif
 endfunction " >>>
