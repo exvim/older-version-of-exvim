@@ -475,6 +475,9 @@ endfunction " >>>
 
 " --ex_GotoLastEditBuffer--
 function! g:ex_SwitchBuffer() " <<<
+    " this will fix no jump error < bufwinnr() == -1 >
+    silent call g:ex_RecordCurrentBufNum()
+
     " if current window is same as edit buffer window, jump to last edit window
     if winnr() == bufwinnr(s:ex_editbuf_num)
         call g:ex_GotoPluginBuffer()
