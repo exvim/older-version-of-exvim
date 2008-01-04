@@ -686,16 +686,6 @@ let OmniCpp_MayCompleteScope = 0
 " When 'completeopt' does not contain "longest", Vim automatically select the first entry of the popup menu. You can change this behaviour with the OmniCpp_SelectFirstItem option.
 let OmniCpp_SelectFirstItem = 0
 
-" --------------------
-" tregisters
-" --------------------
-command REG call TRegisters()
-
-" --------------------
-" tselectbuffer
-" --------------------
-noremap <silent> <Leader>bb :TSelectBuffer<CR>
-
 " --------------------------------------------------------------------------------------
 " Other settings
 " --------------------------------------------------------------------------------------
