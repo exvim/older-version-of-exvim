@@ -9,6 +9,7 @@ if /I "%1"=="all" goto START
 if /I "%1"=="c" goto C_ONLY
 if /I "%1"=="cpp" goto CPP_ONLY
 if /I "%1"=="python" goto PYTHON
+if /I "%1"=="c#" goto CSHARP
 if /I "%1"=="general" goto GENERAL
 if /I "%1"=="vim" goto VIM
 if /I "%1"=="html" goto HTML
@@ -33,6 +34,12 @@ rem python settings
 :PYTHON
 set LANGTYPE=PYTHON
 set FILEFILTER=*.py
+goto START
+
+rem c# settings
+:CSHARP
+set LANGTYPE=CSHARP
+set FILEFILTER=*.cs
 goto START
 
 rem cstyle settings
@@ -88,7 +95,8 @@ echo Creating Tags...
 if /I "%LANGTYPE%"=="C_ONLY" ctags -o./_tags -R --c-kinds=+p --fields=+iaS --extra=+q --languages=c --langmap=c++:+.inl
 if /I "%LANGTYPE%"=="CPP_ONLY" ctags -o./_tags -R --c++-kinds=+p --fields=+iaS --extra=+q --languages=c++ --langmap=c++:+.inl
 if /I "%LANGTYPE%"=="PYTHON" ctags -o./_tags -R --fields=+iaS --extra=+q --languages=python
-if /I "%LANGTYPE%"=="GENERAL" ctags -o./_tags -R --c++-kinds=+p --fields=+iaS --extra=+q --languages=c,c++,python --langmap=c++:+.inl
+if /I "%LANGTYPE%"=="CSHARP" ctags -o./_tags -R --fields=+iaS --extra=+q --languages=c#
+if /I "%LANGTYPE%"=="GENERAL" ctags -o./_tags -R --c++-kinds=+p --fields=+iaS --extra=+q --languages=c,c++,c#,python --langmap=c++:+.inl
 if /I "%LANGTYPE%"=="VIM" ctags -o./_tags -R  --fields=+iaS --extra=+q --languages=vim
 if /I "%LANGTYPE%"=="HTML" ctags -o./_tags -R  --fields=+iaS --extra=+q --languages=html
 if /I "%LANGTYPE%"=="ALL" ctags -o./_tags -R --c++-kinds=+p --fields=+iaS --extra=+q
@@ -121,6 +129,7 @@ rem create cscope files but if LANGTYPE is vim, we don't needt to create cscope
 rem =======================================
 if /I "%2"=="inherits" goto FINISH
 if /I "%LANGTYPE%"=="PYTHON" goto ID
+if /I "%LANGTYPE%"=="CSHARP" goto ID
 if /I "%LANGTYPE%"=="VIM" goto ID
 if /I "%LANGTYPE%"=="HTML" goto ID
 echo Creating cscope.files...
