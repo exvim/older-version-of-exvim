@@ -53,6 +53,9 @@
 *.cpp			text
 *.cxx			text
 
+# c# srouce files
+*.cs			text
+
 # shader files
 *.hlsl          text
 *.vsh           text
