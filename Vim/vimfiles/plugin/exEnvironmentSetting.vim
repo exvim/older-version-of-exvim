@@ -88,7 +88,24 @@ function! g:exES_SetEnvironment() " <<<
     if g:exES_setted != 1
         let g:exES_setted = 1
 
-        for Line in getline(1, '$')
+        " get PWD
+        let Line = getline(1)
+        let SettingList = split(Line, "=")
+        if len(SettingList)>=2
+            " exec "let g:exES_".SettingList[0]."='".escape(SettingList[1], ' ')."'"
+            " since '\ ' will get error in win32, just disable it here
+            exec "let g:exES_".SettingList[0]."='".SettingList[1]."'" 
+        endif
+        " check if PWD is correct, rewrite default template if not
+        let _cwd = substitute( getcwd(), "\\", "\/", "g" )
+        if g:exES_PWD != _cwd 
+            let g:exES_PWD = _cwd 
+            silent normal! Gdgg
+            call s:exES_WriteDefaultTemplate()
+        endif
+
+        " read lines to get settings
+        for Line in getline(2, '$')
             let SettingList = split(Line, "=")
             if len(SettingList)>=2
                 " exec "let g:exES_".SettingList[0]."='".escape(SettingList[1], ' ')."'"
