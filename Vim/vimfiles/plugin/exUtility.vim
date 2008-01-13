@@ -942,6 +942,18 @@ function! g:ex_QuickFileJump() " <<<
     endif
 endfunction " >>>
 
+" -- ex_Explore
+function! g:ex_Explore( path ) " <<<
+    if expand( a:path ) != ""
+        if isdirectory( a:path )
+            let cur_dir =  fnamemodify( a:path, ":p" )
+        else
+            let cur_dir =  fnamemodify( a:path, ":p:h" )
+        endif
+        silent exec '!start explorer.exe ' . cur_dir
+    endif
+endfunction " >>>
+
 " ------------------------
 "  fold functions
 " ------------------------

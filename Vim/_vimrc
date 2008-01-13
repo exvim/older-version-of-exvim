@@ -705,7 +705,14 @@ if has("gui_running")
         " Open the folder containing the currently open file. Double <CR> at end
         " is so you don't have to hit return after command. Double quotes are
         " not necessary in the 'explorer.exe %:p:h' section.
-        :map <silent> <C-F5> :if expand("%:p:h") != ""<CR>:!start explorer.exe %:p:h<CR>:endif<CR><CR>
+        " :map <silent> <C-F5> :if expand("%:p:h") != ""<CR>:!start explorer.exe %:p:h<CR>:endif<CR><CR>
+
+        " explore the vimfile directory
+        :map <silent> <C-F5> :call g:ex_Explore(getcwd() . "\\_vimfiles")<CR>
+        " explore the cwd directory
+        :map <silent> <C-F6> :call g:ex_Explore(getcwd())<CR>
+        " explore the diretory current file in
+        :map <silent> <C-F7> :call g:ex_Explore(expand("%:p:h"))<CR>
     endif
 endif
 " 
