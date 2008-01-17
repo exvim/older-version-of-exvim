@@ -1,0 +1,168 @@
+H1 { text-align: center; font-family:Tahoma }
+BODY {    font-family:verdana; }
+P {   font-family:verdana; }
+A.qindex
+{
+	font-size: x-small;
+	font-family: verdana;
+}
+A.qindexRef
+{
+	font-weight: normal;
+	font-size: x-small;
+	font-family: verdana;
+}
+A.el
+{
+	font-weight: normal;
+	font-size: x-small;
+	font-family: verdana;
+	text-decoration: none;
+}
+A.elRef
+{
+	font-weight: bold;
+	font-size: x-small;
+	font-family: Verdana;
+}
+A.code
+{
+	font-weight: bold;
+	font-size: x-small;
+	color: #4444ee;
+	font-family: verdana;
+	text-decoration: none;
+}
+A.codeRef
+{
+	font-weight: normal;
+	font-size: x-small;
+	color: #4444ee;
+	font-family: verdana;
+}
+A:hover
+{
+	font-weight: normal;
+	font-size: x-small;
+	font-family: Verdana;
+	background-color: #3399ff;
+	text-decoration: none;
+}
+DL.el
+{
+	font-weight: bold;
+	font-size: x-small;
+	margin-left: -1cm;
+	font-family: Verdana;
+}
+DIV.fragment
+{
+	border-right: medium none;
+	border-top: medium none;
+	font-weight: normal;
+	font-size: x-small;
+	border-left: medium none;
+	width: 100%;
+	border-bottom: medium none;
+	font-family: Verdana;
+	background-color: #eeeeee;
+}
+DIV.ah
+{
+	margin-top: 3px;
+	font-weight: bold;
+	font-size: x-small;
+	margin-bottom: 3px;
+	color: #ffffff;
+	font-family: Verdana;
+	background-color: black;
+}
+TD.md
+{
+	font-weight: bold;
+	font-size: x-small;
+	font-family: Verdana;
+	background-color: #c5c5c5;
+}
+TD.mdname
+{
+	font-weight: bold;
+	font-size: x-small;
+	font-style: normal;
+	font-family: Verdana;
+	background-color: #c5c5c5;
+}
+DIV.groupHeader
+{
+	margin-top: 12px;
+	font-weight: bold;
+	font-size: x-small;
+	margin-bottom: 6px;
+	margin-left: 16px;
+	font-family: Verdana;
+}
+DIV.groupText
+{
+	font-weight: bold;
+	font-size: x-small;
+	margin-left: 16px;
+	font-style: italic;
+	font-family: Verdana;
+}
+HR { height: 1px;}
+EM
+{
+	font-weight: normal;
+	font-size: x-small;
+	font-style: normal;
+	font-family: Verdana;
+}
+FONT.keyword
+{
+	font-weight: normal;
+	font-size: x-small;
+	color: #008000;
+	font-family: 'Courier New';
+}
+FONT.keywordtype
+{
+	font-weight: normal;
+	font-size: x-small;
+	color: #604020;
+	font-family: 'Courier New';
+}
+FONT.keywordflow
+{
+	font-weight: normal;
+	font-size: x-small;
+	color: #e08000;
+	font-family: 'Courier New';
+}
+FONT.comment
+{
+	font-weight: normal;
+	font-size: x-small;
+	color: #800000;
+	font-family: 'Courier New';
+}
+FONT.preprocessor
+{
+	font-weight: normal;
+	font-size: x-small;
+	color: #806020;
+	font-family: 'Courier New';
+}
+FONT.stringliteral
+{
+	font-weight: normal;
+	font-size: x-small;
+	color: #002080;
+	font-family: 'Courier New';
+}
+FONT.charliteral
+{
+	font-weight: normal;
+	font-size: x-small;
+	color: #008080;
+	font-family: 'Courier New';
+}
