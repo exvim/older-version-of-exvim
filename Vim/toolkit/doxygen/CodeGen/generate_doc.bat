@@ -1,5 +1,6 @@
 doxygen.exe config.cfg
-cd ..\dox\html
-..\..\doxy_tmpl\hhc.exe index.hhp
+copy logo.gif .\doc\html\logo.gif
+cd .\doc\html
+..\..\hhc.exe index.hhp
 cd ..
 copy html\index.chm Document.chm
