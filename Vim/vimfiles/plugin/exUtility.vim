@@ -1075,7 +1075,7 @@ function! g:ex_GCCMake(args) " <<<
 
     let entry_file = glob('gcc_entry*.mk') 
     if entry_file != ''
-        exec "!make -f" . entry_file . " " . a:args
+        exec "!start make -f" . entry_file . " " . a:args
     else
         call g:ex_WarningMsg("entry file not found")
     endif
@@ -1088,7 +1088,7 @@ function! g:ex_ShaderMake(args) " <<<
 
     let entry_file = glob('shader_entry*.mk') 
     if entry_file != ''
-        exec "!make -f" . entry_file . " " . a:args
+        exec "!start make -f" . entry_file . " " . a:args
     else
         call g:ex_WarningMsg("entry file not found")
     endif
@@ -1125,7 +1125,7 @@ function! g:ex_VCMake(cmd, config) " <<<
             endif
 
             " exec make_vs.bat
-            exec "!make_vs ".cmd.' '.g:exES_Solution.' '.a:config.' '.prj_name
+            exec "!start make_vs ".cmd.' '.g:exES_Solution.' '.a:config.' '.prj_name
         else
             call g:ex_WarningMsg("solution not found")
         endif
@@ -1142,22 +1142,22 @@ function! g:ex_UpdateVimFiles( type ) " <<<
     if a:type == ""
         if quick_gen_bat != ''
             silent exec "cscope kill " . g:exES_Cscope
-            silent exec "!" . quick_gen_bat
+            silent exec "!start " . quick_gen_bat
             silent exec "cscope add " . g:exES_Cscope
         else
             call g:ex_WarningMsg("quick_gen_project*.bat not found")
         endif
     elseif a:type == "ID"
-        silent exec "!" . quick_gen_bat . " id"
+        silent exec "!start " . quick_gen_bat . " id"
     elseif a:type == "symbol"
-        silent exec "!" . quick_gen_bat . " symbol"
+        silent exec "!start " . quick_gen_bat . " symbol"
     elseif a:type == "inherits"
-        silent exec "!" . quick_gen_bat . " inherits"
+        silent exec "!start " . quick_gen_bat . " inherits"
     elseif a:type == "tag"
-        silent exec "!" . quick_gen_bat . " tag"
+        silent exec "!start " . quick_gen_bat . " tag"
     elseif a:type == "cscope"
         silent exec "cscope kill " . g:exES_Cscope
-        silent exec "!" . quick_gen_bat . " cscope"
+        silent exec "!start " . quick_gen_bat . " cscope"
         silent exec "cscope add " . g:exES_Cscope
     else
         call g:ex_WarningMsg("do not found update-type: " . a:type )
@@ -1169,7 +1169,7 @@ function! g:ex_Debug( exe_name ) " <<<
     if glob(a:exe_name) == ''
         call g:ex_WarningMsg('file: ' . a:exe_name . ' not found')
     else
-        silent exec '!insight ' . a:exe_name
+        silent exec '!start insight ' . a:exe_name
     endif
 endfunction " >>>
 
@@ -1370,8 +1370,26 @@ function! g:ex_GenInheritsDot( pattern, gen_method ) " <<<
 
     " write file
     call writefile(inherits_list, inherits_dot_file, "b")
-    let dot_cmd = "!dot " . inherits_dot_file . " -Tpng -o" . inherit_directory_path . pattern_fname . ".png"
+    let image_file_name = inherit_directory_path . pattern_fname . ".png"
+    let dot_cmd = "!dot " . inherits_dot_file . " -Tpng -o" . image_file_name
     silent exec dot_cmd
+    if has("win32")
+        return substitute( fnamemodify( image_file_name, ":p" ), '\/', '\\', 'g' )
+    else
+        return fnamemodify( image_file_name, ":p" )
+    endif
+endfunction " >>>
+
+
+" --ex_ViewInheritsImage--
+function! g:ex_ViewInheritsImage() " <<<
+    let reg_s = @s
+    let save_pos = getpos(".")
+    exe 'normal! "syiw'
+    silent call setpos(".", save_pos )
+    let inherit_class_name = @s
+    let @s = reg_s
+    silent exec '!start ' . g:exES_ImageViewer ' ' . g:ex_GenInheritsDot(inherit_class_name,"all")
 endfunction " >>>
 
 " --ex_RecursiveGetChildren--

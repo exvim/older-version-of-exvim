@@ -425,6 +425,8 @@ command -narg=1 GV call g:ex_GenInheritsDot('<args>',"all")
 command -narg=1 GVP call g:ex_GenInheritsDot('<args>',"parent")
 command -narg=1 GVC call g:ex_GenInheritsDot('<args>',"children")
 
+map <silent> <Leader>gv :call g:ex_ViewInheritsImage()<CR>
+
 command LINE call g:ex_PutLine(86, '-')
 command DEF call g:ex_PutDefine()
 command HEADER call g:ex_PutHeader()
@@ -509,6 +511,7 @@ nnoremap <silent> <Leader>ad :ExmhHL 0 <CR>
 " --------------------
 let g:exES_vimfile_dir = "_vimfiles"
 let g:exES_project_cmd = 'EXProject'
+let g:exES_ImageViewer = 'd:\exDev\IrfanView\i_view32.exe'
 
 function g:exES_UpdateEnvironment()
     " set parent working directory
