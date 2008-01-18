@@ -1389,6 +1389,8 @@ function! g:ex_ViewInheritsImage() " <<<
     silent call setpos(".", save_pos )
     let inherit_class_name = @s
     let @s = reg_s
+    let inherit_class_name = "\\<" . inherit_class_name . "\\>"
+    echomsg inherit_class_name
     silent exec '!start ' . g:exES_ImageViewer ' ' . g:ex_GenInheritsDot(inherit_class_name,"all")
 endfunction " >>>
 
