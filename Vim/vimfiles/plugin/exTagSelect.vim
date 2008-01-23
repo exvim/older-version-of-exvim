@@ -188,7 +188,8 @@ endfunction " >>>
 " Init exTagSelect window
 function! g:exTS_InitSelectWindow() " <<<
     " load the tagfiles
-    let s:exTS_tag_file_list = tagfiles()
+    " let s:exTS_tag_file_list = tagfiles()
+    let s:exTS_tag_file_list = []
 
     " syntax highlight
     if g:exTS_highlight_result

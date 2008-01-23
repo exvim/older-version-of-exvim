@@ -585,15 +585,15 @@ function! g:ex_MatchTagFile( tag_file_list, file_name ) " <<<
         endif
     endif
 
-    let full_file_name = ''
-    for tag_file in a:tag_file_list
-        let tag_path = strpart( tag_file, 0, strridx(tag_file, '\') )
-        let full_file_name = tag_path . a:file_name
-        if findfile(full_file_name) != ''
-            break
-        endif
-        let full_file_name = ''
-    endfor
+    "let full_file_name = ''
+    "for tag_file in a:tag_file_list
+    "    let tag_path = strpart( tag_file, 0, strridx(tag_file, '\') )
+    "    let full_file_name = tag_path . a:file_name
+    "    if findfile(full_file_name) != ''
+    "        break
+    "    endif
+    "    let full_file_name = ''
+    "endfor
 
     if full_file_name == ''
         call g:ex_WarningMsg( a:file_name . ' not found' )
