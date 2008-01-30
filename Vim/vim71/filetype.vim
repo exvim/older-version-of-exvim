@@ -2120,7 +2120,7 @@ au BufNewFile,BufRead *.z8a			setf z8a
 " ======================== jwu: User Define File Type =============================
 
 " High Level Shader Language
-au BufNewFile,BufRead *.hlsl,*.fx,*.fxh,*.cg,*.vsh,*.psh,*.shd       setf hlsl
+au BufNewFile,BufRead *.hlsl,*.fx,*.fxh,*.cg,*.vsh,*.psh,*.shd,*.glsl       setf hlsl
 
 " Max Script
 au BufNewFile,BufRead *.ms,*.mse,*.mcr,*.mzp,*.ds  setf maxscript
