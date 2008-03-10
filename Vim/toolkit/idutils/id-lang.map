@@ -80,6 +80,17 @@
 # vim files
 *.vim           text
 
+# html file
+*.html          text 
+*.htm           text
+*.shtml         text
+*.stm           text
+
+# xml file
+*.xml           text
+*.mms           text
+*.glm           text
+
 # misc file
 *.l			    text
 *.lex			text
