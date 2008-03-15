@@ -40,8 +40,8 @@ highlight def ex_SynObjectLine gui=none guibg=#ffe4b3 term=none cterm=none cterm
 let s:ex_HighLightText = ["","","",""]
 
 " local script vairable initialization
-let s:ex_editbuf_num = ""
-let s:ex_pluginbuf_num = ""
+let s:ex_editbuf_num = -1
+let s:ex_pluginbuf_num = -1
 
 " file browse
 let s:ex_level_list = []
@@ -423,7 +423,7 @@ endfunction " >>>
 " Record current buf num when leave
 function! g:ex_RecordCurrentBufNum() " <<<
     let short_bufname = fnamemodify(bufname("%"),":p:t")
-    if index( g:exUT_plugin_list, short_bufname ) == -1
+    if index( g:exUT_plugin_list, short_bufname, 0, 1 ) == -1 " compare ignore case
         let s:ex_editbuf_num = bufnr('%')
     elseif short_bufname !=# "-MiniBufExplorer-"
         let s:ex_pluginbuf_num = bufnr('%')
@@ -473,7 +473,7 @@ function! g:ex_GotoLastEditBuffer() " <<<
     endif
 endfunction " >>>
 
-" --ex_GotoLastEditBuffer--
+" --ex_SwitchBuffer--
 function! g:ex_SwitchBuffer() " <<<
     " this will fix no jump error < bufwinnr() == -1 >
     silent call g:ex_RecordCurrentBufNum()
