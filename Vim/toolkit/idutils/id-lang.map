@@ -91,6 +91,9 @@
 *.mms           text
 *.glm           text
 
+# max-script file
+*.ms            text
+
 # misc file
 *.l			    text
 *.lex			text
