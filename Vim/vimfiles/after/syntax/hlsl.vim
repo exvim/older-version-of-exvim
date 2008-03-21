@@ -33,11 +33,11 @@ syn keyword hlslType            snorm4 unorm4 matrix
 syn match   hlslType            "\<\(BOOL\|int\|half\|float\|double\)[1-4]*\>"
 syn match   hlslType            "\<\(BOOL\|int\|half\|float\|double\)[1-4]x[1-4]\>"
 syn keyword hlslType            vertexshader pixelshader struct typedef
+syn keyword hlslType            in out
 
 " shader type
 syn match   hlslShaderType      "\<\(vs\|ps\|gs\)_[1-4]_[0-4]\>"
-syn keyword hlslBaseFunction    CompileShader SetVertexShader SetGeometryShader SetPixelShader SetDepthStencilState pass
-syn match   hlslBaseFunction    "\<technique\d\+\>"
+syn keyword hlslBaseFunction    CompileShader SetVertexShader SetGeometryShader SetPixelShader SetDepthStencilState pass compile technique
 
 " function
 syn keyword hlslFunction        abs acos all any asin atan atan2 ceil clamp clip cos cosh cross 
