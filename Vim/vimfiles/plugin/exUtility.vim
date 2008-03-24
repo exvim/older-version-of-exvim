@@ -310,13 +310,20 @@ function! g:ex_PutLine( len, line_type ) " <<<
     endif
 endfunction " >>>
 
+" --ex_PutSegment--
+function! g:ex_PutSegment() " <<<
+    execute 'normal! ' . 'o' .   "// ======================================================================================\<CR>"
+    execute 'normal! ' . "\<Home>c$" . "// \<CR>"
+endfunction " >>>
+
 " --ex_PutDefine--
 function! g:ex_PutDefine() " <<<
-    execute 'normal! ' . 'o' .   "/**\<CR>"
-    execute 'normal! ' . "\<Home>c$" . " * =======================================\<CR>"
-    execute 'normal! ' . "\<Home>c$" . " * \<CR>"
-    execute 'normal! ' . "\<Home>c$" . " * =======================================\<CR>"
-    execute 'normal! ' . "\<Home>c$" . " */"
+    execute 'normal! ' . 'o' .   "///////////////////////////////////////////////////////////////////////////////\<CR>"
+    execute 'normal! ' . "\<Home>c$" . "// class \<CR>"
+    execute 'normal! ' . "\<Home>c$" . "// \<CR>"
+    execute 'normal! ' . "\<Home>c$" . "// Purpose: \<CR>"
+    execute 'normal! ' . "\<Home>c$" . "// \<CR>"
+    execute 'normal! ' . "\<Home>c$" . "///////////////////////////////////////////////////////////////////////////////\<CR>"
 endfunction " >>>
 
 " --ex_PutHeader--
