@@ -428,10 +428,12 @@ command -narg=1 GVC call g:ex_GenInheritsDot('<args>',"children")
 map <silent> <Leader>gv :call g:ex_ViewInheritsImage()<CR>
 
 command LINE call g:ex_PutLine(86, '-')
-command DEF call g:ex_PutDefine()
 command HEADER call g:ex_PutHeader()
-command MAIN call g:ex_PutMain()
+command SEP call g:ex_PutSeparate()
 command SEG call g:ex_PutSegment()
+command DEF call g:ex_PutDefine()
+command DECL call g:ex_PutDefine()
+command MAIN call g:ex_PutMain()
 
 " add plugin we use to prevent them record as edit-buffer
 let g:exUT_plugin_list = ["-MiniBufExplorer-","__Tag_List__"] 
