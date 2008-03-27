@@ -323,14 +323,18 @@ function! g:ex_PutSeparate() " <<<
     execute 'normal! ' . "\<Home>c$" . "// \<CR>"
 endfunction " >>>
 
+" --ex_PutDescription--
+function! g:ex_PutDescription() " <<<
+    execute 'normal! ' . 'o' .   "// ------------------------------------------------------------------\<CR>"
+    execute 'normal! ' . "\<Home>c$" . "// Desc: \<CR>"
+    execute 'normal! ' . "\<Home>c$" . "// ------------------------------------------------------------------\<CR>"
+endfunction " >>>
+
 " --ex_PutDefine--
 function! g:ex_PutDefine() " <<<
-    execute 'normal! ' . 'o' .   "///////////////////////////////////////////////////////////////////////////////\<CR>"
-    execute 'normal! ' . "\<Home>c$" . "// class \<CR>"
-    execute 'normal! ' . "\<Home>c$" . "// \<CR>"
-    execute 'normal! ' . "\<Home>c$" . "// Purpose: \<CR>"
-    execute 'normal! ' . "\<Home>c$" . "// \<CR>"
-    execute 'normal! ' . "\<Home>c$" . "///////////////////////////////////////////////////////////////////////////////\<CR>"
+    execute 'normal! ' . 'o' .   "// ------------------------------------------------------------------\<CR>"
+    execute 'normal! ' . "\<Home>c$" . "// Desc: \<CR>"
+    execute 'normal! ' . "\<Home>c$" . "// ------------------------------------------------------------------\<CR>"
 endfunction " >>>
 
 " --ex_PutDeclaration--

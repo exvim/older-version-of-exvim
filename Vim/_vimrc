@@ -432,7 +432,8 @@ command HEADER call g:ex_PutHeader()
 command SEP call g:ex_PutSeparate()
 command SEG call g:ex_PutSegment()
 command DEF call g:ex_PutDefine()
-command DECL call g:ex_PutDefine()
+command DEC call g:ex_PutDeclaration()
+command DES call g:ex_PutDescription()
 command MAIN call g:ex_PutMain()
 
 " add plugin we use to prevent them record as edit-buffer
