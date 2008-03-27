@@ -319,7 +319,7 @@ endfunction " >>>
 
 " --ex_PutSeparate--
 function! g:ex_PutSeparate() " <<<
-    execute 'normal! ' . 'o' .   "// ==================================================================\<CR>"
+    execute 'normal! ' . 'o' .   "// ========================================================\<CR>"
     execute 'normal! ' . "\<Home>c$" . "// \<CR>"
 endfunction " >>>
 
