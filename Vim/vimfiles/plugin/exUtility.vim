@@ -1302,12 +1302,10 @@ function! g:ex_Highlight_Visual(match_nr) " <<<
         let el = line_end+1
         let pat = '/\%>'.sl.'l'.'\%<'.el.'l/'
     endif
-    if pat == s:ex_HighLightText[a:match_nr]
-        call g:ex_HighlightCancle(a:match_nr)
-    else
-        exe a:match_nr . 'match ex_SynHL' . a:match_nr . ' ' . pat
-        let s:ex_HighLightText[a:match_nr] = pat
-    endif
+
+    " never check highlight pattern in visual highlight mode
+    exe a:match_nr . 'match ex_SynHL' . a:match_nr . ' ' . pat
+    let s:ex_HighLightText[a:match_nr] = ''
     silent call cursor(cur_line, cur_col)
 endfunction " >>>
 
