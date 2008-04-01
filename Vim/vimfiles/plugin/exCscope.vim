@@ -474,6 +474,11 @@ function! s:exCS_GetSearchResult(search_pattern, search_method) " <<<
         silent exec "normal \<Esc>"
     endif
 
+    " if cscope file not connect, connect it
+    if cscope_connection(4, "cscope.out", g:exES_Cscope ) == 0
+        call g:exCS_ConnectCscopeFile()
+    endif
+
     " jump back to edit buffer first
     call g:ex_GotoEditBuffer()
 

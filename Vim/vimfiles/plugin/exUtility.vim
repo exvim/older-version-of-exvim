@@ -1171,7 +1171,8 @@ function! g:ex_UpdateVimFiles( type ) " <<<
         if quick_gen_bat != ''
             silent exec "cscope kill " . g:exES_Cscope
             silent exec "!start " . quick_gen_bat
-            silent exec "cscope add " . g:exES_Cscope
+            " we use async update
+            " silent exec "cscope add " . g:exES_Cscope
         else
             call g:ex_WarningMsg("quick_gen_project*.bat not found")
         endif
@@ -1186,7 +1187,8 @@ function! g:ex_UpdateVimFiles( type ) " <<<
     elseif a:type == "cscope"
         silent exec "cscope kill " . g:exES_Cscope
         silent exec "!start " . quick_gen_bat . " cscope"
-        silent exec "cscope add " . g:exES_Cscope
+        " we use async update
+        " silent exec "cscope add " . g:exES_Cscope
     else
         call g:ex_WarningMsg("do not found update-type: " . a:type )
     endif
