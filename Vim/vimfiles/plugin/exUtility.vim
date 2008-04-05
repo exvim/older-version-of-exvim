@@ -312,57 +312,72 @@ endfunction " >>>
 
 " --ex_PutSegment--
 function! g:ex_PutSegment() " <<<
-    execute 'normal! ' . 'o' .   "///////////////////////////////////////////////////////////////////////////////\<CR>"
-    execute 'normal! ' . "\<Home>c$" . "// \<CR>"
-    execute 'normal! ' . "\<Home>c$" . "///////////////////////////////////////////////////////////////////////////////\<CR>"
+    execute 'normal! ' . 'o' . "///////////////////////////////////////////////////////////////////////////////"
+    execute 'normal! ' . 'o' . "// "
+    execute 'normal! ' . 'o' . "///////////////////////////////////////////////////////////////////////////////\<CR>"
+endfunction " >>>
+
+" --ex_PutNamespaceStart--
+function! g:ex_PutNamespaceStart( space_name ) " <<<
+    execute 'normal! ' . 'o'
+    execute 'normal! ' . "\<Home>c$" . "// #########################\<CR>"
+    execute 'normal! ' . "\<Home>c$" . "namespace " . a:space_name . " { \<CR>" 
+    execute 'normal! ' . "\<Home>c$" . "// #########################\<CR>"
+endfunction " >>>
+
+" --ex_PutNamespaceEnd--
+function! g:ex_PutNamespaceEnd( space_name ) " <<<
+    execute 'normal! ' . 'o'
+    execute 'normal! ' . "\<Home>c$" . "// #########################\<CR>"
+    execute 'normal! ' . "\<Home>c$" . "} // end namespace " . a:space_name . " \<CR>" 
+    execute 'normal! ' . "\<Home>c$" . "// #########################\<CR>"
 endfunction " >>>
 
 " --ex_PutSeparate--
 function! g:ex_PutSeparate() " <<<
-    execute 'normal! ' . 'o' .   "// ========================================================\<CR>"
-    execute 'normal! ' . "\<Home>c$" . "// \<CR>"
+    execute 'normal! ' . 'o' . "// ========================================================"
+    execute 'normal! ' . 'o' . "// "
 endfunction " >>>
 
 " --ex_PutDescription--
 function! g:ex_PutDescription() " <<<
-    execute 'normal! ' . 'o' .   "// ------------------------------------------------------------------\<CR>"
-    execute 'normal! ' . "\<Home>c$" . "// Desc: \<CR>"
-    execute 'normal! ' . "\<Home>c$" . "// ------------------------------------------------------------------\<CR>"
+    execute 'normal! ' . 'o' . "// ------------------------------------------------------------------"
+    execute 'normal! ' . 'o' . "// Desc: "
+    execute 'normal! ' . 'o' . "// ------------------------------------------------------------------\<CR>"
 endfunction " >>>
 
 " --ex_PutDefine--
 function! g:ex_PutDefine() " <<<
-    execute 'normal! ' . 'o' .   "// ------------------------------------------------------------------\<CR>"
-    execute 'normal! ' . "\<Home>c$" . "// Desc: \<CR>"
-    execute 'normal! ' . "\<Home>c$" . "// ------------------------------------------------------------------\<CR>"
+    execute 'normal! ' . 'o' . "// ------------------------------------------------------------------"
+    execute 'normal! ' . 'o' . "// Desc: "
+    execute 'normal! ' . 'o' . "// ------------------------------------------------------------------\<CR>"
 endfunction " >>>
 
 " --ex_PutDeclaration--
 function! g:ex_PutDeclaration() " <<<
-    execute 'normal! ' . 'o' .   "///////////////////////////////////////////////////////////////////////////////\<CR>"
-    execute 'normal! ' . "\<Home>c$" . "// class \<CR>"
-    execute 'normal! ' . "\<Home>c$" . "// \<CR>"
-    execute 'normal! ' . "\<Home>c$" . "// Purpose: \<CR>"
-    execute 'normal! ' . "\<Home>c$" . "// \<CR>"
-    execute 'normal! ' . "\<Home>c$" . "///////////////////////////////////////////////////////////////////////////////\<CR>"
+    execute 'normal! ' . 'o' . "///////////////////////////////////////////////////////////////////////////////"
+    execute 'normal! ' . 'o' . "// class "
+    execute 'normal! ' . 'o' . "// "
+    execute 'normal! ' . 'o' . "// Purpose: "
+    execute 'normal! ' . 'o' . "// "
+    execute 'normal! ' . 'o' . "///////////////////////////////////////////////////////////////////////////////\<CR>"
 endfunction " >>>
 
 " --ex_PutHeader--
 function! g:ex_PutHeader() " <<<
     execute 'normal! ' . "gg"
-    execute 'normal! ' . "O" .   "// ======================================================================================\<CR>"
-    execute 'normal! ' . "\<Home>c$" . "// File         : " . fnamemodify(expand('%'), ":t") . "\<CR>"
-    execute 'normal! ' . "\<Home>c$" . "// Author       : Wu Jie \<CR>"
-    execute 'normal! ' . "\<Home>c$" . "// Description  : \<CR>"
-    execute 'normal! ' . "\<Home>c$" . "// ======================================================================================"
-    execute 'normal! ' . "o"
+    execute 'normal! ' . "O" . "// ======================================================================================"
+    execute 'normal! ' . "o" . "// File         : " . fnamemodify(expand('%'), ":t")
+    execute 'normal! ' . "o" . "// Author       : Wu Jie "
+    execute 'normal! ' . "o" . "// Description  : "
+    execute 'normal! ' . "o" . "// ======================================================================================\<CR>"
 endfunction " >>>
 
 " --ex_PutMain--
 function! g:ex_PutMain() " <<<
-    execute 'normal! ' . 'o' .   "int main( int argv, char* argc[] )\<CR>"
-    execute 'normal! ' . "\<Home>c$" . " {\<CR>"
-    execute 'normal! ' . "\<Home>c$" . " }"
+    execute 'normal! ' . 'o' .   "int main( int argv, char* argc[] )"
+    execute 'normal! ' . "o" . " {"
+    execute 'normal! ' . "o" . " }\<CR>"
 endfunction " >>>
 
 " --ex_AlignDigit--
