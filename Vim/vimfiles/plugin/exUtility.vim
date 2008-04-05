@@ -317,6 +317,13 @@ function! g:ex_PutSegment() " <<<
     execute 'normal! ' . 'o' . "///////////////////////////////////////////////////////////////////////////////\<CR>"
 endfunction " >>>
 
+" --ex_PutNote--
+function! g:ex_PutNote() " <<<
+    execute 'normal! ' . 'o' . "// ############################################################################"
+    execute 'normal! ' . 'o' . "// Note: "
+    execute 'normal! ' . 'o' . "// ############################################################################\<CR>"
+endfunction " >>>
+
 " --ex_PutNamespaceStart--
 function! g:ex_PutNamespaceStart( space_name ) " <<<
     execute 'normal! ' . 'o'
@@ -1118,7 +1125,8 @@ function! g:ex_GCCMake(args) " <<<
 
     let entry_file = glob('gcc_entry*.mk') 
     if entry_file != ''
-        exec "!start make -f" . entry_file . " " . a:args
+        " ! start is different with !start, silent ! start will close the 'cmd /c start' window
+        exec "silent ! start make -f" . entry_file . " " . a:args
     else
         call g:ex_WarningMsg("entry file not found")
     endif
@@ -1131,7 +1139,7 @@ function! g:ex_ShaderMake(args) " <<<
 
     let entry_file = glob('shader_entry*.mk') 
     if entry_file != ''
-        exec "!start make -f" . entry_file . " " . a:args
+        exec "silent ! start make -f" . entry_file . " " . a:args
     else
         call g:ex_WarningMsg("entry file not found")
     endif
@@ -1168,7 +1176,7 @@ function! g:ex_VCMake(cmd, config) " <<<
             endif
 
             " exec make_vs.bat
-            exec "!start make_vs ".cmd.' '.g:exES_Solution.' '.a:config.' '.prj_name
+            exec "silent ! start make_vs ".cmd.' '.g:exES_Solution.' '.a:config.' '.prj_name
         else
             call g:ex_WarningMsg("solution not found")
         endif
