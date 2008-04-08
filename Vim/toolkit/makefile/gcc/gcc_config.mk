@@ -19,7 +19,7 @@ endif
 # Configuration Name
 # parameter: Debug
 # 			 Release
-# 			 FinalRelease
+# 			 Final
 # 			 All
 Configuration = Debug
 

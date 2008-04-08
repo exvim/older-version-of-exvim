@@ -114,16 +114,18 @@ ErrLogName := ErrorLog.err
 ifeq ($(Configuration),Debug)
 PreDefs += DEBUG
 PreDefs += _DEBUG
+PreDefs += _EX_DEBUG_
 else 
 ifeq ($(Configuration),Release)
 PreDefs += NDEBUG
 PreDefs += RELEASE
 PreDefs += _RELEASE
+PreDefs += _EX_RELEASE_
 else
-ifeq ($(Configuration),FinalRelease)
+ifeq ($(Configuration),Final)
 PreDefs += NDEBUG
-PreDefs += FINAL_RELEASE
-PreDefs += _FINAL_RELEASE
+PreDefs += FINAL
+PreDefs += _EX_FINAL_
 endif
 endif
 endif
@@ -133,7 +135,7 @@ ifeq ($(Platform),Linux)
 PreDefs += __LINUX__
 PreDefs += _LINUX
 PreDefs += LINUX
-PreDefs += _EX_LINUX
+PreDefs += _EX_LINUX_
 else 
 ifeq ($(Platform),Win32)
 PreDefs += __WIN32__
@@ -141,13 +143,13 @@ PreDefs += _WIN32
 PreDefs += WIN32
 PreDefs += WIN
 PreDefs += WINDOWS
-PreDefs += _EX_WIN32
+PreDefs += _EX_WIN32_
 else 
 ifeq ($(Platform),PS3)
 PreDefs += __PS3__
 PreDefs += _PS3
 PreDefs += PS3
-PreDefs += _EX_PS3
+PreDefs += _EX_PS3_
 endif
 endif
 endif
@@ -156,6 +158,7 @@ endif
 ifeq ($(ProjectType),dll)
 PreDefs += DLL
 PreDefs += _DLL
+PreDefs += _EX_DLL_
 endif
 
 # -------------------
