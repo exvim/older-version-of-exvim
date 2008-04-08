@@ -382,7 +382,7 @@ endfunction " >>>
 
 " --ex_PutMain--
 function! g:ex_PutMain() " <<<
-    execute 'normal! ' . 'o' .   "int main( int argv, char* argc[] )"
+    execute 'normal! ' . 'o' .   "int main( int argc, char* argv[] )"
     execute 'normal! ' . "o" . "{"
     execute 'normal! ' . "o" . "}\<CR>"
     execute 'normal! ' . "2k"
