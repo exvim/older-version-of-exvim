@@ -438,6 +438,8 @@ command DEF call g:ex_PutDefine()
 command DEC call g:ex_PutDeclaration()
 command DES call g:ex_PutDescription()
 command MAIN call g:ex_PutMain()
+command -narg=1 CLASS call g:ex_PutClass( "class", "<args>" )
+command -narg=1 STRUCT call g:ex_PutClass( "struct", "<args>" )
 
 " add plugin we use to prevent them record as edit-buffer
 let g:exUT_plugin_list = ["-MiniBufExplorer-","__Tag_List__"] 

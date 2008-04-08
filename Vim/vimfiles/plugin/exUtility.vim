@@ -383,8 +383,37 @@ endfunction " >>>
 " --ex_PutMain--
 function! g:ex_PutMain() " <<<
     execute 'normal! ' . 'o' .   "int main( int argv, char* argc[] )"
-    execute 'normal! ' . "o" . " {"
-    execute 'normal! ' . "o" . " }\<CR>"
+    execute 'normal! ' . "o" . "{"
+    execute 'normal! ' . "o" . "}\<CR>"
+    execute 'normal! ' . "2k"
+endfunction " >>>
+
+" --ex_PutClass--
+function! g:ex_PutClass( class_type, class_name ) " <<<
+    execute 'normal! ' . 'o' . "///////////////////////////////////////////////////////////////////////////////"
+    execute 'normal! ' . 'o' . "// class " . a:class_name
+    execute 'normal! ' . 'o' . "// "
+    execute 'normal! ' . 'o' . "// Purpose: "
+    execute 'normal! ' . 'o' . "// "
+    execute 'normal! ' . 'o' . "///////////////////////////////////////////////////////////////////////////////"
+    execute 'normal! ' . 'o'
+    execute 'normal! ' . 'o' . a:class_type . " " . a:class_name
+    execute 'normal! ' . 'o' . "{"
+    execute 'normal! ' . 'o' . "public:"
+    execute 'normal! ' . 'o' . "// internal typedef"
+    execute 'normal! ' . 'o' . "typedef " . a:class_name . " self_t;"
+    execute 'normal! ' . 'o'
+    execute 'normal! ' . 'o' . "public:"
+    execute 'normal! ' . 'o' . "// con/de-structor"
+    execute 'normal! ' . 'o' . a:class_name . " ();"
+    execute 'normal! ' . 'o' . "virtual ~" . a:class_name . " ();"
+    execute 'normal! ' . 'o'
+    execute 'normal! ' . 'o' . "public:"
+    execute 'normal! ' . 'o' . "// copy constructor"
+    execute 'normal! ' . 'o' . a:class_name . " ( const self_t& _copy );"
+    execute 'normal! ' . 'o' . "self_t& operator = ( const self_t& _copy );"
+    execute 'normal! ' . 'o'
+    execute 'normal! ' . 'o' . "}; // end " . a:class_type . " " . a:class_name
 endfunction " >>>
 
 " --ex_AlignDigit--
