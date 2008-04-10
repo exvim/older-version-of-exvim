@@ -279,7 +279,7 @@ endif
 endif
 	$(ECHO) generate $(@)
 	$(CAT) $(ErrDir)/$(ErrLogName) >> $(ErrDir)/$(Project).err
-	$(AFTER_BUILD)
+	$(POST_BUILD)
 
 # -------------------
 # Dependence Rules
