@@ -1304,33 +1304,44 @@ function! g:ex_Highlight_Normal(match_nr) " <<<
     " Clear previously selected name
     silent exe a:match_nr . 'match none'
 
-    let reg_h = @h
-    exe 'normal! "hyiw'
-    if @h == s:ex_HighLightText[a:match_nr]
+    " put the highlight text to reg a:matchnr for substitute
+    exe 'normal! "' . a:match_nr . 'yiw'
+    let hl_word = getreg(a:match_nr)
+    if hl_word == s:ex_HighLightText[a:match_nr]
         call g:ex_HighlightCancle(a:match_nr)
     else
-        exe a:match_nr . 'match ex_SynHL' . a:match_nr . ' ' . '/\<'.@h.'\>/'
-        let s:ex_HighLightText[a:match_nr] = @h
+        exe a:match_nr . 'match ex_SynHL' . a:match_nr . ' ' . '/\<'.hl_word.'\>/'
+        let s:ex_HighLightText[a:match_nr] = hl_word
     endif
-    let @h = reg_h
     silent call cursor(cur_line, cur_col)
 endfunction " >>>
 
 " --ex_Highlight_Text--
 " hightlight match_nr with text
 function! g:ex_Highlight_Text(match_nr, args) " <<<
+    " if no argument comming, cancle hihglight return
+    if a:args == ''
+        call g:ex_HighlightCancle(a:match_nr)
+        return
+    endif
+
+    " if we don't haveupper case character, ignore case
+    let pattern = a:args
+    if match( a:args, '\u' ) == -1
+        let pattern = '\c' . pattern
+    endif
+
+    " start match
     let cur_line = line(".")
     let cur_col = col(".")
+
     " Clear previously selected name
     silent exe a:match_nr . 'match none'
 
-    exe a:match_nr . 'match ex_SynHL' . a:match_nr . ' ' . '"' . a:args . '"'
-    if a:args == s:ex_HighLightText[a:match_nr]
-        call g:ex_HighlightCancle(a:match_nr)
-    else
-        let s:ex_HighLightText[a:match_nr] = a:args
-        silent call cursor(cur_line, cur_col)
-    endif
+    "
+    exe a:match_nr . 'match ex_SynHL' . a:match_nr . ' ' . '"' . pattern . '"'
+    let s:ex_HighLightText[a:match_nr] = pattern
+    silent call cursor(cur_line, cur_col)
 endfunction " >>>
 
 " --ex_Highlight_Visual--
@@ -1375,9 +1386,13 @@ function! g:ex_HighlightCancle(match_nr) " <<<
         let s:ex_HighLightText[1] = ''
         let s:ex_HighLightText[2] = ''
         let s:ex_HighLightText[3] = ''
+        silent call setreg(1,'') 
+        silent call setreg(2,'') 
+        silent call setreg(3,'') 
     else
         silent exe a:match_nr . 'match none'
         let s:ex_HighLightText[a:match_nr] = ''
+        silent call setreg(a:match_nr,'') 
     endif
     silent call cursor(cur_line, cur_col)
 endfunction " >>>
