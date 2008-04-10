@@ -1,0 +1,9 @@
+General
+    Output Directory = $(SolutionDir)bin\msvc\$(PlatformName)\$(ConfigurationName)\bin
+    Intermediate Directory = $(SolutionDir)bin\msvc\$(PlatformName)\$(ConfigurationName)\int\$(ProjectName)
+    Build Log File = $(IntDir)\BuildLog.htm
+
+Librarian/Link
+    Output File(Debug) = $(OutDir)\$(ProjectName)_d.lib 
+    Output File(Release) = $(OutDir)\$(ProjectName)_r.lib 
+    Output File(Final) = $(OutDir)\$(ProjectName).lib 

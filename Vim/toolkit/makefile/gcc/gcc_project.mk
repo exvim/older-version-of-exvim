@@ -48,9 +48,7 @@ LFlag_Spec += # (sample: -L"C:/Program Files/Microsoft DirectX SDK/Lib/x86")
 # Parent Working Directory
 PWD ?= ..
 
-# After Build Even
-
-# After Build Even
+# Post Build Even
 # programme after target been built, this is the project specific one (sample: make_fself $(@) $(basename $(@)).self)
 define POST_BUILD
 endef

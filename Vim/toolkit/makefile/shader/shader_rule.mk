@@ -10,7 +10,7 @@
 # -------------------
 #  Out Directory
 # -------------------
-OutDir := $(PWD)/_smakes/$(SHADER_Platform)
+OutDir := $(PWD)/bin/shader/$(SHADER_Platform)
 
 # -------------------
 #  Source
@@ -35,7 +35,7 @@ GS_Srcs :=$(notdir $(FullPath_GS_Srcs))
 # -------------------
 
 # Object File Output Path
-ObjDir := $(OutDir)/$(SHADER_Configuration)/SHD_Objs/$(Project)
+ObjDir := $(OutDir)/$(SHADER_Configuration)/objs/$(Project)
 
 # Object File Output Names
 #HLSL_Objs := $(patsubst %.hlsl,%.hlslo,$(HLSL_Srcs))
@@ -59,7 +59,7 @@ FullPath_Objs := $(addprefix $(ObjDir)/,$(Objs))
 # -------------------
 
 # Error File Output Path
-ErrDir := $(OutDir)/$(SHADER_Configuration)/Logs/BuildLogs
+ErrDir := $(OutDir)/$(SHADER_Configuration)/logs/BuildLogs
 FullPath_Errs := $(ErrDir)/$(Project).err
 ErrLogName := ErrorLog.err
 

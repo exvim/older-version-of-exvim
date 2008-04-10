@@ -8,7 +8,7 @@
 # -------------------
 #  Out Directory
 # -------------------
-OutDir := $(PWD)/_gmakes/$(Platform)
+OutDir := $(PWD)/bin/gcc/$(Platform)
 
 # -------------------
 #  Include
@@ -33,7 +33,7 @@ Srcs := $(notdir $(FullPath_Srcs))
 # -------------------
 
 # Object File Output Path
-ObjDir := $(OutDir)/$(Configuration)/Objs/$(Project)
+ObjDir := $(OutDir)/$(Configuration)/objs/$(Project)
 
 # Object File Output Names
 Objs := $(patsubst %.c,%.o,$(patsubst %.cpp,%.o,$(Srcs)))
@@ -46,7 +46,7 @@ FullPath_Objs := $(addprefix $(ObjDir)/,$(Objs))
 # -------------------
 
 # Dependence File Output Path
-DepDir := $(OutDir)/$(Configuration)/Deps/$(Project)
+DepDir := $(OutDir)/$(Configuration)/deps/$(Project)
 
 # Dependence File Output Names
 Deps := $(patsubst %.o,%.d,$(Objs))
@@ -65,7 +65,7 @@ FullPath_AllDeps := $(FullPath_Deps) $(FullPath_GchDeps)
 Libs := $(PrjLibs) $(ExtLibs)
 
 # Project Compile Dependence Libraries Output Path
-PrjLibDir := $(OutDir)/$(Configuration)/Libs
+PrjLibDir := $(OutDir)/$(Configuration)
 
 # Project compile dependence libraries with Full Path
 FullPath_PrjLibs := $(addprefix $(PrjLibDir)/lib,$(addsuffix .a,$(PrjLibs)))
@@ -76,15 +76,15 @@ FullPath_PrjLibs := $(addprefix $(PrjLibDir)/lib,$(addsuffix .a,$(PrjLibs)))
 
 # Target File Output Path & Name
 ifeq ($(ProjectType),$(EXE_NAME))
-TargetDir := $(OutDir)/$(Configuration)/Bin
+TargetDir := $(OutDir)/$(Configuration)/bin
 Target := $(Project)_$(Configuration).$(ProjectType)
 else
 ifeq ($(ProjectType),a)
-TargetDir := $(OutDir)/$(Configuration)/Libs
+TargetDir := $(OutDir)/$(Configuration)/bin
 Target := lib$(Project).$(ProjectType)
 else
 ifeq ($(ProjectType),dll)
-TargetDir := $(OutDir)/$(Configuration)/Libs
+TargetDir := $(OutDir)/$(Configuration)/bin
 Target := $(Project).$(ProjectType)
 libTarget := lib$(Project).a
 endif
@@ -97,7 +97,7 @@ FullPath_Target := $(TargetDir)/$(Target)
 # -------------------
 
 # Error File Output Path
-ErrDir := $(OutDir)/$(Configuration)/Logs/BuildLogs
+ErrDir := $(OutDir)/$(Configuration)/logs/BuildLogs
 FullPath_Errs := $(ErrDir)/$(Project).err
 ErrLogName := ErrorLog.err
 

@@ -52,8 +52,10 @@ FX_ENTRY=FX_Main
 # Parent Working Directory
 PWD ?= ..
 
-# After Build Even
-AFTER_BUILD = # programme after target been built, this is the project specific one (sample: make_fself $(@) $(basename $(@)).self)
+# Post Build Even
+# programme after target been built, this is the project specific one (sample: make_fself $(@) $(basename $(@)).self)
+define POST_BUILD
+endef
 
 # ----------------------------------------------------------
 #  Rules
