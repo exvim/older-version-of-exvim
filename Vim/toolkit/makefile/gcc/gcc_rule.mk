@@ -236,8 +236,9 @@ rebuild: |clean-all all
 # -------------------
 # Target Rules
 # -------------------
-.PHONY: target clean-target $(Target)
+.PHONY: target clean-target rebuild-target $(Target)
 # all
+rebuild-target: |clean-target target
 target: $(FullPath_Target)
 clean-target:
 	$(ECHO)
@@ -279,13 +280,15 @@ endif
 endif
 	$(ECHO) generate $(@)
 	$(CAT) $(ErrDir)/$(ErrLogName) >> $(ErrDir)/$(Project).err
+	$(POST_BUILD_ALL_PROJECT)
 	$(POST_BUILD)
 
 # -------------------
 # Dependence Rules
 # -------------------
-.PHONY: deps clean-deps $(Deps)
+.PHONY: deps clean-deps rebuild-deps $(Deps)
 # all
+rebuild-deps: |clean-deps deps
 deps: $(FullPath_AllDeps)
 clean-deps: 
 	$(ECHO)
@@ -352,8 +355,9 @@ endif
 # -------------------
 # GCH Rules
 # -------------------
-.PHONY: gchs clean-gchs
+.PHONY: gchs clean-gchs rebuild-gchs
 # all
+rebuild-gchs: |clean-gchs gchs
 gchs: $(FullPath_Gchs)
 clean-gchs: 
 	$(ECHO)
@@ -380,8 +384,9 @@ $(FullPath_Gchs):
 # -------------------
 # Object Rules
 # -------------------
-.PHONY: objs clean-objs $(Objs)
+.PHONY: objs clean-objs rebuild-objs $(Objs)
 # all
+rebuild-objs: |clean-objs objs
 objs: $(FullPath_Objs)
 clean-objs:
 	$(ECHO)

@@ -149,5 +149,7 @@ DEVENV := $(SILENT_CMD)devenv
 CLS := $(SILENT_CMD)cls # this is the dos command, temp exist here
 COPY := $(SILENT_CMD)copy
 
-# After Build Even
-AFTER_BUILD = # programme after target been built, this is the project specific one (sample: make_fself $(@) $(basename $(@)).self)
+# Post Build Even for all project
+define POST_BUILD_ALL_PROJECT
+$(ECHO) Post Build...
+endef
