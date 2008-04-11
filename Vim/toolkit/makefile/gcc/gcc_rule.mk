@@ -8,7 +8,7 @@
 # -------------------
 #  Out Directory
 # -------------------
-OutDir := $(PWD)/bin/gcc/$(Platform)
+OutDir := $(PWD)/_build/gcc/$(Platform)
 
 # -------------------
 #  Include
@@ -65,10 +65,10 @@ FullPath_AllDeps := $(FullPath_Deps) $(FullPath_GchDeps)
 Libs := $(PrjLibs) $(ExtLibs)
 
 # Project Compile Dependence Libraries Output Path
-PrjLibDir := $(OutDir)/$(Configuration)
+PrjLibDir := $(OutDir)/$(Configuration)/bin
 
 # Project compile dependence libraries with Full Path
-FullPath_PrjLibs := $(addprefix $(PrjLibDir)/lib,$(addsuffix .a,$(PrjLibs)))
+FullPath_PrjLibs := $(addprefix $(PrjLibDir)/,$(addprefix lib,$(addsuffix .a,$(PrjLibs))))
 
 # -------------------
 #  Target

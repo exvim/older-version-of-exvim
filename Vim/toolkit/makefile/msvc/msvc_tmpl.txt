@@ -1,6 +1,6 @@
 General
-    Output Directory = $(SolutionDir)bin\msvc\$(PlatformName)\$(ConfigurationName)\bin
-    Intermediate Directory = $(SolutionDir)bin\msvc\$(PlatformName)\$(ConfigurationName)\int\$(ProjectName)
+    Output Directory = $(SolutionDir)_build\msvc\$(PlatformName)\$(ConfigurationName)\bin
+    Intermediate Directory = $(SolutionDir)_build\msvc\$(PlatformName)\$(ConfigurationName)\int\$(ProjectName)
     Build Log File = $(IntDir)\BuildLog.htm
 
 Librarian/Link
