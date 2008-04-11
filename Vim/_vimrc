@@ -205,9 +205,9 @@ if &clipboard ==# "unnamed"
     vnoremap <silent>p :call g:ex_VisualPasteFixed()<CR>
 else
     " general copy/paste.
-    map <a-y> "*y
-    map <a-p> "*p
-    map <c-p> "*P
+    map <leader>y "*y
+    map <leader>p "*p
+    map <leader>P "*P
 endif
 
 " F12: Insert '#if 0' and '#endif' between the selection
