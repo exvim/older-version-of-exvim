@@ -433,6 +433,7 @@ endfunction " >>>
 
 " --ex_RemoveIFZero--
 function! g:ex_RemoveIFZero() range " <<<
+    " FIXME: when line have **, it will failed
     let save_cursor = getpos(".")
     let save_line = getline(".")
     let cur_line = save_line
