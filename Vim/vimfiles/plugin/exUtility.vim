@@ -38,6 +38,7 @@ highlight def ex_SynObjectLine gui=none guibg=#ffe4b3 term=none cterm=none cterm
 
 " store the highlight strings
 let s:ex_HighLightText = ["","","",""]
+let s:ex_hlRegMap = ["","q","w","e"]
 
 " local script vairable initialization
 let s:ex_editbuf_num = -1
@@ -1306,8 +1307,8 @@ function! g:ex_Highlight_Normal(match_nr) " <<<
     silent exe a:match_nr . 'match none'
 
     " put the highlight text to reg a:matchnr for substitute
-    exe 'normal! "' . a:match_nr . 'yiw'
-    let hl_word = getreg(a:match_nr)
+    exe 'normal! "' . s:ex_hlRegMap[a:match_nr] . 'yiw'
+    let hl_word = getreg(s:ex_hlRegMap[a:match_nr])
     if hl_word == s:ex_HighLightText[a:match_nr]
         call g:ex_HighlightCancle(a:match_nr)
     else
@@ -1387,9 +1388,9 @@ function! g:ex_HighlightCancle(match_nr) " <<<
         let s:ex_HighLightText[1] = ''
         let s:ex_HighLightText[2] = ''
         let s:ex_HighLightText[3] = ''
-        silent call setreg(1,'') 
-        silent call setreg(2,'') 
-        silent call setreg(3,'') 
+        silent call setreg(s:ex_hlRegMap[1],'') 
+        silent call setreg(s:ex_hlRegMap[2],'') 
+        silent call setreg(s:ex_hlRegMap[3],'') 
     else
         silent exe a:match_nr . 'match none'
         let s:ex_HighLightText[a:match_nr] = ''
