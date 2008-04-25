@@ -483,7 +483,7 @@ function! g:ex_RemoveIFZero() range " <<<
     endif
 
     silent call setpos('.', save_cursor)
-    silent call search(save_line, 'b')
+    silent call search('\V'.save_line, 'b')
     silent call cursor(line('.'), save_cursor[2])
 endfunction " >>>
 
