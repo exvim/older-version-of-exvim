@@ -17,7 +17,7 @@ endif
 " the extertion syntax define
 " ==========================================
 " EX_ENGINE extentions
-syn keyword cStatement         ex_new ex_new_use ex_new_nomanage ex_new_in ex_new_add ex_new_insert ex_stack_malloc
+syn keyword cStatement         ex_new ex_new_use ex_new_nomanage ex_new_in ex_new_at ex_stack_malloc
 syn keyword cStatement         ex_delete ex_delete_use ex_delete_nomanage ex_delete_in
 syn keyword cStatement         ex_delete_array ex_delete_array_use ex_delete_array_nomanage
 
