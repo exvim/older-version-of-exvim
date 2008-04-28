@@ -239,9 +239,9 @@ function! g:exPJ_InitSelectWindow() " <<<
 
     " key map
     nnoremap <silent> <buffer> <Return>   :call <SID>exPJ_GotoSelectResult('e')<CR>
-    nnoremap <silent> <buffer> <S-Return> :call <SID>exPJ_GotoSelectResult('sp')<CR>
+    nnoremap <silent> <buffer> <S-Return> :call <SID>exPJ_GotoSelectResult('bel sp')<CR>
     nnoremap <silent> <buffer> <2-LeftMouse>   :call <SID>exPJ_GotoSelectResult('e')<CR>
-    nnoremap <silent> <buffer> <S-2-LeftMouse> :call <SID>exPJ_GotoSelectResult('sp')<CR>
+    nnoremap <silent> <buffer> <S-2-LeftMouse> :call <SID>exPJ_GotoSelectResult('bel sp')<CR>
 
     nnoremap <silent> <buffer> <Space>   :call <SID>exPJ_ResizeWindow()<CR>
     nnoremap <silent> <buffer> <localleader>C    :call <SID>exPJ_CreateProject('','')<CR>
