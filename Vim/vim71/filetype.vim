@@ -2128,6 +2128,9 @@ au BufNewFile,BufRead *.ms,*.mse,*.mcr,*.mzp,*.ds  setf maxscript
 " Doxygen Comment
 au BufNewFile,BufRead *.dox,*.doxygen       setf cpp.doxygen
 
+" gmsh
+au BufNewFile,BufRead *.geo                 setf gmsh
+
 " =================================================================================
 
 augroup END
