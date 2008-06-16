@@ -341,6 +341,18 @@ function! g:ex_PutNamespaceEnd( space_name ) " <<<
     execute 'normal! ' . "\<Home>c$" . "// #########################\<CR>"
 endfunction " >>>
 
+" --ex_PutNamespaceStart--
+function! g:ex_PutNamespace( space_name ) " <<<
+    execute 'normal! ' . 'o'
+    execute 'normal! ' . "\<Home>c$" . "// #########################\<CR>"
+    execute 'normal! ' . "\<Home>c$" . "namespace " . a:space_name . " { \<CR>" 
+    execute 'normal! ' . "\<Home>c$" . "// #########################\<CR>"
+    execute 'normal! ' . 'o'
+    execute 'normal! ' . "\<Home>c$" . "// #########################\<CR>"
+    execute 'normal! ' . "\<Home>c$" . "} // end namespace " . a:space_name . " \<CR>" 
+    execute 'normal! ' . "\<Home>c$" . "// #########################\<CR>"
+endfunction " >>>
+
 " --ex_PutSeparate--
 function! g:ex_PutSeparate() " <<<
     execute 'normal! ' . 'o' . "// ========================================================"

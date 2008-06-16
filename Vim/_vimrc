@@ -432,6 +432,7 @@ map <silent> <Leader>gv :call g:ex_ViewInheritsImage()<CR>
 command LINE call g:ex_PutLine(86, '-')
 command -narg=1 NSS call g:ex_PutNamespaceStart("<args>")
 command -narg=1 NSE call g:ex_PutNamespaceEnd("<args>")
+command -narg=1 NS call g:ex_PutNamespace("<args>")
 command HEADER call g:ex_PutHeader()
 command SEP call g:ex_PutSeparate()
 command SEG call g:ex_PutSegment()
