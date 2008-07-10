@@ -566,6 +566,12 @@ function! g:ex_GotoLastEditBuffer() " <<<
     endif
 endfunction " >>>
 
+" --ex_YankBufferName--
+function! g:ex_YankBufferName() " <<<
+    let buf_name = substitute( bufname('%'), "\\", "\/", "g" )
+    let @" = fnamemodify(buf_name,"")
+endfunction " >>>
+
 " --ex_SwitchBuffer--
 function! g:ex_SwitchBuffer() " <<<
     " this will fix no jump error < bufwinnr() == -1 >

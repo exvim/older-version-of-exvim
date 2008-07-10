@@ -417,6 +417,8 @@ map <silent> <Leader>1 :call g:ex_HighlightCancle(1)<CR>
 map <silent> <Leader>2 :call g:ex_HighlightCancle(2)<CR>
 map <silent> <Leader>3 :call g:ex_HighlightCancle(3)<CR>
 
+map <silent> <Leader>yb :call g:ex_YankBufferName()<CR>
+
 command -narg=? GMake call g:ex_GCCMake("<args>")
 command -narg=? SMake call g:ex_ShaderMake("<args>")
 command -narg=* VMake call g:ex_VCMake(<f-args>)
