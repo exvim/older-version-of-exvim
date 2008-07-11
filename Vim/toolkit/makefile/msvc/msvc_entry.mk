@@ -10,17 +10,33 @@
 include msvc_config.mk
 
 # ----------------------------------------------------------
+#  Pre-generate Target
+# ----------------------------------------------------------
+
+# -------------------
+#  Out Directory
+# -------------------
+
+OutDir := ./_build/msvc/$(Platform)
+
+# -------------------
+#  Logs
+# -------------------
+
+# Error File Output Path
+ErrDir := $(OutDir)/$(Configuration)/logs/errors
+ErrLogName := ErrorLog.err
+FullPath_Errs := $(ErrDir)/$(ErrLogName)
+
+# ----------------------------------------------------------
 #  User Define
 # ----------------------------------------------------------
 
 # The Solution Name
-Sln = # The Solution Name
+Sln =
 
 # Project names
-Prjs += # The Sub-Project Name
-
-Configuration = Debug
-Platform = Win32
+Prjs +=
 
 # ----------------------------------------------------------
 #  Advance User Define
@@ -37,19 +53,32 @@ PrjCmd_Rebuild := $(addsuffix /rebuild,$(Prjs))
 
 .PHONY: all clean-all rebuild
 all: 
-	$(DEVENV) $(Sln) /Build "$(Configuration)|$(Platform)"
+	$(MKDIR) $(ErrDir)
+	$(ECHO) msvc error log > $(FullPath_Errs)
+	$(DEVENV) $(Sln) /Build "$(Configuration)|$(Platform)" /Out $(FullPath_Errs) 
+	gawk -f "%EX_DEV%\Vim\toolkit\gawk\prg_ConvertLog.awk" $(FullPath_Errs)>$(FullPath_Errs)
 clean-all: 
-	$(DEVENV) $(Sln) /Clean "$(Configuration)|$(Platform)"
+	$(MKDIR) $(ErrDir)
+	$(ECHO) msvc error log > $(FullPath_Errs)
+	$(DEVENV) $(Sln) /Clean "$(Configuration)|$(Platform)" /Out $(FullPath_Errs)
 rebuild: 
-	$(DEVENV) $(Sln) /Rebuild "$(Configuration)|$(Platform)"
+	$(MKDIR) $(ErrDir)
+	$(ECHO) msvc error log > $(FullPath_Errs)
+	$(DEVENV) $(Sln) /Rebuild "$(Configuration)|$(Platform)" /Out $(FullPath_Errs)
 
 .PHONY: $(PrjCmds_All) $(PrjCmds_All) $(PrjCmd_Rebuild)
 $(PrjCmd_All):
-	$(DEVENV) $(Sln) /Build "$(Configuration)|$(Platform)" /Project $(dir $@)
+	$(MKDIR) $(ErrDir)
+	$(ECHO) msvc error log > $(FullPath_Errs)
+	$(DEVENV) $(Sln) /Build "$(Configuration)|$(Platform)" /Project $(patsubst %/,%,$(dir $@)) /Out $(FullPath_Errs)
  
 $(PrjCmd_Clean):
-	$(DEVENV) $(Sln) /Clean "$(Configuration)|$(Platform)" /Project $(dir $@)
+	$(MKDIR) $(ErrDir)
+	$(ECHO) msvc error log > $(FullPath_Errs)
+	$(DEVENV) $(Sln) /Clean "$(Configuration)|$(Platform)" /Project $(patsubst %/,%,$(dir $@)) /Out $(FullPath_Errs)
  
 $(PrjCmd_Rebuild):
-	$(DEVENV) $(Sln) /Rebuild "$(Configuration)|$(Platform)" /Project $(dir $@)
+	$(MKDIR) $(ErrDir)
+	$(ECHO) msvc error log > $(FullPath_Errs)
+	$(DEVENV) $(Sln) /Rebuild "$(Configuration)|$(Platform)" /Project $(patsubst %/,%,$(dir $@)) /Out $(FullPath_Errs)
 

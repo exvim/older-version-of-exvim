@@ -299,13 +299,24 @@ function! s:exQF_GetQuickFixResult( file_name ) " <<<
         " get the compile dir
         let s:exQF_compile_dir = ''
         if exists('g:exES_PWD')
+            let g:line = ""
             for line in readfile( full_file_name, '', 2 )
+                " process gcc error log formation
                 if match(line, '^--\[.\+\].\+--') != -1
                     let idx_start = stridx(line,"[")+1
                     let idx_end = stridx(line,"]")
                     let s:exQF_compile_dir = g:exES_PWD.'/'.strpart( line, idx_start, idx_end-idx_start )
                     break
+                " else " process msvc error log formation
+                "     if match(line, '------') != -1
+                "         " process msvc error log formation
+                "         let idx_start = matchend(line,"Project: ")
+                "         let idx_end = matchend(line,'Project: \S\+,')-1
+                "         let s:exQF_compile_dir = g:exES_PWD.'/'.strpart( line, idx_start, idx_end-idx_start )
+                "         break
+                "     endif
                 endif
+                let g:line = g:line . line
             endfor
         endif
 

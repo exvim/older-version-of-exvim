@@ -8,6 +8,7 @@
 # -------------------
 #  Out Directory
 # -------------------
+
 OutDir := $(PWD)/_build/gcc/$(Platform)
 
 # -------------------
@@ -97,7 +98,7 @@ FullPath_Target := $(TargetDir)/$(Target)
 # -------------------
 
 # Error File Output Path
-ErrDir := $(OutDir)/$(Configuration)/logs/BuildLogs
+ErrDir := $(OutDir)/$(Configuration)/logs/errors
 FullPath_Errs := $(ErrDir)/$(Project).err
 ErrLogName := ErrorLog.err
 

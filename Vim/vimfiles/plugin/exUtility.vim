@@ -508,6 +508,12 @@ function! g:ex_InsertRemoveCmt() range " <<<
     endif
 endfunction " >>>
 
+" --ex_Yank--
+function! g:ex_Yank( string ) " <<<
+    let @" = a:string
+    let @* = a:string
+endfunction " >>>
+
 " ------------------------
 "  buffer functions
 " ------------------------
@@ -569,7 +575,13 @@ endfunction " >>>
 " --ex_YankBufferName--
 function! g:ex_YankBufferName() " <<<
     let buf_name = substitute( bufname('%'), "\\", "\/", "g" )
-    let @" = fnamemodify(buf_name,"")
+    silent call g:ex_Yank( fnamemodify(buf_name,"") )
+endfunction " >>>
+
+" --ex_YankFilePath--
+function! g:ex_YankFilePath() " <<<
+    let buf_name = substitute( bufname('%'), "\\", "\/", "g" )
+    silent call g:ex_Yank( fnamemodify(buf_name,":p:h") )
 endfunction " >>>
 
 " --ex_SwitchBuffer--
@@ -1195,10 +1207,24 @@ function! g:ex_ShaderMake(args) " <<<
 endfunction " >>>
 
 " --ex_VCMake()-- 
-function! g:ex_VCMake(cmd, config) " <<<
+function! g:ex_VCMake(args) " <<<
     " save all file for compile first
     silent exec "wa!"
 
+    let entry_file = glob('msvc_entry*.mk') 
+    if entry_file != ''
+        exec "silent ! start make -f" . entry_file . " " . a:args
+    else
+        call g:ex_WarningMsg("entry file not found")
+    endif
+endfunction " >>>
+
+" --ex_VCMakeBAT()-- 
+function! g:ex_VCMakeBAT(cmd, config) " <<<
+    " save all file for compile first
+    silent exec "wa!"
+
+    " process by bat
     let make_vs = glob('make_vs.bat') 
     if make_vs != ''
         if exists('g:exES_Solution')

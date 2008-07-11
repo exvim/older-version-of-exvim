@@ -44,8 +44,11 @@ set maxmempattern=1000
 
 " set quick fix error format
 " default errorformat = %f(%l) : %t%*\D%n: %m,%*[^"]"%f"%*\D%l: %m,%f(%l) : %m,%*[^ ] %f %l: %m,%f:%l:%c:%m,%f(%l):%m,%f:%l:%m,%f|%l| %m
-set errorformat+=\>%f(%l)\ :\ %t%*\\D%n:\ %m " msvc 2005 error-format
-set errorformat+=%f(%l\\,%c):\ %m " fxc shader error-format
+"set errorformat+=%D%\\d%\\+\>------\ %.%#Project:\ %f%\\,%.%# " msvc 2005 error-entering
+"set errorformat+=%D%\\d%\\+\>------\ %.%#Project:\ %f%\\,%.%# " msvc 2005 error-entering
+"set errorformat+=%X%\\d%\\+\>%.%#%\\d%\\+\ error(s)%.%#%\\d%\\+\ warning(s) " msvc 2005 error-leaving
+"set errorformat+=%\\d%\\+\>%f(%l)\ :\ %t%*\\D%n:\ %m " msvc 2005 error-format
+"set errorformat+=%f(%l\\,%c):\ %m " fxc shader error-format
 
 
 " --------------------------------------------------------------------------------------
@@ -418,10 +421,44 @@ map <silent> <Leader>2 :call g:ex_HighlightCancle(2)<CR>
 map <silent> <Leader>3 :call g:ex_HighlightCancle(3)<CR>
 
 map <silent> <Leader>yb :call g:ex_YankBufferName()<CR>
+map <silent> <Leader>yp :call g:ex_YankFilePath()<CR>
+
+
+" VimTip 311: Open the folder containing the currently open file
+" http://vim.sourceforge.net/tip_view.php?tip_id=
+" 
+" Occasionally, on windows, I have files open in gvim, that the folder for 
+" that file is not open. This key map opens the folder that contains the 
+" currently open file. The expand() is so that we don't try to open the 
+" folder of an anonymous buffer, we would get an explorer error dialog in 
+" that case.
+" 
+if has("gui_running")
+    if has("win32")
+        " Open the folder containing the currently open file. Double <CR> at end
+        " is so you don't have to hit return after command. Double quotes are
+        " not necessary in the 'explorer.exe %:p:h' section.
+        " :map <silent> <C-F5> :if expand("%:p:h") != ""<CR>:!start explorer.exe %:p:h<CR>:endif<CR><CR>
+
+        " explore the vimfile directory
+        :map <silent> <C-F5> :call g:ex_Yank(getcwd() . "\\_vimfiles")<CR>
+        :map <silent> <A-F5> :call g:ex_Explore(getcwd() . "\\_vimfiles")<CR>
+        " explore the cwd directory
+        :map <silent> <C-F6> :call g:ex_Yank(getcwd())<CR>
+        :map <silent> <A-F6> :call g:ex_Explore(getcwd())<CR>
+        " explore the diretory current file in
+        :map <silent> <C-F7> :call g:ex_Yank(expand("%:p:h"))<CR>
+        :map <silent> <A-F7> :call g:ex_Explore(expand("%:p:h"))<CR>
+    endif
+endif
+" 
+" Tom.
+
 
 command -narg=? GMake call g:ex_GCCMake("<args>")
 command -narg=? SMake call g:ex_ShaderMake("<args>")
-command -narg=* VMake call g:ex_VCMake(<f-args>)
+command -narg=* VMake call g:ex_VCMake("<args>")
+command -narg=* VBat call g:ex_VCMakeBAT(<f-args>)
 command -narg=? Update call g:ex_UpdateVimFiles("<args>")
 
 " inherits genreate
@@ -707,31 +744,3 @@ let OmniCpp_SelectFirstItem = 0
 " --------------------------------------------------------------------------------------
 " Other settings
 " --------------------------------------------------------------------------------------
-
-" VimTip 311: Open the folder containing the currently open file
-" http://vim.sourceforge.net/tip_view.php?tip_id=
-" 
-" Occasionally, on windows, I have files open in gvim, that the folder for 
-" that file is not open. This key map opens the folder that contains the 
-" currently open file. The expand() is so that we don't try to open the 
-" folder of an anonymous buffer, we would get an explorer error dialog in 
-" that case.
-" 
-if has("gui_running")
-    if has("win32")
-        " Open the folder containing the currently open file. Double <CR> at end
-        " is so you don't have to hit return after command. Double quotes are
-        " not necessary in the 'explorer.exe %:p:h' section.
-        " :map <silent> <C-F5> :if expand("%:p:h") != ""<CR>:!start explorer.exe %:p:h<CR>:endif<CR><CR>
-
-        " explore the vimfile directory
-        :map <silent> <C-F5> :call g:ex_Explore(getcwd() . "\\_vimfiles")<CR>
-        " explore the cwd directory
-        :map <silent> <C-F6> :call g:ex_Explore(getcwd())<CR>
-        " explore the diretory current file in
-        :map <silent> <C-F7> :call g:ex_Explore(expand("%:p:h"))<CR>
-    endif
-endif
-" 
-" Tom.
-
