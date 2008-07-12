@@ -242,12 +242,13 @@ rebuild: |clean-all all
 rebuild-target: |clean-target target
 target: $(FullPath_Target)
 clean-target:
-	$(ECHO)
+	$(ECHO) -------------------
 	$(ECHO) delete target:
+	$(ECHO) -------------------
 ifeq ($(CURRENT_OS),Linux)
 	@for item in $(FullPath_Target); do echo "    |--"   $$item; done
 else
-	@for %%i in ($(FullPath_Target)) do (echo     \--   %%i)
+	@for %%i in ($(FullPath_Target)) do (echo     ^|--   %%i)
 endif
 	$(RM) $(FullPath_Target)
 ifeq ($(ProjectType),dll)
@@ -258,16 +259,18 @@ $(Target): $(FullPath_Target)
 
 # commands-target
 $(FullPath_Target): $(FullPath_Objs) $(FullPath_PrjLibs)
+	$(ECHO) -------------------
 	$(ECHO) linking:
+	$(ECHO) -------------------
 ifeq ($(CURRENT_OS),Linux)
 	@for obj in $(filter %.o,$^); do echo "    |--"   $$obj; done
 else
-	@for %%i in ($(filter %.o,$^)) do (echo     \--   %%i)
+	@for %%i in ($(filter %.o,$^)) do (echo     ^|--   %%i)
 endif
 	$(MKDIR) $(TargetDir)
 	$(MKDIR) $(ErrDir)
-	$(ECHO) - > $(ErrDir)/$(ErrLogName)
-	$(ECHO) --[$(Project)]Link-- >> $(ErrDir)/$(ErrLogName)
+	$(ECHO). > $(ErrDir)/$(ErrLogName)
+	$(ECHO) ^<^<^<^<^<^< $(Target): '$(Project)' >> $(ErrDir)/$(ErrLogName)
 ifeq ($(ProjectType),$(EXE_NAME))
 	$(CC) $(filter %.o,$^) $(LFlags) -o $@ 2>>$(ErrDir)/$(ErrLogName)
 else
@@ -279,6 +282,7 @@ ifeq ($(ProjectType),dll)
 endif
 endif
 endif
+	$(ECHO) ^>^>^>^>^>^> >> $(ErrDir)/$(ErrLogName)
 	$(ECHO) generate $(@)
 	$(CAT) $(ErrDir)/$(ErrLogName) >> $(ErrDir)/$(Project).err
 	$(POST_BUILD_ALL_PROJECT)
@@ -292,12 +296,13 @@ endif
 rebuild-deps: |clean-deps deps
 deps: $(FullPath_AllDeps)
 clean-deps: 
-	$(ECHO)
+	$(ECHO) -------------------
 	$(ECHO) delete deps:
+	$(ECHO) -------------------
 ifeq ($(CURRENT_OS),Linux)
 	@for item in $(FullPath_AllDeps); do echo "    |--"   $$item; done
 else
-	@for %%i in ($(FullPath_AllDeps)) do (echo     \--   %%i)
+	@for %%i in ($(FullPath_AllDeps)) do (echo     ^|--   %%i)
 endif
 	$(RM) $(FullPath_AllDeps)
 # single
@@ -361,13 +366,14 @@ endif
 rebuild-gchs: |clean-gchs gchs
 gchs: $(FullPath_Gchs)
 clean-gchs: 
-	$(ECHO)
+	$(ECHO) -------------------
 	$(ECHO) delete gchs:
+	$(ECHO) -------------------
 ifneq ($(FullPath_Gchs),)
 ifeq ($(CURRENT_OS),Linux)
 	@for item in $(FullPath_Gchs); do echo "    |--"   $$item; done
 else
-	@for %%i in ($(FullPath_Gchs)) do (echo     \--   %%i)
+	@for %%i in ($(FullPath_Gchs)) do (echo     ^|--   %%i)
 endif
 	$(RM) $(FullPath_Gchs)
 endif
@@ -377,9 +383,10 @@ $(FullPath_Gchs):
 	$(MKDIR) $(ErrDir)
 	$(MKDIR) $(GchDir)
 	$(ECHO) compiling $(basename $@)...
-	$(ECHO) - > $(ErrDir)/$(ErrLogName)
-	$(ECHO) --[$(Project)]$(patsubst %/,%,$(notdir $@))-- >> $(ErrDir)/$(ErrLogName)
+	$(ECHO). > $(ErrDir)/$(ErrLogName)
+	$(ECHO) ^<^<^<^<^<^< $(patsubst %/,%,$(notdir $@)): '$(Project)' >> $(ErrDir)/$(ErrLogName)
 	$(CC) -c $(CFlags) $(basename $(GchDir)) -o $@ 2>>$(ErrDir)/$(ErrLogName)
+	$(ECHO) ^>^>^>^>^>^> >> $(ErrDir)/$(ErrLogName)
 	$(CAT) $(ErrDir)/$(ErrLogName) >> $(ErrDir)/$(Project).err
 
 # -------------------
@@ -390,12 +397,13 @@ $(FullPath_Gchs):
 rebuild-objs: |clean-objs objs
 objs: $(FullPath_Objs)
 clean-objs:
-	$(ECHO)
+	$(ECHO) -------------------
 	$(ECHO) delete objs:
+	$(ECHO) -------------------
 ifeq ($(CURRENT_OS),Linux)
 	@for item in $(FullPath_Objs); do echo "    |--"   $$item; done
 else
-	@for %%i in ($(FullPath_Objs)) do (echo     \--   %%i)
+	@for %%i in ($(FullPath_Objs)) do (echo     ^|--   %%i)
 endif
 	$(RM) $(FullPath_Objs)
 # single
@@ -412,9 +420,10 @@ $(ObjDir)/%.o: %.cpp $(FullPath_Gchs)
 	$(MKDIR) $(ObjDir)
 	$(MKDIR) $(ErrDir)
 	$(ECHO) compiling $<...
-	$(ECHO) - > $(ErrDir)/$(ErrLogName)
-	$(ECHO) --[$(Project)]$*.cpp-- >> $(ErrDir)/$(ErrLogName)
+	$(ECHO). > $(ErrDir)/$(ErrLogName)
+	$(ECHO) ^<^<^<^<^<^< $*.cpp: '$(Project)' >> $(ErrDir)/$(ErrLogName)
 	$(CC) -c $(CFlags) $< -o $@ 2>>$(ErrDir)/$(ErrLogName) 
+	$(ECHO) ^>^>^>^>^>^> >> $(ErrDir)/$(ErrLogName)
 	$(CAT) $(ErrDir)/$(ErrLogName) >> $(ErrDir)/$(Project).err
 
 # c files
@@ -422,9 +431,10 @@ $(ObjDir)/%.o: %.c $(FullPath_Gchs)
 	$(MKDIR) $(ObjDir)
 	$(MKDIR) $(ErrDir)
 	$(ECHO) compiling $<...
-	$(ECHO) - > $(ErrDir)/$(ErrLogName)
-	$(ECHO) --[$(Project)]$*.c-- >> $(ErrDir)/$(ErrLogName)
+	$(ECHO). > $(ErrDir)/$(ErrLogName)
+	$(ECHO) ^<^<^<^<^<^< $*.c: '$(Project)' >> $(ErrDir)/$(ErrLogName)
 	$(CC) -c $(CFlags) $< -o $@ 2>>$(ErrDir)/$(ErrLogName) 
+	$(ECHO) ^>^>^>^>^>^> >> $(ErrDir)/$(ErrLogName)
 	$(CAT) $(ErrDir)/$(ErrLogName) >> $(ErrDir)/$(Project).err
 
 # -------------------
@@ -433,13 +443,14 @@ $(ObjDir)/%.o: %.c $(FullPath_Gchs)
 .PHONY: clean-errs
 # all
 clean-errs:
-	$(ECHO)
+	$(ECHO) -------------------
 	$(ECHO) delete errs:
+	$(ECHO) -------------------
 ifneq ($(FullPath_Errs),)
 ifeq ($(CURRENT_OS),Linux)
 	@for item in $(FullPath_Errs); do echo "    |--"   $$item; done
 else
-	@for %%i in ($(FullPath_Errs)) do (echo     \--   %%i)
+	@for %%i in ($(FullPath_Errs)) do (echo     ^|--   %%i)
 endif
 else
 	$(ECHO) "    |--"

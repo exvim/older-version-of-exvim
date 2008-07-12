@@ -82,6 +82,7 @@ let s:exQF_fold_end = '>>>>>>'
 let s:exQF_need_search_again = 0
 let s:exQF_compile_dir = ''
 let s:exQF_error_file_size = 0
+let s:exQF_compiler = 'gcc'
 
 " select variable
 let s:exQF_select_idx = 1
@@ -227,14 +228,20 @@ function! g:exQF_InitSelectWindow() " <<<
     silent! setlocal number
     silent! setlocal autoread
     silent! setlocal buftype=
-    " syntax highlight
-    syntax match exQF_SynFileTag '^--\[.\+\].\+--'
-    syntax match exQF_SynFileName '^[^:]*:'
-    syntax match exQF_SynFileName '.*\ze(\d\+)'
-    syntax match exQF_SynLineNumber '\d\+:'
-    syntax match exQF_SynLineNumber '(\d\+)'
+    setlocal foldmethod=marker foldmarker=<<<<<<,>>>>>> foldlevel=1
 
-    highlight def exQF_SynFileTag term=none cterm=none ctermfg=DarkRed ctermbg=LightGray gui=none guifg=DarkRed guibg=LightGray
+    " syntax highlight
+    syntax match exQF_SynFoldStart '<<<<<< \S\+: '
+    syntax match exQF_SynFoldEnd '>>>>>>'
+    highlight def exQF_SynFoldStart gui=none guifg=DarkGreen term=none cterm=none ctermfg=DarkGreen
+    highlight def exQF_SynFoldEnd gui=none guifg=DarkGreen term=none cterm=none ctermfg=DarkGreen
+
+    syntax region exQF_FileLineRegion start='^[^:<].*:\(\d\+:\|(\d\+)\)*'  end="$" contains=exQF_SynFileName,exQF_SynLineNumber
+    syntax match exQF_SynFileName contained  '^[^:]*:'
+    syntax match exQF_SynFileName contained '.*\ze(\d\+)'
+    syntax match exQF_SynLineNumber contained '\d\+:'
+    syntax match exQF_SynLineNumber contained '(\d\+)'
+
     highlight def exQF_SynFileName term=none cterm=none ctermfg=Blue gui=none guifg=Blue 
     highlight def exQF_SynLineNumber term=none cterm=none ctermfg=DarkRed gui=none guifg=Brown 
 
@@ -245,6 +252,9 @@ function! g:exQF_InitSelectWindow() " <<<
 
     nnoremap <buffer> <silent> <C-Right>   :call <SID>exQF_SwitchWindow('Select')<CR>
     nnoremap <buffer> <silent> <C-Left>   :call <SID>exQF_SwitchWindow('QuickView')<CR>
+
+    nnoremap <silent> <buffer> <C-Up> :call g:ex_CursorJump( '\(error\\|warning\)', 'up' )<CR>
+    nnoremap <silent> <buffer> <C-Down> :call g:ex_CursorJump( '\(error\\|warning\)', 'down' )<CR>
 
     " autocmd
     au CursorMoved <buffer> :call g:ex_HighlightSelectLine()
@@ -262,22 +272,6 @@ endfunction " >>>
 " --exQF_UpdateSelectWindow--
 " Update exQuickFix window 
 function! g:exQF_UpdateSelectWindow() " <<<
-    if s:exQF_need_update_select_window
-        let s:exQF_need_update_select_window = 0
-        silent exec "cg error.txt"
-        let reg_e = @e
-        silent redir @e
-        silent exec "cl"
-        silent redir END
-        silent exec "normal! Gdgg"
-        silent put = @e
-        let @e = reg_e
-    endif
-
-    " ++++++++++++++++++++++++++++++++++++++++++++
-    " the :cope command is arrange by line_num
-    " ++++++++++++++++++++++++++++++++++++++++++++
-
     silent call cursor(s:exQF_select_idx, 1)
     call g:ex_HighlightConfirmLine()
 endfunction " >>>
@@ -296,39 +290,48 @@ function! s:exQF_GetQuickFixResult( file_name ) " <<<
             silent exec "normal \<Esc>"
         endif
         
-        " get the compile dir
-        let s:exQF_compile_dir = ''
-        if exists('g:exES_PWD')
-            let g:line = ""
-            for line in readfile( full_file_name, '', 2 )
-                " process gcc error log formation
-                if match(line, '^--\[.\+\].\+--') != -1
-                    let idx_start = stridx(line,"[")+1
-                    let idx_end = stridx(line,"]")
-                    let s:exQF_compile_dir = g:exES_PWD.'/'.strpart( line, idx_start, idx_end-idx_start )
-                    break
-                " else " process msvc error log formation
-                "     if match(line, '------') != -1
-                "         " process msvc error log formation
-                "         let idx_start = matchend(line,"Project: ")
-                "         let idx_end = matchend(line,'Project: \S\+,')-1
-                "         let s:exQF_compile_dir = g:exES_PWD.'/'.strpart( line, idx_start, idx_end-idx_start )
-                "         break
-                "     endif
+        " choose compiler
+        let s:exQF_compiler = 'gcc'
+        for line in readfile( full_file_name, '', 2 )
+            " process gcc error log formation
+            if match(line, '^<<<<<< \S\+: ' . "'" . '\a\+\' . "'" ) != -1
+                let s:exQF_compiler = 'exgcc'
+            else 
+                if match(line, '^<<<<<< \S\+ error log >>>>>>') != -1
+                    " TODO: use the text choose compiler
+                    let s:exQF_compiler = 'msvc2005'
                 endif
-                let g:line = g:line . line
-            endfor
-        endif
+            endif
+        endfor
 
         " load the quick fix list
-        if s:exQF_compile_dir != '' && isdirectory(s:exQF_compile_dir) != ''
-            let cur_dir = getcwd()
-            silent exec 'cd '.s:exQF_compile_dir
-            silent exec "cg " . full_file_name
-            silent exec 'cd '.cur_dir
+        let g:test = s:exQF_compiler
+        let s:exQF_compile_dir = g:exES_PWD
+        let cur_dir = getcwd()
+
+        " FIXME: this is a bug, the :comiler! xxx not have effect at second time
+        silent! exec 'compiler! '.s:exQF_compiler
+        if s:exQF_compiler == 'exgcc'
+            silent set errorformat=\%*[^\"]\"%f\"%*\\D%l:\ %m
+            silent set errorformat+=\"%f\"%*\\D%l:\ %m
+            silent set errorformat+=%-G%f:%l:\ %trror:\ (Each\ undeclared\ identifier\ is\ reported\ only\ once
+            silent set errorformat+=%-G%f:%l:\ %trror:\ for\ each\ function\ it\ appears\ in.)
+            silent set errorformat+=%f:%l:\ %m
+            silent set errorformat+=\"%f\"\\,\ line\ %l%*\\D%c%*[^\ ]\ %m
+            silent set errorformat+=%D%\\S%\\+:\ Entering\ directory\ '%f'%.%#
+            silent set errorformat+=%X%\\S%\\+:\ Leaving\ directory\ '%f'%.%#
+            silent set errorformat+=%DEntering\ directory\ '%f'%.%#
+            silent set errorformat+=%XLeaving\ directory\ '%f'%.%#
+            silent set errorformat+=%D\<\<\<\<\<\<\ %\\S%\\+:\ '%f'%.%#
+            silent set errorformat+=%X\>\>\>\>\>\>\ %\\S%\\+:\ '%f'%.%#
         else
-            silent exec "cg " . full_file_name
+            silent set errorformat=%D%\\d%\\+\>------\ %.%#Project:\ %f%\\,%.%#
+            silent set errorformat+=%X%\\d%\\+\>%.%#%\\d%\\+\ error(s)%.%#%\\d%\\+\ warning(s)
+            silent set errorformat+=%\\d%\\+\>%f(%l)\ :\ %t%*\\D%n:\ %m
         endif
+        silent exec 'cd '.s:exQF_compile_dir
+        silent exec "cg " . full_file_name
+        silent exec 'cd '.cur_dir
 
         " save the file size end file name
         let s:exQF_error_file_size = getfsize(full_file_name)
@@ -356,25 +359,6 @@ function! s:exQF_GetQuickFixResult( file_name ) " <<<
     endif
 endfunction " >>>
 
-"TODO delete
-" --exQF_UpdateQuickFixResult--
-" Update Quick Fix Result
-function! s:exQF_UpdateQuickFixResult() " <<<
-    " open and goto search window first
-    let gs_winnr = bufwinnr(s:exQF_select_title)
-    if gs_winnr == -1
-        " open window
-        let old_opt = g:exQF_backto_editbuf
-        let g:exQF_backto_editbuf = 0
-        call s:exQF_ToggleWindow('Select')
-        let g:exQF_backto_editbuf = old_opt
-    else
-        exe gs_winnr . 'wincmd w'
-    endif
-
-    call g:exQF_UpdateSelectWindow()
-endfunction " >>>
-
 " ------------------------------
 "  quick view window part
 " ------------------------------
@@ -383,18 +367,14 @@ endfunction " >>>
 function! g:exQF_InitQuickViewWindow() " <<<
     setlocal number
     " syntax highlight
-    syntax match exQF_SynFileName '^[^:]*:'
-    syntax match exQF_SynSearchPattern '^----------.\+----------'
-    syntax match exQF_SynFileName '^[^:]*:'
-    syntax match exQF_SynFileName '.*\ze(\d\+)'
-    syntax match exQF_SynFileName '.*\ze:\d\+'
-    syntax match exQF_SynLineNumber '\d\+:'
-    syntax match exQF_SynLineNumber '(\d\+)'
-    syntax match exQF_SynLineNumber ':\d\+'
+    syntax region exQF_FileLineRegion start='^[^:<].*:\(\d\+:\|(\d\+)\)*'  end="$" contains=exQF_SynFileName,exQF_SynLineNumber
+    syntax match exQF_SynFileName contained  '^[^:]*:'
+    syntax match exQF_SynFileName contained '.*\ze(\d\+)'
+    syntax match exQF_SynLineNumber contained '\d\+:'
+    syntax match exQF_SynLineNumber contained '(\d\+)'
 
     highlight def exQF_SynFileName term=none cterm=none ctermfg=Blue gui=none guifg=Blue 
-    highlight def exQF_SynSearchPattern term=bold cterm=bold ctermfg=DarkRed ctermbg=LightGray gui=bold guifg=DarkRed guibg=LightGray
-    highlight def exQF_SynLineNumber term=none cterm=none ctermfg=Brown gui=none guifg=Brown 
+    highlight def exQF_SynLineNumber term=none cterm=none ctermfg=DarkRed gui=none guifg=Brown 
 
     " key map
     nnoremap <buffer> <silent> <Return>   \|:call <SID>exQF_GotoInQuickViewWindow()<CR>
@@ -434,8 +414,9 @@ function! s:exQF_GotoInQuickViewWindow() " <<<
     let s:exQF_quick_view_idx = line(".")
     call g:ex_HighlightConfirmLine()
     let cur_line = getline('.')
-    let idx = stridx(cur_line,' ')
-    let idx = eval(strpart(getline('.'),0,idx))
+    let idx_start = match(cur_line, '\d\+' )
+    let idx_end = matchend(cur_line, '\d\+' )
+    let idx = eval(strpart(getline('.'),idx_start,idx_end))
     call s:exQF_Goto(idx)
 endfunction " >>>
 
@@ -563,7 +544,6 @@ endfunction " >>>
 " -------------------------------------------------------------------------
 " Command part
 " -------------------------------------------------------------------------
-"command QF call s:exQF_UpdateQuickFixResult()
 command -nargs=1 QF call s:exQF_GetQuickFixResult('<args>')
 command ExqfToggle call s:exQF_ToggleWindow('')
 command ExqfSelectToggle call s:exQF_ToggleWindow('Select')

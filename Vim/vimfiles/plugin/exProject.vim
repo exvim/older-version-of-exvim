@@ -250,6 +250,9 @@ function! g:exPJ_InitSelectWindow() " <<<
     nnoremap <silent> <buffer> <C-Left>   :echo 'project buffer only'<CR>
     nnoremap <silent> <buffer> <C-Right>  :echo 'project buffer only'<CR>
 
+    nnoremap <silent> <buffer> <C-Up> :call g:ex_CursorJump( 'ErrorLog.err', 'up' )<CR>
+    nnoremap <silent> <buffer> <C-Down> :call g:ex_CursorJump( 'ErrorLog.err', 'down' )<CR>
+
     "
     nnoremap <silent> <buffer> o  :call <SID>exPJ_CreateNewFile()<CR>
     nnoremap <silent> <buffer> O  :call <SID>exPJ_CreateNewFold()<CR>
@@ -277,7 +280,6 @@ function! s:exPJ_SelectCursorMoved() " <<<
     let pat = '/\%' . line('.') . 'l/'
     exe '2match exPJ_SelectLine ' . pat
 endfunction " >>>
-
 
 " --exPJ_OpenProject--
 function! s:exPJ_OpenProject(project_name) " <<<

@@ -54,31 +54,31 @@ PrjCmd_Rebuild := $(addsuffix /rebuild,$(Prjs))
 .PHONY: all clean-all rebuild
 all: 
 	$(MKDIR) $(ErrDir)
-	$(ECHO) msvc error log > $(FullPath_Errs)
+	$(ECHO) ^<^<^<^<^<^< $(Compiler) error log ^>^>^>^>^>^> > $(FullPath_Errs)
 	$(DEVENV) $(Sln) /Build "$(Configuration)|$(Platform)" /Out $(FullPath_Errs) 
 	gawk -f "%EX_DEV%\Vim\toolkit\gawk\prg_ConvertLog.awk" $(FullPath_Errs)>$(FullPath_Errs)
 clean-all: 
 	$(MKDIR) $(ErrDir)
-	$(ECHO) msvc error log > $(FullPath_Errs)
+	$(ECHO) ^<^<^<^<^<^< $(Compiler) error log ^>^>^>^>^>^> > $(FullPath_Errs)
 	$(DEVENV) $(Sln) /Clean "$(Configuration)|$(Platform)" /Out $(FullPath_Errs)
 rebuild: 
 	$(MKDIR) $(ErrDir)
-	$(ECHO) msvc error log > $(FullPath_Errs)
+	$(ECHO) ^<^<^<^<^<^< $(Compiler) error log ^>^>^>^>^>^> > $(FullPath_Errs)
 	$(DEVENV) $(Sln) /Rebuild "$(Configuration)|$(Platform)" /Out $(FullPath_Errs)
 
 .PHONY: $(PrjCmds_All) $(PrjCmds_All) $(PrjCmd_Rebuild)
 $(PrjCmd_All):
 	$(MKDIR) $(ErrDir)
-	$(ECHO) msvc error log > $(FullPath_Errs)
+	$(ECHO) ^<^<^<^<^<^< $(Compiler) error log ^>^>^>^>^>^> > $(FullPath_Errs)
 	$(DEVENV) $(Sln) /Build "$(Configuration)|$(Platform)" /Project $(patsubst %/,%,$(dir $@)) /Out $(FullPath_Errs)
  
 $(PrjCmd_Clean):
 	$(MKDIR) $(ErrDir)
-	$(ECHO) msvc error log > $(FullPath_Errs)
+	$(ECHO) ^<^<^<^<^<^< $(Compiler) error log ^>^>^>^>^>^> > $(FullPath_Errs)
 	$(DEVENV) $(Sln) /Clean "$(Configuration)|$(Platform)" /Project $(patsubst %/,%,$(dir $@)) /Out $(FullPath_Errs)
  
 $(PrjCmd_Rebuild):
 	$(MKDIR) $(ErrDir)
-	$(ECHO) msvc error log > $(FullPath_Errs)
+	$(ECHO) ^<^<^<^<^<^< $(Compiler) error log ^>^>^>^>^>^> > $(FullPath_Errs)
 	$(DEVENV) $(Sln) /Rebuild "$(Configuration)|$(Platform)" /Project $(patsubst %/,%,$(dir $@)) /Out $(FullPath_Errs)
 

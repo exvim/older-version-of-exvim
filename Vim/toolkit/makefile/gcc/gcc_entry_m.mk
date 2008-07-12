@@ -47,7 +47,7 @@ Prj_Cmd_Clean_Deps := $(Batched_Prj_Cmd_Clean_Deps) $(StandAlone_Prj_Cmd_Clean_D
 #  Rules
 # ----------------------------------------------------------
 
-.PHONY: all clean-all rebuild
+.PHONY: all clean-all rebuild clean-deps
 all: |$(Batched_Prj_Cmd_All)
 clean-all: |$(Batched_Prj_Cmd_Clean)
 clean-deps: |$(Batched_Prj_Cmd_Clean_Deps)
@@ -60,30 +60,41 @@ $(Prjs):
 	$(ECHO) Project-$@ making done
 
 $(Prj_Cmds):
+	$(ECHO) ==========================================================
 	$(ECHO) Project: $(dir $@)
 	$(ECHO) Command: $(notdir $@)
+	$(ECHO) ==========================================================
+	$(ECHO) ^|
 	$(SMAKE) -C$(dir $@) -f$(patsubst %/,%,$(dir $@)).mk $(notdir $@)
  
 $(Prj_Cmd_All):
-	$(ECHO)
+	$(ECHO) ==========================================================
 	$(ECHO) Project: $(dir $@)
 	$(ECHO) Command: $(notdir $@)
+	$(ECHO) ==========================================================
+	$(ECHO) ^|
 	$(SMAKE) -C$(dir $@) -f$(patsubst %/,%,$(dir $@)).mk $(notdir $@)
  
 $(Prj_Cmd_Clean):
-	$(ECHO)
+	$(ECHO) ==========================================================
 	$(ECHO) Project: $(dir $@)
 	$(ECHO) Command: $(notdir $@)
+	$(ECHO) ==========================================================
+	$(ECHO) ^|
 	$(SMAKE) -C$(dir $@) -f$(patsubst %/,%,$(dir $@)).mk $(notdir $@)
  
 $(Prj_Cmd_Rebuild):
-	$(ECHO)
+	$(ECHO) ==========================================================
 	$(ECHO) Project: $(dir $@)
 	$(ECHO) Command: $(notdir $@)
+	$(ECHO) ==========================================================
+	$(ECHO) ^|
 	$(SMAKE) -C$(dir $@) -f$(patsubst %/,%,$(dir $@)).mk $(notdir $@)
  
 $(Prj_Cmd_Clean_Deps):
-	$(ECHO)
+	$(ECHO) ==========================================================
 	$(ECHO) Project: $(dir $@)
 	$(ECHO) Command: $(notdir $@)
+	$(ECHO) ==========================================================
+	$(ECHO) ^|
 	$(SMAKE) -C$(dir $@) -f$(patsubst %/,%,$(dir $@)).mk $(notdir $@)

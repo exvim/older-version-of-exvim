@@ -28,12 +28,18 @@ Configuration = Debug
 # 			 All
 Platform = Win32
 
+# Compiler
+# parameter: msvc2003
+# 			 msvc2005
+# 			 msvc2008
+Compiler = msvc2005
+
 # ----------------------------------------------------------
 #  Advance User Define
 # ----------------------------------------------------------
 
 # Make Debug
-SILENT_CMD :=
+SILENT_CMD := @
 
 # Make Silent
 ifeq ($(SILENT_CMD),@)
