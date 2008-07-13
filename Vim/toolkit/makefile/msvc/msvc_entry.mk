@@ -56,7 +56,6 @@ all:
 	$(MKDIR) $(ErrDir)
 	$(ECHO) ^<^<^<^<^<^< $(Compiler) error log ^>^>^>^>^>^> > $(FullPath_Errs)
 	$(DEVENV) $(Sln) /Build "$(Configuration)|$(Platform)" /Out $(FullPath_Errs) 
-	gawk -f "%EX_DEV%\Vim\toolkit\gawk\prg_ConvertLog.awk" $(FullPath_Errs)>$(FullPath_Errs)
 clean-all: 
 	$(MKDIR) $(ErrDir)
 	$(ECHO) ^<^<^<^<^<^< $(Compiler) error log ^>^>^>^>^>^> > $(FullPath_Errs)
