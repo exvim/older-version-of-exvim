@@ -420,8 +420,8 @@ map <silent> <Leader>1 :call g:ex_HighlightCancle(1)<CR>
 map <silent> <Leader>2 :call g:ex_HighlightCancle(2)<CR>
 map <silent> <Leader>3 :call g:ex_HighlightCancle(3)<CR>
 
-map <silent> <Leader>yb :call g:ex_YankBufferName()<CR>
-map <silent> <Leader>yp :call g:ex_YankFilePath()<CR>
+nmap <silent> <Leader>yb :call g:ex_YankBufferName()<CR>
+nmap <silent> <Leader>yp :call g:ex_YankFilePath()<CR>
 
 
 " VimTip 311: Open the folder containing the currently open file
