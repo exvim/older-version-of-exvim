@@ -231,10 +231,12 @@ function! g:exQF_InitSelectWindow() " <<<
     setlocal foldmethod=marker foldmarker=<<<<<<,>>>>>> foldlevel=1
 
     " syntax highlight
-    syntax match exQF_SynFoldStart '<<<<<< \S\+: '
-    syntax match exQF_SynFoldEnd '>>>>>>'
+    syntax match exQF_SynFoldStart '^<<<<<< \S\+: '
+    syntax match exQF_SynFoldEnd '^>>>>>>'
+    syntax match exQF_Title '^<<<<<< \S\+ error log >>>>>>'
     highlight def exQF_SynFoldStart gui=none guifg=DarkGreen term=none cterm=none ctermfg=DarkGreen
     highlight def exQF_SynFoldEnd gui=none guifg=DarkGreen term=none cterm=none ctermfg=DarkGreen
+    highlight def exQF_Title gui=none guifg=DarkGreen term=none cterm=none ctermfg=DarkGreen
 
     syntax region exQF_FileLineRegion start='^[^:<].*:\(\d\+:\|(\d\+)\)*'  end="$" contains=exQF_SynFileName,exQF_SynLineNumber
     syntax match exQF_SynFileName contained  '^[^:]*:'
