@@ -573,15 +573,15 @@ function! g:ex_GotoLastEditBuffer() " <<<
 endfunction " >>>
 
 " --ex_YankBufferName--
-function! g:ex_YankBufferName() " <<<
+function! g:ex_YankBufferNameForCode() " <<<
     let buf_name = substitute( bufname('%'), "\\", "\/", "g" )
     silent call g:ex_Yank( fnamemodify(buf_name,"") )
 endfunction " >>>
 
 " --ex_YankFilePath--
-function! g:ex_YankFilePath() " <<<
+function! g:ex_YankFilePathForCode() " <<<
     let buf_name = substitute( bufname('%'), "\\", "\/", "g" )
-    silent call g:ex_Yank( fnamemodify(buf_name,":p:h") )
+    silent call g:ex_Yank( fnamemodify(buf_name,":h") )
 endfunction " >>>
 
 " --ex_SwitchBuffer--

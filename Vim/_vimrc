@@ -420,8 +420,16 @@ map <silent> <Leader>1 :call g:ex_HighlightCancle(1)<CR>
 map <silent> <Leader>2 :call g:ex_HighlightCancle(2)<CR>
 map <silent> <Leader>3 :call g:ex_HighlightCancle(3)<CR>
 
-nmap <silent> <Leader>yb :call g:ex_YankBufferName()<CR>
-nmap <silent> <Leader>yp :call g:ex_YankFilePath()<CR>
+" copy only full path name
+nmap <silent> <leader>y1 :call g:ex_Yank( fnamemodify(bufname('%'),":p:h") )<CR>
+" copy only file name
+nmap <silent> <leader>y2 :call g:ex_Yank( fnamemodify(bufname('%'),":p:t") )<CR>
+" copy full path + filename
+nmap <silent> <leader>y3 :call g:ex_Yank( fnamemodify(bufname('%'),":p") )<CR>
+" copy path + filename for code
+nmap <silent> <leader>yb :call g:ex_YankBufferNameForCode()<CR>
+" copy path for code
+nmap <silent> <leader>yp :call g:ex_YankFilePathForCode()<CR>
 
 
 " VimTip 311: Open the folder containing the currently open file
