@@ -94,6 +94,10 @@
 # max-script file
 *.ms            text
 
+# perl file
+*.pl            text
+*.pm            text
+
 # misc file
 *.l			    text
 *.lex			text
