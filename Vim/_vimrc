@@ -220,6 +220,9 @@ nmap <F12> :call g:ex_RemoveIFZero()<CR>
 " F11:  Insert/Remove C++ Comment ("//") before all the lines of the selection
 vmap <F11> :call g:ex_InsertRemoveCmt()<CR>
 
+" F10:  Insert/Remove macro extend ("\") after all the lines of the selection
+vmap <F10> :call g:ex_InsertRemoveExtend()<CR>
+
 " F8:  Set Search pattern highlight on/off
 nmap <F8> :let @/=""<CR>
 

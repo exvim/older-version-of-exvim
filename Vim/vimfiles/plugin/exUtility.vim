@@ -500,11 +500,23 @@ function! g:ex_RemoveIFZero() range " <<<
 endfunction " >>>
 
 " --ex_InsertRemoveCmt--
+"  TODO: commit follow first line
 function! g:ex_InsertRemoveCmt() range " <<<
     if (strpart(getline('.'),0,2) == "//")
         exec ":" . a:firstline . "," . a:lastline . "s\/^\\\/\\\/\/\/"
     else
         exec ":" . a:firstline . "," . a:lastline . "s\/^\/\\\/\\\/\/"
+    endif
+endfunction " >>>
+
+" --ex_InsertRemoveExtend--
+"  TODO: check if the last character is space, if not, add space
+function! g:ex_InsertRemoveExtend() range " <<<
+    let line = getline('.')
+    if (strpart(line,strlen(line)-1,1) == "\\")
+        exec ":" . a:firstline . "," . a:lastline . "s/\\\\$//"
+    else
+        exec ":" . a:firstline . "," . a:lastline . "s/$/\\\\/"
     endif
 endfunction " >>>
 
