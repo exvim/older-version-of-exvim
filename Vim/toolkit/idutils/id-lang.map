@@ -71,6 +71,10 @@
 *.pxd           text
 *.scons         text
 
+# javascript files
+*.js            text
+*.as            text
+
 # asmble files
 *.asm           text
 *.ASM           text

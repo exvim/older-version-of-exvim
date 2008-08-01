@@ -197,7 +197,9 @@ endfunc
 au BufNewFile,BufRead *.mar			setf vmasm
 
 " Atlas
-au BufNewFile,BufRead *.atl,*.as		setf atlas
+" jwu disable this, conflict with actionscript
+" au BufNewFile,BufRead *.atl,*.as		setf atlas
+au BufNewFile,BufRead *.atl		        setf atlas
 
 " Autoit v3
 au BufNewFile,BufRead *.au3			setf autoit
@@ -2130,6 +2132,9 @@ au BufNewFile,BufRead *.dox,*.doxygen       setf cpp.doxygen
 
 " gmsh
 au BufNewFile,BufRead *.geo                 setf gmsh
+
+" as (actionscript/flash) I use java analyasis it
+au BufNewFile,BufRead *.as                  setf javascript
 
 " =================================================================================
 
