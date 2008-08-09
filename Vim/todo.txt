@@ -1,0 +1,7 @@
+Remove filter in \ss window when press enter, change to TS jump.
+Add Fast Copy quick_gen_xxx.
+Add Project Window support create directory
+Add exUtility support save environment
+Add shader compiler can output preprocess file.
+Add lua support
+Fix shader macro highlight bugs
