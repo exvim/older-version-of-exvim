@@ -95,6 +95,9 @@
 *.mms           text
 *.glm           text
 
+# lua file
+*.lua           text
+
 # max-script file
 *.ms            text
 

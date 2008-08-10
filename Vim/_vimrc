@@ -320,11 +320,6 @@ command Revert :silent !p4 revert %
 command Changelist :silent !p4 change
 command ShowChangelist :!p4 changes -s pending -u jwu
 
-" TODO
-" VS.net build
-command Build :!devenv D:\BiaPSP\BIA_EIB_PSP\BIA_PSP_ProDG\BIA_PSP_ProDG.sln /build "PSP HW Debug(Offline)"
-command Compile :!devenv % /build "PSP HW Debug(Offline)"
-
 " --------------------------------------------------------------------------------------
 " Auto Command
 " --------------------------------------------------------------------------------------
@@ -394,18 +389,10 @@ highlight ShowMarksHLm term=bold cterm=bold ctermbg=LightGreen ctermfg=DarkGreen
 nmap <F9> \mh
 
 " --------------------
-" VTreeExplorer
-"   not using this plugin now
-" --------------------
-"map <Leader>te :VSTreeExplore<CR>
-"let treeExplVertical = 1
-"let treeExplWinSize = 30
-"let treeExplHidden = 1
-"let treeExplDirSort = 1
-
-" --------------------
 " exUtility
 " --------------------
+
+" quick highlight 
 nmap <silent> <a-1> :call g:ex_Highlight_Normal(1)<CR>
 nmap <silent> <a-2> :call g:ex_Highlight_Normal(2)<CR>
 nmap <silent> <a-3> :call g:ex_Highlight_Normal(3)<CR>
@@ -466,20 +453,21 @@ endif
 " 
 " Tom.
 
-
+" project gen/copy/build
 command -narg=? GMake call g:ex_GCCMake("<args>")
 command -narg=? SMake call g:ex_ShaderMake("<args>")
 command -narg=* VMake call g:ex_VCMake("<args>")
 command -narg=* VBat call g:ex_VCMakeBAT(<f-args>)
 command -narg=? Update call g:ex_UpdateVimFiles("<args>")
+command -narg=? QCopy call g:ex_CopyQuickGenProject("<args>")
 
 " inherits genreate
 command -narg=1 GV call g:ex_GenInheritsDot('<args>',"all")
 command -narg=1 GVP call g:ex_GenInheritsDot('<args>',"parent")
 command -narg=1 GVC call g:ex_GenInheritsDot('<args>',"children")
-
 map <silent> <Leader>gv :call g:ex_ViewInheritsImage()<CR>
 
+" code writing
 command LINE call g:ex_PutLine(86, '-')
 command -narg=1 NSS call g:ex_PutNamespaceStart("<args>")
 command -narg=1 NSE call g:ex_PutNamespaceEnd("<args>")

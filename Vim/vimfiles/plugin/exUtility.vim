@@ -1328,6 +1328,24 @@ function! g:ex_UpdateVimFiles( type ) " <<<
     endif
 endfunction " >>>
 
+" --ex_CopyQuickGenProject( type )--
+function! g:ex_CopyQuickGenProject( type ) " <<<
+    let quick_gen_bat = ""
+    if a:type == ""
+        let quick_gen_bat = "quick_gen_project_all.bat" 
+    elseif a:type == "general"
+        let quick_gen_bat = "quick_gen_project_general.bat" 
+    else
+        let quick_gen_bat = "quick_gen_project_" . a:type . "_only.bat" 
+    endif
+    let full_quick_gen_bat = fnamemodify( $EX_DEV . "\\Vim\\toolkit\\quickgen\\" . quick_gen_bat, ":p")
+    if findfile( full_quick_gen_bat ) == ""
+        call g:ex_WarningMsg('Error: file ' . full_quick_gen_bat . ' not found')
+    else
+        silent exec "!copy " . full_quick_gen_bat
+    endif
+endfunction " >>>
+
 " --ex_Debug()--
 function! g:ex_Debug( exe_name ) " <<<
     if glob(a:exe_name) == ''

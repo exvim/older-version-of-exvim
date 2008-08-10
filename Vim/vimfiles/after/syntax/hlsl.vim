@@ -30,8 +30,8 @@ syn keyword hlslStorage         extern shared static uniform volatile
 " base type
 syn keyword hlslType            const row_major col_major
 syn keyword hlslType            snorm4 unorm4 matrix
-syn match   hlslType            "\<\(BOOL\|int\|half\|float\|double\)[1-4]*\>"
-syn match   hlslType            "\<\(BOOL\|int\|half\|float\|double\)[1-4]x[1-4]\>"
+syn match   hlslType            "\<\(bool\|int\|half\|float\|double\)[1-4]*\>"
+syn match   hlslType            "\<\(bool\|int\|half\|float\|double\)[1-4]x[1-4]\>"
 syn keyword hlslType            vertexshader pixelshader struct typedef
 syn keyword hlslType            in out
 

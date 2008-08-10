@@ -12,6 +12,8 @@ if /I "%1"=="python" goto PYTHON
 if /I "%1"=="c#" goto CSHARP
 if /I "%1"=="general" goto GENERAL
 if /I "%1"=="vim" goto VIM
+if /I "%1"=="lua" goto LUA
+if /I "%1"=="js" goto JS
 if /I "%1"=="html" goto HTML
 
 rem =======================================
@@ -42,12 +44,6 @@ set LANGTYPE=CSHARP
 set FILEFILTER=*.cs
 goto START
 
-rem cstyle settings
-:GENERAL
-set LANGTYPE=GENERAL
-set FILEFILTER=*.c *.cpp *.cxx *.h *.hpp *.inl *.uc *.hlsl *.vsh *.psh *.fx *.fxh *.cg *.shd
-goto START
-
 rem vim settings
 :VIM
 set LANGTYPE=VIM
@@ -58,6 +54,24 @@ rem html settings
 :HTML
 set LANGTYPE=HTML
 set FILEFILTER=*.html *.htm *.shtml *.stm
+goto START
+
+rem lua settings
+:LUA
+set LANGTYPE=LUA
+set FILEFILTER=*.lua
+goto START
+
+rem javascript settings
+:JS
+set LANGTYPE=JS
+set FILEFILTER=*.js *.as
+goto START
+
+rem cstyle settings
+:GENERAL
+set LANGTYPE=GENERAL
+set FILEFILTER=*.c *.cpp *.cxx *.h *.hpp *.inl *.uc *.hlsl *.vsh *.psh *.fx *.fxh *.cg *.shd
 goto START
 
 rem =======================================
@@ -96,10 +110,12 @@ if /I "%LANGTYPE%"=="C_ONLY" ctags -o./_tags -R --c-kinds=+p --fields=+iaS --ext
 if /I "%LANGTYPE%"=="CPP_ONLY" ctags -o./_tags -R --c++-kinds=+p --fields=+iaS --extra=+q --languages=c++ --langmap=c++:+.inl
 if /I "%LANGTYPE%"=="PYTHON" ctags -o./_tags -R --fields=+iaS --extra=+q --languages=python
 if /I "%LANGTYPE%"=="CSHARP" ctags -o./_tags -R --fields=+iaS --extra=+q --languages=c#
-if /I "%LANGTYPE%"=="GENERAL" ctags -o./_tags -R --c++-kinds=+p --fields=+iaS --extra=+q --languages=c,c++,c#,python,javascript --langmap=c++:+.inl,c:+.fx,c:+.fxh,c:+.hlsl,c:+.vsh,c:+.psh,c:+.cg,c:+.shd,javascript:+.as
 if /I "%LANGTYPE%"=="VIM" ctags -o./_tags -R  --fields=+iaS --extra=+q --languages=vim
 if /I "%LANGTYPE%"=="HTML" ctags -o./_tags -R  --fields=+iaS --extra=+q --languages=html
-if /I "%LANGTYPE%"=="ALL" ctags -o./_tags -R --c++-kinds=+p --fields=+iaS --extra=+q
+if /I "%LANGTYPE%"=="LUA" ctags -o./_tags -R  --fields=+iaS --extra=+q --languages=lua
+if /I "%LANGTYPE%"=="JS" ctags -o./_tags -R  --fields=+iaS --extra=+q --languages=javascript --langmap=javascript:+.as
+if /I "%LANGTYPE%"=="GENERAL" ctags -o./_tags -R --c++-kinds=+p --fields=+iaS --extra=+q --languages=c,c++,c# --langmap=c++:+.inl,c:+.fx,c:+.fxh,c:+.hlsl,c:+.vsh,c:+.psh,c:+.cg,c:+.shd
+if /I "%LANGTYPE%"=="ALL" ctags -o./_tags -R --c++-kinds=+p --fields=+iaS --extra=+q --langmap=c++:+.inl,c:+.fx,c:+.fxh,c:+.hlsl,c:+.vsh,c:+.psh,c:+.cg,c:+.shd,javascript:+.as
 move /Y ".\_tags" ".\tags"
 
 :SYMBOL
@@ -114,24 +130,29 @@ move /Y ".\_vimfiles\_symbol" ".\_vimfiles\symbol"
 :INHERITS
 rem =======================================
 rem create inherits
+rem     note: only for OO language
 rem =======================================
 if /I "%2"=="symbol" goto FINISH
 if /I "%LANGTYPE%"=="C_ONLY" goto CSCOPE
 if /I "%LANGTYPE%"=="VIM" goto CSCOPE
 if /I "%LANGTYPE%"=="HTML" goto CSCOPE
+if /I "%LANGTYPE%"=="LUA" goto CSCOPE
 echo Creating Inherits...
 gawk -f "%EX_DEV%\Vim\toolkit\gawk\prg_Inherits.awk" ./tags>./_vimfiles/_inherits
 move /Y ".\_vimfiles\_inherits" ".\_vimfiles\inherits"
 
 :CSCOPE
 rem =======================================
-rem create cscope files but if LANGTYPE is vim, we don't needt to create cscope
+rem create cscope files
+rem     note: only for c/cpp
 rem =======================================
 if /I "%2"=="inherits" goto FINISH
 if /I "%LANGTYPE%"=="PYTHON" goto ID
 if /I "%LANGTYPE%"=="CSHARP" goto ID
 if /I "%LANGTYPE%"=="VIM" goto ID
 if /I "%LANGTYPE%"=="HTML" goto ID
+if /I "%LANGTYPE%"=="LUA" goto ID
+if /I "%LANGTYPE%"=="JS" goto ID
 echo Creating cscope.files...
 dir /s /b %FILEFILTER%|sed "s,\(.*\),\"\1\",g" > cscope.files
 echo Creating cscope.out...
