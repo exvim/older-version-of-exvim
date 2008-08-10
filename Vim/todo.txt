@@ -1,4 +1,4 @@
-Remove filter in \ss window when press enter, change to TS jump.
+[done] Remove filter in \ss window when press enter, change to TS jump.
 Add Fast Copy quick_gen_xxx.
 Add Project Window support create directory
 Add exUtility support save environment

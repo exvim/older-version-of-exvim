@@ -340,8 +340,8 @@ function! g:exSL_InitSelectWindow() " <<<
     silent! setlocal buftype=
     
     " key map
-    nnoremap <buffer> <silent> <Return>   \|:call <SID>exSL_ShowPickedResult(getline('.'), 0)<CR>
-    nnoremap <buffer> <silent> <C-Return> :call <SID>exSL_GotoResultInSelectWindow()<CR>
+    nnoremap <buffer> <silent> <Return> \|:call <SID>exSL_GotoResultInSelectWindow()<CR>
+    nnoremap <buffer> <silent> <C-Return>   \|:call <SID>exSL_ShowPickedResult(getline('.'), 0)<CR>
     nnoremap <buffer> <silent> <Space>   :call <SID>exSL_ResizeWindow()<CR>
     nnoremap <buffer> <silent> <ESC>   :call <SID>exSL_ToggleWindow('Select')<CR>
     nnoremap <buffer> <silent> <C-Left>   :call <SID>exSL_SwitchWindow('QuickView')<CR>
@@ -367,7 +367,7 @@ function! s:exSL_GotoResultInSelectWindow() " <<<
     call g:ex_HighlightConfirmLine()
     let s:exSL_select_idx = line('.')
     let symbol_key_word = getline('.')
-    if (symbol_key_word)
+    if symbol_key_word != ''
         call s:exSL_ToggleWindow('Select')
         exec (g:exSL_SymbolSelectCmd . " " . symbol_key_word)
     else
