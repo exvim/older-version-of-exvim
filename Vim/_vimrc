@@ -236,29 +236,22 @@ nmap <A-F2> :set guifont=NSimSun:cGB2312<CR>:set encoding=cp936<CR>
 nmap <A-F3> :set guifont=MS_Gothic:cSHIFTJIS<CR>:set encoding=cp932<CR>
 
 " map Ctrl-Tab to switch window
-map <S-Up> <C-W><Up>
-map! <S-Up> <C-W><Up>
-map <S-Down> <C-W><Down>
-map! <S-Down> <C-W><Down>
-map <S-Left> <C-W><Left>
-map! <S-Left> <C-W><Left>
-map <S-Right> <C-W><Right>
-map! <S-Right> <C-W><Right>
-map <silent><Leader><Tab> :call g:ex_SwitchBuffer()<CR>
+nmap <S-Up> <C-W><Up>
+nmap <S-Down> <C-W><Down>
+nmap <S-Left> <C-W><Left>
+nmap <S-Right> <C-W><Right>
+nmap <silent><Leader><Tab> :call g:ex_SwitchBuffer()<CR>
 
 " for the exUtility Plugin
-map <silent><Leader><ESC> :call g:ex_SwitchBuffer()<CR><ESC>
+nmap <silent><Leader><ESC> :call g:ex_SwitchBuffer()<CR><ESC>
 
 " change the original file jump method to this one
 nnoremap gf :call g:ex_QuickFileJump()<CR>
 
 " VimTip #401: A mapping for easy switching between buffers
-map <silent> <C-Right> :bn!<CR>
-map! <silent> <C-Right> :bn!<CR>
-map <silent> <C-Left> :bp!<CR>
-map! <silent> <C-Left> :bp!<CR>
-map <silent> <C-Tab> :call g:ex_GotoLastEditBuffer()<CR>
-map! <silent> <C-Tab> :call g:ex_GotoLastEditBuffer()<CR>
+nmap <silent> <C-Right> :bn!<CR>
+nmap <silent> <C-Left> :bp!<CR>
+nmap <silent> <C-Tab> :call g:ex_GotoLastEditBuffer()<CR>
 
 " Move in fold
 map z<Up> zk
