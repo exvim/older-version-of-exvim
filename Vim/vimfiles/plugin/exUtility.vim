@@ -48,6 +48,11 @@ let s:ex_pluginbuf_num = -1
 let s:ex_level_list = []
 " >>>
 
+" Define the ex autocommands
+augroup ex_auto_cmds
+    autocmd WinLeave * call g:ex_RecordCurrentBufNum()
+augroup end
+
 " ------------------------
 "  window functions
 " ------------------------
@@ -154,9 +159,9 @@ function! g:ex_InitWindow(init_func_name) " <<<
     highlight def ex_SynError gui=none guifg=White guibg=Red term=none cterm=none ctermfg=White ctermbg=Red
 
     " Define the ex autocommands
-    augroup ex_auto_cmds
-        autocmd WinLeave * call g:ex_RecordCurrentBufNum()
-    augroup end
+    " augroup ex_auto_cmds
+    "     autocmd WinLeave * call g:ex_RecordCurrentBufNum()
+    " augroup end
 
     " avoid cwd change problem
     if exists( 'g:exES_PWD' )
@@ -184,6 +189,7 @@ function! g:ex_OpenWindow( buffer_name, window_direction, window_size, use_verti
     endif
 
     " go to edit buffer first, then open the window, this will avoid some bugs
+    call g:ex_RecordCurrentBufNum()
     call g:ex_GotoEditBuffer()
 
     " If the window is open, jump to it
@@ -536,6 +542,7 @@ function! g:ex_RecordCurrentBufNum() " <<<
     let short_bufname = fnamemodify(bufname("%"),":p:t")
     if index( g:exUT_plugin_list, short_bufname, 0, 1 ) == -1 " compare ignore case
         let s:ex_editbuf_num = bufnr('%')
+        let g:ex_debug = s:ex_editbuf_num 
     elseif short_bufname !=# "-MiniBufExplorer-"
         let s:ex_pluginbuf_num = bufnr('%')
     endif
