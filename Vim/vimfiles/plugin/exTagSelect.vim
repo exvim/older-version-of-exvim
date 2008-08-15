@@ -467,10 +467,7 @@ endfunction " >>>
 
 " --exTS_GoDirect--
 function! s:exTS_GoDirect() " <<<
-    let reg_t = @t
-    exe 'normal! "tyiw'
-    call s:exTS_GetTagSelectResult(@t, 1)
-    let @t = reg_t
+    call s:exTS_GetTagSelectResult(expand("<cword>"), 1)
 endfunction " >>>
 
 " -------------------------------------------------------------------------

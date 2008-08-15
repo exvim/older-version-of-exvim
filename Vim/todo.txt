@@ -5,3 +5,24 @@ Add Project Window support create directory
 Add exUtility support save environment
 Add shader compiler can output preprocess file.
 Fix shader macro highlight bugs
+
+Production      Comapny                                                                 Complexity      Static Analysis
+ 
+Code            Wzard Parasoft(http://www.parasoft.com/poducts/wizard/index.htm         No              Yes
+ 
+Rexelint        Gimpel Software(http://www.gimpel.com/lintinfo.htm)                     No              Yes
+ 
+Splint          University of Virginia(http://www.splint.org)                           No              Yes
+ 
+Logiscope       Telelogic(http://www.telelogc.com/products/tau/logiscope/index.cfm)     Yes             Yes
+ 
+QA C/C++        QA Systems(http://www.qa-systems.com/products/qac/                      Yes             Yes
+ 
+Mc Cabe QA      McCabe & Associates(http://www.mccabe.com/main.htm)                     Yes             Yes
+ 
+Understand      C++ Scientific Toolwarks(http://www.scitools.com)                       Yes             No
+ 
+CodeCheck       Abraxas(http://abxsoft.com)                                             Yes             Yes
+ 
+GateKeeper      KLOOwork(http://www.klocwork.com/)                                      Yes             Yes
+ 

@@ -218,23 +218,12 @@ endfunction " >>>
 
 " --exCS_GoDirect--
 function! s:exCS_GoDirect( search_method ) " <<<
-    let reg_s = @s
-
-    let save_pos = getpos(".")
+    let search_text = ''
     if a:search_method ==# 'i' " including file
-        exe 'normal! "syiW'
-        if @s =~# '^\".*\"$'
-            let @s = fnamemodify( substitute( @s, '"', '', "g" ), ":p:t" )
-        else
-            silent call setpos(".", save_pos )
-            exe 'normal! "syiw'
-        endif
+        let search_text = expand("<cfile>".":t")
     else
-        exe 'normal! "syiw'
+        let search_text = expand("<cword>")
     endif
-    silent call setpos(".", save_pos )
-    let search_text = @s
-    let @s = reg_s
 
     call s:exCS_GetSearchResult(search_text, a:search_method)
 endfunction " >>>
@@ -338,13 +327,7 @@ function! s:exCS_ParseFunction() " <<<
             return
         endif
     else
-        let reg_s = @s
-
-        let save_pos = getpos(".")
-        exe 'normal! "syiw'
-        silent call setpos(".", save_pos )
-        let search_text = @s
-        let @s = reg_s
+        let search_text = expand("<cword>")
     endif
     call s:exCS_GetSearchResult(search_text, 'ds')
 endfunction " >>>

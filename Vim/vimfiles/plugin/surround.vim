@@ -1,7 +1,7 @@
 " surround.vim - Surroundings
 " Author:       Tim Pope <vimNOSPAM@tpope.info>
 " GetLatestVimScripts: 1697 1 :AutoInstall: surround.vim
-" $Id: surround.vim,v 1.27 2007-10-01 15:27:33 tpope Exp $
+" $Id: surround.vim,v 1.34 2008-02-15 21:43:42 tpope Exp $
 "
 " See surround.txt for help.  This can be accessed by doing
 "
@@ -13,7 +13,7 @@
 " ============================================================================
 
 " Exit quickly when:
-" - this plugin was already loaded (or disabled)
+" - this plugin was already loaded or disabled
 " - when 'compatible' is set
 if (exists("g:loaded_surround") && g:loaded_surround) || &cp
     finish
@@ -425,7 +425,6 @@ function! s:dosurround(...) " {{{1
     else
         exe 'norm d'.strcount.'i'.char
     endif
-    "exe "norm vi".char."d"
     let keeper = getreg('"')
     let okeeper = keeper " for reindent below
     if keeper == ""
@@ -436,8 +435,6 @@ function! s:dosurround(...) " {{{1
     let oldline = getline('.')
     let oldlnum = line('.')
     if char ==# "p"
-        "let append = matchstr(keeper,'\n*\%$')
-        "let keeper = substitute(keeper,'\n*\%$','','')
         call setreg('"','','V')
     elseif char ==# "s" || char ==# "w" || char ==# "W"
         " Do nothing
@@ -450,32 +447,25 @@ function! s:dosurround(...) " {{{1
         call setreg('"','/**/',"c")
         let keeper = substitute(substitute(keeper,'^/\*\s\=','',''),'\s\=\*$','','')
     else
-        exe "norm! da".char
+        " One character backwards
+        call search('.','bW')
+        exe "norm da".char
     endif
     let removed = getreg('"')
     let rem2 = substitute(removed,'\n.*','','')
     let oldhead = strpart(oldline,0,strlen(oldline)-strlen(rem2))
     let oldtail = strpart(oldline,  strlen(oldline)-strlen(rem2))
     let regtype = getregtype('"')
-    if char == 'p'
-        let regtype = "V"
-    endif
     if char =~# '[\[({<T]' || spc
         let keeper = substitute(keeper,'^\s\+','','')
         let keeper = substitute(keeper,'\s\+$','','')
     endif
     if col("']") == col("$") && col('.') + 1 == col('$')
-        "let keeper = substitute(keeper,'^\n\s*','','')
-        "let keeper = substitute(keeper,'\n\s*$','','')
         if oldhead =~# '^\s*$' && a:0 < 2
-            "let keeper = substitute(keeper,oldhead.'\%$','','')
             let keeper = substitute(keeper,'\%^\n'.oldhead.'\(\s*.\{-\}\)\n\s*\%$','\1','')
         endif
         let pcmd = "p"
     else
-        if oldhead == "" && a:0 < 2
-            "let keeper = substitute(keeper,'\%^\n\(.*\)\n\%$','\1','')
-        endif
         let pcmd = "P"
     endif
     if line('.') < oldlnum && regtype ==# "V"
@@ -488,7 +478,6 @@ function! s:dosurround(...) " {{{1
     silent exe 'norm! ""'.pcmd.'`['
     if removed =~ '\n' || okeeper =~ '\n' || getreg('"') =~ '\n'
         call s:reindent()
-    else
     endif
     if getline('.') =~ '^\s\+$' && keeper =~ '^\s*\n'
         silent norm! cc
@@ -496,6 +485,11 @@ function! s:dosurround(...) " {{{1
     call setreg('"',removed,regtype)
     let s:lastdel = removed
     let &clipboard = cb_save
+    if newchar == ""
+        silent! call repeat#set("\<Plug>Dsurround".char,scount)
+    else
+        silent! call repeat#set("\<Plug>Csurround".char.newchar,scount)
+    endif
 endfunction " }}}1
 
 function! s:changesurround() " {{{1
@@ -561,6 +555,9 @@ function! s:opfunc(type,...) " {{{1
     call setreg(reg,reg_save,reg_type)
     let &selection = sel_save
     let &clipboard = cb_save
+    if a:type =~ '^\d\+$'
+        silent! call repeat#set("\<Plug>Y".(a:0 ? "S" : "s")."surround".char,a:type)
+    endif
 endfunction
 
 function! s:opfunc2(arg)
@@ -598,13 +595,11 @@ inoremap <silent> <Plug>ISurround  <C-R>=<SID>insert(1)<CR>
 if !exists("g:surround_no_mappings") || ! g:surround_no_mappings
     nmap          ds   <Plug>Dsurround
     nmap          cs   <Plug>Csurround
-
-    " jwu disable this. lead to y visual error
-    "nmap          ys   <Plug>Ysurround
-    "nmap          yS   <Plug>YSurround
-    "nmap          yss  <Plug>Yssurround
-    "nmap          ySs  <Plug>YSsurround
-    "nmap          ySS  <Plug>YSsurround
+    nmap          ys   <Plug>Ysurround
+    nmap          yS   <Plug>YSurround
+    nmap          yss  <Plug>Yssurround
+    nmap          ySs  <Plug>YSsurround
+    nmap          ySS  <Plug>YSsurround
     if !hasmapto("<Plug>Vsurround","v")
         if exists(":xmap")
             xmap  s    <Plug>Vsurround

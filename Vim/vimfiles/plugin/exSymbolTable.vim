@@ -306,10 +306,7 @@ endfunction " >>>
 "  show the picked result in the quick view window
 function! s:exSL_GetAndShowPickedResult() " <<<
     " get search pattern
-    let reg_a = @a
-    exe 'normal! "ayiw'
-    let search_pattern = @a
-    let @a = reg_a
+    let search_pattern = expand("<cword>")
 
     "
     "if &filetype == "ex_filetype"

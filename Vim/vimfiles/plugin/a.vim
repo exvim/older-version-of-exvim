@@ -11,12 +11,20 @@
 
 " Directory & regex enhancements added by Bindu Wavell who is well known on
 " vim.sf.net
+"
+" Patch for spaces in files/directories from Nathan Stien (also reported by
+" Soeren Sonnenburg)
 
 " Do not load a.vim if is has already been loaded.
 if exists("loaded_alternateFile")
     finish
 endif
+if (v:progname == "ex")
+   finish
+endif
 let loaded_alternateFile = 1
+
+let alternateExtensionsDict = {}
 
 " setup the default set of alternate extensions. The user can override in thier
 " .vimrc if the defaults are not suitable. To override in a .vimrc simply set a
@@ -28,7 +36,7 @@ let loaded_alternateFile = 1
 
 " This variable will be increased when an extension with greater number of dots
 " is added by the AddAlternateExtensionMapping call.
-let s:maxDotsInExtension = 0
+let s:maxDotsInExtension = 1
 
 " Function : AddAlternateExtensionMapping (PRIVATE)
 " Purpose  : simple helper function to add the default alternate extension
@@ -46,17 +54,20 @@ function! <SID>AddAlternateExtensionMapping(extension, alternates)
 
    " This code handles extensions which contains a dot. exists() fails with
    " such names.
-   let v:errmsg = ""
-   silent! echo g:alternateExtensions_{a:extension}
-   if (v:errmsg != "")
-      let g:alternateExtensions_{a:extension} = a:alternates
-   endif
+   "let v:errmsg = ""
+   " FIXME this line causes ex to return 1 instead of 0 for some reason??
+   "silent! echo g:alternateExtensions_{a:extension}
+   "if (v:errmsg != "")
+      "let g:alternateExtensions_{a:extension} = a:alternates
+   "endif
 
+   let g:alternateExtensionsDict[a:extension] = a:alternates
    let dotsNumber = strlen(substitute(a:extension, "[^.]", "", "g"))
    if s:maxDotsInExtension < dotsNumber
      let s:maxDotsInExtension = dotsNumber
    endif
 endfunction
+
 
 " Add all the default extensions
 " Mappings for C and C++
@@ -88,9 +99,10 @@ call <SID>AddAlternateExtensionMapping('ypp',"lpp,l,lex")
 " Mappings for OCaml
 call <SID>AddAlternateExtensionMapping('ml',"mli")
 call <SID>AddAlternateExtensionMapping('mli',"ml")
-
-"let g:alternateExtensions_{'aspx.cs'} = "aspx"
-"let g:alternateExtensions_{'aspx'} = "aspx.cs"
+" ASP stuff
+call <SID>AddAlternateExtensionMapping('aspx.cs', 'aspx')
+call <SID>AddAlternateExtensionMapping('aspx.vb', 'aspx')
+call <SID>AddAlternateExtensionMapping('aspx', 'aspx.cs,aspx.vb')
 
 " Setup default search path, unless the user has specified
 " a path in their [._]vimrc. 
@@ -105,6 +117,16 @@ if (!exists('g:alternateNoDefaultAlternate'))
    " by default a.vim will alternate to a file which does not exist
    let g:alternateNoDefaultAlternate = 0
 endif
+
+" If this variable is true then a.vim will convert the alternate filename to a
+" filename relative to the current working directory.
+" Feature by Nathan Huizinga
+if (!exists('g:alternateRelativeFiles'))                                        
+   " by default a.vim will not convert the filename to one relative to the
+   " current working directory
+   let g:alternateRelativeFiles = 0
+endif
+
 
 " Function : GetNthItemFromList (PRIVATE)
 " Purpose  : Support reading items from a comma seperated list
@@ -233,6 +255,47 @@ function! <SID>FindFileInSearchPath(fileName, pathList, relPathBase)
    return filepath
 endfunction
 
+" Function : FindFileInSearchPathEx (PRIVATE)
+" Purpose  : Searches for a file in the search path list
+" Args     : filename -- name of the file to search for
+"            pathList -- the path list to search
+"            relPathBase -- the path which relative paths are expanded from
+"            count -- find the count'th occurence of the file on the path
+" Returns  : An expanded filename if found, the empty string otherwise
+" Author   : Michael Sharpe (feline@irendi.com)
+" History  : Based on <SID>FindFileInSearchPath() but with extensions
+function! <SID>FindFileInSearchPathEx(fileName, pathList, relPathBase, count)
+   let filepath = ""
+   let m = 1
+   let spath = ""
+   let pathListLen = strlen(a:pathList)
+   if (pathListLen > 0)
+      while (1)
+         let pathSpec = <SID>GetNthItemFromList(a:pathList, m) 
+         if (pathSpec != "")
+            let path = <SID>ExpandAlternatePath(pathSpec, a:relPathBase)
+            if (spath != "")
+               let spath = spath . ','
+            endif
+            let spath = spath . path
+         else
+            break
+         endif
+         let m = m + 1
+      endwhile
+   endif
+
+   if (&path != "")
+      if (spath != "")
+         let spath = spath . ','
+      endif
+      let spath = spath . &path
+   endif
+
+   let filepath = findfile(a:fileName, spath, a:count)
+   return filepath
+endfunction
+
 " Function : EnumerateFilesByExtension (PRIVATE)
 " Purpose  : enumerates all files by a particular list of alternate extensions.
 " Args     : path -- path of a file (not including the file)
@@ -243,7 +306,16 @@ endfunction
 function! EnumerateFilesByExtension(path, baseName, extension)
    let enumeration = ""
    let extSpec = ""
-   silent! let extSpec = g:alternateExtensions_{a:extension}
+   let v:errmsg = ""
+   silent! echo g:alternateExtensions_{a:extension}
+   if (v:errmsg == "")
+      let extSpec = g:alternateExtensions_{a:extension}
+   endif
+   if (extSpec == "")
+      if (has_key(g:alternateExtensionsDict, a:extension))
+         let extSpec = g:alternateExtensionsDict[a:extension]
+      endif
+   endif
    if (extSpec != "") 
       let n = 1
       let done = 0
@@ -334,6 +406,9 @@ function! DetermineExtension(path)
   while i <= s:maxDotsInExtension
     let mods = mods . ":e"
     let extension = fnamemodify(a:path, mods)
+    if (has_key(g:alternateExtensionsDict, extension))
+       return extension
+    endif
     let v:errmsg = ""
     silent! echo g:alternateExtensions_{extension}
     if (v:errmsg == "")
@@ -412,11 +487,88 @@ function! AlternateFile(splitWindow, ...)
    endif
 endfunction
 
+" Function : AlternateOpenFileUnderCursor (PUBLIC)
+" Purpose  : Opens file under the cursor
+" Args     : splitWindow -- indicates how to open the file
+" Returns  : Nothing
+" Author   : Michael Sharpe (feline@irendi.com) www.irendi.com
+function! AlternateOpenFileUnderCursor(splitWindow,...)
+   let cursorFile = (a:0 > 0) ? a:1 : expand("<cfile>") 
+   let currentPath = expand("%:p:h")
+   let openCount = 1
+
+   let fileName = <SID>FindFileInSearchPathEx(cursorFile, g:alternateSearchPath, currentPath, openCount)
+   if (fileName != "")
+      call <SID>FindOrCreateBuffer(fileName, a:splitWindow, 1)
+      let b:openCount = openCount
+      let b:cursorFile = cursorFile
+      let b:currentPath = currentPath
+   else
+      echo "Can't find file"
+   endif
+endfunction
+
+" Function : AlternateOpenNextFile (PUBLIC)
+" Purpose  : Opens the next file corresponding to the search which found the 
+"            current file
+" Args     : bang -- indicates what to do if the current file has not been 
+"                    saved
+" Returns  : nothing
+" Author   : Michael Sharpe (feline@irendi.com) www.irendi.com
+function! AlternateOpenNextFile(bang)
+   let cursorFile = ""
+   if (exists("b:cursorFile"))
+      let cursorFile = b:cursorFile
+   endif
+
+   let currentPath = ""
+   if (exists("b:currentPath"))
+      let currentPath = b:currentPath
+   endif
+
+   let openCount = 0
+   if (exists("b:openCount"))
+      let openCount = b:openCount + 1
+   endif
+
+   if (cursorFile != ""  && currentPath != ""  && openCount != 0)
+      let fileName = <SID>FindFileInSearchPathEx(cursorFile, g:alternateSearchPath, currentPath, openCount)
+      if (fileName != "")
+         call <SID>FindOrCreateBuffer(fileName, "n".a:bang, 0)
+         let b:openCount = openCount
+         let b:cursorFile = cursorFile
+         let b:currentPath = currentPath
+      else 
+         let fileName = <SID>FindFileInSearchPathEx(cursorFile, g:alternateSearchPath, currentPath, 1)
+         if (fileName != "")
+            call <SID>FindOrCreateBuffer(fileName, "n".a:bang, 0)
+            let b:openCount = 1
+            let b:cursorFile = cursorFile
+            let b:currentPath = currentPath
+         else
+            echo "Can't find next file"
+         endif
+      endif
+   endif
+endfunction
+
+comm! -nargs=? -bang IH call AlternateOpenFileUnderCursor("n<bang>", <f-args>)
+comm! -nargs=? -bang IHS call AlternateOpenFileUnderCursor("h<bang>", <f-args>)
+comm! -nargs=? -bang IHV call AlternateOpenFileUnderCursor("v<bang>", <f-args>)
+comm! -nargs=? -bang IHT call AlternateOpenFileUnderCursor("t<bang>", <f-args>)
+comm! -nargs=? -bang IHN call AlternateOpenNextFile("<bang>")
+" jwu: disable all imap, leader is often used
+"imap <Leader>ih <ESC>:IHS<CR>
+nmap <Leader>ih :IHS<CR>
+"imap <Leader>is <ESC>:IHS<CR>:A<CR>
+nmap <Leader>is :IHS<CR>:A<CR>
+"imap <Leader>ihn <ESC>:IHN<CR>
+nmap <Leader>ihn :IHN<CR>
+
 "function! <SID>PrintList(theList) 
 "   let n = 1
 "   let oneFile = <SID>GetNthItemFromList(a:theList, n)
 "   while (oneFile != "")
-"      Decho "list[".n."]=".oneFile
 "      let n = n + 1
 "      let oneFile = <SID>GetNthItemFromList(a:theList, n)
 "   endwhile
@@ -547,7 +699,7 @@ endfunction
 "            + implemented fix from Matt Perry
 function! <SID>FindOrCreateBuffer(fileName, doSplit, findSimilar)
   " Check to see if the buffer is already open before re-opening it.
-  let FILENAME = a:fileName
+  let FILENAME = escape(a:fileName, ' ')
   let bufNr = -1
   let lastBuffer = bufnr("$")
   let i = 1
@@ -579,6 +731,10 @@ function! <SID>FindOrCreateBuffer(fileName, doSplit, findSimilar)
            let FILENAME = bufName
         endif
      endif
+  endif
+
+  if (g:alternateRelativeFiles == 1)                                            
+        let FILENAME = fnamemodify(FILENAME, ":p:.")
   endif
 
   let splitType = a:doSplit[0]
@@ -669,7 +825,7 @@ endfunction
 " Function : EqualFilePaths (PRIVATE)
 " Purpose  : Compares two paths. Do simple string comparison anywhere but on
 "            Windows. On Windows take into account that file paths could differ
-"            in usage of separators and the fact that case does not metter.
+"            in usage of separators and the fact that case does not matter.
 "            "c:\WINDOWS" is the same path as "c:/windows". has("win32unix") Vim
 "            version does not count as one having Windows path rules.
 " Args     : path1 (IN) -- first path

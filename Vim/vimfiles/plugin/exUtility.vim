@@ -1053,15 +1053,10 @@ endfunction " >>>
 function! g:ex_QuickFileJump() " <<<
     " make the gf go everywhere in the project
     if exists( 'g:exES_PWD' )
-        let tmp_reg = @t
-        let save_pos = getpos(".")
-        normal! "tyiW
-        silent call setpos(".", save_pos )
-        let file_name = substitute( @t, '\("\|<\|>\)', '', "g" )
-        let @t = tmp_reg
+        let file_name = expand("<cfile>")
         echomsg "searching file: " . file_name
         let path = escape(g:exES_PWD, " ") . "/**;"
-        let full_path_file = findfile( file_name, path ) 
+        let full_path_file = findfile( simplify(file_name), path ) 
 
         " if we found the file
         if full_path_file != ""
@@ -1590,12 +1585,7 @@ endfunction " >>>
 
 " --ex_ViewInheritsImage--
 function! g:ex_ViewInheritsImage() " <<<
-    let reg_s = @s
-    let save_pos = getpos(".")
-    exe 'normal! "syiw'
-    silent call setpos(".", save_pos )
-    let inherit_class_name = @s
-    let @s = reg_s
+    let inherit_class_name = expand("<cword>")
     let inherit_class_name = "\\<" . inherit_class_name . "\\>"
     echomsg inherit_class_name
     silent exec '!start ' . g:exES_ImageViewer ' ' . g:ex_GenInheritsDot(inherit_class_name,"all")
