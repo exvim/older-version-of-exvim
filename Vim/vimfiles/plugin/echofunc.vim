@@ -254,13 +254,19 @@ function! EchoFuncStart()
     let b:EchoFuncStarted=1
     let s:ShowMode=&showmode
     let s:CmdHeight=&cmdheight
-    inoremap    <silent>    <buffer>    (       (<c-r>=EchoFunc('')<cr>
-    " jwu: add \ef to echofunction    
-    noremap <silent> <buffer> <leader>ef :call EchoFunc(expand("<cword>"))<cr>
-    " jwu: disable it, I don't want the func info disappeared  
+
+    " jwu: disable them 
+    " for (: if the function have thousands of tags, it will be slow
+    " for ): I don't want the func info disappeared  
+    " inoremap    <silent>    <buffer>    (       (<c-r>=EchoFunc('')<cr>
     " inoremap    <silent>    <buffer>    )       <c-\><c-o>:echo<cr>)
+
     exec 'inoremap <silent> <buffer> ' . g:EchoFuncKeyNext . ' <c-r>=EchoFuncN()<cr>'
     exec 'inoremap <silent> <buffer> ' . g:EchoFuncKeyPrev . ' <c-r>=EchoFuncP()<cr>'
+
+    " jwu: add \ef to echofunction    
+    noremap <silent> <buffer> <leader>ef :call EchoFunc(expand("<cword>"))<cr>
+
     " jwu: add noremap, I think normal mode can use them, too
     exec 'nnoremap <silent> <buffer> ' . g:EchoFuncKeyNext . ' :call EchoFuncN()<cr>'
     exec 'nnoremap <silent> <buffer> ' . g:EchoFuncKeyPrev . ' :call EchoFuncP()<cr>'
@@ -270,11 +276,11 @@ function! EchoFuncStop()
     if !exists('b:EchoFuncStarted')
         return
     endif
-    iunmap      <buffer>    (
 
     " jwu
-    nunmap      <buffer>    <leader>ef
+    " iunmap      <buffer>    (
     " iunmap      <buffer>    )
+    nunmap      <buffer>    <leader>ef
 
     exec 'iunmap <buffer> ' . g:EchoFuncKeyNext
     exec 'iunmap <buffer> ' . g:EchoFuncKeyPrev
