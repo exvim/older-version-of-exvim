@@ -539,8 +539,11 @@ endfunction " >>>
 " --ex_RecordCurrentBufNum--
 " Record current buf num when leave
 function! g:ex_RecordCurrentBufNum() " <<<
-    let short_bufname = fnamemodify(bufname("%"),":p:t")
+    let short_bufname = fnamemodify(bufname('%'),":p:t")
     if index( g:exUT_plugin_list, short_bufname, 0, 1 ) == -1 " compare ignore case
+        " FIXME, in two edit_buf split window, when close one, the cursor will
+        " move to the down window, and when call gotoeditbuffer, the winleave
+        " trigger, and editbuf_num changes
         let s:ex_editbuf_num = bufnr('%')
         let g:ex_debug = s:ex_editbuf_num 
     elseif short_bufname !=# "-MiniBufExplorer-"
