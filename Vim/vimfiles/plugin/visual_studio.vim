@@ -260,6 +260,16 @@ function! <Sid>DTEQuickfixOpen(which)
     silent exec 'QF '. &errorfile
 endfunction
 
+" jwu
+"----------------------------------------------------------------------
+function! DTEBreakInFile()
+    if ! DTEPutFile()
+        return
+    endif
+    " NOTE: there used to be a cd (change directory) here but not anymore
+    call <Sid>DTEExec ('dte_break_in_file')
+endfunction
+
 "----------------------------------------------------------------------
 
 function! DTECompileFile()
@@ -557,6 +567,9 @@ if ! exists ('g:visual_studio_mapping') || g:visual_studio_mapping != 0
     nmap <silent> <Leader>vj :call DTEGetProjects()<cr>
     nmap <silent> <Leader>va :call DTEAbout()<cr>
     nmap <silent> <Leader>vh :call DTEOnline()<cr>
+
+	" jwu: add
+    nmap <silent> <Leader>vk :call DTEBreakInFile()<cr>
 endif
 
 " vim: set sts=4 sw=4:

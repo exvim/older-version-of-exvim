@@ -27,6 +27,26 @@ vsBuildStateDone = 3         # Build has been completed
 # otherwise there is an exception at exit
 sys.exitfunc = lambda: None
 
+#jwu
+#----------------------------------------------------------------------
+def dte_break_in_file (vs_pid):
+    logging.info ('== dte_break_in_file %s' % vars())
+    dte = _get_dte(vs_pid)
+    if not dte: return
+    try:
+        dte.ExecuteCommand ('Debug.BreakInFile')
+    except Exception, e:
+        logging.exception (e)
+        _dte_exception (e)
+        _vim_activate ()
+        return
+    # ExecuteCommand is not synchronous so we have to wait
+	# TODO: get the new break window, check each filename,line,col, finally press OK button confirm.
+    # _dte_wait_for_build (dte)
+    # dte_output (vs_pid, fn_quickfix, 'Output')
+    # _vim_status ('Compile file complete')
+    # _vim_activate ()
+
 #----------------------------------------------------------------------
 
 def dte_compile_file (vs_pid, fn_quickfix):
