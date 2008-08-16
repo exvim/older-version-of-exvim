@@ -295,14 +295,14 @@ function! s:exPJ_OpenProject(project_name) " <<<
 
     let g:exPJ_edit_mode = 'none'
     let g:exPJ_backto_editbuf = 0
-    silent call s:exPJ_OpenWindow('Select')
+    call s:exPJ_OpenWindow('Select')
     let g:exPJ_edit_mode = old_edit_mode
     let g:exPJ_backto_editbuf = old_bacto_editbuf
 endfunction " >>>
 
 " --exPJ_CreateProject--
 function! s:exPJ_CreateProject(entry_dir,filter) " <<<
-    silent call g:ex_SetLevelList(-1, 1)
+    call g:ex_SetLevelList(-1, 1)
 
     "
     let entry_dir = a:entry_dir
@@ -331,8 +331,8 @@ function! s:exPJ_CreateProject(entry_dir,filter) " <<<
     let old_bacto_editbuf = g:exPJ_backto_editbuf
     let g:exPJ_backto_editbuf = 0
     echon "Creating exProject: " . entry_dir . "\r"
-    silent call s:exPJ_OpenWindow('Select')
-    silent call g:ex_Browse(entry_dir,g:ex_GetFileFilterPattern(filter))
+    call s:exPJ_OpenWindow('Select')
+    call g:ex_Browse(entry_dir,g:ex_GetFileFilterPattern(filter))
     let g:exPJ_backto_editbuf = old_bacto_editbuf
 endfunction " >>>
 
@@ -513,15 +513,15 @@ function! s:exPJ_RefreshProject() " <<<
 
     " set level list if not the root dir
     if need_set_list
-        silent call g:ex_SetLevelList(line('.'), 1)
+        call g:ex_SetLevelList(line('.'), 1)
     endif
     " delete the whole fold
     silent exec "normal! zc"
     silent exec "normal! 2dd"
     " broswing
-    silent call g:ex_Browse(full_path_name,g:ex_GetFileFilterPattern(filter))
+    call g:ex_Browse(full_path_name,g:ex_GetFileFilterPattern(filter))
     " reset level list
-    silent call g:ex_SetLevelList(-1, 1)
+    call g:ex_SetLevelList(-1, 1)
 
     " at the end, we need to rename the folder as simple one
     if need_set_list
@@ -676,11 +676,11 @@ function! s:exPJ_GotoSelectResult(edit_cmd) " <<<
     let file_type = fnamemodify( full_path_name, ":e" )
     if file_type == 'err'
         echon 'load quick fix list: ' . full_path_name . "\r"
-        silent call g:ex_GotoPluginBuffer()
+        call g:ex_GotoPluginBuffer()
         silent exec 'QF '.full_path_name
     elseif file_type == 'mk'
         echon 'set make file: ' . full_path_name . "\r"
-        silent call g:ex_GotoEditBuffer()
+        call g:ex_GotoEditBuffer()
         silent exec a:edit_cmd.' '.full_path_name
         """"""""""""""""""""""""""""""""""""""
         " do not show it in buffer list // jwu: show them have more convienience
@@ -690,13 +690,13 @@ function! s:exPJ_GotoSelectResult(edit_cmd) " <<<
         """"""""""""""""""""""""""""""""""""""
     elseif file_type == 'exe'
         echon 'debug: ' . full_path_name . "\r"
-        silent call g:ex_GotoEditBuffer()
-        silent call g:ex_Debug( full_path_name )
+        call g:ex_GotoEditBuffer()
+        call g:ex_Debug( full_path_name )
     else " default
         " put the edit file
         echon full_path_name . "\r"
         " silent wincmd p
-        silent call g:ex_GotoEditBuffer()
+        call g:ex_GotoEditBuffer()
         silent exec a:edit_cmd.' '.full_path_name
     endif
 
@@ -716,7 +716,7 @@ function! s:exPJ_GotoCurrentFile() " <<<
     let cur_bufname = bufname("%")
 
     " go to the project window
-    silent call s:exPJ_OpenProject("")
+    call s:exPJ_OpenProject("")
     " go to the top to begin search
     silent normal! gg
 

@@ -912,6 +912,18 @@ endfunction " >>>
 
 " --ex_Browse--
 function! g:ex_Browse(dir, filter) " <<<
+
+    " ECHO full_path for this level
+    " ++++++++++++++++++++++++++++++++++
+    let full_path = ''
+    for level in s:ex_level_list
+		if level.short_dir != ''
+			let full_path = level.short_dir.'/'.full_path
+		endif
+    endfor
+    echon "processing: " . full_path . "\r"
+    " ++++++++++++++++++++++++++++++++++
+
     " get short_dir
     " let short_dir = strpart( a:dir, strridx(a:dir,'\')+1 )
     let short_dir = fnamemodify( a:dir, ":t" )
@@ -1037,19 +1049,11 @@ function! g:ex_Browse(dir, filter) " <<<
             silent put! = ''
         endif
     endif
-    return 0
 
-    " ECHO full_path for this level
-    " ++++++++++++++++++++++++++++++++++
-    " let full_path = ''
-    " for level in s:ex_level_list
-    "     let full_path = level.short_dir.'/'.full_path
-    " endfor
-    " echomsg full_path . "\r"
-    " ++++++++++++++++++++++++++++++++++
+    return 0
 endfunction " >>>
 
-" --ex_GetFoldLevel--
+" --ex_QuickFileJump--
 function! g:ex_QuickFileJump() " <<<
     " make the gf go everywhere in the project
     if exists( 'g:exES_PWD' )

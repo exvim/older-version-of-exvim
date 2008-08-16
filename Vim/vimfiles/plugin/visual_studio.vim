@@ -246,14 +246,18 @@ endfunction
 
 function! <Sid>DTEQuickfixOpen(which)
     if g:visual_studio_quickfix_height > 0
-        exe 'copen '.g:visual_studio_quickfix_height
+        " jwu disable
+        " exe 'copen '.g:visual_studio_quickfix_height
         if a:which == 'Task List'
             exe 'setlocal errorformat='.g:visual_studio_quickfix_errorformat_task_list
         else
             exe 'setlocal errorformat='.g:visual_studio_quickfix_errorformat
         endif
     endif
-    cfile
+
+    " jwu disable
+    " cfile
+    silent exec 'QF '. &errorfile
 endfunction
 
 "----------------------------------------------------------------------
@@ -533,12 +537,18 @@ endif
 " Mapping setup
 
 if ! exists ('g:visual_studio_mapping') || g:visual_studio_mapping != 0
-    nmap <silent> <Leader>vg :call DTEGetFile()<cr>
+	" jwu: change \vg to \vo ( I like same as do,dp ), "o" can be obtain
+    nmap <silent> <Leader>vo :call DTEGetFile()<cr>
     nmap <silent> <Leader>vp :call DTEPutFile()<cr>
-    nmap <silent> <Leader>vt :call DTETaskList()<cr>
-    nmap <silent> <Leader>vo :call DTEOutput()<cr>
-    nmap <silent> <Leader>vf :call DTEFindResults(1)<cr>
-    nmap <silent> <Leader>v2 :call DTEFindResults(2)<cr>
+	" jwu: change \vt to \vgt
+	"             \vo to \vgo
+	"	          \vf to \vf1 
+	"	          \v2 to \vf2 
+    nmap <silent> <Leader>vgt :call DTETaskList()<cr>
+    nmap <silent> <Leader>vgo :call DTEOutput()<cr>
+    nmap <silent> <Leader>vf1 :call DTEFindResults(1)<cr>
+    nmap <silent> <Leader>vf2 :call DTEFindResults(2)<cr>
+
     nmap <silent> <Leader>vb :call DTEBuildSolution()<cr>
     nmap <silent> <Leader>vu :call DTEBuildStartupProject()<cr>
     nmap <silent> <Leader>vc :call DTECompileFile()<cr>

@@ -508,7 +508,7 @@ function! s:exCS_GetSearchResult(search_pattern, search_method) " <<<
     " processing search result
     let pattern_title = '----------' . a:search_pattern . '----------'
     silent put = pattern_title 
-    silent call s:exCS_ShowQuickFixResult(a:search_method)
+    call s:exCS_ShowQuickFixResult(a:search_method)
 
     " Init search state
     let line_num = search(pattern_title)

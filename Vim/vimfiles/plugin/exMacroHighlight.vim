@@ -465,7 +465,7 @@ function! s:exMH_UpdateSyntax() " <<<
     " if enable syntax
     if s:exMH_IsEnable == 1
         " re-define syntax
-        silent call s:exMH_DefineSyntax() 
+        call s:exMH_DefineSyntax() 
     endif
 endfunction " >>>
 

@@ -6,6 +6,15 @@ Add exUtility support save environment
 Add shader compiler can output preprocess file.
 Fix shader macro highlight bugs
 
+--------------------------------------------------------------------------------------
+
+Debug.BreakInFile
+Debug.BreakInFunction
+Debug.BreakInAddress
+Debug.SetRadix
+
+--------------------------------------------------------------------------------------
+
 Production      Comapny                                                                 Complexity      Static Analysis
  
 Code            Wzard Parasoft(http://www.parasoft.com/poducts/wizard/index.htm         No              Yes
