@@ -334,6 +334,7 @@ function! s:exPJ_CreateProject(entry_dir,filter) " <<<
     call s:exPJ_OpenWindow('Select')
     call g:ex_Browse(entry_dir,g:ex_GetFileFilterPattern(filter))
     let g:exPJ_backto_editbuf = old_bacto_editbuf
+    echon "Creating exProject: " . entry_dir . " done!\r"
 endfunction " >>>
 
 " --exPJ_QuickRefreshProject
@@ -522,6 +523,8 @@ function! s:exPJ_RefreshProject() " <<<
     call g:ex_Browse(full_path_name,g:ex_GetFileFilterPattern(filter))
     " reset level list
     call g:ex_SetLevelList(-1, 1)
+
+    echon "Update directory: " . full_path_name . " done!\r"
 
     " at the end, we need to rename the folder as simple one
     if need_set_list

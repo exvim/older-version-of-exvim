@@ -427,19 +427,21 @@ function! s:EchoFuncInitialize()
             menu    &Tools.Echo\ F&unction.Echo\ Function\ Sto&p    :call EchoFuncStop()<CR>
         endif
 
-        if has("balloon_eval")
-            autocmd BufRead,BufNewFile * call CheckedBalloonDeclarationStart()
-            if has('gui_running')
-                menu    &Tools.Echo\ Function.&Balloon\ Declaration\ Start  :call BalloonDeclarationStart()<CR>
-                menu    &Tools.Echo\ Function.Balloon\ Declaration\ &Stop   :call BalloonDeclarationStop()<CR>
-            endif
-        endif
+        " jwu disable
+        " if has("balloon_eval")
+        "     autocmd BufRead,BufNewFile * call CheckedBalloonDeclarationStart()
+        "     if has('gui_running')
+        "         menu    &Tools.Echo\ Function.&Balloon\ Declaration\ Start  :call BalloonDeclarationStart()<CR>
+        "         menu    &Tools.Echo\ Function.Balloon\ Declaration\ &Stop   :call BalloonDeclarationStop()<CR>
+        "     endif
+        " endif
     augroup END
 
     call CheckedEchoFuncStart()
-    if has("balloon_eval")
-        call CheckedBalloonDeclarationStart()
-    endif
+    " jwu disable
+    " if has("balloon_eval")
+    "     call CheckedBalloonDeclarationStart()
+    " endif
 endfunction
 
 augroup EchoFunc

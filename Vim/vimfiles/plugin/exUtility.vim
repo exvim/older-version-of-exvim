@@ -901,8 +901,6 @@ function! g:ex_SetLevelList( line_num, by_next_line ) " <<<
         endif
         let idx += 2
     endwhile
-
-    echo s:ex_level_list
 endfunction " >>>
 
 " --ex_FileNameSort--

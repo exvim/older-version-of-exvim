@@ -305,7 +305,7 @@ function s:exGS_ParseSubcmd(cmd) " <<<
         let flag = strpart( a:cmd, slash_idx_2+1 )
     endif
 
-    echo pat . ' ' . sub . ' ' . flag
+    echon pat . ' ' . sub . ' ' . flag . "\r"
     call s:exGS_GlobalSubstitute( pat, sub, flag )
 endfunction " >>>
 

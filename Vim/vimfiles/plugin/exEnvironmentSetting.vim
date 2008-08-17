@@ -23,11 +23,7 @@ if !exists('g:exES_vimfile_dir')
     let g:exES_vimfile_dir = "_vimfiles"
 endif
 
-" Project or EXProject
-if !exists('g:exES_project_cmd')
-    let g:exES_project_cmd = 'EXProject'
-endif
-
+let s:exES_CurrentVersion = 5
 " >>>
 
 " -------------------------------------------------------------------------
@@ -42,18 +38,33 @@ function! s:exES_WriteDefaultTemplate() " <<<
     let _list = []
 
     silent call add(_list, 'PWD='._cwd)
-    if g:exES_project_cmd == 'EXProject'
-        silent call add(_list, 'Project='._cwd.'/'._dir_name.'/'._project_name.'.exproject')
-    else
-        silent call add(_list, 'Project='._cwd.'/'._dir_name.'/'._project_name.'.vimprojects')
-    endif
-    silent call add(_list, 'Tag='._cwd.'/tags')
-    silent call add(_list, 'ID=./'._dir_name.'/ID')
-    silent call add(_list, 'Symbol='._cwd.'/'._dir_name.'/symbol')
-    silent call add(_list, 'Macro='._cwd.'/'._dir_name.'/macro')
-    silent call add(_list, 'Cscope='._cwd.'/'._dir_name.'/cscope.out')
-    silent call add(_list, 'Inherits='._cwd.'/'._dir_name.'/inherits')
+    silent call add(_list, 'Version='.s:exES_CurrentVersion)
 
+	" Init the exUtility plugin file path
+    silent call add(_list, '')
+    silent call add(_list, '-- exUtility Settings --')
+    silent call add(_list, '')
+    silent call add(_list, 'Project=./'._dir_name.'/'._project_name.'.exproject')
+    silent call add(_list, 'Tag='._cwd.'/tags') " the tags need full path, or will not be able to find
+    silent call add(_list, 'ID=./'._dir_name.'/ID')
+    silent call add(_list, 'Symbol=./'._dir_name.'/symbol')
+    silent call add(_list, 'Macro=./'._dir_name.'/macro')
+    silent call add(_list, 'Cscope=./'._dir_name.'/cscope.out')
+    silent call add(_list, 'Inherits=./'._dir_name.'/inherits')
+
+	" Init the visual_studio plugin file path
+    silent call add(_list, '')
+    silent call add(_list, '-- Vsiaul Studio Settings --')
+    silent call add(_list, '')
+
+    silent call add(_list, 'vsTaskList=./'._dir_name.'/vs_task_list.txt')
+    silent call add(_list, 'vsOutput=./'._dir_name.'/vs_output.txt')
+    silent call add(_list, 'vsFindResult1=./'._dir_name.'/vs_find_results_1.txt')
+    silent call add(_list, 'vsFindResult2=./'._dir_name.'/vs_find_results_2.txt')
+
+	" TODO: use list for souliton results, and apply this list in
+	" visual_studio plugin search
+	" Init visual studio solution file path
     let sln_list = split(glob("*.sln"))
     if empty(sln_list) != 1
         for sln in sln_list
@@ -61,6 +72,15 @@ function! s:exES_WriteDefaultTemplate() " <<<
         endfor
     endif
 
+    " Init the vimwiki plugin file path
+    silent call add(_list, '')
+    silent call add(_list, '-- Vsiaul Studio Settings --')
+    silent call add(_list, '')
+
+    silent call add(_list, 'wikiHome='._cwd.'/vimwiki/')
+    silent call add(_list, 'wikiHomeHtml='._cwd.'/vimwiki/html/')
+
+    " put the settings into vimentry file
     silent put! = _list
     silent exec "w!"
 endfunction " >>>
@@ -72,6 +92,18 @@ function! g:exES_SetEnvironment() " <<<
     silent! setlocal bufhidden=hide
     silent! setlocal noswapfile
     silent! setlocal nobuflisted
+
+	" syntax highlight
+	syn match exES_SynSetting transparent  "^.\{-}=.*$" contains=exES_SynVar,exES_SynOperator
+	syn match exES_SynVar	"^.\{-}=" contained contains=exES_SynOperator
+	syn match exES_SynOperator	"=.*$" contained contains=exES_SynVal
+	syn match exES_SynVal	"[^=].*$" contained
+	syn match exES_SynComment	"^-- .\+ --$" 
+
+	highlight def exES_SynVar gui=none guifg=DarkCyan term=none cterm=none ctermfg=DarkCyan
+	highlight link exES_SynOperator Normal
+	highlight def exES_SynVal gui=none guifg=Brown term=none cterm=none ctermfg=Brown
+	highlight link exES_SynComment Comment
 
     " record edit buffer
     silent! call g:ex_RecordCurrentBufNum()
@@ -92,14 +124,37 @@ function! g:exES_SetEnvironment() " <<<
         let Line = getline(1)
         let SettingList = split(Line, "=")
         if len(SettingList)>=2
-            " exec "let g:exES_".SettingList[0]."='".escape(SettingList[1], ' ')."'"
+            " let g:exES_{SettingList[0]} = escape(SettingList[1], ' ')
             " since '\ ' will get error in win32, just disable it here
-            exec "let g:exES_".SettingList[0]."='".SettingList[1]."'" 
+            let g:exES_{SettingList[0]} = SettingList[1]
         endif
-        " check if PWD is correct, rewrite default template if not
+		" get Ver.
+        let Line = getline(2)
+        let SettingList = split(Line, "=")
+        if len(SettingList)>=2
+            let g:exES_{SettingList[0]} = SettingList[1]
+        endif
+
+        " check if need to update setting file
+        let need_update = 0
+
+        " process check
         let _cwd = substitute( getcwd(), "\\", "\/", "g" )
-        if g:exES_PWD != _cwd 
+        if !exists( 'g:exES_PWD' ) || !exists( 'g:exES_Version' )
+            echomsg "g:exES_PWD/g:exES_Version not exists"
+            let need_update = 1
+        elseif g:exES_PWD != _cwd " check if PWD is correct, rewrite default template if not
+            echomsg "g:exES_PWD != _cwd ==> " . g:exES_PWD . " != " . _cwd
             let g:exES_PWD = _cwd 
+            let need_update = 1
+        elseif g:exES_Version != s:exES_CurrentVersion " check if Ver is correct, rewrite default template if not
+            echomsg "g:exES_Version != s:exES_CurrentVersion ==> " . g:exES_Version . " != " . s:exES_CurrentVersion
+            let need_update = 1
+        endif
+
+        let need_update = 0
+        " update if needed
+        if need_update == 1
             silent normal! Gdgg
             call s:exES_WriteDefaultTemplate()
         endif
@@ -108,9 +163,9 @@ function! g:exES_SetEnvironment() " <<<
         for Line in getline(2, '$')
             let SettingList = split(Line, "=")
             if len(SettingList)>=2
-                " exec "let g:exES_".SettingList[0]."='".escape(SettingList[1], ' ')."'"
+                " let g:exES_{SettingList[0]} = escape(SettingList[1], ' ')
                 " since '\ ' will get error in win32, just disable it here
-                exec "let g:exES_".SettingList[0]."='".SettingList[1]."'" 
+                let g:exES_{SettingList[0]} = SettingList[1]
             endif
         endfor
 

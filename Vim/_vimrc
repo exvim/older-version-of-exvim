@@ -367,6 +367,7 @@ au FileType vim set comments=sO:\"\ -,mO:\"\ \ ,eO:\"\",f:\"
 " --------------------
 "  ShowMarks
 " --------------------
+
 let showmarks_include = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 let g:showmarks_enable = 1
 " For marks a-z
@@ -482,6 +483,7 @@ let g:exUT_plugin_list = ["-MiniBufExplorer-","__Tag_List__"]
 " --------------------
 " exTagSelect
 " --------------------
+
 nnoremap <silent> <Leader>ts :ExtsSelectToggle<CR>
 nnoremap <silent> <Leader>tt :ExtsStackToggle<CR>
 nnoremap <silent> <Leader>tg :ExtsGoDirectly<CR>
@@ -495,6 +497,7 @@ let g:exTS_window_direction = 'bel'
 " --------------------
 " exGlobalSearch
 " --------------------
+
 nnoremap <silent> <Leader>gs :ExgsSelectToggle<CR>
 nnoremap <silent> <Leader>gq :ExgsQuickViewToggle<CR>
 nnoremap <silent> <Leader>gt :ExgsStackToggle<CR>
@@ -509,6 +512,7 @@ let g:exGS_window_direction = 'bel'
 " --------------------
 " exSymbolTable
 " --------------------
+
 nnoremap <silent> <Leader>ss :ExslSelectToggle<CR>
 nnoremap <silent> <Leader>sq :ExslQuickViewToggle<CR>
 nnoremap <silent> <F6> :ExslToggle<CR>
@@ -519,16 +523,18 @@ let g:exSL_SymbolSelectCmd = 'TS'
 " --------------------
 " exCscope
 " --------------------
+
 nnoremap <silent> <F2> :CSIC<CR>
 nnoremap <silent> <Leader>ci :CSID<CR>
 nnoremap <silent> <F3> :ExcsParseFunction<CR>
 nnoremap <silent> <Leader>cd :CSDD<CR>
 nnoremap <silent> <Leader>cc :CSCD<CR>
-
 nnoremap <silent> <Leader>cs :ExcsSelectToggle<CR>
 nnoremap <silent> <Leader>cq :ExcsQuickViewToggle<CR>
+
 map <silent> <Leader>cb :BackwardSearchStack<CR>
 map <silent> <Leader>cf :ForwardSearchStack<CR>
+
 let g:exCS_backto_editbuf = 0
 let g:exCS_close_when_selected = 0
 let g:exCS_window_direction = 'bel'
@@ -537,8 +543,10 @@ let g:exCS_window_width = 48
 " --------------------
 " exQuickFix
 " -------------------
+
 nnoremap <silent> <leader>qf :ExqfSelectToggle<CR>
 nnoremap <silent> <leader>qq :ExqfQuickViewToggle<CR>
+
 let g:exQF_backto_editbuf = 0
 let g:exQF_close_when_selected = 0
 let g:exQF_window_direction = 'bel'
@@ -546,71 +554,21 @@ let g:exQF_window_direction = 'bel'
 " --------------------
 " exMacroHightlight
 " --------------------
+
 nnoremap <silent> <Leader>aa :ExmhSelectToggle<CR>
 nnoremap <silent> <Leader>ae :ExmhHL 1 <CR>
 nnoremap <silent> <Leader>ad :ExmhHL 0 <CR>
 
 " --------------------
-" exEnvironmentSetting
-" --------------------
-let g:exES_vimfile_dir = "_vimfiles"
-let g:exES_project_cmd = 'EXProject'
-let g:exES_ImageViewer = 'd:\exDev\IrfanView\i_view32.exe'
-
-function g:exES_UpdateEnvironment()
-    " set parent working directory
-    if exists( 'g:exES_PWD' )
-        silent exec 'cd ' . g:exES_PWD
-    endif
-
-    " set tag file path
-    if exists( 'g:exES_Tag' )
-        "let &tags = &tags . ',' . g:exES_Tag
-        let &tags = escape(g:exES_Tag, " ")
-    endif
-
-    " open exProject window
-    if exists( 'g:exES_Project' )
-        silent exec g:exES_project_cmd.' '.g:exES_Project
-    endif
-
-    " init macro list
-    if exists( 'g:exES_Macro' )
-        silent call g:exMH_InitMacroList(g:exES_Macro)
-    endif
-
-    " connect cscope file
-    if exists( 'g:exES_Cscope' )
-        silent call g:exCS_ConnectCscopeFile()
-    endif
-
-    " Open Minibuffer always, re-adjust project position
-    let g:miniBufExplorerMoreThanOne = 0 
-endfunction
-
-" --------------------
-" Project || exProject
-" --------------------
-if g:exES_project_cmd == 'EXProject'
-    map <silent> <A-S-p> :EXProject<CR>
-    map <A-S-o> :EXProject<CR>:redraw<CR>/
-    map <leader>ff :EXProject<CR>:redraw<CR>/\[[^F]*\]\c.*
-    map <leader>fd :EXProject<CR>:redraw<CR>/\[F\]\c.*
-    map <leader>fc :ExpjGotoCurrentFile<CR>
-else
-    map <silent> <A-S-p> :Project<CR>
-    map <A-S-o> :Project<CR>:redraw<CR>/
-    map <leader>ff :Project<CR>:redraw<CR>/
-    map <leader>fd :Project<CR>:redraw<CR>/=
-endif
-
-" project 
-" F3 used in cscope local function parse
-"nmap <silent> <F3> <Plug>ToggleProject
-let g:proj_window_width = 30
-let g:proj_window_increment = 50
-
 " exProject
+" --------------------
+
+map <silent> <A-S-p> :EXProject<CR>
+map <A-S-o> :EXProject<CR>:redraw<CR>/
+map <leader>ff :EXProject<CR>:redraw<CR>/\[[^F]*\]\c.*
+map <leader>fd :EXProject<CR>:redraw<CR>/\[F\]\c.*
+map <leader>fc :ExpjGotoCurrentFile<CR>
+
 let g:exPJ_window_width_increment = 50
 let g:exPJ_defualt_filter  = 'c cpp cxx c++ C '
 let g:exPJ_defualt_filter .= 'h H hh hxx hpp inl '
@@ -620,12 +578,13 @@ let g:exPJ_defualt_filter .= 'hlsl vsh psh fx fxh cg shd glsl '
 let g:exPJ_defualt_filter .= 'py pyw '
 let g:exPJ_defualt_filter .= 'vim awk '
 let g:exPJ_defualt_filter .= 'dox doxygen '
-let g:exPJ_defualt_filter .= 'ini cfg '
+let g:exPJ_defualt_filter .= 'ini cfg wiki '
 let g:exPJ_defualt_filter .= 'mk err exe bat '
 
 " --------------------
 " TagList
 " --------------------
+
 " F4:  Switch on/off TagList
 nnoremap <silent> <F4> :TlistToggle<CR>
 
@@ -684,6 +643,7 @@ highlight MBEVisibleChanged term=bold cterm=bold ctermbg=DarkRed ctermfg=Black g
 " --------------------
 " OmniCppComplete
 " --------------------
+
 " set Ctrl+j in insert mode, like VS.Net
 imap <C-]> <C-X><C-O>
 " :inoremap <expr> <cr> pumvisible() ? "\<c-y>" : "\<c-g>u\<cr>" 
@@ -733,6 +693,80 @@ let OmniCpp_MayCompleteScope = 0
 
 " When 'completeopt' does not contain "longest", Vim automatically select the first entry of the popup menu. You can change this behaviour with the OmniCpp_SelectFirstItem option.
 let OmniCpp_SelectFirstItem = 0
+
+" --------------------
+" vimwiki
+" --------------------
+
+let g:vimwiki_home = $TEMP.'\\vimwiki\\'
+let g:vimwiki_home_html = $TEMP.'\\vimwiki\\html\\'
+let g:vimwiki_index = "index"
+let g:vimwiki_ext = ".wiki"
+let g:vimwiki_smartCR = 1
+let g:vimwiki_maxhi = 1
+let g:vimwiki_stripsym = '_'
+
+" --------------------
+" exEnvironmentSetting
+" --------------------
+" NOTE: The exEvironmentSetting must put at the end of the plugin settings. It may update the default settings of plugin above
+
+let g:exES_vimfile_dir = "_vimfiles"
+let g:exES_project_cmd = 'EXProject'
+let g:exES_ImageViewer = 'd:\exDev\IrfanView\i_view32.exe'
+
+function g:exES_UpdateEnvironment()
+    " set parent working directory
+    if exists( 'g:exES_PWD' )
+        silent exec 'cd ' . g:exES_PWD
+    endif
+
+    " set tag file path
+    if exists( 'g:exES_Tag' )
+        "let &tags = &tags . ',' . g:exES_Tag
+        let &tags = escape(g:exES_Tag, " ")
+    endif
+
+    " open exProject window
+    if exists( 'g:exES_Project' )
+        silent exec g:exES_project_cmd.' '.g:exES_Project
+    endif
+
+    " init macro list
+    if exists( 'g:exES_Macro' )
+        silent call g:exMH_InitMacroList(g:exES_Macro)
+    endif
+
+    " connect cscope file
+    if exists( 'g:exES_Cscope' )
+        silent call g:exCS_ConnectCscopeFile()
+    endif
+
+	" set visual_studio plugin variables
+	if exists( 'g:exES_vsTaskList' )
+		let g:visual_studio_task_list = g:exES_vsTaskList
+	endif
+	if exists( 'g:exES_vsOutput' )
+		let g:visual_studio_output = g:exES_vsOutput
+	endif
+	if exists( 'g:exES_vsFindResult1' )
+		let g:visual_studio_find_results_1 = g:exES_vsFindResult1
+	endif
+	if exists( 'g:exES_vsFindResult2' )
+		let g:visual_studio_find_results_2 = g:exES_vsFindResult2
+	endif
+
+    " set vimwiki
+	if exists( 'g:exES_wikiHome' )
+        let g:vimwiki_home = g:exES_wikiHome 
+    endif
+	if exists( 'g:exES_wikiHomeHtml' )
+        let g:vimwiki_home_html = g:exES_wikiHomeHtml 
+    endif
+
+    " Open Minibuffer always, re-adjust project position
+    let g:miniBufExplorerMoreThanOne = 0 
+endfunction
 
 " --------------------------------------------------------------------------------------
 " Other settings
