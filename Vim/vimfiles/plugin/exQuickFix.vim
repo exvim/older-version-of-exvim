@@ -331,9 +331,6 @@ function! s:exQF_GetQuickFixResult( file_name ) " <<<
             silent set errorformat+=%X%\\d%\\+\>%.%#%\\d%\\+\ error(s)%.%#%\\d%\\+\ warning(s)
             silent set errorformat+=%\\d%\\+\>%f(%l)\ :\ %t%*\\D%n:\ %m
         endif
-        silent exec 'cd '.s:exQF_compile_dir
-        silent exec "cg " . full_file_name
-        silent exec 'cd '.cur_dir
 
         " save the file size end file name
         let s:exQF_error_file_size = getfsize(full_file_name)
@@ -356,6 +353,17 @@ function! s:exQF_GetQuickFixResult( file_name ) " <<<
         else
             exe gs_winnr . 'wincmd w'
         endif
+
+        "
+        if s:exQF_compiler != 'exgcc'
+            silent exec 'sort /^\d\+>/ or'
+            silent exec 'w!'
+        endif
+
+        " get the quick fix result
+        silent exec 'cd '.s:exQF_compile_dir
+        silent exec "cg " . full_file_name
+        silent exec 'cd '.cur_dir
     else
         call g:ex_WarningMsg('file: ' . full_file_name . ' not found')
     endif
