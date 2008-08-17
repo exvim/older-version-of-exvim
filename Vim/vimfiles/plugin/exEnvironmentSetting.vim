@@ -77,8 +77,8 @@ function! s:exES_WriteDefaultTemplate() " <<<
     silent call add(_list, '-- Vsiaul Studio Settings --')
     silent call add(_list, '')
 
-    silent call add(_list, 'wikiHome='._cwd.'/vimwiki/')
-    silent call add(_list, 'wikiHomeHtml='._cwd.'/vimwiki/html/')
+    silent call add(_list, 'wikiHome=./_doc/')
+    silent call add(_list, 'wikiHomeHtml=./_doc/html/')
 
     " put the settings into vimentry file
     silent put! = _list
