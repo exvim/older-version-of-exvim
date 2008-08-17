@@ -8,10 +8,25 @@ Fix shader macro highlight bugs
 
 --------------------------------------------------------------------------------------
 
+VS Command:
+
 Debug.BreakInFile
 Debug.BreakInFunction
 Debug.BreakInAddress
 Debug.SetRadix
+
+--------------------------------------------------------------------------------------
+
+VS DTE
+
+Breakpoint
+Breakpoints
+BuildDependencies
+BuildDependency
+Debugger
+DebuggerEvents
+Thread
+Threads
 
 --------------------------------------------------------------------------------------
 
