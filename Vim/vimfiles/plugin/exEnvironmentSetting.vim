@@ -83,6 +83,7 @@ function! s:exES_WriteDefaultTemplate() " <<<
     " put the settings into vimentry file
     silent put! = _list
     silent exec "w!"
+    silent exec "normal gg"
 endfunction " >>>
 
 
@@ -152,7 +153,6 @@ function! g:exES_SetEnvironment() " <<<
             let need_update = 1
         endif
 
-        let need_update = 0
         " update if needed
         if need_update == 1
             silent normal! Gdgg
