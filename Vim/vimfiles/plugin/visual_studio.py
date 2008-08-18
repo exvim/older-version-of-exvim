@@ -298,7 +298,12 @@ def dte_list_projects (vs_pid):
     for project in sorted(dte.Solution.Projects, cmp=lambda x,y: cmp(x.Name, y.Name)):
         if project.Name == startup_project_name:
             startup_project_index = index
-        lst_result.append (_dte_project_tree(project))
+        # jwu added: to judge is this a project or a folder (if folder it will not have FullName)
+        if len(project.FullName) != 0:
+            lst_result.append (_dte_project_tree(project))
+            print 'add project: %s' %project.Name
+        else:
+            print 'skip project: %s' %project.Name
         index += 1
     _vim_command ('let s:visual_studio_lst_project = %s' % lst_result)
     _vim_command ('let s:visual_studio_startup_project_index = %s' % startup_project_index)

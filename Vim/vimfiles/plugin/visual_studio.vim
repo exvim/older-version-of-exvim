@@ -375,7 +375,10 @@ function! <Sid>DTESolutionMenuChoice(which)
     let s:visual_studio_pid = s:visual_studio_lst_dte[index][0]
     echo 'Connected: '.s:visual_studio_lst_dte[index][1]
     call <Sid>DTESolutionGuiMenuCreate()
-    call DTEGetProjects(0)
+    " jwu: get project in \vj, this will help connect sln faster
+    " call DTEGetProjects(0) 
+    " jwu: add this, change solution should change the project list
+    let s:visual_studio_lst_project = []
     return 1
 endfunction
 
@@ -389,12 +392,17 @@ function! DTEGetProjects(...)
     let gui_menu = 0
     if a:0 >= 1 | let verbose = a:1 | endif
     if a:0 >= 2 | let gui_menu = a:2 | endif
-    let s:visual_studio_lst_project = []
+    " jwu disable this
+    " let s:visual_studio_lst_project = []
     " The following call will assign values to s:visual_studio_lst_project
     if verbose
         echo 'Retrieving Projects ...'
     endif
-    call <Sid>DTEExec ('dte_list_projects')
+
+    " jwu judge if empty list, then get project list
+    if len(s:visual_studio_lst_project) == 0
+        call <Sid>DTEExec ('dte_list_projects')
+    endif
     call <Sid>DTEProjectGuiMenuCreate()
     if len(s:visual_studio_lst_project) == 0
         if verbose
