@@ -24,6 +24,7 @@ syn keyword cStatement         ex_realloc ex_realloc_use ex_realloc_nomanage
 syn keyword cStatement         ex_free ex_free_use ex_free_nomanage
 syn keyword cStatement         ex_stack_malloc
 syn keyword cConstant	       TRUE FALSE
+syn keyword cTodo              contained NOTE 
 
 " ==========================================
 " exMacroHighlight Predeined Syntax
