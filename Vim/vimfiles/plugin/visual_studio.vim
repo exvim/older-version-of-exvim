@@ -222,11 +222,19 @@ function! DTETaskList()
     call <Sid>DTEExec ('dte_task_list', &errorfile)
 endfunction
 
+" jwu
 "----------------------------------------------------------------------
 
-function! DTEOutput()
+function! DTEBuildOutput()
     let &errorfile = g:visual_studio_output
-    call <Sid>DTEExec ('dte_output', &errorfile, 'Output')
+    call <Sid>DTEExec ('dte_output', &errorfile, 'Output', 'Build')
+endfunction
+
+"----------------------------------------------------------------------
+
+function! DTEDebugOutput()
+    let &errorfile = g:visual_studio_output
+    call <Sid>DTEExec ('dte_output', &errorfile, 'Output', 'Debug')
 endfunction
 
 "----------------------------------------------------------------------
@@ -267,7 +275,12 @@ function! DTEBreakInFile()
         return
     endif
     " NOTE: there used to be a cd (change directory) here but not anymore
-    call <Sid>DTEExec ('dte_break_in_file')
+    let filename = escape(expand('%:p'),'\')
+    if filename == ''
+        echo 'No vim file!'
+        return 0
+    endif
+    call <Sid>DTEExec ('dte_break_in_file', filename, &modified, line('.'), col('.'))
 endfunction
 
 "----------------------------------------------------------------------
@@ -536,7 +549,7 @@ if has('gui') && ( ! exists('g:visual_studio_menu') || g:visual_studio_menu != 0
     amenu <silent> &VisualStudio.&Put\ File :call DTEPutFile()<cr>
     amenu <silent> &VisualStudio.-separator1- :
     amenu <silent> &VisualStudio.&Task\ List :call DTETaskList()<cr>
-    amenu <silent> &VisualStudio.&Output :call DTEOutput()<cr>
+    amenu <silent> &VisualStudio.&Output :call DTEBuildOutput()<cr>
     amenu <silent> &VisualStudio.&Find\ Results\ 1 :call DTEFindResults(1)<cr>
     amenu <silent> &VisualStudio.Find\ Results\ &2 :call DTEFindResults(2)<cr>
     amenu <silent> &VisualStudio.-separator2- :
@@ -563,7 +576,8 @@ if ! exists ('g:visual_studio_mapping') || g:visual_studio_mapping != 0
 	"	          \vf to \vf1 
 	"	          \v2 to \vf2 
     nmap <silent> <Leader>vgt :call DTETaskList()<cr>
-    nmap <silent> <Leader>vgo :call DTEOutput()<cr>
+    nmap <silent> <Leader>vgb :call DTEBuildOutput()<cr>
+    nmap <silent> <Leader>vgo :call DTEDebugOutput()<cr>
     nmap <silent> <Leader>vf1 :call DTEFindResults(1)<cr>
     nmap <silent> <Leader>vf2 :call DTEFindResults(2)<cr>
 

@@ -148,7 +148,14 @@ endfunction
 set cindent shiftwidth=4 " Set cindent on to autoinent when editing C/C++ file, with 4 shift width
 set tabstop=4 " Set tabstop to 4 characters
 set expandtab " Set expandtab on, the tab will be change to space automaticaly
-au BufEnter *.py,*.pyw set noexpandtab " if edit python scripts, don't use expandtab
+au BufEnter *.py,*.pyw call CheckIfExpandTab() " if edit python scripts, check if have \t. ( python said: the programme can only use \t or not, but can use them together )
+function CheckIfExpandTab()
+	if search('^\t','wn') == 0
+		set expandtab
+	else
+		set noexpandtab
+	endif
+endfunction
 
 " Set Number format to null(default is octal) , when press CTRL-A on number
 " like 007, it would not become 010

@@ -29,19 +29,23 @@ sys.exitfunc = lambda: None
 
 #jwu
 #----------------------------------------------------------------------
-def dte_break_in_file (vs_pid):
+def dte_break_in_file (vs_pid, filename, modified, line_num, col_num):
     logging.info ('== dte_break_in_file %s' % vars())
     dte = _get_dte(vs_pid)
     if not dte: return
     try:
         dte.ExecuteCommand ('Debug.BreakInFile')
+        # TODO: 
+        # import pythoncom
+        # bpType = pythoncom.LoadTypeLib('EnvDTE.dbgBreakpointConditionType')
+        # dte.Debugger.Breakpoints.Add( '', filename, line_num, col_num, '', bpType.dbgBreakpointConditionTypeWhenTrue, 'C#', '', 0, '', 0, envdte.dbgHitCountType.dbgHitCountTypeNone )
     except Exception, e:
         logging.exception (e)
         _dte_exception (e)
         _vim_activate ()
         return
     # ExecuteCommand is not synchronous so we have to wait
-	# TODO: get the new break window, check each filename,line,col, finally press OK button confirm.
+    # TODO: get the new break window, check each filename,line,col, finally press OK button confirm.
     # _dte_wait_for_build (dte)
     # dte_output (vs_pid, fn_quickfix, 'Output')
     # _vim_status ('Compile file complete')
@@ -53,6 +57,7 @@ def dte_compile_file (vs_pid, fn_quickfix):
     logging.info ('== dte_compile_file %s' % vars())
     dte = _get_dte(vs_pid)
     if not dte: return
+    _dte_set_autoload (vs_pid)
     try:
         dte.ExecuteCommand ('Build.Compile')
     except Exception, e:
@@ -188,7 +193,7 @@ def dte_task_list (vs_pid, fn_quickfix):
 
 #----------------------------------------------------------------------
 
-def dte_output (vs_pid, fn_output, window_caption, notify=None):
+def dte_output (vs_pid, fn_output, window_caption, item=None, notify=None):
     logging.info ('== dte_output %s' % vars())
     if window_caption not in ['Find Results 1', 'Find Results 2', 'Output']:
         _vim_msg ('Error: unrecognized window (%s)' % window_caption)
@@ -200,7 +205,7 @@ def dte_output (vs_pid, fn_output, window_caption, notify=None):
         _vim_msg ('Error: window not active (%s)' % window_caption)
         return
     if window_caption == 'Output':
-        owp = window.Object.OutputWindowPanes.Item ('Build')
+        owp = window.Object.OutputWindowPanes.Item (item)
         sel = owp.TextDocument.Selection
     else:
         sel = window.Selection
