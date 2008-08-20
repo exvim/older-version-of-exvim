@@ -39,6 +39,7 @@ def dte_break_in_file (vs_pid, filename, modified, line_num, col_num):
         # import pythoncom
         # bpType = pythoncom.LoadTypeLib('EnvDTE.dbgBreakpointConditionType')
         # dte.Debugger.Breakpoints.Add( '', filename, line_num, col_num, '', bpType.dbgBreakpointConditionTypeWhenTrue, 'C#', '', 0, '', 0, envdte.dbgHitCountType.dbgHitCountTypeNone )
+        # dte.Debugger.Breakpoints.Add( '', filename, line_num, col_num, '', 1, 'C#', '', 0, '', 0, 0 )
     except Exception, e:
         logging.exception (e)
         _dte_exception (e)
@@ -47,7 +48,7 @@ def dte_break_in_file (vs_pid, filename, modified, line_num, col_num):
     # ExecuteCommand is not synchronous so we have to wait
     # TODO: get the new break window, check each filename,line,col, finally press OK button confirm.
     # _dte_wait_for_build (dte)
-    # dte_output (vs_pid, fn_quickfix, 'Output')
+    # dte_output (vs_pid, fn_quickfix, 'Output', 'Build')
     # _vim_status ('Compile file complete')
     # _vim_activate ()
 
@@ -67,7 +68,7 @@ def dte_compile_file (vs_pid, fn_quickfix):
         return
     # ExecuteCommand is not synchronous so we have to wait
     _dte_wait_for_build (dte)
-    dte_output (vs_pid, fn_quickfix, 'Output')
+    dte_output (vs_pid, fn_quickfix, 'Output', 'Build')
     _vim_status ('Compile file complete')
     _vim_activate ()
 
@@ -102,7 +103,7 @@ def dte_build_solution(vs_pid, fn_quickfix, write_first):
         _dte_exception (e)
         _vim_activate ()
         return
-    dte_output (vs_pid, fn_quickfix, 'Output')
+    dte_output (vs_pid, fn_quickfix, 'Output', 'Build')
     _vim_status ('Build solution complete')
     _vim_activate ()
 
@@ -141,7 +142,7 @@ def dte_build_project(vs_pid, fn_quickfix, write_first, project_name=None):
         _dte_exception (e)
         _vim_activate ()
         return
-    dte_output (vs_pid, fn_quickfix, 'Output')
+    dte_output (vs_pid, fn_quickfix, 'Output', 'Build')
     _vim_status ('Build project complete')
     _vim_activate ()
 
