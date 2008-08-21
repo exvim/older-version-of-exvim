@@ -412,7 +412,8 @@ function! s:exMH_DefineSyntax() " <<<
     " --------------- exIfEnable ---------------
     " if enable(def_macro) else disable
     exec 'syn region exIfEnableStart start=' . '"' . s:if_enable_pattern . '"' . ' end=".\@=\|$" contains=exIfEnable,exAndEnable,exAndnotEnable'
-    exec 'syn region exIfEnable contained extend keepend matchgroup=cPreProc start=' . '"' . s:def_macro_pattern . s:end_not_and_pattern . '"' . ' skip="#endif\>\_[^\%(\/\*\)]*\*\/" end="^\s*\%(%:\|#\)\s*\%(endif\>\)" contains=exElseDisable,@exEnableContainedGroup'
+    " add if_or_pattern will fix a bug that #if MACRO_DISABLE || MACRO_ENABLE || MACRO_DISABLE " FIXME: I not sure if it have any side-effect
+    exec 'syn region exIfEnable contained extend keepend matchgroup=cPreProc start=' . '"' . s:if_or_pattern . s:def_macro_pattern . s:end_not_and_pattern . '"' . ' skip="#endif\>\_[^\%(\/\*\)]*\*\/" end="^\s*\%(%:\|#\)\s*\%(endif\>\)" contains=exElseDisable,@exEnableContainedGroup'
 
     " --------------- exElifEnable ---------------
     " elif enable(def_macro) else disable
@@ -423,6 +424,7 @@ function! s:exMH_DefineSyntax() " <<<
     " --------------- exIfnEnable ---------------
     " ifn enable(undef_macro) else disable
     exec 'syn region exIfnEnableStart start=' . '"' . s:ifn_enable_pattern . '"' . ' end=".\@=\|$" contains=exIfnEnable,exAndEnable,exAndnotEnable'
+    " FIXME: #if !MACRO_ENABLE || !MACRO_DISABLE || !MACRO_DISABLE, #else will be error!
     exec 'syn region exIfnEnable contained extend keepend matchgroup=cPreProc start=' . '"' . s:undef_macro_pattern . s:end_not_and_pattern . '"' . ' skip="#endif\>\_[^\%(\/\*\)]*\*\/" end="^\s*\%(%:\|#\)\s*\%(endif\>\)" contains=exElseDisable,@exEnableContainedGroup'
 
     " --------------- exElifnEnable ---------------
