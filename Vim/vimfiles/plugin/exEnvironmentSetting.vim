@@ -23,7 +23,7 @@ if !exists('g:exES_vimfile_dir')
     let g:exES_vimfile_dir = "_vimfiles"
 endif
 
-let s:exES_CurrentVersion = 5
+let s:exES_CurrentVersion = 6
 " >>>
 
 " -------------------------------------------------------------------------
@@ -54,7 +54,7 @@ function! s:exES_WriteDefaultTemplate() " <<<
 
 	" Init the visual_studio plugin file path
     silent call add(_list, '')
-    silent call add(_list, '-- Vsiaul Studio Settings --')
+    silent call add(_list, '-- Visual Studio Settings --')
     silent call add(_list, '')
 
     silent call add(_list, 'vsTaskList=./'._dir_name.'/vs_task_list.txt')
@@ -160,7 +160,7 @@ function! g:exES_SetEnvironment() " <<<
         endif
 
         " read lines to get settings
-        for Line in getline(2, '$')
+        for Line in getline(1, '$')
             let SettingList = split(Line, "=")
             if len(SettingList)>=2
                 " let g:exES_{SettingList[0]} = escape(SettingList[1], ' ')
