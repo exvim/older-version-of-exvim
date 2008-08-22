@@ -23,7 +23,7 @@ if !exists('g:exES_vimfile_dir')
     let g:exES_vimfile_dir = "_vimfiles"
 endif
 
-let s:exES_CurrentVersion = 6
+let s:exES_CurrentVersion = 7
 " >>>
 
 " -------------------------------------------------------------------------
@@ -74,7 +74,7 @@ function! s:exES_WriteDefaultTemplate() " <<<
 
     " Init the vimwiki plugin file path
     silent call add(_list, '')
-    silent call add(_list, '-- Vsiaul Studio Settings --')
+    silent call add(_list, '-- vimwiki Settings --')
     silent call add(_list, '')
 
     silent call add(_list, 'wikiHome=./_doc/')
