@@ -541,9 +541,6 @@ endfunction " >>>
 function! g:ex_RecordCurrentBufNum() " <<<
     let short_bufname = fnamemodify(bufname('%'),":p:t")
     if index( g:exUT_plugin_list, short_bufname, 0, 1 ) == -1 " compare ignore case
-        " FIXME, in two edit_buf split window, when close one, the cursor will
-        " move to the down window, and when call gotoeditbuffer, the winleave
-        " trigger, and editbuf_num changes
         let s:ex_editbuf_num = bufnr('%')
         let g:ex_debug = s:ex_editbuf_num 
     elseif short_bufname !=# "-MiniBufExplorer-"
@@ -566,6 +563,7 @@ function! g:ex_GotoEditBuffer() " <<<
     if winnr() != winnum && winnum != -1 " this will fix the jump error in the vimentry buffer, cause the winnum for vimentry buffer will be -1
         exe winnum . 'wincmd w'
     endif
+    call g:ex_RecordCurrentBufNum()
 endfunction " >>>
 
 " --ex_GotoPluginBuffer--
@@ -575,6 +573,7 @@ function! g:ex_GotoPluginBuffer() " <<<
     if winnr() != winnum
         exe winnum . 'wincmd w'
     endif
+    call g:ex_RecordCurrentBufNum()
 endfunction " >>>
 
 " --ex_GetEditBufferNum--

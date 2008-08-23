@@ -27,30 +27,51 @@ vsBuildStateDone = 3         # Build has been completed
 # otherwise there is an exception at exit
 sys.exitfunc = lambda: None
 
-#jwu
 #----------------------------------------------------------------------
 def dte_break_in_file (vs_pid, filename, modified, line_num, col_num):
     logging.info ('== dte_break_in_file %s' % vars())
     dte = _get_dte(vs_pid)
     if not dte: return
     try:
-        dte.ExecuteCommand ('Debug.BreakInFile')
-        # TODO: 
-        # import pythoncom
-        # bpType = pythoncom.LoadTypeLib('EnvDTE.dbgBreakpointConditionType')
-        # dte.Debugger.Breakpoints.Add( '', filename, line_num, col_num, '', bpType.dbgBreakpointConditionTypeWhenTrue, 'C#', '', 0, '', 0, envdte.dbgHitCountType.dbgHitCountTypeNone )
-        # dte.Debugger.Breakpoints.Add( '', filename, line_num, col_num, '', 1, 'C#', '', 0, '', 0, 0 )
+        # dte.ExecuteCommand ('Debug.BreakInFile')
+        # print dte.Debugger.Breakpoints.Item(1).ConditionType
+        # print dte.Debugger.Breakpoints.Item(1).HitCountType
+        # print dte.Debugger.Breakpoints.Item(1).Language 
+        dte.Debugger.Breakpoints.Add( '', filename, line_num, col_num, '', 1, 'C++', '', 0, '', 0, 1 )
     except Exception, e:
         logging.exception (e)
         _dte_exception (e)
         _vim_activate ()
         return
     # ExecuteCommand is not synchronous so we have to wait
-    # TODO: get the new break window, check each filename,line,col, finally press OK button confirm.
-    # _dte_wait_for_build (dte)
-    # dte_output (vs_pid, fn_quickfix, 'Output', 'Build')
-    # _vim_status ('Compile file complete')
-    # _vim_activate ()
+    _vim_status ('Break in file complete')
+    _vim_activate ()
+
+#----------------------------------------------------------------------
+def dte_add_watch (vs_pid, watch_var):
+    logging.info ('== dte_add_watch %s' % vars())
+    dte = _get_dte(vs_pid)
+    if not dte: return
+    try:
+        dte.ExecuteCommand ('Debug.AddWatch', watch_var)
+        # TODO:
+        # for window in dte.Windows:
+        #     if str(window.Caption).startswith('Watch 1'):
+        #         watch_window = window
+        # if not watch_window:
+        #     _vim_msg ('Error: Watch 1 window not active')
+        #     return
+        # watch_window.Activate()
+        # uih = watch_window.Object
+        # print uih.UIHierarchyItems.Count
+    except Exception, e:
+        logging.exception (e)
+        _dte_exception (e)
+        _vim_activate ()
+        return
+    # ExecuteCommand is not synchronous so we have to wait
+    _vim_status ('Add watch %s complete' % watch_var)
+    _vim_activate ()
 
 #----------------------------------------------------------------------
 

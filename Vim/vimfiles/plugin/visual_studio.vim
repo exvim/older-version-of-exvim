@@ -222,7 +222,6 @@ function! DTETaskList()
     call <Sid>DTEExec ('dte_task_list', &errorfile)
 endfunction
 
-" jwu
 "----------------------------------------------------------------------
 
 function! DTEBuildOutput()
@@ -268,7 +267,6 @@ function! <Sid>DTEQuickfixOpen(which)
     silent exec 'QF '. &errorfile
 endfunction
 
-" jwu
 "----------------------------------------------------------------------
 function! DTEBreakInFile()
     if ! DTEPutFile()
@@ -281,6 +279,15 @@ function! DTEBreakInFile()
         return 0
     endif
     call <Sid>DTEExec ('dte_break_in_file', filename, &modified, line('.'), col('.'))
+endfunction
+
+"----------------------------------------------------------------------
+function! DTEAddWatch(word)
+    if ! DTEPutFile()
+        return
+    endif
+    call <Sid>DTEExec ('dte_add_watch', a:word)
+    return 1
 endfunction
 
 "----------------------------------------------------------------------
@@ -568,30 +575,33 @@ endif
 " Mapping setup
 
 if ! exists ('g:visual_studio_mapping') || g:visual_studio_mapping != 0
-	" jwu: change \vg to \vo ( I like same as do,dp ), "o" can be obtain
+    " solution/project
+    nmap <silent> <Leader>vs :call DTEGetSolutions()<cr>
+    nmap <silent> <Leader>vj :call DTEGetProjects()<cr>
+
+    " files
     nmap <silent> <Leader>vo :call DTEGetFile()<cr>
     nmap <silent> <Leader>vp :call DTEPutFile()<cr>
-	" jwu: change \vt to \vgt
-	"             \vo to \vgo
-	"	          \vf to \vf1 
-	"	          \v2 to \vf2 
+
+    " info windows
     nmap <silent> <Leader>vgt :call DTETaskList()<cr>
     nmap <silent> <Leader>vgb :call DTEBuildOutput()<cr>
     nmap <silent> <Leader>vgo :call DTEDebugOutput()<cr>
     nmap <silent> <Leader>vf1 :call DTEFindResults(1)<cr>
     nmap <silent> <Leader>vf2 :call DTEFindResults(2)<cr>
 
+    " debug
+    nmap <silent> <Leader>vk :call DTEBreakInFile()<cr>
+    nmap <silent> <Leader>vw :call DTEAddWatch(expand("<cword>"))<cr>
+
+    " compile
     nmap <silent> <Leader>vb :call DTEBuildSolution()<cr>
     nmap <silent> <Leader>vu :call DTEBuildStartupProject()<cr>
     nmap <silent> <Leader>vc :call DTECompileFile()<cr>
-    nmap <silent> <Leader>vs :call DTEGetSolutions()<cr>
-    " TODO vju, vjb options ??
-    nmap <silent> <Leader>vj :call DTEGetProjects()<cr>
+
+    " misc
     nmap <silent> <Leader>va :call DTEAbout()<cr>
     nmap <silent> <Leader>vh :call DTEOnline()<cr>
-
-	" jwu: add
-    nmap <silent> <Leader>vk :call DTEBreakInFile()<cr>
 endif
 
 " vim: set sts=4 sw=4:

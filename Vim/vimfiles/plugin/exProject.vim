@@ -258,8 +258,9 @@ function! g:exPJ_InitSelectWindow() " <<<
     nnoremap <silent> <buffer> O  :call <SID>exPJ_CreateNewFold()<CR>
 
     " Autocommands to keep the window the specified size
-    au WinLeave <buffer> :call s:exPJ_RefreshWindow()
-    au BufEnter <buffer> :call s:exPJ_RefreshWindow()
+    " XXX: since we fix minibuf window open position problem (by manual open it before exProject window open), we don't need this
+    " au WinLeave <buffer> :call s:exPJ_RefreshWindow()
+    " au BufEnter <buffer> :call s:exPJ_RefreshWindow()
     au CursorMoved <buffer> :call s:exPJ_SelectCursorMoved()
 
     " buffer command
