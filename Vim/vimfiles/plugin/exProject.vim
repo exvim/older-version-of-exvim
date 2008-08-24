@@ -189,7 +189,7 @@ endfunction
 
 " --exPJ_RefreshWindow--
 function! s:exPJ_RefreshWindow()
-    silent! wincmd H
+    " silent! wincmd H
     silent exe 'vertical resize ' . g:exPJ_window_width
 endfunction
 
@@ -258,9 +258,7 @@ function! g:exPJ_InitSelectWindow() " <<<
     nnoremap <silent> <buffer> O  :call <SID>exPJ_CreateNewFold()<CR>
 
     " Autocommands to keep the window the specified size
-    " XXX: since we fix minibuf window open position problem (by manual open it before exProject window open), we don't need this
-    " au WinLeave <buffer> :call s:exPJ_RefreshWindow()
-    " au BufEnter <buffer> :call s:exPJ_RefreshWindow()
+    au WinLeave <buffer> :call s:exPJ_RefreshWindow()
     au CursorMoved <buffer> :call s:exPJ_SelectCursorMoved()
 
     " buffer command

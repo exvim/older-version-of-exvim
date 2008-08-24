@@ -75,7 +75,7 @@ set guifont=Lucida_Console:h9
 highlight DiffAdd cterm=none ctermbg=LightGreen gui=none guibg=LightGreen
 highlight DiffDelete term=bold cterm=bold ctermfg=Red ctermbg=LightRed gui=bold guifg=Red guibg=LightRed
 highlight DiffChange term=bold cterm=none ctermbg=LightCyan gui=none guibg=LightCyan
-highlight DiffText term=reverse cterm=none ctermbg=Yellow gui=underline guibg=LightCyan
+highlight DiffText term=reverse cterm=underline ctermbg=LightCyan gui=none guibg=Violet
 
 " highlight fold
 highlight Folded term=standout ctermfg=1 ctermbg=7 guifg=DarkBlue guibg=LightGrey

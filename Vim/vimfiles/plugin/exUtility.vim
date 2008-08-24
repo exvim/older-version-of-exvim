@@ -48,11 +48,6 @@ let s:ex_pluginbuf_num = -1
 let s:ex_level_list = []
 " >>>
 
-" Define the ex autocommands
-augroup ex_auto_cmds
-    autocmd WinLeave * call g:ex_RecordCurrentBufNum()
-augroup end
-
 " ------------------------
 "  window functions
 " ------------------------
@@ -159,9 +154,9 @@ function! g:ex_InitWindow(init_func_name) " <<<
     highlight def ex_SynError gui=none guifg=White guibg=Red term=none cterm=none ctermfg=White ctermbg=Red
 
     " Define the ex autocommands
-    " augroup ex_auto_cmds
-    "     autocmd WinLeave * call g:ex_RecordCurrentBufNum()
-    " augroup end
+    augroup ex_auto_cmds
+        autocmd WinLeave * call g:ex_RecordCurrentBufNum()
+    augroup end
 
     " avoid cwd change problem
     if exists( 'g:exES_PWD' )
@@ -536,6 +531,8 @@ endfunction " >>>
 "  buffer functions
 " ------------------------
 
+" FIXME: when you split window/open the same file in two window, you can only get the original bufwinnr() by the bufnr().
+" FIXME: :sp will trigger the WinEnter, find a way to use it.
 " --ex_RecordCurrentBufNum--
 " Record current buf num when leave
 function! g:ex_RecordCurrentBufNum() " <<<
