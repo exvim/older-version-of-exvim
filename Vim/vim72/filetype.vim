@@ -201,9 +201,7 @@ endfunc
 au BufNewFile,BufRead *.mar			setf vmasm
 
 " Atlas
-" jwu disable this, conflict with actionscript
-" au BufNewFile,BufRead *.atl,*.as		setf atlas
-au BufNewFile,BufRead *.atl		        setf atlas
+au BufNewFile,BufRead *.atl,*.as		setf atlas
 
 " Autoit v3
 au BufNewFile,BufRead *.au3			setf autoit
@@ -2165,9 +2163,8 @@ au BufNewFile,BufRead .Xdefaults,.Xpdefaults,.Xresources,xdm-config,*.ad setf xd
 
 " Xmath
 au BufNewFile,BufRead *.msc,*.msf		setf xmath
-" jwu disable this
-" au BufNewFile,BufRead *.ms
-"	 \ if !s:FTnroff() | setf xmath | endif
+au BufNewFile,BufRead *.ms
+	\ if !s:FTnroff() | setf xmath | endif
 
 " XML  specific variants: docbk and xbl
 au BufNewFile,BufRead *.xml			call s:FTxml()
@@ -2260,25 +2257,6 @@ au BufNewFile,BufRead *.zsql			call s:SQL()
 
 " Z80 assembler asz80
 au BufNewFile,BufRead *.z8a			setf z8a
-
-" ======================== jwu: User Define File Type =============================
-
-" High Level Shader Language
-au BufNewFile,BufRead *.hlsl,*.fx,*.fxh,*.cg,*.vsh,*.psh,*.shd,*.glsl       setf hlsl
-
-" Max Script
-au BufNewFile,BufRead *.ms,*.mse,*.mcr,*.mzp,*.ds  setf maxscript
-
-" Doxygen Comment
-au BufNewFile,BufRead *.dox,*.doxygen       setf cpp.doxygen
-
-" gmsh
-au BufNewFile,BufRead *.geo                 setf gmsh
-
-" as (actionscript/flash) I use java analyasis it
-au BufNewFile,BufRead *.as                  setf javascript
-
-" =================================================================================
 
 augroup END
 

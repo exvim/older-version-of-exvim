@@ -912,7 +912,7 @@ function! g:ex_Browse(dir, filter) " <<<
     let full_path = ''
     for level in s:ex_level_list
 		if level.short_dir != ''
-			let full_path = level.short_dir.'/'.full_path
+			let full_path = full_path.'/'.level.short_dir
 		endif
     endfor
     echon "processing: " . full_path . "\r"
