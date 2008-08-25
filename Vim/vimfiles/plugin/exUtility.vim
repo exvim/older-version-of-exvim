@@ -6,10 +6,10 @@
 "=============================================================================
 " You may use this code in whatever way you see fit.
 
-if exists('loaded_exscript') || &cp
+if exists('loaded_exutility') || &cp
     finish
 endif
-let loaded_exscript=1
+let loaded_exutility=1
 
 " -------------------------------------------------------------------------
 "  variable part
