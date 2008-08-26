@@ -39,6 +39,7 @@ highlight def ex_SynObjectLine gui=none guibg=#ffe4b3 term=none cterm=none cterm
 " store the highlight strings
 let s:ex_HighLightText = ["","","",""]
 let s:ex_hlRegMap = ["","q","w","e"]
+let s:ex_hlMatchID = [-1,-1,-1,-1]
 
 " local script vairable initialization
 let s:ex_editbuf_num = -1
@@ -1404,18 +1405,24 @@ endfunction " >>>
 function! g:ex_Highlight_Normal(match_nr) " <<<
     let cur_line = line(".")
     let cur_col = col(".")
+
     " Clear previously selected name
-    silent exe a:match_nr . 'match none'
+    if s:ex_hlMatchID[a:match_nr] != -1
+        call matchdelete(s:ex_hlMatchID[a:match_nr])
+        let s:ex_hlMatchID[a:match_nr] = -1
+    endif
+    " XXX: jwu_match
+    " silent exe a:match_nr . 'match none'
 
     " put the highlight text to reg a:matchnr for substitute
-    let reg_default = @"
     exe 'normal! "' . s:ex_hlRegMap[a:match_nr] . 'yiw'
     let hl_word = getreg(s:ex_hlRegMap[a:match_nr])
-    let @" = reg_default 
     if hl_word == s:ex_HighLightText[a:match_nr]
         call g:ex_HighlightCancle(a:match_nr)
     else
-        exe a:match_nr . 'match ex_SynHL' . a:match_nr . ' ' . '/\<'.hl_word.'\>/'
+        let s:ex_hlMatchID[a:match_nr] = matchadd( 'ex_SynHL'.a:match_nr, '\<'.hl_word.'\>', a:match_nr )
+        " XXX: jwu_match
+        " exe a:match_nr . 'match ex_SynHL' . a:match_nr . ' ' . '/\<'.hl_word.'\>/'
         let s:ex_HighLightText[a:match_nr] = hl_word
     endif
     silent call cursor(cur_line, cur_col)
@@ -1495,7 +1502,12 @@ function! g:ex_HighlightCancle(match_nr) " <<<
         silent call setreg(s:ex_hlRegMap[2],'') 
         silent call setreg(s:ex_hlRegMap[3],'') 
     else
-        silent exe a:match_nr . 'match none'
+        if s:ex_hlMatchID[a:match_nr] != -1
+            call matchdelete(s:ex_hlMatchID[a:match_nr])
+            let s:ex_hlMatchID[a:match_nr] = -1 
+        endif
+        " XXX: jwu match
+        " silent exe a:match_nr . 'match none'
         let s:ex_HighLightText[a:match_nr] = ''
         silent call setreg(a:match_nr,'') 
     endif
