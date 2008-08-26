@@ -1415,8 +1415,10 @@ function! g:ex_Highlight_Normal(match_nr) " <<<
     " silent exe a:match_nr . 'match none'
 
     " put the highlight text to reg a:matchnr for substitute
+    let reg_default = @"
     exe 'normal! "' . s:ex_hlRegMap[a:match_nr] . 'yiw'
     let hl_word = getreg(s:ex_hlRegMap[a:match_nr])
+    let @" = reg_default 
     if hl_word == s:ex_HighLightText[a:match_nr]
         call g:ex_HighlightCancle(a:match_nr)
     else
