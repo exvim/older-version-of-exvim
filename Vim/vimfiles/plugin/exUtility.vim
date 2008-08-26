@@ -31,13 +31,14 @@ endif
 highlight def ex_SynHL1 gui=none guibg=LightCyan term=none cterm=none ctermbg=LightCyan
 highlight def ex_SynHL2 gui=none guibg=LightMagenta term=none cterm=none ctermbg=LightMagenta
 highlight def ex_SynHL3 gui=none guibg=LightRed term=none cterm=none ctermbg=LightRed
+highlight def ex_SynHL4 gui=none guibg=LightGreen term=none cterm=none ctermbg=LightGreen
 
 highlight def ex_SynSelectLine gui=none guibg=#bfffff term=none cterm=none ctermbg=LightCyan
 highlight def ex_SynConfirmLine gui=none guibg=#ffe4b3 term=none cterm=none ctermbg=DarkYellow
 highlight def ex_SynObjectLine gui=none guibg=#ffe4b3 term=none cterm=none ctermbg=DarkYellow
 
 " store the highlight strings
-let s:ex_hlRegMap = ["","q","w","e"]
+let s:ex_hlRegMap = ["","q","w","e","r"]
 
 " local script vairable initialization
 let s:ex_editbuf_num = -1
@@ -1462,6 +1463,7 @@ function! g:ex_HighlightCancle(match_nr) " <<<
         call s:ex_MatchDelete(1)
         call s:ex_MatchDelete(2)
         call s:ex_MatchDelete(3)
+        call s:ex_MatchDelete(4)
     else
         call s:ex_MatchDelete(a:match_nr)
     endif
@@ -1470,10 +1472,10 @@ endfunction " >>>
 " --ex_DefineMatchVariables--
 function s:ex_DefineMatchVariables() " <<<
     if !exists('w:ex_hlMatchID')
-        let w:ex_hlMatchID = [0,0,0,0]
+        let w:ex_hlMatchID = [0,0,0,0,0]
     endif
     if !exists('w:ex_HighLightText')
-        let w:ex_HighLightText = ["","","",""]
+        let w:ex_HighLightText = ["","","","",""]
     endif
 endfunction " >>>
 

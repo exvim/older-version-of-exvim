@@ -88,6 +88,7 @@ function UpdateHighlights()
     hi ex_SynHL1 gui=none guibg=LightCyan term=none cterm=none ctermbg=LightCyan
     hi ex_SynHL2 gui=none guibg=LightMagenta term=none cterm=none ctermbg=LightMagenta
     hi ex_SynHL3 gui=none guibg=LightRed term=none cterm=none ctermbg=LightRed
+    hi ex_SynHL4 gui=none guibg=LightGreen term=none cterm=none ctermbg=LightGreen
     hi ex_SynSelectLine gui=none guibg=#bfffff term=none cterm=none ctermbg=LightCyan
     hi ex_SynConfirmLine gui=none guibg=#ffe4b3 term=none cterm=none ctermbg=DarkYellow
     hi ex_SynObjectLine gui=none guibg=#ffe4b3 term=none cterm=none ctermbg=DarkYellow
@@ -488,20 +489,24 @@ nmap <F9> \mh
 nmap <silent> <a-1> :call g:ex_Highlight_Normal(1)<CR>
 nmap <silent> <a-2> :call g:ex_Highlight_Normal(2)<CR>
 nmap <silent> <a-3> :call g:ex_Highlight_Normal(3)<CR>
+nmap <silent> <a-4> :call g:ex_Highlight_Normal(4)<CR>
 
 vmap <silent> <a-1> :call g:ex_Highlight_Visual(1)<CR>
 vmap <silent> <a-2> :call g:ex_Highlight_Visual(2)<CR>
 vmap <silent> <a-3> :call g:ex_Highlight_Visual(3)<CR>
+vmap <silent> <a-4> :call g:ex_Highlight_Visual(4)<CR>
 
 command -narg=? HL1 call g:ex_Highlight_Text(1, "<args>")
 command -narg=? HL2 call g:ex_Highlight_Text(2, "<args>")
 command -narg=? HL3 call g:ex_Highlight_Text(3, "<args>")
+command -narg=? HL4 call g:ex_Highlight_Text(4, "<args>")
 
-map <silent> <a-4> :call g:ex_HighlightCancle(0)<CR>
+map <silent> <a-0> :call g:ex_HighlightCancle(0)<CR>
 map <silent> <Leader>0 :call g:ex_HighlightCancle(0)<CR>
 map <silent> <Leader>1 :call g:ex_HighlightCancle(1)<CR>
 map <silent> <Leader>2 :call g:ex_HighlightCancle(2)<CR>
 map <silent> <Leader>3 :call g:ex_HighlightCancle(3)<CR>
+map <silent> <Leader>4 :call g:ex_HighlightCancle(4)<CR>
 
 " copy only full path name
 nmap <silent> <leader>y1 :call g:ex_Yank( fnamemodify(bufname('%'),":p:h") )<CR>
