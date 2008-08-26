@@ -161,6 +161,12 @@ endfunction
 " " highlight line number and visual
 " highlight LineNr term=underline cterm=none ctermfg=DarkRed gui=none guifg=Brown
 " highlight Visual term=reverse ctermbg=LightGray guibg=LightGray
+" 
+" " highlight Pop menu
+" highlight Pmenu        ctermbg=LightGray guibg=LightGray
+" highlight PmenuSel     ctermbg=DarkBlue ctermfg=White guibg=DarkBlue guifg=White
+" highlight PmenuSbar    ctermbg=DarkGray guibg=DarkGray
+" highlight PmenuThumb   ctermbg=Black guibg=Black
 
 " highlight #if 0 using my own highlight define
 " highlight exMacroDisable term=none cterm=none ctermfg=DarkGray gui=none guifg=DarkGray

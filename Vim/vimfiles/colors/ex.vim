@@ -35,7 +35,7 @@ hi NonText      term=bold ctermfg=9 gui=bold guifg=Blue
 hi Directory    term=bold ctermfg=1 guifg=Blue
 hi ErrorMsg     term=standout ctermfg=15 ctermbg=4 guifg=White guibg=Red
 hi IncSearch    term=reverse cterm=reverse gui=reverse
-hi Search       term=reverse ctermfg=0 ctermbg=14 guibg=Yellow
+hi Search       term=reverse ctermfg=0 ctermbg=14 guifg=NONE guibg=Yellow
 hi MoreMsg      term=bold ctermfg=2 gui=bold guifg=SeaGreen
 hi ModeMsg      term=bold cterm=bold gui=bold
 " <<<<<<<<<<<<<< jwu custumize
