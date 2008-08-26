@@ -37,9 +37,7 @@ highlight def ex_SynConfirmLine gui=none guibg=#ffe4b3 term=none cterm=none cter
 highlight def ex_SynObjectLine gui=none guibg=#ffe4b3 term=none cterm=none ctermbg=DarkYellow
 
 " store the highlight strings
-let s:ex_HighLightText = ["","","",""]
 let s:ex_hlRegMap = ["","q","w","e"]
-let s:ex_hlMatchID = [-1,-1,-1,-1]
 
 " local script vairable initialization
 let s:ex_editbuf_num = -1
@@ -1403,31 +1401,9 @@ endfunction " >>>
 " --ex_Highlight_Normal--
 " hightlight match_nr
 function! g:ex_Highlight_Normal(match_nr) " <<<
-    let cur_line = line(".")
-    let cur_col = col(".")
-
-    " Clear previously selected name
-    if s:ex_hlMatchID[a:match_nr] != -1
-        call matchdelete(s:ex_hlMatchID[a:match_nr])
-        let s:ex_hlMatchID[a:match_nr] = -1
-    endif
-    " XXX: jwu_match
-    " silent exe a:match_nr . 'match none'
-
-    " put the highlight text to reg a:matchnr for substitute
-    let reg_default = @"
-    exe 'normal! "' . s:ex_hlRegMap[a:match_nr] . 'yiw'
-    let hl_word = getreg(s:ex_hlRegMap[a:match_nr])
-    let @" = reg_default 
-    if hl_word == s:ex_HighLightText[a:match_nr]
-        call g:ex_HighlightCancle(a:match_nr)
-    else
-        let s:ex_hlMatchID[a:match_nr] = matchadd( 'ex_SynHL'.a:match_nr, '\<'.hl_word.'\>', a:match_nr )
-        " XXX: jwu_match
-        " exe a:match_nr . 'match ex_SynHL' . a:match_nr . ' ' . '/\<'.hl_word.'\>/'
-        let s:ex_HighLightText[a:match_nr] = hl_word
-    endif
-    silent call cursor(cur_line, cur_col)
+    " get word under cursor
+    let hl_word = expand('<cword>')
+    call g:ex_Highlight_Text( a:match_nr, '\<'.hl_word.'\>' )
 endfunction " >>>
 
 " --ex_Highlight_Text--
@@ -1439,81 +1415,76 @@ function! g:ex_Highlight_Text(match_nr, args) " <<<
         return
     endif
 
-    " if we don't haveupper case character, ignore case
+    " if we don't have upper case character, ignore case
     let pattern = a:args
     if match( a:args, '\u' ) == -1
         let pattern = '\c' . pattern
     endif
 
     " start match
-    let cur_line = line(".")
-    let cur_col = col(".")
-
-    " Clear previously selected name
-    silent exe a:match_nr . 'match none'
-
-    "
-    exe a:match_nr . 'match ex_SynHL' . a:match_nr . ' ' . '"' . pattern . '"'
-    let s:ex_HighLightText[a:match_nr] = pattern
-    silent call cursor(cur_line, cur_col)
+    call s:ex_DefineMatchVariables() 
+    if pattern ==# w:ex_HighLightText[a:match_nr]
+        call g:ex_HighlightCancle(a:match_nr)
+    else
+        call g:ex_HighlightCancle(a:match_nr)
+        let w:ex_hlMatchID[a:match_nr] = matchadd( 'ex_SynHL'.a:match_nr, pattern, a:match_nr )
+        let w:ex_HighLightText[a:match_nr] = pattern
+        silent call setreg(s:ex_hlRegMap[a:match_nr],a:args) 
+    endif
 endfunction " >>>
 
 " --ex_Highlight_Visual--
 " hightlight match_nr
-function! g:ex_Highlight_Visual(match_nr) " <<<
-    let cur_line = line(".")
-    let cur_col = col(".")
-    " Clear previously selected name
-    silent exe a:match_nr . 'match none'
-    let line_start = line("'<")
-    let line_end = line("'>")
+function! g:ex_Highlight_Visual(match_nr) range " <<<
+    call s:ex_DefineMatchVariables() 
 
     " if in the same line
     let pat = '//'
-    if line_start == line_end
-        let sl = line_start-1
+    if a:firstline == a:lastline
+        let sl = a:firstline-1
         let sc = col("'<")-1
-        let el = line_end+1
+        let el = a:lastline+1
         let ec = col("'>")+1
-        let pat = '/\%>'.sl.'l'.'\%>'.sc.'v'.'\%<'.el.'l'.'\%<'.ec.'v/'
+        let pat = '\%>'.sl.'l'.'\%>'.sc.'v'.'\%<'.el.'l'.'\%<'.ec.'v'
     else
-        let sl = line_start-1
-        let el = line_end+1
-        let pat = '/\%>'.sl.'l'.'\%<'.el.'l/'
+        let sl = a:firstline-1
+        let el = a:lastline+1
+        let pat = '\%>'.sl.'l'.'\%<'.el.'l'
     endif
-
-    " never check highlight pattern in visual highlight mode
-    exe a:match_nr . 'match ex_SynHL' . a:match_nr . ' ' . pat
-    let s:ex_HighLightText[a:match_nr] = ''
-    silent call cursor(cur_line, cur_col)
+    call g:ex_Highlight_Text( a:match_nr, pat )
 endfunction " >>>
 
 " --ex_HighlightCancle--
 " Cancle highlight
 function! g:ex_HighlightCancle(match_nr) " <<<
-    let cur_line = line(".")
-    let cur_col = col(".")
+    call s:ex_DefineMatchVariables() 
     if a:match_nr == 0
-        1match none
-        2match none
-        3match none
-        let s:ex_HighLightText[1] = ''
-        let s:ex_HighLightText[2] = ''
-        let s:ex_HighLightText[3] = ''
-        silent call setreg(s:ex_hlRegMap[1],'') 
-        silent call setreg(s:ex_hlRegMap[2],'') 
-        silent call setreg(s:ex_hlRegMap[3],'') 
+        call s:ex_MatchDelete(1)
+        call s:ex_MatchDelete(2)
+        call s:ex_MatchDelete(3)
     else
-        if s:ex_hlMatchID[a:match_nr] != -1
-            call matchdelete(s:ex_hlMatchID[a:match_nr])
-            let s:ex_hlMatchID[a:match_nr] = -1 
-        endif
-        " XXX: jwu match
-        " silent exe a:match_nr . 'match none'
-        let s:ex_HighLightText[a:match_nr] = ''
-        silent call setreg(a:match_nr,'') 
+        call s:ex_MatchDelete(a:match_nr)
     endif
-    silent call cursor(cur_line, cur_col)
+endfunction " >>>
+
+" --ex_DefineMatchVariables--
+function s:ex_DefineMatchVariables() " <<<
+    if !exists('w:ex_hlMatchID')
+        let w:ex_hlMatchID = [0,0,0,0]
+    endif
+    if !exists('w:ex_HighLightText')
+        let w:ex_HighLightText = ["","","",""]
+    endif
+endfunction " >>>
+
+" --ex_MatchDelete--
+function s:ex_MatchDelete(match_nr) " <<<
+    if w:ex_hlMatchID[a:match_nr] != 0
+        silent call matchdelete(w:ex_hlMatchID[a:match_nr])
+        let w:ex_hlMatchID[a:match_nr] = 0
+    endif
+    let w:ex_HighLightText[a:match_nr] = ''
+    silent call setreg(s:ex_hlRegMap[a:match_nr],'') 
 endfunction " >>>
 
 " ------------------------
