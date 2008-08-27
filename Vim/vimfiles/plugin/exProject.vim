@@ -212,12 +212,8 @@ function! g:exPJ_InitSelectWindow() " <<<
     silent! setlocal foldtext=g:ex_FoldText()
     silent! setlocal foldminlines=0
     silent! setlocal foldlevel=9999
-    syntax match exPJ_SynFoldStart '{'
-    syntax match exPJ_SynFoldEnd '}'
-    highlight def exPJ_SynFoldStart gui=none guifg=background term=none cterm=none ctermfg=DarkGray
-    highlight def exPJ_SynFoldEnd gui=none guifg=background term=none cterm=none ctermfg=DarkGray
-    " highlight def exPJ_SynFoldStart gui=none guifg=black
-    " highlight def exPJ_SynFoldEnd gui=none guifg=black
+    syntax match ex_SynTransparent '{'
+    syntax match ex_SynTransparent '}'
     " +++++++++++++++++++++++++++++++
 
     " syntax highlight
@@ -228,14 +224,13 @@ function! g:exPJ_InitSelectWindow() " <<<
     syntax match exPJ_SynHeaderFile '\[\(h\|i\)\]'
     syntax match exPJ_SynErrorFile '\[e\]'
     
-    highlight def exPJ_SynDir gui=bold guifg=Brown term=bold cterm=bold ctermfg=DarkRed
-    highlight def exPJ_TreeLine gui=none guifg=DarkGray term=none cterm=none ctermfg=Gray
-    highlight def link exPJ_SelectLine ex_SynSelectLine
+    hi def exPJ_TreeLine gui=none guifg=DarkGray term=none cterm=none ctermfg=Gray
+    hi def exPJ_SynDir gui=bold guifg=Brown term=bold cterm=bold ctermfg=DarkRed
+    hi def exPJ_SynFile gui=none guifg=Magenta term=none cterm=none ctermfg=Magenta
 
-    highlight def exPJ_SynFile gui=none guifg=Magenta term=none cterm=none ctermfg=Magenta
-    highlight def exPJ_SynSrcFile gui=none guifg=Blue term=none cterm=none ctermfg=Blue
-    highlight def exPJ_SynHeaderFile gui=none guifg=DarkGreen term=none cterm=none ctermfg=DarkGreen
-    highlight def exPJ_SynErrorFile gui=none guifg=Red term=none cterm=none ctermfg=Red
+    hi def exPJ_SynSrcFile gui=none guifg=Blue term=none cterm=none ctermfg=Blue
+    hi def exPJ_SynHeaderFile gui=none guifg=DarkGreen term=none cterm=none ctermfg=DarkGreen
+    hi def exPJ_SynErrorFile gui=none guifg=Red term=none cterm=none ctermfg=Red
 
     " key map
     nnoremap <silent> <buffer> <Return>   :call <SID>exPJ_GotoSelectResult('e')<CR>
@@ -259,7 +254,7 @@ function! g:exPJ_InitSelectWindow() " <<<
 
     " Autocommands to keep the window the specified size
     au WinLeave <buffer> :call s:exPJ_RefreshWindow()
-    au CursorMoved <buffer> :call s:exPJ_SelectCursorMoved()
+    au CursorMoved <buffer> :call g:ex_HighlightSelectLine()
 
     " buffer command
     command -buffer RM call s:exPJ_RemoveEmptyDir()
@@ -268,16 +263,6 @@ endfunction " >>>
 " --exPJ_UpdateSelectWindow--
 " Update window
 function! g:exPJ_UpdateSelectWindow() " <<<
-endfunction " >>>
-
-" --exPJ_SelectCursorMoved--
-" call when cursor moved
-function! s:exPJ_SelectCursorMoved() " <<<
-    " Clear previously selected name
-    2match none
-    " Highlight the current line
-    let pat = '/\%' . line('.') . 'l/'
-    exe '2match exPJ_SelectLine ' . pat
 endfunction " >>>
 
 " --exPJ_OpenProject--

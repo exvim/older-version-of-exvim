@@ -322,27 +322,12 @@ function! g:exGS_InitSelectWindow() " <<<
     if g:exGS_highlight_result
         " this will load the syntax highlight as cpp for search result
         silent exec "so $VIM/vimfiles/after/syntax/exUtility.vim"
-
-        "
-        syntax region exGS_SynFileName start="^[^:]*" end=":" oneline
-        syntax region exGS_SynSearchPattern start="^----------" end="----------"
-        syntax match exGS_SynLineNumber '\d\+:'
-
-        "
-        highlight def exGS_SynFileName gui=none guifg=DarkBlue term=none cterm=none ctermfg=DarkBlue
-        highlight def exGS_SynSearchPattern gui=bold guifg=DarkRed guibg=LightGray term=bold cterm=bold ctermfg=DarkRed ctermbg=LightGray
-        highlight def exGS_SynLineNumber gui=none guifg=Red term=none cterm=none ctermfg=Red
-    else
-        "
-        syntax region exGS_SynFileName start="^[^:]*" end=":" oneline
-        syntax region exGS_SynSearchPattern start="^----------" end="----------"
-        syntax match exGS_SynLineNumber '\d\+:'
-
-        "
-        highlight def exGS_SynFileName gui=none guifg=Blue term=none cterm=none ctermfg=Blue
-        highlight def exGS_SynSearchPattern gui=bold guifg=DarkRed guibg=LightGray term=bold cterm=bold ctermfg=DarkRed ctermbg=LightGray
-        highlight def exGS_SynLineNumber gui=none guifg=Brown term=none cterm=none ctermfg=Brown
     endif
+
+    "
+    syntax region ex_SynFileName start="^[^:]*" end=":" oneline
+    syntax region ex_SynSearchPattern start="^----------" end="----------"
+    syntax match ex_SynLineNr '\d\+:'
 
     " key map
     nnoremap <buffer> <silent> <Return>   \|:call <SID>exGS_GotoInSelectWindow()<CR>
@@ -493,15 +478,10 @@ endfunction " >>>
 " Init exGlobalSearch select window
 function! g:exGS_InitStackWindow() " <<<
     " syntax highlight
-    syntax match exGS_SynJumpMethodGS '\[GS]'
-    syntax match exGS_SynJumpMethodGG '\[GG]'
-    syntax match exGS_SynJumpSymbol '======>'
-    syntax match exGS_SynStackTitle '#.\+PATTERN.\+ENTRY POINT PREVIEW'
-
-    highlight def exGS_SynJumpMethodGS gui=none guifg=Red 
-    highlight def exGS_SynJumpMethodGG gui=none guifg=Blue 
-    highlight def exGS_SynJumpSymbol gui=none guifg=DarkGreen
-    highlight def exGS_SynStackTitle gui=bold guifg=Brown
+    syntax match ex_SynJumpMethodS '\[GS]'
+    syntax match ex_SynJumpMethodG '\[GG]'
+    syntax match ex_SynJumpSymbol '======>'
+    syntax match ex_SynTitle '#.\+PATTERN.\+ENTRY POINT PREVIEW'
 
     " key map
     nnoremap <buffer> <silent> <Return>   \|:call <SID>exGS_Stack_GoDirect()<CR>
@@ -703,39 +683,15 @@ function! g:exGS_InitQuickViewWindow() " <<<
     if g:exGS_highlight_result
         " this will load the syntax highlight as cpp for search result
         silent exec "so $VIM/vimfiles/after/syntax/exUtility.vim"
-
-        "
-        syntax region exGS_SynFileName start="^[^:]*" end=":" oneline
-        syntax region exGS_SynSearchPattern start="^----------" end="----------"
-        syntax match exGS_SynLineNumber '\d\+:'
-
-        "
-        highlight def exGS_SynFileName gui=none guifg=DarkBlue term=none cterm=none ctermfg=DarkBlue
-        highlight def exGS_SynSearchPattern gui=bold guifg=DarkRed guibg=LightGray term=bold cterm=bold ctermfg=DarkRed ctermbg=LightGray
-        highlight def exGS_SynLineNumber gui=none guifg=Red term=none cterm=none ctermfg=Red
-
-        "
-        syntax match exGS_SynFoldStart '<<<<<<'
-        syntax match exGS_SynFoldEnd '>>>>>>'
-        highlight def exGS_SynFoldStart gui=none guifg=DarkGreen term=none cterm=none ctermfg=DarkGreen
-        highlight def exGS_SynFoldEnd gui=none guifg=DarkGreen term=none cterm=none ctermfg=DarkGreen
-    else
-        "
-        syntax region exGS_SynFileName start="^[^:]*" end=":" oneline
-        syntax region exGS_SynSearchPattern start="^----------" end="----------"
-        syntax match exGS_SynLineNumber '\d\+:'
-
-        "
-        highlight def exGS_SynFileName gui=none guifg=Blue term=none cterm=none ctermfg=Blue
-        highlight def exGS_SynSearchPattern gui=bold guifg=DarkRed guibg=LightGray term=bold cterm=bold ctermfg=DarkRed ctermbg=LightGray
-        highlight def exGS_SynLineNumber gui=none guifg=Brown term=none cterm=none ctermfg=Brown
-
-        "
-        syntax match exGS_SynFoldStart '<<<<<<'
-        syntax match exGS_SynFoldEnd '>>>>>>'
-        highlight def exGS_SynFoldStart gui=none guifg=DarkGreen term=none cterm=none ctermfg=DarkGreen
-        highlight def exGS_SynFoldEnd gui=none guifg=DarkGreen term=none cterm=none ctermfg=DarkGreen
     endif
+    "
+    syntax region ex_SynFileName start="^[^:]*" end=":" oneline
+    syntax region ex_SynSearchPattern start="^----------" end="----------"
+    syntax match ex_SynLineNr '\d\+:'
+
+    "
+    syntax match ex_SynFold '<<<<<<'
+    syntax match ex_SynFold '>>>>>>'
 
     " key map
     nnoremap <buffer> <silent> <Return>   \|:call <SID>exGS_GotoInQuickViewWindow()<CR>

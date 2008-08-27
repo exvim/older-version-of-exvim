@@ -530,10 +530,10 @@ function! g:exMH_InitSelectWindow() " <<<
     syntax match exMH_MacroEnable '^...\zs\*\S\+$'
     syntax match exMH_MacroDisable '^....\zs\S\+$'
 
-    highlight def exMH_GroupNameEnable term=bold cterm=bold ctermfg=DarkRed ctermbg=LightGray gui=bold guifg=DarkRed guibg=LightGray
-    highlight def exMH_GroupNameDisable term=bold cterm=bold ctermfg=Red ctermbg=DarkGray gui=bold guifg=DarkGray guibg=LightGray
-    highlight def link exMH_MacroEnable cPreProc
-    highlight def link exMH_MacroDisable exMacroDisable
+    hi def exMH_GroupNameEnable term=bold cterm=bold ctermfg=DarkRed ctermbg=LightGray gui=bold guifg=DarkRed guibg=LightGray
+    hi def exMH_GroupNameDisable term=bold cterm=bold ctermfg=Red ctermbg=DarkGray gui=bold guifg=DarkGray guibg=LightGray
+    hi def link exMH_MacroEnable cPreProc
+    hi def link exMH_MacroDisable exMacroDisable
 endfunction " >>>
 
 " --exMH_UpdateSelectWindow--

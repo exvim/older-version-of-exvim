@@ -195,25 +195,13 @@ function! g:exTS_InitSelectWindow() " <<<
     if g:exTS_highlight_result
         " this will load the syntax highlight as cpp for search result
         silent exec "so $VIM/vimfiles/after/syntax/exUtility.vim"
-
-        "
-        syntax match exTS_SynFileName '^\S\+\s(.\+)$'
-        syntax match exTS_SynTagName '^\S\+$'
-
-        "
-        highlight def exTS_SynTagName term=bold cterm=bold ctermfg=DarkRed ctermbg=LightGray gui=bold guifg=DarkRed guibg=LightGray
-        highlight def exTS_SynFileName term=underline cterm=underline ctermfg=LightBlue gui=underline guifg=SlateBlue
-    else
-        "
-        syntax match exTS_SynFileName '^\S\+\s(.\+)$'
-        syntax match exTS_SynTagName '^\S\+$'
-        syntax match exTS_SynSearchPattern '^        \S.*$'
-
-        "
-        highlight def exTS_SynTagName term=bold cterm=bold ctermfg=DarkRed ctermbg=LightGray gui=bold guifg=DarkRed guibg=LightGray
-        highlight def exTS_SynFileName term=none cterm=none ctermfg=Blue gui=none guifg=Blue
-        highlight def exTS_SynSearchPattern term=none cterm=none ctermfg=Black gui=none guifg=Black 
     endif
+
+    "
+    syntax match ex_SynFileName '^\S\+\s(.\+)$'
+    syntax match ex_SynSearchPattern '^\S\+$'
+    syntax match ex_SynNormal '^        \S.*$'
+    syntax match ex_SynLineNr '^        \d\+:'
 
     " key map
     nnoremap <buffer> <silent> <Return>   \|:call <SID>exTS_GotoTagSelectResult()<CR>
@@ -478,15 +466,10 @@ endfunction " >>>
 " Init exTagSelectStack window
 function! g:exTS_InitStackWindow() " <<<
     " syntax highlight
-    syntax match exTS_SynJumpMethodTS '\[TS]'
-    syntax match exTS_SynJumpMethodTG '\[TG]'
-    syntax match exTS_SynJumpSymbol '======>'
-    syntax match exTS_SynStackTitle '#.\+TAG NAME.\+ENTRY POINT PREVIEW'
-
-    highlight def exTS_SynJumpMethodTS term=none cterm=none ctermfg=Red gui=none guifg=Red 
-    highlight def exTS_SynJumpMethodTG term=none cterm=none ctermfg=Blue gui=none guifg=Blue 
-    highlight def exTS_SynJumpSymbol term=none cterm=none ctermfg=DarkGreen gui=none guifg=DarkGreen
-    highlight def exTS_SynStackTitle term=bold cterm=bold ctermfg=DarkYellow gui=bold guifg=Brown
+    syntax match ex_SynJumpMethodS '\[TS]'
+    syntax match ex_SynJumpMethodG '\[TG]'
+    syntax match ex_SynJumpSymbol '======>'
+    syntax match ex_SynTitle '#.\+TAG NAME.\+ENTRY POINT PREVIEW'
 
     " map keys
     nnoremap <buffer> <silent> <Return>   \|:call <SID>exTS_Stack_GoDirect()<CR>

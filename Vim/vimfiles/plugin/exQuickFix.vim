@@ -231,21 +231,15 @@ function! g:exQF_InitSelectWindow() " <<<
     setlocal foldmethod=marker foldmarker=<<<<<<,>>>>>> foldlevel=1
 
     " syntax highlight
-    syntax match exQF_SynFoldStart '^<<<<<< \S\+: '
-    syntax match exQF_SynFoldEnd '^>>>>>>'
-    syntax match exQF_Title '^<<<<<< \S\+ error log >>>>>>'
-    highlight def exQF_SynFoldStart gui=none guifg=DarkGreen term=none cterm=none ctermfg=DarkGreen
-    highlight def exQF_SynFoldEnd gui=none guifg=DarkGreen term=none cterm=none ctermfg=DarkGreen
-    highlight def exQF_Title gui=none guifg=DarkGreen term=none cterm=none ctermfg=DarkGreen
+    syntax match ex_SynFold '^<<<<<< \S\+: '
+    syntax match ex_SynFold '^>>>>>>'
+    syntax match ex_SynTitle '^<<<<<< \S\+ error log >>>>>>'
 
-    syntax region exQF_FileLineRegion start='^[^:<].*:\(\d\+:\|(\d\+)\)*'  end="$" contains=exQF_SynFileName,exQF_SynLineNumber
-    syntax match exQF_SynFileName contained  '^[^:]*:'
-    syntax match exQF_SynFileName contained '.*\ze(\d\+)'
-    syntax match exQF_SynLineNumber contained '\d\+:'
-    syntax match exQF_SynLineNumber contained '(\d\+)'
-
-    highlight def exQF_SynFileName term=none cterm=none ctermfg=Blue gui=none guifg=Blue 
-    highlight def exQF_SynLineNumber term=none cterm=none ctermfg=DarkRed gui=none guifg=Brown 
+    syntax region exQF_FileLineRegion start='^[^:<].*:\(\d\+:\|(\d\+)\)*'  end="$" contains=ex_SynFileName,ex_SynLineNr
+    syntax match ex_SynFileName contained  '^[^:]*:'
+    syntax match ex_SynFileName contained '.*\ze(\d\+)'
+    syntax match ex_SynLineNr contained '\d\+:'
+    syntax match ex_SynLineNr contained '(\d\+)'
 
     " key map
     nnoremap <buffer> <silent> <Return>   \|:call <SID>exQF_GotoInSelectWindow()<CR>
@@ -377,14 +371,11 @@ endfunction " >>>
 function! g:exQF_InitQuickViewWindow() " <<<
     setlocal number
     " syntax highlight
-    syntax region exQF_FileLineRegion start='^[^:<].*:\(\d\+:\|(\d\+)\)*'  end="$" contains=exQF_SynFileName,exQF_SynLineNumber
-    syntax match exQF_SynFileName contained  '^[^:]*:'
-    syntax match exQF_SynFileName contained '.*\ze(\d\+)'
-    syntax match exQF_SynLineNumber contained '\d\+:'
-    syntax match exQF_SynLineNumber contained '(\d\+)'
-
-    highlight def exQF_SynFileName term=none cterm=none ctermfg=Blue gui=none guifg=Blue 
-    highlight def exQF_SynLineNumber term=none cterm=none ctermfg=DarkRed gui=none guifg=Brown 
+    syntax region exQF_FileLineRegion start='^[^:<].*:\(\d\+:\|(\d\+)\)*'  end="$" contains=ex_SynFileName,ex_SynLineNr
+    syntax match ex_SynFileName contained  '^[^:]*:'
+    syntax match ex_SynFileName contained '.*\ze(\d\+)'
+    syntax match ex_SynLineNr contained '\d\+:'
+    syntax match ex_SynLineNr contained '(\d\+)'
 
     " key map
     nnoremap <buffer> <silent> <Return>   \|:call <SID>exQF_GotoInQuickViewWindow()<CR>

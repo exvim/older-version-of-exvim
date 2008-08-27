@@ -77,37 +77,56 @@ silent exec "colorscheme ex"
 au ColorScheme * call UpdateHighlights()
 function UpdateHighlights()
     " ==================
-    " exMacroHighlight
-    " ==================
-    hi exMacroDisable term=none cterm=none ctermfg=DarkGray gui=none guifg=DarkGray
-    hi link cCppOut exMacroDisable                
-
-    " ==================
     " exUtility
     " ==================
     hi ex_SynHL1 gui=none guibg=LightCyan term=none cterm=none ctermbg=LightCyan
     hi ex_SynHL2 gui=none guibg=LightMagenta term=none cterm=none ctermbg=LightMagenta
     hi ex_SynHL3 gui=none guibg=LightRed term=none cterm=none ctermbg=LightRed
     hi ex_SynHL4 gui=none guibg=LightGreen term=none cterm=none ctermbg=LightGreen
+
     hi ex_SynSelectLine gui=none guibg=#bfffff term=none cterm=none ctermbg=LightCyan
     hi ex_SynConfirmLine gui=none guibg=#ffe4b3 term=none cterm=none ctermbg=DarkYellow
     hi ex_SynObjectLine gui=none guibg=#ffe4b3 term=none cterm=none ctermbg=DarkYellow
-    hi ex_SynError gui=none guifg=White guibg=Red term=none cterm=none ctermfg=White ctermbg=Red
+
+    hi link ex_SynError Error
+    hi link ex_SynFold Comment
+    hi link ex_SynFileName Statement
+    hi link ex_SynLineNr LineNr
+    hi link ex_SynNormal Normal
+
+    hi ex_SynTransparent gui=none guifg=background term=none cterm=none ctermfg=DarkGray
+    hi ex_SynSearchPattern gui=bold guifg=DarkRed guibg=LightGray term=bold cterm=bold ctermfg=DarkRed ctermbg=LightGray
+    hi ex_SynTitle term=bold cterm=bold ctermfg=DarkYellow gui=bold guifg=Brown
+
+    hi ex_SynJumpMethodS term=none cterm=none ctermfg=Red gui=none guifg=Red 
+    hi ex_SynJumpMethodG term=none cterm=none ctermfg=Blue gui=none guifg=Blue 
+    hi link ex_SynJumpSymbol Comment
+
+    " ==================
+    " exMacroHighlight
+    " ==================
+    hi exMacroDisable term=none cterm=none ctermfg=DarkGray gui=none guifg=DarkGray
+    hi link cCppOut exMacroDisable                
+    hi exMH_GroupNameEnable term=bold cterm=bold ctermfg=DarkRed ctermbg=LightGray gui=bold guifg=DarkRed guibg=LightGray
+    hi exMH_GroupNameDisable term=bold cterm=bold ctermfg=Red ctermbg=DarkGray gui=bold guifg=DarkGray guibg=LightGray
+    hi link exMH_MacroEnable cPreProc
+    hi link exMH_MacroDisable exMacroDisable
 
     " ==================
     " exProject
     " ==================
-    hi exPJ_SynFoldStart gui=none guifg=background term=none cterm=none ctermfg=DarkGray
-    hi exPJ_SynFoldEnd gui=none guifg=background term=none cterm=none ctermfg=DarkGray
-    hi exPJ_SynDir gui=bold guifg=Brown term=bold cterm=bold ctermfg=DarkRed
     hi exPJ_TreeLine gui=none guifg=DarkGray term=none cterm=none ctermfg=Gray
-    hi link exPJ_SelectLine ex_SynSelectLine
+    hi exPJ_SynDir gui=bold guifg=Brown term=bold cterm=bold ctermfg=DarkRed
     hi exPJ_SynFile gui=none guifg=Magenta term=none cterm=none ctermfg=Magenta
+
     hi exPJ_SynSrcFile gui=none guifg=Blue term=none cterm=none ctermfg=Blue
     hi exPJ_SynHeaderFile gui=none guifg=DarkGreen term=none cterm=none ctermfg=DarkGreen
     hi exPJ_SynErrorFile gui=none guifg=Red term=none cterm=none ctermfg=Red
 
-    " TODO: make syntax highlight clear in ex plugins, currently lots of redundance code in it 
+    " ==================
+    " exCScope
+    " ==================
+    hi exCS_SynQfNumber gui=none guifg=Red term=none cterm=none ctermfg=Red
 
     " ==================
     " ShowMarks
@@ -147,32 +166,6 @@ function UpdateHighlights()
     " TagListFileName - Used for filenames
     hi MyTagListFileName term=bold cterm=bold ctermfg=Black ctermbg=LightBlue gui=bold guifg=Black guibg=LightBlue
 endfunction
-
-" XXX: Begin
-" " highlight diff
-" highlight DiffAdd cterm=none ctermbg=LightGreen gui=none guibg=LightGreen
-" highlight DiffDelete term=bold cterm=bold ctermfg=Red ctermbg=LightRed gui=bold guifg=Red guibg=LightRed
-" highlight DiffChange term=bold cterm=none ctermbg=LightCyan gui=none guibg=LightCyan
-" highlight DiffText term=reverse cterm=underline ctermbg=LightCyan gui=none guibg=Violet
-" 
-" " highlight fold
-" highlight Folded term=standout ctermfg=1 ctermbg=7 guifg=DarkBlue guibg=LightGrey
-" highlight FoldColumn term=standout ctermfg=1 ctermbg=7 guifg=DarkBlue guibg=Grey
-" 
-" " highlight line number and visual
-" highlight LineNr term=underline cterm=none ctermfg=DarkRed gui=none guifg=Brown
-" highlight Visual term=reverse ctermbg=LightGray guibg=LightGray
-" 
-" " highlight Pop menu
-" highlight Pmenu        ctermbg=LightGray guibg=LightGray
-" highlight PmenuSel     ctermbg=DarkBlue ctermfg=White guibg=DarkBlue guifg=White
-" highlight PmenuSbar    ctermbg=DarkGray guibg=DarkGray
-" highlight PmenuThumb   ctermbg=Black guibg=Black
-
-" highlight #if 0 using my own highlight define
-" highlight exMacroDisable term=none cterm=none ctermfg=DarkGray gui=none guifg=DarkGray
-" highlight link cCppOut exMacroDisable                
-" XXX: End
 
 " --------------------
 "  Vim UI
@@ -467,17 +460,6 @@ au FileType vim set comments=sO:\"\ -,mO:\"\ \ ,eO:\"\",f:\"
 let showmarks_include = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 let g:showmarks_enable = 1
 
-" XXX: Start
-" " For marks a-z
-" highlight ShowMarksHLl term=bold cterm=bold ctermbg=LightBlue ctermfg=Blue gui=bold guibg=LightBlue guifg=Blue                      
-" " For marks A-Z
-" highlight ShowMarksHLu term=bold cterm=bold ctermbg=LightRed ctermfg=DarkRed gui=bold guibg=LightRed guifg=DarkRed
-" " For all other marks
-" highlight ShowMarksHLo term=bold cterm=bold ctermbg=LightYellow ctermfg=DarkYellow gui=bold guibg=LightYellow guifg=DarkYellow
-" " For multiple marks on the same line.
-" highlight ShowMarksHLm term=bold cterm=bold ctermbg=LightGreen ctermfg=DarkGreen gui=bold guibg=LightGreen guifg=DarkGreen
-" XXX: END
-
 " quick remove mark
 nmap <F9> \mh
 
@@ -691,19 +673,6 @@ let g:exPJ_defualt_filter .= 'mk err exe bat '
 " F4:  Switch on/off TagList
 nnoremap <silent> <F4> :TlistToggle<CR>
 
-" XXX: BEGIN
-" " TagListTagName  - Used for tag names
-" highlight MyTagListTagName term=bold cterm=none ctermfg=Black ctermbg=DarkYellow gui=none guifg=Black guibg=#ffe4b3
-" " TagListTagScope - Used for tag scope
-" highlight MyTagListTagScope term=NONE cterm=NONE ctermfg=Blue gui=NONE guifg=Blue 
-" " TagListTitle    - Used for tag titles
-" highlight MyTagListTitle term=bold cterm=bold ctermfg=DarkRed ctermbg=LightGray gui=bold guifg=DarkRed guibg=LightGray 
-" " TagListComment  - Used for comments
-" highlight MyTagListComment ctermfg=DarkGreen guifg=DarkGreen 
-" " TagListFileName - Used for filenames
-" highlight MyTagListFileName term=bold cterm=bold ctermfg=Black ctermbg=LightBlue gui=bold guifg=Black guibg=LightBlue
-" XXX: END
-
 "let Tlist_Ctags_Cmd = $VIM.'/vimfiles/ctags.exe' " location of ctags tool 
 let Tlist_Show_One_File = 1 " Displaying tags for only one file~
 let Tlist_Exist_OnlyWindow = 1 " if you are the last, kill yourself 
@@ -738,17 +707,6 @@ let g:miniBufExplMaxSize = 1 " <max lines: defualt 0> setting this to 0 will mea
 "let g:miniBufExplMapCTabSwitchBufs = 1 
 "let g:miniBufExplMapWindowNavArrows = 1
 
-" XXX: BEGIN
-" "for buffers that have NOT CHANGED and are NOT VISIBLE.
-" highlight MBENormal ctermbg=LightGray ctermfg=DarkGray guibg=LightGray guifg=DarkGray
-" " for buffers that HAVE CHANGED and are NOT VISIBLE
-" highlight MBEChanged ctermbg=Red ctermfg=DarkRed guibg=Red guifg=DarkRed
-" " buffers that have NOT CHANGED and are VISIBLE
-" highlight MBEVisibleNormal term=bold cterm=bold ctermbg=Gray ctermfg=Black gui=bold guibg=Gray guifg=Black
-" " buffers that have CHANGED and are VISIBLE
-" highlight MBEVisibleChanged term=bold cterm=bold ctermbg=DarkRed ctermfg=Black gui=bold guibg=DarkRed guifg=Black
-" XXX: END
-
 " --------------------
 " OmniCppComplete
 " --------------------
@@ -759,14 +717,6 @@ imap <C-]> <C-X><C-O>
 
 " set completeopt as don't show menu and preview
 set completeopt=menuone
-
-" Popup menu hightLight Group
-" XXX: Begin
-" highlight Pmenu ctermbg=LightGray guibg=LightGray
-" highlight PmenuSel ctermbg=DarkBlue ctermfg=White guibg=DarkBlue guifg=White
-" highlight PmenuSbar ctermbg=DarkGray guibg=DarkGray
-" highlight PmenuThumb ctermbg=Black guibg=Black
-" XXX: End
 
 " use global scope search
 let OmniCpp_GlobalScopeSearch = 1

@@ -94,6 +94,12 @@ let s:exCS_quick_view_idx = 1
 let s:exCS_picked_search_result = ''
 let s:exCS_quick_view_search_pattern = ''
 
+" -------------------------------
+" syntax highlight
+" -------------------------------
+
+hi def exCS_SynQfNumber gui=none guifg=Red term=none cterm=none ctermfg=Red
+
 " >>>
 
 " -------------------------------------------------------------------------
@@ -353,31 +359,12 @@ function! g:exCS_InitSelectWindow() " <<<
     if g:exCS_highlight_result
         " this will load the syntax highlight as cpp for search result
         silent exec "so $VIM/vimfiles/after/syntax/exUtility.vim"
-
-        "
-        syntax match exCS_SynFileName '^.*\s\+(.*)$'
-        syntax region exCS_SynSearchPattern start="^----------" end="----------"
-        syntax match exCS_SynLineNumber '<\d\+>'
-        syntax match exCS_SynQfNumber '^ \[\d\+\]'
-
-        "
-        highlight def exCS_SynFileName gui=none guifg=DarkBlue term=none cterm=none ctermfg=DarkBlue
-        highlight def exCS_SynSearchPattern gui=bold guifg=DarkRed guibg=LightGray term=bold cterm=bold ctermfg=DarkRed ctermbg=LightGray
-        highlight def exCS_SynLineNumber gui=none guifg=Red term=none cterm=none ctermfg=Red
-        highlight def exCS_SynQfNumber gui=none guifg=Red term=none cterm=none ctermfg=Red
-    else
-        "
-        syntax match exCS_SynFileName '^.*\s\+(.*)$'
-        syntax region exCS_SynSearchPattern start="^----------" end="----------"
-        syntax match exCS_SynLineNumber '<\d\+>'
-        syntax match exCS_SynQfNumber '^ \[\d\+\]'
-
-        "
-        highlight def exCS_SynFileName gui=none guifg=Blue term=none cterm=none ctermfg=Blue
-        highlight def exCS_SynSearchPattern gui=bold guifg=DarkRed guibg=LightGray term=bold cterm=bold ctermfg=DarkRed ctermbg=LightGray
-        highlight def exCS_SynLineNumber gui=none guifg=Red term=none cterm=none ctermfg=Red
-        highlight def exCS_SynQfNumber gui=none guifg=Brown term=none cterm=none ctermfg=Brown
     endif
+
+    syntax match ex_SynFileName '^.*\s\+(.*)$'
+    syntax region ex_SynSearchPattern start="^----------" end="----------"
+    syntax match ex_SynLineNr '<\d\+>'
+    syntax match exCS_SynQfNumber '^ \[\d\+\]'
 
     " key map
     nnoremap <buffer> <silent> <Return>   \|:call <SID>exCS_GotoInSelectWindow()<CR>
@@ -525,17 +512,11 @@ function! g:exCS_InitQuickViewWindow() " <<<
     silent! setlocal nonumber
     setlocal foldmethod=marker foldmarker=<<<<<<,>>>>>> foldlevel=1
     " syntax highlight
-    syntax match exCS_SynFileName '^[^:]*:'
-    syntax match exCS_SynSearchPattern '^----------.\+----------'
-    syntax match exCS_SynLineNumber '\d\+:'
-    syntax match exCS_SynFoldStart '<<<<<<'
-    syntax match exCS_SynFoldEnd '>>>>>>'
-
-    highlight def exCS_SynFileName gui=none guifg=Blue 
-    highlight def exCS_SynSearchPattern gui=bold guifg=DarkRed guibg=LightGray
-    highlight def exCS_SynLineNumber gui=none guifg=Brown 
-    highlight def exCS_SynFoldStart gui=none guifg=DarkGreen
-    highlight def exCS_SynFoldEnd gui=none guifg=DarkGreen
+    syntax match ex_SynFileName '^[^:]*:'
+    syntax match ex_SynSearchPattern '^----------.\+----------'
+    syntax match ex_SynLineNr '\d\+:'
+    syntax match ex_SynFold '<<<<<<'
+    syntax match ex_SynFold '>>>>>>'
 
     " key map
     nnoremap <buffer> <silent> <Return>   \|:call <SID>exCS_GotoInQuickViewWindow()<CR>

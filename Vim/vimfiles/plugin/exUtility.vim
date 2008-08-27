@@ -27,16 +27,6 @@ endif
 " local variable initialization
 " -------------------------------
 
-" 
-highlight def ex_SynHL1 gui=none guibg=LightCyan term=none cterm=none ctermbg=LightCyan
-highlight def ex_SynHL2 gui=none guibg=LightMagenta term=none cterm=none ctermbg=LightMagenta
-highlight def ex_SynHL3 gui=none guibg=LightRed term=none cterm=none ctermbg=LightRed
-highlight def ex_SynHL4 gui=none guibg=LightGreen term=none cterm=none ctermbg=LightGreen
-
-highlight def ex_SynSelectLine gui=none guibg=#bfffff term=none cterm=none ctermbg=LightCyan
-highlight def ex_SynConfirmLine gui=none guibg=#ffe4b3 term=none cterm=none ctermbg=DarkYellow
-highlight def ex_SynObjectLine gui=none guibg=#ffe4b3 term=none cterm=none ctermbg=DarkYellow
-
 " store the highlight strings
 let s:ex_hlRegMap = ["","q","w","e","r"]
 
@@ -46,6 +36,35 @@ let s:ex_pluginbuf_num = -1
 
 " file browse
 let s:ex_level_list = []
+
+
+" -------------------------------
+" syntax highlight
+" -------------------------------
+
+hi def ex_SynHL1 gui=none guibg=LightCyan term=none cterm=none ctermbg=LightCyan
+hi def ex_SynHL2 gui=none guibg=LightMagenta term=none cterm=none ctermbg=LightMagenta
+hi def ex_SynHL3 gui=none guibg=LightRed term=none cterm=none ctermbg=LightRed
+hi def ex_SynHL4 gui=none guibg=LightGreen term=none cterm=none ctermbg=LightGreen
+
+hi def ex_SynSelectLine gui=none guibg=#bfffff term=none cterm=none ctermbg=LightCyan
+hi def ex_SynConfirmLine gui=none guibg=#ffe4b3 term=none cterm=none ctermbg=DarkYellow
+hi def ex_SynObjectLine gui=none guibg=#ffe4b3 term=none cterm=none ctermbg=DarkYellow
+
+hi def link ex_SynError Error
+hi def link ex_SynFold Comment
+hi def link ex_SynFileName Statement
+hi def link ex_SynLineNr LineNr
+hi def link ex_SynNormal Normal
+
+hi def ex_SynTransparent gui=none guifg=background term=none cterm=none ctermfg=DarkGray
+hi def ex_SynSearchPattern gui=bold guifg=DarkRed guibg=LightGray term=bold cterm=bold ctermfg=DarkRed ctermbg=LightGray
+hi def ex_SynTitle term=bold cterm=bold ctermfg=DarkYellow gui=bold guifg=Brown
+
+hi def ex_SynJumpMethodS term=none cterm=none ctermfg=Red gui=none guifg=Red 
+hi def ex_SynJumpMethodG term=none cterm=none ctermfg=Blue gui=none guifg=Blue 
+hi def link ex_SynJumpSymbol Comment
+
 " >>>
 
 " ------------------------
@@ -151,7 +170,6 @@ function! g:ex_InitWindow(init_func_name) " <<<
 
     " Define hightlighting
     syntax match ex_SynError '^Error:.*'
-    highlight def ex_SynError gui=none guifg=White guibg=Red term=none cterm=none ctermfg=White ctermbg=Red
 
     " Define the ex autocommands
     augroup ex_auto_cmds
