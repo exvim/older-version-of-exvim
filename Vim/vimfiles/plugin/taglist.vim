@@ -1353,29 +1353,21 @@ endfunction
 " Tlist_Window_Zoom
 " Zoom (maximize/minimize) the taglist window
 function! s:Tlist_Window_Zoom()
-    if s:tlist_win_maximized
-        " Restore the window back to the previous size
-        if g:Tlist_Use_Horiz_Window
-            exe 'resize ' . g:Tlist_WinHeight
+    "
+    if g:Tlist_Use_Horiz_Window
+        if winheight('.') <= g:Tlist_WinHeight
+            let new_size = g:Tlist_WinHeight + g:Tlist_WinIncreament
         else
-            exe 'vert resize ' . g:Tlist_WinWidth
+            let new_size = g:Tlist_WinHeight
         endif
-        let s:tlist_win_maximized = 0
+        exe 'resize ' . new_size
     else
-        " Set the window size to the maximum possible without closing other
-        " windows
-        if g:Tlist_Use_Horiz_Window
-            " resize
-            " jwu modify
-            let new_size = g:Tlist_WinHeight + g:Tlist_WinIncreament
-            exe 'resize ' . new_size
+        if winwidth('.') <= g:Tlist_WinWidth
+            let new_size = g:Tlist_WinWidth + g:Tlist_WinIncreament
         else
-            " vert resize
-            " jwu modify
-            let new_size = g:Tlist_WinHeight + g:Tlist_WinIncreament
-            exe 'vert resize ' . new_size
+            let new_size = g:Tlist_WinWidth
         endif
-        let s:tlist_win_maximized = 1
+        exe 'vert resize ' . new_size
     endif
 endfunction
 
