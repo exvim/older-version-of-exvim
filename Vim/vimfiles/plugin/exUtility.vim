@@ -33,6 +33,8 @@ let s:ex_hlRegMap = ["","q","w","e","r"]
 " local script vairable initialization
 let s:ex_editbuf_num = -1
 let s:ex_pluginbuf_num = -1
+let s:ex_lastbuf_pos = []
+let s:ex_curbuf_pos = []
 
 " file browse
 let s:ex_level_list = []
@@ -174,6 +176,7 @@ function! g:ex_InitWindow(init_func_name) " <<<
     " Define the ex autocommands
     augroup ex_auto_cmds
         autocmd WinLeave * call g:ex_RecordCurrentBufNum()
+        autocmd WinLeave * call g:ex_RecordCurrentPos()
     augroup end
 
     " avoid cwd change problem
@@ -563,6 +566,15 @@ function! g:ex_RecordCurrentBufNum() " <<<
     endif
 endfunction " >>>
 
+" --ex_RecordCurrentPos--
+" Record current buf pos
+function g:ex_RecordCurrentPos() " <<<
+    let bufnr = bufnr('%')
+    if buflisted(bufnr) && bufloaded(bufnr) && bufexists(bufnr)
+        let s:ex_lastbuf_pos = getpos('.')
+    endif
+endfunction " >>>
+
 " --ex_UpdateCurrentBuffer--
 "  Update current buffer
 function! g:ex_UpdateCurrentBuffer() " <<<
@@ -602,7 +614,10 @@ function! g:ex_GotoLastEditBuffer() " <<<
     let bufnr = bufnr("#")
     if buflisted(bufnr) && bufloaded(bufnr) && bufexists(bufnr)
         "silent exec "normal! M"
+        let s:ex_curbuf_pos = s:ex_lastbuf_pos
+        let s:ex_lastbuf_pos = getpos('.')
         silent exec bufnr."b!"
+        silent call setpos('.',s:ex_curbuf_pos)
     else
         call g:ex_WarningMsg("Buffer: " .bufname(bufnr).  " can't be accessed.")
     endif
