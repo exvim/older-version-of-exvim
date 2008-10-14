@@ -570,8 +570,11 @@ endfunction " >>>
 " Record current buf pos
 function g:ex_RecordCurrentPos() " <<<
     let bufnr = bufnr('%')
-    if buflisted(bufnr) && bufloaded(bufnr) && bufexists(bufnr)
+    let short_bufname = fnamemodify(bufname(bufnr),":p:t")
+    if buflisted(bufnr) && bufloaded(bufnr) && bufexists(bufnr) && index( g:exUT_plugin_list, short_bufname, 0, 1 ) == -1
         let s:ex_lastbuf_pos = getpos('.')
+    else
+        let s:ex_curbuf_pos = getpos('.')
     endif
 endfunction " >>>
 
@@ -612,7 +615,9 @@ endfunction " >>>
 function! g:ex_GotoLastEditBuffer() " <<<
     " check if buffer existed and listed
     let bufnr = bufnr("#")
-    if buflisted(bufnr) && bufloaded(bufnr) && bufexists(bufnr)
+    let short_bufname = fnamemodify(bufname(bufnr),":p:t")
+    let cur_short_bufname = fnamemodify(bufname('%'),":p:t")
+    if buflisted(bufnr) && bufloaded(bufnr) && bufexists(bufnr) && index( g:exUT_plugin_list, short_bufname, 0, 1 ) == -1 && index( g:exUT_plugin_list, cur_short_bufname, 0, 1 ) == -1
         "silent exec "normal! M"
         let s:ex_curbuf_pos = s:ex_lastbuf_pos
         let s:ex_lastbuf_pos = getpos('.')
