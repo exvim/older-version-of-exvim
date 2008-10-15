@@ -26,7 +26,7 @@ OutDir := ./_build/msvc/$(Platform)
 # Error File Output Path
 ErrDir := $(OutDir)/$(Configuration)/logs/errors
 ErrLogName := ErrorLog.err
-FullPath_Errs := $(ErrDir)/$(ErrLogName)
+FullPath_Errs := "$(ErrDir)/$(ErrLogName)"
 
 # ----------------------------------------------------------
 #  User Define
