@@ -307,7 +307,7 @@ vmap <F12> :call g:ex_InsertIFZero()<CR>
 nmap <F12> :call g:ex_RemoveIFZero()<CR>
 
 " F11:  Insert/Remove C++ Comment ("//") before all the lines of the selection
-vmap <F11> :call g:ex_InsertRemoveCmt()<CR>
+" vmap <F11> :call g:ex_InsertRemoveCmt()<CR>
 
 " XXX: F10 looks like have some feature, when map with F10, the gv will take no effects
 " F9:  Insert/Remove macro extend ("\") after all the lines of the selection
@@ -340,7 +340,7 @@ nnoremap gf :call g:ex_QuickFileJump()<CR>
 " VimTip #401: A mapping for easy switching between buffers
 nmap <silent> <C-Right> :bn!<CR>
 nmap <silent> <C-Left> :bp!<CR>
-nmap <silent> <C-Tab> :call g:ex_GotoLastEditBuffer()<CR>
+nmap <silent> <C-Tab> :call g:ex_SwapToLastEditBuffer()<CR>
 
 " Move in fold
 map z<Up> zk
@@ -461,7 +461,7 @@ let showmarks_include = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 let g:showmarks_enable = 1
 
 " quick remove mark
-nmap <F9> \mh
+" nmap <F9> \mh
 
 " --------------------
 " exUtility
@@ -766,6 +766,22 @@ let g:vimwiki_ext = ".wiki"
 let g:vimwiki_smartCR = 1
 let g:vimwiki_maxhi = 1
 let g:vimwiki_stripsym = '_'
+
+" --------------------
+" EnhCommentify
+" --------------------
+
+let g:EnhCommentifyFirstLineMode='yes'
+let g:EnhCommentifyRespectIndent='yes'
+let g:EnhCommentifyUseBlockIndent='yes'
+let g:EnhCommentifyAlignRight = 'yes'
+let g:EnhCommentifyPretty = 'yes'
+vmap <F11> <Plug>VisualComment
+nmap <F11> <Plug>Comment
+imap <F11> <ESC><Plug>Comment
+vmap <C-F11> <Plug>VisualDeComment
+nmap <C-F11> <Plug>DeComment
+imap <C-F11> <ESC><Plug>DeComment
 
 " --------------------
 " exEnvironmentSetting

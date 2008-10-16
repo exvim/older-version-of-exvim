@@ -33,8 +33,10 @@ let s:ex_hlRegMap = ["","q","w","e","r"]
 " local script vairable initialization
 let s:ex_editbuf_num = -1
 let s:ex_pluginbuf_num = -1
-let s:ex_lastbuf_pos = []
-let s:ex_curbuf_pos = []
+
+" swap buf infos
+let s:ex_swap_buf_num = -1
+let s:ex_swap_buf_pos = []
 
 " file browse
 let s:ex_level_list = []
@@ -176,7 +178,7 @@ function! g:ex_InitWindow(init_func_name) " <<<
     " Define the ex autocommands
     augroup ex_auto_cmds
         autocmd WinLeave * call g:ex_RecordCurrentBufNum()
-        autocmd WinLeave * call g:ex_RecordCurrentPos()
+        autocmd BufLeave * call g:ex_RecordSwapBufInfo()
     augroup end
 
     " avoid cwd change problem
@@ -303,7 +305,7 @@ function! g:ex_ToggleWindow( buffer_name, window_direction, window_size, use_ver
     call g:ex_OpenWindow( a:buffer_name, a:window_direction, a:window_size, a:use_vertical, a:edit_mode, a:backto_editbuf, a:init_func_name, a:call_func_name )
 endfunction " >>>
 
-" --ex_ResizeWindow
+" --ex_ResizeWindow--
 "  Resize window use increase value
 function! g:ex_ResizeWindow( use_vertical, original_size, increase_size ) " <<<
     if a:use_vertical
@@ -335,84 +337,85 @@ endfunction " >>>
 
 " --ex_PutSegment--
 function! g:ex_PutSegment() " <<<
-    execute 'normal! ' . 'o' . "///////////////////////////////////////////////////////////////////////////////"
-    execute 'normal! ' . 'o' . "// "
-    execute 'normal! ' . 'o' . "///////////////////////////////////////////////////////////////////////////////\<CR>"
+    execute 'normal! ' . 'o' . b:ECcommentOpen . "/////////////////////////////////////////////////////////////////////////////" . b:ECcommentClose
+    execute 'normal! ' . 'o' . b:ECcommentOpen . " " . b:ECcommentClose
+    execute 'normal! ' . 'o' . b:ECcommentOpen . "/////////////////////////////////////////////////////////////////////////////" . b:ECcommentClose . "\<CR>"
 endfunction " >>>
 
 " --ex_PutNote--
 function! g:ex_PutNote() " <<<
-    execute 'normal! ' . 'o' . "// ############################################################################"
-    execute 'normal! ' . 'o' . "// Note: "
-    execute 'normal! ' . 'o' . "// ############################################################################\<CR>"
+    execute 'normal! ' . 'o' . b:ECcommentOpen . " ############################################################################" . b:ECcommentClose
+    execute 'normal! ' . 'o' . b:ECcommentOpen . " Note: " . b:ECcommentClose
+    execute 'normal! ' . 'o' . b:ECcommentOpen . " ############################################################################" . b:ECcommentClose . "\<CR>"
 endfunction " >>>
 
 " --ex_PutNamespaceStart--
 function! g:ex_PutNamespaceStart( space_name ) " <<<
     execute 'normal! ' . 'o'
-    execute 'normal! ' . "\<Home>c$" . "// #########################\<CR>"
+    execute 'normal! ' . "\<Home>c$" . b:ECcommentOpen . " #########################" . b:ECcommentClose . "\<CR>"
     execute 'normal! ' . "\<Home>c$" . "namespace " . a:space_name . " { \<CR>" 
-    execute 'normal! ' . "\<Home>c$" . "// #########################\<CR>"
+    execute 'normal! ' . "\<Home>c$" . b:ECcommentOpen . " #########################" . b:ECcommentClose . "\<CR>"
 endfunction " >>>
 
 " --ex_PutNamespaceEnd--
 function! g:ex_PutNamespaceEnd( space_name ) " <<<
     execute 'normal! ' . 'o'
-    execute 'normal! ' . "\<Home>c$" . "// #########################\<CR>"
+    execute 'normal! ' . "\<Home>c$" . b:ECcommentOpen . " #########################" . b:ECcommentClose . "\<CR>"
     execute 'normal! ' . "\<Home>c$" . "} // end namespace " . a:space_name . " \<CR>" 
-    execute 'normal! ' . "\<Home>c$" . "// #########################\<CR>"
+    execute 'normal! ' . "\<Home>c$" . b:ECcommentOpen . " #########################" . b:ECcommentClose . "\<CR>"
 endfunction " >>>
 
 " --ex_PutNamespaceStart--
 function! g:ex_PutNamespace( space_name ) " <<<
     execute 'normal! ' . 'o'
-    execute 'normal! ' . "\<Home>c$" . "// #########################\<CR>"
+    execute 'normal! ' . "\<Home>c$" . b:ECcommentOpen . " #########################" . b:ECcommentClose . "\<CR>"
     execute 'normal! ' . "\<Home>c$" . "namespace " . a:space_name . " { \<CR>" 
-    execute 'normal! ' . "\<Home>c$" . "// #########################\<CR>"
+    execute 'normal! ' . "\<Home>c$" . b:ECcommentOpen . " #########################" . b:ECcommentClose . "\<CR>"
     execute 'normal! ' . 'o'
-    execute 'normal! ' . "\<Home>c$" . "// #########################\<CR>"
+    execute 'normal! ' . "\<Home>c$" . b:ECcommentOpen . " #########################" . b:ECcommentClose . "\<CR>"
     execute 'normal! ' . "\<Home>c$" . "} // end namespace " . a:space_name . " \<CR>" 
-    execute 'normal! ' . "\<Home>c$" . "// #########################\<CR>"
+    execute 'normal! ' . "\<Home>c$" . b:ECcommentOpen . " #########################" . b:ECcommentClose . "\<CR>"
 endfunction " >>>
 
 " --ex_PutSeparate--
 function! g:ex_PutSeparate() " <<<
-    execute 'normal! ' . 'o' . "// ========================================================"
-    execute 'normal! ' . 'o' . "// "
+    execute 'normal! ' . 'o' . b:ECcommentOpen . " ========================================================" . b:ECcommentClose
+    execute 'normal! ' . 'o' . b:ECcommentOpen . " " . b:ECcommentClose
+    execute 'normal! ' . 'o' . b:ECcommentOpen . " ========================================================" . b:ECcommentClose . "\<CR>"
 endfunction " >>>
 
 " --ex_PutDescription--
 function! g:ex_PutDescription() " <<<
-    execute 'normal! ' . 'o' . "// ------------------------------------------------------------------"
-    execute 'normal! ' . 'o' . "// Desc: "
-    execute 'normal! ' . 'o' . "// ------------------------------------------------------------------\<CR>"
+    execute 'normal! ' . 'o' . b:ECcommentOpen . " ------------------------------------------------------------------" . b:ECcommentClose
+    execute 'normal! ' . 'o' . b:ECcommentOpen . " Desc: " . b:ECcommentClose 
+    execute 'normal! ' . 'o' . b:ECcommentOpen . " ------------------------------------------------------------------" . b:ECcommentClose . "\<CR>"
 endfunction " >>>
 
 " --ex_PutDefine--
 function! g:ex_PutDefine() " <<<
-    execute 'normal! ' . 'o' . "// ------------------------------------------------------------------"
-    execute 'normal! ' . 'o' . "// Desc: "
-    execute 'normal! ' . 'o' . "// ------------------------------------------------------------------\<CR>"
+    execute 'normal! ' . 'o' . b:ECcommentOpen . " ------------------------------------------------------------------" . b:ECcommentClose
+    execute 'normal! ' . 'o' . b:ECcommentOpen . " Desc: " . b:ECcommentClose 
+    execute 'normal! ' . 'o' . b:ECcommentOpen . " ------------------------------------------------------------------" . b:ECcommentClose . "\<CR>"
 endfunction " >>>
 
 " --ex_PutDeclaration--
 function! g:ex_PutDeclaration() " <<<
-    execute 'normal! ' . 'o' . "///////////////////////////////////////////////////////////////////////////////"
-    execute 'normal! ' . 'o' . "// class "
-    execute 'normal! ' . 'o' . "// "
-    execute 'normal! ' . 'o' . "// Purpose: "
-    execute 'normal! ' . 'o' . "// "
-    execute 'normal! ' . 'o' . "///////////////////////////////////////////////////////////////////////////////\<CR>"
+    execute 'normal! ' . 'o' . b:ECcommentOpen . "/////////////////////////////////////////////////////////////////////////////" . b:ECcommentClose
+    execute 'normal! ' . 'o' . b:ECcommentOpen . " class " . b:ECcommentClose
+    execute 'normal! ' . 'o' . b:ECcommentOpen . " " . b:ECcommentClose
+    execute 'normal! ' . 'o' . b:ECcommentOpen . " Purpose: " . b:ECcommentClose
+    execute 'normal! ' . 'o' . b:ECcommentOpen . " " . b:ECcommentClose
+    execute 'normal! ' . 'o' . b:ECcommentOpen . "/////////////////////////////////////////////////////////////////////////////" . b:ECcommentClose . "\<CR>"
 endfunction " >>>
 
 " --ex_PutHeader--
 function! g:ex_PutHeader() " <<<
     execute 'normal! ' . "gg"
-    execute 'normal! ' . "O" . "// ======================================================================================"
-    execute 'normal! ' . "o" . "// File         : " . fnamemodify(expand('%'), ":t")
-    execute 'normal! ' . "o" . "// Author       : Wu Jie "
-    execute 'normal! ' . "o" . "// Description  : "
-    execute 'normal! ' . "o" . "// ======================================================================================\<CR>"
+    execute 'normal! ' . "O" . b:ECcommentOpen . " ======================================================================================" . b:ECcommentClose
+    execute 'normal! ' . "o" . b:ECcommentOpen . " File         : " . fnamemodify(expand('%'), ":t") . b:ECcommentClose
+    execute 'normal! ' . "o" . b:ECcommentOpen . " Author       : Wu Jie " . b:ECcommentClose
+    execute 'normal! ' . "o" . b:ECcommentOpen . " Description  : " . b:ECcommentClose
+    execute 'normal! ' . "o" . b:ECcommentOpen . " ======================================================================================" . b:ECcommentClose . "\<CR>"
 endfunction " >>>
 
 " --ex_PutMain--
@@ -560,21 +563,48 @@ function! g:ex_RecordCurrentBufNum() " <<<
     let short_bufname = fnamemodify(bufname('%'),":p:t")
     if index( g:exUT_plugin_list, short_bufname, 0, 1 ) == -1 " compare ignore case
         let s:ex_editbuf_num = bufnr('%')
-        let g:ex_debug = s:ex_editbuf_num 
     elseif short_bufname !=# "-MiniBufExplorer-"
         let s:ex_pluginbuf_num = bufnr('%')
     endif
 endfunction " >>>
 
-" --ex_RecordCurrentPos--
+" --ex_RecordSwapBufInfo--
 " Record current buf pos
-function g:ex_RecordCurrentPos() " <<<
+function g:ex_RecordSwapBufInfo() " <<<
     let bufnr = bufnr('%')
     let short_bufname = fnamemodify(bufname(bufnr),":p:t")
     if buflisted(bufnr) && bufloaded(bufnr) && bufexists(bufnr) && index( g:exUT_plugin_list, short_bufname, 0, 1 ) == -1
-        let s:ex_lastbuf_pos = getpos('.')
+        let s:ex_swap_buf_num = bufnr
+        let s:ex_swap_buf_pos = getpos('.')
+    endif
+endfunction " >>>
+
+" --ex_SwapToLastEditBuffer--
+function! g:ex_SwapToLastEditBuffer() " <<<
+    " check if current buffer can use switch
+    let cur_bufnr = bufnr('%')
+    let cru_short_bufname = fnamemodify(bufname('%'),":p:t")
+
+    if index( g:exUT_plugin_list, cru_short_bufname, 0, 1 ) != -1 " check it is plugin window or not
+        call g:ex_WarningMsg("Buffer: " .bufname(cur_bufnr).  " can't be switch.")
+        return
+    endif
+
+    " check if last buffer existed and listed, swap if accessable
+    let last_bufnr = bufnr("#")
+    let last_short_bufname = fnamemodify(bufname(last_bufnr),":p:t")
+    if buflisted(last_bufnr) && bufloaded(last_bufnr) && bufexists(last_bufnr) && index( g:exUT_plugin_list, last_short_bufname, 0, 1 ) == -1
+        let tmp_swap_buf_pos = deepcopy(s:ex_swap_buf_pos)
+        let tmp_swap_buf_nr = s:ex_swap_buf_num
+        let s:ex_swap_buf_pos = getpos('.')
+        silent exec last_bufnr."b!"
+
+        " only recover the pos when we have the right last buffer recorded
+        if last_bufnr == tmp_swap_buf_nr
+            silent call setpos('.',tmp_swap_buf_pos)
+        endif
     else
-        let s:ex_curbuf_pos = getpos('.')
+        call g:ex_WarningMsg("Buffer: " .bufname(last_bufnr).  " can't be accessed.")
     endif
 endfunction " >>>
 
@@ -609,23 +639,6 @@ endfunction " >>>
 " --ex_GetEditBufferNum--
 function! g:ex_GetEditBufferNum() " <<<
     return s:ex_editbuf_num
-endfunction " >>>
-
-" --ex_GotoLastEditBuffer--
-function! g:ex_GotoLastEditBuffer() " <<<
-    " check if buffer existed and listed
-    let bufnr = bufnr("#")
-    let short_bufname = fnamemodify(bufname(bufnr),":p:t")
-    let cur_short_bufname = fnamemodify(bufname('%'),":p:t")
-    if buflisted(bufnr) && bufloaded(bufnr) && bufexists(bufnr) && index( g:exUT_plugin_list, short_bufname, 0, 1 ) == -1 && index( g:exUT_plugin_list, cur_short_bufname, 0, 1 ) == -1
-        "silent exec "normal! M"
-        let s:ex_curbuf_pos = s:ex_lastbuf_pos
-        let s:ex_lastbuf_pos = getpos('.')
-        silent exec bufnr."b!"
-        silent call setpos('.',s:ex_curbuf_pos)
-    else
-        call g:ex_WarningMsg("Buffer: " .bufname(bufnr).  " can't be accessed.")
-    endif
 endfunction " >>>
 
 " --ex_YankBufferName--
