@@ -748,7 +748,7 @@ function! s:exPJ_GotoCurrentFile() " <<<
             " -----------------------------
 
             " re-check by directory search
-            if full_path_name =~# escape(cur_bufname,'\')
+            if full_path_name ==# fnamemodify( cur_bufname, ":p" )
                 let pattern_found = 1
             else
                 continue
