@@ -776,6 +776,9 @@ let g:EnhCommentifyRespectIndent='yes'
 let g:EnhCommentifyUseBlockIndent='yes'
 let g:EnhCommentifyAlignRight = 'yes'
 let g:EnhCommentifyPretty = 'yes'
+let g:EnhCommentifyBindInNormal = 'no'
+let g:EnhCommentifyBindInVisual = 'no'
+let g:EnhCommentifyBindInInsert = 'no'
 vmap <F11> <Plug>VisualComment
 nmap <F11> <Plug>Comment
 imap <F11> <ESC><Plug>Comment
