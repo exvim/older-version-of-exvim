@@ -562,6 +562,19 @@ command MAIN call g:ex_PutMain()
 command -narg=1 CLASS call g:ex_PutClass( "class", "<args>" )
 command -narg=1 STRUCT call g:ex_PutClass( "struct", "<args>" )
 
+" text mark
+command -range TEMP call g:ex_MarkText("TEMP")
+command -range DEBUG call g:ex_MarkText("DEBUG")
+command -range RELEASE call g:ex_MarkText("RELEASE")
+command -range CRASH call g:ex_MarkText("CRASH")
+command -range MODIFY call g:ex_MarkText("MODIFY")
+
+command -range TEST call g:ex_MarkText("TESTME")
+command -range DEL call g:ex_MarkText("DELME")
+command -range FIX call g:ex_MarkText("FIXME")
+
+command -range -narg=1 MK call g:ex_MarkText("<args>")
+
 " add plugin we use to prevent them record as edit-buffer
 let g:exUT_plugin_list = ["-MiniBufExplorer-","__Tag_List__"] 
 

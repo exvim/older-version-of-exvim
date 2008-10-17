@@ -9,6 +9,7 @@
 " the extertion syntax define
 " ==========================================
 " EX_ENGINE extentions
+
 syn keyword cType              SIZE_T
 syn keyword cType              UINT INT UINT8 INT8 UINT16 INT16 UINT32 INT32 UINT64 INT64
 syn keyword cType              uint uint8 int8 uint16 int16 uint32 int32 uint64 int64
@@ -24,7 +25,10 @@ syn keyword cStatement         ex_realloc ex_realloc_use ex_realloc_nomanage
 syn keyword cStatement         ex_free ex_free_use ex_free_nomanage
 syn keyword cStatement         ex_stack_malloc
 syn keyword cConstant	       TRUE FALSE
-syn keyword cTodo              contained NOTE TEMP DEBUG
+syn keyword cTodo              contained NOTE
+syn keyword exCommentLable     contained TEMP CRASH MODIFY DEBUG DELME TESTME
+
+syn cluster	cCommentGroup	contains=cTodo,exCommentLable
 
 " ==========================================
 " exMacroHighlight Predeined Syntax
@@ -66,6 +70,10 @@ hi def link cConstant             Boolean
 " ------------------------------------------
 " exMacroHilight hilight defines
 " ------------------------------------------
+
+hi def exCommentLable term=standout ctermfg=DarkYellow ctermbg=Red gui=none guifg=LightYellow guibg=Red
+" hi def exCommentLable term=standout ctermfg=DarkYellow ctermbg=Red gui=none guifg=DarkRed guibg=LightMagenta
+
 " inside pattern
 hi def link exCppSkip              exMacroDisable
 hi def link exMacroInside          Normal

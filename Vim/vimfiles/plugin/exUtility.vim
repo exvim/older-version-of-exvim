@@ -337,85 +337,127 @@ endfunction " >>>
 
 " --ex_PutSegment--
 function! g:ex_PutSegment() " <<<
-    execute 'normal! ' . 'o' . b:ECcommentOpen . "/////////////////////////////////////////////////////////////////////////////" . b:ECcommentClose
-    execute 'normal! ' . 'o' . b:ECcommentOpen . " " . b:ECcommentClose
-    execute 'normal! ' . 'o' . b:ECcommentOpen . "/////////////////////////////////////////////////////////////////////////////" . b:ECcommentClose . "\<CR>"
+    silent normal! o''
+    let space = printf('%*s',indent('.'),'')
+    silent call setline ( '.', space . b:ECcommentOpen . "/////////////////////////////////////////////////////////////////////////////" . b:ECcommentClose )
+    silent call append  ( '.', space . b:ECcommentOpen . "" . b:ECcommentClose )
+    silent normal! j
+    silent call append  ( '.', space . b:ECcommentOpen . "/////////////////////////////////////////////////////////////////////////////" . b:ECcommentClose )
+    silent normal! j
+    silent call append  ( '.', "" )
+    silent normal! j
 endfunction " >>>
 
 " --ex_PutNote--
 function! g:ex_PutNote() " <<<
-    execute 'normal! ' . 'o' . b:ECcommentOpen . " ############################################################################" . b:ECcommentClose
-    execute 'normal! ' . 'o' . b:ECcommentOpen . " Note: " . b:ECcommentClose
-    execute 'normal! ' . 'o' . b:ECcommentOpen . " ############################################################################" . b:ECcommentClose . "\<CR>"
+    silent normal! o''
+    let space = printf('%*s',indent('.'),'')
+    silent call setline ( '.', space . b:ECcommentOpen . " ############################################################################ " . b:ECcommentClose )
+    silent call append  ( '.', space . b:ECcommentOpen . " Note: " . b:ECcommentClose )
+    silent normal! j
+    silent call append  ( '.', space . b:ECcommentOpen . " ############################################################################ " . b:ECcommentClose )
+    silent normal! j
+    silent call append  ( '.', "" )
+    silent normal! j
 endfunction " >>>
 
 " --ex_PutNamespaceStart--
 function! g:ex_PutNamespaceStart( space_name ) " <<<
-    execute 'normal! ' . 'o'
-    execute 'normal! ' . "\<Home>c$" . b:ECcommentOpen . " #########################" . b:ECcommentClose . "\<CR>"
-    execute 'normal! ' . "\<Home>c$" . "namespace " . a:space_name . " { \<CR>" 
-    execute 'normal! ' . "\<Home>c$" . b:ECcommentOpen . " #########################" . b:ECcommentClose . "\<CR>"
+    silent call append  ( '.', b:ECcommentOpen . " ######################### " . b:ECcommentClose )
+    silent normal! j
+    silent call append  ( '.', "namespace " . a:space_name . " { " )
+    silent normal! j
+    silent call append  ( '.', b:ECcommentOpen . " ######################### " . b:ECcommentClose )
+    silent normal! j
+    silent call append  ( '.', "" )
+    silent normal! j
 endfunction " >>>
 
 " --ex_PutNamespaceEnd--
 function! g:ex_PutNamespaceEnd( space_name ) " <<<
-    execute 'normal! ' . 'o'
-    execute 'normal! ' . "\<Home>c$" . b:ECcommentOpen . " #########################" . b:ECcommentClose . "\<CR>"
-    execute 'normal! ' . "\<Home>c$" . "} // end namespace " . a:space_name . " \<CR>" 
-    execute 'normal! ' . "\<Home>c$" . b:ECcommentOpen . " #########################" . b:ECcommentClose . "\<CR>"
+    silent call append  ( '.', b:ECcommentOpen . " ######################### " . b:ECcommentClose )
+    silent normal! j
+    silent call append  ( '.', "} // end namespace " . a:space_name . " " )
+    silent normal! j
+    silent call append  ( '.', b:ECcommentOpen . " ######################### " . b:ECcommentClose )
+    silent normal! j
+    silent call append  ( '.', "" )
+    silent normal! j
 endfunction " >>>
 
 " --ex_PutNamespaceStart--
 function! g:ex_PutNamespace( space_name ) " <<<
-    execute 'normal! ' . 'o'
-    execute 'normal! ' . "\<Home>c$" . b:ECcommentOpen . " #########################" . b:ECcommentClose . "\<CR>"
-    execute 'normal! ' . "\<Home>c$" . "namespace " . a:space_name . " { \<CR>" 
-    execute 'normal! ' . "\<Home>c$" . b:ECcommentOpen . " #########################" . b:ECcommentClose . "\<CR>"
-    execute 'normal! ' . 'o'
-    execute 'normal! ' . "\<Home>c$" . b:ECcommentOpen . " #########################" . b:ECcommentClose . "\<CR>"
-    execute 'normal! ' . "\<Home>c$" . "} // end namespace " . a:space_name . " \<CR>" 
-    execute 'normal! ' . "\<Home>c$" . b:ECcommentOpen . " #########################" . b:ECcommentClose . "\<CR>"
+    call g:ex_PutNamespaceStart(a:space_name)
+    call g:ex_PutNamespaceEnd(a:space_name)
 endfunction " >>>
 
 " --ex_PutSeparate--
 function! g:ex_PutSeparate() " <<<
-    execute 'normal! ' . 'o' . b:ECcommentOpen . " ========================================================" . b:ECcommentClose
-    execute 'normal! ' . 'o' . b:ECcommentOpen . " " . b:ECcommentClose
-    execute 'normal! ' . 'o' . b:ECcommentOpen . " ========================================================" . b:ECcommentClose . "\<CR>"
+    silent normal! o''
+    let space = printf('%*s',indent('.'),'')
+    silent call setline ( '.', space . b:ECcommentOpen . " ======================================================== " . b:ECcommentClose )
+    silent call append  ( '.', space . b:ECcommentOpen . " " . b:ECcommentClose )
+    silent normal! j
+    silent call append  ( '.', space . b:ECcommentOpen . " ======================================================== " . b:ECcommentClose )
+    silent normal! j
+    silent call append  ( '.', "" )
+    silent normal! j
 endfunction " >>>
 
 " --ex_PutDescription--
 function! g:ex_PutDescription() " <<<
-    execute 'normal! ' . 'o' . b:ECcommentOpen . " ------------------------------------------------------------------" . b:ECcommentClose
-    execute 'normal! ' . 'o' . b:ECcommentOpen . " Desc: " . b:ECcommentClose 
-    execute 'normal! ' . 'o' . b:ECcommentOpen . " ------------------------------------------------------------------" . b:ECcommentClose . "\<CR>"
+    silent normal! o''
+    let space = printf('%*s',indent('.'),'')
+    silent call setline ( '.', space . b:ECcommentOpen . " ------------------------------------------------------------------ " . b:ECcommentClose )
+    silent call append  ( '.', space . b:ECcommentOpen . " Desc: " . b:ECcommentClose )
+    silent normal! j
+    silent call append  ( '.', space . b:ECcommentOpen . " ------------------------------------------------------------------ " . b:ECcommentClose )
+    silent normal! j
+    silent call append  ( '.', "" )
+    silent normal! j
 endfunction " >>>
 
 " --ex_PutDefine--
 function! g:ex_PutDefine() " <<<
-    execute 'normal! ' . 'o' . b:ECcommentOpen . " ------------------------------------------------------------------" . b:ECcommentClose
-    execute 'normal! ' . 'o' . b:ECcommentOpen . " Desc: " . b:ECcommentClose 
-    execute 'normal! ' . 'o' . b:ECcommentOpen . " ------------------------------------------------------------------" . b:ECcommentClose . "\<CR>"
+    silent normal! o''
+    let space = printf('%*s',indent('.'),'')
+    silent call setline ( '.', space . b:ECcommentOpen . " ------------------------------------------------------------------ " . b:ECcommentClose )
+    silent call append  ( '.', space . b:ECcommentOpen . " Desc: " . b:ECcommentClose )
+    silent normal! j
+    silent call append  ( '.', space . b:ECcommentOpen . " ------------------------------------------------------------------ " . b:ECcommentClose )
+    silent normal! j
+    silent call append  ( '.', "" )
+    silent normal! j
 endfunction " >>>
 
 " --ex_PutDeclaration--
 function! g:ex_PutDeclaration() " <<<
-    execute 'normal! ' . 'o' . b:ECcommentOpen . "/////////////////////////////////////////////////////////////////////////////" . b:ECcommentClose
-    execute 'normal! ' . 'o' . b:ECcommentOpen . " class " . b:ECcommentClose
-    execute 'normal! ' . 'o' . b:ECcommentOpen . " " . b:ECcommentClose
-    execute 'normal! ' . 'o' . b:ECcommentOpen . " Purpose: " . b:ECcommentClose
-    execute 'normal! ' . 'o' . b:ECcommentOpen . " " . b:ECcommentClose
-    execute 'normal! ' . 'o' . b:ECcommentOpen . "/////////////////////////////////////////////////////////////////////////////" . b:ECcommentClose . "\<CR>"
+    silent normal! o''
+    let space = printf('%*s',indent('.'),'')
+    silent call setline ( '.', space . b:ECcommentOpen . "/////////////////////////////////////////////////////////////////////////////" . b:ECcommentClose )
+    silent call append  ( '.', space . b:ECcommentOpen . " class " . b:ECcommentClose )
+    silent normal! j
+    silent call append  ( '.', space . b:ECcommentOpen . " " . b:ECcommentClose )
+    silent normal! j
+    silent call append  ( '.', space . b:ECcommentOpen . " Purpose: " . b:ECcommentClose )
+    silent normal! j
+    silent call append  ( '.', space . b:ECcommentOpen . " " . b:ECcommentClose )
+    silent normal! j
+    silent call append  ( '.', space . b:ECcommentOpen . "/////////////////////////////////////////////////////////////////////////////" . b:ECcommentClose )
+    silent normal! j
+    silent call append  ( '.', "" )
+    silent normal! j
 endfunction " >>>
 
 " --ex_PutHeader--
 function! g:ex_PutHeader() " <<<
-    execute 'normal! ' . "gg"
-    execute 'normal! ' . "O" . b:ECcommentOpen . " ======================================================================================" . b:ECcommentClose
-    execute 'normal! ' . "o" . b:ECcommentOpen . " File         : " . fnamemodify(expand('%'), ":t") . b:ECcommentClose
-    execute 'normal! ' . "o" . b:ECcommentOpen . " Author       : Wu Jie " . b:ECcommentClose
-    execute 'normal! ' . "o" . b:ECcommentOpen . " Description  : " . b:ECcommentClose
-    execute 'normal! ' . "o" . b:ECcommentOpen . " ======================================================================================" . b:ECcommentClose . "\<CR>"
+    silent call append ( 0, b:ECcommentOpen . " ======================================================================================" . b:ECcommentClose )
+    silent call append ( 1, b:ECcommentOpen . " File         : " . fnamemodify(expand('%'), ":t") . b:ECcommentClose )
+    silent call append ( 2, b:ECcommentOpen . " Author       : Wu Jie " . b:ECcommentClose )
+    silent call append ( 3, b:ECcommentOpen . " Description  : " . b:ECcommentClose )
+    silent call append ( 4, b:ECcommentOpen . " ======================================================================================" . b:ECcommentClose )
+    silent call append ( 5, "" )
+    silent call cursor ( 6, 0 )
 endfunction " >>>
 
 " --ex_PutMain--
@@ -454,6 +496,29 @@ function! g:ex_PutClass( class_type, class_name ) " <<<
     execute 'normal! ' . 'o' . "}; // end " . a:class_type . " " . a:class_name
 endfunction " >>>
 
+" --ex_MarkText--
+function! g:ex_MarkText( text ) range " <<<
+    " 
+    let v_line1 = line("'<")
+    let v_line2 = line("'>")
+
+    " 
+    if v_line1 <= v_line2
+        let first_line = v_line1
+        let last_line = v_line2 
+    else
+        let first_line = v_line2
+        let last_line = v_line1 
+    endif
+
+    "
+    let lstline = last_line + 1 
+    let space = printf('%*s',indent(first_line),'')
+    call append( last_line , space . b:ECcommentOpen . ' } ' . a:text . ' end ' . b:ECcommentClose )
+    call append( first_line -1 , space . b:ECcommentOpen . ' ' . a:text . ' { ' . b:ECcommentClose )
+    silent exec ":" . lstline
+endfunction " >>>
+
 " --ex_AlignDigit--
 function! g:ex_AlignDigit( align_nr, digit ) " <<<
     let print_fmt = '%'.a:align_nr.'d'
@@ -466,7 +531,7 @@ function! g:ex_InsertIFZero() range " <<<
     let lstline = a:lastline + 1 
     call append( a:lastline , "#endif")
     call append( a:firstline -1 , "#if 0")
-    exec ":" . lstline
+    silent exec ":" . lstline
 endfunction " >>>
 
 " --ex_RemoveIFZero--
@@ -512,7 +577,7 @@ function! g:ex_RemoveIFZero() range " <<<
     endif
     if else_lnum != -1
         silent exe "normal! ". else_lnum ."G"
-        silent normal! dd
+        silent call setline('.',"// XXX #else XXX")
     endif
     if if_lnum != -1
         silent exe "normal! ". if_lnum ."G"
