@@ -338,8 +338,12 @@ nmap <silent><Leader><ESC> :call g:ex_SwitchBuffer()<CR><ESC>
 nnoremap gf :call g:ex_QuickFileJump()<CR>
 
 " VimTip #401: A mapping for easy switching between buffers
-nmap <silent> <C-Right> :bn!<CR>
-nmap <silent> <C-Left> :bp!<CR>
+" NOTE: there has a bug, in window (not fullscree) mode, some times the buffer 
+"       will jump to other display screen ( if you use double screen ).      
+" nmap <silent> <C-Right> :bn!<CR>
+" nmap <silent> <C-Left> :bp!<CR>
+nmap <silent> <C-Right> :call g:ex_GotoBuffer('next')<CR>
+nmap <silent> <C-Left> :call g:ex_GotoBuffer('prev')<CR>
 nmap <silent> <C-Tab> :call g:ex_SwapToLastEditBuffer()<CR>
 
 " Move in fold

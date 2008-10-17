@@ -673,6 +673,30 @@ function! g:ex_SwapToLastEditBuffer() " <<<
     endif
 endfunction " >>>
 
+" --ex_GotoBuffer--
+function! g:ex_GotoBuffer(cmd) " <<<
+    " save current win pos x,y.
+    if has("gui_running")
+        let gui_win_pos_x = getwinposx()
+        let gui_win_pos_y = getwinposy()
+    endif
+
+    " jump buffer
+    if a:cmd ==# 'next'
+        silent exec "bn!"
+    elseif a:cmd ==# 'prev'
+        silent exec "bp!"
+    endif
+
+    " restore windows pos if needed ( if windows pos changed ) 
+    if has("gui_running")
+        if gui_win_pos_x != getwinposx() || gui_win_pos_y != getwinposy()
+            silent exec "winpos " . gui_win_pos_x " " . gui_win_pos_y
+        endif
+    endif
+endfunction " >>>
+
+
 " --ex_UpdateCurrentBuffer--
 "  Update current buffer
 function! g:ex_UpdateCurrentBuffer() " <<<
