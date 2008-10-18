@@ -41,7 +41,6 @@ let s:ex_swap_buf_pos = []
 " file browse
 let s:ex_level_list = []
 
-
 " -------------------------------
 " syntax highlight
 " -------------------------------
@@ -451,13 +450,35 @@ endfunction " >>>
 
 " --ex_PutHeader--
 function! g:ex_PutHeader() " <<<
+    if getline(1) =~# b:ECcommentOpen . " ======================================================================================" . b:ECcommentClose
+        if getline(2) =~# b:ECcommentOpen . " File         : .*" . b:ECcommentClose
+            if getline(3) =~# b:ECcommentOpen . " Author       : .*" . b:ECcommentClose
+                if getline(4) =~# b:ECcommentOpen . " Description  : .*" . b:ECcommentClose
+                    if getline(5) =~# b:ECcommentOpen . " Last Change  : .*" . b:ECcommentClose
+                        if getline(6) =~# b:ECcommentOpen . " ======================================================================================" . b:ECcommentClose
+                            silent call setline ( 1, b:ECcommentOpen . " ======================================================================================" . b:ECcommentClose )
+                            silent call setline ( 2, b:ECcommentOpen . " File         : " . fnamemodify(expand('%'), ":t") . b:ECcommentClose )
+                            silent call setline ( 3, b:ECcommentOpen . " Author       : Wu Jie " . b:ECcommentClose )
+                            silent call setline ( 4, b:ECcommentOpen . " Description  : " . b:ECcommentClose )
+                            silent call setline ( 5, b:ECcommentOpen . " Last Change  : " . strftime("%m/%d/%Y | %H:%M:%S %p | %A,%B") . b:ECcommentClose )
+                            silent call setline ( 6, b:ECcommentOpen . " ======================================================================================" . b:ECcommentClose )
+                            silent call cursor ( 7, 0 )
+                            return
+                        endif
+                    endif
+                endif
+            endif
+        endif
+    endif
+
     silent call append ( 0, b:ECcommentOpen . " ======================================================================================" . b:ECcommentClose )
     silent call append ( 1, b:ECcommentOpen . " File         : " . fnamemodify(expand('%'), ":t") . b:ECcommentClose )
     silent call append ( 2, b:ECcommentOpen . " Author       : Wu Jie " . b:ECcommentClose )
     silent call append ( 3, b:ECcommentOpen . " Description  : " . b:ECcommentClose )
-    silent call append ( 4, b:ECcommentOpen . " ======================================================================================" . b:ECcommentClose )
-    silent call append ( 5, "" )
-    silent call cursor ( 6, 0 )
+    silent call append ( 4, b:ECcommentOpen . " Last Change  : " . strftime("%m/%d/%Y | %H:%M:%S %p | %A,%B") . b:ECcommentClose )
+    silent call append ( 5, b:ECcommentOpen . " ======================================================================================" . b:ECcommentClose )
+    silent call append ( 6, "" )
+    silent call cursor ( 7, 0 )
 endfunction " >>>
 
 " --ex_PutMain--
@@ -816,7 +837,6 @@ function g:ex_Kwbd(kwbdStage) " <<<
         endif 
     endif 
 endfunction  " >>>
-
 
 " ------------------------
 "  file functions

@@ -1,6 +1,7 @@
 
 " --------- date_generator --------
 strftime("%Y-%m-%d_%a")
+strftime("%m/%d/%Y | %H:%M:%S %p | %A,%B")
 
 " --------- dir_convertor --------
 %s/\//\\/g " Linux->Windows 

@@ -505,7 +505,6 @@ nmap <silent> <leader>yb :call g:ex_YankBufferNameForCode()<CR>
 " copy path for code
 nmap <silent> <leader>yp :call g:ex_YankFilePathForCode()<CR>
 
-
 " VimTip 311: Open the folder containing the currently open file
 " http://vim.sourceforge.net/tip_view.php?tip_id=
 " 
@@ -771,18 +770,6 @@ let OmniCpp_MayCompleteScope = 0
 
 " When 'completeopt' does not contain "longest", Vim automatically select the first entry of the popup menu. You can change this behaviour with the OmniCpp_SelectFirstItem option.
 let OmniCpp_SelectFirstItem = 0
-
-" --------------------
-" vimwiki
-" --------------------
-
-let g:vimwiki_home = $TEMP.'\\vimwiki\\'
-let g:vimwiki_home_html = $TEMP.'\\vimwiki\\html\\'
-let g:vimwiki_index = "index"
-let g:vimwiki_ext = ".wiki"
-let g:vimwiki_smartCR = 1
-let g:vimwiki_maxhi = 1
-let g:vimwiki_stripsym = '_'
 
 " --------------------
 " EnhCommentify
