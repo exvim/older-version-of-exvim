@@ -1,101 +1,136 @@
-"=============================================================================
-" File:        exSymbolTable.vim
-" Author:      Yu Jianrong
-" Last Change: 2006-11-22
-" Version:     0.1
-"  
-" Copyright (c) 2006, Yu Jianrong
-" All rights reserved.
-"=============================================================================
-"
+" ======================================================================================
+" File         : exSymbolTable.vim
+" Author       : Wu Jie 
+" Last Change  : 10/18/2008 | 18:57:21 PM | Saturday,October
+" Description  : 
+" ======================================================================================
 
+" check if plugin loaded
 if exists('loaded_exsymboltable') || &cp
     finish
 endif
 let loaded_exsymboltable=1
 
-" -------------------------------------------------------------------------
-"  variable part
-" -------------------------------------------------------------------------
+"/////////////////////////////////////////////////////////////////////////////
+" variables
+"/////////////////////////////////////////////////////////////////////////////
 
-" Initialization <<<
-
-" -------------------------------
+" ======================================================== 
 " gloable varialbe initialization
-" -------------------------------
+" ======================================================== 
 
-" window height for horizon window mode
+" ------------------------------------------------------------------ 
+" Desc: window height for horizon window mode
+" ------------------------------------------------------------------ 
+
 if !exists('g:exSL_window_height')
     let g:exSL_window_height = 20
 endif
 
-" window width for vertical window mode
+" ------------------------------------------------------------------ 
+" Desc: window width for vertical window mode
+" ------------------------------------------------------------------ 
+
 if !exists('g:exSL_window_width')
     let g:exSL_window_width = 30
 endif
 
-" window height increment value
+" ------------------------------------------------------------------ 
+" Desc: window height increment value
+" ------------------------------------------------------------------ 
+
 if !exists('g:exSL_window_height_increment')
     let g:exSL_window_height_increment = 30
 endif
 
-" window width increment value
+" ------------------------------------------------------------------ 
+" Desc: window width increment value
+" ------------------------------------------------------------------ 
+
 if !exists('g:exSL_window_width_increment')
     let g:exSL_window_width_increment = 100
 endif
 
-" go back to edit buffer
+" ------------------------------------------------------------------ 
+" Desc: go back to edit buffer
 " 'topleft','botright'
+" ------------------------------------------------------------------ 
+
 if !exists('g:exSL_window_direction')
     let g:exSL_window_direction = 'botright'
 endif
 
-" use vertical or not
+" ------------------------------------------------------------------ 
+" Desc: use vertical or not
+" ------------------------------------------------------------------ 
+
 if !exists('g:exSL_use_vertical_window')
     let g:exSL_use_vertical_window = 1
 endif
 
-" set edit mode
+" ------------------------------------------------------------------ 
+" Desc: set edit mode
 " 'none', 'append', 'replace'
+" ------------------------------------------------------------------ 
+
 if !exists('g:exSL_edit_mode')
     let g:exSL_edit_mode = 'replace'
 endif
 
-" set tag select command
+" ------------------------------------------------------------------ 
+" Desc: set tag select command
+" ------------------------------------------------------------------ 
+
 if !exists('g:exSL_SymbolSelectCmd')
     let g:exSL_SymbolSelectCmd = 'ts'
 endif
 
-" -------------------------------
+" ======================================================== 
 " local variable initialization
-" -------------------------------
-" title
+" ======================================================== 
+
+" ------------------------------------------------------------------ 
+" Desc: title
+" ------------------------------------------------------------------ 
+
 let s:exSL_select_title = "__exSL_SelectWindow__"
 let s:exSL_quick_view_title = "__exSL_QuickViewWindow__"
 let s:exSL_short_title = 'Select'
 let s:exSL_cur_title = ''
 
-" general
+" ------------------------------------------------------------------ 
+" Desc: general
+" ------------------------------------------------------------------ 
+
 let s:exSL_ignore_case = 0
 let s:exSL_backto_editbuf = 0
 let s:exSL_picked_search_result = 0
 
-" select
+" ------------------------------------------------------------------ 
+" Desc: select
+" ------------------------------------------------------------------ 
+
 let s:exSL_select_idx = 1
 let s:exSL_get_symbol_file = 1
 
-" quick view
+" ------------------------------------------------------------------ 
+" Desc: quick view
+" ------------------------------------------------------------------ 
+
 let s:exSL_quick_view_idx = 1
 
-" >>>
+"/////////////////////////////////////////////////////////////////////////////
+" function defines
+"/////////////////////////////////////////////////////////////////////////////
 
+" ======================================================== 
+"  general function defines
+" ======================================================== 
 
-" -------------------------------------------------------------------------
-"  function part
-" -------------------------------------------------------------------------
+" ------------------------------------------------------------------ 
+" Desc: Open exSymbolSelect window 
+" ------------------------------------------------------------------ 
 
-" --exSL_OpenWindow--
-" Open exSymbolSelect window 
 function! s:exSL_OpenWindow( short_title ) " <<<
     if a:short_title != ''
         let s:exSL_short_title = a:short_title
@@ -109,8 +144,10 @@ function! s:exSL_OpenWindow( short_title ) " <<<
     endif
 endfunction " >>>
 
-" --exSL_ResizeWindow--
-" Resize the window use the increase value
+" ------------------------------------------------------------------ 
+" Desc: Resize the window use the increase value
+" ------------------------------------------------------------------ 
+
 function! s:exSL_ResizeWindow() " <<<
     if g:exSL_use_vertical_window
         call g:ex_ResizeWindow( g:exSL_use_vertical_window, g:exSL_window_width, g:exSL_window_width_increment )
@@ -119,8 +156,10 @@ function! s:exSL_ResizeWindow() " <<<
     endif
 endfunction " >>>
 
-" --exSL_ToggleWindow--
-" Toggle the window
+" ------------------------------------------------------------------ 
+" Desc: Toggle the window
+" ------------------------------------------------------------------ 
+
 function! s:exSL_ToggleWindow( short_title ) " <<<
     " read the file first
     if s:exSL_get_symbol_file
@@ -165,7 +204,10 @@ function! s:exSL_ToggleWindow( short_title ) " <<<
     endif
 endfunction " >>>
 
-" --exSL_SwitchWindow
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
 function! s:exSL_SwitchWindow( short_title ) " <<<
     " assignment the title
     if a:short_title == 'Select'
@@ -179,8 +221,10 @@ function! s:exSL_SwitchWindow( short_title ) " <<<
     endif
 endfunction " >>>
 
-" --exSL_SetCase--
-"  set if ignore case
+" ------------------------------------------------------------------ 
+" Desc: set if ignore case
+" ------------------------------------------------------------------ 
+
 function! s:exSL_SetIgnoreCase(ignore_case) " <<<
     let s:exSL_ignore_case = a:ignore_case
     if a:ignore_case
@@ -190,8 +234,10 @@ function! s:exSL_SetIgnoreCase(ignore_case) " <<<
     endif
 endfunction " >>>
 
-" --exSL_GetSymbolListResult--
-" search result directly
+" ------------------------------------------------------------------ 
+" Desc: search result directly
+" ------------------------------------------------------------------ 
+
 function! s:exSL_GetSymbolListResult( symbol ) " <<<
     "if &filetype == "ex_filetype"
     "    silent exec "normal \<Esc>"
@@ -219,8 +265,10 @@ function! s:exSL_GetSymbolListResult( symbol ) " <<<
     endif
 endfunction " >>>
 
-" --exSL_QuickSearch--
-" use quick search
+" ------------------------------------------------------------------ 
+" Desc: use quick search
+" ------------------------------------------------------------------ 
+
 function! s:exSL_QuickSearch() " <<<
     "if &filetype == "ex_filetype"
     "    silent exec "normal \<Esc>"
@@ -237,8 +285,10 @@ function! s:exSL_QuickSearch() " <<<
     silent exe 'redraw'
 endfunction " >>>
 
-" --exSL_CopyPickedLine--
-" copy the quick view result with search pattern
+" ------------------------------------------------------------------ 
+" Desc: copy the quick view result with search pattern
+" ------------------------------------------------------------------ 
+
 function! s:exSL_CopyPickedLine( search_pattern, by_word, inverse_search ) " <<<
     let use_pattern = 1
     if a:search_pattern == ''
@@ -279,8 +329,10 @@ function! s:exSL_CopyPickedLine( search_pattern, by_word, inverse_search ) " <<<
     endif
 endfunction " >>>
 
-" --exSL_ShowPickedResult--
-"  show the picked result in the quick view window
+" ------------------------------------------------------------------ 
+" Desc: show the picked result in the quick view window
+" ------------------------------------------------------------------ 
+
 function! s:exSL_ShowPickedResult( search_pattern, inverse_search ) " <<<
     " assignment the title
     if s:exSL_short_title == 'Select'
@@ -302,8 +354,10 @@ function! s:exSL_ShowPickedResult( search_pattern, inverse_search ) " <<<
     silent exec 'normal! ggdd'
 endfunction " >>>
 
-" --exSL_GetAndShowPickedResult--
-"  show the picked result in the quick view window
+" ------------------------------------------------------------------ 
+" Desc: show the picked result in the quick view window
+" ------------------------------------------------------------------ 
+
 function! s:exSL_GetAndShowPickedResult() " <<<
     " get search pattern
     let search_pattern = expand("<cword>")
@@ -323,12 +377,14 @@ function! s:exSL_GetAndShowPickedResult() " <<<
     silent exec 'normal! ggdd'
 endfunction " >>>
 
-" ------------------------------
-"  select window part
-" ------------------------------
+" ======================================================== 
+" select window defines
+" ======================================================== 
 
-" --exSL_InitSelectWindow--
-" Init exSymbolList window
+" ------------------------------------------------------------------ 
+" Desc: Init exSymbolList window
+" ------------------------------------------------------------------ 
+
 function! g:exSL_InitSelectWindow() " <<<
     " set buffer no modifiable
     silent! setlocal nomodifiable
@@ -351,15 +407,19 @@ function! g:exSL_InitSelectWindow() " <<<
     au CursorMoved <buffer> :call g:ex_HighlightSelectLine()
 endfunction " >>>
 
-" --exSL_UpdateSelectWindow--
-" Update exSymbolList window
+" ------------------------------------------------------------------ 
+" Desc: Update exSymbolList window
+" ------------------------------------------------------------------ 
+
 function! g:exSL_UpdateSelectWindow() " <<<
     call cursor( s:exSL_select_idx, 1)
     call g:ex_HighlightConfirmLine()
 endfunction " >>>
 
-" --exSL_GotoResultInSelectWindow--
-" Goto result position
+" ------------------------------------------------------------------ 
+" Desc: Goto result position
+" ------------------------------------------------------------------ 
+
 function! s:exSL_GotoResultInSelectWindow() " <<<
     call g:ex_HighlightConfirmLine()
     let s:exSL_select_idx = line('.')
@@ -372,11 +432,14 @@ function! s:exSL_GotoResultInSelectWindow() " <<<
     endif
 endfunction " >>>
 
-" ------------------------------
+" ======================================================== 
 "  quick view window part
-" ------------------------------
-" --exSL_InitQuickViewWindow--
-" Init exSymbolList window
+" ======================================================== 
+
+" ------------------------------------------------------------------ 
+" Desc: Init exSymbolList window
+" ------------------------------------------------------------------ 
+
 function! g:exSL_InitQuickViewWindow() " <<<
     silent! setlocal nonumber
     
@@ -394,15 +457,19 @@ function! g:exSL_InitQuickViewWindow() " <<<
     au CursorMoved <buffer> :call g:ex_HighlightSelectLine()
 endfunction " >>>
 
-" --exSL_UpdateQuickViewWindow--
-" Update exSymbolList window
+" ------------------------------------------------------------------ 
+" Desc: Update exSymbolList window
+" ------------------------------------------------------------------ 
+
 function! g:exSL_UpdateQuickViewWindow() " <<<
     call cursor( s:exSL_quick_view_idx, 1)
     call g:ex_HighlightConfirmLine()
 endfunction " >>>
 
-" --exSL_GotoResultInQuickViewWindow--
-" Goto result position
+" ------------------------------------------------------------------ 
+" Desc: Goto result position
+" ------------------------------------------------------------------ 
+
 function! s:exSL_GotoResultInQuickViewWindow() " <<<
     call g:ex_HighlightConfirmLine()
     let s:exSL_quick_view_idx = line('.')
@@ -411,10 +478,11 @@ function! s:exSL_GotoResultInQuickViewWindow() " <<<
     exec (g:exSL_SymbolSelectCmd . " " . symbol_key_word)
 endfunction " >>>
 
+"/////////////////////////////////////////////////////////////////////////////
+" Commands
+"/////////////////////////////////////////////////////////////////////////////
 
-" -------------------------------------------------------------------------
-" Command part
-" -------------------------------------------------------------------------
+"
 command -nargs=1 SL call s:exSL_GetSymbolListResult('<args>')
 command ExslSelectToggle call s:exSL_ToggleWindow('Select')
 command ExslQuickViewToggle call s:exSL_ToggleWindow('QuickView')
@@ -429,6 +497,10 @@ command -nargs=1 SLPD call s:exSL_ShowPickedResult('<args>',1)
 " Ignore case setting
 command SLigc call s:exSL_SetIgnoreCase(1)
 command SLnoigc call s:exSL_SetIgnoreCase(0)
+
+"/////////////////////////////////////////////////////////////////////////////
+" finish
+"/////////////////////////////////////////////////////////////////////////////
 
 finish
 " vim: set foldmethod=marker foldmarker=<<<,>>> foldlevel=1:

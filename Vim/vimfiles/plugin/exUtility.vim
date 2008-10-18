@@ -1,49 +1,65 @@
-"=============================================================================
-" File:        exUtility.vim
-" Author:      Johnny
-" Last Change: Wed 29 Oct 2006 01:05:03 PM EDT
-" Version:     1.0
-"=============================================================================
-" You may use this code in whatever way you see fit.
+" ======================================================================================
+" File         : exUtility.vim
+" Author       : Wu Jie 
+" Last Change  : 10/18/2008 | 18:57:33 PM | Saturday,October
+" Description  : 
+" ======================================================================================
 
+" check if plugin loaded
 if exists('loaded_exutility') || &cp
     finish
 endif
 let loaded_exutility=1
 
-" -------------------------------------------------------------------------
-"  variable part
-" -------------------------------------------------------------------------
-" Initialization <<<
-" -------------------------------
+"/////////////////////////////////////////////////////////////////////////////
+" variables
+"/////////////////////////////////////////////////////////////////////////////
+
+" ======================================================== 
 " gloable varialbe initialization
-" -------------------------------
-" store the plugins buffer name, so we can ensure not recore name as edit-buffer
+" ======================================================== 
+
+" ------------------------------------------------------------------ 
+" Desc: store the plugins buffer name, so we can ensure not recore name as edit-buffer
+" ------------------------------------------------------------------ 
+
 if !exists('g:exUT_plugin_list')
     let g:exUT_plugin_list = []
 endif
 
-" -------------------------------
+" ======================================================== 
 " local variable initialization
-" -------------------------------
+" ======================================================== 
 
-" store the highlight strings
+" ------------------------------------------------------------------ 
+" Desc: store the highlight strings
+" ------------------------------------------------------------------ 
+
 let s:ex_hlRegMap = ["","q","w","e","r"]
 
-" local script vairable initialization
+" ------------------------------------------------------------------ 
+" Desc: local script vairable initialization
+" ------------------------------------------------------------------ 
+
 let s:ex_editbuf_num = -1
 let s:ex_pluginbuf_num = -1
 
-" swap buf infos
+" ------------------------------------------------------------------ 
+" Desc: swap buf infos
+" ------------------------------------------------------------------ 
+
 let s:ex_swap_buf_num = -1
 let s:ex_swap_buf_pos = []
 
-" file browse
+" ------------------------------------------------------------------ 
+" Desc: file browse
+" ------------------------------------------------------------------ 
+
 let s:ex_level_list = []
 
-" -------------------------------
+" ======================================================== 
 " syntax highlight
-" -------------------------------
+" ======================================================== 
 
 hi def ex_SynHL1 gui=none guibg=LightCyan term=none cterm=none ctermbg=LightCyan
 hi def ex_SynHL2 gui=none guibg=LightMagenta term=none cterm=none ctermbg=LightMagenta
@@ -68,20 +84,22 @@ hi def ex_SynJumpMethodS term=none cterm=none ctermfg=Red gui=none guifg=Red
 hi def ex_SynJumpMethodG term=none cterm=none ctermfg=Blue gui=none guifg=Blue 
 hi def link ex_SynJumpSymbol Comment
 
-" >>>
 
-" ------------------------
+"/////////////////////////////////////////////////////////////////////////////
 "  window functions
-" ------------------------
+"/////////////////////////////////////////////////////////////////////////////
 
-" --ex_CreateWindow--
-" Create window
+
+" ------------------------------------------------------------------ 
+" Desc: Create window
 " buffer_name : a string of the buffer_name
 " window_direction : 'topleft', 'botright'
 " use_vertical : 0, 1
 " edit_mode : 'none', 'append', 'replace'
 " init_func_name: 'none', 'function_name'
-function! g:ex_CreateWindow( buffer_name, window_direction, window_size, use_vertical, edit_mode, init_func_name ) " <<<
+" ------------------------------------------------------------------ 
+
+function g:ex_CreateWindow( buffer_name, window_direction, window_size, use_vertical, edit_mode, init_func_name ) " <<<
     " If the window is open, jump to it
     let winnum = bufwinnr(a:buffer_name)
     if winnum != -1
@@ -144,10 +162,12 @@ function! g:ex_CreateWindow( buffer_name, window_direction, window_size, use_ver
 
 endfunction " >>>
 
-" --ex_InitWindow--
-" Init window
+" ------------------------------------------------------------------ 
+" Desc: Init window
 " init_func_name: 'none', 'function_name'
-function! g:ex_InitWindow(init_func_name) " <<<
+" ------------------------------------------------------------------ 
+
+function g:ex_InitWindow(init_func_name) " <<<
     silent! setlocal filetype=ex_filetype
 
     " Folding related settings
@@ -190,8 +210,8 @@ function! g:ex_InitWindow(init_func_name) " <<<
     endif
 endfunction " >>>
 
-" --ex_OpenWindow--
-"  Open window
+" ------------------------------------------------------------------ 
+" Desc: Open window
 " buffer_name : a string of the buffer_name
 " window_direction : 'topleft', 'botright'
 " use_vertical : 0, 1
@@ -199,7 +219,9 @@ endfunction " >>>
 " backto_editbuf : 0, 1
 " init_func_name: 'none', 'function_name'
 " call_func_name: 'none', 'function_name'
-function! g:ex_OpenWindow( buffer_name, window_direction, window_size, use_vertical, edit_mode, backto_editbuf, init_func_name, call_func_name ) " <<<
+" ------------------------------------------------------------------ 
+
+function g:ex_OpenWindow( buffer_name, window_direction, window_size, use_vertical, edit_mode, backto_editbuf, init_func_name, call_func_name ) " <<<
     " if current editor buf is a plugin file type
     if &filetype == "ex_filetype"
         silent exec "normal \<Esc>"
@@ -240,9 +262,11 @@ function! g:ex_OpenWindow( buffer_name, window_direction, window_size, use_verti
     endif
 endfunction " >>>
 
-" --ex_CloseWindow--
-"  Close window
-function! g:ex_CloseWindow( buffer_name ) " <<<
+" ------------------------------------------------------------------ 
+" Desc: Close window
+" ------------------------------------------------------------------ 
+
+function g:ex_CloseWindow( buffer_name ) " <<<
     "Make sure the window exists
     let winnum = bufwinnr(a:buffer_name)
     if winnum == -1
@@ -291,9 +315,11 @@ function! g:ex_CloseWindow( buffer_name ) " <<<
     "endif
 endfunction " >>>
 
-" --ex_ToggleWindow--
-" Toggle window
-function! g:ex_ToggleWindow( buffer_name, window_direction, window_size, use_vertical, edit_mode, backto_editbuf, init_func_name, call_func_name ) " <<<
+" ------------------------------------------------------------------ 
+" Desc: Toggle window
+" ------------------------------------------------------------------ 
+
+function g:ex_ToggleWindow( buffer_name, window_direction, window_size, use_vertical, edit_mode, backto_editbuf, init_func_name, call_func_name ) " <<<
     " If exTagSelect window is open then close it.
     let winnum = bufwinnr(a:buffer_name)
     if winnum != -1
@@ -304,9 +330,11 @@ function! g:ex_ToggleWindow( buffer_name, window_direction, window_size, use_ver
     call g:ex_OpenWindow( a:buffer_name, a:window_direction, a:window_size, a:use_vertical, a:edit_mode, a:backto_editbuf, a:init_func_name, a:call_func_name )
 endfunction " >>>
 
-" --ex_ResizeWindow--
-"  Resize window use increase value
-function! g:ex_ResizeWindow( use_vertical, original_size, increase_size ) " <<<
+" ------------------------------------------------------------------ 
+" Desc: Resize window use increase value
+" ------------------------------------------------------------------ 
+
+function g:ex_ResizeWindow( use_vertical, original_size, increase_size ) " <<<
     if a:use_vertical
         let new_size = a:original_size
         if winwidth('.') <= a:original_size
@@ -322,20 +350,26 @@ function! g:ex_ResizeWindow( use_vertical, original_size, increase_size ) " <<<
     endif
 endfunction " >>>
 
-" ------------------------
+"/////////////////////////////////////////////////////////////////////////////
 "  string functions
-" ------------------------
+"/////////////////////////////////////////////////////////////////////////////
 
-" --ex_PutLine--
-function! g:ex_PutLine( len, line_type ) " <<<
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
+function g:ex_PutLine( len, line_type ) " <<<
     let plen = a:len - strlen(getline('.'))
     if (plen > 0)
         execute 'normal! ' plen . 'A' . a:line_type
     endif
 endfunction " >>>
 
-" --ex_PutSegment--
-function! g:ex_PutSegment() " <<<
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
+function g:ex_PutSegment() " <<<
     silent normal! o''
     let space = printf('%*s',indent('.'),'')
     silent call setline ( '.', space . b:ECcommentOpen . "/////////////////////////////////////////////////////////////////////////////" . b:ECcommentClose )
@@ -347,8 +381,11 @@ function! g:ex_PutSegment() " <<<
     silent normal! j
 endfunction " >>>
 
-" --ex_PutNote--
-function! g:ex_PutNote() " <<<
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
+function g:ex_PutNote() " <<<
     silent normal! o''
     let space = printf('%*s',indent('.'),'')
     silent call setline ( '.', space . b:ECcommentOpen . " ############################################################################ " . b:ECcommentClose )
@@ -360,8 +397,11 @@ function! g:ex_PutNote() " <<<
     silent normal! j
 endfunction " >>>
 
-" --ex_PutNamespaceStart--
-function! g:ex_PutNamespaceStart( space_name ) " <<<
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
+function g:ex_PutNamespaceStart( space_name ) " <<<
     silent call append  ( '.', b:ECcommentOpen . " ######################### " . b:ECcommentClose )
     silent normal! j
     silent call append  ( '.', "namespace " . a:space_name . " { " )
@@ -372,8 +412,11 @@ function! g:ex_PutNamespaceStart( space_name ) " <<<
     silent normal! j
 endfunction " >>>
 
-" --ex_PutNamespaceEnd--
-function! g:ex_PutNamespaceEnd( space_name ) " <<<
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
+function g:ex_PutNamespaceEnd( space_name ) " <<<
     silent call append  ( '.', b:ECcommentOpen . " ######################### " . b:ECcommentClose )
     silent normal! j
     silent call append  ( '.', "} // end namespace " . a:space_name . " " )
@@ -384,14 +427,20 @@ function! g:ex_PutNamespaceEnd( space_name ) " <<<
     silent normal! j
 endfunction " >>>
 
-" --ex_PutNamespaceStart--
-function! g:ex_PutNamespace( space_name ) " <<<
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
+function g:ex_PutNamespace( space_name ) " <<<
     call g:ex_PutNamespaceStart(a:space_name)
     call g:ex_PutNamespaceEnd(a:space_name)
 endfunction " >>>
 
-" --ex_PutSeparate--
-function! g:ex_PutSeparate() " <<<
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
+function g:ex_PutSeparate() " <<<
     silent normal! o''
     let space = printf('%*s',indent('.'),'')
     silent call setline ( '.', space . b:ECcommentOpen . " ======================================================== " . b:ECcommentClose )
@@ -403,8 +452,11 @@ function! g:ex_PutSeparate() " <<<
     silent normal! j
 endfunction " >>>
 
-" --ex_PutDescription--
-function! g:ex_PutDescription() " <<<
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
+function g:ex_PutDescription() " <<<
     silent normal! o''
     let space = printf('%*s',indent('.'),'')
     silent call setline ( '.', space . b:ECcommentOpen . " ------------------------------------------------------------------ " . b:ECcommentClose )
@@ -416,8 +468,11 @@ function! g:ex_PutDescription() " <<<
     silent normal! j
 endfunction " >>>
 
-" --ex_PutDefine--
-function! g:ex_PutDefine() " <<<
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
+function g:ex_PutDefine() " <<<
     silent normal! o''
     let space = printf('%*s',indent('.'),'')
     silent call setline ( '.', space . b:ECcommentOpen . " ------------------------------------------------------------------ " . b:ECcommentClose )
@@ -429,8 +484,11 @@ function! g:ex_PutDefine() " <<<
     silent normal! j
 endfunction " >>>
 
-" --ex_PutDeclaration--
-function! g:ex_PutDeclaration() " <<<
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
+function g:ex_PutDeclaration() " <<<
     silent normal! o''
     let space = printf('%*s',indent('.'),'')
     silent call setline ( '.', space . b:ECcommentOpen . "/////////////////////////////////////////////////////////////////////////////" . b:ECcommentClose )
@@ -448,23 +506,21 @@ function! g:ex_PutDeclaration() " <<<
     silent normal! j
 endfunction " >>>
 
-" --ex_PutHeader--
-function! g:ex_PutHeader() " <<<
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
+function g:ex_PutHeader() " <<<
     if getline(1) =~# b:ECcommentOpen . " ======================================================================================" . b:ECcommentClose
         if getline(2) =~# b:ECcommentOpen . " File         : .*" . b:ECcommentClose
             if getline(3) =~# b:ECcommentOpen . " Author       : .*" . b:ECcommentClose
-                if getline(4) =~# b:ECcommentOpen . " Description  : .*" . b:ECcommentClose
-                    if getline(5) =~# b:ECcommentOpen . " Last Change  : .*" . b:ECcommentClose
-                        if getline(6) =~# b:ECcommentOpen . " ======================================================================================" . b:ECcommentClose
-                            silent call setline ( 1, b:ECcommentOpen . " ======================================================================================" . b:ECcommentClose )
-                            silent call setline ( 2, b:ECcommentOpen . " File         : " . fnamemodify(expand('%'), ":t") . b:ECcommentClose )
-                            silent call setline ( 3, b:ECcommentOpen . " Author       : Wu Jie " . b:ECcommentClose )
-                            silent call setline ( 4, b:ECcommentOpen . " Description  : " . b:ECcommentClose )
-                            silent call setline ( 5, b:ECcommentOpen . " Last Change  : " . strftime("%m/%d/%Y | %H:%M:%S %p | %A,%B") . b:ECcommentClose )
-                            silent call setline ( 6, b:ECcommentOpen . " ======================================================================================" . b:ECcommentClose )
-                            silent call cursor ( 7, 0 )
-                            return
-                        endif
+                if getline(4) =~# b:ECcommentOpen . " Last Change  : .*" . b:ECcommentClose
+                    if getline(5) =~# b:ECcommentOpen . " Description  : .*" . b:ECcommentClose
+                        silent call setline ( 2, b:ECcommentOpen . " File         : " . fnamemodify(expand('%'), ":t") . b:ECcommentClose )
+                        silent call setline ( 3, b:ECcommentOpen . " Author       : Wu Jie " . b:ECcommentClose )
+                        silent call setline ( 4, b:ECcommentOpen . " Last Change  : " . strftime("%m/%d/%Y | %H:%M:%S %p | %A,%B") . b:ECcommentClose )
+                        silent call cursor ( 7, 0 )
+                        return
                     endif
                 endif
             endif
@@ -474,23 +530,29 @@ function! g:ex_PutHeader() " <<<
     silent call append ( 0, b:ECcommentOpen . " ======================================================================================" . b:ECcommentClose )
     silent call append ( 1, b:ECcommentOpen . " File         : " . fnamemodify(expand('%'), ":t") . b:ECcommentClose )
     silent call append ( 2, b:ECcommentOpen . " Author       : Wu Jie " . b:ECcommentClose )
-    silent call append ( 3, b:ECcommentOpen . " Description  : " . b:ECcommentClose )
-    silent call append ( 4, b:ECcommentOpen . " Last Change  : " . strftime("%m/%d/%Y | %H:%M:%S %p | %A,%B") . b:ECcommentClose )
+    silent call append ( 3, b:ECcommentOpen . " Last Change  : " . strftime("%m/%d/%Y | %H:%M:%S %p | %A,%B") . b:ECcommentClose )
+    silent call append ( 4, b:ECcommentOpen . " Description  : " . b:ECcommentClose )
     silent call append ( 5, b:ECcommentOpen . " ======================================================================================" . b:ECcommentClose )
     silent call append ( 6, "" )
     silent call cursor ( 7, 0 )
 endfunction " >>>
 
-" --ex_PutMain--
-function! g:ex_PutMain() " <<<
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
+function g:ex_PutMain() " <<<
     execute 'normal! ' . 'o' .   "int main( int argc, char* argv[] )"
     execute 'normal! ' . "o" . "{"
     execute 'normal! ' . "o" . "}\<CR>"
     execute 'normal! ' . "2k"
 endfunction " >>>
 
-" --ex_PutClass--
-function! g:ex_PutClass( class_type, class_name ) " <<<
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
+function g:ex_PutClass( class_type, class_name ) " <<<
     execute 'normal! ' . 'o' . "///////////////////////////////////////////////////////////////////////////////"
     execute 'normal! ' . 'o' . "// class " . a:class_name
     execute 'normal! ' . 'o' . "// "
@@ -517,8 +579,11 @@ function! g:ex_PutClass( class_type, class_name ) " <<<
     execute 'normal! ' . 'o' . "}; // end " . a:class_type . " " . a:class_name
 endfunction " >>>
 
-" --ex_MarkText--
-function! g:ex_MarkText( text ) range " <<<
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
+function g:ex_MarkText( text ) range " <<<
     " 
     let v_line1 = line("'<")
     let v_line2 = line("'>")
@@ -540,23 +605,32 @@ function! g:ex_MarkText( text ) range " <<<
     silent exec ":" . lstline
 endfunction " >>>
 
-" --ex_AlignDigit--
-function! g:ex_AlignDigit( align_nr, digit ) " <<<
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
+function g:ex_AlignDigit( align_nr, digit ) " <<<
     let print_fmt = '%'.a:align_nr.'d'
     let str_digit = printf(print_fmt,a:digit)
     retur substitute(str_digit,' ', '0','g')
 endfunction " >>>
 
-" --ex_InsertIFZero--
-function! g:ex_InsertIFZero() range " <<<
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
+function g:ex_InsertIFZero() range " <<<
     let lstline = a:lastline + 1 
     call append( a:lastline , "#endif")
     call append( a:firstline -1 , "#if 0")
     silent exec ":" . lstline
 endfunction " >>>
 
-" --ex_RemoveIFZero--
-function! g:ex_RemoveIFZero() range " <<<
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
+function g:ex_RemoveIFZero() range " <<<
     " FIXME: when line have **, it will failed
     let save_cursor = getpos(".")
     let save_line = getline(".")
@@ -610,42 +684,27 @@ function! g:ex_RemoveIFZero() range " <<<
     silent call cursor(line('.'), save_cursor[2])
 endfunction " >>>
 
-" --ex_InsertRemoveCmt--
-"  TODO: commit follow first line
-function! g:ex_InsertRemoveCmt() range " <<<
-    if (strpart(getline('.'),0,2) == "//")
-        exec ":" . a:firstline . "," . a:lastline . "s\/^\\\/\\\/\/\/"
-    else
-        exec ":" . a:firstline . "," . a:lastline . "s\/^\/\\\/\\\/\/"
-    endif
-endfunction " >>>
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
 
-" --ex_InsertRemoveExtend--
-"  TODO: check if the last character is space, if not, add space
-function! g:ex_InsertRemoveExtend() range " <<<
-    let line = getline('.')
-    if (strpart(line,strlen(line)-1,1) == "\\")
-        exec ":" . a:firstline . "," . a:lastline . "s/\\\\$//"
-    else
-        exec ":" . a:firstline . "," . a:lastline . "s/$/\\\\/"
-    endif
-endfunction " >>>
-
-" --ex_Yank--
-function! g:ex_Yank( string ) " <<<
+function g:ex_Yank( string ) " <<<
     let @" = a:string
     let @* = a:string
 endfunction " >>>
 
-" ------------------------
+" ======================================================== 
 "  buffer functions
-" ------------------------
+" ======================================================== 
 
+
+" ------------------------------------------------------------------ 
+" Desc: Record current buf num when leave
 " FIXME: when you split window/open the same file in two window, you can only get the original bufwinnr() by the bufnr().
 " FIXME: :sp will trigger the WinEnter, find a way to use it.
-" --ex_RecordCurrentBufNum--
-" Record current buf num when leave
-function! g:ex_RecordCurrentBufNum() " <<<
+" ------------------------------------------------------------------ 
+
+function g:ex_RecordCurrentBufNum() " <<<
     let short_bufname = fnamemodify(bufname('%'),":p:t")
     if index( g:exUT_plugin_list, short_bufname, 0, 1 ) == -1 " compare ignore case
         let s:ex_editbuf_num = bufnr('%')
@@ -654,8 +713,10 @@ function! g:ex_RecordCurrentBufNum() " <<<
     endif
 endfunction " >>>
 
-" --ex_RecordSwapBufInfo--
-" Record current buf pos
+" ------------------------------------------------------------------ 
+" Desc: Record current buf pos
+" ------------------------------------------------------------------ 
+
 function g:ex_RecordSwapBufInfo() " <<<
     let bufnr = bufnr('%')
     let short_bufname = fnamemodify(bufname(bufnr),":p:t")
@@ -665,8 +726,11 @@ function g:ex_RecordSwapBufInfo() " <<<
     endif
 endfunction " >>>
 
-" --ex_SwapToLastEditBuffer--
-function! g:ex_SwapToLastEditBuffer() " <<<
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
+function g:ex_SwapToLastEditBuffer() " <<<
     " check if current buffer can use switch
     let cur_bufnr = bufnr('%')
     let cru_short_bufname = fnamemodify(bufname('%'),":p:t")
@@ -694,8 +758,11 @@ function! g:ex_SwapToLastEditBuffer() " <<<
     endif
 endfunction " >>>
 
-" --ex_GotoBuffer--
-function! g:ex_GotoBuffer(cmd) " <<<
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
+function g:ex_GotoBuffer(cmd) " <<<
     " save current win pos x,y.
     if has("gui_running")
         let gui_win_pos_x = getwinposx()
@@ -717,17 +784,21 @@ function! g:ex_GotoBuffer(cmd) " <<<
     endif
 endfunction " >>>
 
+" ------------------------------------------------------------------ 
+" Desc: Update current buffer
+" ------------------------------------------------------------------ 
 
-" --ex_UpdateCurrentBuffer--
-"  Update current buffer
-function! g:ex_UpdateCurrentBuffer() " <<<
+function g:ex_UpdateCurrentBuffer() " <<<
     if exists(':UMiniBufExplorer')
         silent exe "UMiniBufExplorer"
     endif
 endfunction " >>>
 
-" --ex_GotoEditBuffer--
-function! g:ex_GotoEditBuffer() " <<<
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
+function g:ex_GotoEditBuffer() " <<<
     " check and jump to the buffer first
     let winnum = bufwinnr(s:ex_editbuf_num)
     if winnr() != winnum && winnum != -1 " this will fix the jump error in the vimentry buffer, cause the winnum for vimentry buffer will be -1
@@ -736,8 +807,11 @@ function! g:ex_GotoEditBuffer() " <<<
     call g:ex_RecordCurrentBufNum()
 endfunction " >>>
 
-" --ex_GotoPluginBuffer--
-function! g:ex_GotoPluginBuffer() " <<<
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
+function g:ex_GotoPluginBuffer() " <<<
     " check and jump to the buffer first
     let winnum = bufwinnr(s:ex_pluginbuf_num)
     if winnr() != winnum
@@ -746,25 +820,37 @@ function! g:ex_GotoPluginBuffer() " <<<
     call g:ex_RecordCurrentBufNum()
 endfunction " >>>
 
-" --ex_GetEditBufferNum--
-function! g:ex_GetEditBufferNum() " <<<
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
+function g:ex_GetEditBufferNum() " <<<
     return s:ex_editbuf_num
 endfunction " >>>
 
-" --ex_YankBufferName--
-function! g:ex_YankBufferNameForCode() " <<<
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
+function g:ex_YankBufferNameForCode() " <<<
     let buf_name = substitute( bufname('%'), "\\", "\/", "g" )
     silent call g:ex_Yank( fnamemodify(buf_name,"") )
 endfunction " >>>
 
-" --ex_YankFilePath--
-function! g:ex_YankFilePathForCode() " <<<
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
+function g:ex_YankFilePathForCode() " <<<
     let buf_name = substitute( bufname('%'), "\\", "\/", "g" )
     silent call g:ex_Yank( fnamemodify(buf_name,":h") )
 endfunction " >>>
 
-" --ex_SwitchBuffer--
-function! g:ex_SwitchBuffer() " <<<
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
+function g:ex_SwitchBuffer() " <<<
     " this will fix no jump error < bufwinnr() == -1 >
     silent call g:ex_RecordCurrentBufNum()
 
@@ -776,10 +862,12 @@ function! g:ex_SwitchBuffer() " <<<
     endif
 endfunction " >>>
 
-" --ex_Kwbd--
-" VimTip #1119: How to use Vim like an IDE
+" ------------------------------------------------------------------ 
+" Desc: VimTip #1119: How to use Vim like an IDE
 " delete the buffer; keep windows; create a scratch buffer if no buffers left 
 " Using this Kwbd function (:call Kwbd(1)) will make Vim behave like an IDE; or maybe even better. 
+" ------------------------------------------------------------------ 
+
 function g:ex_Kwbd(kwbdStage) " <<<
     if(a:kwbdStage == 1) 
         if(!buflisted(winbufnr(0))) 
@@ -838,19 +926,23 @@ function g:ex_Kwbd(kwbdStage) " <<<
     endif 
 endfunction  " >>>
 
-" ------------------------
+" ======================================================== 
 "  file functions
-" ------------------------
+" ======================================================== 
 
-" --ex_ConvertFileName--
-" Convert full file name into the format: file_name (directory)
-function! g:ex_ConvertFileName(full_file_name) " <<<
+" ------------------------------------------------------------------ 
+" Desc: Convert full file name into the format: file_name (directory)
+" ------------------------------------------------------------------ 
+
+function g:ex_ConvertFileName(full_file_name) " <<<
     return fnamemodify( a:full_file_name, ":t" ) . ' (' . fnamemodify( a:full_file_name, ":h" ) . ')'    
 endfunction ">>>
 
-" --ex_GetFullFileName--
-" Get full file name from converted format
-function! g:ex_GetFullFileName(converted_line) " <<<
+" ------------------------------------------------------------------ 
+" Desc: Get full file name from converted format
+" ------------------------------------------------------------------ 
+
+function g:ex_GetFullFileName(converted_line) " <<<
     if match(a:converted_line, '^\S\+\s(\S\+)$') == -1
         call g:ex_WarningMsg('format is wrong')
         return
@@ -863,9 +955,11 @@ function! g:ex_GetFullFileName(converted_line) " <<<
     return strpart(file_path, 0, idx_bracket_last) . '\' . simple_file_name
 endfunction " >>>
 
-" --ex_MatchTagFile()--
-" Match tag and find file if it has
-function! g:ex_MatchTagFile( tag_file_list, file_name ) " <<<
+" ------------------------------------------------------------------ 
+" Desc: Match tag and find file if it has
+" ------------------------------------------------------------------ 
+
+function g:ex_MatchTagFile( tag_file_list, file_name ) " <<<
     " if we can use PWD find file, use it first
     if exists('g:exES_PWD')
         let full_file_name = substitute(g:exES_PWD,'\','',"g") . substitute(a:file_name,'\.\\','\\',"g")
@@ -891,8 +985,11 @@ function! g:ex_MatchTagFile( tag_file_list, file_name ) " <<<
     return simplify(full_file_name)
 endfunction " >>>
 
-" --ex_GetFileFilterPattern--
-function! g:ex_GetFileFilterPattern(filter) " <<<
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
+function g:ex_GetFileFilterPattern(filter) " <<<
     let filter_list = split(a:filter,' ')
     let filter_pattern = '\V'
     for filter in filter_list
@@ -901,8 +998,11 @@ function! g:ex_GetFileFilterPattern(filter) " <<<
     return strpart(filter_pattern, 0, strlen(filter_pattern)-2)
 endfunction " >>>
 
-" --ex_BrowseWithEmtpy--
-function! g:ex_BrowseWithEmtpy(dir, filter) " <<<
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
+function g:ex_BrowseWithEmtpy(dir, filter) " <<<
     " get short_dir
     "let short_dir = strpart( a:dir, strridx(a:dir,'\')+1 )
     let short_dir = fnamemodify( a:dir, ":t" )
@@ -1025,8 +1125,11 @@ function! g:ex_BrowseWithEmtpy(dir, filter) " <<<
     silent call remove( s:ex_level_list, len(s:ex_level_list)-1 )
 endfunction " >>>
 
-" --ex_SetLevelList()
-function! g:ex_SetLevelList( line_num, by_next_line ) " <<<
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
+function g:ex_SetLevelList( line_num, by_next_line ) " <<<
     if len(s:ex_level_list)
         silent call remove(s:ex_level_list, 0, len(s:ex_level_list)-1)
     endif
@@ -1059,13 +1162,19 @@ function! g:ex_SetLevelList( line_num, by_next_line ) " <<<
     endwhile
 endfunction " >>>
 
-" --ex_FileNameSort--
-function! g:ex_FileNameSort( i1, i2 ) " <<<
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
+function g:ex_FileNameSort( i1, i2 ) " <<<
     return a:i1 ==? a:i2 ? 0 : a:i1 >? a:i2 ? 1 : -1
 endfunction " >>>
 
-" --ex_Browse--
-function! g:ex_Browse(dir, filter) " <<<
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
+function g:ex_Browse(dir, filter) " <<<
 
     " ECHO full_path for this level
     " ++++++++++++++++++++++++++++++++++
@@ -1207,8 +1316,11 @@ function! g:ex_Browse(dir, filter) " <<<
     return 0
 endfunction " >>>
 
-" --ex_QuickFileJump--
-function! g:ex_QuickFileJump() " <<<
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
+function g:ex_QuickFileJump() " <<<
     " make the gf go everywhere in the project
     if exists( 'g:exES_PWD' )
         let file_name = expand("<cfile>")
@@ -1228,8 +1340,11 @@ function! g:ex_QuickFileJump() " <<<
     endif
 endfunction " >>>
 
-" -- ex_Explore
-function! g:ex_Explore( path ) " <<<
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
+function g:ex_Explore( path ) " <<<
     if expand( a:path ) != ""
         if isdirectory( a:path )
             let cur_dir =  fnamemodify( a:path, ":p" )
@@ -1240,20 +1355,26 @@ function! g:ex_Explore( path ) " <<<
     endif
 endfunction " >>>
 
-" ------------------------
+" ======================================================== 
 "  fold functions
-" ------------------------
+" ======================================================== 
 
-" --ex_GetFoldLevel--
-function! g:ex_GetFoldLevel(line_num) " <<<
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
+function g:ex_GetFoldLevel(line_num) " <<<
     let cur_line = getline(a:line_num)
     let cur_line = strpart(cur_line,0,strridx(cur_line,'|')+1)
     let str_len = strlen(cur_line)
     return str_len/2
 endfunction " >>>
 
-" --ex_FoldText() --
-function! g:ex_FoldText() " <<<
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
+function g:ex_FoldText() " <<<
     let line = getline(v:foldstart)
     let line = substitute(line,'\[F\]\(.\{-}\) {.*','\[+\]\1 ','')
     return line
@@ -1263,13 +1384,15 @@ function! g:ex_FoldText() " <<<
     " return line
 endfunction ">>>
 
-" ------------------------
+" ======================================================== 
 "  jump functions
-" ------------------------
+" ======================================================== 
 
-" --ex_Goto--
-" Goto the position by file name and search pattern
-function! g:ex_GotoSearchPattern(full_file_name, search_pattern) " <<<
+" ------------------------------------------------------------------ 
+" Desc: Goto the position by file name and search pattern
+" ------------------------------------------------------------------ 
+
+function g:ex_GotoSearchPattern(full_file_name, search_pattern) " <<<
     " check and jump to the buffer first
     call g:ex_GotoEditBuffer()
 
@@ -1293,9 +1416,11 @@ function! g:ex_GotoSearchPattern(full_file_name, search_pattern) " <<<
     return 1
 endfunction " >>>
 
-" --ex_GotoExCommand--
-" Goto the position by file name and search pattern
-function! g:ex_GotoExCommand(full_file_name, ex_cmd) " <<<
+" ------------------------------------------------------------------ 
+" Desc: Goto the position by file name and search pattern
+" ------------------------------------------------------------------ 
+
+function g:ex_GotoExCommand(full_file_name, ex_cmd) " <<<
     " check and jump to the buffer first
     call g:ex_GotoEditBuffer()
 
@@ -1326,8 +1451,11 @@ function! g:ex_GotoExCommand(full_file_name, ex_cmd) " <<<
     return 1
 endfunction " >>>
 
-" --ex_GotoTagNumber--
-function! g:ex_GotoTagNumber(tag_number) " <<<
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
+function g:ex_GotoTagNumber(tag_number) " <<<
     " check and jump to the buffer first
     call g:ex_GotoEditBuffer()
 
@@ -1337,9 +1465,11 @@ function! g:ex_GotoTagNumber(tag_number) " <<<
     exe 'normal! zz'
 endfunction " >>>
 
-" --ex_GotoPos--
-" Goto the pos by position list
-function! g:ex_GotoPos(poslist) " <<<
+" ------------------------------------------------------------------ 
+" Desc: Goto the pos by position list
+" ------------------------------------------------------------------ 
+
+function g:ex_GotoPos(poslist) " <<<
     " check and jump to the buffer first
     call g:ex_GotoEditBuffer()
 
@@ -1350,8 +1480,11 @@ function! g:ex_GotoPos(poslist) " <<<
     exe 'normal! zz'
 endfunction " >>>
 
-" --ex_CursorJump--
-function! g:ex_CursorJump( search_pattern, search_direction )
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
+function g:ex_CursorJump( search_pattern, search_direction )
     let save_cursor = getpos(".")
 
     " get search flags, also move cursors
@@ -1374,12 +1507,15 @@ function! g:ex_CursorJump( search_pattern, search_direction )
     call g:ex_HighlightSelectLine()
 endfunction " >>>
 
-" ------------------------
+" ======================================================== 
 "  make functions
-" ------------------------
+" ======================================================== 
 
-" --ex_GCCMake()--
-function! g:ex_GCCMake(args) " <<<
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
+function g:ex_GCCMake(args) " <<<
     " save all file for compile first
     silent exec "wa!"
 
@@ -1392,8 +1528,11 @@ function! g:ex_GCCMake(args) " <<<
     endif
 endfunction " >>>
 
-" --ex_ShaderMake()--
-function! g:ex_ShaderMake(args) " <<<
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
+function g:ex_ShaderMake(args) " <<<
     " save all file for compile first
     silent exec "wa!"
 
@@ -1405,8 +1544,11 @@ function! g:ex_ShaderMake(args) " <<<
     endif
 endfunction " >>>
 
-" --ex_VCMake()-- 
-function! g:ex_VCMake(args) " <<<
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
+function g:ex_VCMake(args) " <<<
     " save all file for compile first
     silent exec "wa!"
 
@@ -1418,8 +1560,11 @@ function! g:ex_VCMake(args) " <<<
     endif
 endfunction " >>>
 
-" --ex_VCMakeBAT()-- 
-function! g:ex_VCMakeBAT(cmd, config) " <<<
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
+function g:ex_VCMakeBAT(cmd, config) " <<<
     " save all file for compile first
     silent exec "wa!"
 
@@ -1459,9 +1604,11 @@ function! g:ex_VCMakeBAT(cmd, config) " <<<
     endif
 endfunction " >>>
 
-" --ex_UpdateVimFiles()--
-"  type: ID,symbol,tag,none=all
-function! g:ex_UpdateVimFiles( type ) " <<<
+" ------------------------------------------------------------------ 
+" Desc: type: ID,symbol,tag,none=all
+" ------------------------------------------------------------------ 
+
+function g:ex_UpdateVimFiles( type ) " <<<
     " exec bat
     let quick_gen_bat = glob('quick_gen_project*.bat') 
     if a:type == ""
@@ -1491,8 +1638,11 @@ function! g:ex_UpdateVimFiles( type ) " <<<
     endif
 endfunction " >>>
 
-" --ex_CopyQuickGenProject( type )--
-function! g:ex_CopyQuickGenProject( type ) " <<<
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
+function g:ex_CopyQuickGenProject( type ) " <<<
     let quick_gen_bat = ""
     if a:type == ""
         let quick_gen_bat = "quick_gen_project_all.bat" 
@@ -1509,8 +1659,11 @@ function! g:ex_CopyQuickGenProject( type ) " <<<
     endif
 endfunction " >>>
 
-" --ex_Debug()--
-function! g:ex_Debug( exe_name ) " <<<
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
+function g:ex_Debug( exe_name ) " <<<
     if glob(a:exe_name) == ''
         call g:ex_WarningMsg('file: ' . a:exe_name . ' not found')
     else
@@ -1518,13 +1671,15 @@ function! g:ex_Debug( exe_name ) " <<<
     endif
 endfunction " >>>
 
-" ------------------------
+" ======================================================== 
 "  Hightlight functions
-" ------------------------
+" ======================================================== 
 
-" --ex_HighlightConfirmLine--
-" hightlight confirm line
-function! g:ex_HighlightConfirmLine() " <<<
+" ------------------------------------------------------------------ 
+" Desc: hightlight confirm line
+" ------------------------------------------------------------------ 
+
+function g:ex_HighlightConfirmLine() " <<<
     " Clear previously selected name
     match none
     " Highlight the current line
@@ -1532,9 +1687,11 @@ function! g:ex_HighlightConfirmLine() " <<<
     exe 'match ex_SynConfirmLine ' . pat
 endfunction " >>>
 
-" --ex_HighlightSelectLine--
-" hightlight select line
-function! g:ex_HighlightSelectLine() " <<<
+" ------------------------------------------------------------------ 
+" Desc: hightlight select line
+" ------------------------------------------------------------------ 
+
+function g:ex_HighlightSelectLine() " <<<
     " Clear previously selected name
     2match none
     " Highlight the current line
@@ -1542,9 +1699,11 @@ function! g:ex_HighlightSelectLine() " <<<
     exe '2match ex_SynSelectLine ' . pat
 endfunction " >>>
 
-" --ex_HighlightObjectLine--
-" hightlight object line
-function! g:ex_HighlightObjectLine() " <<<
+" ------------------------------------------------------------------ 
+" Desc: hightlight object line
+" ------------------------------------------------------------------ 
+
+function g:ex_HighlightObjectLine() " <<<
     " Clear previously selected name
     3match none
     " Highlight the current line
@@ -1552,24 +1711,30 @@ function! g:ex_HighlightObjectLine() " <<<
     exe '3match ex_SynObjectLine ' . pat
 endfunction " >>>
 
-" --ex_ClearObjectHighlight--
-"  clear the object line hight light
-function! g:ex_ClearObjectHighlight() " <<<
+" ------------------------------------------------------------------ 
+" Desc: clear the object line hight light
+" ------------------------------------------------------------------ 
+
+function g:ex_ClearObjectHighlight() " <<<
     " Clear previously selected name
     3match none
 endfunction " >>>
 
-" --ex_Highlight_Normal--
-" hightlight match_nr
-function! g:ex_Highlight_Normal(match_nr) " <<<
+" ------------------------------------------------------------------ 
+" Desc: hightlight match_nr
+" ------------------------------------------------------------------ 
+
+function g:ex_Highlight_Normal(match_nr) " <<<
     " get word under cursor
     let hl_word = expand('<cword>')
     call g:ex_Highlight_Text( a:match_nr, '\<'.hl_word.'\>' )
 endfunction " >>>
 
-" --ex_Highlight_Text--
-" hightlight match_nr with text
-function! g:ex_Highlight_Text(match_nr, args) " <<<
+" ------------------------------------------------------------------ 
+" Desc: hightlight match_nr with text
+" ------------------------------------------------------------------ 
+
+function g:ex_Highlight_Text(match_nr, args) " <<<
     " if no argument comming, cancle hihglight return
     if a:args == ''
         call g:ex_HighlightCancle(a:match_nr)
@@ -1594,9 +1759,11 @@ function! g:ex_Highlight_Text(match_nr, args) " <<<
     endif
 endfunction " >>>
 
-" --ex_Highlight_Visual--
-" hightlight match_nr
-function! g:ex_Highlight_Visual(match_nr) range " <<<
+" ------------------------------------------------------------------ 
+" Desc: hightlight match_nr
+" ------------------------------------------------------------------ 
+
+function g:ex_Highlight_Visual(match_nr) range " <<<
     call s:ex_DefineMatchVariables() 
 
     " if in the same line
@@ -1615,9 +1782,11 @@ function! g:ex_Highlight_Visual(match_nr) range " <<<
     call g:ex_Highlight_Text( a:match_nr, pat )
 endfunction " >>>
 
-" --ex_HighlightCancle--
-" Cancle highlight
-function! g:ex_HighlightCancle(match_nr) " <<<
+" ------------------------------------------------------------------ 
+" Desc: Cancle highlight
+" ------------------------------------------------------------------ 
+
+function g:ex_HighlightCancle(match_nr) " <<<
     call s:ex_DefineMatchVariables() 
     if a:match_nr == 0
         call s:ex_MatchDelete(1)
@@ -1629,7 +1798,10 @@ function! g:ex_HighlightCancle(match_nr) " <<<
     endif
 endfunction " >>>
 
-" --ex_DefineMatchVariables--
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
 function s:ex_DefineMatchVariables() " <<<
     if !exists('w:ex_hlMatchID')
         let w:ex_hlMatchID = [0,0,0,0,0]
@@ -1639,7 +1811,10 @@ function s:ex_DefineMatchVariables() " <<<
     endif
 endfunction " >>>
 
-" --ex_MatchDelete--
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
 function s:ex_MatchDelete(match_nr) " <<<
     if w:ex_hlMatchID[a:match_nr] != 0
         silent call matchdelete(w:ex_hlMatchID[a:match_nr])
@@ -1649,13 +1824,15 @@ function s:ex_MatchDelete(match_nr) " <<<
     silent call setreg(s:ex_hlRegMap[a:match_nr],'') 
 endfunction " >>>
 
-" ------------------------
+" ======================================================== 
 "  Inherits functions
-" ------------------------
+" ======================================================== 
 
-" --ex_GenInheritsDot--
-"
-function! g:ex_GenInheritsDot( pattern, gen_method ) " <<<
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
+function g:ex_GenInheritsDot( pattern, gen_method ) " <<<
     " find inherits file
     if exists( g:exES_Inherits )
         let inherits_file = g:exES_Inherits
@@ -1727,17 +1904,22 @@ function! g:ex_GenInheritsDot( pattern, gen_method ) " <<<
     endif
 endfunction " >>>
 
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
 
-" --ex_ViewInheritsImage--
-function! g:ex_ViewInheritsImage() " <<<
+function g:ex_ViewInheritsImage() " <<<
     let inherit_class_name = expand("<cword>")
     let inherit_class_name = "\\<" . inherit_class_name . "\\>"
     echomsg inherit_class_name
     silent exec '!start ' . g:exES_ImageViewer ' ' . g:ex_GenInheritsDot(inherit_class_name,"all")
 endfunction " >>>
 
-" --ex_RecursiveGetChildren--
-function! s:ex_RecursiveGetChildren(inherits_list, file_list) " <<<
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
+function s:ex_RecursiveGetChildren(inherits_list, file_list) " <<<
     let result_list = []
     for inherit in a:inherits_list
         " change to parent pattern
@@ -1759,8 +1941,11 @@ function! s:ex_RecursiveGetChildren(inherits_list, file_list) " <<<
     return result_list
 endfunction " >>>
 
-" --ex_RecursiveGetParent--
-function! s:ex_RecursiveGetParent(inherits_list, file_list) " <<<
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
+function s:ex_RecursiveGetParent(inherits_list, file_list) " <<<
     let result_list = []
     for inherit in a:inherits_list
         " change to child pattern
@@ -1782,27 +1967,36 @@ function! s:ex_RecursiveGetParent(inherits_list, file_list) " <<<
     return result_list
 endfunction " >>>
 
-" ------------------------
+" ======================================================== 
 "  Debug functions
-" ------------------------
+" ======================================================== 
 
-" --ex_WarningMsg--
-" Display a message using WarningMsg highlight group
-function! g:ex_WarningMsg(msg) " <<<
+" ------------------------------------------------------------------ 
+" Desc: Display a message using WarningMsg highlight group
+" ------------------------------------------------------------------ 
+
+function g:ex_WarningMsg(msg) " <<<
     echohl WarningMsg
     echomsg a:msg
     echohl None
 endfunction " >>>
 
-" fix vim bug.
+" ------------------------------------------------------------------ 
+" Desc: fix vim bug.
 " when you use clipboard=unnamed, and you have two vim-windows, visual-copy 
 " in window-1, then visual-copy in window-2, then visual-paste again. it is wrong
 " FIXME: this will let the "ap useless
-function! g:ex_VisualPasteFixed() " <<<
+" ------------------------------------------------------------------ 
+
+function g:ex_VisualPasteFixed() " <<<
     silent call getreg('*')
     " silent normal! gvpgvy " <-- this let you be the win32 copy/paste style
     silent normal! gvp
 endfunction " >>>
+
+"/////////////////////////////////////////////////////////////////////////////
+" finish
+"/////////////////////////////////////////////////////////////////////////////
 
 finish
 " vim: set foldmethod=marker foldmarker=<<<,>>> foldlevel=1:

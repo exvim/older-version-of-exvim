@@ -1,91 +1,122 @@
-"=============================================================================
-" File:        exMacroHighlight.vim
-" Author:      Wu Jie
-" Last Change: 2007-10-12
-" Version:     1.0
-"  
-" Copyright (c) 2006, Wu Jie
-" All rights reserved.
-"=============================================================================
-"
+" ======================================================================================
+" File         : exMacroHighlight.vim
+" Author       : Wu Jie 
+" Last Change  : 10/18/2008 | 18:56:52 PM | Saturday,October
+" Description  : 
+" ======================================================================================
 
+" check if plugin loaded
 if exists('loaded_exmacrohighlight') || &cp
     finish
 endif
 let loaded_exmacrohighlight=1
 
-" -------------------------------------------------------------------------
-"  variable part
-" -------------------------------------------------------------------------
+"/////////////////////////////////////////////////////////////////////////////
+" variables
+"/////////////////////////////////////////////////////////////////////////////
 
-" Initialization <<<
-
-" -------------------------------
+" ======================================================== 
 " gloable varialbe initialization
-" -------------------------------
+" ======================================================== 
 
-" window height for horizon window mode
+" ------------------------------------------------------------------ 
+" Desc: window height for horizon window mode
+" ------------------------------------------------------------------ 
+
 if !exists('g:exMH_window_height')
     let g:exMH_window_height = 20
 endif
 
-" window width for vertical window mode
+" ------------------------------------------------------------------ 
+" Desc: window width for vertical window mode
+" ------------------------------------------------------------------ 
+
 if !exists('g:exMH_window_width')
     let g:exMH_window_width = 30
 endif
 
-" window height increment value
+" ------------------------------------------------------------------ 
+" Desc: window height increment value
+" ------------------------------------------------------------------ 
+
 if !exists('g:exMH_window_height_increment')
     let g:exMH_window_height_increment = 30
 endif
 
-" window width increment value
+" ------------------------------------------------------------------ 
+" Desc: window width increment value
+" ------------------------------------------------------------------ 
+
 if !exists('g:exMH_window_width_increment')
     let g:exMH_window_width_increment = 100
 endif
 
-" go back to edit buffer
+" ------------------------------------------------------------------ 
+" Desc: go back to edit buffer
 " 'topleft','botright'
+" ------------------------------------------------------------------ 
+
 if !exists('g:exMH_window_direction')
     let g:exMH_window_direction = 'botright'
 endif
 
-" use vertical or not
+" ------------------------------------------------------------------ 
+" Desc: use vertical or not
+" ------------------------------------------------------------------ 
+
 if !exists('g:exMH_use_vertical_window')
     let g:exMH_use_vertical_window = 1
 endif
 
-" set edit mode
+" ------------------------------------------------------------------ 
+" Desc: set edit mode
 " 'none', 'append', 'replace'
+" ------------------------------------------------------------------ 
+
 if !exists('g:exMH_edit_mode')
     let g:exMH_edit_mode = 'replace'
 endif
 
-" set tag select command
+" ------------------------------------------------------------------ 
+" Desc: set tag select command
+" ------------------------------------------------------------------ 
+
 if !exists('g:exMH_SymbolSelectCmd')
     let g:exMH_SymbolSelectCmd = 'ts'
 endif
 
-" -------------------------------
+" ======================================================== 
 " local variable initialization
-" -------------------------------
+" ======================================================== 
 
-" title
+" ------------------------------------------------------------------ 
+" Desc: title
+" ------------------------------------------------------------------ 
+
 let s:exMH_select_title = "__exMH_SelectWindow__"
 let s:exMH_short_title = 'Select'
 let s:exMH_cur_filename = ''
 
-" general
+" ------------------------------------------------------------------ 
+" Desc: general
+" ------------------------------------------------------------------ 
+
 let s:exMH_backto_editbuf = 0
 let s:exMH_get_macro_file = 1
 let s:exMH_define_list = [[],[]] " 0: not define group, 1: define group
 let s:exMH_IsEnable = 0
 let s:exMH_Debug = 0
 
-" select
+" ------------------------------------------------------------------ 
+" Desc: select
+" ------------------------------------------------------------------ 
+
 let s:exMH_select_idx = 1
 
-" predefine patterns
+" ------------------------------------------------------------------ 
+" Desc: predefine patterns
+" ------------------------------------------------------------------ 
+
 " the document said \%(\) will not count the groups as a sub-expression(.eg use \1,\2...), this will be a bit fast ( I don't feel )
 " ---------------------------------
 "let s:if_pattern = '^\s*\%(%:\|#\)\s*\%(if\s\+(*\s*\%(defined\)*\s*(*\s*\%(\s*\S*\s*==\s*\)*\|ifdef\s\+(*\s*\)'
@@ -130,15 +161,20 @@ let s:elif_enable_pattern   = s:elif_or_pattern . s:def_macro_pattern . s:end_pa
 let s:elif_disable_pattern  = s:elif_and_pattern . s:undef_macro_pattern . s:end_pattern
 let s:elifn_enable_pattern  = s:elifn_or_pattern . s:undef_macro_pattern . s:end_pattern
 let s:elifn_disable_pattern = s:elifn_and_pattern . s:def_macro_pattern . s:end_pattern
-" >>>
 
-" -------------------------------------------------------------------------
-"  function part
-" -------------------------------------------------------------------------
+"/////////////////////////////////////////////////////////////////////////////
+" function defines
+"/////////////////////////////////////////////////////////////////////////////
 
-" --exMH_OpenWindow--
-" Open exMacroHighlight select window 
-function! s:exMH_OpenWindow( short_title ) " <<<
+" ======================================================== 
+" general functions
+" ======================================================== 
+
+" ------------------------------------------------------------------ 
+" Desc: Open exMacroHighlight select window 
+" ------------------------------------------------------------------ 
+
+function s:exMH_OpenWindow( short_title ) " <<<
     " if s:exMH_cur_filename don't load, we load and do MH init 
     if s:exMH_cur_filename == ''
         if exists('g:exES_Macro')
@@ -176,9 +212,11 @@ function! s:exMH_OpenWindow( short_title ) " <<<
     endif
 endfunction " >>>
 
-" --exMH_ResizeWindow--
-" Resize the window use the increase value
-function! s:exMH_ResizeWindow() " <<<
+" ------------------------------------------------------------------ 
+" Desc: Resize the window use the increase value
+" ------------------------------------------------------------------ 
+
+function s:exMH_ResizeWindow() " <<<
     if g:exMH_use_vertical_window
         call g:ex_ResizeWindow( g:exMH_use_vertical_window, g:exMH_window_width, g:exMH_window_width_increment )
     else
@@ -186,9 +224,11 @@ function! s:exMH_ResizeWindow() " <<<
     endif
 endfunction " >>>
 
-" --exMH_ToggleWindow--
-" Toggle the window
-function! s:exMH_ToggleWindow( short_title ) " <<<
+" ------------------------------------------------------------------ 
+" Desc: Toggle the window
+" ------------------------------------------------------------------ 
+
+function s:exMH_ToggleWindow( short_title ) " <<<
     " if s:exMH_cur_filename don't load, we load and do MH init 
     if s:exMH_cur_filename == ''
         if exists('g:exES_Macro')
@@ -225,8 +265,11 @@ function! s:exMH_ToggleWindow( short_title ) " <<<
     endif
 endfunction " >>>
 
-" --exMH_SwitchWindow--
-function! s:exMH_SwitchWindow( short_title ) " <<<
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
+function s:exMH_SwitchWindow( short_title ) " <<<
     let title = '__exMH_' . a:short_title . 'Window__'
     if a:short_title == 'Select'
         let title = s:exMH_cur_filename
@@ -236,8 +279,11 @@ function! s:exMH_SwitchWindow( short_title ) " <<<
     endif
 endfunction " >>>
 
-" --exMH_InitMacroList--
-function! g:exMH_InitMacroList(macrofile_name) " <<<
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
+function g:exMH_InitMacroList(macrofile_name) " <<<
     " init file name and read the file into line_list
     let s:exMH_cur_filename = a:macrofile_name
     let line_list = []
@@ -301,8 +347,11 @@ function! g:exMH_InitMacroList(macrofile_name) " <<<
     autocmd BufEnter *.hlsl,*.fx,*.fxh,*.cg,*.vsh,*.psh,*.shd call s:exMH_UpdateSyntax()
 endfunction " >>>
 
-" --exMH_UpdateMacroList--
-function! s:exMH_UpdateMacroList(line_list,save_file) " <<<
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
+function s:exMH_UpdateMacroList(line_list,save_file) " <<<
     " clear the macro list and define list first
     if !empty(s:exMH_define_list)
         if !empty(s:exMH_define_list[0])
@@ -365,8 +414,11 @@ function! s:exMH_UpdateMacroList(line_list,save_file) " <<<
     call s:exMH_UpdateMacroPattern()
 endfunction " >>>
 
-" --exMH_UpdateMacroPattern--
-function! s:exMH_UpdateMacroPattern() " <<<
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
+function s:exMH_UpdateMacroPattern() " <<<
     " update def macro pattern
     let s:def_macro_pattern = '\%(\%(\%(==\|!=\)\s*\)\@<!\<1\>'
     for def_macro in s:exMH_define_list[1]
@@ -394,8 +446,11 @@ function! s:exMH_UpdateMacroPattern() " <<<
     let s:elifn_disable_pattern = s:elifn_and_pattern . s:def_macro_pattern . s:end_pattern
 endfunction " >>>
 
-" --exMH_DefineSyntax--
-function! s:exMH_DefineSyntax() " <<<
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
+function s:exMH_DefineSyntax() " <<<
     " ------------ simple document -------------
 
     "  exIfEnable/exIfnEnable
@@ -455,8 +510,11 @@ function! s:exMH_DefineSyntax() " <<<
     exec 'syn region exElifnDisable contained start=' . '"' . s:def_macro_pattern . s:end_not_or_pattern . '"' . ' skip="#endif\>\_[^\%(\/\*\)]*\*\/" end="^\s*\%(%:\|#\)\s*\%(endif\>\)" contains=exCppSkip,exElseDisable,exElifEnableStart,exElifnEnableStart'
 endfunction " >>>
 
-" --exMH_UpdateSyntax--
-function! s:exMH_UpdateSyntax() " <<<
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
+function s:exMH_UpdateSyntax() " <<<
     " clear syntax group for re-define
     syntax clear exAndEnable exAndnotEnable exOrDisable exOrnotDisable
     syntax clear exIfEnableStart exIfEnable exIfnEnableStart exIfnEnable
@@ -471,7 +529,10 @@ function! s:exMH_UpdateSyntax() " <<<
     endif
 endfunction " >>>
 
-" --GetMHIndent--
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
 function GetMHIndent() " <<<
     let cur_line = getline(v:lnum)
     " indent group
@@ -481,7 +542,10 @@ function GetMHIndent() " <<<
     return 4
 endfunction " >>>
 
-" --exMH_SyntaxHL--
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
 function s:exMH_SyntaxHL(b_enable) " <<<
     let s:exMH_IsEnable = a:b_enable
     if s:exMH_IsEnable == 1
@@ -492,13 +556,15 @@ function s:exMH_SyntaxHL(b_enable) " <<<
     call s:exMH_UpdateSyntax()
 endfunction " >>>
 
-" ------------------------------
-"  select window part
-" ------------------------------
+" ======================================================== 
+" select window functions
+" ======================================================== 
 
-" --exMH_InitSelectWindow--
-" Init exSymbolList window
-function! g:exMH_InitSelectWindow() " <<<
+" ------------------------------------------------------------------ 
+" Desc: Init exSymbolList window
+" ------------------------------------------------------------------ 
+
+function g:exMH_InitSelectWindow() " <<<
     " set buffer no modifiable
     silent! setlocal nonumber
     " this will help Update symbol relate with it.
@@ -536,16 +602,20 @@ function! g:exMH_InitSelectWindow() " <<<
     hi def link exMH_MacroDisable exMacroDisable
 endfunction " >>>
 
-" --exMH_UpdateSelectWindow--
-" Update exMacroHighlight window
-function! g:exMH_UpdateSelectWindow() " <<<
+" ------------------------------------------------------------------ 
+" Desc: Update exMacroHighlight window
+" ------------------------------------------------------------------ 
+
+function g:exMH_UpdateSelectWindow() " <<<
     call cursor( s:exMH_select_idx, 1)
     call g:ex_HighlightConfirmLine()
 endfunction " >>>
 
-" --exMH_SelectConfirm--
-" confirm selected macro
-function! s:exMH_SelectConfirm() " <<<
+" ------------------------------------------------------------------ 
+" Desc: confirm selected macro
+" ------------------------------------------------------------------ 
+
+function s:exMH_SelectConfirm() " <<<
     let line = getline(".")
 
     " if this is a group title
@@ -669,12 +739,17 @@ function! s:exMH_SelectConfirm() " <<<
 
 endfunction " >>>
 
-" -------------------------------------------------------------------------
-" Command part
-" -------------------------------------------------------------------------
+"/////////////////////////////////////////////////////////////////////////////
+" Commands
+"/////////////////////////////////////////////////////////////////////////////
+
 command ExmhSelectToggle call s:exMH_ToggleWindow('Select')
 command ExmhToggle call s:exMH_ToggleWindow('')
 command -narg=? ExmhHL call s:exMH_SyntaxHL("<args>")
+
+"/////////////////////////////////////////////////////////////////////////////
+" finish
+"/////////////////////////////////////////////////////////////////////////////
 
 finish
 " vim: set foldmethod=marker foldmarker=<<<,>>> foldlevel=1:

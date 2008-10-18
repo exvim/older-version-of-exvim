@@ -1,69 +1,94 @@
-"=============================================================================
-" File:        exProject.vim
-" Author:      Johnny
-" Last Change: Wed 25 Oct 2006 01:05:03 PM EDT
-" Version:     1.0
-"=============================================================================
-" You may use this code in whatever way you see fit.
+" ======================================================================================
+" File         : exProject.vim
+" Author       : Wu Jie 
+" Last Change  : 10/18/2008 | 18:56:58 PM | Saturday,October
+" Description  : 
+" ======================================================================================
 
+" check if plugin loaded
 if exists('loaded_exproject') || &cp
     finish
 endif
 let loaded_exproject=1
 
-" -------------------------------------------------------------------------
-"  variable part
-" -------------------------------------------------------------------------
+"/////////////////////////////////////////////////////////////////////////////
+" variables
+"/////////////////////////////////////////////////////////////////////////////
 
-" Initialization <<<
-
-" -------------------------------
+" ======================================================== 
 " gloable varialbe initialization
-" -------------------------------
+" ======================================================== 
 
-" window height for horizon window mode
+" ------------------------------------------------------------------ 
+" Desc: window height for horizon window mode
+" ------------------------------------------------------------------ 
+
 if !exists('g:exPJ_window_height')
     let g:exPJ_window_height = 20
 endif
 
-" window width for vertical window mode
+" ------------------------------------------------------------------ 
+" Desc: window width for vertical window mode
+" ------------------------------------------------------------------ 
+
 if !exists('g:exPJ_window_width')
     let g:exPJ_window_width = 30
 endif
 
-" window height increment value
+" ------------------------------------------------------------------ 
+" Desc: window height increment value
+" ------------------------------------------------------------------ 
+
 if !exists('g:exPJ_window_height_increment')
     let g:exPJ_window_height_increment = 30
 endif
 
-" window width increment value
+" ------------------------------------------------------------------ 
+" Desc: window width increment value
+" ------------------------------------------------------------------ 
+
 if !exists('g:exPJ_window_width_increment')
     let g:exPJ_window_width_increment = 100
 endif
 
-" go back to edit buffer
+" ------------------------------------------------------------------ 
+" Desc: go back to edit buffer
 " 'topleft','botright'
+" ------------------------------------------------------------------ 
+
 if !exists('g:exPJ_window_direction')
     let g:exPJ_window_direction = 'topleft'
 endif
 
-" use vertical or not
+" ------------------------------------------------------------------ 
+" Desc: use vertical or not
+" ------------------------------------------------------------------ 
+
 if !exists('g:exPJ_use_vertical_window')
     let g:exPJ_use_vertical_window = 1
 endif
 
-" go back to edit buffer
+" ------------------------------------------------------------------ 
+" Desc: go back to edit buffer
+" ------------------------------------------------------------------ 
+
 if !exists('g:exPJ_backto_editbuf')
     let g:exPJ_backto_editbuf = 1
 endif
 
-" set edit mode
+" ------------------------------------------------------------------ 
+" Desc: set edit mode
 " 'none', 'append', 'replace'
+" ------------------------------------------------------------------ 
+
 if !exists('g:exPJ_edit_mode')
     let g:exPJ_edit_mode = 'replace'
 endif
 
-" set defualt filter
+" ------------------------------------------------------------------ 
+" Desc: set defualt filter
+" ------------------------------------------------------------------ 
+
 if !exists('g:exPJ_defualt_filter')
     let g:exPJ_defualt_filter  = 'c cpp cxx '
     let g:exPJ_defualt_filter .= 'h hpp inl '
@@ -73,29 +98,40 @@ if !exists('g:exPJ_defualt_filter')
     let g:exPJ_defualt_filter .= 'ini cfg '
     let g:exPJ_defualt_filter .= 'mk err exe '
 endif
-" -------------------------------
-" local variable initialization
-" -------------------------------
 
-" title
+" ======================================================== 
+" local variable initialization
+" ======================================================== 
+
+" ------------------------------------------------------------------ 
+" Desc: title
+" ------------------------------------------------------------------ 
+
 let s:exPJ_select_title = "__exPJ_SelectWindow__"
 let s:exPJ_short_title = 'Select'
 let s:exPJ_cur_filename = '__exPJ_SelectWindow__'
 
-" select variable
+" ------------------------------------------------------------------ 
+" Desc: select variable
+" ------------------------------------------------------------------ 
+
 let s:exPJ_cursor_line = 0
 let s:exPJ_cursor_col = 0
 let s:exPJ_need_update_select_window = 0
 
-" >>>
+"/////////////////////////////////////////////////////////////////////////////
+" function defines
+"/////////////////////////////////////////////////////////////////////////////
 
-" -------------------------------------------------------------------------
-"  function part
-" -------------------------------------------------------------------------
+" ======================================================== 
+" general functions
+" ======================================================== 
 
-" --exPJ_OpenWindow--
-" Open exTagSelect window 
-function! s:exPJ_OpenWindow( short_title ) " <<<
+" ------------------------------------------------------------------ 
+" Desc: Open exTagSelect window 
+" ------------------------------------------------------------------ 
+
+function s:exPJ_OpenWindow( short_title ) " <<<
     " if need switch window
     if a:short_title != ''
         if s:exPJ_short_title != a:short_title
@@ -123,9 +159,11 @@ function! s:exPJ_OpenWindow( short_title ) " <<<
     endif
 endfunction " >>>
 
-" --exPJ_ResizeWindow--
-" Resize the window use the increase value
-function! s:exPJ_ResizeWindow() " <<<
+" ------------------------------------------------------------------ 
+" Desc: Resize the window use the increase value
+" ------------------------------------------------------------------ 
+
+function s:exPJ_ResizeWindow() " <<<
     if g:exPJ_use_vertical_window
         call g:ex_ResizeWindow( g:exPJ_use_vertical_window, g:exPJ_window_width, g:exPJ_window_width_increment )
     else
@@ -133,9 +171,11 @@ function! s:exPJ_ResizeWindow() " <<<
     endif
 endfunction " >>>
 
-" --exPJ_ToggleWindow--
-" Toggle the window
-function! s:exPJ_ToggleWindow( short_title ) " <<<
+" ------------------------------------------------------------------ 
+" Desc: Toggle the window
+" ------------------------------------------------------------------ 
+
+function s:exPJ_ToggleWindow( short_title ) " <<<
     " if need switch window
     if a:short_title != ''
         if s:exPJ_short_title != a:short_title
@@ -162,8 +202,11 @@ function! s:exPJ_ToggleWindow( short_title ) " <<<
     endif
 endfunction " >>>
 
-" --exPJ_SwitchWindow--
-function! s:exPJ_SwitchWindow( short_title ) " <<<
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
+function s:exPJ_SwitchWindow( short_title ) " <<<
     let title = '__exPJ_' . a:short_title . 'Window__'
     if a:short_title == 'Select'
         let title = s:exPJ_cur_filename
@@ -173,8 +216,11 @@ function! s:exPJ_SwitchWindow( short_title ) " <<<
     endif
 endfunction " >>>
 
-" --exPJ_GetName--
-function! s:exPJ_GetName( line_num )
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
+function s:exPJ_GetName( line_num )
     let line = getline(a:line_num)
     let line = substitute(line,'.*\[.*\]\(.\{-}\)','\1','')
     let idx_end_1 = stridx(line,' {')
@@ -187,19 +233,24 @@ function! s:exPJ_GetName( line_num )
     return line
 endfunction
 
-" --exPJ_RefreshWindow--
-function! s:exPJ_RefreshWindow()
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
+function s:exPJ_RefreshWindow()
     " silent! wincmd H
     silent exe 'vertical resize ' . g:exPJ_window_width
 endfunction
 
-" ------------------------------
-"  select window part
-" ------------------------------
+" ======================================================== 
+"  select window functons
+" ======================================================== 
 
-" --exPJ_InitSelectWindow--
-" Init exTagSelect window
-function! g:exPJ_InitSelectWindow() " <<<
+" ------------------------------------------------------------------ 
+" Desc: Init exTagSelect window
+" ------------------------------------------------------------------ 
+
+function g:exPJ_InitSelectWindow() " <<<
     silent! setlocal filetype=ft_exproject
     silent! setlocal buftype=
 
@@ -260,13 +311,18 @@ function! g:exPJ_InitSelectWindow() " <<<
     command -buffer RM call s:exPJ_RemoveEmptyDir()
 endfunction " >>>
 
-" --exPJ_UpdateSelectWindow--
-" Update window
-function! g:exPJ_UpdateSelectWindow() " <<<
+" ------------------------------------------------------------------ 
+" Desc: Update window
+" ------------------------------------------------------------------ 
+
+function g:exPJ_UpdateSelectWindow() " <<<
 endfunction " >>>
 
-" --exPJ_OpenProject--
-function! s:exPJ_OpenProject(project_name) " <<<
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
+function s:exPJ_OpenProject(project_name) " <<<
     " set and find project file
     if a:project_name != ''
         let s:exPJ_cur_filename = a:project_name
@@ -284,8 +340,11 @@ function! s:exPJ_OpenProject(project_name) " <<<
     let g:exPJ_backto_editbuf = old_bacto_editbuf
 endfunction " >>>
 
-" --exPJ_CreateProject--
-function! s:exPJ_CreateProject(entry_dir,filter) " <<<
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
+function s:exPJ_CreateProject(entry_dir,filter) " <<<
     call g:ex_SetLevelList(-1, 1)
 
     "
@@ -321,8 +380,11 @@ function! s:exPJ_CreateProject(entry_dir,filter) " <<<
     echon "Creating exProject: " . entry_dir . " done!\r"
 endfunction " >>>
 
-" --exPJ_QuickRefreshProject
-function! s:exPJ_QuickRefreshProject() " <<<
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
+function s:exPJ_QuickRefreshProject() " <<<
     " get filter
     let filter = inputdialog( 'Enter the filters: sample(cpp c inl)', g:exPJ_defualt_filter, 'cancle')
     if filter == 'cancle'
@@ -426,8 +488,11 @@ function! s:exPJ_QuickRefreshProject() " <<<
 
 endfunction " >>>
 
-" --exPJ_RefreshProject--
-function! s:exPJ_RefreshProject() " <<<
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
+function s:exPJ_RefreshProject() " <<<
     " get filter
     let filter = inputdialog( 'Enter the filters: sample(cpp c inl)', g:exPJ_defualt_filter, 'cancle')
     if filter == 'cancle'
@@ -535,8 +600,11 @@ function! s:exPJ_RefreshProject() " <<<
     endif
 endfunction " >>>
 
-" --exPJ_CreateNewFile--
-function! s:exPJ_CreateNewFile() " <<<
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
+function s:exPJ_CreateNewFile() " <<<
     let reg_t = @t
     if foldclosed('.') != -1
         silent exec 'normal! j"tyy"t2p$a-[]'
@@ -574,8 +642,11 @@ function! s:exPJ_CreateNewFile() " <<<
     let @t = reg_t
 endfunction " >>>
 
-" --exPJ_CreateNewFold--
-function! s:exPJ_CreateNewFold() " <<<
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
+function s:exPJ_CreateNewFold() " <<<
     let reg_t = @t
     if foldclosed('.') != -1
         silent exec 'normal! j"tyy"t2p$a-[]'
@@ -621,8 +692,11 @@ function! s:exPJ_CreateNewFold() " <<<
     let @t = reg_t
 endfunction " >>>
 
-" --exPJ_GotoSelectResult--
-function! s:exPJ_GotoSelectResult(edit_cmd) " <<<
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
+function s:exPJ_GotoSelectResult(edit_cmd) " <<<
     let file_line = getline('.')
     " if fold, open it else if not a file return
     if foldclosed('.') != -1 || match(getline('.'), '\C\[F\]') != -1
@@ -697,8 +771,11 @@ function! s:exPJ_GotoSelectResult(edit_cmd) " <<<
     endif
 endfunction " >>>
 
-" --exPJ_GotoSelectResult--
-function! s:exPJ_GotoCurrentFile() " <<<
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
+function s:exPJ_GotoCurrentFile() " <<<
     " get current buffer name then jump
     let cur_bufname = bufname("%")
 
@@ -764,12 +841,17 @@ function! s:exPJ_GotoCurrentFile() " <<<
     silent normal! zz
 endfunction " >>>
 
-" -------------------------------------------------------------------------
-" Command part
-" -------------------------------------------------------------------------
+"/////////////////////////////////////////////////////////////////////////////
+" Commands
+"/////////////////////////////////////////////////////////////////////////////
+
 command -narg=? EXProject call s:exPJ_OpenProject("<args>")
 command ExpjSelectToggle call s:exPJ_ToggleWindow('Select')
 command ExpjGotoCurrentFile call s:exPJ_GotoCurrentFile()
+
+"/////////////////////////////////////////////////////////////////////////////
+" finish
+"/////////////////////////////////////////////////////////////////////////////
 
 finish
 " vim: set foldmethod=marker foldmarker=<<<,>>> foldlevel=1:

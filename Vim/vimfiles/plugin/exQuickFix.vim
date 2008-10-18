@@ -1,82 +1,115 @@
-"=============================================================================
-" File:        exQuickFix.vim
-" Author:      Johnny
-" Last Change: 12/15/2006 2:09:05 PM
-" Version:     1.0
-"=============================================================================
-" You may use this code in whatever way you see fit.
+" ======================================================================================
+" File         : exQuickFix.vim
+" Author       : Wu Jie 
+" Last Change  : 10/18/2008 | 18:57:12 PM | Saturday,October
+" Description  : 
+" ======================================================================================
 
+" check if plugin loaded
 if exists('loaded_exquickfix') || &cp
     finish
 endif
 let loaded_exquickfix = 1
 
-" -------------------------------------------------------------------------
-"  variable part
-" -------------------------------------------------------------------------
-" Initialization <<<
-" -------------------------------
-" gloable varialbe initialization
-" -------------------------------
+"/////////////////////////////////////////////////////////////////////////////
+" variables
+"/////////////////////////////////////////////////////////////////////////////
 
-" window height for horizon window mode
+" ======================================================== 
+" gloable varialbe initialization
+" ======================================================== 
+
+" ------------------------------------------------------------------ 
+" Desc: window height for horizon window mode
+" ------------------------------------------------------------------ 
+
 if !exists('g:exQF_window_height')
     let g:exQF_window_height = 20
 endif
 
-" window width for vertical window mode
+" ------------------------------------------------------------------ 
+" Desc: window width for vertical window mode
+" ------------------------------------------------------------------ 
+
 if !exists('g:exQF_window_width')
     let g:exQF_window_width = 30
 endif
 
-" window height increment value
+" ------------------------------------------------------------------ 
+" Desc: window height increment value
+" ------------------------------------------------------------------ 
+
 if !exists('g:exQF_window_height_increment')
     let g:exQF_window_height_increment = 30
 endif
 
-" window width increment value
+" ------------------------------------------------------------------ 
+" Desc: window width increment value
+" ------------------------------------------------------------------ 
+
 if !exists('g:exQF_window_width_increment')
     let g:exQF_window_width_increment = 100
 endif
 
-" go back to edit buffer
+" ------------------------------------------------------------------ 
+" Desc: go back to edit buffer
 " 'topleft','botright'
+" ------------------------------------------------------------------ 
+
 if !exists('g:exQF_window_direction')
     let g:exQF_window_direction = 'botright'
 endif
 
-" use vertical or not
+" ------------------------------------------------------------------ 
+" Desc: use vertical or not
+" ------------------------------------------------------------------ 
+
 if !exists('g:exQF_use_vertical_window')
     let g:exQF_use_vertical_window = 0
 endif
 
-" go back to edit buffer
+" ------------------------------------------------------------------ 
+" Desc: go back to edit buffer
+" ------------------------------------------------------------------ 
+
 if !exists('g:exQF_backto_editbuf')
     let g:exQF_backto_editbuf = 1
 endif
 
-" go and close exTagSelect window
+" ------------------------------------------------------------------ 
+" Desc: go and close exTagSelect window
+" ------------------------------------------------------------------ 
+
 if !exists('g:exQF_close_when_selected')
     let g:exQF_close_when_selected = 0
 endif
 
-" set edit mode
+" ------------------------------------------------------------------ 
+" Desc: set edit mode
 " 'none', 'append', 'replace'
+" ------------------------------------------------------------------ 
+
 if !exists('g:exQF_edit_mode')
     let g:exQF_edit_mode = 'replace'
 endif
 
-" -------------------------------
+" ======================================================== 
 " local variable initialization
-" -------------------------------
+" ======================================================== 
 
-" title
+" ------------------------------------------------------------------ 
+" Desc: title
+" ------------------------------------------------------------------ 
+
 let s:exQF_select_title = '__exQF_SelectWindow__'
 let s:exQF_quick_view_title = '__exQF_QuickViewWindow__'
 let s:exQF_short_title = 'Select'
 let s:exQF_cur_filename = '__exQF_SelectWindow__'
 
-" general
+" ------------------------------------------------------------------ 
+" Desc: general
+" ------------------------------------------------------------------ 
+
 let s:exQF_fold_start = '<<<<<<'
 let s:exQF_fold_end = '>>>>>>'
 let s:exQF_need_search_again = 0
@@ -84,25 +117,35 @@ let s:exQF_compile_dir = ''
 let s:exQF_error_file_size = 0
 let s:exQF_compiler = 'gcc'
 
-" select variable
+" ------------------------------------------------------------------ 
+" Desc: select variable
+" ------------------------------------------------------------------ 
+
 let s:exQF_select_idx = 1
 let s:exQF_need_update_select_window = 0
 
-" quick view variable
+" ------------------------------------------------------------------ 
+" Desc: quick view variable
+" ------------------------------------------------------------------ 
+
 let s:exQF_quick_view_idx = 1
 let s:exQF_picked_search_result = ''
 let s:exQF_quick_view_search_pattern = ''
 let s:exQF_need_update_quick_view_window = 0
 
-" >>>
+"/////////////////////////////////////////////////////////////////////////////
+" function defins
+"/////////////////////////////////////////////////////////////////////////////
 
-" -------------------------------------------------------------------------
-"  function part
-" -------------------------------------------------------------------------
+" ======================================================== 
+" general functions
+" ======================================================== 
 
-" --exQF_OpenWindow--
-" Open exQuickFix window 
-function! s:exQF_OpenWindow( short_title ) " <<<
+" ------------------------------------------------------------------ 
+" Desc: Open exQuickFix window 
+" ------------------------------------------------------------------ 
+
+function s:exQF_OpenWindow( short_title ) " <<<
     " if need switch window
     if a:short_title != ''
         if s:exQF_short_title != a:short_title
@@ -130,9 +173,11 @@ function! s:exQF_OpenWindow( short_title ) " <<<
     endif
 endfunction " >>>
 
-" --exQF_ResizeWindow--
-" Resize the window use the increase value
-function! s:exQF_ResizeWindow() " <<<
+" ------------------------------------------------------------------ 
+" Desc: Resize the window use the increase value
+" ------------------------------------------------------------------ 
+
+function s:exQF_ResizeWindow() " <<<
     if g:exQF_use_vertical_window
         call g:ex_ResizeWindow( g:exQF_use_vertical_window, g:exQF_window_width, g:exQF_window_width_increment )
     else
@@ -140,9 +185,11 @@ function! s:exQF_ResizeWindow() " <<<
     endif
 endfunction " >>>
 
-" --exQF_ToggleWindow--
-" Toggle the window
-function! s:exQF_ToggleWindow( short_title ) " <<<
+" ------------------------------------------------------------------ 
+" Desc: Toggle the window
+" ------------------------------------------------------------------ 
+
+function s:exQF_ToggleWindow( short_title ) " <<<
     " if need switch window
     if a:short_title != ''
         if s:exQF_short_title != a:short_title
@@ -169,8 +216,11 @@ function! s:exQF_ToggleWindow( short_title ) " <<<
     endif
 endfunction " >>>
 
-" --exQF_SwitchWindow
-function! s:exQF_SwitchWindow( short_title ) " <<<
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
+function s:exQF_SwitchWindow( short_title ) " <<<
     let title = '__exQF_' . a:short_title . 'Window__'
     if a:short_title == 'Select'
         let title = s:exQF_cur_filename
@@ -180,9 +230,11 @@ function! s:exQF_SwitchWindow( short_title ) " <<<
     endif
 endfunction " >>>
 
-" --exQF_Goto--
-"  goto select line
-function! s:exQF_Goto(idx) " <<<
+" ------------------------------------------------------------------ 
+" Desc: goto select line
+" ------------------------------------------------------------------ 
+
+function s:exQF_Goto(idx) " <<<
     let idx = a:idx
     if idx == -1
         let idx = line(".")
@@ -218,13 +270,15 @@ function! s:exQF_Goto(idx) " <<<
     endif
 endfunction " >>>
 
-" ------------------------------
-"  select window part
-" ------------------------------
+" ======================================================== 
+" select window part
+" ======================================================== 
 
-" --exQF_InitSelectWindow--
-" Init exQuickFix window
-function! g:exQF_InitSelectWindow() " <<<
+" ------------------------------------------------------------------ 
+" Desc: Init exQuickFix window
+" ------------------------------------------------------------------ 
+
+function g:exQF_InitSelectWindow() " <<<
     silent! setlocal number
     silent! setlocal autoread
     silent! setlocal buftype=
@@ -256,25 +310,30 @@ function! g:exQF_InitSelectWindow() " <<<
     au CursorMoved <buffer> :call g:ex_HighlightSelectLine()
 endfunction " >>>
 
-" --exQF_GotoSelectLine--
-"  goto select line
-function! s:exQF_GotoInSelectWindow() " <<<
+" ------------------------------------------------------------------ 
+" Desc: goto select line
+" ------------------------------------------------------------------ 
+
+function s:exQF_GotoInSelectWindow() " <<<
     let s:exQF_select_idx = line(".")
     call g:ex_HighlightConfirmLine()
     call s:exQF_Goto(-1)
 endfunction " >>>
 
-" TODO fuck you just not update like this
-" --exQF_UpdateSelectWindow--
-" Update exQuickFix window 
-function! g:exQF_UpdateSelectWindow() " <<<
+" ------------------------------------------------------------------ 
+" Desc: Update exQuickFix window 
+" ------------------------------------------------------------------ 
+
+function g:exQF_UpdateSelectWindow() " <<<
     silent call cursor(s:exQF_select_idx, 1)
     call g:ex_HighlightConfirmLine()
 endfunction " >>>
 
-" --exQF_GetQuickFixResult--
-"  get error file and load quick fix list
-function! s:exQF_GetQuickFixResult( file_name ) " <<<
+" ------------------------------------------------------------------ 
+" Desc: get error file and load quick fix list
+" ------------------------------------------------------------------ 
+
+function s:exQF_GetQuickFixResult( file_name ) " <<<
     let full_file_name = globpath( getcwd(), a:file_name )
     if full_file_name == ''
         let full_file_name = a:file_name
@@ -363,12 +422,15 @@ function! s:exQF_GetQuickFixResult( file_name ) " <<<
     endif
 endfunction " >>>
 
-" ------------------------------
-"  quick view window part
-" ------------------------------
-" --exQF_InitQuickViewWindow--
-" Init exQuickFix select window
-function! g:exQF_InitQuickViewWindow() " <<<
+" ======================================================== 
+" quick view window functions
+" ======================================================== 
+
+" ------------------------------------------------------------------ 
+" Desc: Init exQuickFix select window
+" ------------------------------------------------------------------ 
+
+function g:exQF_InitQuickViewWindow() " <<<
     setlocal number
     " syntax highlight
     syntax region exQF_FileLineRegion start='^[^:<].*:\(\d\+:\|(\d\+)\)*'  end="$" contains=ex_SynFileName,ex_SynLineNr
@@ -392,9 +454,11 @@ function! g:exQF_InitQuickViewWindow() " <<<
     au CursorMoved <buffer> :call g:ex_HighlightSelectLine()
 endfunction " >>>
 
-" --exQF_UpdateQuickViewWindow--
-" Update exQuickFix window 
-function! g:exQF_UpdateQuickViewWindow() " <<<
+" ------------------------------------------------------------------ 
+" Desc: Update exQuickFix window 
+" ------------------------------------------------------------------ 
+
+function g:exQF_UpdateQuickViewWindow() " <<<
     silent call cursor(s:exQF_quick_view_idx, 1)
     call g:ex_HighlightConfirmLine()
     if s:exQF_need_update_quick_view_window
@@ -409,9 +473,11 @@ function! g:exQF_UpdateQuickViewWindow() " <<<
     endif
 endfunction " >>>
 
-" --exQF_GotoInQuickViewWindow--
-"  goto select line
-function! s:exQF_GotoInQuickViewWindow() " <<<
+" ------------------------------------------------------------------ 
+" Desc: goto select line
+" ------------------------------------------------------------------ 
+
+function s:exQF_GotoInQuickViewWindow() " <<<
     let s:exQF_quick_view_idx = line(".")
     call g:ex_HighlightConfirmLine()
     let cur_line = getline('.')
@@ -421,9 +487,11 @@ function! s:exQF_GotoInQuickViewWindow() " <<<
     call s:exQF_Goto(idx)
 endfunction " >>>
 
-" --exQF_CopyPickedLine--
-" copy the quick view result with search pattern
-function! s:exQF_CopyPickedLine( search_pattern, line_start, line_end, search_method ) " <<<
+" ------------------------------------------------------------------ 
+" Desc: copy the quick view result with search pattern
+" ------------------------------------------------------------------ 
+
+function s:exQF_CopyPickedLine( search_pattern, line_start, line_end, search_method ) " <<<
     if a:search_pattern == ''
         let search_pattern = @/
     else
@@ -493,9 +561,11 @@ function! s:exQF_CopyPickedLine( search_pattern, line_start, line_end, search_me
     endif
 endfunction " >>>
 
-" --exQF_ShowPickedResult--
-"  show the picked result in the quick view window
-function! s:exQF_ShowPickedResult( search_pattern, line_start, line_end, edit_mode, search_method ) " <<<
+" ------------------------------------------------------------------ 
+" Desc: show the picked result in the quick view window
+" ------------------------------------------------------------------ 
+
+function s:exQF_ShowPickedResult( search_pattern, line_start, line_end, edit_mode, search_method ) " <<<
     call s:exQF_CopyPickedLine( a:search_pattern, a:line_start, a:line_end, a:search_method )
     call s:exQF_SwitchWindow('QuickView')
     if a:edit_mode == 'replace'
@@ -516,17 +586,21 @@ function! s:exQF_ShowPickedResult( search_pattern, line_start, line_end, edit_mo
     endif
 endfunction " >>>
 
-" --exQF_ShowPickedResultNormalMode--
-"  show the picked result in the quick view window
-function! s:exQF_ShowPickedResultNormalMode( search_pattern, edit_mode, search_method ) " <<<
+" ------------------------------------------------------------------ 
+" Desc: show the picked result in the quick view window
+" ------------------------------------------------------------------ 
+
+function s:exQF_ShowPickedResultNormalMode( search_pattern, edit_mode, search_method ) " <<<
     let line_start = 1
     let line_end = line('$')
     call s:exQF_ShowPickedResult( a:search_pattern, line_start, line_end, a:edit_mode, a:search_method )
 endfunction " >>>
 
-" --exQF_ShowPickedResult--
-"  show the picked result in the quick view window
-function! s:exQF_ShowPickedResultVisualMode( search_pattern, edit_mode, search_method ) " <<<
+" ------------------------------------------------------------------ 
+" Desc: show the picked result in the quick view window
+" ------------------------------------------------------------------ 
+
+function s:exQF_ShowPickedResultVisualMode( search_pattern, edit_mode, search_method ) " <<<
     let line_start = 3
     let line_end = line('$')
 
@@ -542,13 +616,18 @@ function! s:exQF_ShowPickedResultVisualMode( search_pattern, edit_mode, search_m
     call s:exQF_ShowPickedResult( a:search_pattern, line_start, line_end, a:edit_mode, a:search_method )
 endfunction " >>>
 
-" -------------------------------------------------------------------------
-" Command part
-" -------------------------------------------------------------------------
+"/////////////////////////////////////////////////////////////////////////////
+" Commands
+"/////////////////////////////////////////////////////////////////////////////
+
 command -nargs=1 QF call s:exQF_GetQuickFixResult('<args>')
 command ExqfToggle call s:exQF_ToggleWindow('')
 command ExqfSelectToggle call s:exQF_ToggleWindow('Select')
 command ExqfQuickViewToggle call s:exQF_ToggleWindow('QuickView')
+
+"/////////////////////////////////////////////////////////////////////////////
+" finish
+"/////////////////////////////////////////////////////////////////////////////
 
 finish
 " vim: set foldmethod=marker foldmarker=<<<,>>> foldlevel=1:

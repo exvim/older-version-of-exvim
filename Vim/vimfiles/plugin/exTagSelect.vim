@@ -1,118 +1,166 @@
-"=============================================================================
-" File:        exTagSelect.vim
-" Author:      Johnny
-" Last Change: Wed 25 Oct 2006 01:05:03 PM EDT
-" Version:     1.0
-"=============================================================================
-" You may use this code in whatever way you see fit.
+" ======================================================================================
+" File         : exTagSelect.vim
+" Author       : Wu Jie 
+" Last Change  : 10/18/2008 | 18:57:27 PM | Saturday,October
+" Description  : 
+" ======================================================================================
 
+" check if plugin loaded
 if exists('loaded_extagselect') || &cp
     finish
 endif
 let loaded_extagselect=1
 
-" -------------------------------------------------------------------------
-"  variable part
-" -------------------------------------------------------------------------
+"/////////////////////////////////////////////////////////////////////////////
+" variables
+"/////////////////////////////////////////////////////////////////////////////
 
-" Initialization <<<
-
-" -------------------------------
+" ======================================================== 
 " gloable varialbe initialization
-" -------------------------------
+" ======================================================== 
 
-" window height for horizon window mode
+" ------------------------------------------------------------------ 
+" Desc: window height for horizon window mode
+" ------------------------------------------------------------------ 
+
 if !exists('g:exTS_window_height')
     let g:exTS_window_height = 20
 endif
 
-" window width for vertical window mode
+" ------------------------------------------------------------------ 
+" Desc: window width for vertical window mode
+" ------------------------------------------------------------------ 
+
 if !exists('g:exTS_window_width')
     let g:exTS_window_width = 30
 endif
 
-" window height increment value
+" ------------------------------------------------------------------ 
+" Desc: window height increment value
+" ------------------------------------------------------------------ 
+
 if !exists('g:exTS_window_height_increment')
     let g:exTS_window_height_increment = 30
 endif
 
-" window width increment value
+" ------------------------------------------------------------------ 
+" Desc: window width increment value
+" ------------------------------------------------------------------ 
+
 if !exists('g:exTS_window_width_increment')
     let g:exTS_window_width_increment = 100
 endif
 
-" go back to edit buffer
+" ------------------------------------------------------------------ 
+" Desc: go back to edit buffer
 " 'topleft','botright'
+" ------------------------------------------------------------------ 
+
 if !exists('g:exTS_window_direction')
     let g:exTS_window_direction = 'botright'
 endif
 
-" use vertical or not
+" ------------------------------------------------------------------ 
+" Desc: use vertical or not
+" ------------------------------------------------------------------ 
+
 if !exists('g:exTS_use_vertical_window')
     let g:exTS_use_vertical_window = 0
 endif
 
-" go back to edit buffer
+" ------------------------------------------------------------------ 
+" Desc: go back to edit buffer
+" ------------------------------------------------------------------ 
+
 if !exists('g:exTS_backto_editbuf')
     let g:exTS_backto_editbuf = 1
 endif
 
-" go and close exTagSelect window
+" ------------------------------------------------------------------ 
+" Desc: go and close exTagSelect window
+" ------------------------------------------------------------------ 
+
 if !exists('g:exTS_close_when_selected')
     let g:exTS_close_when_selected = 0
 endif
 
-" go and close exTagStack window
+" ------------------------------------------------------------------ 
+" Desc: go and close exTagStack window
+" ------------------------------------------------------------------ 
+
 if !exists('g:exTS_stack_close_when_selected')
     let g:exTS_stack_close_when_selected = 0
 endif
 
-" use syntax highlight for search result
+" ------------------------------------------------------------------ 
+" Desc: use syntax highlight for search result
+" ------------------------------------------------------------------ 
+
 if !exists('g:exTS_highlight_result')
     let g:exTS_highlight_result = 0
 endif
 
-" set edit mode
+" ------------------------------------------------------------------ 
+" Desc: set edit mode
 " 'none', 'append', 'replace'
+" ------------------------------------------------------------------ 
+
 if !exists('g:exTS_edit_mode')
     let g:exTS_edit_mode = 'replace'
 endif
 
-" -------------------------------
+" ======================================================== 
 " local variable initialization
-" -------------------------------
+" ======================================================== 
 
-" title
+
+" ------------------------------------------------------------------ 
+" Desc: title
+" ------------------------------------------------------------------ 
+
 let s:exTS_select_title = "__exTS_SelectWindow__"
 let s:exTS_stack_title = "__exTS_StackWindow__"
 let s:exTS_short_title = 'Select'
 
-" general
+" ------------------------------------------------------------------ 
+" Desc: general
+" ------------------------------------------------------------------ 
+
 let s:exTS_ignore_case = 0
 let s:exTS_need_parse_again = 0
 let s:exTS_tag_state_tmp = {'tag_name':'', 'tag_idx':-1, 'tag_list':[], 'max_tags':-1, 'output_result':'', 'entry_cursor_pos':[-1,-1,-1,-1], 'entry_file_name':'', 'stack_preview':''}
 let s:exTS_tag_stack_list = [{'tag_name':'exTS_StartPoint', 'tag_idx':-1, 'tag_list':[], 'max_tags':-1, 'output_result':'StartPoint', 'entry_cursor_pos':[-1,-1,-1,-1], 'entry_file_name':'', 'stack_preview':''}]
 
-" select variable
+" ------------------------------------------------------------------ 
+" Desc: select variable
+" ------------------------------------------------------------------ 
+
 let s:exTS_tag_select_idx = 1
 let s:exTS_cursor_idx = 0
 let s:exTS_need_update_select_window = 0
 
-" stack variable
+" ------------------------------------------------------------------ 
+" Desc: stack variable
+" ------------------------------------------------------------------ 
+
 let s:exTS_stack_idx = 0
 let s:exTS_need_update_stack_window = 0
 let s:exTS_need_push_tag = 0
 let s:exTS_last_jump_method = "to_tag"
 
-" >>>
+"/////////////////////////////////////////////////////////////////////////////
+" function defines
+"/////////////////////////////////////////////////////////////////////////////
 
-" -------------------------------------------------------------------------
-"  function part
-" -------------------------------------------------------------------------
+" ======================================================== 
+" general function defines
+" ======================================================== 
 
-" --exTS_OpenWindow--
-" Open exTagSelect window 
-function! s:exTS_OpenWindow( short_title ) " <<<
+" ------------------------------------------------------------------ 
+" Desc: Open exTagSelect window 
+" ------------------------------------------------------------------ 
+
+function s:exTS_OpenWindow( short_title ) " <<<
     if a:short_title != ''
         let s:exTS_short_title = a:short_title
     endif
@@ -125,9 +173,11 @@ function! s:exTS_OpenWindow( short_title ) " <<<
     endif
 endfunction " >>>
 
-" --exTS_ResizeWindow--
-" Resize the window use the increase value
-function! s:exTS_ResizeWindow() " <<<
+" ------------------------------------------------------------------ 
+" Desc: Resize the window use the increase value
+" ------------------------------------------------------------------ 
+
+function s:exTS_ResizeWindow() " <<<
     if g:exTS_use_vertical_window
         call g:ex_ResizeWindow( g:exTS_use_vertical_window, g:exTS_window_width, g:exTS_window_width_increment )
     else
@@ -135,9 +185,11 @@ function! s:exTS_ResizeWindow() " <<<
     endif
 endfunction " >>>
 
-" --exTS_ToggleWindow--
-" Toggle the window
-function! s:exTS_ToggleWindow( short_title ) " <<<
+" ------------------------------------------------------------------ 
+" Desc: Toggle the window
+" ------------------------------------------------------------------ 
+
+function s:exTS_ToggleWindow( short_title ) " <<<
     " if need switch window
     if a:short_title != ''
         if s:exTS_short_title != a:short_title
@@ -157,8 +209,11 @@ function! s:exTS_ToggleWindow( short_title ) " <<<
     endif
 endfunction " >>>
 
-" --exTS_SwitchWindow
-function! s:exTS_SwitchWindow( short_title ) " <<<
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
+function s:exTS_SwitchWindow( short_title ) " <<<
     let title = '__exTS_' . a:short_title . 'Window__'
     if bufwinnr(title) == -1
         let tmp_backup = g:exTS_backto_editbuf
@@ -168,9 +223,11 @@ function! s:exTS_SwitchWindow( short_title ) " <<<
     endif
 endfunction " >>>
 
-" --exTS_SetCase--
-"  set if ignore case
-function! s:exTS_SetIgnoreCase(ignore_case) " <<<
+" ------------------------------------------------------------------ 
+" Desc: set if ignore case
+" ------------------------------------------------------------------ 
+
+function s:exTS_SetIgnoreCase(ignore_case) " <<<
     let s:exTS_ignore_case = a:ignore_case
     let s:exTS_need_parse_again = 1
     if a:ignore_case
@@ -180,13 +237,15 @@ function! s:exTS_SetIgnoreCase(ignore_case) " <<<
     endif
 endfunction " >>>
 
-" ------------------------------
-"  select window part
-" ------------------------------
+" ======================================================== 
+"  select window functions
+" ======================================================== 
 
-" --exTS_InitSelectWindow--
-" Init exTagSelect window
-function! g:exTS_InitSelectWindow() " <<<
+" ------------------------------------------------------------------ 
+" Desc: Init exTagSelect window
+" ------------------------------------------------------------------ 
+
+function g:exTS_InitSelectWindow() " <<<
     " load the tagfiles
     " let s:exTS_tag_file_list = tagfiles()
     let s:exTS_tag_file_list = []
@@ -214,9 +273,11 @@ function! g:exTS_InitSelectWindow() " <<<
     au CursorMoved <buffer> :call s:exTS_SelectCursorMoved()
 endfunction " >>>
 
-" --exTS_UpdateSelectWindow--
-" Update window
-function! g:exTS_UpdateSelectWindow() " <<<
+" ------------------------------------------------------------------ 
+" Desc: Update window
+" ------------------------------------------------------------------ 
+
+function g:exTS_UpdateSelectWindow() " <<<
     if s:exTS_need_update_select_window
         let s:exTS_need_update_select_window = 0
         " clear window
@@ -233,9 +294,11 @@ function! g:exTS_UpdateSelectWindow() " <<<
     let s:exTS_cursor_idx = line('.')
 endfunction " >>>
 
-" --exTS_SelectCursorMoved--
-" call when cursor moved
-function! s:exTS_SelectCursorMoved()
+" ------------------------------------------------------------------ 
+" Desc: call when cursor moved
+" ------------------------------------------------------------------ 
+
+function s:exTS_SelectCursorMoved()
     let line_num = line('.')
 
     if line_num == s:exTS_cursor_idx
@@ -261,9 +324,11 @@ function! s:exTS_SelectCursorMoved()
     call g:ex_HighlightSelectLine()
 endfunction
 
-" --exTS_GetTagSelectResult--
-"  Get the result of a word and use :ts record the result
-function! s:exTS_GetTagSelectResult(tag, direct_jump) " <<<
+" ------------------------------------------------------------------ 
+" Desc: Get the result of a word and use :ts record the result
+" ------------------------------------------------------------------ 
+
+function s:exTS_GetTagSelectResult(tag, direct_jump) " <<<
     " this will fix the jump error when tagselect in the same window
     if &filetype == "ex_filetype"
         silent exec "normal \<Esc>"
@@ -393,9 +458,11 @@ function! s:exTS_GetTagSelectResult(tag, direct_jump) " <<<
     let @t = reg_t
 endfunction " >>>
 
-" --exTS_GotoTagSelectResult--
-" Goto result position
-function! s:exTS_GotoTagSelectResult() " <<<
+" ------------------------------------------------------------------ 
+" Desc: Goto result position
+" ------------------------------------------------------------------ 
+
+function s:exTS_GotoTagSelectResult() " <<<
     " read current line as search pattern
     let cur_line = getline(".")
     if match(cur_line, '^        \S.*$') == -1
@@ -453,18 +520,15 @@ function! s:exTS_GotoTagSelectResult() " <<<
     endif
 endfunction " >>>
 
-" --exTS_GoDirect--
-function! s:exTS_GoDirect() " <<<
-    call s:exTS_GetTagSelectResult(expand("<cword>"), 1)
-endfunction " >>>
+" ======================================================== 
+" tag stack window functions
+" ======================================================== 
 
-" -------------------------------------------------------------------------
-"  tag stack function part
-" -------------------------------------------------------------------------
+" ------------------------------------------------------------------ 
+" Desc: Init exTagSelectStack window
+" ------------------------------------------------------------------ 
 
-" --exTS_InitStackWindow--
-" Init exTagSelectStack window
-function! g:exTS_InitStackWindow() " <<<
+function g:exTS_InitStackWindow() " <<<
     " syntax highlight
     syntax match ex_SynJumpMethodS '\[TS]'
     syntax match ex_SynJumpMethodG '\[TG]'
@@ -482,9 +546,11 @@ function! g:exTS_InitStackWindow() " <<<
     au CursorMoved <buffer> :call g:ex_HighlightSelectLine()
 endfunction " >>>
 
-" --exTS_UpdateStackWindow--
-" Update stack window
-function! g:exTS_UpdateStackWindow() " <<<
+" ------------------------------------------------------------------ 
+" Desc: Update stack window
+" ------------------------------------------------------------------ 
+
+function g:exTS_UpdateStackWindow() " <<<
     if s:exTS_need_update_stack_window
         let s:exTS_need_update_stack_window = 0
         let reg_tmp = @t
@@ -501,9 +567,11 @@ function! g:exTS_UpdateStackWindow() " <<<
     call g:ex_HighlightConfirmLine()
 endfunction " >>>
 
-" --exTS_PushTagStack--
-" Push tags into tag stack
-function! s:exTS_PushTagStack( tag_state ) " <<<
+" ------------------------------------------------------------------ 
+" Desc: Push tags into tag stack
+" ------------------------------------------------------------------ 
+
+function s:exTS_PushTagStack( tag_state ) " <<<
     let list_len = len(s:exTS_tag_stack_list)
     if list_len > s:exTS_stack_idx+1
         call remove(s:exTS_tag_stack_list, s:exTS_stack_idx+1, list_len-1)
@@ -519,9 +587,11 @@ function! s:exTS_PushTagStack( tag_state ) " <<<
     return s:exTS_stack_idx
 endfunction " >>>
 
-" --exTS_ShowTagStack()--
-" Show the tag stack list in current window
-function! s:exTS_ShowTagStack() " <<<
+" ------------------------------------------------------------------ 
+" Desc: Show the tag stack list in current window
+" ------------------------------------------------------------------ 
+
+function s:exTS_ShowTagStack() " <<<
     " put an empty line first
     silent put = ''
 
@@ -544,11 +614,12 @@ function! s:exTS_ShowTagStack() " <<<
     let @t = reg_tmp
 endfunction " >>>
 
-
-" --exTS_Stack_GotoTag--
-" Go to idx tags
+" ------------------------------------------------------------------ 
+" Desc: Go to idx tags
 " jump_method : 'to_tag', to_entry
-function! s:exTS_Stack_GotoTag( idx, jump_method ) " <<<
+" ------------------------------------------------------------------ 
+
+function s:exTS_Stack_GotoTag( idx, jump_method ) " <<<
     let jump_method = a:jump_method
     let list_len = len(s:exTS_tag_stack_list)
     " if idx < 0, return
@@ -622,8 +693,11 @@ function! s:exTS_Stack_GotoTag( idx, jump_method ) " <<<
     endif
 endfunction " >>>
 
-" --exTS_Stack_GoDirect--
-function! s:exTS_Stack_GoDirect() " <<<
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
+function s:exTS_Stack_GoDirect() " <<<
     if line(".") > 1
         let cur_line = getline(".")
         let idx = match(cur_line, '\S')
@@ -647,9 +721,11 @@ function! s:exTS_Stack_GoDirect() " <<<
     endif
 endfunction " >>>
 
-" -------------------------------------------------------------------------
-" Command part
-" -------------------------------------------------------------------------
+"/////////////////////////////////////////////////////////////////////////////
+" Commands
+"/////////////////////////////////////////////////////////////////////////////
+
+"
 command -nargs=1 TS call s:exTS_GetTagSelectResult('<args>', 0)
 command BackwardTagStack call s:exTS_Stack_GotoTag(s:exTS_stack_idx-1, 'to_entry')
 command ForwardTagStack call s:exTS_Stack_GotoTag(s:exTS_stack_idx+1, 'to_tag')
@@ -657,11 +733,15 @@ command TAGS call s:exTS_SwitchWindow('Stack')
 command ExtsSelectToggle call s:exTS_ToggleWindow('Select')
 command ExtsStackToggle call s:exTS_ToggleWindow('Stack')
 command ExtsToggle call s:exTS_ToggleWindow('')
-command ExtsGoDirectly call s:exTS_GoDirect()
+command ExtsGoDirectly call s:exTS_GetTagSelectResult(expand("<cword>"), 1)
 
 " Ignore case setting
 command TSigc call s:exTS_SetIgnoreCase(1)
 command TSnoigc call s:exTS_SetIgnoreCase(0)
+
+"/////////////////////////////////////////////////////////////////////////////
+" finish
+"/////////////////////////////////////////////////////////////////////////////
 
 finish
 " vim: set foldmethod=marker foldmarker=<<<,>>> foldlevel=1:

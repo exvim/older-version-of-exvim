@@ -1,101 +1,146 @@
-"=============================================================================
-" File:        exGlobalSearch.vim
-" Author:      Johnny
-" Last Change: Wed 29 Oct 2006 01:05:03 PM EDT
-" Version:     1.0
-"=============================================================================
-" You may use this code in whatever way you see fit.
+" ======================================================================================
+" File         : exGlobalSearch.vim
+" Author       : Wu Jie 
+" Last Change  : 10/18/2008 | 18:56:44 PM | Saturday,October
+" Description  : 
+" ======================================================================================
 
+" check if plugin loaded
 if exists('loaded_exglobalsearch') || &cp
     finish
 endif
 let loaded_exglobalsearch=1
 
-" -------------------------------------------------------------------------
-"  variable part
-" -------------------------------------------------------------------------
-" Initialization <<<
-" -------------------------------
-" gloable varialbe initialization
-" -------------------------------
+"/////////////////////////////////////////////////////////////////////////////
+" variables
+"/////////////////////////////////////////////////////////////////////////////
 
-" window height for horizon window mode
+" ======================================================== 
+" gloable varialbe initialization
+" ======================================================== 
+
+" ------------------------------------------------------------------ 
+" Desc: window height for horizon window mode
+" ------------------------------------------------------------------ 
+
 if !exists('g:exGS_window_height')
     let g:exGS_window_height = 20
 endif
 
-" window width for vertical window mode
+" ------------------------------------------------------------------ 
+" Desc: window width for vertical window mode
+" ------------------------------------------------------------------ 
+
 if !exists('g:exGS_window_width')
     let g:exGS_window_width = 30
 endif
 
-" window height increment value
+" ------------------------------------------------------------------ 
+" Desc: window height increment value
+" ------------------------------------------------------------------ 
+
 if !exists('g:exGS_window_height_increment')
     let g:exGS_window_height_increment = 30
 endif
 
-" window width increment value
+" ------------------------------------------------------------------ 
+" Desc: window width increment value
+" ------------------------------------------------------------------ 
+
 if !exists('g:exGS_window_width_increment')
     let g:exGS_window_width_increment = 100
 endif
 
-" go back to edit buffer
+" ------------------------------------------------------------------ 
+" Desc: go back to edit buffer
 " 'topleft','botright'
+" ------------------------------------------------------------------ 
+
 if !exists('g:exGS_window_direction')
     let g:exGS_window_direction = 'botright'
 endif
 
-" use vertical or not
+" ------------------------------------------------------------------ 
+" Desc: use vertical or not
+" ------------------------------------------------------------------ 
+
 if !exists('g:exGS_use_vertical_window')
     let g:exGS_use_vertical_window = 0
 endif
 
-" go back to edit buffer
+" ------------------------------------------------------------------ 
+" Desc: go back to edit buffer
+" ------------------------------------------------------------------ 
+
 if !exists('g:exGS_backto_editbuf')
     let g:exGS_backto_editbuf = 1
 endif
 
-" go and close exTagSelect window
+" ------------------------------------------------------------------ 
+" Desc: go and close exTagSelect window
+" ------------------------------------------------------------------ 
+
 if !exists('g:exGS_close_when_selected')
     let g:exGS_close_when_selected = 0
 endif
 
-" go and close exTagSelect window
+" ------------------------------------------------------------------ 
+" Desc: go and close exTagSelect window
+" ------------------------------------------------------------------ 
+
 if !exists('g:exGS_stack_close_when_selected')
     let g:exGS_stack_close_when_selected = 0
 endif
 
-" use syntax highlight for search result
+" ------------------------------------------------------------------ 
+" Desc: use syntax highlight for search result
+" ------------------------------------------------------------------ 
+
 if !exists('g:exGS_highlight_result')
     let g:exGS_highlight_result = 0
 endif
 
-" set edit mode
+" ------------------------------------------------------------------ 
+" Desc: set edit mode
 " 'none', 'append', 'replace'
+" ------------------------------------------------------------------ 
+
 if !exists('g:exGS_edit_mode')
     let g:exGS_edit_mode = 'replace'
 endif
 
-" -------------------------------
+" ======================================================== 
 " local variable initialization
-" -------------------------------
+" ======================================================== 
 
-" title
+" ------------------------------------------------------------------ 
+" Desc: title
+" ------------------------------------------------------------------ 
+
 let s:exGS_select_title = '__exGS_SelectWindow__'
 let s:exGS_stack_title = '__exGS_StackWindow__'
 let s:exGS_quick_view_title = '__exGS_QuickViewWindow__'
 let s:exGS_short_title = 'Select'
 
-" general
+" ------------------------------------------------------------------ 
+" Desc: general
+" ------------------------------------------------------------------ 
+
 let s:exGS_fold_start = '<<<<<<'
 let s:exGS_fold_end = '>>>>>>'
 let s:exGS_ignore_case = 1
 let s:exGS_need_search_again = 0
 
-" select variable
+" ------------------------------------------------------------------ 
+" Desc: select variable
+" ------------------------------------------------------------------ 
+
 let s:exGS_select_idx = 1
 
-" stack variable
+" ------------------------------------------------------------------ 
+" Desc: stack variable
+" ------------------------------------------------------------------ 
+
 let s:exGS_need_update_stack_window = 0
 let s:exGS_stack_idx = 0
 let s:exGS_search_state_tmp = {'pattern':'', 'pattern_cursor_pos':[-1,-1,-1,-1], 'pattern_file_name':'', 'entry_cursor_pos':[-1,-1,-1,-1], 'entry_file_name':'', 'stack_preview':''}
@@ -103,20 +148,27 @@ let s:exGS_search_stack_list = [{'pattern':'exGS_StartPoint', 'pattern_cursor_po
 let s:exGS_need_push_search_result = 0
 let s:exGS_last_jump_method = "to_tag"
 
-" quick view variable
+" ------------------------------------------------------------------ 
+" Desc: quick view variable
+" ------------------------------------------------------------------ 
+
 let s:exGS_quick_view_idx = 1
 let s:exGS_picked_search_result = ''
 let s:exGS_quick_view_search_pattern = ''
 
-" >>>
+"/////////////////////////////////////////////////////////////////////////////
+" function defins
+"/////////////////////////////////////////////////////////////////////////////
 
-" -------------------------------------------------------------------------
-"  function part
-" -------------------------------------------------------------------------
+" ======================================================== 
+" general functions
+" ======================================================== 
 
-" --exGS_OpenWindow--
-" Open exGlobalSearch window 
-function! s:exGS_OpenWindow( short_title ) " <<<
+" ------------------------------------------------------------------ 
+" Desc: Open exGlobalSearch window 
+" ------------------------------------------------------------------ 
+
+function s:exGS_OpenWindow( short_title ) " <<<
     if a:short_title != ''
         let s:exGS_short_title = a:short_title
     endif
@@ -129,9 +181,11 @@ function! s:exGS_OpenWindow( short_title ) " <<<
     endif
 endfunction " >>>
 
-" --exGS_ResizeWindow--
-" Resize the window use the increase value
-function! s:exGS_ResizeWindow() " <<<
+" ------------------------------------------------------------------ 
+" Desc: Resize the window use the increase value
+" ------------------------------------------------------------------ 
+
+function s:exGS_ResizeWindow() " <<<
     if g:exGS_use_vertical_window
         call g:ex_ResizeWindow( g:exGS_use_vertical_window, g:exGS_window_width, g:exGS_window_width_increment )
     else
@@ -139,9 +193,11 @@ function! s:exGS_ResizeWindow() " <<<
     endif
 endfunction " >>>
 
-" --exGS_ToggleWindow--
-" Toggle the window
-function! s:exGS_ToggleWindow( short_title ) " <<<
+" ------------------------------------------------------------------ 
+" Desc: Toggle the window
+" ------------------------------------------------------------------ 
+
+function s:exGS_ToggleWindow( short_title ) " <<<
     " if need switch window
     if a:short_title != ''
         if s:exGS_short_title != a:short_title
@@ -161,8 +217,11 @@ function! s:exGS_ToggleWindow( short_title ) " <<<
     endif
 endfunction " >>>
 
-" --exGS_SwitchWindow
-function! s:exGS_SwitchWindow( short_title ) " <<<
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
+function s:exGS_SwitchWindow( short_title ) " <<<
     let title = '__exGS_' . a:short_title . 'Window__'
     if bufwinnr(title) == -1
         let tmp_backup = g:exGS_backto_editbuf
@@ -172,9 +231,11 @@ function! s:exGS_SwitchWindow( short_title ) " <<<
     endif
 endfunction " >>>
 
-" --exGS_Goto--
-"  goto select line
-function! s:exGS_Goto() " <<<
+" ------------------------------------------------------------------ 
+" Desc: goto select line
+" ------------------------------------------------------------------ 
+
+function s:exGS_Goto() " <<<
     let line = getline('.')
     " get file name
     let idx = stridx(line, ":")
@@ -249,10 +310,11 @@ function! s:exGS_Goto() " <<<
     return 1
 endfunction " >>>
 
-
-" --exGS_SetCase--
-"  set if ignore case
-function! s:exGS_SetIgnoreCase(ignore_case) " <<<
+" ------------------------------------------------------------------ 
+" Desc: set if ignore case
+" ------------------------------------------------------------------ 
+"
+function s:exGS_SetIgnoreCase(ignore_case) " <<<
     let s:exGS_ignore_case = a:ignore_case
     let s:exGS_need_search_again = 1
     if a:ignore_case
@@ -262,13 +324,11 @@ function! s:exGS_SetIgnoreCase(ignore_case) " <<<
     endif
 endfunction " >>>
 
-" --exGS_GoDirect--
-function! s:exGS_GoDirect() " <<<
-    call s:exGS_GetGlobalSearchResult(expand("<cword>"), '-s', 1)
-endfunction " >>>
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
 
-" --exGS_GlobalSubstitute--
-function! s:exGS_GlobalSubstitute( pat, sub, flag ) " <<<
+function s:exGS_GlobalSubstitute( pat, sub, flag ) " <<<
     silent normal! gg
     let last_line = line("$")
     let cur_line_idx = 0
@@ -289,7 +349,10 @@ function! s:exGS_GlobalSubstitute( pat, sub, flag ) " <<<
     endwhile
 endfunction " >>>
 
-" -- exGS_ParseSubcmd--
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
 function s:exGS_ParseSubcmd(cmd) " <<<
     let slash_idx_1 = stridx( a:cmd, "/" )
     while a:cmd[slash_idx_1-1] == '\'
@@ -309,13 +372,15 @@ function s:exGS_ParseSubcmd(cmd) " <<<
     call s:exGS_GlobalSubstitute( pat, sub, flag )
 endfunction " >>>
 
-" ------------------------------
-"  select window part
-" ------------------------------
+" ======================================================== 
+" select window functions
+" ======================================================== 
 
-" --exGS_InitSelectWindow--
-" Init exGlobalSearch window
-function! g:exGS_InitSelectWindow() " <<<
+" ------------------------------------------------------------------ 
+" Desc: Init exGlobalSearch window
+" ------------------------------------------------------------------ 
+
+function g:exGS_InitSelectWindow() " <<<
     setlocal number
 
     " syntax highlight
@@ -384,26 +449,32 @@ function! g:exGS_InitSelectWindow() " <<<
     command -buffer -nargs=1 SUB call s:exGS_ParseSubcmd('<args>')
 endfunction " >>>
 
-" --exGS_GotoSelectLine--
-"  goto select line
-function! s:exGS_GotoInSelectWindow() " <<<
+" ------------------------------------------------------------------ 
+" Desc: goto select line
+" ------------------------------------------------------------------ 
+"
+function s:exGS_GotoInSelectWindow() " <<<
     let s:exGS_select_idx = line(".")
     call g:ex_HighlightConfirmLine()
     call s:exGS_Goto()
 endfunction " >>>
 
-" --exGS_UpdateSelectWindow--
-" Update exGlobalSearch window 
-function! g:exGS_UpdateSelectWindow() " <<<
+" ------------------------------------------------------------------ 
+" Desc: Update exGlobalSearch window 
+" ------------------------------------------------------------------ 
+
+function g:exGS_UpdateSelectWindow() " <<<
     silent call cursor(s:exGS_select_idx, 1)
     call g:ex_HighlightConfirmLine()
 endfunction " >>>
 
-" --exGS_GetGlobalSearchResult--
-" Get Global Search Result
+" ------------------------------------------------------------------ 
+" Desc: Get Global Search Result
 " search_pattern = ''
 " search_method = -s / -r / -w
-function! s:exGS_GetGlobalSearchResult(search_pattern, search_method, direct_jump) " <<<
+" ------------------------------------------------------------------ 
+
+function s:exGS_GetGlobalSearchResult(search_pattern, search_method, direct_jump) " <<<
     " this will fix the jump error when tagselect in the same window
     if &filetype == "ex_filetype"
         silent exec "normal \<Esc>"
@@ -471,12 +542,15 @@ function! s:exGS_GetGlobalSearchResult(search_pattern, search_method, direct_jum
     silent call cursor( line_num+1, 1 )
 endfunction " >>>
 
-" ------------------------------
-"  stack window part
-" ------------------------------
-" --exGS_InitStackWindow--
-" Init exGlobalSearch select window
-function! g:exGS_InitStackWindow() " <<<
+" ======================================================== 
+" stack window functions
+" ======================================================== 
+
+" ------------------------------------------------------------------ 
+" Desc: Init exGlobalSearch select window
+" ------------------------------------------------------------------ 
+
+function g:exGS_InitStackWindow() " <<<
     " syntax highlight
     syntax match ex_SynJumpMethodS '\[GS]'
     syntax match ex_SynJumpMethodG '\[GG]'
@@ -496,9 +570,11 @@ function! g:exGS_InitStackWindow() " <<<
     au CursorMoved <buffer> :call g:ex_HighlightSelectLine()
 endfunction " >>>
 
-" --exGS_UpdateStackWindow--
-" Update exGlobalSearch stack window 
-function! g:exGS_UpdateStackWindow() " <<<
+" ------------------------------------------------------------------ 
+" Desc: Update exGlobalSearch stack window 
+" ------------------------------------------------------------------ 
+
+function g:exGS_UpdateStackWindow() " <<<
     " if need update stack window 
     if s:exGS_need_update_stack_window
         let s:exGS_need_update_stack_window = 0
@@ -513,9 +589,11 @@ function! g:exGS_UpdateStackWindow() " <<<
     call g:ex_HighlightConfirmLine()
 endfunction " >>>
 
-" --exGS_PushStack--
-" Push the result into stack
-function! s:exGS_PushStack( search_state ) " <<<
+" ------------------------------------------------------------------ 
+" Desc: Push the result into stack
+" ------------------------------------------------------------------ 
+
+function s:exGS_PushStack( search_state ) " <<<
     let list_len = len(s:exGS_search_stack_list)
     if list_len > s:exGS_stack_idx+1
         call remove(s:exGS_search_stack_list, s:exGS_stack_idx+1, list_len-1)
@@ -529,15 +607,11 @@ function! s:exGS_PushStack( search_state ) " <<<
     let s:exGS_need_update_stack_window = 1
 endfunction " >>>
 
-" --exGS_SetStack--
-" Set current stack value
-function! s:exGS_SetStack( search_state ) " <<<
-    let s:exGS_search_stack_list[s:exGS_stack_idx] = copy( a:search_state )
-endfunction " >>>
+" ------------------------------------------------------------------ 
+" Desc: Show the stack list in stack window
+" ------------------------------------------------------------------ 
 
-" --exGS_ShowStackList--
-" Show the stack list in stack window
-function! s:exGS_ShowStackList() " <<<
+function s:exGS_ShowStackList() " <<<
     " open and goto search window first
     let gs_winnr = bufwinnr(s:exGS_stack_title)
     if gs_winnr == -1
@@ -574,10 +648,12 @@ function! s:exGS_ShowStackList() " <<<
     let @t = reg_tmp
 endfunction " >>>
 
-" --exGS_Stack_GotoTag--
-" Go to idx tags
+" ------------------------------------------------------------------ 
+" Desc: Go to idx tags
 " jump_method : 'to_tag', to_entry
-function! s:exGS_Stack_GotoTag( idx, jump_method ) " <<<
+" ------------------------------------------------------------------ 
+
+function s:exGS_Stack_GotoTag( idx, jump_method ) " <<<
     let jump_method = a:jump_method
     let list_len = len(s:exGS_search_stack_list)
     " if idx < 0, return
@@ -649,8 +725,11 @@ function! s:exGS_Stack_GotoTag( idx, jump_method ) " <<<
     endif
 endfunction " >>>
 
-" --exGS_Stack_GoDirect--
-function! s:exGS_Stack_GoDirect() " <<<
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
+function s:exGS_Stack_GoDirect() " <<<
     let cur_line = getline(".")
     let idx = match(cur_line, '\S')
     let cur_line = strpart(cur_line, idx)
@@ -670,12 +749,15 @@ function! s:exGS_Stack_GoDirect() " <<<
     endif
 endfunction " >>>
 
-" ------------------------------
-"  quick view window part
-" ------------------------------
-" --exGS_InitQuickViewWindow--
-" Init exGlobalSearch select window
-function! g:exGS_InitQuickViewWindow() " <<<
+" ======================================================== 
+" quick view window part
+" ======================================================== 
+
+" ------------------------------------------------------------------ 
+" Desc: Init exGlobalSearch select window
+" ------------------------------------------------------------------ 
+
+function g:exGS_InitQuickViewWindow() " <<<
     setlocal number
     setlocal foldmethod=marker foldmarker=<<<<<<,>>>>>> foldlevel=1
 
@@ -748,25 +830,31 @@ function! g:exGS_InitQuickViewWindow() " <<<
     command -buffer -nargs=1 SUB call s:exGS_ParseSubcmd('<args>')
 endfunction " >>>
 
-" --exGS_UpdateQuickViewWindow--
-" Update exGlobalSearch stack window 
-function! g:exGS_UpdateQuickViewWindow() " <<<
+" ------------------------------------------------------------------ 
+" Desc: Update exGlobalSearch stack window 
+" ------------------------------------------------------------------ 
+
+function g:exGS_UpdateQuickViewWindow() " <<<
     silent call cursor(s:exGS_quick_view_idx, 1)
     call g:ex_HighlightConfirmLine()
 endfunction " >>>
 
-" --exGS_GotoInQuickViewWindow--
-"  goto select line
-function! s:exGS_GotoInQuickViewWindow() " <<<
+" ------------------------------------------------------------------ 
+" Desc: goto select line
+" ------------------------------------------------------------------ 
+
+function s:exGS_GotoInQuickViewWindow() " <<<
     let s:exGS_quick_view_idx = line(".")
     " TODO save history idx
     call g:ex_HighlightConfirmLine()
     call s:exGS_Goto()
 endfunction " >>>
 
-" --exGS_CopyPickedLine--
-" copy the quick view result with search pattern
-function! s:exGS_CopyPickedLine( search_pattern, line_start, line_end, search_method, inverse_search ) " <<<
+" ------------------------------------------------------------------ 
+" Desc: copy the quick view result with search pattern
+" ------------------------------------------------------------------ 
+
+function s:exGS_CopyPickedLine( search_pattern, line_start, line_end, search_method, inverse_search ) " <<<
     if a:search_pattern == ''
         let search_pattern = @/
     else
@@ -843,9 +931,11 @@ function! s:exGS_CopyPickedLine( search_pattern, line_start, line_end, search_me
     endif
 endfunction " >>>
 
-" --exGS_ShowPickedResult--
-"  show the picked result in the quick view window
-function! s:exGS_ShowPickedResult( search_pattern, line_start, line_end, edit_mode, search_method, inverse_search ) " <<<
+" ------------------------------------------------------------------ 
+" Desc: show the picked result in the quick view window
+" ------------------------------------------------------------------ 
+
+function s:exGS_ShowPickedResult( search_pattern, line_start, line_end, edit_mode, search_method, inverse_search ) " <<<
     call s:exGS_CopyPickedLine( a:search_pattern, a:line_start, a:line_end, a:search_method, a:inverse_search )
     call s:exGS_SwitchWindow('QuickView')
     if a:edit_mode == 'replace'
@@ -868,17 +958,21 @@ function! s:exGS_ShowPickedResult( search_pattern, line_start, line_end, edit_mo
     endif
 endfunction " >>>
 
-" --exGS_ShowPickedResultNormalMode--
-"  show the picked result in the quick view window
-function! s:exGS_ShowPickedResultNormalMode( search_pattern, edit_mode, search_method, inverse_search ) " <<<
+" ------------------------------------------------------------------ 
+" Desc: show the picked result in the quick view window
+" ------------------------------------------------------------------ 
+
+function s:exGS_ShowPickedResultNormalMode( search_pattern, edit_mode, search_method, inverse_search ) " <<<
     let line_start = 1
     let line_end = line('$')
     call s:exGS_ShowPickedResult( a:search_pattern, line_start, line_end, a:edit_mode, a:search_method, a:inverse_search )
 endfunction " >>>
 
-" --exGS_ShowPickedResultVisualMode--
-"  show the picked result in the quick view window
-function! s:exGS_ShowPickedResultVisualMode( search_pattern, edit_mode, search_method, inverse_search ) " <<<
+" ------------------------------------------------------------------ 
+" Desc: show the picked result in the quick view window
+" ------------------------------------------------------------------ 
+
+function s:exGS_ShowPickedResultVisualMode( search_pattern, edit_mode, search_method, inverse_search ) " <<<
     let line_start = 3
     let line_end = line('$')
 
@@ -894,9 +988,10 @@ function! s:exGS_ShowPickedResultVisualMode( search_pattern, edit_mode, search_m
     call s:exGS_ShowPickedResult( a:search_pattern, line_start, line_end, a:edit_mode, a:search_method, a:inverse_search )
 endfunction " >>>
 
-" -------------------------------------------------------------------------
-" Command part
-" -------------------------------------------------------------------------
+"/////////////////////////////////////////////////////////////////////////////
+" Commands
+"/////////////////////////////////////////////////////////////////////////////
+
 command -nargs=1 GS call s:exGS_GetGlobalSearchResult('<args>', '-s', 0)
 command -nargs=1 GSW call s:exGS_GetGlobalSearchResult('<args>', '-w', 0)
 command -nargs=1 GSR call s:exGS_GetGlobalSearchResult('<args>', '-r', 0)
@@ -904,7 +999,7 @@ command ExgsToggle call s:exGS_ToggleWindow('')
 command ExgsSelectToggle call s:exGS_ToggleWindow('Select')
 command ExgsStackToggle call s:exGS_ToggleWindow('Stack')
 command ExgsQuickViewToggle call s:exGS_ToggleWindow('QuickView')
-command ExgsGoDirectly call s:exGS_GoDirect()
+command ExgsGoDirectly call s:exGS_GetGlobalSearchResult(expand("<cword>"), '-s', 1)
 command BackwardSearchStack call s:exGS_Stack_GotoTag(s:exGS_stack_idx-1, 'to_entry')
 command ForwardSearchStack call s:exGS_Stack_GotoTag(s:exGS_stack_idx+1, 'to_tag')
 
@@ -920,6 +1015,9 @@ command -nargs=1 GSPNI call s:exGS_ShowPickedResult('<args>', 'new', '', 1 )
 command GSigc call s:exGS_SetIgnoreCase(1)
 command GSnoigc call s:exGS_SetIgnoreCase(0)
 
+"/////////////////////////////////////////////////////////////////////////////
+" finish
+"/////////////////////////////////////////////////////////////////////////////
 
 finish
 " vim: set foldmethod=marker foldmarker=<<<,>>> foldlevel=1:

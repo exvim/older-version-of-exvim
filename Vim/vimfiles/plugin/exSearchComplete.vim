@@ -1,46 +1,45 @@
-"=============================================================================
-" File:        exSearchComplete.vim
-" Author:      Johnny
-" Last Change: 08/17/2008 2:09:05 PM
-" Version:     1.0
-"=============================================================================
-" You may use this code in whatever way you see fit.
+" ======================================================================================
+" File         : exSearchComplete.vim
+" Author       : Wu Jie 
+" Last Change  : 10/18/2008 | 18:32:07 PM | Saturday,October
+" Description  : This script catches the <Tab> character when using the '/' search 
+"                command.  Pressing Tab will expand the current partial word to the 
+"                next matching word starting with the partial word.
+"                If you want to match a tab, use the '\t' pattern.
+" ======================================================================================
 
-" This script catches the <Tab> character when using the '/' search 
-" command.  Pressing Tab will expand the current partial word to the 
-" next matching word starting with the partial word.
-" If you want to match a tab, use the '\t' pattern.
-
-" -------------------------------
-" Avoid multiple sourcing
-" -------------------------------
-
+" check if plugin loaded
 if exists('loaded_exsearchcomplete') || &cp
     finish
 endif
 let loaded_exsearchcomplete = 1
 
-" -------------------------------
+"/////////////////////////////////////////////////////////////////////////////
 " Key mappings
-" -------------------------------
+"/////////////////////////////////////////////////////////////////////////////
 
 noremap / :call g:ex_SearchCompleteStart()<CR>/
 
 
-" -------------------------------
-" functions
-" -------------------------------
+"/////////////////////////////////////////////////////////////////////////////
+" function defines
+"/////////////////////////////////////////////////////////////////////////////
 
-" --ex_SearchCompleteStart--
-" Set mappings for search complete
+
+" ------------------------------------------------------------------ 
+" Desc: Set mappings for search complete
+" ------------------------------------------------------------------ 
+
 function! g:ex_SearchCompleteStart() " <<<
 	cnoremap <Tab> <C-R>=<sid>ex_SearchComplete()<CR>
 	cnoremap <silent> <CR> <CR>:call g:ex_SearchCompleteStop()<CR>
 	cnoremap <silent> <Esc> <C-C>:call g:ex_SearchCompleteStop()<CR>
 endfunction " >>>
 
-" --ex_SearchComplete--
-" Tab completion in / search
+" ------------------------------------------------------------------ 
+" Desc: Tab completion in / search
+" ------------------------------------------------------------------ 
+
 function! s:ex_SearchComplete() " <<<
 	let old_cmdline = getcmdline()
 	let pos = getcmdpos()
@@ -58,8 +57,10 @@ function! s:ex_SearchComplete() " <<<
 	return substitute(old_cmdline, ".", "\<c-h>", "g") . new_cmdline
 endfunction " >>>
 
-" --ex_SearchCompleteStop--
-" Remove search complete mappings
+" ------------------------------------------------------------------ 
+" Desc: Remove search complete mappings
+" ------------------------------------------------------------------ 
+
 function! g:ex_SearchCompleteStop() " <<<
 	cunmap <Tab>
 	cunmap <CR>

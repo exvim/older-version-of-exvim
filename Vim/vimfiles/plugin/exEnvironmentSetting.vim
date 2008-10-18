@@ -1,37 +1,58 @@
-"=============================================================================
-" File:        exEnvironmentSetting.vim
-" Author:      Johnny
-" Last Change: Wed 29 Oct 2006 01:05:03 PM EDT
-" Version:     1.0
-"=============================================================================
-" You may use this code in whatever way you see fit.
+" ======================================================================================
+" File         : exEnvironmentSetting.vim
+" Author       : Wu Jie 
+" Last Change  : 10/18/2008 | 18:56:38 PM | Saturday,October
+" Description  : 
+" ======================================================================================
 
+" check if plugin loaded
 if exists('loaded_ex_environment_setting') || &cp
     finish
 endif
 let loaded_ex_environment_setting=1
 
-" -------------------------------------------------------------------------
-"  variable part
-" -------------------------------------------------------------------------
-" Initialization <<<
+"/////////////////////////////////////////////////////////////////////////////
+" variables
+"/////////////////////////////////////////////////////////////////////////////
+
+" ======================================================== 
 " gloable variable initialization
-let g:exES_setted = 0
+" ======================================================== 
+
+" ------------------------------------------------------------------ 
+" Desc: create to specified where to put vim files 
+" ------------------------------------------------------------------ 
 
 " set the vim file dir
 if !exists('g:exES_vimfile_dir')
     let g:exES_vimfile_dir = "_vimfiles"
 endif
 
+" ------------------------------------------------------------------ 
+" Desc: current version. increase this will cause template re-write 
+" ------------------------------------------------------------------ 
+
 let s:exES_CurrentVersion = 7
-" >>>
 
-" -------------------------------------------------------------------------
-"  function part
-" -------------------------------------------------------------------------
+" ======================================================== 
+" local variable initialization 
+" ======================================================== 
 
-" --exES_WriteDefaultTemplate--
-function! s:exES_WriteDefaultTemplate() " <<<
+" ------------------------------------------------------------------ 
+" Desc: used to detect if environment have been set
+" ------------------------------------------------------------------ 
+
+let s:exES_setted = 0
+
+"/////////////////////////////////////////////////////////////////////////////
+" function defines
+"/////////////////////////////////////////////////////////////////////////////
+
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
+function s:exES_WriteDefaultTemplate() " <<<
     let _cwd = substitute( getcwd(), "\\", "\/", "g" )
     let _dir_name = g:exES_vimfile_dir
     let _project_name = fnamemodify( expand('%'), ":t:r" )  
@@ -86,9 +107,11 @@ function! s:exES_WriteDefaultTemplate() " <<<
     silent exec "normal gg"
 endfunction " >>>
 
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
 
-" --exES_SetEnvironment--
-function! g:exES_SetEnvironment() " <<<
+function g:exES_SetEnvironment() " <<<
     " do not show it in buffer list
     silent! setlocal bufhidden=hide
     silent! setlocal noswapfile
@@ -118,8 +141,8 @@ function! g:exES_SetEnvironment() " <<<
     endif
 
     " get environment value
-    if g:exES_setted != 1
-        let g:exES_setted = 1
+    if s:exES_setted != 1
+        let s:exES_setted = 1
 
         " get PWD
         let Line = getline(1)
@@ -188,9 +211,20 @@ function! g:exES_SetEnvironment() " <<<
 endfunction " >>>
 
 
-" if it is vimentry files, set evironment first
+"/////////////////////////////////////////////////////////////////////////////
+" commands
+"/////////////////////////////////////////////////////////////////////////////
+
+" ------------------------------------------------------------------ 
+" Desc: if it is vimentry files, set evironment first
+" ------------------------------------------------------------------ 
+
 au BufEnter *.vimentry call g:exES_SetEnvironment()
 
+
+"/////////////////////////////////////////////////////////////////////////////
+" finish
+"/////////////////////////////////////////////////////////////////////////////
 
 finish
 " vim: set foldmethod=marker foldmarker=<<<,>>> foldlevel=1:
