@@ -1,3 +1,5 @@
+@echo off
+
 rem  ======================================================================================
 rem  File         : iconv_big5-to-gb.bat
 rem  Author       : Wu Jie 
@@ -9,10 +11,10 @@ rem  ------------------------------------------------------------------
 rem  Desc: 
 rem  ------------------------------------------------------------------ 
 
-echo off
 for /R %1 %%i in (*.srt) do ( 
         echo Converting %%i... 
         iconv -c -f BIG5 -t GB18030 "%%i" > "%%i.cov" )
 goto Finish
+
 :Finish
 echo on

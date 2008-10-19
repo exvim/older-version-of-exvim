@@ -1,3 +1,5 @@
+@echo off
+
 rem  ======================================================================================
 rem  File         : generate_doc.bat
 rem  Author       : Wu Jie 
@@ -15,3 +17,5 @@ cd .\doc\html
 ..\..\hhc.exe index.hhp
 cd ..
 copy html\index.chm Document.chm
+
+echo on

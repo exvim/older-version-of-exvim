@@ -1,3 +1,5 @@
+@echo off
+
 rem  ======================================================================================
 rem  File         : quick_gen_project_vim_only.bat
 rem  Author       : Wu Jie 
@@ -10,3 +12,5 @@ rem  Desc:
 rem  ------------------------------------------------------------------ 
 
 "%EX_DEV%\Vim\toolkit\quickgen\quick_gen_project.bat" vim %1
+
+echo on
