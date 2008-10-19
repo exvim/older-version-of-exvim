@@ -1,62 +1,99 @@
-############################################################
-## Copyright (C) 2006 Johnny
-## ayacai [at] 163 [dot] com
-############################################################
+#  ======================================================================================
+#  File         : gcc_entry_s.mk
+#  Author       : Wu Jie 
+#  Last Change  : 10/19/2008 | 11:17:25 AM | Sunday,October
+#  Description  : 
+#  ======================================================================================
 
-# ----------------------------------------------------------
+# /////////////////////////////////////////////////////////////////////////////
 #  Global Configuration
-# ----------------------------------------------------------
-# include general config
+# /////////////////////////////////////////////////////////////////////////////
+
+#  ------------------------------------------------------------------ 
+#  Desc: include general config
+#  ------------------------------------------------------------------ 
+
 include gcc_config.mk
 
-# ----------------------------------------------------------
+# /////////////////////////////////////////////////////////////////////////////
 #  User Define
-# ----------------------------------------------------------
+# /////////////////////////////////////////////////////////////////////////////
 
-# Parent Working Directory
+#  ------------------------------------------------------------------ 
+#  Desc: Parent Working Directory
+#  ------------------------------------------------------------------ 
+
 PWD := .
 
-# Project Name
-Project := # current directory name
-ProjectType := # choose: a,lib,so,dll,exe
+#  ------------------------------------------------------------------ 
+#  Desc: Project Name
+#  ------------------------------------------------------------------ 
 
-# Include Path
+Project := # TODO: current directory name
+ProjectType := # TODO: choose: a,lib,so,dll,exe
+
+#  ------------------------------------------------------------------ 
+#  Desc: Include Path
+#  ------------------------------------------------------------------ 
+
 IncDirs += .
-IncDirs += # relative-address (sample: ./Incs)
+IncDirs += # TODO: relative-address (sample: ./Incs)
 
-# Precompiled Headers Dependence Headers
-FullPath_GchSrcs += # relative-address/header-file-name (sample: ./Incs/Gch-header.h)
+#  ------------------------------------------------------------------ 
+#  Desc: Precompiled Headers Dependence Headers
+#  ------------------------------------------------------------------ 
 
-# Source Path
+FullPath_GchSrcs += # TODO: relative-address/header-file-name (sample: ./Incs/Gch-header.h)
+
+#  ------------------------------------------------------------------ 
+#  Desc: Source Path
+#  ------------------------------------------------------------------ 
+
 SrcDirs += .
-SrcDirs += # relative-address (sample: ./Srcs)
+SrcDirs += # TODO: relative-address (sample: ./Srcs)
 
-# Dependent Libaray File Paths
-LibDirs += # relative-address (sample: ../Third-Part-Libs)
+#  ------------------------------------------------------------------ 
+#  Desc: Dependent Libaray File Paths
+#  ------------------------------------------------------------------ 
 
-# Dependent Library File Names
-PrjLibs += # lib-file-name (sample: libSDK.a-->SDK) This is libs for project compile depence
-ExtLibs += # lib-file-name (sample: libSDK.a-->SDK) This is libs for external libaraies
+LibDirs += # TODO: relative-address (sample: ../Third-Part-Libs)
 
-# Special Flags
-# Some space-depent directory flag can't generate automatically, use this instead
-CFlag_Spec += # (sample: -I"C:/Program Files/Microsoft DirectX SDK/Include")
-LFlag_Spec += # (sample: -L"C:/Program Files/Microsoft DirectX SDK/Lib/x86")
+#  ------------------------------------------------------------------ 
+#  Desc: Dependent Library File Names
+#  ------------------------------------------------------------------ 
 
-# ----------------------------------------------------------
+PrjLibs += # TODO: lib-file-name (sample: libSDK.a-->SDK) This is libs for project compile depence
+ExtLibs += # TODO: lib-file-name (sample: libSDK.a-->SDK) This is libs for external libaraies
+
+#  ------------------------------------------------------------------ 
+#  Desc: Special Flags
+#   Some space-depent directory flag can't generate automatically, use this instead
+#  ------------------------------------------------------------------ 
+
+CFlag_Spec += # TODO: (sample: -I"C:/Program Files/Microsoft DirectX SDK/Include")
+LFlag_Spec += # TODO: (sample: -L"C:/Program Files/Microsoft DirectX SDK/Lib/x86")
+
+# /////////////////////////////////////////////////////////////////////////////
 #  Addvance User Define
-# ----------------------------------------------------------
+# /////////////////////////////////////////////////////////////////////////////
 
-# Parent Working Directory
+#  ------------------------------------------------------------------ 
+#  Desc: Parent Working Directory
+#  ------------------------------------------------------------------ 
+
 PWD ?= .
 
-# Post Build Even
-# programme after target been built, this is the project specific one (sample: make_fself $(@) $(basename $(@)).self)
+# /////////////////////////////////////////////////////////////////////////////
+#  Post Build Even
+# 	programme after target been built, this is the project specific one (sample: make_fself $(@) $(basename $(@)).self)
+# /////////////////////////////////////////////////////////////////////////////
+
 define POST_BUILD
+$(ECHO) Post Build $(Project)...
 endef
 
-# ----------------------------------------------------------
+# /////////////////////////////////////////////////////////////////////////////
 #  Rules
-# ----------------------------------------------------------
+# /////////////////////////////////////////////////////////////////////////////
 
 include gcc_rule.mk

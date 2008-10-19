@@ -1,81 +1,126 @@
-# Copyright (C) 2006 Johnny
-# ayacai [at] 163 [dot] com
+#  ======================================================================================
+#  File         : gcc_rule.mk
+#  Author       : Wu Jie 
+#  Last Change  : 10/19/2008 | 11:27:09 AM | Sunday,October
+#  Description  : 
+#  ======================================================================================
 
-# ----------------------------------------------------------
+# /////////////////////////////////////////////////////////////////////////////
 #  Pre-generate Target
-# ----------------------------------------------------------
+# /////////////////////////////////////////////////////////////////////////////
 
-# -------------------
-#  Out Directory
-# -------------------
+#  ------------------------------------------------------------------ 
+#  Desc: Out Directory
+#  ------------------------------------------------------------------ 
 
 OutDir := $(PWD)/_build/gcc/$(Platform)
 
-# -------------------
-#  Include
-# -------------------
+#  ------------------------------------------------------------------ 
+#  Desc: Include
+#  ------------------------------------------------------------------ 
 
-# Precompiled Headers
+# TODO: ??? where is include?
+
+#  ------------------------------------------------------------------ 
+#  Desc: Precompiled Headers
+#  ------------------------------------------------------------------ 
+
 GchDir := $(addsuffix .gch,$(FullPath_GchSrcs))
 FullPath_Gchs := $(addsuffix _$(Platform)_$(Configuration).h.gch,$(addprefix $(GchDir)/,$(basename $(notdir $(FullPath_GchSrcs)))))
 
-# -------------------
-#  Source
-# -------------------
+#  ------------------------------------------------------------------ 
+#  Desc: Source
+#  ------------------------------------------------------------------ 
 
-# Source Files With Full Path
+#  ======================================================== 
+#  Source Files With Full Path
+#  ======================================================== 
+
 FullPath_Srcs := $(wildcard $(addsuffix /*.c,$(SrcDirs))) $(wildcard $(addsuffix /*.cpp,$(SrcDirs))) 
 
-# Source Files
+#  ======================================================== 
+#  Source Files
+#  ======================================================== 
+
 Srcs := $(notdir $(FullPath_Srcs))
 
-# -------------------
-#  Object
-# -------------------
+#  ------------------------------------------------------------------ 
+#  Desc: Object
+#  ------------------------------------------------------------------ 
 
-# Object File Output Path
+#  ======================================================== 
+#  Object File Output Path
+#  ======================================================== 
+
 ObjDir := $(OutDir)/$(Configuration)/objs/$(Project)
 
-# Object File Output Names
+#  ======================================================== 
+#  Object File Output Names
+#  ======================================================== 
+
 Objs := $(patsubst %.c,%.o,$(patsubst %.cpp,%.o,$(Srcs)))
 
-# Object File With Full Path
+#  ======================================================== 
+#  Object File With Full Path
+#  ======================================================== 
+
 FullPath_Objs := $(addprefix $(ObjDir)/,$(Objs))
 
-# -------------------
-#  Dependence
-# -------------------
+#  ------------------------------------------------------------------ 
+#  Desc: Dependence
+#  ------------------------------------------------------------------ 
 
-# Dependence File Output Path
+#  ======================================================== 
+#  Dependence File Output Path
+#  ======================================================== 
+
 DepDir := $(OutDir)/$(Configuration)/deps/$(Project)
 
-# Dependence File Output Names
+#  ======================================================== 
+#  Dependence File Output Names
+#  ======================================================== 
+
 Deps := $(patsubst %.o,%.d,$(Objs))
 GchDeps := $(patsubst %.gch,%.d,$(notdir $(GchDir)))
 
-# Dependence File With Full Path
+#  ======================================================== 
+#  Dependence File With Full Path
+#  ======================================================== 
+
 FullPath_Deps := $(addprefix $(DepDir)/,$(Deps))
 FullPath_GchDeps := $(addprefix $(DepDir)/,$(GchDeps))
 FullPath_AllDeps := $(FullPath_Deps) $(FullPath_GchDeps)
 
-# -------------------
-#  Dependence Library
-# -------------------
+#  ------------------------------------------------------------------ 
+#  Desc: Dependence Library
+#  ------------------------------------------------------------------ 
 
-# Dependence Libraries
+#  ======================================================== 
+#  Dependence Libraries
+#  ======================================================== 
+
 Libs := $(PrjLibs) $(ExtLibs)
 
-# Project Compile Dependence Libraries Output Path
+#  ======================================================== 
+#  Project Compile Dependence Libraries Output Path
+#  ======================================================== 
+
 PrjLibDir := $(OutDir)/$(Configuration)/bin
 
-# Project compile dependence libraries with Full Path
+#  ======================================================== 
+#  Project compile dependence libraries with Full Path
+#  ======================================================== 
+
 FullPath_PrjLibs := $(addprefix $(PrjLibDir)/,$(addprefix lib,$(addsuffix .a,$(PrjLibs))))
 
-# -------------------
-#  Target
-# -------------------
+#  ------------------------------------------------------------------ 
+#  Desc: Target
+#  ------------------------------------------------------------------ 
 
-# Target File Output Path & Name
+#  ======================================================== 
+#  Target File Output Path & Name
+#  ======================================================== 
+
 ifeq ($(ProjectType),$(EXE_NAME))
 TargetDir := $(OutDir)/$(Configuration)/bin
 Target := $(Project)_$(Configuration).$(ProjectType)
@@ -93,50 +138,58 @@ endif
 endif
 FullPath_Target := $(TargetDir)/$(Target)
 
-# -------------------
-#  Logs
-# -------------------
+#  ------------------------------------------------------------------ 
+#  Desc: Logs
+#  ------------------------------------------------------------------ 
 
-# Error File Output Path
+#  ======================================================== 
+#  Error File Output Path
+#  ======================================================== 
+
 ErrDir := $(OutDir)/$(Configuration)/logs/errors
 FullPath_Errs := $(ErrDir)/$(Project).err
 ErrLogName := ErrorLog.err
 
-
-# ----------------------------------------------------------
+# /////////////////////////////////////////////////////////////////////////////
 #  Compiler Flags
-# ----------------------------------------------------------
+# /////////////////////////////////////////////////////////////////////////////
 
-# -------------------
-#  Pre-define
-# -------------------
+#  ------------------------------------------------------------------ 
+#  Desc: Pre-define
+#  ------------------------------------------------------------------ 
 
-# Configuration Pre-define
+#  ======================================================== 
+#  Configuration Pre-define
+#  ======================================================== 
+
 ifeq ($(Configuration),Debug)
 PreDefs += DEBUG
 PreDefs += _DEBUG
-PreDefs += _EX_DEBUG_
+PreDefs += __EX_DEBUG
 else 
 ifeq ($(Configuration),Release)
 PreDefs += NDEBUG
 PreDefs += RELEASE
 PreDefs += _RELEASE
-PreDefs += _EX_RELEASE_
+PreDefs += __EX_RELEASE
 else
 ifeq ($(Configuration),Final)
 PreDefs += NDEBUG
 PreDefs += FINAL
-PreDefs += _EX_FINAL_
+PreDefs += __EX_FINAL
 endif
 endif
 endif
 
-# Platform Pre-defeine
+#  ======================================================== 
+#  Platform Pre-defeine
+#  ======================================================== 
+
 ifeq ($(Platform),Linux)
 PreDefs += __LINUX__
 PreDefs += _LINUX
 PreDefs += LINUX
-PreDefs += _EX_LINUX_
+PreDefs += __EX_LINUX
 else 
 ifeq ($(Platform),Win32)
 PreDefs += __WIN32__
@@ -144,48 +197,69 @@ PreDefs += _WIN32
 PreDefs += WIN32
 PreDefs += WIN
 PreDefs += WINDOWS
-PreDefs += _EX_WIN32_
+PreDefs += __EX_WIN32
 else 
 ifeq ($(Platform),PS3)
 PreDefs += __PS3__
 PreDefs += _PS3
 PreDefs += PS3
-PreDefs += _EX_PS3_
+PreDefs += __EX_PS3
 endif
 endif
 endif
 
-# Build as DLL or not
+#  ======================================================== 
+#  Build as DLL or not
+#  ======================================================== 
+
 ifeq ($(ProjectType),dll)
 PreDefs += DLL
 PreDefs += _DLL
-PreDefs += _EX_DLL_
+PreDefs += __EX_DLL
 endif
 
-# -------------------
-#  Generate Flag
-# -------------------
+# /////////////////////////////////////////////////////////////////////////////
+# Generate Flag
+# /////////////////////////////////////////////////////////////////////////////
 
-# pre-define
+#  ------------------------------------------------------------------ 
+#  Desc: pre-define
+#  ------------------------------------------------------------------ 
+
 Flag_PreDef := $(addprefix -D,$(PreDefs))
 
-# includes
+#  ------------------------------------------------------------------ 
+#  Desc: includes
+#  ------------------------------------------------------------------ 
+
 Flag_Inc := $(addprefix -I,$(IncDirs))
 
-# libaray directory
+#  ------------------------------------------------------------------ 
+#  Desc: libaray directory
+#  ------------------------------------------------------------------ 
+
 Flag_LibDir := $(addprefix -L,$(LibDirs))
 
-# libaray link
+#  ------------------------------------------------------------------ 
+#  Desc: libaray link
+#  ------------------------------------------------------------------ 
+
 Flag_Lib := $(addprefix -l,$(Libs))
 
-# build as dll
+#  ------------------------------------------------------------------ 
+#  Desc: build as dll
+#  ------------------------------------------------------------------ 
+
 ifeq ($(ProjectType),dll)
 Flag_BuildDll := -shared -Wl,--out-implib,$(TargetDir)/$(libTarget)
 else
 Flag_BuildDll :=
 endif
 
-# built-in function
+#  ------------------------------------------------------------------ 
+#  Desc: built-in function
+#  ------------------------------------------------------------------ 
+
 # mmx
 ifeq ($(USE_MMX),1)
 Flag_BuiltIn_Functions += -mmmx
@@ -199,8 +273,11 @@ ifeq ($(USE_SSE3),1)
 Flag_BuiltIn_Functions += -msse3
 endif
 
-# Debug Flag ( choose debug or not )
-# Optimization Flag ( -O0:disable -O/-O1:general opt -O2:advance opt -O3:all opt )
+#  ------------------------------------------------------------------ 
+#  Desc: Debug Flag ( choose debug or not )
+# 	Optimization Flag ( -O0:disable -O/-O1:general opt -O2:advance opt -O3:all opt )
+#  ------------------------------------------------------------------ 
+
 ifeq ($(Configuration),Debug)
 Flag_Debug := -g
 Flag_Opt := -O0
@@ -209,36 +286,49 @@ Flag_Debug :=
 Flag_Opt := -O1
 endif 
 
-# Compile Flag
+#  ------------------------------------------------------------------ 
+#  Desc: Compile Flag
+#  ------------------------------------------------------------------ 
+
 CFlags := $(Flag_Debug) $(Flag_Opt) $(Flag_PreDef) $(Flag_Inc) $(Flag_BuiltIn_Functions) $(CFlag_Spec)
-# Link Flag
+
+#  ------------------------------------------------------------------ 
+#  Desc: Link Flag
+#  ------------------------------------------------------------------ 
+
 LFlags := $(Flag_LibDir) $(Flag_Lib) $(Flag_BuildDll) $(LFlag_Spec)
 
-# -------------------
-#  VPATH
-# -------------------
+#  ------------------------------------------------------------------ 
+#  Desc: VPATH
+#  ------------------------------------------------------------------ 
 
 VPATH := $(IncDirs)
 VPATH += $(SrcDirs)
 VPATH += $(TargetDir)
 
-# ----------------------------------------------------------
+# /////////////////////////////////////////////////////////////////////////////
 #  Rules
-# ----------------------------------------------------------
+# /////////////////////////////////////////////////////////////////////////////
 
-# -------------------
-# All Rules
-# -------------------
+#  ------------------------------------------------------------------ 
+#  Desc: All Rules
+#  ------------------------------------------------------------------ 
+
 .PHONY: all clean-all rebuild
 all: |clean-errs $(FullPath_Target)
 clean-all: |clean-gchs clean-objs clean-errs clean-target
 rebuild: |clean-all all
 
-# -------------------
-# Target Rules
-# -------------------
+#  ------------------------------------------------------------------ 
+#  Desc: Target Rules
+#  ------------------------------------------------------------------ 
+
 .PHONY: target clean-target rebuild-target $(Target)
-# all
+
+#  ======================================================== 
+#  all
+#  ======================================================== 
+
 rebuild-target: |clean-target target
 target: $(FullPath_Target)
 clean-target:
@@ -254,10 +344,17 @@ endif
 ifeq ($(ProjectType),dll)
 	$(RM) $(TargetDir)/$(libTarget)
 endif
-# single
+
+#  ======================================================== 
+#  single
+#  ======================================================== 
+
 $(Target): $(FullPath_Target)
 
-# commands-target
+#  ======================================================== 
+#  commands-target
+#  ======================================================== 
+
 $(FullPath_Target): $(FullPath_Objs) $(FullPath_PrjLibs)
 	$(ECHO) -------------------
 	$(ECHO) linking:
@@ -288,11 +385,16 @@ endif
 	$(POST_BUILD_ALL_PROJECT)
 	$(POST_BUILD)
 
-# -------------------
-# Dependence Rules
-# -------------------
+#  ------------------------------------------------------------------ 
+#  Desc: Dependence Rules
+#  ------------------------------------------------------------------ 
+
 .PHONY: deps clean-deps rebuild-deps $(Deps)
-# all
+
+#  ======================================================== 
+#  all
+#  ======================================================== 
+
 rebuild-deps: |clean-deps deps
 deps: $(FullPath_AllDeps)
 clean-deps: 
@@ -305,15 +407,25 @@ else
 	@for %%i in ($(FullPath_AllDeps)) do (echo     ^|--   %%i)
 endif
 	$(RM) $(FullPath_AllDeps)
-# single
+
+#  ======================================================== 
+#  single
+#  ======================================================== 
+
 $(Deps):
 	$(SMAKE) -f$(Project).mk $(DepDir)/$@
 clean-%.d:
 	$(ECHO) delete $(DepDir)/$*.d
 	$(RM) $(DepDir)/$*.d
 
-# commands-deps
-# cpp files
+#  ======================================================== 
+#  commands-deps
+#  ======================================================== 
+
+#  ======================================================== 
+#  cpp-files
+#  ======================================================== 
+
 $(DepDir)/%.d: %.cpp
 	$(ECHO) creating $@...
 	$(MKDIR) $(DepDir)
@@ -328,7 +440,10 @@ else
 	$(RM) $@.tmp
 endif
 
-# c files
+#  ======================================================== 
+#  c-files
+#  ======================================================== 
+
 $(DepDir)/%.d: %.c
 	$(ECHO) creating $@...
 	$(MKDIR) $(DepDir)
@@ -343,7 +458,10 @@ else
 	$(RM) $@.tmp
 endif
 
-# commands-gch-deps
+#  ======================================================== 
+#  commands-gch-deps
+#  ======================================================== 
+
 $(DepDir)/%.h.d: %.h
 	$(ECHO) creating $@...
 	$(MKDIR) $(DepDir)
@@ -358,11 +476,16 @@ else
 	$(RM) $@.tmp
 endif
 
-# -------------------
-# GCH Rules
-# -------------------
+#  ------------------------------------------------------------------ 
+#  Desc: GCH Rules
+#  ------------------------------------------------------------------ 
+
 .PHONY: gchs clean-gchs rebuild-gchs
-# all
+	
+#  ======================================================== 
+#  all
+#  ======================================================== 
+
 rebuild-gchs: |clean-gchs gchs
 gchs: $(FullPath_Gchs)
 clean-gchs: 
@@ -378,7 +501,10 @@ endif
 	$(RM) $(FullPath_Gchs)
 endif
 
-# commands-gchs
+#  ======================================================== 
+#  commands-gchs
+#  ======================================================== 
+
 $(FullPath_Gchs):
 	$(MKDIR) $(ErrDir)
 	$(MKDIR) $(GchDir)
@@ -389,11 +515,16 @@ $(FullPath_Gchs):
 	$(ECHO) ^>^>^>^>^>^> >> $(ErrDir)/$(ErrLogName)
 	$(CAT) $(ErrDir)/$(ErrLogName) >> $(ErrDir)/$(Project).err
 
-# -------------------
-# Object Rules
-# -------------------
+#  ------------------------------------------------------------------ 
+#  Desc: Object Rules
+#  ------------------------------------------------------------------ 
+
 .PHONY: objs clean-objs rebuild-objs $(Objs)
-# all
+
+#  ======================================================== 
+#  all
+#  ======================================================== 
+
 rebuild-objs: |clean-objs objs
 objs: $(FullPath_Objs)
 clean-objs:
@@ -406,15 +537,25 @@ else
 	@for %%i in ($(FullPath_Objs)) do (echo     ^|--   %%i)
 endif
 	$(RM) $(FullPath_Objs)
-# single
+
+#  ======================================================== 
+#  single
+#  ======================================================== 
+
 $(Objs):
 	$(SMAKE) -f$(Project).mk $(ObjDir)/$@
 clean-%.o:
 	$(ECHO) delete $(ObjDir)/$*.o
 	$(RM) $(ObjDir)/$*.o
 
-# commands-objs
-# cpp files
+#  ======================================================== 
+#  commands-objs
+#  ======================================================== 
+
+#  ======================================================== 
+#  cpp files
+#  ======================================================== 
+
 -include $(FullPath_AllDeps)
 $(ObjDir)/%.o: %.cpp $(FullPath_Gchs)
 	$(MKDIR) $(ObjDir)
@@ -426,7 +567,10 @@ $(ObjDir)/%.o: %.cpp $(FullPath_Gchs)
 	$(ECHO) ^>^>^>^>^>^> >> $(ErrDir)/$(ErrLogName)
 	$(CAT) $(ErrDir)/$(ErrLogName) >> $(ErrDir)/$(Project).err
 
-# c files
+#  ======================================================== 
+#  c files
+#  ======================================================== 
+
 $(ObjDir)/%.o: %.c $(FullPath_Gchs)
 	$(MKDIR) $(ObjDir)
 	$(MKDIR) $(ErrDir)
@@ -437,11 +581,16 @@ $(ObjDir)/%.o: %.c $(FullPath_Gchs)
 	$(ECHO) ^>^>^>^>^>^> >> $(ErrDir)/$(ErrLogName)
 	$(CAT) $(ErrDir)/$(ErrLogName) >> $(ErrDir)/$(Project).err
 
-# -------------------
-# Output Rules
-# -------------------
+#  ------------------------------------------------------------------ 
+#  Desc: Output Rules
+#  ------------------------------------------------------------------ 
+
 .PHONY: clean-errs
-# all
+
+#  ======================================================== 
+#  all
+#  ======================================================== 
+
 clean-errs:
 	$(ECHO) -------------------
 	$(ECHO) delete errs:

@@ -1,10 +1,22 @@
+rem  ======================================================================================
+rem  File         : command.txt
+rem  Author       : Wu Jie 
+rem  Last Change  : 10/19/2008 | 15:27:19 PM | Sunday,October
+rem  Description  : 
+rem  ======================================================================================
 
-rem ----------- mkid -----------------
+rem  ------------------------------------------------------------------ 
+rem  Desc: mkid
+rem  ------------------------------------------------------------------ 
+
 mkid --include="C C++" rem used for c/c++ only, remove comment text, strings
 mkid --exclude="text" rem don't generate id for txt
 mkid --include="text" rem this is special for my own lang-map, treat everything as text, for including comment and strings
 
-rem ----------- lid -----------------
+rem  ------------------------------------------------------------------ 
+rem  Desc: lid
+rem  ------------------------------------------------------------------ 
+
 lid --result=grep -s/-r/-w
 
 rem vim: set ft=dosbatch:

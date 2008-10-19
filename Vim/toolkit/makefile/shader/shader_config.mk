@@ -1,175 +1,219 @@
-############################################################
-## Copyright (C) 2006 Johnny
-## ayacai [at] 163 [dot] com
-############################################################
+#  ======================================================================================
+#  File         : shader_config.mk
+#  Author       : Wu Jie 
+#  Last Change  : 10/19/2008 | 13:50:00 PM | Sunday,October
+#  Description  : 
+#  ======================================================================================
 
-# ----------------------------------------------------------
+# /////////////////////////////////////////////////////////////////////////////
 #  System Auto Dectect
-# ----------------------------------------------------------
+# /////////////////////////////////////////////////////////////////////////////
+
 ifeq ($(@shell uname), Linux)
 CURRENT_OS := Linux
 else
 CURRENT_OS := Win32
 endif
 
-# ----------------------------------------------------------
+# /////////////////////////////////////////////////////////////////////////////
 #  Advance User Define
-# ----------------------------------------------------------
+# /////////////////////////////////////////////////////////////////////////////
 
-# Choose the shell
+#  ------------------------------------------------------------------ 
+#  Desc: Choose the shell
+#  ------------------------------------------------------------------ 
+
 SHELL := /bin/sh
 
-# Make Debug
+#  ------------------------------------------------------------------ 
+#  Desc: Make Debug
+#  ------------------------------------------------------------------ 
+
 SILENT_CMD := @
 
-# Make Silent
+#  ------------------------------------------------------------------ 
+#  Desc: Make Silent
+#  ------------------------------------------------------------------ 
+
 ifeq ($(SILENT_CMD),@)
 SILENT_MK := --silent
 else
 SILENT_MK :=
 endif
 
-# General Commands
+#  ------------------------------------------------------------------ 
+#  Desc: General Commands
+#  ------------------------------------------------------------------ 
+
 ECHO := $(SILENT_CMD)echo
 SMAKE := $(SILENT_CMD)$(MAKE) $(SILENT_MK)
 
-# Command Path Choose
+#  ------------------------------------------------------------------ 
+#  Desc: Command Path Choose
+#  ------------------------------------------------------------------ 
+
 ifeq ($(CURRENT_OS),Linux)
 CMD_PATH_LINUX :=
 else
 CMD_PATH_LINUX := $(EX_DEV)/msys/1.0/bin/
 endif
 
-# Linux Commands
+#  ------------------------------------------------------------------ 
+#  Desc: Linux Commands
+#  ------------------------------------------------------------------ 
+
 RM := $(SILENT_CMD)$(CMD_PATH_LINUX)rm -f
 RMDIR := $(SILENT_CMD)$(CMD_PATH_LINUX)rmdir
 MKDIR := $(SILENT_CMD)$(CMD_PATH_LINUX)mkdir -p
 CAT := $(SILENT_CMD)$(CMD_PATH_LINUX)cat
 
-# Windows Commands
+#  ------------------------------------------------------------------ 
+#  Desc: Windows Commands
+#  ------------------------------------------------------------------ 
+
 CLS := $(SILENT_CMD)cls # this is the dos command, temp exist here
 COPY := $(SILENT_CMD)copy
 
-# After Build Even
-AFTER_BUILD = # programme after target been built, this is the project specific one (sample: make_fself $(@) $(basename $(@)).self)
-
-# ----------------------------------------------------------
+# /////////////////////////////////////////////////////////////////////////////
 #  User Define
-# ----------------------------------------------------------
+# /////////////////////////////////////////////////////////////////////////////
 
-# Configuration Name
-# parameter: Debug
-# 			 Release
-# 			 FinalRelease
-# 			 All
+#  ------------------------------------------------------------------ 
+#  Desc: Configuration Name
+# 	parameter: Debug
+# 			   Release
+# 			   FinalRelease
+# 			   All
+#  ------------------------------------------------------------------ 
+
 SHADER_Configuration = Debug
 
+#  ------------------------------------------------------------------ 
+#  Desc: Platform Name
+# 	parameter: Linux
+# 			   Win32
+# 			   Xenon
+# 			   PS3
+# 			   All
+#  ------------------------------------------------------------------ 
 
-# Platform Name
-# parameter: Linux
-# 			 Win32
-# 			 Xenon
-# 			 PS3
-# 			 All
 SHADER_Platform = Win32
 
-# ----------------------------------------------------------
-#  Shader Compiler
-# ----------------------------------------------------------
+#  ------------------------------------------------------------------ 
+#  Desc: Shader Compiler Path
+#  ------------------------------------------------------------------ 
 
-# Shader Compiler Path
 SHADER_COMPILER_PATH_WIN32=D:\Program Files\Microsoft DirectX SDK (August 2007)\Utilities\Bin\x86
 SHADER_COMPILER_PATH_LINUX=
 SHADER_COMPILER_PATH_XENON=D:\Program Files\Microsoft DirectX SDK (August 2007)\Utilities\Bin\x86
 SHADER_COMPILER_PATH_PS3=
 
-# Shader Compiler
-# parameter: fxc 		( directx hlsl shader compiler )
-#  			 cg 		( nVidia cg shader compiler )
+#  ------------------------------------------------------------------ 
+#  Desc: Shader Compiler
+# 	parameter: fxc 		( directx hlsl shader compiler )
+#  			   cg 		( nVidia cg shader compiler )
+#  ------------------------------------------------------------------ 
+
 SHADER_COMPILER_WIN32=fxc
 SHADER_COMPILER_LINUX=cg
 SHADER_COMPILER_XENON=fxc
 SHADER_COMPILER_PS3=cg
 
-# ----------------------------------------------------------
+# /////////////////////////////////////////////////////////////////////////////
 #  General Compile Detail
-# ----------------------------------------------------------
+# /////////////////////////////////////////////////////////////////////////////
 
-# Pack Matrices
-# parameter: column_major
-#  			 row_major
+#  ------------------------------------------------------------------ 
+#  Desc: Pack Matrices
+# 	parameter: column_major
+#  			   row_major
+#  ------------------------------------------------------------------ 
+
 PACK_MATRICES_WIN32=column_major
 PACK_MATRICES_LINUX=column_major
 PACK_MATRICES_XENON=column_major
 PACK_MATRICES_PS3=column_major
 
-# ----------------------------------------------------------
+# /////////////////////////////////////////////////////////////////////////////
 #  Vertex Shader Compile Detail
-# ----------------------------------------------------------
+# /////////////////////////////////////////////////////////////////////////////
 
-# Vertex Shader Mode Version
-# parameter: vs_1_1
-#  			 vs_2_0
-#  			 vs_2_a
-#  			 vs_2_sw
-#  			 vs_3_0
-#  			 vs_3_sw
-#  			 vs_4_0
-#  			 vs_4_1
+#  ------------------------------------------------------------------ 
+#  Desc: Vertex Shader Mode Version
+# 	parameter: vs_1_1
+#  			   vs_2_0
+#  			   vs_2_a
+#  			   vs_2_sw
+#  			   vs_3_0
+#  			   vs_3_sw
+#  			   vs_4_0
+#  			   vs_4_1
+#  ------------------------------------------------------------------ 
+
 VS_WIN32=vs_3_0
 VS_LINUX=vs_3_0
 VS_XENON=vs_3_0
 VS_PS3=vs_3_0
 
-# ----------------------------------------------------------
+# /////////////////////////////////////////////////////////////////////////////
 #  Pixel Shader Compile Detail
-# ----------------------------------------------------------
+# /////////////////////////////////////////////////////////////////////////////
 
-# Pixel Shader Mode Version
-# parameter: ps_2_0
-#  			 ps_2_a
-#  			 ps_2_b
-#  			 ps_2_sw
-#  			 ps_3_0
-#  			 ps_4_0
-#  			 ps_4_1
+#  ------------------------------------------------------------------ 
+#  Desc: Pixel Shader Mode Version
+# 	parameter: ps_2_0
+#  			   ps_2_a
+#  			   ps_2_b
+#  			   ps_2_sw
+#  			   ps_3_0
+#  			   ps_4_0
+#  			   ps_4_1
+#  ------------------------------------------------------------------ 
+
 PS_WIN32=ps_3_0
 PS_LINUX=ps_3_0
 PS_XENON=ps_3_0
 PS_PS3=ps_3_0
 
-# ----------------------------------------------------------
+# /////////////////////////////////////////////////////////////////////////////
 #  Geometry Shader Compile Detail
-# ----------------------------------------------------------
+# /////////////////////////////////////////////////////////////////////////////
 
-# Geometry Shader Mode Version
-# parameter: gs_4_0
-#  			 gs_4_1
+#  ------------------------------------------------------------------ 
+#  Desc: Geometry Shader Mode Version
+# 	parameter: gs_4_0
+#  			   gs_4_1
+#  ------------------------------------------------------------------ 
+
 GS_WIN32=gs_4_0
 GS_LINUX=gs_4_0
 GS_XENON=gs_4_0
 GS_PS3=gs_4_0
 
-# ----------------------------------------------------------
+# /////////////////////////////////////////////////////////////////////////////
 #  FX Shader Compile Detail
-# ----------------------------------------------------------
+# /////////////////////////////////////////////////////////////////////////////
 
-# Fx Shader Mode Version
-# parameter: fx_2_0
-#  			 fx_4_0
-#  			 fx_4_1
+#  ------------------------------------------------------------------ 
+#  Desc: Fx Shader Mode Version
+# 	parameter: fx_2_0
+#  			   fx_4_0
+#  			   fx_4_1
+#  ------------------------------------------------------------------ 
+
 FX_WIN32=fx_4_0
 FX_LINUX=fx_4_0
 FX_XENON=fx_4_0
 FX_PS3=fx_4_0
 
-# ----------------------------------------------------------
+# /////////////////////////////////////////////////////////////////////////////
 #  Advance User Define
-# ----------------------------------------------------------
+# /////////////////////////////////////////////////////////////////////////////
 
-# Executable File Name
-# Choose the compiler
-# Choose the linker
+#  ------------------------------------------------------------------ 
+#  Desc: 
+#  ------------------------------------------------------------------ 
+
 ifeq ($(SHADER_Platform),Win32)
 SHDC := $(SILENT_CMD)"$(SHADER_COMPILER_PATH_WIN32)"\$(SHADER_COMPILER_WIN32)
 PACK_MATRICES := $(COLUMN_MAJOR_WIN32)
@@ -213,5 +257,10 @@ endif
 endif
 endif
 
-# After Build Even
-AFTER_BUILD = # programme after target been built, this is the project specific one (sample: make_fself $(@) $(basename $(@)).self)
+# /////////////////////////////////////////////////////////////////////////////
+# Post Build Even for all project
+# /////////////////////////////////////////////////////////////////////////////
+
+define POST_BUILD_ALL_PROJECT
+$(ECHO) Post Build...
+endef

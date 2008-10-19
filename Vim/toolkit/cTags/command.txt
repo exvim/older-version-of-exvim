@@ -1,5 +1,15 @@
+rem  ======================================================================================
+rem  File         : command.txt
+rem  Author       : Wu Jie 
+rem  Last Change  : 10/19/2008 | 15:23:46 PM | Sunday,October
+rem  Description  : 
+rem  ======================================================================================
 
-rem ----------- Make General Tags -----------------
+
+rem  ------------------------------------------------------------------ 
+rem  Desc: Make General Tags
+rem  ------------------------------------------------------------------ 
+
 ctags -R --c++-kinds=+p --fields=+iaS --extra=+q --languages=c++ --langmap=c++:+.inl ..
 
 rem vim: set ft=dosbatch:

@@ -1,6 +1,14 @@
-" --------------------------------------------------------------------------------------
+" ======================================================================================
+" File         : _vimrc
+" Author       : Wu Jie 
+" Last Change  : 10/19/2008 | 15:33:27 PM | Sunday,October
+" Description  : 
+" ======================================================================================
+
+"/////////////////////////////////////////////////////////////////////////////
 " General
-" --------------------------------------------------------------------------------------
+"/////////////////////////////////////////////////////////////////////////////
+
 set nocompatible " Use Vim settings, rather then Vi settings (much better!). This must be first, because it changes other options as a side effect.
 set langmenu=none " always use English menu
 
@@ -51,13 +59,14 @@ set maxmempattern=1000
 "set errorformat+=%f(%l\\,%c):\ %m " fxc shader error-format
 
 
-" --------------------------------------------------------------------------------------
+"/////////////////////////////////////////////////////////////////////////////
 " Variable settings ( set all )
-" --------------------------------------------------------------------------------------
+"/////////////////////////////////////////////////////////////////////////////
 
-" --------------------
-"  Visual
-" --------------------
+" ------------------------------------------------------------------ 
+" Desc: Visual
+" ------------------------------------------------------------------ 
+
 set showmatch " show matching paren 
 set matchtime=0 " 0 second to show the matching paren ( much faster )
 set nu " Show LineNumber
@@ -76,9 +85,11 @@ set guifont=Lucida_Console:h9
 silent exec "colorscheme ex"
 au ColorScheme * call UpdateHighlights()
 function UpdateHighlights()
-    " ==================
+
+    " ======================================================== 
     " exUtility
-    " ==================
+    " ======================================================== 
+
     hi ex_SynHL1 gui=none guibg=LightCyan term=none cterm=none ctermbg=LightCyan
     hi ex_SynHL2 gui=none guibg=LightMagenta term=none cterm=none ctermbg=LightMagenta
     hi ex_SynHL3 gui=none guibg=LightRed term=none cterm=none ctermbg=LightRed
@@ -102,9 +113,10 @@ function UpdateHighlights()
     hi ex_SynJumpMethodG term=none cterm=none ctermfg=Blue gui=none guifg=Blue 
     hi link ex_SynJumpSymbol Comment
 
-    " ==================
+    " ======================================================== 
     " exMacroHighlight
-    " ==================
+    " ======================================================== 
+
     hi exMacroDisable term=none cterm=none ctermfg=DarkGray gui=none guifg=DarkGray
     hi link cCppOut exMacroDisable                
     hi exMH_GroupNameEnable term=bold cterm=bold ctermfg=DarkRed ctermbg=LightGray gui=bold guifg=DarkRed guibg=LightGray
@@ -112,9 +124,10 @@ function UpdateHighlights()
     hi link exMH_MacroEnable cPreProc
     hi link exMH_MacroDisable exMacroDisable
 
-    " ==================
+    " ======================================================== 
     " exProject
-    " ==================
+    " ======================================================== 
+
     hi exPJ_TreeLine gui=none guifg=DarkGray term=none cterm=none ctermfg=Gray
     hi exPJ_SynDir gui=bold guifg=Brown term=bold cterm=bold ctermfg=DarkRed
     hi exPJ_SynFile gui=none guifg=Magenta term=none cterm=none ctermfg=Magenta
@@ -123,14 +136,16 @@ function UpdateHighlights()
     hi exPJ_SynHeaderFile gui=none guifg=DarkGreen term=none cterm=none ctermfg=DarkGreen
     hi exPJ_SynErrorFile gui=none guifg=Red term=none cterm=none ctermfg=Red
 
-    " ==================
+    " ======================================================== 
     " exCScope
-    " ==================
+    " ======================================================== 
+
     hi exCS_SynQfNumber gui=none guifg=Red term=none cterm=none ctermfg=Red
 
-    " ==================
+    " ======================================================== 
     " ShowMarks
-    " ==================
+    " ======================================================== 
+
     " For marks a-z
     hi ShowMarksHLl term=bold cterm=bold ctermbg=LightBlue ctermfg=Blue gui=bold guibg=LightBlue guifg=Blue                      
     " For marks A-Z
@@ -140,9 +155,10 @@ function UpdateHighlights()
     " For multiple marks on the same line.
     hi ShowMarksHLm term=bold cterm=bold ctermbg=LightGreen ctermfg=DarkGreen gui=bold guibg=LightGreen guifg=DarkGreen
 
-    " ==================
+    " ======================================================== 
     " MiniBufExplorer
-    " ==================
+    " ======================================================== 
+
     " for buffers that have NOT CHANGED and are NOT VISIBLE.
     hi MBENormal ctermbg=LightGray ctermfg=DarkGray guibg=LightGray guifg=DarkGray
     " for buffers that HAVE CHANGED and are NOT VISIBLE
@@ -152,9 +168,10 @@ function UpdateHighlights()
     " buffers that have CHANGED and are VISIBLE
     hi MBEVisibleChanged term=bold cterm=bold ctermbg=DarkRed ctermfg=Black gui=bold guibg=DarkRed guifg=Black
 
-    " ==================
+    " ======================================================== 
     " TagList
-    " ==================
+    " ======================================================== 
+
     " TagListTagName  - Used for tag names
     hi MyTagListTagName term=bold cterm=none ctermfg=Black ctermbg=DarkYellow gui=none guifg=Black guibg=#ffe4b3
     " TagListTagScope - Used for tag scope
@@ -167,9 +184,10 @@ function UpdateHighlights()
     hi MyTagListFileName term=bold cterm=bold ctermfg=Black ctermbg=LightBlue gui=bold guifg=Black guibg=LightBlue
 endfunction
 
-" --------------------
-"  Vim UI
-" --------------------
+" ------------------------------------------------------------------ 
+" Desc: Vim UI
+" ------------------------------------------------------------------ 
+
 set wildmenu " turn on wild menu, try typing :h and press <Tab> 
 set showcmd	" display incomplete commands
 set cmdheight=1 " 1 screen lines to use for the command-line 
@@ -200,9 +218,10 @@ set guioptions-=T
 
 "set grepprg=grep\ -n
 
-" --------------------
-"  Text edit
-" --------------------
+" ------------------------------------------------------------------ 
+" Desc: Text edit
+" ------------------------------------------------------------------ 
+
 set ai " autoindent 
 set si " smartindent 
 set backspace=indent,eol,start " allow backspacing over everything in insert mode
@@ -245,15 +264,17 @@ set nf=
 " In Visual Block Mode, cursor can be positioned where there is no actual character
 set ve=block
 
-" --------------------
-"  Fold text
-" --------------------
+" ------------------------------------------------------------------ 
+" Desc: Fold text
+" ------------------------------------------------------------------ 
+
 set foldmethod=marker foldmarker={,} foldlevel=9999
 set diffopt=filler,context:9999
 
-" --------------------
-"  Search
-" --------------------
+" ------------------------------------------------------------------ 
+" Desc: Search
+" ------------------------------------------------------------------ 
+
 " Switch syntax highlighting on, when the terminal has colors
 " Also switch on highlighting the last used search pattern.
 if &t_Co > 2 || has("gui_running")
@@ -268,16 +289,17 @@ set smartcase " Set smartcase mode on, If there is upper case character in the s
 set grepprg=lid\ -Rgrep\ -s
 set grepformat=%f:%l:%m
 
-" --------------------
-"  Syntax
-" --------------------
+" ------------------------------------------------------------------ 
+" Desc: Syntax
+" ------------------------------------------------------------------ 
+
 let c_gnu = 1
 let c_no_curly_error = 1
 "let c_no_bracket_error = 1
 
-" --------------------------------------------------------------------------------------
+"/////////////////////////////////////////////////////////////////////////////
 " Key Mappings
-" --------------------------------------------------------------------------------------
+"/////////////////////////////////////////////////////////////////////////////
 
 " Don't use Ex mode, use Q for formatting
 map Q gq  
@@ -391,10 +413,9 @@ inoremap <c-p> <C-X><C-P>
 " even be separated by punctuation (such as "abc = def").
 nmap <silent> <leader>sw "_yiw:s/\(\%#\w\+\)\(\W\+\)\(\w\+\)/\3\2\1/<cr><c-o>
 
-
-" --------------------------------------------------------------------------------------
+"/////////////////////////////////////////////////////////////////////////////
 " Command
-" --------------------------------------------------------------------------------------
+"/////////////////////////////////////////////////////////////////////////////
 
 " TODO
 " perforce key mapping
@@ -406,11 +427,14 @@ command Revert :silent !p4 revert %
 command Changelist :silent !p4 change
 command ShowChangelist :!p4 changes -s pending -u jwu
 
-" --------------------------------------------------------------------------------------
+"/////////////////////////////////////////////////////////////////////////////
 " Auto Command
-" --------------------------------------------------------------------------------------
+"/////////////////////////////////////////////////////////////////////////////
 
-" Only do this part when compiled with support for autocommands.
+" ------------------------------------------------------------------ 
+" Desc: Only do this part when compiled with support for autocommands.
+" ------------------------------------------------------------------ 
+
 if has("autocmd")
   " Enable file type detection.
   " Use the default filetype settings, so that mail gets 'tw' set to 72,
@@ -436,9 +460,10 @@ if has("autocmd")
   augroup END
 endif " has("autocmd")
 
-" --------------------
-"  Buffer
-" --------------------
+" ------------------------------------------------------------------ 
+" Desc: Buffer
+" ------------------------------------------------------------------ 
+
 au BufEnter * :syntax sync fromstart " ensure every file does syntax highlighting (full) 
 au BufNewFile,BufRead *.avs set syntax=avs " for avs syntax file.
 au BufWritePost * call g:ex_UpdateCurrentBuffer() 
@@ -447,19 +472,26 @@ au BufWritePost * call g:ex_UpdateCurrentBuffer()
 " Change current directory to the file of the buffer ( from Script#65"CD.vim"
 " au   BufEnter *   execute ":lcd " . expand("%:p:h") 
 
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
 au GUIEnter * simalt ~x " Maximize window when enter vim
 
-" Disable auto-comment for c/cpp and vim-script
+" ------------------------------------------------------------------ 
+" Desc: Disable auto-comment for c/cpp and vim-script
+" ------------------------------------------------------------------ 
+
 au FileType c,cpp set comments=sO:*\ -,mO:*\ \ ,exO:*/,s1:/*,mb:*,ex:*/,f:// 
 au FileType vim set comments=sO:\"\ -,mO:\"\ \ ,eO:\"\",f:\"
 
-" --------------------------------------------------------------------------------------
+"/////////////////////////////////////////////////////////////////////////////
 " Plugin Configurations
-" --------------------------------------------------------------------------------------
+"/////////////////////////////////////////////////////////////////////////////
 
-" --------------------
-"  ShowMarks
-" --------------------
+" ------------------------------------------------------------------ 
+" Desc: ShowMarks
+" ------------------------------------------------------------------ 
 
 let showmarks_include = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 let g:showmarks_enable = 1
@@ -467,9 +499,9 @@ let g:showmarks_enable = 1
 " quick remove mark
 " nmap <F9> \mh
 
-" --------------------
-" exUtility
-" --------------------
+" ------------------------------------------------------------------ 
+" Desc: exUtility
+" ------------------------------------------------------------------ 
 
 " quick highlight 
 nmap <silent> <a-1> :call g:ex_Highlight_Normal(1)<CR>
@@ -581,9 +613,9 @@ command -range -narg=1 MK call g:ex_MarkText("<args>")
 " add plugin we use to prevent them record as edit-buffer
 let g:exUT_plugin_list = ["-MiniBufExplorer-","__Tag_List__"] 
 
-" --------------------
-" exTagSelect
-" --------------------
+" ------------------------------------------------------------------ 
+" Desc: exTagSelect
+" ------------------------------------------------------------------ 
 
 nnoremap <silent> <Leader>ts :ExtsSelectToggle<CR>
 nnoremap <silent> <Leader>tt :ExtsStackToggle<CR>
@@ -595,9 +627,9 @@ let g:exTS_backto_editbuf = 0
 let g:exTS_close_when_selected = 1
 let g:exTS_window_direction = 'bel'
 
-" --------------------
-" exGlobalSearch
-" --------------------
+" ------------------------------------------------------------------ 
+" Desc: exGlobalSearch
+" ------------------------------------------------------------------ 
 
 nnoremap <silent> <Leader>gs :ExgsSelectToggle<CR>
 nnoremap <silent> <Leader>gq :ExgsQuickViewToggle<CR>
@@ -610,9 +642,9 @@ let g:exGS_backto_editbuf = 0
 let g:exGS_close_when_selected = 0
 let g:exGS_window_direction = 'bel'
 
-" --------------------
-" exSymbolTable
-" --------------------
+" ------------------------------------------------------------------ 
+" Desc: exSymbolTable
+" ------------------------------------------------------------------ 
 
 nnoremap <silent> <Leader>ss :ExslSelectToggle<CR>
 nnoremap <silent> <Leader>sq :ExslQuickViewToggle<CR>
@@ -621,9 +653,9 @@ nnoremap <A-S-l> :ExslQuickSearch<CR>/
 nnoremap <silent> <Leader>sg :ExslGoDirectly<CR>
 let g:exSL_SymbolSelectCmd = 'TS'
 
-" --------------------
-" exCscope
-" --------------------
+" ------------------------------------------------------------------ 
+" Desc: exCscope
+" ------------------------------------------------------------------ 
 
 nnoremap <silent> <F2> :CSIC<CR>
 nnoremap <silent> <Leader>ci :CSID<CR>
@@ -641,9 +673,9 @@ let g:exCS_close_when_selected = 0
 let g:exCS_window_direction = 'bel'
 let g:exCS_window_width = 48
 
-" --------------------
-" exQuickFix
-" -------------------
+" ------------------------------------------------------------------ 
+" Desc: exQuickFix
+" ------------------------------------------------------------------ 
 
 nnoremap <silent> <leader>qf :ExqfSelectToggle<CR>
 nnoremap <silent> <leader>qq :ExqfQuickViewToggle<CR>
@@ -652,17 +684,17 @@ let g:exQF_backto_editbuf = 0
 let g:exQF_close_when_selected = 0
 let g:exQF_window_direction = 'bel'
 
-" --------------------
-" exMacroHightlight
-" --------------------
+" ------------------------------------------------------------------ 
+" Desc: exMacroHightlight
+" ------------------------------------------------------------------ 
 
 nnoremap <silent> <Leader>aa :ExmhSelectToggle<CR>
 nnoremap <silent> <Leader>ae :ExmhHL 1 <CR>
 nnoremap <silent> <Leader>ad :ExmhHL 0 <CR>
 
-" --------------------
-" exProject
-" --------------------
+" ------------------------------------------------------------------ 
+" Desc: exProject
+" ------------------------------------------------------------------ 
 
 map <silent> <A-S-p> :EXProject<CR>
 map <A-S-o> :EXProject<CR>:redraw<CR>/
@@ -682,9 +714,9 @@ let g:exPJ_defualt_filter .= 'dox doxygen '
 let g:exPJ_defualt_filter .= 'ini cfg wiki '
 let g:exPJ_defualt_filter .= 'mk err exe bat '
 
-" --------------------
-" TagList
-" --------------------
+" ------------------------------------------------------------------ 
+" Desc: TagList
+" ------------------------------------------------------------------ 
 
 " F4:  Switch on/off TagList
 nnoremap <silent> <F4> :TlistToggle<CR>
@@ -708,9 +740,9 @@ let Tlist_Compact_Format = 1 " do not show help
 " let Tlist_Process_File_Always = 1 " To use the :TlistShowTag and the :TlistShowPrototype commands without the taglist window and the taglist menu, you should set this variable to 1.
 ":TlistShowPrototype [filename] [linenumber]
 
-" --------------------
-" MiniBufExpl
-" --------------------
+" ------------------------------------------------------------------ 
+" Desc: MiniBufExpl
+" ------------------------------------------------------------------ 
 
 let g:miniBufExplTabWrap = 1 " make tabs show complete (no broken on two lines) 
 let g:miniBufExplModSelTarget = 1 " If you use other explorers like TagList you can (As of 6.2.8) set it at 1:
@@ -723,9 +755,9 @@ let g:miniBufExplMaxSize = 1 " <max lines: defualt 0> setting this to 0 will mea
 "let g:miniBufExplMapCTabSwitchBufs = 1 
 "let g:miniBufExplMapWindowNavArrows = 1
 
-" --------------------
-" OmniCppComplete
-" --------------------
+" ------------------------------------------------------------------ 
+" Desc: OmniCppComplete
+" ------------------------------------------------------------------ 
 
 " set Ctrl+j in insert mode, like VS.Net
 imap <C-]> <C-X><C-O>
@@ -771,9 +803,9 @@ let OmniCpp_MayCompleteScope = 0
 " When 'completeopt' does not contain "longest", Vim automatically select the first entry of the popup menu. You can change this behaviour with the OmniCpp_SelectFirstItem option.
 let OmniCpp_SelectFirstItem = 0
 
-" --------------------
-" EnhCommentify
-" --------------------
+" ------------------------------------------------------------------ 
+" Desc: EnhCommentify
+" ------------------------------------------------------------------ 
 
 let g:EnhCommentifyFirstLineMode='yes'
 let g:EnhCommentifyRespectIndent='yes'
@@ -790,9 +822,10 @@ vmap <C-F11> <Plug>VisualDeComment
 nmap <C-F11> <Plug>DeComment
 imap <C-F11> <ESC><Plug>DeComment
 
-" --------------------
-" exEnvironmentSetting
-" --------------------
+" ------------------------------------------------------------------ 
+" Desc: exEnvironmentSetting
+" ------------------------------------------------------------------ 
+
 " NOTE: The exEvironmentSetting must put at the end of the plugin settings. It may update the default settings of plugin above
 
 let g:exES_vimfile_dir = "_vimfiles"
@@ -855,6 +888,7 @@ function g:exES_UpdateEnvironment()
     endif
 endfunction
 
-" --------------------------------------------------------------------------------------
+"/////////////////////////////////////////////////////////////////////////////
 " Other settings
-" --------------------------------------------------------------------------------------
+"/////////////////////////////////////////////////////////////////////////////
+

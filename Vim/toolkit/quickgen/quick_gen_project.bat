@@ -1,8 +1,16 @@
+rem  ======================================================================================
+rem  File         : quick_gen_project.bat
+rem  Author       : Wu Jie 
+rem  Last Change  : 10/19/2008 | 15:27:53 PM | Sunday,October
+rem  Description  : 
+rem  ======================================================================================
+
 @echo off
 
-rem =======================================
+rem /////////////////////////////////////////////////////////////////////////////
 rem preprocess arguments
-rem =======================================
+rem /////////////////////////////////////////////////////////////////////////////
+
 set LANGTYPE=ALL
 set FILEFILTER="*.c *.cpp *.cxx *.h *.hpp *.inl *.uc *.hlsl *.vsh *.psh *.fx *.fxh *.cg *.shd"
 if /I "%1"=="all" goto START
@@ -16,84 +24,116 @@ if /I "%1"=="lua" goto LUA
 if /I "%1"=="js" goto JS
 if /I "%1"=="html" goto HTML
 
-rem =======================================
+rem /////////////////////////////////////////////////////////////////////////////
 rem set variables
-rem =======================================
+rem /////////////////////////////////////////////////////////////////////////////
 
-rem c-only settings
+rem  ------------------------------------------------------------------ 
+rem  Desc: c-only settings
+rem  ------------------------------------------------------------------ 
+
 :C_ONLY
 set LANGTYPE=C_ONLY
 set FILEFILTER=*.c *.h
 goto START
 
-rem cpp-only settings
+rem  ------------------------------------------------------------------ 
+rem  Desc: cpp-only settings
+rem  ------------------------------------------------------------------ 
+
 :CPP_ONLY
 set LANGTYPE=CPP_ONLY
 set FILEFILTER=*.cpp *.cxx *.h *.hpp *.inl
 goto START
 
-rem python settings
+rem  ------------------------------------------------------------------ 
+rem  Desc: python settings
+rem  ------------------------------------------------------------------ 
+
 :PYTHON
 set LANGTYPE=PYTHON
 set FILEFILTER=*.py
 goto START
 
-rem c# settings
+rem  ------------------------------------------------------------------ 
+rem  Desc: c# settings
+rem  ------------------------------------------------------------------ 
+
 :CSHARP
 set LANGTYPE=CSHARP
 set FILEFILTER=*.cs
 goto START
 
-rem vim settings
+rem  ------------------------------------------------------------------ 
+rem  Desc: vim settings
+rem  ------------------------------------------------------------------ 
+
 :VIM
 set LANGTYPE=VIM
 set FILEFILTER=*.vim
 goto START
 
-rem html settings
+rem  ------------------------------------------------------------------ 
+rem  Desc: html settings
+rem  ------------------------------------------------------------------ 
+
 :HTML
 set LANGTYPE=HTML
 set FILEFILTER=*.html *.htm *.shtml *.stm
 goto START
 
-rem lua settings
+rem  ------------------------------------------------------------------ 
+rem  Desc: lua settings
+rem  ------------------------------------------------------------------ 
+
 :LUA
 set LANGTYPE=LUA
 set FILEFILTER=*.lua
 goto START
 
-rem javascript settings
+rem  ------------------------------------------------------------------ 
+rem  Desc: javascript settings
+rem  ------------------------------------------------------------------ 
+
 :JS
 set LANGTYPE=JS
 set FILEFILTER=*.js *.as
 goto START
 
-rem cstyle settings
+rem  ------------------------------------------------------------------ 
+rem  Desc: cstyle settings
+rem  ------------------------------------------------------------------ 
+
 :GENERAL
 set LANGTYPE=GENERAL
 set FILEFILTER=*.c *.cpp *.cxx *.h *.hpp *.inl *.uc *.hlsl *.vsh *.psh *.fx *.fxh *.cg *.shd
 goto START
 
-rem =======================================
+rem /////////////////////////////////////////////////////////////////////////////
 rem Start Process
-rem =======================================
+rem /////////////////////////////////////////////////////////////////////////////
 
 :START
-rem =======================================
-rem start generate
-rem =======================================
+
+rem  ------------------------------------------------------------------ 
+rem  Desc: start generate
+rem  ------------------------------------------------------------------ 
+
 echo Generate %LANGTYPE% Project
 
 :MKDIR
-rem =======================================
-rem create directory first
-rem =======================================
+
+rem  ------------------------------------------------------------------ 
+rem  Desc: create directory first
+rem  ------------------------------------------------------------------ 
+
 echo Create Diretory: _vimfiles
 mkdir _vimfiles
 
-rem =======================================
-rem choose the generate mode
-rem =======================================
+rem  ------------------------------------------------------------------ 
+rem  Desc: choose the generate mode
+rem  ------------------------------------------------------------------ 
+
 if /I "%2"=="" goto TAG
 if /I "%2"=="tag" goto TAG
 if /I "%2"=="symbol" goto SYMBOL
@@ -102,9 +142,11 @@ if /I "%2"=="cscope" goto CSCOPE
 if /I "%2"=="id" goto ID
 
 :TAG
-rem =======================================
-rem create tags
-rem =======================================
+
+rem  ------------------------------------------------------------------ 
+rem  Desc: create tags
+rem  ------------------------------------------------------------------ 
+
 echo Creating Tags...
 if /I "%LANGTYPE%"=="C_ONLY" ctags -o./_tags -R --c-kinds=+p --fields=+iaS --extra=+q --languages=c --langmap=c++:+.inl
 if /I "%LANGTYPE%"=="CPP_ONLY" ctags -o./_tags -R --c++-kinds=+p --fields=+iaS --extra=+q --languages=c++ --langmap=c++:+.inl
@@ -119,19 +161,23 @@ if /I "%LANGTYPE%"=="ALL" ctags -o./_tags -R --c++-kinds=+p --fields=+iaS --extr
 move /Y ".\_tags" ".\tags"
 
 :SYMBOL
-rem =======================================
-rem create symbols
-rem =======================================
+
+rem  ------------------------------------------------------------------ 
+rem  Desc: create symbols
+rem  ------------------------------------------------------------------ 
+
 if /I "%2"=="tag" goto FINISH
 echo Creating Symbols...
 gawk -f "%EX_DEV%\Vim\toolkit\gawk\prg_NoStripSymbol.awk" ./tags>./_vimfiles/_symbol
 move /Y ".\_vimfiles\_symbol" ".\_vimfiles\symbol"
 
 :INHERITS
-rem =======================================
-rem create inherits
-rem     note: only for OO language
-rem =======================================
+
+rem  ------------------------------------------------------------------ 
+rem  Desc: create inherits
+rem  NOTE: only for OO language
+rem  ------------------------------------------------------------------ 
+
 if /I "%2"=="symbol" goto FINISH
 if /I "%LANGTYPE%"=="C_ONLY" goto CSCOPE
 if /I "%LANGTYPE%"=="VIM" goto CSCOPE
@@ -142,10 +188,12 @@ gawk -f "%EX_DEV%\Vim\toolkit\gawk\prg_Inherits.awk" ./tags>./_vimfiles/_inherit
 move /Y ".\_vimfiles\_inherits" ".\_vimfiles\inherits"
 
 :CSCOPE
-rem =======================================
-rem create cscope files
-rem     note: only for c/cpp
-rem =======================================
+
+rem  ------------------------------------------------------------------ 
+rem  Desc: create cscope files
+rem  NOTE: only for c/cpp
+rem  ------------------------------------------------------------------ 
+
 if /I "%2"=="inherits" goto FINISH
 if /I "%LANGTYPE%"=="PYTHON" goto ID
 if /I "%LANGTYPE%"=="CSHARP" goto ID
@@ -161,9 +209,11 @@ move /Y cscope.files ".\_vimfiles\cscope.files"
 move /Y cscope.out ".\_vimfiles\cscope.out"
 
 :ID
-rem =======================================
-rem create IDs
-rem =======================================
+
+rem  ------------------------------------------------------------------ 
+rem  Desc: create IDs
+rem  ------------------------------------------------------------------ 
+
 if /I "%2"=="cscope" goto FINISH
 echo Creating IDs...
 mkid --include="text"
@@ -173,9 +223,11 @@ move /Y ID ".\_vimfiles\ID"
 if /I "%2"=="id" goto FINISH
 
 :FINISH
-rem =======================================
-rem finish process
-rem =======================================
+
+rem  ------------------------------------------------------------------ 
+rem  Desc: finish process
+rem  ------------------------------------------------------------------ 
+
 echo Finish
 echo on
 

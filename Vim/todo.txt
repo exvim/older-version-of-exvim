@@ -1,3 +1,14 @@
+" ======================================================================================
+" File         : todo.txt
+" Author       : Wu Jie 
+" Last Change  : 10/19/2008 | 15:42:20 PM | Sunday,October
+" Description  : 
+" ======================================================================================
+
+"/////////////////////////////////////////////////////////////////////////////
+"
+"/////////////////////////////////////////////////////////////////////////////
+
 [done] Remove filter in \ss window when press enter, change to TS jump.
 [done] Add lua support
 [done] Add Fast Copy quick_gen_xxx.
@@ -6,18 +17,18 @@ Add exUtility support save environment
 Add shader compiler can output preprocess file.
 Fix shader macro highlight bugs
 
---------------------------------------------------------------------------------------
-
-VS Command:
+"/////////////////////////////////////////////////////////////////////////////
+" VS Command:
+"/////////////////////////////////////////////////////////////////////////////
 
 Debug.BreakInFile
 Debug.BreakInFunction
 Debug.BreakInAddress
 Debug.SetRadix
 
---------------------------------------------------------------------------------------
-
-VS DTE
+"/////////////////////////////////////////////////////////////////////////////
+" VS DTE:
+"/////////////////////////////////////////////////////////////////////////////
 
 Breakpoint
 Breakpoints
@@ -28,7 +39,9 @@ DebuggerEvents
 Thread
 Threads
 
---------------------------------------------------------------------------------------
+"/////////////////////////////////////////////////////////////////////////////
+"
+"/////////////////////////////////////////////////////////////////////////////
 
 Production      Comapny                                                                 Complexity      Static Analysis
  
@@ -50,3 +63,4 @@ CodeCheck       Abraxas(http://abxsoft.com)                                     
  
 GateKeeper      KLOOwork(http://www.klocwork.com/)                                      Yes             Yes
  
+" vim: set ft=vim:

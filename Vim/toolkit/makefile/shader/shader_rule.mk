@@ -1,78 +1,100 @@
-############################################################
-## Copyright (C) 2006 Johnny
-## ayacai [at] 163 [dot] com
-############################################################
+#  ======================================================================================
+#  File         : shader_rule.mk
+#  Author       : Wu Jie 
+#  Last Change  : 10/19/2008 | 14:03:13 PM | Sunday,October
+#  Description  : 
+#  ======================================================================================
 
-# ----------------------------------------------------------
+# /////////////////////////////////////////////////////////////////////////////
 #  Pre-generate Target
-# ----------------------------------------------------------
+# /////////////////////////////////////////////////////////////////////////////
 
-# -------------------
-#  Out Directory
-# -------------------
+#  ------------------------------------------------------------------ 
+#  Desc: Out Directory
+#  ------------------------------------------------------------------ 
+
 OutDir := $(PWD)/bin/shader/$(SHADER_Platform)
 
-# -------------------
-#  Source
-# -------------------
+#  ------------------------------------------------------------------ 
+#  Desc: Source
+#  ------------------------------------------------------------------ 
 
-# Source Files With Full Path
-#FullPath_HLSL_Srcs := $(wildcard $(addsuffix /*.hlsl,$(SrcDirs))) 
+#  ======================================================== 
+#  Source Files With Full Path
+#  ======================================================== 
+
 FullPath_FX_Srcs := $(wildcard $(addsuffix /*.fx,$(SrcDirs)))
 FullPath_VS_Srcs := $(wildcard $(addsuffix /*.vsh,$(SrcDirs))) 
 FullPath_PS_Srcs := $(wildcard $(addsuffix /*.psh,$(SrcDirs))) 
 FullPath_GS_Srcs := $(wildcard $(addsuffix /*.gsh,$(SrcDirs))) 
 
-# Source Files
-#HLSL_Srcs :=$(notdir $(FullPath_HLSL_Srcs))
+#  ======================================================== 
+#  Source Files
+#  ======================================================== 
+
 FX_Srcs :=$(notdir $(FullPath_FX_Srcs))
 VS_Srcs :=$(notdir $(FullPath_VS_Srcs))
 PS_Srcs :=$(notdir $(FullPath_PS_Srcs))
 GS_Srcs :=$(notdir $(FullPath_GS_Srcs))
 
-# -------------------
-#  Object
-# -------------------
+#  ------------------------------------------------------------------ 
+#  Desc: Object
+#  ------------------------------------------------------------------ 
 
-# Object File Output Path
+#  ======================================================== 
+#  Object File Output Path
+#  ======================================================== 
+
 ObjDir := $(OutDir)/$(SHADER_Configuration)/objs/$(Project)
 
-# Object File Output Names
-#HLSL_Objs := $(patsubst %.hlsl,%.hlslo,$(HLSL_Srcs))
+#  ======================================================== 
+#  Object File Output Names
+#  ======================================================== 
+
 VS_Objs := $(patsubst %.vsh,%.vso,$(VS_Srcs))
 PS_Objs := $(patsubst %.psh,%.pso,$(PS_Srcs))
 GS_Objs := $(patsubst %.gsh,%.gso,$(GS_Srcs))
 FX_Objs := $(patsubst %.fx,%.fxo,$(FX_Srcs))
 
-# All Objs
-#Objs += $(HLSL_Objs)
+#  ======================================================== 
+#  All Objs
+#  ======================================================== 
+
 Objs += $(FX_Objs)
 Objs += $(VS_Objs)
 Objs += $(PS_Objs)
 Objs += $(GS_Objs)
 
-# Object File With Full Path
+#  ======================================================== 
+#  Object File With Full Path
+#  ======================================================== 
+
 FullPath_Objs := $(addprefix $(ObjDir)/,$(Objs))
 
-# -------------------
-#  Logs
-# -------------------
+#  ------------------------------------------------------------------ 
+#  Desc: Logs
+#  ------------------------------------------------------------------ 
 
-# Error File Output Path
+#  ======================================================== 
+#  Error File Output Path
+#  ======================================================== 
+
 ErrDir := $(OutDir)/$(SHADER_Configuration)/logs/BuildLogs
 FullPath_Errs := $(ErrDir)/$(Project).err
 ErrLogName := ErrorLog.err
 
+# /////////////////////////////////////////////////////////////////////////////
+# Compiler Flags
+# /////////////////////////////////////////////////////////////////////////////
 
-# ----------------------------------------------------------
-#  Compiler Flags
-# ----------------------------------------------------------
+#  ------------------------------------------------------------------ 
+#  Desc: Pre-define
+#  ------------------------------------------------------------------ 
 
-# -------------------
-#  Pre-define
-# -------------------
+#  ======================================================== 
+#  SHADER_Configuration Pre-define
+#  ======================================================== 
 
-# SHADER_Configuration Pre-define
 ifeq ($(SHADER_Configuration),Debug)
 PreDefs += DEBUG
 PreDefs += _DEBUG
@@ -90,7 +112,10 @@ endif
 endif
 endif
 
-# SHADER_Platform Pre-defeine
+#  ======================================================== 
+#  SHADER_Platform Pre-defeine
+#  ======================================================== 
+
 ifeq ($(SHADER_Platform),Linux)
 PreDefs += __LINUX__
 PreDefs += _LINUX
@@ -122,16 +147,22 @@ endif
 endif
 endif
 
-# -------------------
-#  Generate Flag
-# -------------------
+#  ------------------------------------------------------------------ 
+#  Desc: Generate Flag
+#  ------------------------------------------------------------------ 
 
-# General Flag
+#  ======================================================== 
+#  General Flag
+#  ======================================================== 
+
 Flag_PreDef := $(addprefix /D,$(PreDefs))
 Flag_Inc := $(addprefix /I,$(IncDirs))
 
-# Debug Flag ( choose debug or not )
-# Optimization Flag ( -O0:disable -O/-O1:general opt -O2:advance opt -O3:all opt )
+#  ======================================================== 
+#  Debug Flag ( choose debug or not )
+#  Optimization Flag ( -O0:disable -O/-O1:general opt -O2:advance opt -O3:all opt )
+#  ======================================================== 
+
 ifeq ($(SHADER_Configuration),Debug)
 Flag_Debug := /Zi
 Flag_Opt := /Od
@@ -140,56 +171,70 @@ Flag_Debug :=
 Flag_Opt := /O1
 endif 
 
-# pack matrices in row-major order or column-major order
+#  ======================================================== 
+#  pack matrices in row-major order or column-major order
+#  ======================================================== 
+
 ifeq ($(PACK_MATRICES),column_major)
 Flag_PackMatrices := /Zpc
 else
 Flag_PackMatrices := /Zpr
 endif
 
-# Compile Flag
+#  ======================================================== 
+#  Compile Flag
+#  ======================================================== 
+
 CFlags := $(Flag_Debug) $(Flag_Opt) $(Flag_PreDef) $(Flag_Inc) $(Flag_PackMatrices) $(CFlag_Spec)
 
-# -------------------
-#  VPATH
-# -------------------
+# /////////////////////////////////////////////////////////////////////////////
+# VPATH
+# /////////////////////////////////////////////////////////////////////////////
 
 VPATH := $(IncDirs)
 VPATH += $(SrcDirs)
 
-# ----------------------------------------------------------
-#  Rules
-# ----------------------------------------------------------
+# /////////////////////////////////////////////////////////////////////////////
+# Rules
+# /////////////////////////////////////////////////////////////////////////////
 
-# -------------------
-# All Rules
-# -------------------
+#  ------------------------------------------------------------------ 
+#  Desc: All Rules
+#  ------------------------------------------------------------------ 
+
 .PHONY: all clean-all rebuild
 all: |clean-errs objs
 clean-all: |clean-objs clean-errs
 rebuild: |clean-all all
 
-# -------------------
-# Object Rules
-# -------------------
+#  ------------------------------------------------------------------ 
+#  Desc: Object Rules
+#  ------------------------------------------------------------------ 
+
 .PHONY: objs clean-objs $(Objs)
-# all
+
+#  ======================================================== 
+#  all
+#  ======================================================== 
+
 objs: $(FullPath_Objs)
 clean-objs:
-	$(ECHO)
+	$(ECHO) -------------------
 	$(ECHO) delete objs:
+	$(ECHO) -------------------
 ifeq ($(CURRENT_OS),Linux)
 	@for item in $(FullPath_Objs); do echo "    |--"   $$item; done
 else
-	@for %%i in ($(FullPath_Objs)) do (echo     \--   %%i)
+	@for %%i in ($(FullPath_Objs)) do (echo     ^|--   %%i)
 endif
 	$(RM) $(FullPath_Objs)
-# single
+
+#  ======================================================== 
+#  single
+#  ======================================================== 
+
 $(Objs):
 	$(SMAKE) -f$(Project).mk $(ObjDir)/$@
-#clean-%.hlslo:
-#	$(ECHO) delete $(ObjDir)/$*.hlslo
-#	$(RM) $(ObjDir)/$*.hlslo
 clean-%.vso:
 	$(ECHO) delete $(ObjDir)/$*.vso
 	$(RM) $(ObjDir)/$*.vso
@@ -203,25 +248,19 @@ clean-%.fxo:
 	$(ECHO) delete $(ObjDir)/$*.fxo
 	$(RM) $(ObjDir)/$*.fxo
 
-# commands-objs
-# hlsl files
-#$(ObjDir)/%.hlslo: %.hlsl
-#	$(MKDIR) $(ObjDir)
-#	$(MKDIR) $(ErrDir)
-#	$(ECHO) compiling $<...
-#	$(ECHO) - > $(ErrDir)/$(ErrLogName)
-#	$(ECHO) --[$(Project)]$*.hlsl-- >> $(ErrDir)/$(ErrLogName)
-#	$(SHDC) /E$(FX_ENTRY) $(CFlags) $< -o $@ 2>>$(ErrDir)/$(ErrLogName) 
-#	$(CAT) $(ErrDir)/$(ErrLogName) >> $(ErrDir)/$(Project).err
+#  ======================================================== 
+#  commands-objs
+#  ======================================================== 
 
 # vsh files
 $(ObjDir)/%.vso: %.vsh
 	$(MKDIR) $(ObjDir)
 	$(MKDIR) $(ErrDir)
 	$(ECHO) compiling $<...
-	$(ECHO) - > $(ErrDir)/$(ErrLogName)
-	$(ECHO) --[$(Project)]$*.vsh-- >> $(ErrDir)/$(ErrLogName)
+	$(ECHO). > $(ErrDir)/$(ErrLogName)
+	$(ECHO) ^<^<^<^<^<^< $(patsubst %/,%,$(notdir $@)): '$(Project)' >> $(ErrDir)/$(ErrLogName)
 	$(SHDC) /E$(VS_ENTRY) /T$(VS_VER) $(CFlags) $< /Fo$@ 2>>$(ErrDir)/$(ErrLogName) 
+	$(ECHO) ^>^>^>^>^>^> >> $(ErrDir)/$(ErrLogName)
 	$(CAT) $(ErrDir)/$(ErrLogName) >> $(ErrDir)/$(Project).err
 
 # psh files
@@ -229,9 +268,10 @@ $(ObjDir)/%.pso: %.psh
 	$(MKDIR) $(ObjDir)
 	$(MKDIR) $(ErrDir)
 	$(ECHO) compiling $<...
-	$(ECHO) - > $(ErrDir)/$(ErrLogName)
-	$(ECHO) --[$(Project)]$*.psh-- >> $(ErrDir)/$(ErrLogName)
+	$(ECHO). > $(ErrDir)/$(ErrLogName)
+	$(ECHO) ^<^<^<^<^<^< $(patsubst %/,%,$(notdir $@)): '$(Project)' >> $(ErrDir)/$(ErrLogName)
 	$(SHDC) /E$(PS_ENTRY) /T$(PS_VER) $(CFlags) $< /Fo$@ 2>>$(ErrDir)/$(ErrLogName) 
+	$(ECHO) ^>^>^>^>^>^> >> $(ErrDir)/$(ErrLogName)
 	$(CAT) $(ErrDir)/$(ErrLogName) >> $(ErrDir)/$(Project).err
 
 # gsh files
@@ -239,9 +279,10 @@ $(ObjDir)/%.gso: %.gsh
 	$(MKDIR) $(ObjDir)
 	$(MKDIR) $(ErrDir)
 	$(ECHO) compiling $<...
-	$(ECHO) - > $(ErrDir)/$(ErrLogName)
-	$(ECHO) --[$(Project)]$*.gsh-- >> $(ErrDir)/$(ErrLogName)
+	$(ECHO). > $(ErrDir)/$(ErrLogName)
+	$(ECHO) ^<^<^<^<^<^< $(patsubst %/,%,$(notdir $@)): '$(Project)' >> $(ErrDir)/$(ErrLogName)
 	$(SHDC) /E$(GS_ENTRY) /T$(GS_VER) $(CFlags) $< /Fo$@ 2>>$(ErrDir)/$(ErrLogName) 
+	$(ECHO) ^>^>^>^>^>^> >> $(ErrDir)/$(ErrLogName)
 	$(CAT) $(ErrDir)/$(ErrLogName) >> $(ErrDir)/$(Project).err
 
 # fx files
@@ -249,24 +290,27 @@ $(ObjDir)/%.fxo: %.fx
 	$(MKDIR) $(ObjDir)
 	$(MKDIR) $(ErrDir)
 	$(ECHO) compiling $<...
-	$(ECHO) - > $(ErrDir)/$(ErrLogName)
-	$(ECHO) --[$(Project)]$*.fx-- >> $(ErrDir)/$(ErrLogName)
+	$(ECHO). > $(ErrDir)/$(ErrLogName)
+	$(ECHO) ^<^<^<^<^<^< $(patsubst %/,%,$(notdir $@)): '$(Project)' >> $(ErrDir)/$(ErrLogName)
 	$(SHDC) /E$(FX_ENTRY) /T$(FX_VER) $(CFlags) $< /Fo$@ 2>>$(ErrDir)/$(ErrLogName) 
+	$(ECHO) ^>^>^>^>^>^> >> $(ErrDir)/$(ErrLogName)
 	$(CAT) $(ErrDir)/$(ErrLogName) >> $(ErrDir)/$(Project).err
 
-# -------------------
+# /////////////////////////////////////////////////////////////////////////////
 # Output Rules
-# -------------------
+# /////////////////////////////////////////////////////////////////////////////
+
 .PHONY: clean-errs
 # all
 clean-errs:
-	$(ECHO)
+	$(ECHO) -------------------
 	$(ECHO) delete errs:
+	$(ECHO) -------------------
 ifneq ($(FullPath_Errs),)
 ifeq ($(CURRENT_OS),Linux)
 	@for item in $(FullPath_Errs); do echo "    |--"   $$item; done
 else
-	@for %%i in ($(FullPath_Errs)) do (echo     \--   %%i)
+	@for %%i in ($(FullPath_Errs)) do (echo     ^|--   %%i)
 endif
 else
 	$(ECHO) "    |--"

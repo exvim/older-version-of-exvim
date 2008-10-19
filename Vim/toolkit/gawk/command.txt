@@ -1,9 +1,21 @@
+rem  ======================================================================================
+rem  File         : command.txt
+rem  Author       : Wu Jie 
+rem  Last Change  : 10/19/2008 | 15:25:37 PM | Sunday,October
+rem  Description  : 
+rem  ======================================================================================
 
-rem ----------- MakeBuildLog -----------------
+rem  ------------------------------------------------------------------ 
+rem  Desc: MakeBuildLog
+rem  ------------------------------------------------------------------ 
+
 gawk "!/^</{print $0}" BuildLog.err>StripBuildLog.err
 gawk -f "%EX_DEV%\Vim\toolkit\gawk\prg_ConvertLog.awk" BuildLog.log>BuildLog.err
 
-rem ----------- MakeSymbole -----------------
+rem  ------------------------------------------------------------------ 
+rem  Desc: MakeSymbole
+rem  ------------------------------------------------------------------ 
+
 gawk -f "%EX_DEV%\Vim\toolkit\gawk\prg_StripSymbol.awk" tags>symbol
 gawk -f "%EX_DEV%\Vim\toolkit\gawk\prg_NoStripSymbol.awk" tags>symbol
 
