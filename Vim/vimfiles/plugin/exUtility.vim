@@ -57,6 +57,16 @@ let s:ex_swap_buf_pos = []
 
 let s:ex_level_list = []
 
+" ------------------------------------------------------------------ 
+" Desc: special mark text 
+" ------------------------------------------------------------------ 
+
+let s:ex_special_mark_pattern = 'todo\|xxx\|fixme'
+let s:ex_special_mark_pattern .= '\|note\|ref\|example'
+let s:ex_special_mark_pattern .= '\|temp\|crash\|modify\|debug\|dummy'
+let s:ex_special_mark_pattern .= '\|delme\|testme\|optme'
+let s:ex_special_mark_pattern .= '\|refactoring\|duplicate\|redundancy'
+
 " ======================================================== 
 " syntax highlight
 " ======================================================== 
@@ -597,12 +607,72 @@ function g:ex_MarkText( text ) range " <<<
         let last_line = v_line1 
     endif
 
+    " check if it is special mark, special mark will use uppercase
+    let text = a:text
+    if a:text =~? s:ex_special_mark_pattern
+        let text = toupper(text)
+    endif
+
     "
     let lstline = last_line + 1 
     let space = printf('%*s',indent(first_line),'')
-    call append( last_line , space . b:ECcommentOpen . ' } ' . a:text . ' end ' . b:ECcommentClose )
-    call append( first_line -1 , space . b:ECcommentOpen . ' ' . a:text . ' { ' . b:ECcommentClose )
+    call append( last_line , space . b:ECcommentOpen . ' } ' . text . ' end ' . b:ECcommentClose )
+    call append( first_line -1 , space . b:ECcommentOpen . ' ' . text . ' { ' . b:ECcommentClose )
     silent exec ":" . lstline
+endfunction " >>>
+
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
+function g:ex_RemoveSpecialMarkText () " <<<
+    let save_cursor = getpos(".")
+    let save_line = getline(".")
+    let cur_line = save_line
+
+    let start_lnum = -1
+    let end_lnum = -1
+    let start_pattern = b:ECcommentOpen . ' ' . '\(' . s:ex_special_mark_pattern . '\)' . ' { ' . b:ECcommentClose
+    let end_pattern = b:ECcommentOpen . ' } ' . '\(' . s:ex_special_mark_pattern . '\)' . ' end ' . b:ECcommentClose
+
+    " found '#if 0' first
+    while match(cur_line, start_pattern ) == -1
+        let cur_line_nr = line(".")
+        silent normal! ^[{
+        let cur_line = getline(".")
+        let lnum = line(".")
+        if lnum == cur_line_nr
+            if match( cur_line, start_pattern ) == -1
+                call g:ex_WarningMsg("special mark pattern not found")
+                silent call cursor(save_cursor[1], save_cursor[2])
+                return
+            endif
+        endif
+    endwhile
+
+    " record the line
+    let start_lnum = line(".")
+    silent normal! $]}
+    let end_lnum = line(".")
+
+    " delete the if/else/endif
+    if end_lnum != -1
+        silent exe end_lnum
+        silent normal! dd
+    endif
+    if start_lnum != -1
+        silent exe start_lnum
+        silent normal! dd
+    endif
+
+    silent call setpos('.', save_cursor)
+    if match(save_line, start_pattern) == -1 && match(save_line, end_pattern) == -1
+        silent call search('\V'.save_line, 'b')
+    endif
+    silent call cursor(line('.'), save_cursor[2])
+    if match(save_line, end_pattern) != -1
+        silent normal! kk
+    endif
 endfunction " >>>
 
 " ------------------------------------------------------------------ 
@@ -642,12 +712,14 @@ function g:ex_RemoveIFZero() range " <<<
 
     " found '#if 0' first
     while match(cur_line, "#if.*0") == -1
+        let cur_line_nr = line(".")
         silent normal! [#
         let cur_line = getline(".")
         let lnum = line(".")
-        if lnum == 0
+        if lnum == cur_line_nr
             if match(cur_line, "#if.*0") == -1
                 call g:ex_WarningMsg(" not #if 0 matched")
+                silent call cursor(save_cursor[1], save_cursor[2])
                 return
             endif
         endif
@@ -667,21 +739,26 @@ function g:ex_RemoveIFZero() range " <<<
 
     " delete the if/else/endif
     if endif_lnum != -1
-        silent exe "normal! ". endif_lnum ."G"
+        silent exe endif_lnum
         silent normal! dd
     endif
     if else_lnum != -1
-        silent exe "normal! ". else_lnum ."G"
+        silent exe else_lnum
         silent call setline('.',"// XXX #else XXX")
     endif
     if if_lnum != -1
-        silent exe "normal! ". if_lnum ."G"
+        silent exe if_lnum
         silent normal! dd
     endif
 
     silent call setpos('.', save_cursor)
-    silent call search('\V'.save_line, 'b')
+    if match(save_line, "#if.*0") == -1 && match(save_line, "#endif.*") == -1
+        silent call search('\V'.save_line, 'b')
+    endif
     silent call cursor(line('.'), save_cursor[2])
+    if match(save_line, "#endif.*") != -1
+        silent normal! kk
+    endif
 endfunction " >>>
 
 " ------------------------------------------------------------------ 

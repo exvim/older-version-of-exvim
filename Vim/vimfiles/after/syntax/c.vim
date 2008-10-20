@@ -25,8 +25,8 @@ syn keyword cStatement         ex_realloc ex_realloc_use ex_realloc_nomanage
 syn keyword cStatement         ex_free ex_free_use ex_free_nomanage
 syn keyword cStatement         ex_stack_malloc
 syn keyword cConstant	       TRUE FALSE
-syn keyword cTodo              contained NOTE
-syn keyword exCommentLable     contained TEMP CRASH MODIFY DEBUG DELME TESTME
+syn keyword cTodo              contained NOTE REF EXAMPLE
+syn keyword exCommentLable     contained TEMP CRASH MODIFY DEBUG DUMMY DELME TESTME OPTME REFACTORING DUPLICATE REDUNDANCY
 
 syn cluster	cCommentGroup	contains=cTodo,exCommentLable
 
