@@ -1,14 +1,17 @@
-" ==========================================
-" Vim syntax file
-" Language:	C externtions
-" Maintainer:	Wu Jie
-" Last Change:	2007/10/12
-" ==========================================
+" ======================================================================================
+" File         : c.vim
+" Author       : Wu Jie 
+" Last Change  : 10/21/2008 | 22:50:46 PM | Tuesday,October
+" Description  : 
+" ======================================================================================
 
-" ==========================================
+"/////////////////////////////////////////////////////////////////////////////
 " the extertion syntax define
-" ==========================================
+"/////////////////////////////////////////////////////////////////////////////
+
+" ======================================================== 
 " EX_ENGINE extentions
+" ======================================================== 
 
 syn keyword cType              SIZE_T
 syn keyword cType              UINT INT UINT8 INT8 UINT16 INT16 UINT32 INT32 UINT64 INT64
@@ -25,14 +28,25 @@ syn keyword cStatement         ex_realloc ex_realloc_use ex_realloc_nomanage
 syn keyword cStatement         ex_free ex_free_use ex_free_nomanage
 syn keyword cStatement         ex_stack_malloc
 syn keyword cConstant	       TRUE FALSE
-syn keyword cTodo              contained NOTE REF EXAMPLE
-syn keyword exCommentLable     contained TEMP CRASH MODIFY DEBUG DUMMY DELME TESTME OPTME REFACTORING DUPLICATE REDUNDANCY
 
-syn cluster	cCommentGroup	contains=cTodo,exCommentLable
+" DELME { 
+" syn keyword cTodo              contained NOTE REF EXAMPLE
+" syn keyword exCommentLable     contained TEMP CRASH MODIFY DEBUG DUMMY DELME TESTME OPTME REFACTORING DUPLICATE REDUNDANCY
+" } DELME end 
 
-" ==========================================
+if !exists('g:ex_todo_keyword')
+    let g:ex_todo_keyword = 'NOTE REF EXAMPLE'
+endif
+if !exists('g:ex_comment_lable_keyword')
+    let g:ex_comment_lable_keyword = 'TEMP CRASH MODIFY DEBUG DUMMY DELME TESTME OPTME REFACTORING DUPLICATE REDUNDANCY'
+endif
+silent exec ':syn keyword cTodo contained ' . g:ex_todo_keyword
+silent exec ':syn keyword exCommentLable contained ' . g:ex_comment_lable_keyword
+syn cluster cCommentGroup contains=cTodo,exCommentLable
+
+" ======================================================== 
 " exMacroHighlight Predeined Syntax
-" ==========================================
+" ======================================================== 
 
 " the cPreCondit conflict with exMacroInside, use exPreCondit instead
 syn region exMacroInside contained matchgroup=cPreProc start="^\s*\(%:\|#\)\s*\(if\>\|ifdef\>\|ifndef\>\).*\/\/"rs=e-2 start="^\s*\(%:\|#\)\s*\(if\>\|ifdef\>\|ifndef\>\).*" skip="\\$" end="^\s*\(%:\|#\)\s*endif\>" extend contains=@exEnableContainedGroup
@@ -56,23 +70,21 @@ syn cluster cParenGroup add=exCppSkip,exMacroInside,exIfEnable,exIfDisable,exIfn
 syn cluster cPreProcGroup add=exCppSkip,exMacroInside,exIfEnable,exIfDisable,exIfnEnable,exIfnDisable,exElifEnable,exElifnEnable,exElifDisable,exElifnDisable,exElseDisable,exElseEnable,exAndEnable,exAndnotEnable,exOrDisable,exOrnotDisable
 syn cluster cMultiGroup add=exCppSkip,exMacroInside,exIfEnable,exIfDisable,exIfnEnable,exIfnDisable,exElifEnable,exElifnEnable,exElifDisable,exElifnDisable,exElseDisable,exElseEnable,exAndEnable,exAndnotEnable,exOrDisable,exOrnotDisable 
 
-" ==========================================
+"/////////////////////////////////////////////////////////////////////////////
 " Default highlighting
-" ==========================================
+"/////////////////////////////////////////////////////////////////////////////
 
-" ------------------------------------------
+" ======================================================== 
 " EX_ENGINE hilight defines
-" ------------------------------------------
+" ======================================================== 
+
 hi def link cType                 Type
 hi def link cStatement            Statement
 hi def link cConstant             Boolean
 
-" ------------------------------------------
+" ======================================================== 
 " exMacroHilight hilight defines
-" ------------------------------------------
-
-hi def exCommentLable term=standout ctermfg=DarkYellow ctermbg=Red gui=none guifg=LightYellow guibg=Red
-" hi def exCommentLable term=standout ctermfg=DarkYellow ctermbg=Red gui=none guifg=DarkRed guibg=LightMagenta
+" ======================================================== 
 
 " inside pattern
 hi def link exCppSkip              exMacroDisable
@@ -112,6 +124,10 @@ hi def link exElifDisableStart     exMacroDisable
 hi def link exElifDisable          exMacroDisable 
 hi def link exElifnDisableStart    exMacroDisable 
 hi def link exElifnDisable         exMacroDisable 
+
+"/////////////////////////////////////////////////////////////////////////////
+" finish
+"/////////////////////////////////////////////////////////////////////////////
 
 let b:current_syntax = "c"
 

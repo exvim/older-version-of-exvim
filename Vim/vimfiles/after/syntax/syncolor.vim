@@ -1,10 +1,15 @@
-" Vim syntax support file
-" Maintainer:	Bram Moolenaar <Bram@vim.org>
-" Last Change:	2001 Sep 12
+" ======================================================================================
+" File         : syncolor.vim
+" Author       : Wu Jie 
+" Last Change  : 10/21/2008 | 22:53:03 PM | Tuesday,October
+" Description  : This file sets up the default methods for highlighting.
+"                It is loaded from "synload.vim" and from Vim for ":syntax reset".
+"                Also used from init_highlight().
+" ======================================================================================
 
-" This file sets up the default methods for highlighting.
-" It is loaded from "synload.vim" and from Vim for ":syntax reset".
-" Also used from init_highlight().
+"/////////////////////////////////////////////////////////////////////////////
+"
+"/////////////////////////////////////////////////////////////////////////////
 
 if !exists("syntax_cmd") || syntax_cmd == "on"
   " ":syntax on" works like in Vim 5.7: set colors but keep links
@@ -25,11 +30,16 @@ else
   endif
 endif
 
+"/////////////////////////////////////////////////////////////////////////////
+"
+"/////////////////////////////////////////////////////////////////////////////
+
 " Many terminals can only use six different colors (plus black and white).
 " Therefore the number of colors used is kept low. It doesn't look nice with
 " too many colors anyway.
 " Careful with "cterm=bold", it changes the color to bright for some terminals.
 " There are two sets of defaults: for a dark and a light background.
+
 if &background == "dark"
   SynColor Comment	    term=bold cterm=NONE ctermfg=DarkGreen ctermbg=NONE gui=NONE guifg=DarkGreen guibg=NONE
   SynColor Constant	    term=underline cterm=NONE ctermfg=DarkRed ctermbg=NONE gui=NONE guifg=Brown guibg=NONE
@@ -54,8 +64,13 @@ endif
 SynColor Error		term=reverse cterm=NONE ctermfg=White ctermbg=Red gui=NONE guifg=White guibg=Red
 SynColor Todo		term=standout cterm=NONE ctermfg=Black ctermbg=Yellow gui=NONE guifg=Blue guibg=Yellow
 
+"/////////////////////////////////////////////////////////////////////////////
+"
+"/////////////////////////////////////////////////////////////////////////////
+
 " Common groups that link to default highlighting.
 " You can specify other highlighting easily.
+
 SynLink String		    Constant
 SynLink Character	    Constant
 SynLink Number		    Constant

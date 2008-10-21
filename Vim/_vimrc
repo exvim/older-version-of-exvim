@@ -9,6 +9,9 @@
 " General
 "/////////////////////////////////////////////////////////////////////////////
 
+" put your own user name here
+let g:ex_usr_name = "Wu Jie"
+
 set nocompatible " Use Vim settings, rather then Vi settings (much better!). This must be first, because it changes other options as a side effect.
 set langmenu=none " always use English menu
 
@@ -112,6 +115,9 @@ function UpdateHighlights()
     hi ex_SynJumpMethodS term=none cterm=none ctermfg=Red gui=none guifg=Red 
     hi ex_SynJumpMethodG term=none cterm=none ctermfg=Blue gui=none guifg=Blue 
     hi link ex_SynJumpSymbol Comment
+
+    hi exCommentLable term=standout ctermfg=DarkYellow ctermbg=Red gui=none guifg=LightYellow guibg=Red
+    " hi exCommentLable term=standout ctermfg=DarkYellow ctermbg=Red gui=none guifg=DarkRed guibg=LightMagenta
 
     " ======================================================== 
     " exMacroHighlight
@@ -598,6 +604,8 @@ command -narg=1 CLASS call g:ex_PutClass( "class", "<args>" )
 command -narg=1 STRUCT call g:ex_PutClass( "struct", "<args>" )
 
 " mark (special) text
+let g:ex_todo_keyword = 'NOTE REF EXAMPLE'
+let g:ex_comment_lable_keyword = 'TEMP CRASH MODIFY DEBUG DUMMY DELME TESTME OPTME REFACTORING DUPLICATE REDUNDANCY'
 vnoremap <Leader>mk :MK 
 nnoremap <Leader>mk :call g:ex_RemoveSpecialMarkText() <CR>
 command -range -narg=1 MK call g:ex_MarkText("<args>")

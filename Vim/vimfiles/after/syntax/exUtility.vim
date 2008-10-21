@@ -1,7 +1,13 @@
-" Vim syntax file
-" Language:	C++
-" Maintainer:	wu jie <ayacai@163.com>
-" Last Change:	2002 Jul 15
+" ======================================================================================
+" File         : exUtility.vim
+" Author       : Wu Jie 
+" Last Change  : 10/21/2008 | 22:55:35 PM | Tuesday,October
+" Description  : 
+" ======================================================================================
+
+"/////////////////////////////////////////////////////////////////////////////
+" check script load
+"/////////////////////////////////////////////////////////////////////////////
 
 " For version 5.x: Clear all syntax items
 " For version 6.x: Quit when a syntax file was already loaded
@@ -18,6 +24,10 @@ else
   runtime! syntax/cpp.vim
   unlet b:current_syntax
 endif
+
+"/////////////////////////////////////////////////////////////////////////////
+" syntax defines
+"/////////////////////////////////////////////////////////////////////////////
 
 " don't highlight error pattern
 let c_no_bracket_error = 1
@@ -46,10 +56,17 @@ syn region	cIncluded	display contained start=+"+ end=+"+
 syn match	cIncluded	display contained "<[^>]*>"
 syn match	cInclude	display "\s*\(%:\|#\)\s*include\>\s*["<]" contains=cIncluded
 
+"/////////////////////////////////////////////////////////////////////////////
+" highlight defines
+"/////////////////////////////////////////////////////////////////////////////
+
 " link the cParenError to normal to avoid disaply paren error
 hi def link cParenError		Normal
 
+"/////////////////////////////////////////////////////////////////////////////
 " finish
+"/////////////////////////////////////////////////////////////////////////////
+
 let b:current_syntax = "exUtility"
 
 " vim: ts=8

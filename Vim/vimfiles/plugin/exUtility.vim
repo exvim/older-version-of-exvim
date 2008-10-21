@@ -527,7 +527,7 @@ function g:ex_PutHeader() " <<<
                 if getline(4) =~# b:ECcommentOpen . " Last Change  : .*" . b:ECcommentClose
                     if getline(5) =~# b:ECcommentOpen . " Description  : .*" . b:ECcommentClose
                         silent call setline ( 2, b:ECcommentOpen . " File         : " . fnamemodify(expand('%'), ":t") . b:ECcommentClose )
-                        silent call setline ( 3, b:ECcommentOpen . " Author       : Wu Jie " . b:ECcommentClose )
+                        silent call setline ( 3, b:ECcommentOpen . " Author       : " . g:ex_usr_name . " " . b:ECcommentClose )
                         silent call setline ( 4, b:ECcommentOpen . " Last Change  : " . strftime("%m/%d/%Y | %H:%M:%S %p | %A,%B") . b:ECcommentClose )
                         silent call cursor ( 7, 0 )
                         return
@@ -539,7 +539,7 @@ function g:ex_PutHeader() " <<<
 
     silent call append ( 0, b:ECcommentOpen . " ======================================================================================" . b:ECcommentClose )
     silent call append ( 1, b:ECcommentOpen . " File         : " . fnamemodify(expand('%'), ":t") . b:ECcommentClose )
-    silent call append ( 2, b:ECcommentOpen . " Author       : Wu Jie " . b:ECcommentClose )
+    silent call append ( 2, b:ECcommentOpen . " Author       : " . g:ex_usr_name . " " . b:ECcommentClose )
     silent call append ( 3, b:ECcommentOpen . " Last Change  : " . strftime("%m/%d/%Y | %H:%M:%S %p | %A,%B") . b:ECcommentClose )
     silent call append ( 4, b:ECcommentOpen . " Description  : " . b:ECcommentClose )
     silent call append ( 5, b:ECcommentOpen . " ======================================================================================" . b:ECcommentClose )
@@ -632,8 +632,8 @@ function g:ex_RemoveSpecialMarkText () " <<<
 
     let start_lnum = -1
     let end_lnum = -1
-    let start_pattern = b:ECcommentOpen . ' ' . '\(' . s:ex_special_mark_pattern . '\)' . ' { ' . b:ECcommentClose
-    let end_pattern = b:ECcommentOpen . ' } ' . '\(' . s:ex_special_mark_pattern . '\)' . ' end ' . b:ECcommentClose
+    let start_pattern = b:ECcommentOpen . ' ' . '\(' . s:ex_special_mark_pattern . '\)' . '.* { ' . b:ECcommentClose
+    let end_pattern = b:ECcommentOpen . ' } ' . '\(' . s:ex_special_mark_pattern . '\)' . '.* end ' . b:ECcommentClose
 
     " found '#if 0' first
     while match(cur_line, start_pattern ) == -1

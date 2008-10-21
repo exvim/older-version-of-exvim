@@ -1,9 +1,13 @@
-" ==========================================
-" Vim syntax file
-" Language:	hlsl syntax highlight
-" Maintainer:	Wu Jie
-" Last Change:	2007/10/12
-" ==========================================
+" ======================================================================================
+" File         : hlsl.vim
+" Author       : Wu Jie 
+" Last Change  : 10/21/2008 | 22:54:01 PM | Tuesday,October
+" Description  : 
+" ======================================================================================
+
+"/////////////////////////////////////////////////////////////////////////////
+" check script loading
+"/////////////////////////////////////////////////////////////////////////////
 
 if version < 600
   syntax clear
@@ -20,6 +24,10 @@ else
   runtime! $VIM/vimfiles/after/syntax/c.vim
   unlet b:current_syntax
 endif
+
+"/////////////////////////////////////////////////////////////////////////////
+" syntax defines
+"/////////////////////////////////////////////////////////////////////////////
 
 " keyword definitions
 " case match
@@ -61,12 +69,16 @@ syn match   hlslType            "\<\(Texture\|sampler\)[1-3]D\>"
 syn keyword hlslType            sampler texture filter
 syn match   hlslType            "address[u,v,w]"
 
-" ==========================================
+"/////////////////////////////////////////////////////////////////////////////
 " exMacroHighlight Predeined Syntax
-" ==========================================
+"/////////////////////////////////////////////////////////////////////////////
 
 " add hlsl enable group
 syn cluster exEnableContainedGroup add=hlslStorage,hlslType,hlslShaderType,hlslBaseFunction,hlslBaseFunction,hlslFunction
+
+"/////////////////////////////////////////////////////////////////////////////
+" highlight defines
+"/////////////////////////////////////////////////////////////////////////////
 
 " Define the default highlighting.
 if version >= 508 || !exists("did_hlsl_syntax_inits")
@@ -84,6 +96,10 @@ if version >= 508 || !exists("did_hlsl_syntax_inits")
   HiLink hlslSemantic        Special
   delcommand HiLink
 endif
+
+"/////////////////////////////////////////////////////////////////////////////
+" finish
+"/////////////////////////////////////////////////////////////////////////////
 
 let b:current_syntax = "hlsl"
 
