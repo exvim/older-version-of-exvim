@@ -334,9 +334,6 @@ endif
 vmap <F12> :call g:ex_InsertIFZero()<CR>
 nmap <F12> :call g:ex_RemoveIFZero()<CR>
 
-" F11:  Insert/Remove C++ Comment ("//") before all the lines of the selection
-" vmap <F11> :call g:ex_InsertRemoveCmt()<CR>
-
 " XXX: F10 looks like have some feature, when map with F10, the gv will take no effects
 " F9:  Insert/Remove macro extend ("\") after all the lines of the selection
 vmap <F9> :call g:ex_InsertRemoveExtend()<CR>
@@ -605,7 +602,7 @@ command -narg=1 STRUCT call g:ex_PutClass( "struct", "<args>" )
 
 " mark (special) text
 let g:ex_todo_keyword = 'NOTE REF EXAMPLE'
-let g:ex_comment_lable_keyword = 'TEMP CRASH MODIFY DEBUG DUMMY DELME TESTME OPTME REFACTORING DUPLICATE REDUNDANCY'
+let g:ex_comment_lable_keyword = 'TEMP CRASH MODIFY DEBUG DUMMY USELESS DELME TESTME OPTME REFACTORING DUPLICATE REDUNDANCY'
 vnoremap <Leader>mk :MK 
 nnoremap <Leader>mk :call g:ex_RemoveSpecialMarkText() <CR>
 command -range -narg=1 MK call g:ex_MarkText("<args>")

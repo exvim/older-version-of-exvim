@@ -62,10 +62,8 @@ let s:ex_level_list = []
 " ------------------------------------------------------------------ 
 
 let s:ex_special_mark_pattern = 'todo\|xxx\|fixme'
-let s:ex_special_mark_pattern .= '\|note\|ref\|example'
-let s:ex_special_mark_pattern .= '\|temp\|crash\|modify\|debug\|dummy'
-let s:ex_special_mark_pattern .= '\|delme\|testme\|optme'
-let s:ex_special_mark_pattern .= '\|refactoring\|duplicate\|redundancy'
+let s:ex_special_mark_pattern .= '\|' . substitute(tolower(g:ex_todo_keyword), ' ', '\|', 'g' ) 
+let s:ex_special_mark_pattern .= '\|' . substitute(tolower(g:ex_comment_lable_keyword), ' ', '\\|', 'g' ) 
 
 " ======================================================== 
 " syntax highlight
@@ -758,6 +756,19 @@ function g:ex_RemoveIFZero() range " <<<
     silent call cursor(line('.'), save_cursor[2])
     if match(save_line, "#endif.*") != -1
         silent normal! kk
+    endif
+endfunction " >>>
+
+" ------------------------------------------------------------------ 
+" Desc: TODO: check if the last character is space, if not, add space
+" ------------------------------------------------------------------ 
+
+function! g:ex_InsertRemoveExtend() range " <<<
+    let line = getline('.')
+    if (strpart(line,strlen(line)-1,1) == "\\")
+        exec ":" . a:firstline . "," . a:lastline . "s/\\\\$//"
+    else
+        exec ":" . a:firstline . "," . a:lastline . "s/$/\\\\/"
     endif
 endfunction " >>>
 
