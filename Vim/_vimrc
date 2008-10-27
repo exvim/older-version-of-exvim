@@ -601,8 +601,8 @@ command -narg=1 CLASS call g:ex_PutClass( "class", "<args>" )
 command -narg=1 STRUCT call g:ex_PutClass( "struct", "<args>" )
 
 " mark (special) text
-let g:ex_todo_keyword = 'NOTE REF EXAMPLE'
-let g:ex_comment_lable_keyword = 'TEMP CRASH MODIFY DEBUG DUMMY USELESS HACK DELME TESTME OPTME REFACTORING DUPLICATE REDUNDANCY'
+let g:ex_todo_keyword = 'NOTE REF EXAMPLE SAMPLE'
+let g:ex_comment_lable_keyword = 'TEMP CRASH MODIFY REMOVE ADD HACK DEBUG DUMMY USELESS DELME TESTME OPTME REFACTORING DUPLICATE REDUNDANCY'
 vnoremap <Leader>mk :MK 
 nnoremap <Leader>mk :call g:ex_RemoveSpecialMarkText() <CR>
 command -range -narg=1 MK call g:ex_MarkText("<args>")
