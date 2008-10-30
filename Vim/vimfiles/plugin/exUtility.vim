@@ -62,7 +62,7 @@ let s:ex_level_list = []
 " ------------------------------------------------------------------ 
 
 let s:ex_special_mark_pattern = 'todo\|xxx\|fixme'
-let s:ex_special_mark_pattern .= '\|' . substitute(tolower(g:ex_todo_keyword), ' ', '\|', 'g' ) 
+let s:ex_special_mark_pattern .= '\|' . substitute(tolower(g:ex_todo_keyword), ' ', '\\|', 'g' ) 
 let s:ex_special_mark_pattern .= '\|' . substitute(tolower(g:ex_comment_lable_keyword), ' ', '\\|', 'g' ) 
 
 " ======================================================== 
