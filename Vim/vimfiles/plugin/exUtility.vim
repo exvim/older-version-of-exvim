@@ -1914,9 +1914,21 @@ function g:ex_SrcHighlight( line1, line2 ) " <<<
     let last_line = a:line2
 
     " process src-highlight
-    let temp_directory_path = g:exES_PWD.'/'.g:exES_vimfile_dir.'/_temp' 
-    let temp_file = temp_directory_path.'/'.'_src_highlight.txt' 
-    let temp_file_html = temp_file . '.html' 
+    if exists("g:exES_PWD")
+        let temp_directory_path = g:exES_PWD.'/'.g:exES_vimfile_dir.'/_temp' 
+        let temp_file = temp_directory_path.'/'.'_src_highlight.txt' 
+        let temp_file_html = temp_file . '.html' 
+    else
+        let temp_directory_path = './_temp' 
+
+        " create _temp directory if not found
+        if finddir(temp_directory_path) == ''
+            silent call mkdir(temp_directory_path)
+        endif
+
+        let temp_file = temp_directory_path.'/'.'_src_highlight.txt' 
+        let temp_file_html = temp_file . '.html' 
+    endif
 
     " get text by lines
     let text = getline( first_line, last_line )
