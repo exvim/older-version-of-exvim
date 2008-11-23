@@ -32,7 +32,7 @@ endif
 " Desc: current version. increase this will cause template re-write 
 " ------------------------------------------------------------------ 
 
-let s:exES_CurrentVersion = 7
+let s:exES_CurrentVersion = 8
 
 " ======================================================== 
 " local variable initialization 
@@ -201,6 +201,12 @@ function g:exES_SetEnvironment() " <<<
         let inherit_directory_path = g:exES_PWD.'/'.g:exES_vimfile_dir.'/_hierarchies' 
         if finddir(inherit_directory_path) == ''
             silent call mkdir(inherit_directory_path)
+        endif
+
+        " create _temp directory
+        let temp_directory_path = g:exES_PWD.'/'.g:exES_vimfile_dir.'/_temp' 
+        if finddir(temp_directory_path) == ''
+            silent call mkdir(temp_directory_path)
         endif
 
         " update environment

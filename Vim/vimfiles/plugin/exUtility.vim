@@ -593,17 +593,8 @@ endfunction " >>>
 
 function g:ex_MarkText( text ) range " <<<
     " 
-    let v_line1 = line("'<")
-    let v_line2 = line("'>")
-
-    " 
-    if v_line1 <= v_line2
-        let first_line = v_line1
-        let last_line = v_line2 
-    else
-        let first_line = v_line2
-        let last_line = v_line1 
-    endif
+    let first_line = line("'<")
+    let last_line = line("'>")
 
     " check if it is special mark, special mark will use uppercase
     let text = a:text
@@ -1910,6 +1901,45 @@ function s:ex_MatchDelete(match_nr) " <<<
     endif
     let w:ex_HighLightText[a:match_nr] = ''
     silent call setreg(s:ex_hlRegMap[a:match_nr],'') 
+endfunction " >>>
+
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
+function g:ex_SrcHighlight() range " <<<
+    " 
+    let first_line = line("'<")
+    let last_line = line("'>")
+    let need_jump_back = 1
+
+    if first_line == 0 && last_line == 0
+        let first_line = 1
+        let last_line = line("$")
+        let need_jump_back = 0
+    endif
+
+    " process src-highlight
+    let temp_directory_path = g:exES_PWD.'/'.g:exES_vimfile_dir.'/_temp' 
+    let temp_file = temp_directory_path.'/'.'_src_highlight.txt' 
+    let temp_file_html = temp_file . '.html' 
+
+    " get text by lines
+    let text = getline( first_line, last_line )
+    call writefile( text, temp_file, "b" )
+
+    " browse use browser browse file
+    let shl_cmd = 'source-highlight -f html -s ex_cpp -n --data-dir=%EX_DEV%\GnuWin32\share\source-highlight' . ' -i ' . temp_file . ' -o ' . temp_file_html
+    let shl_result = system(shl_cmd)
+
+    " TODO: use if win32, if linux
+    let win_file = substitute( temp_file_html, "\/", "\\", "g" )
+    silent exec '!start ' . g:exES_WebBrowser . ' ' . win_file
+
+    " go back to start line
+    if need_jump_back
+        silent exec ":" . first_line
+    endif
 endfunction " >>>
 
 " ======================================================== 

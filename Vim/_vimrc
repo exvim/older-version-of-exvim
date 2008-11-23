@@ -600,6 +600,9 @@ command MAIN call g:ex_PutMain()
 command -narg=1 CLASS call g:ex_PutClass( "class", "<args>" )
 command -narg=1 STRUCT call g:ex_PutClass( "struct", "<args>" )
 
+" src-highlight
+command -range SHL call g:ex_SrcHighlight()
+
 " mark (special) text
 let g:ex_todo_keyword = 'NOTE REF EXAMPLE SAMPLE'
 let g:ex_comment_lable_keyword = 'TEMP CRASH MODIFY REMOVE ADD HACK DEBUG DUMMY USELESS DELME TESTME OPTME REFACTORING DUPLICATE REDUNDANCY HARDCODE'
@@ -828,6 +831,8 @@ imap <C-F11> <ESC><Plug>DeComment
 let g:exES_vimfile_dir = "_vimfiles"
 let g:exES_project_cmd = 'EXProject'
 let g:exES_ImageViewer = 'd:\exDev\IrfanView\i_view32.exe'
+let g:exES_WebBrowser = 'c:\Program Files\Mozilla Firefox\firefox.exe'
+" 'c:\Documents\ and\ Settings\Johnny\Local\ Settings\Application Data\Google\Chrome\Application\chrome.exe'
 
 function g:exES_UpdateEnvironment()
     " Open Minibuffer always, re-adjust project position

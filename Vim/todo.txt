@@ -18,20 +18,9 @@ Add shader compiler can output preprocess file.
 Fix shader macro highlight bugs
 
 "/////////////////////////////////////////////////////////////////////////////
-" VS Command:
-"/////////////////////////////////////////////////////////////////////////////
-
-Debug.BreakInFile
-Debug.BreakInFunction
-Debug.BreakInAddress
-Debug.SetRadix
-
-"/////////////////////////////////////////////////////////////////////////////
 " VS DTE:
 "/////////////////////////////////////////////////////////////////////////////
 
-Breakpoint
-Breakpoints
 BuildDependencies
 BuildDependency
 Debugger
@@ -39,28 +28,11 @@ DebuggerEvents
 Thread
 Threads
 
+fix bugs: ctrl-c lead to error
+
 "/////////////////////////////////////////////////////////////////////////////
-"
+" source-highlight
 "/////////////////////////////////////////////////////////////////////////////
 
-Production      Comapny                                                                 Complexity      Static Analysis
- 
-Code            Wzard Parasoft(http://www.parasoft.com/poducts/wizard/index.htm         No              Yes
- 
-Rexelint        Gimpel Software(http://www.gimpel.com/lintinfo.htm)                     No              Yes
- 
-Splint          University of Virginia(http://www.splint.org)                           No              Yes
- 
-Logiscope       Telelogic(http://www.telelogc.com/products/tau/logiscope/index.cfm)     Yes             Yes
- 
-QA C/C++        QA Systems(http://www.qa-systems.com/products/qac/                      Yes             Yes
- 
-Mc Cabe QA      McCabe & Associates(http://www.mccabe.com/main.htm)                     Yes             Yes
- 
-Understand      C++ Scientific Toolwarks(http://www.scitools.com)                       Yes             No
- 
-CodeCheck       Abraxas(http://abxsoft.com)                                             Yes             Yes
- 
-GateKeeper      KLOOwork(http://www.klocwork.com/)                                      Yes             Yes
- 
-" vim: set ft=vim:
+write css as standard 
+write plugin support quick source-highlight
