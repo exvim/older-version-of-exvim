@@ -591,10 +591,11 @@ endfunction " >>>
 " Desc: 
 " ------------------------------------------------------------------ 
 
-function g:ex_MarkText( text ) range " <<<
+function g:ex_MarkText( text, line1, line2 ) " <<<
+
     " 
-    let first_line = line("'<")
-    let last_line = line("'>")
+    let first_line = a:line1
+    let last_line = a:line2
 
     " check if it is special mark, special mark will use uppercase
     let text = a:text
@@ -1907,17 +1908,10 @@ endfunction " >>>
 " Desc: 
 " ------------------------------------------------------------------ 
 
-function g:ex_SrcHighlight() range " <<<
+function g:ex_SrcHighlight( line1, line2 ) " <<<
     " 
-    let first_line = line("'<")
-    let last_line = line("'>")
-    let need_jump_back = 1
-
-    if first_line == 0 && last_line == 0
-        let first_line = 1
-        let last_line = line("$")
-        let need_jump_back = 0
-    endif
+    let first_line = a:line1
+    let last_line = a:line2
 
     " process src-highlight
     let temp_directory_path = g:exES_PWD.'/'.g:exES_vimfile_dir.'/_temp' 
@@ -1937,9 +1931,7 @@ function g:ex_SrcHighlight() range " <<<
     silent exec '!start ' . g:exES_WebBrowser . ' ' . win_file
 
     " go back to start line
-    if need_jump_back
-        silent exec ":" . first_line
-    endif
+    silent exec ":" . first_line
 endfunction " >>>
 
 " ======================================================== 
