@@ -1,0 +1,18 @@
+include "cpp.lang"
+
+keyword = "ex_malloc|ex_malloc_use|ex_malloc_nomanage",
+          "ex_realloc|ex_realloc_use|ex_realloc_nomanage",
+          "ex_free|ex_free_use|ex_free_nomanage",
+          "ex_stack_malloc",
+          "TRUE|FALSE"
+
+type = "SIZE_T",
+       "UINT|INT|UINT8|INT8|UINT16|INT16|UINT32|INT32|UINT64|INT64",
+       "uint|uint8|int8|uint16|int16|uint32|int32|uint64|int64",
+       "FLOAT|DOUBLE",
+       "f32|f64",
+       "CHAR|WCHAR|TCHAR|TEXT",
+       "wchar|tchar",
+       "INLINE|NOINLINE",
+       "vec_f32_t",
+       "BOOL|UBOOL"

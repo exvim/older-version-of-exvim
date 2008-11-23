@@ -1,0 +1,15 @@
+rem  ======================================================================================
+rem  File         : command.txt
+rem  Author       : Wu Jie 
+rem  Last Change  : 11/23/2008 | 11:20:33 AM | Sunday,November
+rem  Description  : 
+rem  ======================================================================================
+
+
+rem  ------------------------------------------------------------------ 
+rem  Desc: 
+rem  ------------------------------------------------------------------ 
+
+source-highlight -f html -s ex_cpp -n --data-dir=%EX_DEV%\GnuWin32\share\source-highlight -i INPUT -o OUPUT
+
+rem vim: set ft=dosbatch:

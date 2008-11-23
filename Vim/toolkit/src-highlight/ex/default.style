@@ -1,0 +1,34 @@
+keyword blue ; 	    // for language keywords
+type blue ;	        // for basic types
+string brown ;		// for strings and chars
+comment darkgreen ;	// for comments
+number brown ;		// for literal numbers
+preproc purple ;	// for preproc directives (e.g. #include, import)
+symbol black ;      // for simbols (e.g. <, >, +)
+function black ;	// for function calls and declarations
+cbracket black ;    // for block brackets (e.g. {, })
+
+// line numbers
+linenum brown f;
+
+// Internet related
+url blue u, f;
+
+// other elements for ChangeLog and Log files
+date blue b ;
+time darkblue b ;
+ip darkgreen ;
+file darkblue b ;
+name darkgreen ;
+
+// for Prolog, Perl...
+variable darkgreen ;
+
+// explicit for Latex
+italics darkgreen i;
+bold darkgreen b;
+underline darkgreen u;
+fixed green f;
+argument darkgreen;
+optionalargument purple;
+math orange;
