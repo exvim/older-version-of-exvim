@@ -30,7 +30,7 @@ noremap / :call g:ex_SearchCompleteStart()<CR>/
 " Desc: Set mappings for search complete
 " ------------------------------------------------------------------ 
 
-function! g:ex_SearchCompleteStart() " <<<
+function g:ex_SearchCompleteStart() " <<<
 	cnoremap <Tab> <C-R>=<sid>ex_SearchComplete()<CR>
 	cnoremap <silent> <CR> <CR>:call g:ex_SearchCompleteStop()<CR>
 	cnoremap <silent> <Esc> <C-C>:call g:ex_SearchCompleteStop()<CR>
@@ -40,7 +40,7 @@ endfunction " >>>
 " Desc: Tab completion in / search
 " ------------------------------------------------------------------ 
 
-function! s:ex_SearchComplete() " <<<
+function s:ex_SearchComplete() " <<<
 	let old_cmdline = getcmdline()
 	let pos = getcmdpos()
 
@@ -61,7 +61,7 @@ endfunction " >>>
 " Desc: Remove search complete mappings
 " ------------------------------------------------------------------ 
 
-function! g:ex_SearchCompleteStop() " <<<
+function g:ex_SearchCompleteStop() " <<<
 	cunmap <Tab>
 	cunmap <CR>
 	cunmap <Esc>

@@ -755,7 +755,7 @@ endfunction " >>>
 " Desc: TODO: check if the last character is space, if not, add space
 " ------------------------------------------------------------------ 
 
-function! g:ex_InsertRemoveExtend() range " <<<
+function g:ex_InsertRemoveExtend() range " <<<
     let line = getline('.')
     if (strpart(line,strlen(line)-1,1) == "\\")
         exec ":" . a:firstline . "," . a:lastline . "s/\\\\$//"

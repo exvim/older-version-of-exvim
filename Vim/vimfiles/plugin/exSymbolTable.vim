@@ -131,7 +131,7 @@ let s:exSL_quick_view_idx = 1
 " Desc: Open exSymbolSelect window 
 " ------------------------------------------------------------------ 
 
-function! s:exSL_OpenWindow( short_title ) " <<<
+function s:exSL_OpenWindow( short_title ) " <<<
     if a:short_title != ''
         let s:exSL_short_title = a:short_title
     endif
@@ -148,7 +148,7 @@ endfunction " >>>
 " Desc: Resize the window use the increase value
 " ------------------------------------------------------------------ 
 
-function! s:exSL_ResizeWindow() " <<<
+function s:exSL_ResizeWindow() " <<<
     if g:exSL_use_vertical_window
         call g:ex_ResizeWindow( g:exSL_use_vertical_window, g:exSL_window_width, g:exSL_window_width_increment )
     else
@@ -160,7 +160,7 @@ endfunction " >>>
 " Desc: Toggle the window
 " ------------------------------------------------------------------ 
 
-function! s:exSL_ToggleWindow( short_title ) " <<<
+function s:exSL_ToggleWindow( short_title ) " <<<
     " read the file first
     if s:exSL_get_symbol_file
         let s:exSL_get_symbol_file = 0
@@ -208,7 +208,7 @@ endfunction " >>>
 " Desc: 
 " ------------------------------------------------------------------ 
 
-function! s:exSL_SwitchWindow( short_title ) " <<<
+function s:exSL_SwitchWindow( short_title ) " <<<
     " assignment the title
     if a:short_title == 'Select'
         let s:exSL_cur_title = s:exSL_select_title
@@ -225,7 +225,7 @@ endfunction " >>>
 " Desc: set if ignore case
 " ------------------------------------------------------------------ 
 
-function! s:exSL_SetIgnoreCase(ignore_case) " <<<
+function s:exSL_SetIgnoreCase(ignore_case) " <<<
     let s:exSL_ignore_case = a:ignore_case
     if a:ignore_case
         echomsg 'exSL ignore case'
@@ -238,7 +238,7 @@ endfunction " >>>
 " Desc: search result directly
 " ------------------------------------------------------------------ 
 
-function! s:exSL_GetSymbolListResult( symbol ) " <<<
+function s:exSL_GetSymbolListResult( symbol ) " <<<
     "if &filetype == "ex_filetype"
     "    silent exec "normal \<Esc>"
     "endif
@@ -269,7 +269,7 @@ endfunction " >>>
 " Desc: use quick search
 " ------------------------------------------------------------------ 
 
-function! s:exSL_QuickSearch() " <<<
+function s:exSL_QuickSearch() " <<<
     "if &filetype == "ex_filetype"
     "    silent exec "normal \<Esc>"
     "endif
@@ -289,7 +289,7 @@ endfunction " >>>
 " Desc: copy the quick view result with search pattern
 " ------------------------------------------------------------------ 
 
-function! s:exSL_CopyPickedLine( search_pattern, by_word, inverse_search ) " <<<
+function s:exSL_CopyPickedLine( search_pattern, by_word, inverse_search ) " <<<
     let use_pattern = 1
     if a:search_pattern == ''
         let search_pattern = @/
@@ -333,7 +333,7 @@ endfunction " >>>
 " Desc: show the picked result in the quick view window
 " ------------------------------------------------------------------ 
 
-function! s:exSL_ShowPickedResult( search_pattern, inverse_search ) " <<<
+function s:exSL_ShowPickedResult( search_pattern, inverse_search ) " <<<
     " assignment the title
     if s:exSL_short_title == 'Select'
         call g:ex_HighlightConfirmLine()
@@ -358,7 +358,7 @@ endfunction " >>>
 " Desc: show the picked result in the quick view window
 " ------------------------------------------------------------------ 
 
-function! s:exSL_GetAndShowPickedResult() " <<<
+function s:exSL_GetAndShowPickedResult() " <<<
     " get search pattern
     let search_pattern = expand("<cword>")
 
@@ -385,7 +385,7 @@ endfunction " >>>
 " Desc: Init exSymbolList window
 " ------------------------------------------------------------------ 
 
-function! g:exSL_InitSelectWindow() " <<<
+function g:exSL_InitSelectWindow() " <<<
     " set buffer no modifiable
     silent! setlocal nomodifiable
     silent! setlocal nonumber
@@ -411,7 +411,7 @@ endfunction " >>>
 " Desc: Update exSymbolList window
 " ------------------------------------------------------------------ 
 
-function! g:exSL_UpdateSelectWindow() " <<<
+function g:exSL_UpdateSelectWindow() " <<<
     call cursor( s:exSL_select_idx, 1)
     call g:ex_HighlightConfirmLine()
 endfunction " >>>
@@ -420,7 +420,7 @@ endfunction " >>>
 " Desc: Goto result position
 " ------------------------------------------------------------------ 
 
-function! s:exSL_GotoResultInSelectWindow() " <<<
+function s:exSL_GotoResultInSelectWindow() " <<<
     call g:ex_HighlightConfirmLine()
     let s:exSL_select_idx = line('.')
     let symbol_key_word = getline('.')
@@ -440,7 +440,7 @@ endfunction " >>>
 " Desc: Init exSymbolList window
 " ------------------------------------------------------------------ 
 
-function! g:exSL_InitQuickViewWindow() " <<<
+function g:exSL_InitQuickViewWindow() " <<<
     silent! setlocal nonumber
     
     " key map
@@ -461,7 +461,7 @@ endfunction " >>>
 " Desc: Update exSymbolList window
 " ------------------------------------------------------------------ 
 
-function! g:exSL_UpdateQuickViewWindow() " <<<
+function g:exSL_UpdateQuickViewWindow() " <<<
     call cursor( s:exSL_quick_view_idx, 1)
     call g:ex_HighlightConfirmLine()
 endfunction " >>>
@@ -470,7 +470,7 @@ endfunction " >>>
 " Desc: Goto result position
 " ------------------------------------------------------------------ 
 
-function! s:exSL_GotoResultInQuickViewWindow() " <<<
+function s:exSL_GotoResultInQuickViewWindow() " <<<
     call g:ex_HighlightConfirmLine()
     let s:exSL_quick_view_idx = line('.')
     let symbol_key_word = getline('.')
