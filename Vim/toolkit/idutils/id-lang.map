@@ -101,6 +101,9 @@
 # max-script file
 *.ms            text
 
+# matlab/octave file
+*.m             text
+
 # perl file
 *.pl            text
 *.pm            text
