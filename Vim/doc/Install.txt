@@ -30,6 +30,7 @@ Install:
     (3) Copy $VIM\toolkit\idutils\id-lang.map to %EX_DEV%\GnuWin32\share\id-lang.map 
     (3) Copy $VIM\toolkit\src-highlight\ex\*.* to %EX_DEV%\GnuWin32\share\source-highlight
     (4) Copy $VIM\toolkit\octave\.octaverc to %EX_DEV%\Octave\.octaverc
+    (5) Copy $VIM\toolkit\cTags\.ctags to $HOME\.ctags ( etc. c:\Documents and Settings\jwu )
 
 4. Install Graphviz
     (1) Install graphiviz to EX_DEV\Graphviz
