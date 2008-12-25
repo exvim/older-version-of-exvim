@@ -409,6 +409,12 @@ inoremap <c-j> <C-X><C-]>
 " search in current files, preview first. remove the original c-p
 inoremap <c-p> <C-X><C-P>
 
+" map for quick add special comments
+map <leader>ws :SEG<CR>
+map <leader>wd :DEF<CR>
+map <leader>we :SEP<CR>
+map <leader>wc :DEC<CR>
+
 " VimTip 329: A map for swapping words
 " http://vim.sourceforge.net/tip_view.php?tip_id=
 " Then when you put the cursor on or in a word, press "\sw", and
