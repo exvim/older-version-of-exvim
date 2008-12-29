@@ -46,9 +46,9 @@ set autoread " auto read same-file change ( better for vc/vim change )
 " XXX
 "set isk+=$,%,#,- " none of these should be word dividers 
 
-" FIXME
+" FIXME: confirm if fix
 " there have a bug with visual copy, shows the there is nothing in register *
-"set clipboard=unnamed " use clipboard register '*'(unnamed) for all y, d, c, p ops, use autoselect to avoid selection p bugs.
+set clipboard=unnamed " use clipboard register '*'(unnamed) for all y, d, c, p ops, use autoselect to avoid selection p bugs.
 
 " enlarge maxmempattern from 1000 to ... (2000000 will give it without limit)
 set maxmempattern=1000
@@ -322,7 +322,7 @@ map Q gq
 " define the copy/paste judged by clipboard
 if &clipboard ==# "unnamed"
     " fix the visual paste bug in vim
-    vnoremap <silent>p :call g:ex_VisualPasteFixed()<CR>
+    " vnoremap <silent>p :call g:ex_VisualPasteFixed()<CR>
 else
     " general copy/paste.
     map <leader>y "*y
