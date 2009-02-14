@@ -2,7 +2,7 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="8.00"
-	Name="Main"
+	Name="Project"
 	ProjectGUID="{7C1F6255-F0AF-419A-813E-B07D068D92A4}"
 	RootNamespace="Sample_Project"
 	Keyword="Win32Proj"
@@ -71,6 +71,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				GenerateDebugInformation="true"
 			/>
 			<Tool
 				Name="VCALinkTool"
