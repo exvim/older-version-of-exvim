@@ -90,8 +90,8 @@ endif
 " ------------------------------------------------------------------ 
 
 if !exists('g:exPJ_defualt_filter')
-    let g:exPJ_defualt_filter  = 'c cpp cxx '
-    let g:exPJ_defualt_filter .= 'h hpp inl '
+    let g:exPJ_defualt_filter  = 'c cpp cxx c++ C cc '
+    let g:exPJ_defualt_filter .= 'h H hh hxx hpp inl '
     let g:exPJ_defualt_filter .= 'uc '
     let g:exPJ_defualt_filter .= 'hlsl vsh psh glsl '
     let g:exPJ_defualt_filter .= 'dox doxygen '
