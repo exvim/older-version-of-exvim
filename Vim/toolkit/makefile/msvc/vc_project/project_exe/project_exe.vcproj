@@ -2,8 +2,8 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="8.00"
-	Name="Project"
-	ProjectGUID="{7C1F6255-F0AF-419A-813E-B07D068D92A4}"
+	Name="project_exe"
+	ProjectGUID="{7CC16B07-9444-4A9D-89B3-8BC93DE9C3DC}"
 	RootNamespace="Sample_Project"
 	Keyword="Win32Proj"
 	>
@@ -24,7 +24,6 @@
 			IntermediateDirectory="$(SolutionDir)_build\msvc\$(PlatformName)\$(ConfigurationName)\int\$(ProjectName)"
 			ConfigurationType="1"
 			CharacterSet="0"
-			ManagedExtensions="0"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -47,15 +46,16 @@
 				AdditionalOptions="/LD"
 				Optimization="0"
 				InlineFunctionExpansion="0"
-				AdditionalIncludeDirectories="../../external"
-				PreprocessorDefinitions="WIN32;_DEBUG;_LIB;_EX_DEBUG_;_EX_WIN32_;_EX_CORE_;XML_STATIC;_EX_DLL_"
+				AdditionalIncludeDirectories=""
+				PreprocessorDefinitions="WIN32;_DEBUG;_LIB;__EX_DEBUG;__EX_WIN32;__EX_TEST;XML_STATIC"
 				MinimalRebuild="false"
-				BasicRuntimeChecks="0"
+				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				RuntimeTypeInfo="false"
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough="$(ProjectName).h"
 				PrecompiledHeaderFile="$(IntDir)\$(ProjectName).pch"
+				ProgramDataBaseFileName="$(IntDir)\vc80.pdb"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="true"
 				DebugInformationFormat="3"
@@ -71,7 +71,11 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				OutputFile="$(OutDir)\$(ProjectName).exe"
+				AdditionalLibraryDirectories=""
+				IgnoreDefaultLibraryNames=""
 				GenerateDebugInformation="true"
+				ResourceOnlyDLL="false"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -96,14 +100,14 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="mkdir ..\..\..\bin\msvc\$(PlatformName)\$(ConfigurationName)&#x0D;&#x0A;copy $(TargetPath) ..\..\..\bin\msvc\$(PlatformName)\$(ConfigurationName)\$(TargetFileName)&#x0D;&#x0A;"
+				CommandLine=""
 			/>
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
 			OutputDirectory="$(SolutionDir)_build\msvc\$(PlatformName)\$(ConfigurationName)\bin"
 			IntermediateDirectory="$(SolutionDir)_build\msvc\$(PlatformName)\$(ConfigurationName)\int\$(ProjectName)"
-			ConfigurationType="4"
+			ConfigurationType="1"
 			CharacterSet="0"
 			WholeProgramOptimization="1"
 			>
@@ -124,12 +128,16 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				Optimization="2"
 				AdditionalIncludeDirectories=""
-				PreprocessorDefinitions="WIN32;NDEBUG;_EX_RELEASE_;_EX_WIN32_;_EX_CORE_"
+				PreprocessorDefinitions="WIN32;_RELEASE;_LIB;__EX_RELEASE;__EX_WIN32;__EX_TEST;XML_STATIC"
+				MinimalRebuild="false"
 				RuntimeLibrary="2"
+				RuntimeTypeInfo="false"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderThrough="Core.h"
+				PrecompiledHeaderThrough="$(ProjectName).h"
 				PrecompiledHeaderFile="$(IntDir)\$(ProjectName).pch"
+				ProgramDataBaseFileName="$(IntDir)\vc80.pdb"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="true"
 				DebugInformationFormat="3"
@@ -144,11 +152,16 @@
 				Name="VCPreLinkEventTool"
 			/>
 			<Tool
-				Name="VCLibrarianTool"
-				OutputFile="$(OutDir)\$(ProjectName)_r.lib"
+				Name="VCLinkerTool"
+				OutputFile="$(OutDir)\$(ProjectName).exe"
+				AdditionalLibraryDirectories=""
+				IgnoreDefaultLibraryNames=""
 			/>
 			<Tool
 				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCManifestTool"
 			/>
 			<Tool
 				Name="VCXDCMakeTool"
@@ -160,15 +173,22 @@
 				Name="VCFxCopTool"
 			/>
 			<Tool
+				Name="VCAppVerifierTool"
+			/>
+			<Tool
+				Name="VCWebDeploymentTool"
+			/>
+			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="mkdir ..\..\..\bin\msvc\$(PlatformName)\$(ConfigurationName)&#x0D;&#x0A;copy $(TargetPath) ..\..\..\bin\msvc\$(PlatformName)\$(ConfigurationName)\$(TargetFileName)&#x0D;&#x0A;"
+				CommandLine=""
 			/>
 		</Configuration>
 		<Configuration
 			Name="Final|Win32"
 			OutputDirectory="$(SolutionDir)_build\msvc\$(PlatformName)\$(ConfigurationName)\bin"
 			IntermediateDirectory="$(SolutionDir)_build\msvc\$(PlatformName)\$(ConfigurationName)\int\$(ProjectName)"
-			ConfigurationType="4"
+			ConfigurationType="1"
+			WholeProgramOptimization="1"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -188,11 +208,13 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				AdditionalIncludeDirectories=""
-				PreprocessorDefinitions="WIN32;NDEBUG;_LIB;_EX_FINAL_;_EX_WIN32_;_EX_CORE_"
+				PreprocessorDefinitions="WIN32;_FINAL;_LIB;__EX_FINAL;__EX_WIN32;__EX_TEST;XML_STATIC"
 				RuntimeLibrary="2"
+				RuntimeTypeInfo="false"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderThrough="Core.h"
+				PrecompiledHeaderThrough="$(ProjectName).h"
 				PrecompiledHeaderFile="$(IntDir)\$(ProjectName).pch"
+				ProgramDataBaseFileName="$(IntDir)\vc80.pdb"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="true"
 				DebugInformationFormat="3"
@@ -207,10 +229,15 @@
 				Name="VCPreLinkEventTool"
 			/>
 			<Tool
-				Name="VCLibrarianTool"
+				Name="VCLinkerTool"
+				AdditionalLibraryDirectories=""
+				IgnoreDefaultLibraryNames=""
 			/>
 			<Tool
 				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCManifestTool"
 			/>
 			<Tool
 				Name="VCXDCMakeTool"
@@ -222,8 +249,256 @@
 				Name="VCFxCopTool"
 			/>
 			<Tool
+				Name="VCAppVerifierTool"
+			/>
+			<Tool
+				Name="VCWebDeploymentTool"
+			/>
+			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="mkdir ..\..\..\bin\msvc\$(PlatformName)\$(ConfigurationName)&#x0D;&#x0A;copy $(TargetPath) ..\..\..\bin\msvc\$(PlatformName)\$(ConfigurationName)\$(TargetFileName)&#x0D;&#x0A;"
+				CommandLine=""
+			/>
+		</Configuration>
+		<Configuration
+			Name="Debug_dll|Win32"
+			OutputDirectory="$(SolutionDir)_build\msvc\$(PlatformName)\$(ConfigurationName)\bin"
+			IntermediateDirectory="$(SolutionDir)_build\msvc\$(PlatformName)\$(ConfigurationName)\int\$(ProjectName)"
+			ConfigurationType="1"
+			CharacterSet="0"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+				CommandLine=""
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+			/>
+			<Tool
+				Name="VCCLCompilerTool"
+				AdditionalOptions="/LD"
+				Optimization="0"
+				InlineFunctionExpansion="0"
+				AdditionalIncludeDirectories=""
+				PreprocessorDefinitions="WIN32;_DEBUG;_WINDLL;__EX_DEBUG;__EX_WIN32;__EX_TEST;__EX_DLL;XML_STATIC"
+				MinimalRebuild="true"
+				BasicRuntimeChecks="3"
+				RuntimeLibrary="3"
+				RuntimeTypeInfo="false"
+				UsePrecompiledHeader="2"
+				PrecompiledHeaderThrough="$(ProjectName).h"
+				PrecompiledHeaderFile="$(IntDir)\$(ProjectName).pch"
+				ProgramDataBaseFileName="$(IntDir)\vc80.pdb"
+				WarningLevel="3"
+				Detect64BitPortabilityProblems="true"
+				DebugInformationFormat="3"
+			/>
+			<Tool
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
+			<Tool
+				Name="VCLinkerTool"
+				OutputFile="$(OutDir)\$(ProjectName).exe"
+				LinkIncremental="2"
+				AdditionalLibraryDirectories=""
+				IgnoreDefaultLibraryNames=""
+				GenerateDebugInformation="true"
+				ResourceOnlyDLL="false"
+			/>
+			<Tool
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCManifestTool"
+			/>
+			<Tool
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCAppVerifierTool"
+			/>
+			<Tool
+				Name="VCWebDeploymentTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+				CommandLine=""
+			/>
+		</Configuration>
+		<Configuration
+			Name="Release_dll|Win32"
+			OutputDirectory="$(SolutionDir)_build\msvc\$(PlatformName)\$(ConfigurationName)\bin"
+			IntermediateDirectory="$(SolutionDir)_build\msvc\$(PlatformName)\$(ConfigurationName)\int\$(ProjectName)"
+			ConfigurationType="1"
+			CharacterSet="0"
+			WholeProgramOptimization="1"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+			/>
+			<Tool
+				Name="VCCLCompilerTool"
+				Optimization="2"
+				AdditionalIncludeDirectories=""
+				PreprocessorDefinitions="WIN32;_RELEASE;_LIB;__EX_RELEASE;__EX_WIN32;__EX_TEST;__EX_DLL;XML_STATIC"
+				MinimalRebuild="false"
+				RuntimeLibrary="2"
+				RuntimeTypeInfo="false"
+				UsePrecompiledHeader="2"
+				PrecompiledHeaderThrough="$(ProjectName).h"
+				PrecompiledHeaderFile="$(IntDir)\$(ProjectName).pch"
+				ProgramDataBaseFileName="$(IntDir)\vc80.pdb"
+				WarningLevel="3"
+				Detect64BitPortabilityProblems="true"
+				DebugInformationFormat="3"
+			/>
+			<Tool
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
+			<Tool
+				Name="VCLinkerTool"
+				OutputFile="$(OutDir)\$(ProjectName).exe"
+				AdditionalLibraryDirectories=""
+				IgnoreDefaultLibraryNames=""
+			/>
+			<Tool
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCManifestTool"
+			/>
+			<Tool
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCAppVerifierTool"
+			/>
+			<Tool
+				Name="VCWebDeploymentTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+				CommandLine=""
+			/>
+		</Configuration>
+		<Configuration
+			Name="Final_dll|Win32"
+			OutputDirectory="$(SolutionDir)_build\msvc\$(PlatformName)\$(ConfigurationName)\bin"
+			IntermediateDirectory="$(SolutionDir)_build\msvc\$(PlatformName)\$(ConfigurationName)\int\$(ProjectName)"
+			ConfigurationType="1"
+			WholeProgramOptimization="1"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+			/>
+			<Tool
+				Name="VCCLCompilerTool"
+				AdditionalIncludeDirectories=""
+				PreprocessorDefinitions="WIN32;_FINAL;_LIB;__EX_FINAL;__EX_WIN32;__EX_TEST;__EX_DLL;XML_STATIC"
+				RuntimeLibrary="2"
+				RuntimeTypeInfo="false"
+				UsePrecompiledHeader="2"
+				PrecompiledHeaderThrough="$(ProjectName).h"
+				PrecompiledHeaderFile="$(IntDir)\$(ProjectName).pch"
+				ProgramDataBaseFileName="$(IntDir)\vc80.pdb"
+				WarningLevel="3"
+				Detect64BitPortabilityProblems="true"
+				DebugInformationFormat="3"
+			/>
+			<Tool
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
+			<Tool
+				Name="VCLinkerTool"
+				AdditionalLibraryDirectories=""
+				IgnoreDefaultLibraryNames=""
+			/>
+			<Tool
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCManifestTool"
+			/>
+			<Tool
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCAppVerifierTool"
+			/>
+			<Tool
+				Name="VCWebDeploymentTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+				CommandLine=""
 			/>
 		</Configuration>
 		<Configuration
@@ -413,7 +688,7 @@
 	</References>
 	<Files>
 		<File
-			RelativePath=".\Main.cpp"
+			RelativePath=".\project_exe.cpp"
 			>
 			<FileConfiguration
 				Name="Debug|Win32"
@@ -423,9 +698,49 @@
 					UsePrecompiledHeader="1"
 				/>
 			</FileConfiguration>
+			<FileConfiguration
+				Name="Release|Win32"
+				>
+				<Tool
+					Name="VCCLCompilerTool"
+					UsePrecompiledHeader="1"
+				/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="Final|Win32"
+				>
+				<Tool
+					Name="VCCLCompilerTool"
+					UsePrecompiledHeader="1"
+				/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="Debug_dll|Win32"
+				>
+				<Tool
+					Name="VCCLCompilerTool"
+					UsePrecompiledHeader="1"
+				/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="Release_dll|Win32"
+				>
+				<Tool
+					Name="VCCLCompilerTool"
+					UsePrecompiledHeader="1"
+				/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="Final_dll|Win32"
+				>
+				<Tool
+					Name="VCCLCompilerTool"
+					UsePrecompiledHeader="1"
+				/>
+			</FileConfiguration>
 		</File>
 		<File
-			RelativePath=".\Main.h"
+			RelativePath=".\project_exe.h"
 			>
 		</File>
 	</Files>
