@@ -654,7 +654,6 @@ let g:exGS_window_direction = 'bel'
 
 nnoremap <silent> <Leader>ss :ExslSelectToggle<CR>
 nnoremap <silent> <Leader>sq :ExslQuickViewToggle<CR>
-nnoremap <silent> <F6> :ExslToggle<CR>
 nnoremap <A-S-l> :ExslQuickSearch<CR>/
 nnoremap <silent> <Leader>sg :ExslGoDirectly<CR>
 let g:exSL_SymbolSelectCmd = 'TS'
