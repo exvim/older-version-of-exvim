@@ -299,7 +299,11 @@ def dte_put_file (vs_pid, filename, modified, line_num, col_num):
     io = dte.ItemOperations
     logging.info ('dte_put_file abspath: >%s<' % (os.path.abspath(filename), ))
     rc = io.OpenFile (os.path.abspath (filename))
-    sel = dte.ActiveDocument.Selection
+    doc = dte.ActiveDocument
+    if not doc:
+        _vim_status ('No VS file!')
+        return
+    sel = doc.Selection
     sel.MoveToLineAndOffset (line_num, col_num)
     _dte_activate (vs_pid)
 
