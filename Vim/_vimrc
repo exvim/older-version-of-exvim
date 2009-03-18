@@ -610,8 +610,11 @@ command -narg=1 STRUCT call g:ex_PutClass( "struct", "<args>" )
 command -range=% SHL call g:ex_SrcHighlight( <line1>, <line2> )
 
 " mark (special) text
-let g:ex_todo_keyword = 'NOTE REF EXAMPLE SAMPLE'
-let g:ex_comment_lable_keyword = 'TEMP CRASH MODIFY REMOVE ADD HACK DEBUG DUMMY USELESS DELME TESTME OPTME REFACTORING DUPLICATE REDUNDANCY HARDCODE'
+let g:ex_todo_keyword = 'NOTE REF EXAMPLE SAMPLE CHECK'
+let g:ex_comment_lable_keyword = 'DELME TEMP MODIFY ADD KEEPME ' " for editing
+let g:ex_comment_lable_keyword .= 'DEBUG CRASH DUMMY UNUSED TESTME ' " for testing 
+let g:ex_comment_lable_keyword .= 'HACK OPTME HARDCODE REFACTORING DUPLICATE REDUNDANCY ' " for refactoring
+
 vnoremap <Leader>mk :MK 
 nnoremap <Leader>mk :call g:ex_RemoveSpecialMarkText() <CR>
 command -range -narg=1 MK call g:ex_MarkText("<args>", <line1>, <line2> )
