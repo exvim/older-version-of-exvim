@@ -222,7 +222,7 @@ endfunction " >>>
 
 function s:exPJ_GetName( line_num )
     let line = getline(a:line_num)
-    let line = substitute(line,'.*\[.*\]\(.\{-}\)','\1','')
+    let line = substitute(line,'.\{-}\[.\{-}\]\(.\{-}\)','\1','')
     let idx_end_1 = stridx(line,' {')
     let idx_end_2 = stridx(line,' }')
     if idx_end_1 != -1
@@ -469,7 +469,7 @@ function s:exPJ_QuickRefreshProject() " <<<
 
         let idx = stridx(cur_line, '}')
         if idx == -1
-            silent exec "normal! ddk"
+            silent exec 'normal! "_ddk'
             let fold_end -= 1
             let line_idx = search(file_pattern)
         else
@@ -567,7 +567,7 @@ function s:exPJ_RefreshProject() " <<<
     endif
     " delete the whole fold
     silent exec "normal! zc"
-    silent exec "normal! 2dd"
+    silent exec 'normal! "_2dd'
     " broswing
     call g:ex_Browse(full_path_name,g:ex_GetFileFilterPattern(filter))
     " reset level list
@@ -596,7 +596,7 @@ function s:exPJ_RefreshProject() " <<<
         silent call setline('.', start_part . short_dir . end_part)
     else
         " delete the first empty line then go to the root dir
-        silent exec "normal! ggddj"
+        silent exec 'normal! gg"_ddj'
     endif
 endfunction " >>>
 

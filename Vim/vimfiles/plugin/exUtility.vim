@@ -27,6 +27,14 @@ if !exists('g:exUT_plugin_list')
     let g:exUT_plugin_list = []
 endif
 
+" ------------------------------------------------------------------ 
+" Desc: turn on/off help text
+" ------------------------------------------------------------------ 
+
+if !exists('g:ex_help_text_on')
+    let g:ex_help_text_on = 0
+endif
+
 " ======================================================== 
 " local variable initialization
 " ======================================================== 
@@ -62,8 +70,21 @@ let s:ex_level_list = []
 " ------------------------------------------------------------------ 
 
 let s:ex_special_mark_pattern = 'todo\|xxx\|fixme'
-let s:ex_special_mark_pattern .= '\|' . substitute(tolower(g:ex_todo_keyword), ' ', '\\|', 'g' ) 
-let s:ex_special_mark_pattern .= '\|' . substitute(tolower(g:ex_comment_lable_keyword), ' ', '\\|', 'g' ) 
+if exists('g:ex_todo_keyword')
+    let s:ex_special_mark_pattern .= '\|' . substitute(tolower(g:ex_todo_keyword), ' ', '\\|', 'g' ) 
+endif
+if exists('g:ex_comment_lable_keyword')
+    let s:ex_special_mark_pattern .= '\|' . substitute(tolower(g:ex_comment_lable_keyword), ' ', '\\|', 'g' ) 
+endif
+
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
+let s:ex_MapHelpText={}
+let s:ex_MapHelpMode={}
+let s:ex_MapHelpOldMode={}
+let s:ex_MapLastCursorLine={}
 
 " ======================================================== 
 " syntax highlight
@@ -91,6 +112,9 @@ hi def ex_SynTitle term=bold cterm=bold ctermfg=DarkYellow gui=bold guifg=Brown
 hi def ex_SynJumpMethodS term=none cterm=none ctermfg=Red gui=none guifg=Red 
 hi def ex_SynJumpMethodG term=none cterm=none ctermfg=Blue gui=none guifg=Blue 
 hi def link ex_SynJumpSymbol Comment
+
+" help syntax color
+highlight def ex_SynHelpText gui=none guifg=DarkGreen
 
 
 "/////////////////////////////////////////////////////////////////////////////
@@ -155,6 +179,10 @@ function g:ex_CreateWindow( buffer_name, window_direction, window_size, use_vert
     if bufnum == -1
         call g:ex_InitWindow( a:init_func_name )
     endif
+
+    " Set direction
+    let w:use_vertical = a:use_vertical
+    let w:window_direction = a:window_direction
 
     " adjust with edit_mode
     if a:edit_mode == 'append'
@@ -230,6 +258,14 @@ endfunction " >>>
 " ------------------------------------------------------------------ 
 
 function g:ex_OpenWindow( buffer_name, window_direction, window_size, use_vertical, edit_mode, backto_editbuf, init_func_name, call_func_name ) " <<<
+    " check if a ex window exists on the target position 
+    for nr_win in range(1,winnr("$"))
+        if getwinvar(nr_win, "use_vertical") == a:use_vertical && getwinvar(nr_win, "window_direction") == a:window_direction 
+            " get the ex window, change window to the target window
+            silent exe nr_win . 'wincmd w'
+        endif
+    endfor
+
     " if current editor buf is a plugin file type
     if &filetype == "ex_filetype"
         silent exec "normal \<Esc>"
@@ -263,6 +299,7 @@ function g:ex_OpenWindow( buffer_name, window_direction, window_size, use_vertic
         exe 'call ' . a:call_func_name . '()'
     endif
 
+    "
     if a:backto_editbuf
         " Need to jump back to the original window only if we are not
         " already in that window
@@ -286,6 +323,8 @@ function g:ex_CloseWindow( buffer_name ) " <<<
     exe winnum . 'wincmd w'
     " if this is not the only window
     if winbufnr(2) != -1
+        " If a window other than the a:buffer_name window is open,
+        " then only close the a:buffer_name window.
         close
     endif
 
@@ -2114,6 +2153,163 @@ function g:ex_VisualPasteFixed() " <<<
     silent call getreg('*')
     " silent normal! gvpgvy " <-- this let you be the win32 copy/paste style
     silent normal! gvp
+endfunction " >>>
+
+" ======================================================== 
+"  Help text functions
+" ======================================================== 
+
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
+" --ex_AddHelpItem--
+" Add help Item for current buffer, used in initilization only
+function g:ex_AddHelpItem(HelpText, HelpMode) " <<<
+    let BufName = fnamemodify(bufname(""), ':t')
+    if !has_key(s:ex_MapHelpText, BufName)
+        let s:ex_MapHelpText[BufName]={}
+        let s:ex_MapHelpMode[BufName]=0
+        let s:ex_MapHelpOldMode[BufName]=-1
+        let s:ex_MapLastCursorLine[BufName]=1
+    endif
+    if !has_key(s:ex_MapHelpText[BufName], a:HelpMode)
+        let s:ex_MapHelpText[BufName][a:HelpMode]=[]
+    endif
+    call add(s:ex_MapHelpText[BufName][a:HelpMode] , a:HelpText)
+endfunction " >>>
+
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
+" --ex_AddHelpItem--
+" Add help Item for current buffer, used in initilization only
+function g:ex_DisplayHelp() " <<<
+    " If it's not funtional window, do not display help
+
+    syntax match ex_SynHelpText '^" .*'
+    if g:ex_IsFunctionalbuf("")
+        return
+    endif
+
+    if !g:ex_help_text_on
+        return
+    endif
+
+    " save the position
+    let cur_line = line(".")
+    let cur_col = col(".")
+
+    let BufName = fnamemodify(bufname(""), ':t')
+    " if we don't have this BufName map key, we will failed process function
+    " below, so return instead.
+    if !has_key(s:ex_MapHelpText, BufName)
+        return
+    endif
+
+    let HelpMode = s:ex_MapHelpMode[BufName]
+
+    " Set report option to a huge value to prevent informational messages
+    " while deleting the lines
+    let old_report = &report
+    set report=99999
+
+    " remove old help text
+    let oldModifiableValue = &l:modifiable
+    setlocal modifiable
+    silent exec 'g/^" /d _'
+
+    let index = len(s:ex_MapHelpText[BufName][HelpMode]) - 1
+    while index >=0
+        call append(0,'" ' . s:ex_MapHelpText[BufName][HelpMode][index])
+        let index -= 1
+    endwhile
+
+    if  HelpMode != s:ex_MapHelpOldMode[BufName]
+        normal! gg
+        let s:ex_MapHelpOldMode[BufName] = HelpMode
+    endif
+
+    " Restore the report option
+    let &report = old_report
+
+    " write the file to prevent save file popup menu
+    if &buftype==''
+        exec 'w'
+    endif
+
+    let &l:modifiable=oldModifiableValue
+
+    " restore the position
+    silent call cursor(cur_line, cur_col)
+endfunction " >>>
+
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
+" --ex_SwitchHelpTextMode--
+" Switch between different help text , -1 for toggle between 1 and 0
+function g:ex_SwitchHelpTextMode(HelpMode) " <<<
+    " call g:ex_ClearHighlightSelectLine()
+    2match none " the function is gone, use the match directly
+    let BufName = fnamemodify(bufname(""), ':t')
+    let ResetCursor=0
+    if a:HelpMode == -1
+        if s:ex_MapHelpMode[BufName] == 0
+            let s:ex_MapLastCursorLine[BufName]=line('.')
+            let s:ex_MapHelpMode[BufName] = 1
+        else
+            let ResetCursor=getline(line('.')-1)[0]=='"'
+            let s:ex_MapHelpMode[BufName] = 0
+        endif
+    else
+        let s:ex_MapHelpMode[BufName] = a:HelpMode
+    endif
+    call g:ex_DisplayHelp()
+    call g:ex_HelpUpdateCursor()
+    if ResetCursor
+        call cursor(s:ex_MapLastCursorLine[BufName],0)
+    endif
+endfunction " >>>
+
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
+" --ex_HelpUpdateCursor--
+" if Cursor is on the Help, jump to the first line without help
+function g:ex_HelpUpdateCursor() " <<<
+    if getline('.')[0] == '"'
+        call search('^[^"]\|^$')
+        return 1
+    endif
+    return 0
+endfunction " >>>
+
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
+" --ex_GetHelpTextLength--
+" return the length of HelpText
+function g:ex_GetHelpTextLength() " <<<
+    let linenum = 1
+    while getline(linenum)[0] == '"'
+        let linenum+=1
+    endwhile
+    return linenum-1
+endfunction " >>>
+
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
+" --ex_IsFunctionalbuf--
+" return true if the buf is a functional buf
+function g:ex_IsFunctionalbuf(Buf_Name) " <<<
+    return index( g:exUT_plugin_list, fnamemodify(a:Buf_Name,":p:t") ) >=0
 endfunction " >>>
 
 "/////////////////////////////////////////////////////////////////////////////

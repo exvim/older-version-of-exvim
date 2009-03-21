@@ -264,6 +264,7 @@ function g:exTS_InitSelectWindow() " <<<
 
     " key map
     nnoremap <buffer> <silent> <Return>   \|:call <SID>exTS_GotoTagSelectResult()<CR>
+    nnoremap <buffer> <silent> <2-LeftMouse>   \|:call <SID>exTS_GotoTagSelectResult()<CR>
     nnoremap <buffer> <silent> <Space>   :call <SID>exTS_ResizeWindow()<CR>
     nnoremap <buffer> <silent> <ESC>   :call <SID>exTS_ToggleWindow('Select')<CR>
     nnoremap <buffer> <silent> <C-Left>   :call <SID>exTS_SwitchWindow('Select')<CR>
@@ -281,11 +282,9 @@ function g:exTS_UpdateSelectWindow() " <<<
     if s:exTS_need_update_select_window
         let s:exTS_need_update_select_window = 0
         " clear window
-        let reg_tmp = @t
-        silent exe 'normal! G"tdgg'
+        silent exe 'normal! G"_dgg'
         silent put = s:exTS_tag_stack_list[s:exTS_stack_idx].output_result
-        silent exec 'normal! gg"tdd'
-        let @t = reg_tmp
+        silent exec 'normal! gg"_dd'
     endif
 
     let tag_pattern = '^\s*' .  s:exTS_tag_stack_list[s:exTS_stack_idx].tag_idx . ':'
@@ -392,9 +391,7 @@ function s:exTS_GetTagSelectResult(tag, direct_jump) " <<<
     endif
 
     " clear window
-    let reg_tmp = @t
-    exe 'normal! G"tdgg'
-    let @t = reg_tmp
+    exe 'normal! G"_dgg'
     call g:ex_HighlightConfirmLine()
 
     if match( result, 'Error detected while processing' ) != -1
@@ -539,6 +536,7 @@ function g:exTS_InitStackWindow() " <<<
 
     " map keys
     nnoremap <buffer> <silent> <Return>   \|:call <SID>exTS_Stack_GoDirect()<CR>
+    nnoremap <buffer> <silent> <2-LeftMouse>   \|:call <SID>exTS_Stack_GoDirect()<CR>
     nnoremap <buffer> <silent> <Space>   :call <SID>exTS_ResizeWindow()<CR>
     nnoremap <buffer> <silent> <ESC>   :call <SID>exTS_ToggleWindow('Stack')<CR>
     nnoremap <buffer> <silent> <C-Left>   :call <SID>exTS_SwitchWindow('Select')<CR>
@@ -555,9 +553,7 @@ endfunction " >>>
 function g:exTS_UpdateStackWindow() " <<<
     if s:exTS_need_update_stack_window
         let s:exTS_need_update_stack_window = 0
-        let reg_tmp = @t
-        exe 'normal! G"tdgg'
-        let @t = reg_tmp
+        exe 'normal! G"_dgg'
         call s:exTS_ShowTagStack()
     endif
 
@@ -611,9 +607,7 @@ function s:exTS_ShowTagStack() " <<<
         silent put = str_line
         let idx += 1
     endfor
-    let reg_tmp = @t
-    silent exec 'normal! gg"tdd'
-    let @t = reg_tmp
+    silent exec 'normal! gg"_dd'
 endfunction " >>>
 
 " ------------------------------------------------------------------ 

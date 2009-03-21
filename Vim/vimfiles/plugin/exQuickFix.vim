@@ -297,6 +297,7 @@ function g:exQF_InitSelectWindow() " <<<
 
     " key map
     nnoremap <buffer> <silent> <Return>   \|:call <SID>exQF_GotoInSelectWindow()<CR>
+    nnoremap <buffer> <silent> <2-LeftMouse>   \|:call <SID>exQF_GotoInSelectWindow()<CR>
     nnoremap <buffer> <silent> <Space>   :call <SID>exQF_ResizeWindow()<CR>
     nnoremap <buffer> <silent> <ESC>   :call <SID>exQF_ToggleWindow('Select')<CR>
 
@@ -379,7 +380,7 @@ function s:exQF_GetQuickFixResult( file_name ) " <<<
             silent set errorformat+=%XLeaving\ directory\ '%f'%.%#
             silent set errorformat+=%D\<\<\<\<\<\<\ %\\S%\\+:\ '%f'%.%#
             silent set errorformat+=%X\>\>\>\>\>\>\ %\\S%\\+:\ '%f'%.%#
-        else
+        elseif s:exQF_compiler == 'msvc2005'
             silent set errorformat=%D%\\d%\\+\>------\ %.%#Project:\ %f%\\,%.%#
             silent set errorformat+=%X%\\d%\\+\>%.%#%\\d%\\+\ error(s)%.%#%\\d%\\+\ warning(s)
             silent set errorformat+=%\\d%\\+\>%f(%l)\ :\ %t%*\\D%n:\ %m
@@ -515,12 +516,12 @@ function s:exQF_CopyPickedLine( search_pattern, line_start, line_end, search_met
         " clear down lines
         if a:line_end < line('$')
             silent call cursor( a:line_end, 1 )
-            silent exec 'normal! jdG'
+            silent exec 'normal! j"_dG'
         endif
         " clear up lines
         if a:line_start > 1
             silent call cursor( a:line_start, 1 )
-            silent exec 'normal! kdgg'
+            silent exec 'normal! k"_dgg'
         endif
         silent call cursor( 1, 1 )
 
@@ -530,7 +531,7 @@ function s:exQF_CopyPickedLine( search_pattern, line_start, line_end, search_met
 
         " clear pattern result
         while search('----------.\+----------', 'w') != 0
-            silent exec 'normal! dd'
+            silent exec 'normal! "_dd'
         endwhile
 
         " copy picked result

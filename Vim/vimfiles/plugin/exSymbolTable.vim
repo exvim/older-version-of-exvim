@@ -351,7 +351,7 @@ function s:exSL_ShowPickedResult( search_pattern, inverse_search ) " <<<
     let s:exGS_quick_view_idx = 1
     call g:ex_HighlightConfirmLine()
     silent put = s:exSL_picked_search_result
-    silent exec 'normal! ggdd'
+    silent exec 'normal! gg"_dd'
 endfunction " >>>
 
 " ------------------------------------------------------------------ 
@@ -374,7 +374,7 @@ function s:exSL_GetAndShowPickedResult() " <<<
     call s:exSL_SwitchWindow('QuickView')
     silent exec 'normal! G"_dgg'
     silent put = s:exSL_picked_search_result
-    silent exec 'normal! ggdd'
+    silent exec 'normal! gg"_dd'
 endfunction " >>>
 
 " ======================================================== 
@@ -394,6 +394,7 @@ function g:exSL_InitSelectWindow() " <<<
     
     " key map
     nnoremap <buffer> <silent> <Return> \|:call <SID>exSL_GotoResultInSelectWindow()<CR>
+    nnoremap <buffer> <silent> <2-LeftMouse> :call <SID>exSL_GotoResultInSelectWindow()<CR>
     nnoremap <buffer> <silent> <C-Return>   \|:call <SID>exSL_ShowPickedResult(getline('.'), 0)<CR>
     nnoremap <buffer> <silent> <Space>   :call <SID>exSL_ResizeWindow()<CR>
     nnoremap <buffer> <silent> <ESC>   :call <SID>exSL_ToggleWindow('Select')<CR>

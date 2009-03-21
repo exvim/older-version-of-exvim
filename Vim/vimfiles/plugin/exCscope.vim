@@ -692,12 +692,12 @@ function s:exCS_CopyPickedLine( search_pattern, line_start, line_end, search_met
         " clear down lines
         if a:line_end < line('$')
             silent call cursor( a:line_end, 1 )
-            silent exec 'normal! jdG'
+            silent exec 'normal! j"_dG'
         endif
         " clear up lines
         if a:line_start > 1
             silent call cursor( a:line_start, 1 )
-            silent exec 'normal! kdgg'
+            silent exec 'normal! k"_dgg'
         endif
         silent call cursor( 1, 1 )
 
@@ -715,7 +715,7 @@ function s:exCS_CopyPickedLine( search_pattern, line_start, line_end, search_met
 
         " clear pattern result
         while search('----------.\+----------', 'w') != 0
-            silent exec 'normal! dd'
+            silent exec 'normal! "_dd'
         endwhile
 
         " copy picked result

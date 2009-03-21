@@ -377,32 +377,10 @@ endfunction " >>>
 " ======================================================== 
 
 " ------------------------------------------------------------------ 
-" Desc: Init exGlobalSearch window
+" Desc: 
 " ------------------------------------------------------------------ 
 
-function g:exGS_InitSelectWindow() " <<<
-    setlocal number
-
-    " syntax highlight
-    if g:exGS_highlight_result
-        " this will load the syntax highlight as cpp for search result
-        silent exec "so $VIM/vimfiles/after/syntax/exUtility.vim"
-    endif
-
-    "
-    syntax region ex_SynFileName start="^[^:]*" end=":" oneline
-    syntax region ex_SynSearchPattern start="^----------" end="----------"
-    syntax match ex_SynLineNr '\d\+:'
-
-    " key map
-    nnoremap <buffer> <silent> <Return>   \|:call <SID>exGS_GotoInSelectWindow()<CR>
-    nnoremap <buffer> <silent> <Space>   :call <SID>exGS_ResizeWindow()<CR>
-    nnoremap <buffer> <silent> <ESC>   :call <SID>exGS_ToggleWindow('Select')<CR>
-
-    nnoremap <buffer> <silent> <C-Up>   :call <SID>exGS_SwitchWindow('Stack')<CR>
-    nnoremap <buffer> <silent> <C-Right>   :call <SID>exGS_SwitchWindow('Select')<CR>
-    nnoremap <buffer> <silent> <C-Left>   :call <SID>exGS_SwitchWindow('QuickView')<CR>
-
+function s:exGS_MapPickupResultKeys() " <<<
     nnoremap <buffer> <silent> <LocalLeader>r :call <SID>exGS_ShowPickedResultNormalMode('', 'replace', 'pattern', 0)<CR>
     nnoremap <buffer> <silent> <LocalLeader>d :call <SID>exGS_ShowPickedResultNormalMode('', 'replace', 'pattern', 1)<CR>
     nnoremap <buffer> <silent> <LocalLeader>ar :call <SID>exGS_ShowPickedResultNormalMode('', 'append', 'pattern', 0)<CR>
@@ -441,6 +419,38 @@ function g:exGS_InitSelectWindow() " <<<
     vnoremap <buffer> <silent> <LocalLeader>gad <ESC>:call <SID>exGS_ShowPickedResultVisualMode('', 'append', '', 1)<CR>
     vnoremap <buffer> <silent> <LocalLeader>gnr <ESC>:call <SID>exGS_ShowPickedResultVisualMode('', 'new', '', 0)<CR>
     vnoremap <buffer> <silent> <LocalLeader>gnd <ESC>:call <SID>exGS_ShowPickedResultVisualMode('', 'new', '', 1)<CR>
+endfunction " >>>
+
+" ------------------------------------------------------------------ 
+" Desc: Init exGlobalSearch window
+" ------------------------------------------------------------------ 
+
+function g:exGS_InitSelectWindow() " <<<
+    setlocal number
+
+    " syntax highlight
+    if g:exGS_highlight_result
+        " this will load the syntax highlight as cpp for search result
+        silent exec "so $VIM/vimfiles/after/syntax/exUtility.vim"
+    endif
+
+    "
+    syntax region ex_SynFileName start="^[^:]*" end=":" oneline
+    syntax region ex_SynSearchPattern start="^----------" end="----------"
+    syntax match ex_SynLineNr '\d\+:'
+    syntax match ex_SynHelpText '^" .*'
+
+    " key map
+    nnoremap <buffer> <silent> <Return>   \|:call <SID>exGS_GotoInSelectWindow()<CR>
+    nnoremap <silent> <buffer> <2-LeftMouse>   \|:call <SID>exGS_GotoInSelectWindow()<CR>
+    nnoremap <buffer> <silent> <Space>   :call <SID>exGS_ResizeWindow()<CR>
+    nnoremap <buffer> <silent> <ESC>   :call <SID>exGS_ToggleWindow('Select')<CR>
+
+    nnoremap <buffer> <silent> <C-Up>   :call <SID>exGS_SwitchWindow('Stack')<CR>
+    nnoremap <buffer> <silent> <C-Left>   :call <SID>exGS_SwitchWindow('QuickView')<CR>
+    " nnoremap <buffer> <silent> <C-Right>   :call <SID>exGS_SwitchWindow('Select')<CR>
+
+    call s:exGS_MapPickupResultKeys()
 
     " autocmd
     au CursorMoved <buffer> :call g:ex_HighlightSelectLine()
@@ -559,12 +569,13 @@ function g:exGS_InitStackWindow() " <<<
 
     " key map
     nnoremap <buffer> <silent> <Return>   \|:call <SID>exGS_Stack_GoDirect()<CR>
+    nnoremap <buffer> <silent> <2-LeftMouse>   \|:call <SID>exGS_Stack_GoDirect()<CR>
     nnoremap <buffer> <silent> <Space>   :call <SID>exGS_ResizeWindow()<CR>
     nnoremap <buffer> <silent> <ESC>   :call <SID>exGS_ToggleWindow('Stack')<CR>
 
-    nnoremap <buffer> <silent> <C-Up>   :call <SID>exGS_SwitchWindow('Stack')<CR>
-    nnoremap <buffer> <silent> <C-Right>   :call <SID>exGS_SwitchWindow('Select')<CR>
-    nnoremap <buffer> <silent> <C-Left>   :call <SID>exGS_SwitchWindow('QuickView')<CR>
+    "nnoremap <buffer> <silent> <C-Up>   :call <SID>exGS_SwitchWindow('Stack')<CR>
+    nnoremap <buffer> <silent> <Left>   :call <SID>exGS_SwitchWindow('Select')<CR>
+    nnoremap <buffer> <silent> <Right>   :call <SID>exGS_SwitchWindow('QuickView')<CR>
 
     " autocmd
     au CursorMoved <buffer> :call g:ex_HighlightSelectLine()
@@ -643,9 +654,8 @@ function s:exGS_ShowStackList() " <<<
         silent put = str_line
         let idx += 1
     endfor
-    let reg_tmp = @t
-    silent exec 'normal! gg"tdd'
-    let @t = reg_tmp
+    silent exec 'normal! gg"_dd'
+
 endfunction " >>>
 
 " ------------------------------------------------------------------ 
@@ -777,51 +787,15 @@ function g:exGS_InitQuickViewWindow() " <<<
 
     " key map
     nnoremap <buffer> <silent> <Return>   \|:call <SID>exGS_GotoInQuickViewWindow()<CR>
+    nnoremap <buffer> <silent> <2-LeftMouse>   \|:call <SID>exGS_GotoInQuickViewWindow()<CR>
     nnoremap <buffer> <silent> <Space>   :call <SID>exGS_ResizeWindow()<CR>
     nnoremap <buffer> <silent> <ESC>   :call <SID>exGS_ToggleWindow('QuickView')<CR>
 
     nnoremap <buffer> <silent> <C-Up>   :call <SID>exGS_SwitchWindow('Stack')<CR>
     nnoremap <buffer> <silent> <C-Right>   :call <SID>exGS_SwitchWindow('Select')<CR>
-    nnoremap <buffer> <silent> <C-Left>   :call <SID>exGS_SwitchWindow('QuickView')<CR>
+    " nnoremap <buffer> <silent> <C-Left>   :call <SID>exGS_SwitchWindow('QuickView')<CR>
 
-    nnoremap <buffer> <silent> <Leader>r :call <SID>exGS_ShowPickedResultNormalMode('', 'replace', 'pattern', 0)<CR>
-    nnoremap <buffer> <silent> <Leader>d :call <SID>exGS_ShowPickedResultNormalMode('', 'replace', 'pattern', 1)<CR>
-    nnoremap <buffer> <silent> <Leader>ar :call <SID>exGS_ShowPickedResultNormalMode('', 'append', 'pattern', 0)<CR>
-    nnoremap <buffer> <silent> <Leader>ad :call <SID>exGS_ShowPickedResultNormalMode('', 'append', 'pattern', 1)<CR>
-    nnoremap <buffer> <silent> <Leader>nr :call <SID>exGS_ShowPickedResultNormalMode('', 'new', 'pattern', 0)<CR>
-    nnoremap <buffer> <silent> <Leader>nd :call <SID>exGS_ShowPickedResultNormalMode('', 'new', 'pattern', 1)<CR>
-    vnoremap <buffer> <silent> <Leader>r <ESC>:call <SID>exGS_ShowPickedResultVisualMode('', 'replace', 'pattern', 0)<CR>
-    vnoremap <buffer> <silent> <Leader>d <ESC>:call <SID>exGS_ShowPickedResultVisualMode('', 'replace', 'pattern', 1)<CR>
-    vnoremap <buffer> <silent> <Leader>ar <ESC>:call <SID>exGS_ShowPickedResultVisualMode('', 'append', 'pattern', 0)<CR>
-    vnoremap <buffer> <silent> <Leader>ad <ESC>:call <SID>exGS_ShowPickedResultVisualMode('', 'append', 'pattern', 1)<CR>
-    vnoremap <buffer> <silent> <Leader>nr <ESC>:call <SID>exGS_ShowPickedResultVisualMode('', 'new', 'pattern', 0)<CR>
-    vnoremap <buffer> <silent> <Leader>nd <ESC>:call <SID>exGS_ShowPickedResultVisualMode('', 'new', 'pattern', 1)<CR>
-
-    nnoremap <buffer> <silent> <Leader>fr :call <SID>exGS_ShowPickedResultNormalMode('', 'replace', 'file', 0)<CR>
-    nnoremap <buffer> <silent> <Leader>fd :call <SID>exGS_ShowPickedResultNormalMode('', 'replace', 'file', 1)<CR>
-    nnoremap <buffer> <silent> <Leader>far :call <SID>exGS_ShowPickedResultNormalMode('', 'append', 'file', 0)<CR>
-    nnoremap <buffer> <silent> <Leader>fad :call <SID>exGS_ShowPickedResultNormalMode('', 'append', 'file', 1)<CR>
-    nnoremap <buffer> <silent> <Leader>fnr :call <SID>exGS_ShowPickedResultNormalMode('', 'new', 'file', 0)<CR>
-    nnoremap <buffer> <silent> <Leader>fnd :call <SID>exGS_ShowPickedResultNormalMode('', 'new', 'file', 1)<CR>
-    vnoremap <buffer> <silent> <Leader>fr <ESC>:call <SID>exGS_ShowPickedResultVisualMode('', 'replace', 'file', 0)<CR>
-    vnoremap <buffer> <silent> <Leader>fd <ESC>:call <SID>exGS_ShowPickedResultVisualMode('', 'replace', 'file', 1)<CR>
-    vnoremap <buffer> <silent> <Leader>far <ESC>:call <SID>exGS_ShowPickedResultVisualMode('', 'append', 'file', 0)<CR>
-    vnoremap <buffer> <silent> <Leader>fad <ESC>:call <SID>exGS_ShowPickedResultVisualMode('', 'append', 'file', 1)<CR>
-    vnoremap <buffer> <silent> <Leader>fnr <ESC>:call <SID>exGS_ShowPickedResultVisualMode('', 'new', 'file', 0)<CR>
-    vnoremap <buffer> <silent> <Leader>fnd <ESC>:call <SID>exGS_ShowPickedResultVisualMode('', 'new', 'file')<CR>
-
-    nnoremap <buffer> <silent> <Leader>gr :call <SID>exGS_ShowPickedResultNormalMode('', 'replace', '', 0)<CR>
-    nnoremap <buffer> <silent> <Leader>gd :call <SID>exGS_ShowPickedResultNormalMode('', 'replace', '', 1)<CR>
-    nnoremap <buffer> <silent> <Leader>gar :call <SID>exGS_ShowPickedResultNormalMode('', 'append', '', 0)<CR>
-    nnoremap <buffer> <silent> <Leader>gad :call <SID>exGS_ShowPickedResultNormalMode('', 'append', '', 1)<CR>
-    nnoremap <buffer> <silent> <Leader>gnr :call <SID>exGS_ShowPickedResultNormalMode('', 'new', '', 0)<CR>
-    nnoremap <buffer> <silent> <Leader>gnd :call <SID>exGS_ShowPickedResultNormalMode('', 'new', '', 1)<CR>
-    vnoremap <buffer> <silent> <Leader>gr <ESC>:call <SID>exGS_ShowPickedResultVisualMode('', 'replace', '', 0)<CR>
-    vnoremap <buffer> <silent> <Leader>gd <ESC>:call <SID>exGS_ShowPickedResultVisualMode('', 'replace', '', 1)<CR>
-    vnoremap <buffer> <silent> <Leader>gar <ESC>:call <SID>exGS_ShowPickedResultVisualMode('', 'append', '', 0)<CR>
-    vnoremap <buffer> <silent> <Leader>gad <ESC>:call <SID>exGS_ShowPickedResultVisualMode('', 'append', '', 1)<CR>
-    vnoremap <buffer> <silent> <Leader>gnr <ESC>:call <SID>exGS_ShowPickedResultVisualMode('', 'new', '', 0)<CR>
-    vnoremap <buffer> <silent> <Leader>gnd <ESC>:call <SID>exGS_ShowPickedResultVisualMode('', 'new', '', 1)<CR>
+    call s:exGS_MapPickupResultKeys()
 
     " autocmd
     au CursorMoved <buffer> :call g:ex_HighlightSelectLine()
@@ -877,12 +851,12 @@ function s:exGS_CopyPickedLine( search_pattern, line_start, line_end, search_met
         " clear down lines
         if a:line_end < line('$')
             silent call cursor( a:line_end, 1 )
-            silent exec 'normal! jdG'
+            silent exec 'normal! j"_dG'
         endif
         " clear up lines
         if a:line_start > 1
             silent call cursor( a:line_start, 1 )
-            silent exec 'normal! kdgg'
+            silent exec 'normal! k"_dgg'
         endif
         silent call cursor( 1, 1 )
 
@@ -900,7 +874,7 @@ function s:exGS_CopyPickedLine( search_pattern, line_start, line_end, search_met
 
         " clear pattern result
         while search('----------.\+----------', 'w') != 0
-            silent exec 'normal! dd'
+            silent exec 'normal! "_dd'
         endwhile
 
         " copy picked result
@@ -956,6 +930,7 @@ function s:exGS_ShowPickedResult( search_pattern, line_start, line_end, edit_mod
     elseif a:edit_mode == 'new'
         return
     endif
+
 endfunction " >>>
 
 " ------------------------------------------------------------------ 
