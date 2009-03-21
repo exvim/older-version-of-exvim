@@ -178,7 +178,7 @@ function g:exES_SetEnvironment() " <<<
 
         " update if needed
         if need_update == 1
-            silent normal! Gdgg
+            silent normal! G"_dgg
             call s:exES_WriteDefaultTemplate()
         endif
 

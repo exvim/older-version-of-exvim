@@ -23,16 +23,11 @@ syn keyword cType              wchar tchar
 syn keyword cType              INLINE NOINLINE
 syn keyword cType              vec_f32_t
 syn keyword cType              BOOL UBOOL
-syn keyword cStatement         ex_malloc ex_malloc_use ex_malloc_nomanage
-syn keyword cStatement         ex_realloc ex_realloc_use ex_realloc_nomanage
+syn keyword cStatement         ex_malloc ex_malloc_use ex_malloc_nomanage ex_malloc_tag ex_malloc_tag_use
+syn keyword cStatement         ex_realloc ex_realloc_use ex_realloc_nomanage ex_realloc_tag ex_realloc_tag_use
 syn keyword cStatement         ex_free ex_free_use ex_free_nomanage
 syn keyword cStatement         ex_stack_malloc
 syn keyword cConstant	       TRUE FALSE
-
-" DELME { 
-" syn keyword cTodo              contained NOTE REF EXAMPLE
-" syn keyword exCommentLable     contained TEMP CRASH MODIFY DEBUG DUMMY DELME TESTME OPTME REFACTORING DUPLICATE REDUNDANCY
-" } DELME end 
 
 if !exists('g:ex_todo_keyword')
     let g:ex_todo_keyword = 'NOTE REF EXAMPLE'

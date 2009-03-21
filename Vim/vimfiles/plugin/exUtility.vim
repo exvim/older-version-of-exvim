@@ -119,7 +119,7 @@ function g:ex_CreateWindow( buffer_name, window_direction, window_size, use_vert
         if a:edit_mode == 'append'
             exe 'normal! G'
         elseif a:edit_mode == 'replace'
-            exe 'normal! ggdG'
+            exe 'normal! gg"_dG'
         endif
 
         return
@@ -160,7 +160,7 @@ function g:ex_CreateWindow( buffer_name, window_direction, window_size, use_vert
     if a:edit_mode == 'append'
         exe 'normal! G'
     elseif a:edit_mode == 'replace'
-        exe 'normal! ggdG'
+        exe 'normal! gg"_dG'
     endif
 
     " after create the window, record the bufname into the plugin list
@@ -250,7 +250,7 @@ function g:ex_OpenWindow( buffer_name, window_direction, window_size, use_vertic
         if a:edit_mode == 'append'
             exe 'normal! G'
         elseif a:edit_mode == 'replace'
-            exe 'normal! ggdG'
+            exe 'normal! gg"_dG'
         endif
 
         return

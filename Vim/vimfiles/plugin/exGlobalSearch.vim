@@ -531,7 +531,7 @@ function s:exGS_GetGlobalSearchResult(search_pattern, search_method, direct_jump
     let search_result = '----------' . a:search_pattern . '----------' . "\n" . search_result
 
     " clear screen and put new result
-    silent exec 'normal! Gdgg'
+    silent exec 'normal! G"_dgg'
     call g:ex_HighlightConfirmLine()
     let line_num = line('.')
     silent put = search_result
@@ -625,7 +625,7 @@ function s:exGS_ShowStackList() " <<<
     endif
 
     " clear screen
-    silent exec 'normal! Gdgg'
+    silent exec 'normal! G"_dgg'
 
     " put an empty line first
     silent put = ''
@@ -939,7 +939,7 @@ function s:exGS_ShowPickedResult( search_pattern, line_start, line_end, edit_mod
     call s:exGS_CopyPickedLine( a:search_pattern, a:line_start, a:line_end, a:search_method, a:inverse_search )
     call s:exGS_SwitchWindow('QuickView')
     if a:edit_mode == 'replace'
-        silent exec 'normal! Gdgg'
+        silent exec 'normal! G"_dgg'
         let s:exGS_quick_view_idx = 1
         call g:ex_HighlightConfirmLine()
         silent put = s:exGS_quick_view_search_pattern

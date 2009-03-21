@@ -467,7 +467,7 @@ function g:exQF_UpdateQuickViewWindow() " <<<
         silent redir @q
         silent! exec 'cl'
         silent redir END
-        silent exec "normal! Gdgg"
+        silent exec 'normal! G"_dgg'
         silent put! = @q
         let @q = reg_q
     endif
@@ -569,7 +569,7 @@ function s:exQF_ShowPickedResult( search_pattern, line_start, line_end, edit_mod
     call s:exQF_CopyPickedLine( a:search_pattern, a:line_start, a:line_end, a:search_method )
     call s:exQF_SwitchWindow('QuickView')
     if a:edit_mode == 'replace'
-        silent exec 'normal! Gdgg'
+        silent exec 'normal! G"_dgg'
         silent put = s:exQF_quick_view_search_pattern
         "silent put = s:exQF_fold_start
         silent put = s:exQF_picked_search_result

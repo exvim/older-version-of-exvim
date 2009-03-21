@@ -314,7 +314,8 @@ function s:exTS_SelectCursorMoved()
             silent exec 'normal! j'
         else
             if line('.') == 1
-                break
+                silent exec 'normal! 2j'
+                let s:exTS_cursor_idx = line_num - 1
             endif
             silent exec 'normal! k'
         endif
@@ -398,6 +399,7 @@ function s:exTS_GetTagSelectResult(tag, direct_jump) " <<<
 
     if match( result, 'Error detected while processing' ) != -1
         silent put = 'Error: tag not found ==> ' . in_tag
+        silent put = ''
         return
     endif
 

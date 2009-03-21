@@ -87,7 +87,12 @@ set guifont=Lucida_Console:h9
 " color scheme define
 silent exec "colorscheme ex"
 au ColorScheme * call UpdateHighlights()
+
+" update highlights
+let s:ex_HighlightsInited = 0 
 function UpdateHighlights()
+
+    let s:ex_HighlightsInited = 1 
 
     " ======================================================== 
     " exUtility
@@ -189,6 +194,12 @@ function UpdateHighlights()
     " TagListFileName - Used for filenames
     hi MyTagListFileName term=bold cterm=bold ctermfg=Black ctermbg=LightBlue gui=bold guifg=Black guibg=LightBlue
 endfunction
+
+" if you don't use color scheme, you may properly not run the code above, so
+" run it manually here
+if s:ex_HighlightsInited == 0
+    call UpdateHighlights()
+endif
 
 " ------------------------------------------------------------------ 
 " Desc: Vim UI
