@@ -655,6 +655,8 @@ nnoremap <silent> <Leader>gs :ExgsSelectToggle<CR>
 nnoremap <silent> <Leader>gq :ExgsQuickViewToggle<CR>
 nnoremap <silent> <Leader>gt :ExgsStackToggle<CR>
 nnoremap <silent> <Leader>gg :ExgsGoDirectly<CR>
+nnoremap <silent> <Leader>n :ExgsGotoNextResult<CR>
+nnoremap <silent> <Leader>N :ExgsGotoPrevResult<CR>
 map <silent> <Leader>gb :BackwardSearchStack<CR>
 map <silent> <Leader>gf :ForwardSearchStack<CR>
 map <S-f> :GS 
