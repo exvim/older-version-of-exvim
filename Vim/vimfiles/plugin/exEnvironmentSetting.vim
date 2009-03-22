@@ -134,7 +134,7 @@ function g:exES_SetEnvironment() " <<<
 
     let _file_name = bufname("%")
     if match(_file_name,"vimentry") != -1
-        if empty( readfile(_file_name) )
+        if findfile( _file_name, ".;" ) == "" || empty( readfile(_file_name) )
             " if the file is empty, we creat a template for it
             call s:exES_WriteDefaultTemplate()
         endif
