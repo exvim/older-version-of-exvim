@@ -1,2 +1,1 @@
 visincr.vba: call delete('D:\exDev\Vim\vimfiles/plugin/visincrPlugin.vim')|call delete('D:\exDev\Vim\vimfiles/autoload/visincr.vim')|call delete('D:\exDev\Vim\vimfiles/doc/visincr.txt')|call delete('D:\exDev\Vim\vimfiles/autoload/calutil.vim')
-vimwiki_0_4.vba: call delete('D:\exDev\Vim\vimfiles/plugin/vimwiki.vim')|call delete('D:\exDev\Vim\vimfiles/autoload/vimwiki.vim')|call delete('D:\exDev\Vim\vimfiles/ftplugin/vimwiki.vim')|call delete('D:\exDev\Vim\vimfiles/syntax/vimwiki.vim')
