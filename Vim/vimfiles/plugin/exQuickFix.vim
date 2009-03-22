@@ -352,11 +352,11 @@ function s:exQF_GetQuickFixResult( file_name ) " <<<
             " process gcc error log formation
             if match(line, '^<<<<<< \S\+: ' . "'" . '\a\+\' . "'" ) != -1
                 let s:exQF_compiler = 'exgcc'
-            else 
-                if match(line, '^<<<<<< \S\+ error log >>>>>>') != -1
-                    " TODO: use the text choose compiler
-                    let s:exQF_compiler = 'msvc2005'
-                endif
+            elseif match(line, '^<<<<<< \S\+ error log >>>>>>') != -1
+                " TODO: use the text choose compiler
+                let s:exQF_compiler = 'msvc2005'
+            elseif match(line, '^.*------ Build started.*------') != -1
+                let s:exQF_compiler = 'msvc2005'
             endif
         endfor
 
