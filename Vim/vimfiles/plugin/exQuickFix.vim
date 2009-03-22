@@ -582,8 +582,6 @@ function s:exQF_ShowPickedResult( search_pattern, line_start, line_end, edit_mod
         "silent put = s:exQF_fold_start
         silent put = s:exQF_picked_search_result
         "silent put = s:exQF_fold_end
-    elseif a:edit_mode == 'new'
-        return
     endif
 endfunction " >>>
 

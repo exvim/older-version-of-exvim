@@ -311,6 +311,35 @@ function s:exGS_Goto() " <<<
 endfunction " >>>
 
 " ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
+function s:exGS_GotoResult ( move_method ) " <<<
+    " open and goto search window first
+    let gs_winnr = bufwinnr(s:exGS_select_title)
+    if gs_winnr == -1
+        let gs_winnr = bufwinnr(s:exGS_quick_view_title)
+        if gs_winnr == -1
+            call g:ex_WarningMsg('Please open select/quickview for operating')
+            return
+        endif
+    endif
+    exe gs_winnr . 'wincmd w'
+
+    " move cursor
+    if a:move_method ==# 'next'
+        silent normal! j
+    elseif a:move_method ==# 'prev'
+        silent normal! k
+    endif
+
+    " goto 
+    call g:ex_HighlightSelectLine()
+    silent exec "normal \<Return>"
+    call g:ex_GotoEditBuffer()
+endfunction " >>>
+
+" ------------------------------------------------------------------ 
 " Desc: set if ignore case
 " ------------------------------------------------------------------ 
 "
@@ -385,40 +414,28 @@ function s:exGS_MapPickupResultKeys() " <<<
     nnoremap <buffer> <silent> <LocalLeader>d :call <SID>exGS_ShowPickedResultNormalMode('', 'replace', 'pattern', 1)<CR>
     nnoremap <buffer> <silent> <LocalLeader>ar :call <SID>exGS_ShowPickedResultNormalMode('', 'append', 'pattern', 0)<CR>
     nnoremap <buffer> <silent> <LocalLeader>ad :call <SID>exGS_ShowPickedResultNormalMode('', 'append', 'pattern', 1)<CR>
-    nnoremap <buffer> <silent> <LocalLeader>nr :call <SID>exGS_ShowPickedResultNormalMode('', 'new', 'pattern', 0)<CR>
-    nnoremap <buffer> <silent> <LocalLeader>nd :call <SID>exGS_ShowPickedResultNormalMode('', 'new', 'pattern', 1)<CR>
     vnoremap <buffer> <silent> <LocalLeader>r <ESC>:call <SID>exGS_ShowPickedResultVisualMode('', 'replace', 'pattern', 0)<CR>
     vnoremap <buffer> <silent> <LocalLeader>d <ESC>:call <SID>exGS_ShowPickedResultVisualMode('', 'replace', 'pattern', 1)<CR>
     vnoremap <buffer> <silent> <LocalLeader>ar <ESC>:call <SID>exGS_ShowPickedResultVisualMode('', 'append', 'pattern', 0)<CR>
     vnoremap <buffer> <silent> <LocalLeader>ad <ESC>:call <SID>exGS_ShowPickedResultVisualMode('', 'append', 'pattern', 1)<CR>
-    vnoremap <buffer> <silent> <LocalLeader>nr <ESC>:call <SID>exGS_ShowPickedResultVisualMode('', 'new', 'pattern', 0)<CR>
-    vnoremap <buffer> <silent> <LocalLeader>nd <ESC>:call <SID>exGS_ShowPickedResultVisualMode('', 'new', 'pattern', 1)<CR>
 
     nnoremap <buffer> <silent> <LocalLeader>fr :call <SID>exGS_ShowPickedResultNormalMode('', 'replace', 'file', 0)<CR>
     nnoremap <buffer> <silent> <LocalLeader>fd :call <SID>exGS_ShowPickedResultNormalMode('', 'replace', 'file', 1)<CR>
     nnoremap <buffer> <silent> <LocalLeader>far :call <SID>exGS_ShowPickedResultNormalMode('', 'append', 'file', 0)<CR>
     nnoremap <buffer> <silent> <LocalLeader>fad :call <SID>exGS_ShowPickedResultNormalMode('', 'append', 'file', 1)<CR>
-    nnoremap <buffer> <silent> <LocalLeader>fnr :call <SID>exGS_ShowPickedResultNormalMode('', 'new', 'file', 0)<CR>
-    nnoremap <buffer> <silent> <LocalLeader>fnd :call <SID>exGS_ShowPickedResultNormalMode('', 'new', 'file', 1)<CR>
     vnoremap <buffer> <silent> <LocalLeader>fr <ESC>:call <SID>exGS_ShowPickedResultVisualMode('', 'replace', 'file', 0)<CR>
     vnoremap <buffer> <silent> <LocalLeader>fd <ESC>:call <SID>exGS_ShowPickedResultVisualMode('', 'replace', 'file', 1)<CR>
     vnoremap <buffer> <silent> <LocalLeader>far <ESC>:call <SID>exGS_ShowPickedResultVisualMode('', 'append', 'file', 0)<CR>
     vnoremap <buffer> <silent> <LocalLeader>fad <ESC>:call <SID>exGS_ShowPickedResultVisualMode('', 'append', 'file', 1)<CR>
-    vnoremap <buffer> <silent> <LocalLeader>fnr <ESC>:call <SID>exGS_ShowPickedResultVisualMode('', 'new', 'file', 0)<CR>
-    vnoremap <buffer> <silent> <LocalLeader>fnd <ESC>:call <SID>exGS_ShowPickedResultVisualMode('', 'new', 'file')<CR>
 
     nnoremap <buffer> <silent> <LocalLeader>gr :call <SID>exGS_ShowPickedResultNormalMode('', 'replace', '', 0)<CR>
     nnoremap <buffer> <silent> <LocalLeader>gd :call <SID>exGS_ShowPickedResultNormalMode('', 'replace', '', 1)<CR>
     nnoremap <buffer> <silent> <LocalLeader>gar :call <SID>exGS_ShowPickedResultNormalMode('', 'append', '', 0)<CR>
     nnoremap <buffer> <silent> <LocalLeader>gad :call <SID>exGS_ShowPickedResultNormalMode('', 'append', '', 1)<CR>
-    nnoremap <buffer> <silent> <LocalLeader>gnr :call <SID>exGS_ShowPickedResultNormalMode('', 'new', '', 0)<CR>
-    nnoremap <buffer> <silent> <LocalLeader>gnd :call <SID>exGS_ShowPickedResultNormalMode('', 'new', '', 1)<CR>
     vnoremap <buffer> <silent> <LocalLeader>gr <ESC>:call <SID>exGS_ShowPickedResultVisualMode('', 'replace', '', 0)<CR>
     vnoremap <buffer> <silent> <LocalLeader>gd <ESC>:call <SID>exGS_ShowPickedResultVisualMode('', 'replace', '', 1)<CR>
     vnoremap <buffer> <silent> <LocalLeader>gar <ESC>:call <SID>exGS_ShowPickedResultVisualMode('', 'append', '', 0)<CR>
     vnoremap <buffer> <silent> <LocalLeader>gad <ESC>:call <SID>exGS_ShowPickedResultVisualMode('', 'append', '', 1)<CR>
-    vnoremap <buffer> <silent> <LocalLeader>gnr <ESC>:call <SID>exGS_ShowPickedResultVisualMode('', 'new', '', 0)<CR>
-    vnoremap <buffer> <silent> <LocalLeader>gnd <ESC>:call <SID>exGS_ShowPickedResultVisualMode('', 'new', '', 1)<CR>
 endfunction " >>>
 
 " ------------------------------------------------------------------ 
@@ -528,8 +545,7 @@ function s:exGS_GetGlobalSearchResult(search_pattern, search_method, direct_jump
         let s:exGS_need_search_again = 0
     endif
 
-    " TODO file path
-    " let search_cmd = 'lid --file=' . g:exES_ID . ' --result=grep ' . a:search_pattern
+    " create search cmd
     if s:exGS_ignore_case && (match(a:search_pattern, '\u') == -1)
         echomsg 'search ' . a:search_pattern . '...(ignore case)'
         let search_cmd = 'lid --result=grep -i -f' . g:exES_ID . ' ' . a:search_method . ' ' . a:search_pattern
@@ -548,6 +564,56 @@ function s:exGS_GetGlobalSearchResult(search_pattern, search_method, direct_jump
 
     " Init search state
     let s:exGS_search_state_tmp.pattern = a:search_pattern
+    let s:exGS_select_idx = line_num+1
+    silent call cursor( line_num+1, 1 )
+endfunction " >>>
+
+" ------------------------------------------------------------------ 
+" Desc: 
+" search_pattern = ''
+" search_method = -s / -w
+" ------------------------------------------------------------------ 
+
+function s:exGS_GetFilenameSearchResult(search_pattern, search_method) " <<<
+    " this will fix the jump error when tagselect in the same window
+    if &filetype == "ex_filetype"
+        silent exec "normal \<Esc>"
+    endif
+
+    " open and goto search window first
+    let gs_winnr = bufwinnr(s:exGS_select_title)
+    if gs_winnr == -1
+        " open window
+        let old_opt = g:exGS_backto_editbuf
+        let g:exGS_backto_editbuf = 0
+        call s:exGS_ToggleWindow('Select')
+        let g:exGS_backto_editbuf = old_opt
+    else
+        exe gs_winnr . 'wincmd w'
+    endif
+
+    "
+    let s:exGS_need_push_search_result = 0
+    let s:exGS_select_idx = 1
+
+    " create search cmd
+    if a:search_method ==# '-w'
+        echomsg 'search files by word ' . a:search_pattern . '...(no ignore case)'
+        let search_cmd = 'fnid -f' . g:exES_ID . ' ' . a:search_pattern
+    else
+        echomsg 'search files by reg-exp ' . a:search_pattern . '...(no ignore case)'
+        let search_cmd = 'fnid -f' . g:exES_ID . ' *' . a:search_pattern . '* '
+    endif
+    let search_result = system(search_cmd)
+    let search_result = '----------' . a:search_pattern . '----------' . "\n" . search_result
+
+    " clear screen and put new result
+    silent exec 'normal! G"_dgg'
+    call g:ex_HighlightConfirmLine()
+    let line_num = line('.')
+    silent put = search_result
+
+    " Init search state
     let s:exGS_select_idx = line_num+1
     silent call cursor( line_num+1, 1 )
 endfunction " >>>
@@ -927,8 +993,6 @@ function s:exGS_ShowPickedResult( search_pattern, line_start, line_end, edit_mod
         silent put = s:exGS_fold_start
         silent put = s:exGS_picked_search_result
         silent put = s:exGS_fold_end
-    elseif a:edit_mode == 'new'
-        return
     endif
 
 endfunction " >>>
@@ -970,6 +1034,10 @@ endfunction " >>>
 command -nargs=1 GS call s:exGS_GetGlobalSearchResult('<args>', '-s', 0)
 command -nargs=1 GSW call s:exGS_GetGlobalSearchResult('<args>', '-w', 0)
 command -nargs=1 GSR call s:exGS_GetGlobalSearchResult('<args>', '-r', 0)
+
+command -nargs=1 GSF call s:exGS_GetFilenameSearchResult('<args>', '-s')
+command -nargs=1 GSFW call s:exGS_GetFilenameSearchResult('<args>', '-w')
+
 command ExgsToggle call s:exGS_ToggleWindow('')
 command ExgsSelectToggle call s:exGS_ToggleWindow('Select')
 command ExgsStackToggle call s:exGS_ToggleWindow('Stack')
@@ -978,13 +1046,14 @@ command ExgsGoDirectly call s:exGS_GetGlobalSearchResult(expand("<cword>"), '-s'
 command BackwardSearchStack call s:exGS_Stack_GotoTag(s:exGS_stack_idx-1, 'to_entry')
 command ForwardSearchStack call s:exGS_Stack_GotoTag(s:exGS_stack_idx+1, 'to_tag')
 
+command ExgsGotoNextResult call s:exGS_GotoResult ( 'next' )
+command ExgsGotoPrevResult call s:exGS_GotoResult ( 'prev' )
+
 " quick view command
 command -nargs=1 GSPR call s:exGS_ShowPickedResult('<args>', 'replace', '', 0 )
 command -nargs=1 GSPRI call s:exGS_ShowPickedResult('<args>', 'replace', '', 1 )
 command -nargs=1 GSPA call s:exGS_ShowPickedResult('<args>', 'append', '', 0 )
 command -nargs=1 GSPAI call s:exGS_ShowPickedResult('<args>', 'append', '', 1 )
-command -nargs=1 GSPN call s:exGS_ShowPickedResult('<args>', 'new', '', 0 )
-command -nargs=1 GSPNI call s:exGS_ShowPickedResult('<args>', 'new', '', 1 )
 
 " Ignore case setting
 command GSigc call s:exGS_SetIgnoreCase(1)

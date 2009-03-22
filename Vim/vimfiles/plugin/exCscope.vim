@@ -448,40 +448,28 @@ function g:exCS_InitSelectWindow() " <<<
     nnoremap <buffer> <silent> <Leader>d :call <SID>exCS_ShowPickedResultNormalMode('', 'replace', 'pattern', 1)<CR>
     nnoremap <buffer> <silent> <Leader>ar :call <SID>exCS_ShowPickedResultNormalMode('', 'append', 'pattern', 0)<CR>
     nnoremap <buffer> <silent> <Leader>ad :call <SID>exCS_ShowPickedResultNormalMode('', 'append', 'pattern', 1)<CR>
-    nnoremap <buffer> <silent> <Leader>nr :call <SID>exCS_ShowPickedResultNormalMode('', 'new', 'pattern', 0)<CR>
-    nnoremap <buffer> <silent> <Leader>nd :call <SID>exCS_ShowPickedResultNormalMode('', 'new', 'pattern', 1)<CR>
     vnoremap <buffer> <silent> <Leader>r <ESC>:call <SID>exCS_ShowPickedResultVisualMode('', 'replace', 'pattern', 0)<CR>
     vnoremap <buffer> <silent> <Leader>d <ESC>:call <SID>exCS_ShowPickedResultVisualMode('', 'replace', 'pattern', 1)<CR>
     vnoremap <buffer> <silent> <Leader>ar <ESC>:call <SID>exCS_ShowPickedResultVisualMode('', 'append', 'pattern', 0)<CR>
     vnoremap <buffer> <silent> <Leader>ad <ESC>:call <SID>exCS_ShowPickedResultVisualMode('', 'append', 'pattern', 1)<CR>
-    vnoremap <buffer> <silent> <Leader>nr <ESC>:call <SID>exCS_ShowPickedResultVisualMode('', 'new', 'pattern', 0)<CR>
-    vnoremap <buffer> <silent> <Leader>nd <ESC>:call <SID>exCS_ShowPickedResultVisualMode('', 'new', 'pattern', 1)<CR>
 
     nnoremap <buffer> <silent> <Leader>fr :call <SID>exCS_ShowPickedResultNormalMode('', 'replace', 'file', 0)<CR>
     nnoremap <buffer> <silent> <Leader>fd :call <SID>exCS_ShowPickedResultNormalMode('', 'replace', 'file', 1)<CR>
     nnoremap <buffer> <silent> <Leader>far :call <SID>exCS_ShowPickedResultNormalMode('', 'append', 'file', 0)<CR>
     nnoremap <buffer> <silent> <Leader>fad :call <SID>exCS_ShowPickedResultNormalMode('', 'append', 'file', 1)<CR>
-    nnoremap <buffer> <silent> <Leader>fnr :call <SID>exCS_ShowPickedResultNormalMode('', 'new', 'file', 0)<CR>
-    nnoremap <buffer> <silent> <Leader>fnd :call <SID>exCS_ShowPickedResultNormalMode('', 'new', 'file', 1)<CR>
     vnoremap <buffer> <silent> <Leader>fr <ESC>:call <SID>exCS_ShowPickedResultVisualMode('', 'replace', 'file', 0)<CR>
     vnoremap <buffer> <silent> <Leader>fd <ESC>:call <SID>exCS_ShowPickedResultVisualMode('', 'replace', 'file', 1)<CR>
     vnoremap <buffer> <silent> <Leader>far <ESC>:call <SID>exCS_ShowPickedResultVisualMode('', 'append', 'file', 0)<CR>
     vnoremap <buffer> <silent> <Leader>fad <ESC>:call <SID>exCS_ShowPickedResultVisualMode('', 'append', 'file', 1)<CR>
-    vnoremap <buffer> <silent> <Leader>fnr <ESC>:call <SID>exCS_ShowPickedResultVisualMode('', 'new', 'file', 0)<CR>
-    vnoremap <buffer> <silent> <Leader>fnd <ESC>:call <SID>exCS_ShowPickedResultVisualMode('', 'new', 'file')<CR>
 
     nnoremap <buffer> <silent> <Leader>gr :call <SID>exCS_ShowPickedResultNormalMode('', 'replace', '', 0)<CR>
     nnoremap <buffer> <silent> <Leader>gd :call <SID>exCS_ShowPickedResultNormalMode('', 'replace', '', 1)<CR>
     nnoremap <buffer> <silent> <Leader>gar :call <SID>exCS_ShowPickedResultNormalMode('', 'append', '', 0)<CR>
     nnoremap <buffer> <silent> <Leader>gad :call <SID>exCS_ShowPickedResultNormalMode('', 'append', '', 1)<CR>
-    nnoremap <buffer> <silent> <Leader>gnr :call <SID>exCS_ShowPickedResultNormalMode('', 'new', '', 0)<CR>
-    nnoremap <buffer> <silent> <Leader>gnd :call <SID>exCS_ShowPickedResultNormalMode('', 'new', '', 1)<CR>
     vnoremap <buffer> <silent> <Leader>gr <ESC>:call <SID>exCS_ShowPickedResultVisualMode('', 'replace', '', 0)<CR>
     vnoremap <buffer> <silent> <Leader>gd <ESC>:call <SID>exCS_ShowPickedResultVisualMode('', 'replace', '', 1)<CR>
     vnoremap <buffer> <silent> <Leader>gar <ESC>:call <SID>exCS_ShowPickedResultVisualMode('', 'append', '', 0)<CR>
     vnoremap <buffer> <silent> <Leader>gad <ESC>:call <SID>exCS_ShowPickedResultVisualMode('', 'append', '', 1)<CR>
-    vnoremap <buffer> <silent> <Leader>gnr <ESC>:call <SID>exCS_ShowPickedResultVisualMode('', 'new', '', 0)<CR>
-    vnoremap <buffer> <silent> <Leader>gnd <ESC>:call <SID>exCS_ShowPickedResultVisualMode('', 'new', '', 1)<CR>
 
     " autocmd
     au CursorMoved <buffer> :call g:ex_HighlightSelectLine()
@@ -607,40 +595,28 @@ function g:exCS_InitQuickViewWindow() " <<<
     nnoremap <buffer> <silent> <Leader>d :call <SID>exCS_ShowPickedResultNormalMode('', 'replace', 'pattern', 1)<CR>
     nnoremap <buffer> <silent> <Leader>ar :call <SID>exCS_ShowPickedResultNormalMode('', 'append', 'pattern', 0)<CR>
     nnoremap <buffer> <silent> <Leader>ad :call <SID>exCS_ShowPickedResultNormalMode('', 'append', 'pattern', 1)<CR>
-    nnoremap <buffer> <silent> <Leader>nr :call <SID>exCS_ShowPickedResultNormalMode('', 'new', 'pattern', 0)<CR>
-    nnoremap <buffer> <silent> <Leader>nd :call <SID>exCS_ShowPickedResultNormalMode('', 'new', 'pattern', 1)<CR>
     vnoremap <buffer> <silent> <Leader>r <ESC>:call <SID>exCS_ShowPickedResultVisualMode('', 'replace', 'pattern', 0)<CR>
     vnoremap <buffer> <silent> <Leader>d <ESC>:call <SID>exCS_ShowPickedResultVisualMode('', 'replace', 'pattern', 1)<CR>
     vnoremap <buffer> <silent> <Leader>ar <ESC>:call <SID>exCS_ShowPickedResultVisualMode('', 'append', 'pattern', 0)<CR>
     vnoremap <buffer> <silent> <Leader>ad <ESC>:call <SID>exCS_ShowPickedResultVisualMode('', 'append', 'pattern', 1)<CR>
-    vnoremap <buffer> <silent> <Leader>nr <ESC>:call <SID>exCS_ShowPickedResultVisualMode('', 'new', 'pattern', 0)<CR>
-    vnoremap <buffer> <silent> <Leader>nd <ESC>:call <SID>exCS_ShowPickedResultVisualMode('', 'new', 'pattern', 1)<CR>
 
     nnoremap <buffer> <silent> <Leader>fr :call <SID>exCS_ShowPickedResultNormalMode('', 'replace', 'file', 0)<CR>
     nnoremap <buffer> <silent> <Leader>fd :call <SID>exCS_ShowPickedResultNormalMode('', 'replace', 'file', 1)<CR>
     nnoremap <buffer> <silent> <Leader>far :call <SID>exCS_ShowPickedResultNormalMode('', 'append', 'file', 0)<CR>
     nnoremap <buffer> <silent> <Leader>fad :call <SID>exCS_ShowPickedResultNormalMode('', 'append', 'file', 1)<CR>
-    nnoremap <buffer> <silent> <Leader>fnr :call <SID>exCS_ShowPickedResultNormalMode('', 'new', 'file', 0)<CR>
-    nnoremap <buffer> <silent> <Leader>fnd :call <SID>exCS_ShowPickedResultNormalMode('', 'new', 'file', 1)<CR>
     vnoremap <buffer> <silent> <Leader>fr <ESC>:call <SID>exCS_ShowPickedResultVisualMode('', 'replace', 'file', 0)<CR>
     vnoremap <buffer> <silent> <Leader>fd <ESC>:call <SID>exCS_ShowPickedResultVisualMode('', 'replace', 'file', 1)<CR>
     vnoremap <buffer> <silent> <Leader>far <ESC>:call <SID>exCS_ShowPickedResultVisualMode('', 'append', 'file', 0)<CR>
     vnoremap <buffer> <silent> <Leader>fad <ESC>:call <SID>exCS_ShowPickedResultVisualMode('', 'append', 'file', 1)<CR>
-    vnoremap <buffer> <silent> <Leader>fnr <ESC>:call <SID>exCS_ShowPickedResultVisualMode('', 'new', 'file', 0)<CR>
-    vnoremap <buffer> <silent> <Leader>fnd <ESC>:call <SID>exCS_ShowPickedResultVisualMode('', 'new', 'file')<CR>
 
     nnoremap <buffer> <silent> <Leader>gr :call <SID>exCS_ShowPickedResultNormalMode('', 'replace', '', 0)<CR>
     nnoremap <buffer> <silent> <Leader>gd :call <SID>exCS_ShowPickedResultNormalMode('', 'replace', '', 1)<CR>
     nnoremap <buffer> <silent> <Leader>gar :call <SID>exCS_ShowPickedResultNormalMode('', 'append', '', 0)<CR>
     nnoremap <buffer> <silent> <Leader>gad :call <SID>exCS_ShowPickedResultNormalMode('', 'append', '', 1)<CR>
-    nnoremap <buffer> <silent> <Leader>gnr :call <SID>exCS_ShowPickedResultNormalMode('', 'new', '', 0)<CR>
-    nnoremap <buffer> <silent> <Leader>gnd :call <SID>exCS_ShowPickedResultNormalMode('', 'new', '', 1)<CR>
     vnoremap <buffer> <silent> <Leader>gr <ESC>:call <SID>exCS_ShowPickedResultVisualMode('', 'replace', '', 0)<CR>
     vnoremap <buffer> <silent> <Leader>gd <ESC>:call <SID>exCS_ShowPickedResultVisualMode('', 'replace', '', 1)<CR>
     vnoremap <buffer> <silent> <Leader>gar <ESC>:call <SID>exCS_ShowPickedResultVisualMode('', 'append', '', 0)<CR>
     vnoremap <buffer> <silent> <Leader>gad <ESC>:call <SID>exCS_ShowPickedResultVisualMode('', 'append', '', 1)<CR>
-    vnoremap <buffer> <silent> <Leader>gnr <ESC>:call <SID>exCS_ShowPickedResultVisualMode('', 'new', '', 0)<CR>
-    vnoremap <buffer> <silent> <Leader>gnd <ESC>:call <SID>exCS_ShowPickedResultVisualMode('', 'new', '', 1)<CR>
 
     " autocmd
     au CursorMoved <buffer> :call g:ex_HighlightSelectLine()
@@ -768,8 +744,6 @@ function s:exCS_ShowPickedResult( search_pattern, line_start, line_end, edit_mod
         silent put = s:exCS_fold_start
         silent put = s:exCS_picked_search_result
         silent put = s:exCS_fold_end
-    elseif a:edit_mode == 'new'
-        return
     endif
 endfunction " >>>
 
