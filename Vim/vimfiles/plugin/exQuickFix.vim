@@ -381,7 +381,7 @@ function s:exQF_GetQuickFixResult( file_name ) " <<<
             silent set errorformat+=%D\<\<\<\<\<\<\ %\\S%\\+:\ '%f'%.%#
             silent set errorformat+=%X\>\>\>\>\>\>\ %\\S%\\+:\ '%f'%.%#
         elseif s:exQF_compiler == 'msvc2005'
-            silent set errorformat=%D%\\d%\\+\>------\ %.%#Project:\ %f%\\,%.%#
+            silent set errorformat=%D%\\d%\\+\>------\ %.%#Project:\ %f\ %.%#%\\,%.%#
             silent set errorformat+=%X%\\d%\\+\>%.%#%\\d%\\+\ error(s)%.%#%\\d%\\+\ warning(s)
             silent set errorformat+=%\\d%\\+\>%f(%l)\ :\ %t%*\\D%n:\ %m
         endif
