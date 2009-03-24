@@ -1075,3 +1075,5 @@ just downloaded pr0n instead.
 
 The NERD tree is released under the wtfpl.
 See http://sam.zoy.org/wtfpl/COPYING.
+
+vim:ts=8 sw=8 noexpandtab tw=78 ft=help:
