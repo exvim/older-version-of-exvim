@@ -482,6 +482,16 @@ function s:exTS_GotoTagSelectResult() " <<<
         close
     endif
 
+    " jump by command
+    call g:ex_GotoEditBuffer()
+
+    " if we don't start a new stack, we pop the old jump, so that the new one
+    " will only take the old stack position while we are selecting our result. 
+    let keepjumps_cmd = ''
+    if !s:exTS_need_push_tag
+        let keepjumps_cmd = 'keepjumps'
+    endif
+
     " push tag state to tag stack
     if s:exTS_need_push_tag
         let s:exTS_need_push_tag = 0
@@ -501,10 +511,9 @@ function s:exTS_GotoTagSelectResult() " <<<
         let s:exTS_tag_stack_list[s:exTS_stack_idx].tag_idx = tag_idx
     endif
 
-    " jump by command
-    call g:ex_GotoEditBuffer()
+    " process extractly jump
     let s:exTS_tag_select_idx = tag_idx
-    call g:ex_GotoExCommand( g:ex_MatchTagFile( s:exTS_tag_file_list, s:exTS_tag_stack_list[s:exTS_stack_idx].tag_list[tag_idx-1].filename ), s:exTS_tag_stack_list[s:exTS_stack_idx].tag_list[tag_idx-1].cmd )
+    call g:ex_GotoExCommand( g:ex_MatchTagFile( s:exTS_tag_file_list, s:exTS_tag_stack_list[s:exTS_stack_idx].tag_list[tag_idx-1].filename ), s:exTS_tag_stack_list[s:exTS_stack_idx].tag_list[tag_idx-1].cmd, "" )
     "call g:ex_GotoExCommand( s:exTS_tag_state_{s:exTS_stack_idx}.tag_list[tag_idx-1].filename, s:exTS_tag_state_{s:exTS_stack_idx}.tag_list[tag_idx-1].cmd )
 
     " go back if needed
@@ -659,7 +668,7 @@ function s:exTS_Stack_GotoTag( idx, jump_method ) " <<<
             call setpos('.', s:exTS_tag_stack_list[s:exTS_stack_idx].entry_cursor_pos)
         else
             let tag_idx = s:exTS_tag_stack_list[s:exTS_stack_idx].tag_idx
-            call g:ex_GotoExCommand( g:ex_MatchTagFile( s:exTS_tag_file_list, s:exTS_tag_stack_list[s:exTS_stack_idx].tag_list[tag_idx-1].filename ), s:exTS_tag_stack_list[s:exTS_stack_idx].tag_list[tag_idx-1].cmd )
+            call g:ex_GotoExCommand( g:ex_MatchTagFile( s:exTS_tag_file_list, s:exTS_tag_stack_list[s:exTS_stack_idx].tag_list[tag_idx-1].filename ), s:exTS_tag_stack_list[s:exTS_stack_idx].tag_list[tag_idx-1].cmd, keepjumps_cmd )
             "call g:ex_GotoExCommand( s:exTS_tag_state_{s:exTS_stack_idx}.tag_list[tag_idx-1].filename, s:exTS_tag_state_{s:exTS_stack_idx}.tag_list[tag_idx-1].cmd )
         endif
         exe 'normal! zz'

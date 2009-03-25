@@ -1539,19 +1539,19 @@ endfunction " >>>
 " Desc: Goto the position by file name and search pattern
 " ------------------------------------------------------------------ 
 
-function g:ex_GotoExCommand(full_file_name, ex_cmd) " <<<
+function g:ex_GotoExCommand(full_file_name, ex_cmd, keepjump_cmd) " <<<
     " check and jump to the buffer first
     call g:ex_GotoEditBuffer()
 
     " start jump
     let file_name = escape(a:full_file_name, ' ')
     if bufnr('%') != bufnr(file_name)
-        exe 'silent e ' . file_name
+        exe a:keepjump_cmd . ' silent e ' . file_name
     endif
 
     " cursor jump
     try
-        silent exe a:ex_cmd
+        silent exe a:keepjump_cmd . ' ' . a:ex_cmd
     catch /^Vim\%((\a\+)\)\=:E/
         " if ex_cmd is not digital, try jump again manual
         if match( a:ex_cmd, '^\/\^' ) != -1

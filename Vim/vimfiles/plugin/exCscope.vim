@@ -133,7 +133,7 @@ let s:exCS_select_idx = 1
 " ------------------------------------------------------------------ 
 
 let s:exCS_quick_view_idx = 1
-let s:exCS_picked_search_result = ''
+let s:exCS_picked_search_result = []
 let s:exCS_quick_view_search_pattern = ''
 
 " ======================================================== 
@@ -678,10 +678,13 @@ function s:exCS_CopyPickedLine( search_pattern, line_start, line_end, search_met
         silent call cursor( 1, 1 )
 
         " clear the last search result
-        let s:exCS_picked_search_result = ''
+        if !empty( s:exCS_picked_search_result )
+            silent call remove( s:exCS_picked_search_result, 0, len(s:exCS_picked_search_result)-1 )
+        endif
+
+        " if inverse search, we first filter out not pattern line, then
+        " then filter pattern
         if a:inverse_search
-            " if inverse search, we first filter out not pattern line, then
-            " then filter pattern
             let search_results = '\(.\+:\d\+:\).*'
             silent exec 'v/' . search_results . '/d'
             silent exec 'g/' . full_search_pattern . '/d'
@@ -695,27 +698,10 @@ function s:exCS_CopyPickedLine( search_pattern, line_start, line_end, search_met
         endwhile
 
         " copy picked result
-        let reg_t = @t
-        silent exec 'normal! gg"tyG'
-        let s:exCS_picked_search_result = @t
-        let @t = reg_t
+        let s:exCS_picked_search_result = getline(1,'$')
+
         " recover
         silent exec 'normal! u'
-
-        " this two algorithm was slow
-        " -------------------------
-        " let cmd = 'let s:exCS_picked_search_result = s:exCS_picked_search_result . "\n" . getline(".")'
-        " silent exec '1,$' . 'g/' . search_pattern . '/' . cmd
-        " -------------------------
-        " let cur_line = a:line_start - 1 
-        " while search( search_pattern, 'W', a:line_end ) != 0
-        "     if cur_line != line(".")
-        "         let cur_line = line(".")
-        "         let s:exCS_picked_search_result = s:exCS_picked_search_result . "\n" . getline(".")
-        "     else
-        "         continue
-        "     endif
-        " endwhile
 
         " go back to the original position
         silent call setpos(".", save_cursor)

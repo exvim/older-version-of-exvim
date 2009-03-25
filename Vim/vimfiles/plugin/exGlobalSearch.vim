@@ -153,7 +153,7 @@ let s:exGS_last_jump_method = "to_tag"
 " ------------------------------------------------------------------ 
 
 let s:exGS_quick_view_idx = 1
-let s:exGS_picked_search_result = ''
+let s:exGS_picked_search_result = []
 let s:exGS_quick_view_search_pattern = ''
 
 "/////////////////////////////////////////////////////////////////////////////
@@ -252,10 +252,19 @@ function s:exGS_Goto() " <<<
 
     " start jump
     call g:ex_GotoEditBuffer()
-    if bufnr('%') != bufnr(file_name)
-        exe 'silent e ' . file_name
+
+    " if we don't start a new stack, we pop the old jump, so that the new one
+    " will only take the old stack position while we are selecting our result. 
+    let keepjumps_cmd = ''
+    if !s:exGS_need_push_search_result
+        let keepjumps_cmd = 'keepjumps'
     endif
-    call cursor(line_num, 1)
+
+    "
+    if bufnr('%') != bufnr(file_name)
+        exe keepjumps_cmd . ' silent e ' . file_name
+    endif
+    exec keepjumps_cmd . ' call cursor(line_num, 1)'
     let cursor_pos = getpos(".")
 
     " jump to the pattern if the code have been modified
@@ -927,10 +936,13 @@ function s:exGS_CopyPickedLine( search_pattern, line_start, line_end, search_met
         silent call cursor( 1, 1 )
 
         " clear the last search result
-        let s:exGS_picked_search_result = ''
+        if !empty( s:exGS_picked_search_result )
+            silent call remove( s:exGS_picked_search_result, 0, len(s:exGS_picked_search_result)-1 )
+        endif
+
+        " if inverse search, we first filter out not pattern line, then
+        " then filter pattern
         if a:inverse_search
-            " if inverse search, we first filter out not pattern line, then
-            " then filter pattern
             let search_results = '\(.\+:\d\+:\).*'
             silent exec 'v/' . search_results . '/d'
             silent exec 'g/' . full_search_pattern . '/d'
@@ -944,27 +956,10 @@ function s:exGS_CopyPickedLine( search_pattern, line_start, line_end, search_met
         endwhile
 
         " copy picked result
-        let reg_t = @t
-        silent exec 'normal! gg"tyG'
-        let s:exGS_picked_search_result = @t
-        let @t = reg_t
+        let s:exGS_picked_search_result = getline(1,'$')
+
         " recover
         silent exec 'normal! u'
-
-        " this two algorithm was slow
-        " -------------------------
-        " let cmd = 'let s:exGS_picked_search_result = s:exGS_picked_search_result . "\n" . getline(".")'
-        " silent exec '1,$' . 'g/' . search_pattern . '/' . cmd
-        " -------------------------
-        " let cur_line = a:line_start - 1 
-        " while search( search_pattern, 'W', a:line_end ) != 0
-        "     if cur_line != line(".")
-        "         let cur_line = line(".")
-        "         let s:exGS_picked_search_result = s:exGS_picked_search_result . "\n" . getline(".")
-        "     else
-        "         continue
-        "     endif
-        " endwhile
 
         " go back to the original position
         silent call setpos(".", save_cursor)
