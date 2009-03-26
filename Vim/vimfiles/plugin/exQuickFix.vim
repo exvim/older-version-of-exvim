@@ -129,7 +129,7 @@ let s:exQF_need_update_select_window = 0
 " ------------------------------------------------------------------ 
 
 let s:exQF_quick_view_idx = 1
-let s:exQF_picked_search_result = ''
+let s:exQF_picked_search_result = []
 let s:exQF_quick_view_search_pattern = ''
 let s:exQF_need_update_quick_view_window = 0
 
@@ -526,7 +526,10 @@ function s:exQF_CopyPickedLine( search_pattern, line_start, line_end, search_met
         silent call cursor( 1, 1 )
 
         " clear the last search result
-        let s:exQF_picked_search_result = ''
+        if !empty( s:exQF_picked_search_result )
+            silent call remove( s:exQF_picked_search_result, 0, len(s:exQF_picked_search_result)-1 )
+        endif
+
         silent exec 'v/' . full_search_pattern . '/d'
 
         " clear pattern result
@@ -535,27 +538,10 @@ function s:exQF_CopyPickedLine( search_pattern, line_start, line_end, search_met
         endwhile
 
         " copy picked result
-        let reg_q = @q
-        silent exec 'normal! gg"qyG'
-        let s:exQF_picked_search_result = @q
-        let @q = reg_q
+        let s:exQF_picked_search_result = getline(1,'$')
+
         " recover
         silent exec 'normal! u'
-
-        " this two algorithm was slow
-        " -------------------------
-        " let cmd = 'let s:exQF_picked_search_result = s:exQF_picked_search_result . "\n" . getline(".")'
-        " silent exec '1,$' . 'g/' . search_pattern . '/' . cmd
-        " -------------------------
-        " let cur_line = a:line_start - 1 
-        " while search( search_pattern, 'W', a:line_end ) != 0
-        "     if cur_line != line(".")
-        "         let cur_line = line(".")
-        "         let s:exQF_picked_search_result = s:exQF_picked_search_result . "\n" . getline(".")
-        "     else
-        "         continue
-        "     endif
-        " endwhile
 
         " go back to the original position
         silent call setpos(".", save_cursor)

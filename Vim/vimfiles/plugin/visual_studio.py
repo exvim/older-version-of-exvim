@@ -304,7 +304,9 @@ def dte_put_file (vs_pid, filename, modified, line_num, col_num):
         _vim_status ('No VS file!')
         return
     sel = doc.Selection
-    sel.MoveToLineAndOffset (line_num, col_num)
+    try: sel.MoveToLineAndOffset (line_num, col_num)
+    except:
+        pass
     _dte_activate (vs_pid)
 
 #----------------------------------------------------------------------

@@ -2188,7 +2188,6 @@ endfunction " >>>
 function g:ex_DisplayHelp() " <<<
     " If it's not funtional window, do not display help
 
-    syntax match ex_SynHelpText '^" .*'
     if g:ex_IsFunctionalbuf("")
         return
     endif
@@ -2196,6 +2195,8 @@ function g:ex_DisplayHelp() " <<<
     if !g:ex_help_text_on
         return
     endif
+
+    syntax match ex_SynHelpText '^" .*'
 
     " save the position
     let cur_line = line(".")
@@ -2268,10 +2269,12 @@ function g:ex_SwitchHelpTextMode(HelpMode) " <<<
         let s:ex_MapHelpMode[BufName] = a:HelpMode
     endif
     call g:ex_DisplayHelp()
-    call g:ex_HelpUpdateCursor()
     if ResetCursor
         call cursor(s:ex_MapLastCursorLine[BufName],0)
+    else
+        call cursor(1,0)
     endif
+    call g:ex_HelpUpdateCursor()
 endfunction " >>>
 
 " ------------------------------------------------------------------ 
@@ -2281,6 +2284,10 @@ endfunction " >>>
 " --ex_HelpUpdateCursor--
 " if Cursor is on the Help, jump to the first line without help
 function g:ex_HelpUpdateCursor() " <<<
+    " return immidiaetly if help off
+    if !g:ex_help_text_on
+        return 0
+    endif
     if getline('.')[0] == '"'
         call search('^[^"]\|^$')
         return 1
