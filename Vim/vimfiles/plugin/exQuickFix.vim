@@ -150,9 +150,6 @@ function s:exQF_OpenWindow( short_title ) " <<<
     if a:short_title != ''
         if s:exQF_short_title != a:short_title
             let _title = '__exQF_' . s:exQF_short_title . 'Window__'
-            if s:exQF_short_title == 'Select'
-                let _title = s:exQF_cur_filename
-            endif
             if bufwinnr(_title) != -1
                 call g:ex_CloseWindow(_title)
             endif
@@ -161,10 +158,6 @@ function s:exQF_OpenWindow( short_title ) " <<<
     endif
 
     let title = '__exQF_' . s:exQF_short_title . 'Window__'
-    " toggle exQF window
-    if a:short_title == 'Select'
-        let title = s:exQF_cur_filename
-    endif
     " open window
     if g:exQF_use_vertical_window
         call g:ex_OpenWindow( title, g:exQF_window_direction, g:exQF_window_width, g:exQF_use_vertical_window, g:exQF_edit_mode, g:exQF_backto_editbuf, 'g:exQF_Init'.s:exQF_short_title.'Window', 'g:exQF_Update'.s:exQF_short_title.'Window' )
@@ -194,9 +187,6 @@ function s:exQF_ToggleWindow( short_title ) " <<<
     if a:short_title != ''
         if s:exQF_short_title != a:short_title
             let _title = '__exQF_' . s:exQF_short_title . 'Window__'
-            if s:exQF_short_title == 'Select'
-                let _title = s:exQF_cur_filename
-            endif
             if bufwinnr(_title) != -1
                 call g:ex_CloseWindow(_title)
             endif
@@ -206,9 +196,6 @@ function s:exQF_ToggleWindow( short_title ) " <<<
 
     let title = '__exQF_' . s:exQF_short_title . 'Window__'
     " toggle exQF window
-    if a:short_title == 'Select'
-        let title = s:exQF_cur_filename
-    endif
     if g:exQF_use_vertical_window
         call g:ex_ToggleWindow( title, g:exQF_window_direction, g:exQF_window_width, g:exQF_use_vertical_window, 'none', g:exQF_backto_editbuf, 'g:exQF_Init'.s:exQF_short_title.'Window', 'g:exQF_Update'.s:exQF_short_title.'Window' )
     else
@@ -222,9 +209,6 @@ endfunction " >>>
 
 function s:exQF_SwitchWindow( short_title ) " <<<
     let title = '__exQF_' . a:short_title . 'Window__'
-    if a:short_title == 'Select'
-        let title = s:exQF_cur_filename
-    endif
     if bufwinnr(title) == -1
         call s:exQF_ToggleWindow(a:short_title)
     endif
@@ -381,7 +365,7 @@ function s:exQF_GetQuickFixResult( file_name ) " <<<
             silent set errorformat+=%D\<\<\<\<\<\<\ %\\S%\\+:\ '%f'%.%#
             silent set errorformat+=%X\>\>\>\>\>\>\ %\\S%\\+:\ '%f'%.%#
         elseif s:exQF_compiler == 'msvc2005'
-            silent set errorformat=%D%\\d%\\+\>------\ %.%#Project:\ %f\ %.%#%\\,%.%#
+            silent set errorformat=%D%\\d%\\+\>------\ %.%#Project:\ %f%.%#%\\,%.%#
             silent set errorformat+=%X%\\d%\\+\>%.%#%\\d%\\+\ error(s)%.%#%\\d%\\+\ warning(s)
             silent set errorformat+=%\\d%\\+\>%f(%l)\ :\ %t%*\\D%n:\ %m
         endif
@@ -401,22 +385,22 @@ function s:exQF_GetQuickFixResult( file_name ) " <<<
             let g:exQF_backto_editbuf = 0
             call s:exQF_ToggleWindow('Select')
             let g:exQF_backto_editbuf = old_opt
-            silent! exec '%s/\r//g'
-            silent! exec "w!"
-            silent! exec 'normal! gg'
         else
             exe gs_winnr . 'wincmd w'
         endif
 
+        " clear all the text and put the text to the buffer, by YJR
+        normal! gg"_dG
+        silent call append( 0 , readfile( full_file_name ) )
+
         "
         if s:exQF_compiler != 'exgcc'
             silent exec 'sort /^\d\+>/ or'
-            silent exec 'w!'
         endif
 
         " get the quick fix result
         silent exec 'cd '.s:exQF_compile_dir
-        silent exec "cg " . full_file_name
+        silent exec 'cgetb'
         silent exec 'cd '.cur_dir
     else
         call g:ex_WarningMsg('file: ' . full_file_name . ' not found')
@@ -464,6 +448,8 @@ function g:exQF_UpdateQuickViewWindow() " <<<
     call g:ex_HighlightConfirmLine()
     if s:exQF_need_update_quick_view_window
         let s:exQF_need_update_quick_view_window = 0
+        " TODO:
+        " FIXME: when go to quick view win, it ask save
         let reg_q = @q
         silent redir @q
         silent! exec 'cl'
