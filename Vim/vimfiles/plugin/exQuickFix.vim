@@ -265,7 +265,6 @@ endfunction " >>>
 function g:exQF_InitSelectWindow() " <<<
     silent! setlocal number
     silent! setlocal autoread
-    silent! setlocal buftype=
     setlocal foldmethod=marker foldmarker=<<<<<<,>>>>>> foldlevel=1
 
     " syntax highlight
