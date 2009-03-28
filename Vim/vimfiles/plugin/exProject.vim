@@ -852,6 +852,7 @@ function s:exPJ_GotoCurrentFile( jump_to_project_window ) " <<<
     " get current buffer name then jump
     let cur_filename = fnamemodify(bufname("%") , ":t")
     let cur_filefullpath = fnamemodify(bufname("%") , ":p")
+    let is_found = 0
 
     " go to the project window
     silent call s:exPJ_OpenProject("")
@@ -866,10 +867,20 @@ function s:exPJ_GotoCurrentFile( jump_to_project_window ) " <<<
                 " if find, set the text line in the middel of the window
                 silent normal! zz
                 call g:ex_HighlightSelectLine()
+
+                "
+                let is_found = 1
                 break
             endif
         endif
     endfor
+
+    " if file not found
+    if !is_found
+        call g:ex_WarningMsg('Warnning file not found: ' . cur_filefullpath )
+    else
+        echon "file found in: " . cur_filefullpath . "\r"
+    endif
 
     " back to edit buffer if needed
     if !a:jump_to_project_window
