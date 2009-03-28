@@ -473,15 +473,6 @@ function s:exTS_GotoTagSelectResult() " <<<
     let idx = match(cur_line, ':')
     let tag_idx = eval(strpart(cur_line, 0, idx))
 
-    " close when selected if needed
-    if g:exTS_close_when_selected
-        let winnum = bufwinnr(s:exTS_select_title)
-        if winnr() != winnum
-            exe winnum . 'wincmd w'
-        endif
-        close
-    endif
-
     " jump by command
     call g:ex_GotoEditBuffer()
 
@@ -513,19 +504,10 @@ function s:exTS_GotoTagSelectResult() " <<<
 
     " process extractly jump
     let s:exTS_tag_select_idx = tag_idx
-    call g:ex_GotoExCommand( g:ex_MatchTagFile( s:exTS_tag_file_list, s:exTS_tag_stack_list[s:exTS_stack_idx].tag_list[tag_idx-1].filename ), s:exTS_tag_stack_list[s:exTS_stack_idx].tag_list[tag_idx-1].cmd, "" )
-    "call g:ex_GotoExCommand( s:exTS_tag_state_{s:exTS_stack_idx}.tag_list[tag_idx-1].filename, s:exTS_tag_state_{s:exTS_stack_idx}.tag_list[tag_idx-1].cmd )
+    call g:ex_GotoExCommand( g:ex_MatchTagFile( s:exTS_tag_file_list, s:exTS_tag_stack_list[s:exTS_stack_idx].tag_list[tag_idx-1].filename ), s:exTS_tag_stack_list[s:exTS_stack_idx].tag_list[tag_idx-1].cmd, keepjumps_cmd )
 
     " go back if needed
-    if !g:exTS_close_when_selected
-        if !g:exTS_backto_editbuf
-            let winnum = bufwinnr(s:exTS_select_title)
-            if winnr() != winnum
-                exe winnum . 'wincmd w'
-            endif
-            return
-        endif
-    endif
+    call g:ex_OperateWindow ( s:exTS_select_title, g:exTS_close_when_selected, g:exTS_backto_editbuf, 1 )
 endfunction " >>>
 
 " ======================================================== 
@@ -668,34 +650,13 @@ function s:exTS_Stack_GotoTag( idx, jump_method ) " <<<
             call setpos('.', s:exTS_tag_stack_list[s:exTS_stack_idx].entry_cursor_pos)
         else
             let tag_idx = s:exTS_tag_stack_list[s:exTS_stack_idx].tag_idx
-            call g:ex_GotoExCommand( g:ex_MatchTagFile( s:exTS_tag_file_list, s:exTS_tag_stack_list[s:exTS_stack_idx].tag_list[tag_idx-1].filename ), s:exTS_tag_stack_list[s:exTS_stack_idx].tag_list[tag_idx-1].cmd, keepjumps_cmd )
-            "call g:ex_GotoExCommand( s:exTS_tag_state_{s:exTS_stack_idx}.tag_list[tag_idx-1].filename, s:exTS_tag_state_{s:exTS_stack_idx}.tag_list[tag_idx-1].cmd )
+            call g:ex_GotoExCommand( g:ex_MatchTagFile( s:exTS_tag_file_list, s:exTS_tag_stack_list[s:exTS_stack_idx].tag_list[tag_idx-1].filename ), s:exTS_tag_stack_list[s:exTS_stack_idx].tag_list[tag_idx-1].cmd, "" )
         endif
         exe 'normal! zz'
     endif
 
     " go back if needed
-    if !g:exTS_stack_close_when_selected && !background_op
-        " highlight the select object in edit buffer
-        call g:ex_HighlightObjectLine()
-        exe 'normal! zz'
-
-        "
-        if !g:exTS_backto_editbuf
-            let winnum = bufwinnr(s:exTS_stack_title)
-            if winnr() != winnum
-                exe winnum . 'wincmd w'
-            endif
-            return
-        endif
-    else
-        let winnum = bufwinnr(s:exTS_stack_title)
-        if winnr() != winnum
-            exe winnum . 'wincmd w'
-        endif
-        close
-        call g:ex_GotoEditBuffer()
-    endif
+    call g:ex_OperateWindow ( s:exTS_stack_title, g:exTS_stack_close_when_selected || background_op, g:exTS_backto_editbuf, 1 )
 endfunction " >>>
 
 " ------------------------------------------------------------------ 

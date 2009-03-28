@@ -77,6 +77,14 @@ if !exists('g:exPJ_backto_editbuf')
 endif
 
 " ------------------------------------------------------------------ 
+" Desc: close the project window after selected, by YJR
+" ------------------------------------------------------------------ 
+
+if !exists('g:exPJ_close_when_selected')
+    let g:exPJ_close_when_selected = 0
+endif
+
+" ------------------------------------------------------------------ 
 " Desc: set edit mode
 " 'none', 'append', 'replace'
 " ------------------------------------------------------------------ 
@@ -233,6 +241,51 @@ function s:exPJ_GetName( line_num )
     return line
 endfunction
 
+
+" ------------------------------------------------------------------ 
+" Desc: used by exPJ_GetPath, by YJR
+" ------------------------------------------------------------------ 
+
+function s:exPJ_SearchForPattern(line_num,pattern)
+    for linenum in range(a:line_num , 1 , -1)
+        if match( getline(linenum) , a:pattern ) != -1
+            return linenum
+        endif
+    endfor
+    return 0
+endfunction
+
+" ------------------------------------------------------------------ 
+" Desc: Get the full path of the line, by YJR
+" ------------------------------------------------------------------ 
+
+function s:exPJ_GetPath( line_num )
+    let fold_level = g:ex_GetFoldLevel(a:line_num)
+
+    " recursively make full path
+    if match(getline(a:line_num),'[^^]-\[F\]') != -1
+        let full_path = s:exPJ_GetName( a:line_num )
+    else
+        let full_path = ""
+    endif
+    let level_pattern = repeat('.',fold_level-1)
+    let searchpos = a:line_num
+    while fold_level > 1 " don't parse level:0
+        let fold_level -= 1
+        let level_pattern = repeat('.',fold_level*2)
+        let fold_pattern = '^'.level_pattern.'-\[F\]'
+        let searchpos = s:exPJ_SearchForPattern(searchpos , fold_pattern)
+        if searchpos
+            let full_path = s:exPJ_GetName(searchpos).'/'.full_path
+        else
+            call g:ex_WarningMsg('Fold not found')
+            break
+        endif
+    endwhile
+
+    return full_path
+endfunction
+
 " ------------------------------------------------------------------ 
 " Desc: 
 " ------------------------------------------------------------------ 
@@ -274,7 +327,7 @@ function g:exPJ_InitSelectWindow() " <<<
     syntax match exPJ_SynSrcFile '\[c\]'
     syntax match exPJ_SynHeaderFile '\[\(h\|i\)\]'
     syntax match exPJ_SynErrorFile '\[e\]'
-    
+
     hi def exPJ_TreeLine gui=none guifg=DarkGray term=none cterm=none ctermfg=Gray
     hi def exPJ_SynDir gui=bold guifg=Brown term=bold cterm=bold ctermfg=DarkRed
     hi def exPJ_SynFile gui=none guifg=Magenta term=none cterm=none ctermfg=Magenta
@@ -385,6 +438,11 @@ endfunction " >>>
 " ------------------------------------------------------------------ 
 
 function s:exPJ_QuickRefreshProject() " <<<
+    " skip empty line, YJR
+    if getline('.') == ''
+        return
+    endif
+
     " get filter
     let filter = inputdialog( 'Enter the filters: sample(cpp c inl)', g:exPJ_defualt_filter, 'cancle')
     if filter == 'cancle'
@@ -493,6 +551,11 @@ endfunction " >>>
 " ------------------------------------------------------------------ 
 
 function s:exPJ_RefreshProject() " <<<
+    " skip empty line, YJR
+    if getline('.') == ''
+        return
+    endif
+
     " get filter
     let filter = inputdialog( 'Enter the filters: sample(cpp c inl)', g:exPJ_defualt_filter, 'cancle')
     if filter == 'cancle'
@@ -605,6 +668,11 @@ endfunction " >>>
 " ------------------------------------------------------------------ 
 
 function s:exPJ_CreateNewFile() " <<<
+    " skip empty line, YJR
+    if getline('.') == ''
+        return
+    endif
+
     let reg_t = @t
     if foldclosed('.') != -1
         silent exec 'normal! j"tyy"t2p$a-[]'
@@ -647,6 +715,11 @@ endfunction " >>>
 " ------------------------------------------------------------------ 
 
 function s:exPJ_CreateNewFold() " <<<
+    " skip empty line, YJR
+    if getline('.') == ''
+        return
+    endif
+
     let reg_t = @t
     if foldclosed('.') != -1
         silent exec 'normal! j"tyy"t2p$a-[]'
@@ -675,19 +748,19 @@ function s:exPJ_CreateNewFold() " <<<
             silent call search('|-')
             silent exec "normal! c$"
         endif
-    " else " else if this is file
-    "     let idx = stridx(cur_line, '}')
-    "     if idx == -1
-    "         silent exec 'normal! "tyyj"tP'
-    "         silent call search('[')
-    "         silent exec 'normal! "tc$[F] { }'
-    "     else
-    "         let surfix = strpart(cur_line,idx-1)
-    "         silent call setline('.',strpart(cur_line,0,idx-1))
-    "         let file_line = strpart(cur_line, 0, stridx(cur_line,'-')) . "-[F] { }" . surfix
-    "         put = file_line
-    "         silent call search(']')
-    "     endif
+        " else " else if this is file
+        "     let idx = stridx(cur_line, '}')
+        "     if idx == -1
+        "         silent exec 'normal! "tyyj"tP'
+        "         silent call search('[')
+        "         silent exec 'normal! "tc$[F] { }'
+        "     else
+        "         let surfix = strpart(cur_line,idx-1)
+        "         silent call setline('.',strpart(cur_line,0,idx-1))
+        "         let file_line = strpart(cur_line, 0, stridx(cur_line,'-')) . "-[F] { }" . surfix
+        "         put = file_line
+        "         silent call search(']')
+        "     endif
     endif
     let @t = reg_t
 endfunction " >>>
@@ -697,35 +770,35 @@ endfunction " >>>
 " ------------------------------------------------------------------ 
 
 function s:exPJ_GotoSelectResult(edit_cmd) " <<<
-    let file_line = getline('.')
-    " if fold, open it else if not a file return
-    if foldclosed('.') != -1 || match(getline('.'), '\C\[F\]') != -1
-        normal! za
-        return
-    elseif match(file_line, '\C\[[^F]*\]') == -1
-        call g:ex_WarningMsg('Please select a file')
+    " skip empty line, YJR
+    if getline('.') == ''
         return
     endif
 
     " initial variable
     let s:exPJ_cursor_line = line('.')
     let s:exPJ_cursor_col = col('.')
-    let fold_level = g:ex_GetFoldLevel(s:exPJ_cursor_line)
-    let full_path_name = s:exPJ_GetName(s:exPJ_cursor_line)
 
-    " recursively make full path
-    let level_pattern = repeat('.',fold_level-1)
-    while fold_level > 1 " don't parse level:0
-        let fold_level -= 1
-        let level_pattern = repeat('.',fold_level*2)
-        let fold_pattern = '^'.level_pattern.'-\[F\]'
-        if search(fold_pattern,'b')
-            let full_path_name = s:exPJ_GetName(line('.')).'/'.full_path_name
+    let file_line = getline('.')
+    " if fold, open it else if not a file return
+    if foldclosed('.') != -1 || match(getline('.'), '\C\[F\]') != -1
+        if a:edit_cmd == 'e'
+            normal! za
         else
-            call g:ex_WarningMsg('Fold not found')
-            break
+            exec "silent !start cmd /k cd " . s:exPJ_GetPath(s:exPJ_cursor_line)
         endif
-    endwhile
+        return
+    elseif match(file_line, '\C\[[^F]*\]') == -1
+        if a:edit_cmd == 'e'
+            call g:ex_WarningMsg('Please select a file')
+        else
+            exec "silent !start cmd /k cd " . s:exPJ_GetPath(s:exPJ_cursor_line)
+        endif
+        return
+    endif
+
+    let full_path_name = s:exPJ_GetPath(s:exPJ_cursor_line) . s:exPJ_GetName(s:exPJ_cursor_line)
+
     silent call cursor(s:exPJ_cursor_line,s:exPJ_cursor_col)
 
     " simplify the file name
@@ -758,87 +831,58 @@ function s:exPJ_GotoSelectResult(edit_cmd) " <<<
         echon full_path_name . "\r"
         " silent wincmd p
         call g:ex_GotoEditBuffer()
-        silent exec a:edit_cmd.' '.full_path_name
+        " do not open again if the current buf is the file to be opened
+        if fnamemodify(expand("%"),":p") != fnamemodify(full_path_name,":p")
+            silent exec a:edit_cmd.' '.full_path_name
+        endif
     endif
 
-    "
-    if !g:exPJ_backto_editbuf
-        let winnum = bufwinnr(s:exPJ_select_title)
-        if winnr() != winnum
-            exe winnum . 'wincmd w'
-        endif
-        return
-    endif
+    " go back if needed
+    call g:ex_OperateWindow ( s:exPJ_select_title, g:exPJ_close_when_selected, g:exPJ_backto_editbuf, 0 )
 endfunction " >>>
 
 " ------------------------------------------------------------------ 
 " Desc: 
+"  jump_to_project_window
+"   0: do not jump the cursor to project window
+"   1: jump the cursor to project window
 " ------------------------------------------------------------------ 
 
-function s:exPJ_GotoCurrentFile() " <<<
+function s:exPJ_GotoCurrentFile( jump_to_project_window ) " <<<
     " get current buffer name then jump
-    let cur_bufname = bufname("%")
+    let cur_filename = fnamemodify(bufname("%") , ":t")
+    let cur_filefullpath = fnamemodify(bufname("%") , ":p")
 
     " go to the project window
-    call s:exPJ_OpenProject("")
-    " go to the top to begin search
-    silent normal! gg
+    silent call s:exPJ_OpenProject("")
 
-    " split the bufname into list
-    let file_name = fnamemodify( cur_bufname, ":t" )
-
-    " store position if we don't find, restore to the position
-    let cursor_line = line('.')
-    let cursor_col = col('.')
-
-    """
-    let pattern_found = 0
-    while !pattern_found
-        " search file by name.
-        if search( file_name, "W" ) > 0
-
-            " get full_path_name
-            " -----------------------------
-            " initial variable
-            let s:exPJ_cursor_line = line('.')
-            let s:exPJ_cursor_col = col('.')
-            let fold_level = g:ex_GetFoldLevel(s:exPJ_cursor_line)
-            let full_path_name = s:exPJ_GetName(s:exPJ_cursor_line)
-
-            " recursively make full path
-            let level_pattern = repeat('.',fold_level-1)
-            while fold_level > 1 " don't parse level:0
-                let fold_level -= 1
-                let level_pattern = repeat('.',fold_level*2)
-                let fold_pattern = '^'.level_pattern.'-\[F\]'
-                if search(fold_pattern,'b')
-                    let full_path_name = s:exPJ_GetName(line('.')).'/'.full_path_name
-                else
-                    call g:ex_WarningMsg('Fold not found')
-                    break
-                endif
-            endwhile
-            silent call cursor(s:exPJ_cursor_line,s:exPJ_cursor_col)
-
-            " simplify the file name
-            let full_path_name = fnamemodify( full_path_name, ":p" )
-            " -----------------------------
-
-            " re-check by directory search
-            if full_path_name ==# fnamemodify( cur_bufname, ":p" )
-                let pattern_found = 1
-            else
-                continue
+    for linenum in range(1,line('$'))
+        if match( getline(linenum) , cur_filename ) != -1
+            let searchfilename = s:exPJ_GetPath(linenum) . s:exPJ_GetName(linenum)
+            if fnamemodify(searchfilename , ":p") == cur_filefullpath
+                silent call cursor(linenum, 0)
+                " unfold the line if it's folded
+                norm! zv
+                " if find, set the text line in the middel of the window
+                silent normal! zz
+                call g:ex_HighlightSelectLine()
+                break
             endif
-        else
-            silent call cursor( cursor_line, cursor_col )
-            call g:ex_WarningMsg("the file: " . cur_bufname . " not found in the project tree")
-            return
         endif
-    endwhile
+    endfor
 
-    " if find, set the text line in the middel of the window
-    silent normal! zz
+    " back to edit buffer if needed
+    if !a:jump_to_project_window
+        call g:ex_GotoEditBuffer()
+    endif
+endfunction " >>>
+
+" ------------------------------------------------------------------ 
+" Desc: return if the project is open or not, YJR
+" ------------------------------------------------------------------ 
+
+function! g:exPJ_IsWindowOpened() " <<<
+    return bufwinnr(s:exPJ_cur_filename) != -1
 endfunction " >>>
 
 "/////////////////////////////////////////////////////////////////////////////
@@ -847,7 +891,7 @@ endfunction " >>>
 
 command -narg=? EXProject call s:exPJ_OpenProject("<args>")
 command ExpjSelectToggle call s:exPJ_ToggleWindow('Select')
-command ExpjGotoCurrentFile call s:exPJ_GotoCurrentFile()
+command ExpjGotoCurrentFile call s:exPJ_GotoCurrentFile(1)
 
 "/////////////////////////////////////////////////////////////////////////////
 " finish

@@ -274,9 +274,6 @@ function s:exGS_Goto() " <<<
         call g:ex_WarningMsg('search pattern not found: ' . pattern)
     endif
 
-    call g:ex_HighlightObjectLine()
-    exe 'normal! zz'
-
     " push tag state to tag stack
     if s:exGS_need_push_search_result
         let s:exGS_need_push_search_result = 0
@@ -300,22 +297,8 @@ function s:exGS_Goto() " <<<
 
     " go back if needed
     let title = '__exGS_' . s:exGS_short_title . 'Window__'
-    if !g:exGS_close_when_selected
-        if !g:exGS_backto_editbuf
-            let winnum = bufwinnr(title)
-            if winnr() != winnum
-                exe winnum . 'wincmd w'
-            endif
-            return 1
-        endif
-    else
-        let winnum = bufwinnr(title)
-        if winnr() != winnum
-            exe winnum . 'wincmd w'
-        endif
-        close
-        call g:ex_GotoEditBuffer()
-    endif
+    call g:ex_OperateWindow ( title, g:exGS_close_when_selected, g:exGS_backto_editbuf, 1 )
+
     return 1
 endfunction " >>>
 
@@ -787,27 +770,8 @@ function s:exGS_Stack_GotoTag( idx, jump_method ) " <<<
     endif
 
     " go back if needed
-    if !g:exGS_stack_close_when_selected && !background_op
-        " highlight the select object in edit buffer
-        call g:ex_HighlightObjectLine()
-        exe 'normal! zz'
+    call g:ex_OperateWindow ( s:exGS_stack_title, g:exGS_stack_close_when_selected || background_op, g:exGS_backto_editbuf, 1 )
 
-        "
-        if !g:exGS_backto_editbuf
-            let winnum = bufwinnr(s:exGS_stack_title)
-            if winnr() != winnum
-                exe winnum . 'wincmd w'
-            endif
-            return
-        endif
-    else
-        let winnum = bufwinnr(s:exGS_stack_title)
-        if winnr() != winnum
-            exe winnum . 'wincmd w'
-        endif
-        close
-        call g:ex_GotoEditBuffer()
-    endif
 endfunction " >>>
 
 " ------------------------------------------------------------------ 

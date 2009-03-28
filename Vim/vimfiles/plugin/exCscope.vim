@@ -255,28 +255,10 @@ function s:exCS_Goto() " <<<
     endif
     call cursor( qf_item.lnum, qf_item.col )
 
-    " confirm highlight
-    call g:ex_HighlightObjectLine()
-    exe 'normal! zz'
-
     " go back if needed
     let title = '__exCS_' . s:exCS_short_title . 'Window__'
-    if !g:exCS_close_when_selected
-        if !g:exCS_backto_editbuf
-            let winnum = bufwinnr(title)
-            if winnr() != winnum
-                exe winnum . 'wincmd w'
-            endif
-            return 1
-        endif
-    else
-        let winnum = bufwinnr(title)
-        if winnr() != winnum
-            exe winnum . 'wincmd w'
-        endif
-        close
-        call g:ex_GotoEditBuffer()
-    endif
+    call g:ex_OperateWindow ( title, g:exCS_close_when_selected, g:exCS_backto_editbuf, 1 )
+
     return 1
 endfunction " >>>
 

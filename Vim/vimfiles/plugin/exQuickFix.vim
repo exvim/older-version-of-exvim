@@ -231,27 +231,10 @@ function s:exQF_Goto(idx) " <<<
     catch /^Vim\%((\a\+)\)\=:E42/
         call g:ex_WarningMsg('No Errors')
     endtry
-    call g:ex_HighlightObjectLine()
-    exe 'normal! zz'
 
     " go back if needed
     let title = '__exQF_' . s:exQF_short_title . 'Window__'
-    if !g:exQF_close_when_selected
-        if !g:exQF_backto_editbuf
-            let winnum = bufwinnr(title)
-            if winnr() != winnum
-                exe winnum . 'wincmd w'
-            endif
-            return
-        endif
-    else
-        let winnum = bufwinnr(title)
-        if winnr() != winnum
-            exe winnum . 'wincmd w'
-        endif
-        close
-        call g:ex_GotoEditBuffer()
-    endif
+    call g:ex_OperateWindow ( title, g:exQF_close_when_selected, g:exQF_backto_editbuf, 1 )
 endfunction " >>>
 
 " ======================================================== 
@@ -447,8 +430,8 @@ function g:exQF_UpdateQuickViewWindow() " <<<
     call g:ex_HighlightConfirmLine()
     if s:exQF_need_update_quick_view_window
         let s:exQF_need_update_quick_view_window = 0
-        " TODO:
-        " FIXME: when go to quick view win, it ask save
+
+        "
         let reg_q = @q
         silent redir @q
         silent! exec 'cl'

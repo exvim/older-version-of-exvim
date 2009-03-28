@@ -641,11 +641,14 @@ let g:exUT_plugin_list = ["-MiniBufExplorer-","__Tag_List__"]
 nnoremap <unique> <silent> <Leader>ts :ExtsSelectToggle<CR>
 nnoremap <unique> <silent> <Leader>tt :ExtsStackToggle<CR>
 nnoremap <unique> <silent> <Leader>tg :ExtsGoDirectly<CR>
+
 map <unique> <silent> <Leader>] :ExtsGoDirectly<CR>
 map <unique> <silent> <Leader>tb :BackwardTagStack<CR>
 map <unique> <silent> <Leader>tf :ForwardTagStack<CR>
+
 let g:exTS_backto_editbuf = 0
 let g:exTS_close_when_selected = 1
+let g:exTS_stack_close_when_selected = 0
 let g:exTS_window_direction = 'bel'
 
 " ------------------------------------------------------------------ 
@@ -658,11 +661,14 @@ nnoremap <unique> <silent> <Leader>gt :ExgsStackToggle<CR>
 nnoremap <unique> <silent> <Leader>gg :ExgsGoDirectly<CR>
 nnoremap <unique> <silent> <Leader>n :ExgsGotoNextResult<CR>
 nnoremap <unique> <silent> <Leader>N :ExgsGotoPrevResult<CR>
+
 map <unique> <silent> <Leader>gb :BackwardSearchStack<CR>
 map <unique> <silent> <Leader>gf :ForwardSearchStack<CR>
 map <unique> <S-f> :GS 
+
 let g:exGS_backto_editbuf = 0
 let g:exGS_close_when_selected = 0
+let g:exGS_stack_close_when_selected = 0
 let g:exGS_window_direction = 'bel'
 
 " ------------------------------------------------------------------ 
@@ -673,6 +679,7 @@ nnoremap <unique> <silent> <Leader>ss :ExslSelectToggle<CR>
 nnoremap <unique> <silent> <Leader>sq :ExslQuickViewToggle<CR>
 nnoremap <unique> <A-S-l> :ExslQuickSearch<CR>/
 nnoremap <unique> <silent> <Leader>sg :ExslGoDirectly<CR>
+
 let g:exSL_SymbolSelectCmd = 'TS'
 
 " ------------------------------------------------------------------ 
@@ -724,7 +731,10 @@ map <unique> <leader>ff :EXProject<CR>:redraw<CR>/\[[^F]*\]\c.*
 map <unique> <leader>fd :EXProject<CR>:redraw<CR>/\[F\]\c.*
 map <unique> <leader>fc :ExpjGotoCurrentFile<CR>
 
+let g:exPJ_backto_editbuf = 1
+let g:exPJ_close_when_selected = 0
 let g:exPJ_window_width_increment = 50
+
 let g:exPJ_defualt_filter  = 'c cpp cxx c++ C cc '
 let g:exPJ_defualt_filter .= 'h H hh hxx hpp inl '
 let g:exPJ_defualt_filter .= 'cs '

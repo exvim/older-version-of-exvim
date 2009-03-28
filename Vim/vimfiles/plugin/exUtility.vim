@@ -397,6 +397,36 @@ function g:ex_ResizeWindow( use_vertical, original_size, increase_size ) " <<<
     endif
 endfunction " >>>
 
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
+function g:ex_OperateWindow( title, close_when_selected, backto_edibut, hl_obj_line ) " <<<
+    if a:close_when_selected
+        call g:ex_CloseWindow(a:title)
+        call g:ex_GotoEditBuffer()
+    else
+        " go back to edit buffer first
+        call g:ex_GotoEditBuffer()
+
+        " highlight object line when 
+        " 1: we not close selected window 
+        " 2: if we needed
+        if a:hl_obj_line
+            call g:ex_HighlightObjectLine()
+            exe 'normal! zz'
+        endif
+
+        " if not back to edit buffer, we jump back to specificed window
+        if !a:backto_edibut
+            let winnum = bufwinnr(a:title)
+            if winnr() != winnum
+                exe winnum . 'wincmd w'
+            endif
+        endif
+    endif
+endfunction " >>>
+
 "/////////////////////////////////////////////////////////////////////////////
 "  string functions
 "/////////////////////////////////////////////////////////////////////////////

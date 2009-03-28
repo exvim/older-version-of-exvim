@@ -377,6 +377,22 @@ function s:exSL_GetAndShowPickedResult() " <<<
     silent exec 'normal! gg"_dd'
 endfunction " >>>
 
+" ------------------------------------------------------------------ 
+" Desc: Goto result position
+" ------------------------------------------------------------------ 
+
+function s:exSL_GotoResult() " <<<
+    call g:ex_HighlightConfirmLine()
+    let s:exSL_select_idx = line('.')
+    let symbol_key_word = getline('.')
+    if symbol_key_word != ''
+        call s:exSL_ToggleWindow( s:exSL_short_title )
+        exec (g:exSL_SymbolSelectCmd . " " . symbol_key_word)
+    else
+        call g:ex_WarningMsg('Please select a symbol')
+    endif
+endfunction " >>>
+
 " ======================================================== 
 " select window defines
 " ======================================================== 
@@ -393,8 +409,8 @@ function g:exSL_InitSelectWindow() " <<<
     silent! setlocal buftype=
     
     " key map
-    nnoremap <buffer> <silent> <Return> \|:call <SID>exSL_GotoResultInSelectWindow()<CR>
-    nnoremap <buffer> <silent> <2-LeftMouse> :call <SID>exSL_GotoResultInSelectWindow()<CR>
+    nnoremap <buffer> <silent> <Return> \|:call <SID>exSL_GotoResult()<CR>
+    nnoremap <buffer> <silent> <2-LeftMouse> \|:call <SID>exSL_GotoResult()<CR>
     nnoremap <buffer> <silent> <C-Return>   \|:call <SID>exSL_ShowPickedResult(getline('.'), 0)<CR>
     nnoremap <buffer> <silent> <Space>   :call <SID>exSL_ResizeWindow()<CR>
     nnoremap <buffer> <silent> <ESC>   :call <SID>exSL_ToggleWindow('Select')<CR>
@@ -417,22 +433,6 @@ function g:exSL_UpdateSelectWindow() " <<<
     call g:ex_HighlightConfirmLine()
 endfunction " >>>
 
-" ------------------------------------------------------------------ 
-" Desc: Goto result position
-" ------------------------------------------------------------------ 
-
-function s:exSL_GotoResultInSelectWindow() " <<<
-    call g:ex_HighlightConfirmLine()
-    let s:exSL_select_idx = line('.')
-    let symbol_key_word = getline('.')
-    if symbol_key_word != ''
-        call s:exSL_ToggleWindow('Select')
-        exec (g:exSL_SymbolSelectCmd . " " . symbol_key_word)
-    else
-        call g:ex_WarningMsg('Please select a symbol')
-    endif
-endfunction " >>>
-
 " ======================================================== 
 "  quick view window part
 " ======================================================== 
@@ -445,7 +445,8 @@ function g:exSL_InitQuickViewWindow() " <<<
     silent! setlocal nonumber
     
     " key map
-    nnoremap <buffer> <silent> <Return>   \|:call <SID>exSL_GotoResultInQuickViewWindow()<CR>
+    nnoremap <buffer> <silent> <Return>   \|:call <SID>exSL_GotoResult()<CR>
+    nnoremap <buffer> <silent> <2-LeftMouse> \|:call <SID>exSL_GotoResult()<CR>
     nnoremap <buffer> <silent> <Space>   :call <SID>exSL_ResizeWindow()<CR>
     nnoremap <buffer> <silent> <ESC>   :call <SID>exSL_ToggleWindow('QuickView')<CR>
     nnoremap <buffer> <silent> <C-Left>   :call <SID>exSL_SwitchWindow('QuickView')<CR>
@@ -465,18 +466,6 @@ endfunction " >>>
 function g:exSL_UpdateQuickViewWindow() " <<<
     call cursor( s:exSL_quick_view_idx, 1)
     call g:ex_HighlightConfirmLine()
-endfunction " >>>
-
-" ------------------------------------------------------------------ 
-" Desc: Goto result position
-" ------------------------------------------------------------------ 
-
-function s:exSL_GotoResultInQuickViewWindow() " <<<
-    call g:ex_HighlightConfirmLine()
-    let s:exSL_quick_view_idx = line('.')
-    let symbol_key_word = getline('.')
-    call s:exSL_ToggleWindow('QuickView')
-    exec (g:exSL_SymbolSelectCmd . " " . symbol_key_word)
 endfunction " >>>
 
 "/////////////////////////////////////////////////////////////////////////////
