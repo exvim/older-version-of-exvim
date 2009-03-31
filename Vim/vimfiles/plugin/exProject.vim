@@ -857,8 +857,17 @@ function s:exPJ_GotoCurrentFile( jump_to_project_window ) " <<<
     " go to the project window
     silent call s:exPJ_OpenProject("")
 
-    for linenum in range(1,line('$'))
-        if match( getline(linenum) , cur_filename ) != -1
+    " store position if we don't find, restore to the position
+    let cursor_line = line ('.')
+    let cursor_col = col ('.')
+
+    " now go to the top start search
+    silent normal gg
+
+    " process search
+    while !is_found
+        if search( cur_filename, "W" ) > 0
+            let linenum = line ('.')
             let searchfilename = s:exPJ_GetPath(linenum) . s:exPJ_GetName(linenum)
             if fnamemodify(searchfilename , ":p") == cur_filefullpath
                 silent call cursor(linenum, 0)
@@ -870,17 +879,15 @@ function s:exPJ_GotoCurrentFile( jump_to_project_window ) " <<<
 
                 "
                 let is_found = 1
+                echon "file found in: " . cur_filefullpath . "\r"
                 break
             endif
+        else " if file not found
+            silent call cursor ( cursor_line, cursor_col )
+            call g:ex_WarningMsg('Warnning file not found: ' . cur_filefullpath )
+            return 
         endif
-    endfor
-
-    " if file not found
-    if !is_found
-        call g:ex_WarningMsg('Warnning file not found: ' . cur_filefullpath )
-    else
-        echon "file found in: " . cur_filefullpath . "\r"
-    endif
+    endwhile
 
     " back to edit buffer if needed
     if !a:jump_to_project_window
