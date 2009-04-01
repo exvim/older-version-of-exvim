@@ -1111,7 +1111,7 @@ endfunction " >>>
 function g:ex_MatchTagFile( tag_file_list, file_name ) " <<<
     " if we can use PWD find file, use it first
     if exists('g:exES_PWD')
-        let full_file_name = substitute(g:exES_PWD,'\','',"g") . substitute(a:file_name,'\.\\','\\',"g")
+        let full_file_name = substitute(g:exES_PWD,'\','',"g") . '//' . substitute(a:file_name,'\.\\','\\',"g")
         if findfile(full_file_name) != ''
             return simplify(full_file_name)
         endif
