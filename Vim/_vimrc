@@ -76,13 +76,17 @@ set nu " Show LineNumber
 set scrolloff=0 " minimal number of screen lines to keep above and below the cursor 
 set nowrap " I don't like wrap, cause in split window mode, it feel strange
 
-" Set gui font to MS_GOTHIC, size 9
-" set guifont=ms_gothic:h9
-" yu jian rong reference this one
-" set guifont=simsun:h8  
-" I prefer this 
-"set guifont=NSimSun:cGB2312
-set guifont=Lucida_Console:h9
+"set default guifont
+if has("gui_running")
+    if has("gui_gtk2")
+        set guifont=Luxi\ Mono\ 10
+    elseif has("x11")
+        " Also for GTK 1
+        set guifont=*-lucidatypewriter-medium-r-normal-*-*-180-*-*-m-*-*
+    elseif has("gui_win32")
+        set guifont=Lucida_Console:h9
+    endif
+endif
 
 " color scheme define
 silent exec "colorscheme ex"
@@ -353,12 +357,11 @@ vmap <unique> <F9> :call g:ex_InsertRemoveExtend()<CR>
 nmap <unique> <F8> :let @/=""<CR>
 
 " A-F1:  Switch to English Mode (Both Enconding and uiFont)
-set guifont=Lucida_Console:h9
 nmap <unique> <A-F1> :set guifont=Lucida_Console:h9<CR>:set encoding=latin1<CR>
 " A-F2:  Switch to Chinese Mode (Both Enconding and uiFont)
-nmap <unique> <A-F2> :set guifont=NSimSun:cGB2312<CR>:set encoding=cp936<CR>
+nmap <unique> <A-F2> :set guifont=NSimSun:cGB2312:h9<CR>:set encoding=cp936<CR>
 " A-F3:  Switch to Japanese Mode 
-nmap <unique> <A-F3> :set guifont=MS_Gothic:cSHIFTJIS<CR>:set encoding=cp932<CR>
+nmap <unique> <A-F3> :set guifont=MS_Gothic:cSHIFTJIS:h9<CR>:set encoding=cp932<CR>
 
 " map Ctrl-Tab to switch window
 nmap <unique> <S-Up> <C-W><Up>
@@ -497,7 +500,13 @@ au BufWritePost * call g:ex_UpdateCurrentBuffer()
 " Desc: 
 " ------------------------------------------------------------------ 
 
-au GUIEnter * simalt ~x " Maximize window when enter vim
+if has("gui_running")
+    if has("win32")
+        au GUIEnter * simalt ~x " Maximize window when enter vim
+    elseif has("unix")
+        " TODO: no way right now
+    endif
+endif
 
 " ------------------------------------------------------------------ 
 " Desc: Disable auto-comment for c/cpp and vim-script
