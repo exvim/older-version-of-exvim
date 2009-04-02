@@ -1,0 +1,28 @@
+#! /bin/sh
+# ======================================================================================
+# File         : readme.txt
+# Author       : Wu Jie 
+# Last Change  : 04/01/2009 | 21:34:43 PM | Wednesday,April
+# Description  : 
+# ======================================================================================
+
+# install package we need
+sudo apt-get install libgtk2.0-dev
+sudo apt-get install exuberant-ctags
+sudo apt-get install id-utils
+sudo apt-get install gawk
+
+# copy Makefile to vim72 source directory
+cp Makefile xxx/vim72/src 
+
+# clean, compile and install the source
+sudo make distclean
+sudo make config
+sudo make
+sudo make install
+
+# set global environment
+export EX_DEV="/usr/local/share"
+
+# copy files
+cp /usr/local/share/vim/toolkit/idutils/id-lang.map /usr/share/misc/id-lang.map
