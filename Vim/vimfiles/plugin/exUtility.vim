@@ -1657,8 +1657,54 @@ function g:ex_CursorJump( search_pattern, search_direction )
 endfunction " >>>
 
 " ======================================================== 
-"  make functions
+"  terminal functions
 " ======================================================== 
+
+" ------------------------------------------------------------------ 
+" Desc: 
+"  1. behavior
+"   silent: win32 - when finish the task, cmd-window will close automatically
+"           unix  - no message for processing task.
+"   prompt: win32 - when finish the task, you need to press key to close the cmd-window so that you can read the information   
+"   remain: win32 - when finish the task, the cmd-window will remain there
+"  2. wait
+"   wait:   wait until it is been processed
+"   nowait:  open the cmd-window as a new process
+" ------------------------------------------------------------------ 
+
+function g:ex_Terminal( behavior, wait, cmd ) " <<<
+    if has("win32")
+        " NOTE: !start is different with silent !start, silent !start will close the 'cmd /c start' window
+
+        " init shell & shell_end by behavior
+        let shell = 'cmd'
+        let shell_end = ''
+        if a:behavior ==# 'silent'
+            let shell = 'cmd /c'
+        elseif a:behavior ==# 'prompt'
+            let shell = 'cmd /c'
+            let shell_end = ' & pause'
+        elseif a:behavior ==# 'remain'
+            let shell = 'cmd /k'
+        endif
+
+        " init wait
+        let wait_cmd = ''
+        if a:wait ==# 'nowait'
+            let wait_cmd = 'start '
+        endif
+
+        " process
+        exec 'silent !' . wait_cmd . shell . ' ' . a:cmd . shell_end 
+
+    elseif has("unix")
+        let silent_cmd = ''
+        if a:behavior ==# 'silent'
+            let silent_cmd = 'silent'
+        endif
+        exec silent_cmd . ' !sh ' . a:cmd
+    endif
+endfunction " >>>
 
 " ------------------------------------------------------------------ 
 " Desc: 
@@ -1670,8 +1716,7 @@ function g:ex_GCCMake(args) " <<<
 
     let entry_file = glob('gcc_entry*.mk') 
     if entry_file != ''
-        " ! start is different with !start, silent ! start will close the 'cmd /c start' window
-        exec "silent !start cmd /c make -f" . entry_file . " " . a:args . " & pause"
+        call g:ex_Terminal ( 'prompt', 'nowait', 'make -f' . entry_file . ' ' . a:args )
     else
         call g:ex_WarningMsg("entry file not found")
     endif
@@ -1687,7 +1732,7 @@ function g:ex_ShaderMake(args) " <<<
 
     let entry_file = glob('shader_entry*.mk') 
     if entry_file != ''
-        exec "silent !start make -f" . entry_file . " " . a:args . " & pause"
+        call g:ex_Terminal ( 'prompt', 'nowait', 'make -f' . entry_file . ' ' . a:args )
     else
         call g:ex_WarningMsg("entry file not found")
     endif
@@ -1703,7 +1748,7 @@ function g:ex_VCMake(args) " <<<
 
     let entry_file = glob('msvc_entry*.mk') 
     if entry_file != ''
-        exec "silent !start make -f" . entry_file . " " . a:args . " & pause"
+        call g:ex_Terminal ( 'prompt', 'nowait', 'make -f' . entry_file . ' ' . a:args )
     else
         call g:ex_WarningMsg("entry file not found")
     endif
@@ -1744,7 +1789,7 @@ function g:ex_VCMakeBAT(cmd, config) " <<<
             endif
 
             " exec make_vs.bat
-            exec "silent !start make_vs " . cmd . " " . g:exES_Solution . " " . a:config . " " . prj_name . " & pause"
+            call g:ex_Terminal ( 'prompt', 'nowait', 'make_vs ' . cmd . ' ' . g:exES_Solution . ' ' . a:config . ' ' . prj_name )
         else
             call g:ex_WarningMsg("solution not found")
         endif
@@ -1759,32 +1804,37 @@ endfunction " >>>
 
 function g:ex_UpdateVimFiles( type ) " <<<
     " exec bat
-    let quick_gen_bat = glob('quick_gen_project*.bat') 
+    let update_cmd = ''
+    let quick_gen_script = glob('quick_gen_project*.\(bat\|sh\)') 
     if a:type == ""
-        if quick_gen_bat != ''
+        if quick_gen_script != ''
             silent exec "cscope kill " . g:exES_Cscope
-            exec "silent !start cmd /c " . quick_gen_bat . " all & pause"
+            let update_cmd = quick_gen_script . ' all'
             " we use async update
             " silent exec "cscope add " . g:exES_Cscope
         else
-            call g:ex_WarningMsg("quick_gen_project*.bat not found")
+            call g:ex_WarningMsg("quick_gen_project script not found")
         endif
     elseif a:type == "ID"
-        exec "silent !start cmd /c " . quick_gen_bat . " id & pause"
+        let update_cmd = quick_gen_script . ' id'
     elseif a:type == "symbol"
-        exec "silent !start cmd /c " . quick_gen_bat . " symbol & pause"
-    elseif a:type == "inherits"
-        exec "silent !start cmd /c " . quick_gen_bat . " inherits & pause"
+        let update_cmd = quick_gen_script . ' symbol'
+    elseif a:type == "inherit"
+        let update_cmd = quick_gen_script . ' inherit'
     elseif a:type == "tag"
-        exec "silent !start cmd /c " . quick_gen_bat . " tag & pause"
+        let update_cmd = quick_gen_script . ' tag'
     elseif a:type == "cscope"
         silent exec "cscope kill " . g:exES_Cscope
-        exec "silent !start cmd /c " . quick_gen_bat . " cscope & pause"
+        let update_cmd = quick_gen_script . ' cscope'
         " we use async update
         " silent exec "cscope add " . g:exES_Cscope
     else
         call g:ex_WarningMsg("do not found update-type: " . a:type )
+        return
     endif
+
+    " now process the quick_gen_project script
+    call g:ex_Terminal ( 'prompt', 'nowait', update_cmd )
 endfunction " >>>
 
 " ------------------------------------------------------------------ 
@@ -1792,19 +1842,36 @@ endfunction " >>>
 " ------------------------------------------------------------------ 
 
 function g:ex_CopyQuickGenProject( type ) " <<<
-    let quick_gen_bat = ""
-    if a:type == ""
-        let quick_gen_bat = "quick_gen_project_all.bat" 
-    elseif a:type == "general"
-        let quick_gen_bat = "quick_gen_project_general.bat" 
-    else
-        let quick_gen_bat = "quick_gen_project_" . a:type . "_only.bat" 
+    " init platform dependence value
+    let script_suffix = ''
+    let folder_name = ''
+    let copy_cmd = ''
+    if has("win32")
+        let script_suffix = 'bat'
+        let folder_name = 'batch'
+        let copy_cmd = 'copy'
+    elseif has("unix")
+        let script_suffix = 'sh'
+        let folder_name = 'bash'
+        let copy_cmd = 'cp'
     endif
-    let full_quick_gen_bat = fnamemodify( $EX_DEV . "\\Vim\\toolkit\\quickgen\\" . quick_gen_bat, ":p")
-    if findfile( full_quick_gen_bat ) == ""
-        call g:ex_WarningMsg('Error: file ' . full_quick_gen_bat . ' not found')
+
+    " copy quick gen script
+    let quick_gen_script = ''
+    if a:type == ""
+        let quick_gen_script = "quick_gen_project_all." . script_suffix
+    elseif a:type == "general"
+        let quick_gen_script = "quick_gen_project_general." . script_suffix  
     else
-        silent exec "!copy " . full_quick_gen_bat
+        let quick_gen_script = "quick_gen_project_" . a:type . "_only." . script_suffix
+    endif
+    let full_quick_gen_script = fnamemodify( $EX_DEV . "\\Vim\\toolkit\\quickgen\\" . folder_name . "\\" . quick_gen_script, ":p")
+    if findfile( full_quick_gen_script ) == ""
+        call g:ex_WarningMsg('Error: file ' . full_quick_gen_script . ' not found')
+    else
+        let cmd = copy_cmd . ' ' . full_quick_gen_script 
+        call g:ex_Terminal ( 'silent', 'wait', cmd )
+        echo 'file copied: ' . quick_gen_script
     endif
 endfunction " >>>
 
@@ -1816,6 +1883,7 @@ function g:ex_Debug( exe_name ) " <<<
     if glob(a:exe_name) == ''
         call g:ex_WarningMsg('file: ' . a:exe_name . ' not found')
     else
+        " TODO: call g:ex_Terminal ( 'remain', 'wait', 'insight ' . a:exe_name ) " right now can't use this...
         silent exec '!start insight ' . a:exe_name
     endif
 endfunction " >>>

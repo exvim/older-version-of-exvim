@@ -788,16 +788,14 @@ function s:exPJ_GotoSelectResult(edit_cmd) " <<<
         if a:edit_cmd == 'e'
             normal! za
         else
-            " TODO: use a Terminal function instead.
-            exec "silent !start cmd /k cd " . s:exPJ_GetPath(s:exPJ_cursor_line)
+            call g:ex_Terminal ( 'remain', 'nowait', 'cd '. s:exPJ_GetPath(s:exPJ_cursor_line) )
         endif
         return
     elseif match(file_line, '\C\[[^F]*\]') == -1
         if a:edit_cmd == 'e'
             call g:ex_WarningMsg('Please select a file')
         else
-            " TODO: use a Terminal function instead.
-            exec "silent !start cmd /k cd " . s:exPJ_GetPath(s:exPJ_cursor_line)
+            call g:ex_Terminal ( 'remain', 'nowait', 'cd '. s:exPJ_GetPath(s:exPJ_cursor_line) )
         endif
         return
     endif

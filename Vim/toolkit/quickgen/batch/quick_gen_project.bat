@@ -15,7 +15,7 @@ rem  ------------------------------------------------------------------
 rem  Desc: 
 rem  arguments:
 rem  1  lang_type: "all", "general", "c", "cpp", "c#", "html", "js", "lua", "math", "python", "uc", "vim"
-rem  2  gen_type: "all", "tag", "symbol", "inherits", "cscope", "id"
+rem  2  gen_type: "all", "tag", "symbol", "inherit", "cscope", "id"
 rem  ------------------------------------------------------------------ 
 
 set lang_type=%1
@@ -31,7 +31,7 @@ rem  ------------------------------------------------------------------
 
 set return=FINISH
 set file_filter=*.c *.cpp *.cxx *.h *.hpp *.inl *.hlsl *.vsh *.psh *.fx *.fxh *.cg *.shd *.uc *.m
-set support_inherits=true
+set support_inherit=true
 set support_cscope=true
 
 rem  ------------------------------------------------------------------ 
@@ -41,84 +41,84 @@ rem  ------------------------------------------------------------------
 rem all
 if /I "%lang_type%" == "all" (
     set file_filter=*.c *.cpp *.cxx *.h *.hpp *.inl *.hlsl *.vsh *.psh *.fx *.fxh *.cg *.shd *.uc *.m
-    set support_inherits=true
+    set support_inherit=true
     set support_cscope=true
 
 rem cstyle settings
     ) else if /I "%lang_type%" == "general" (
     set file_filter=*.c *.cpp *.cxx *.h *.hpp *.inl *.hlsl *.vsh *.psh *.fx *.fxh *.cg *.shd *.uc *.m
-    set support_inherits=true
+    set support_inherit=true
     set support_cscope=true
 
 rem c-only settings
     ) else if /I "%lang_type%" == "c" (
     set file_filter=*.c *.h
-    set support_inherits=false
+    set support_inherit=false
     set support_cscope=true
 
 rem cpp-only settings
     ) else if /I "%lang_type%" == "cpp" (
     set file_filter=*.cpp *.cxx *.h *.hpp *.inl
-    set support_inherits=true
+    set support_inherit=true
     set support_cscope=true
 
 rem c-sharp settings
     ) else if /I "%lang_type%" == "c#" (
     set file_filter=*.cs
-    set support_inherits=true
+    set support_inherit=true
     set support_cscope=false
 
 rem html settings
     ) else if /I "%lang_type%" == "html" (
     set file_filter=*.html *.htm *.shtml *.stm
-    set support_inherits=false
+    set support_inherit=false
     set support_cscope=false
 
 rem javascript settings
     ) else if /I "%lang_type%" == "js" (
     set file_filter=*.js *.as
-    set support_inherits=true
+    set support_inherit=true
     set support_cscope=false
 
 rem lua settings
     ) else if /I "%lang_type%" == "lua" (
     set file_filter=*.lua
-    set support_inherits=false
+    set support_inherit=false
     set support_cscope=false
 
 rem math settings
     ) else if /I "%lang_type%" == "math" (
     set file_filter=*.m
-    set support_inherits=false
+    set support_inherit=false
     set support_cscope=false
 
 rem python settings
     ) else if /I "%lang_type%" == "python" (
     set file_filter=*.py
-    set support_inherits=true
+    set support_inherit=true
     set support_cscope=false
 
 rem unreal-script settings
     ) else if /I "%lang_type%" == "uc" (
     set file_filter=*.uc
-    set support_inherits=true
+    set support_inherit=true
     set support_cscope=false
 
 rem vim settings
     ) else if /I "%lang_type%" == "vim" (
     set file_filter=*.vim
-    set support_inherits=false
+    set support_inherit=false
     set support_cscope=false
 
 rem unknown language settings
-    else (
+    ) else (
     echo error: can't find language type
     goto FINISH
     )
 
 rem echo setting infos
 echo language type: %lang_type%
-echo support inheirts: %support_inherits%
+echo support inheirts: %support_inherit%
 echo support cscope: %support_cscope%
 echo generate type: %gen_type%
 goto START
@@ -188,10 +188,10 @@ rem  NOTE: only for OO language
 rem  ------------------------------------------------------------------ 
 
 rem  ######################### 
-:GEN_INHERITS
+:GEN_INHERIT
 rem  ######################### 
 
-if /I "%support_inherits%" == "true" (
+if /I "%support_inherit%" == "true" (
     echo Creating Inherits...
     gawk -f "%EX_DEV%\Vim\toolkit\gawk\prg_Inherits.awk" ./tags>./_vimfiles/_inherits
     move /Y ".\_vimfiles\_inherits" ".\_vimfiles\inherits"
@@ -243,7 +243,7 @@ rem  ========================================================
 rem  Desc: start generate
 rem  ======================================================== 
 
-echo Generate %lang_type% Project
+echo Start Generate Project...
 
 rem  ======================================================== 
 rem  Desc: create directory first
@@ -265,7 +265,7 @@ if /I "%gen_type%" == "all" (
     goto GEN_SYMBOL
 :all_2
     set return=all_3
-    goto GEN_INHERITS
+    goto GEN_INHERIT
 :all_3
     set return=all_4
     goto GEN_CSCOPE
@@ -290,10 +290,10 @@ rem process generate symbol
     goto FINISH
 
 rem process generate inherits
-) else if /I "%gen_type%" == "inherits" ( 
-    set return=inherits_1
-    goto GEN_INHERITS
-:inherits_1
+) else if /I "%gen_type%" == "inherit" ( 
+    set return=inherit_1
+    goto GEN_INHERIT
+:inherit_1
     goto FINISH
 
 rem process generate cscope
@@ -312,7 +312,7 @@ rem process generate id
 
 rem process generate unknown
 ) else (
-    echo "Please specify tag, symbol, inherits, cscope, id or NA as the second arg"
+    echo "Please specify tag, symbol, inherit, cscope, id or NA as the second arg"
 )
 
 rem  ------------------------------------------------------------------ 

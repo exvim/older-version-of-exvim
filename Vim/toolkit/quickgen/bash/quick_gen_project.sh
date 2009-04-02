@@ -16,7 +16,7 @@ export EX_DEV="/usr/local/share"
 # Desc: 
 # arguments:
 # 1  lang_type: "all", "general", "c", "cpp", "c#", "html", "js", "lua", "math", "python", "uc", "vim"
-# 2  gen_type: "all", "tag", "symbol", "inherits", "cscope", "id"
+# 2  gen_type: "all", "tag", "symbol", "inherit", "cscope", "id"
 # ------------------------------------------------------------------ 
 
 lang_type=$1
@@ -31,7 +31,7 @@ gen_type=$2
 # ------------------------------------------------------------------ 
 
 file_filter="*.c *.cpp *.cxx *.h *.hpp *.inl *.hlsl *.vsh *.psh *.fx *.fxh *.cg *.shd *.uc *.m"
-support_inherits="true"
+support_inherit="true"
 support_cscope="true"
 
 # ------------------------------------------------------------------ 
@@ -41,73 +41,73 @@ support_cscope="true"
 # all
 if test "$lang_type" = "all"; then 
     file_filter="*.c *.cpp *.cxx *.h *.hpp *.inl *.hlsl *.vsh *.psh *.fx *.fxh *.cg *.shd *.uc *.m"
-    support_inherits="true"
+    support_inherit="true"
     support_cscope="true"
 
 # cstyle settings
 elif test "$lang_type" = "general"; then
     file_filter="*.c *.cpp *.cxx *.h *.hpp *.inl *.hlsl *.vsh *.psh *.fx *.fxh *.cg *.shd *.uc *.m"
-    support_inherits="true"
+    support_inherit="true"
     support_cscope="true"
 
 # c-only settings
 elif test "$lang_type" = "c"; then
     file_filter="*.c *.h"
-    support_inherits="false"
+    support_inherit="false"
     support_cscope="true"
 
 # cpp-only settings
 elif test "$lang_type" = "cpp"; then
     file_filter="*.cpp *.cxx *.h *.hpp *.inl"
-    support_inherits="true"
+    support_inherit="true"
     support_cscope="true"
 
 # c-sharp settings
 elif test "$lang_type" = "c#"; then
     file_filter="*.cs"
-    support_inherits="true"
+    support_inherit="true"
     support_cscope="false"
 
 # html settings
 elif test "$lang_type" = "html"; then
     file_filter="*.html *.htm *.shtml *.stm"
-    support_inherits="false"
+    support_inherit="false"
     support_cscope="false"
 
 # javascript settings
 elif test "$lang_type" = "js"; then
     file_filter="*.js *.as"
-    support_inherits="true"
+    support_inherit="true"
     support_cscope="false"
 
 # lua settings
 elif test "$lang_type" = "lua"; then
     file_filter="*.lua"
-    support_inherits="false"
+    support_inherit="false"
     support_cscope="false"
 
 # math settings
 elif test "$lang_type" = "math"; then
     file_filter="*.m"
-    support_inherits="false"
+    support_inherit="false"
     support_cscope="false"
 
 # python settings
 elif test "$lang_type" = "python"; then
     file_filter="*.py"
-    support_inherits="true"
+    support_inherit="true"
     support_cscope="false"
 
 # unreal-script settings
 elif test "$lang_type" = "uc"; then
     file_filter="*.uc"
-    support_inherits="true"
+    support_inherit="true"
     support_cscope="false"
 
 # vim settings
 elif test "$lang_type" = "vim"; then
     file_filter="*.vim"
-    support_inherits="false"
+    support_inherit="false"
     support_cscope="false"
 
 # unknown language settings
@@ -119,7 +119,7 @@ fi
 
 # echo setting infos
 echo "language type: ${lang_type}"
-echo "support inheirts: ${support_inherits}"
+echo "support inheirts: ${support_inherit}"
 echo "support cscope: ${support_cscope}"
 echo "generate type: ${gen_type}"
 
@@ -185,7 +185,7 @@ gen_symbols ()
 
 gen_inherits ()
 {
-    if test "$support_inherits" = "true"; then
+    if test "$support_inherit" = "true"; then
         echo "Creating Inherits..."
         gawk -f "${EX_DEV}/vim/toolkit/gawk/prg_Inherits.awk" ./tags>./_vimfiles/_inherits
         mv -f "./_vimfiles/_inherits" "./_vimfiles/inherits"
@@ -228,7 +228,7 @@ gen_id ()
 # Desc: start generate
 # ======================================================== 
 
-echo "Generate ${LANGTYPE} Project"
+echo "Start Generate Project..."
 
 # ======================================================== 
 # Desc: create directory first
@@ -263,7 +263,7 @@ case "$gen_type" in
     ;;
 
     # process generate inherits
-    "inherits")
+    "inherit")
     gen_inherits
     ;;
 
@@ -279,7 +279,7 @@ case "$gen_type" in
 
     # process invalid arg
     *)
-    echo "Please specify tag, symbol, inherits, cscope, id or NA as the second arg"
+    echo "Please specify tag, symbol, inherit, cscope, id or NA as the second arg"
     ;;
 esac
 
