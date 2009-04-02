@@ -263,7 +263,7 @@ function s:exPJ_GetPath( line_num )
     let fold_level = g:ex_GetFoldLevel(a:line_num)
 
     " recursively make full path
-    if match(getline(a:line_num),'[^^]-\[F\]') != -1
+    if match(getline(a:line_num),'[^^]-\C\[F\]') != -1
         let full_path = s:exPJ_GetName( a:line_num )
     else
         let full_path = ""
@@ -273,7 +273,7 @@ function s:exPJ_GetPath( line_num )
     while fold_level > 1 " don't parse level:0
         let fold_level -= 1
         let level_pattern = repeat('.',fold_level*2)
-        let fold_pattern = '^'.level_pattern.'-\[F\]'
+        let fold_pattern = '^'.level_pattern.'-\C\[F\]'
         let searchpos = s:exPJ_SearchForPattern(searchpos , fold_pattern)
         if searchpos
             let full_path = s:exPJ_GetName(searchpos).'/'.full_path
@@ -460,7 +460,7 @@ function s:exPJ_QuickRefreshProject() " <<<
     let fold_level -= 1
     let level_pattern = repeat('.',fold_level*2)
     let full_path_name = ''
-    let fold_pattern = '^'.level_pattern.'-\[F\]'
+    let fold_pattern = '^'.level_pattern.'-\C\[F\]'
 
     " get first fold name
     if match(file_line, '\C\[F\]') == -1
@@ -493,7 +493,7 @@ function s:exPJ_QuickRefreshProject() " <<<
         while fold_level > 1
             let fold_level -= 1
             let level_pattern = repeat('.',fold_level*2)
-            let fold_pattern = '^'.level_pattern.'-\[F\]'
+            let fold_pattern = '^'.level_pattern.'-\C\[F\]'
             if search(fold_pattern,'b')
                 let full_path_name = s:exPJ_GetName(line('.')).'/'.full_path_name
             else
@@ -573,7 +573,7 @@ function s:exPJ_RefreshProject() " <<<
     let fold_level -= 1
     let level_pattern = repeat('.',fold_level*2)
     let full_path_name = ''
-    let fold_pattern = '^'.level_pattern.'-\[F\]'
+    let fold_pattern = '^'.level_pattern.'-\C\[F\]'
 
     " get first fold name
     if match(file_line, '\C\[F\]') == -1
@@ -606,7 +606,7 @@ function s:exPJ_RefreshProject() " <<<
         while fold_level > 1
             let fold_level -= 1
             let level_pattern = repeat('.',fold_level*2)
-            let fold_pattern = '^'.level_pattern.'-\[F\]'
+            let fold_pattern = '^'.level_pattern.'-\C\[F\]'
             if search(fold_pattern,'b')
                 let full_path_name = s:exPJ_GetName(line('.')).'/'.full_path_name
             else
@@ -767,6 +767,9 @@ endfunction " >>>
 
 " ------------------------------------------------------------------ 
 " Desc: 
+" NOTE: the e, sp edit_cmd only work with file 
+"       for folder, when you use e edit_cmd, it will do folder open/close
+"                   when you use sp edit_cmd, it will do prompt cmd/terminal
 " ------------------------------------------------------------------ 
 
 function s:exPJ_GotoSelectResult(edit_cmd) " <<<
@@ -785,6 +788,7 @@ function s:exPJ_GotoSelectResult(edit_cmd) " <<<
         if a:edit_cmd == 'e'
             normal! za
         else
+            " TODO: use a Terminal function instead.
             exec "silent !start cmd /k cd " . s:exPJ_GetPath(s:exPJ_cursor_line)
         endif
         return
@@ -792,6 +796,7 @@ function s:exPJ_GotoSelectResult(edit_cmd) " <<<
         if a:edit_cmd == 'e'
             call g:ex_WarningMsg('Please select a file')
         else
+            " TODO: use a Terminal function instead.
             exec "silent !start cmd /k cd " . s:exPJ_GetPath(s:exPJ_cursor_line)
         endif
         return

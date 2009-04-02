@@ -753,7 +753,7 @@ let g:exPJ_defualt_filter .= 'py pyw '
 let g:exPJ_defualt_filter .= 'vim awk m '
 let g:exPJ_defualt_filter .= 'dox doxygen '
 let g:exPJ_defualt_filter .= 'ini cfg wiki '
-let g:exPJ_defualt_filter .= 'mk err exe bat '
+let g:exPJ_defualt_filter .= 'mk err exe bat sh '
 
 " ------------------------------------------------------------------ 
 " Desc: TagList
