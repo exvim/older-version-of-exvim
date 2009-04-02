@@ -1876,7 +1876,7 @@ function g:ex_CopyQuickGenProject( type ) " <<<
     if findfile( full_quick_gen_script ) == ""
         call g:ex_WarningMsg('Error: file ' . full_quick_gen_script . ' not found')
     else
-        let cmd = copy_cmd . ' ' . full_quick_gen_script 
+        let cmd = copy_cmd . ' ' . full_quick_gen_script . ' ' . quick_gen_script 
         call g:ex_Terminal ( 'silent', 'wait', cmd )
         echo 'file copied: ' . quick_gen_script
     endif
