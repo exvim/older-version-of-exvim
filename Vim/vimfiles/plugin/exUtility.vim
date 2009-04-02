@@ -1865,7 +1865,14 @@ function g:ex_CopyQuickGenProject( type ) " <<<
     else
         let quick_gen_script = "quick_gen_project_" . a:type . "_only." . script_suffix
     endif
-    let full_quick_gen_script = fnamemodify( $EX_DEV . "\\Vim\\toolkit\\quickgen\\" . folder_name . "\\" . quick_gen_script, ":p")
+
+    " get quick gen script from repository
+    let full_quick_gen_script = ''
+    if has("win32")
+        let full_quick_gen_script = fnamemodify( $EX_DEV . "\\Vim\\toolkit\\quickgen\\" . folder_name . "\\" . quick_gen_script, ":p")
+    elseif has("unix")
+        let full_quick_gen_script = fnamemodify( '/usr/local/share/vim/toolkit/quickgen/' . folder_name . '/' . quick_gen_script, ":p" )
+    endif
     if findfile( full_quick_gen_script ) == ""
         call g:ex_WarningMsg('Error: file ' . full_quick_gen_script . ' not found')
     else
