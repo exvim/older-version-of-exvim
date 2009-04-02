@@ -12,9 +12,13 @@ export EX_DEV="/usr/local/share"
 # preprocess arguments
 # /////////////////////////////////////////////////////////////////////////////
 
+# ------------------------------------------------------------------ 
+# Desc: 
 # arguments:
 # 1  lang_type: "all", "general", "c", "cpp", "c#", "html", "js", "lua", "math", "python", "uc", "vim"
-# 2  gen_type: "", "tag", "symbol", "inherits", "cscope", "id"
+# 2  gen_type: "all", "tag", "symbol", "inherits", "cscope", "id"
+# ------------------------------------------------------------------ 
+
 lang_type=$1
 gen_type=$2
 
@@ -22,93 +26,86 @@ gen_type=$2
 # set variables
 # /////////////////////////////////////////////////////////////////////////////
 
-# init default variables
+# ------------------------------------------------------------------ 
+# Desc: init default variables
+# ------------------------------------------------------------------ 
+
 file_filter="*.c *.cpp *.cxx *.h *.hpp *.inl *.hlsl *.vsh *.psh *.fx *.fxh *.cg *.shd *.uc *.m"
 support_inherits="true"
 support_cscope="true"
 
-# set variable depends on differnet language
+# ------------------------------------------------------------------ 
+# Desc: set variable depends on differnet language
+# ------------------------------------------------------------------ 
 
 # all
 if test "$lang_type" = "all"; then 
-    echo "language type is: all"
     file_filter="*.c *.cpp *.cxx *.h *.hpp *.inl *.hlsl *.vsh *.psh *.fx *.fxh *.cg *.shd *.uc *.m"
     support_inherits="true"
     support_cscope="true"
 
 # cstyle settings
 elif test "$lang_type" = "general"; then
-    echo "language type is: general"
     file_filter="*.c *.cpp *.cxx *.h *.hpp *.inl *.hlsl *.vsh *.psh *.fx *.fxh *.cg *.shd *.uc *.m"
     support_inherits="true"
     support_cscope="true"
 
 # c-only settings
 elif test "$lang_type" = "c"; then
-    echo "language type is: c"
     file_filter="*.c *.h"
     support_inherits="false"
     support_cscope="true"
 
 # cpp-only settings
 elif test "$lang_type" = "cpp"; then
-    echo "language type is: cpp"
     file_filter="*.cpp *.cxx *.h *.hpp *.inl"
     support_inherits="true"
     support_cscope="true"
 
 # c-sharp settings
 elif test "$lang_type" = "c#"; then
-    echo "language type is: c#"
     file_filter="*.cs"
     support_inherits="true"
     support_cscope="false"
 
 # html settings
 elif test "$lang_type" = "html"; then
-    echo "language type is: html"
     file_filter="*.html *.htm *.shtml *.stm"
     support_inherits="false"
     support_cscope="false"
 
 # javascript settings
 elif test "$lang_type" = "js"; then
-    echo "language type is: js"
     file_filter="*.js *.as"
     support_inherits="true"
     support_cscope="false"
 
 # lua settings
 elif test "$lang_type" = "lua"; then
-    echo "language type is: lua"
     file_filter="*.lua"
     support_inherits="false"
     support_cscope="false"
 
 # math settings
 elif test "$lang_type" = "math"; then
-    echo "language type is: math"
     file_filter="*.m"
     support_inherits="false"
     support_cscope="false"
 
 # python settings
 elif test "$lang_type" = "python"; then
-    echo "language type is: python"
     file_filter="*.py"
     support_inherits="true"
     support_cscope="false"
 
 # unreal-script settings
 elif test "$lang_type" = "uc"; then
-    echo "language type is: uc"
     file_filter="*.uc"
     support_inherits="true"
     support_cscope="false"
 
 # vim settings
 elif test "$lang_type" = "vim"; then
-    echo "language type is: vim"
     file_filter="*.vim"
     support_inherits="false"
     support_cscope="false"
@@ -119,6 +116,12 @@ else
     errstatus=1
     exit $errstatus
 fi
+
+# echo setting infos
+echo "language type: ${lang_type}"
+echo "support inheirts: ${support_inherits}"
+echo "support cscope: ${support_cscope}"
+echo "generate type: ${gen_type}"
 
 # /////////////////////////////////////////////////////////////////////////////
 # gen functions
@@ -221,27 +224,27 @@ gen_id ()
 # Start Process
 # /////////////////////////////////////////////////////////////////////////////
 
-# ------------------------------------------------------------------ 
+# ======================================================== 
 # Desc: start generate
-# ------------------------------------------------------------------ 
+# ======================================================== 
 
 echo "Generate ${LANGTYPE} Project"
 
-# ------------------------------------------------------------------ 
+# ======================================================== 
 # Desc: create directory first
-# ------------------------------------------------------------------ 
+# ======================================================== 
 
 echo "Create Diretory: _vimfiles"
 mkdir -p _vimfiles
 
-# ------------------------------------------------------------------ 
+# ======================================================== 
 # Desc: choose the generate mode
-# ------------------------------------------------------------------ 
+# ======================================================== 
 
 case "$gen_type" in
 
     # process generate all
-    "")
+    "all")
     gen_tag
     gen_symbols
     gen_inherits

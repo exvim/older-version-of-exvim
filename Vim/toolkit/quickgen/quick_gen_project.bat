@@ -11,249 +11,318 @@ rem ////////////////////////////////////////////////////////////////////////////
 rem preprocess arguments
 rem /////////////////////////////////////////////////////////////////////////////
 
-set LANGTYPE=ALL
-set FILEFILTER="*.c *.cpp *.cxx *.h *.hpp *.inl *.hlsl *.vsh *.psh *.fx *.fxh *.cg *.shd *.uc *.m"
-if /I "%1"=="all" goto START
-if /I "%1"=="general" goto GENERAL
-if /I "%1"=="c" goto C_ONLY
-if /I "%1"=="cpp" goto CPP_ONLY
-if /I "%1"=="c#" goto CSHARP
-if /I "%1"=="html" goto HTML
-if /I "%1"=="js" goto JS
-if /I "%1"=="lua" goto LUA
-if /I "%1"=="math" goto MATH
-if /I "%1"=="python" goto PYTHON
-if /I "%1"=="uc" goto UC
-if /I "%1"=="vim" goto VIM
+rem  ------------------------------------------------------------------ 
+rem  Desc: 
+rem  arguments:
+rem  1  lang_type: "all", "general", "c", "cpp", "c#", "html", "js", "lua", "math", "python", "uc", "vim"
+rem  2  gen_type: "all", "tag", "symbol", "inherits", "cscope", "id"
+rem  ------------------------------------------------------------------ 
+
+set lang_type=%1
+set gen_type=%2
 
 rem /////////////////////////////////////////////////////////////////////////////
 rem set variables
 rem /////////////////////////////////////////////////////////////////////////////
 
 rem  ------------------------------------------------------------------ 
-rem  Desc: cstyle settings
+rem  Desc: init default variables
 rem  ------------------------------------------------------------------ 
 
-:GENERAL
-set LANGTYPE=GENERAL
-set FILEFILTER=*.c *.cpp *.cxx *.h *.hpp *.inl *.hlsl *.vsh *.psh *.fx *.fxh *.cg *.shd *.uc *.m
-goto START
+set return=FINISH
+set file_filter=*.c *.cpp *.cxx *.h *.hpp *.inl *.hlsl *.vsh *.psh *.fx *.fxh *.cg *.shd *.uc *.m
+set support_inherits=true
+set support_cscope=true
 
 rem  ------------------------------------------------------------------ 
-rem  Desc: c-only settings
+rem  Desc: set variable depends on differnet language
 rem  ------------------------------------------------------------------ 
 
-:C_ONLY
-set LANGTYPE=C_ONLY
-set FILEFILTER=*.c *.h
-goto START
+rem all
+if /I "%lang_type%" == "all" (
+    set file_filter=*.c *.cpp *.cxx *.h *.hpp *.inl *.hlsl *.vsh *.psh *.fx *.fxh *.cg *.shd *.uc *.m
+    set support_inherits=true
+    set support_cscope=true
 
-rem  ------------------------------------------------------------------ 
-rem  Desc: cpp-only settings
-rem  ------------------------------------------------------------------ 
+rem cstyle settings
+    ) else if /I "%lang_type%" == "general" (
+    set file_filter=*.c *.cpp *.cxx *.h *.hpp *.inl *.hlsl *.vsh *.psh *.fx *.fxh *.cg *.shd *.uc *.m
+    set support_inherits=true
+    set support_cscope=true
 
-:CPP_ONLY
-set LANGTYPE=CPP_ONLY
-set FILEFILTER=*.cpp *.cxx *.h *.hpp *.inl
-goto START
+rem c-only settings
+    ) else if /I "%lang_type%" == "c" (
+    set file_filter=*.c *.h
+    set support_inherits=false
+    set support_cscope=true
 
-rem  ------------------------------------------------------------------ 
-rem  Desc: c# settings
-rem  ------------------------------------------------------------------ 
+rem cpp-only settings
+    ) else if /I "%lang_type%" == "cpp" (
+    set file_filter=*.cpp *.cxx *.h *.hpp *.inl
+    set support_inherits=true
+    set support_cscope=true
 
-:CSHARP
-set LANGTYPE=CSHARP
-set FILEFILTER=*.cs
-goto START
+rem c-sharp settings
+    ) else if /I "%lang_type%" == "c#" (
+    set file_filter=*.cs
+    set support_inherits=true
+    set support_cscope=false
 
-rem  ------------------------------------------------------------------ 
-rem  Desc: html settings
-rem  ------------------------------------------------------------------ 
+rem html settings
+    ) else if /I "%lang_type%" == "html" (
+    set file_filter=*.html *.htm *.shtml *.stm
+    set support_inherits=false
+    set support_cscope=false
 
-:HTML
-set LANGTYPE=HTML
-set FILEFILTER=*.html *.htm *.shtml *.stm
-goto START
+rem javascript settings
+    ) else if /I "%lang_type%" == "js" (
+    set file_filter=*.js *.as
+    set support_inherits=true
+    set support_cscope=false
 
-rem  ------------------------------------------------------------------ 
-rem  Desc: javascript settings
-rem  ------------------------------------------------------------------ 
+rem lua settings
+    ) else if /I "%lang_type%" == "lua" (
+    set file_filter=*.lua
+    set support_inherits=false
+    set support_cscope=false
 
-:JS
-set LANGTYPE=JS
-set FILEFILTER=*.js *.as
-goto START
+rem math settings
+    ) else if /I "%lang_type%" == "math" (
+    set file_filter=*.m
+    set support_inherits=false
+    set support_cscope=false
 
-rem  ------------------------------------------------------------------ 
-rem  Desc: lua settings
-rem  ------------------------------------------------------------------ 
+rem python settings
+    ) else if /I "%lang_type%" == "python" (
+    set file_filter=*.py
+    set support_inherits=true
+    set support_cscope=false
 
-:LUA
-set LANGTYPE=LUA
-set FILEFILTER=*.lua
-goto START
+rem unreal-script settings
+    ) else if /I "%lang_type%" == "uc" (
+    set file_filter=*.uc
+    set support_inherits=true
+    set support_cscope=false
 
-rem  ------------------------------------------------------------------ 
-rem  Desc: 
-rem  ------------------------------------------------------------------ 
+rem vim settings
+    ) else if /I "%lang_type%" == "vim" (
+    set file_filter=*.vim
+    set support_inherits=false
+    set support_cscope=false
 
-:MATH
-set LANGTYPE=MATH
-set FILEFILTER=*.m
-goto START
+rem unknown language settings
+    else (
+    echo error: can't find language type
+    goto FINISH
+    )
 
-rem  ------------------------------------------------------------------ 
-rem  Desc: python settings
-rem  ------------------------------------------------------------------ 
-
-:PYTHON
-set LANGTYPE=PYTHON
-set FILEFILTER=*.py
-goto START
-
-rem  ------------------------------------------------------------------ 
-rem  Desc: 
-rem  ------------------------------------------------------------------ 
-
-:UC
-set LANGTYPE=UC
-set FILEFILTER=*.uc
-goto START
-
-rem  ------------------------------------------------------------------ 
-rem  Desc: vim settings
-rem  ------------------------------------------------------------------ 
-
-:VIM
-set LANGTYPE=VIM
-set FILEFILTER=*.vim
+rem echo setting infos
+echo language type: %lang_type%
+echo support inheirts: %support_inherits%
+echo support cscope: %support_cscope%
+echo generate type: %gen_type%
 goto START
 
 rem /////////////////////////////////////////////////////////////////////////////
-rem Start Process
+rem gen functions 
 rem /////////////////////////////////////////////////////////////////////////////
-
-:START
-
-rem  ------------------------------------------------------------------ 
-rem  Desc: start generate
-rem  ------------------------------------------------------------------ 
-
-echo Generate %LANGTYPE% Project
-
-:MKDIR
-
-rem  ------------------------------------------------------------------ 
-rem  Desc: create directory first
-rem  ------------------------------------------------------------------ 
-
-echo Create Diretory: _vimfiles
-mkdir _vimfiles
-
-rem  ------------------------------------------------------------------ 
-rem  Desc: choose the generate mode
-rem  ------------------------------------------------------------------ 
-
-if /I "%2"=="" goto TAG
-if /I "%2"=="tag" goto TAG
-if /I "%2"=="symbol" goto SYMBOL
-if /I "%2"=="inherits" goto INHERITS
-if /I "%2"=="cscope" goto CSCOPE
-if /I "%2"=="id" goto ID
-
-:TAG
 
 rem  ------------------------------------------------------------------ 
 rem  Desc: create tags
 rem  ------------------------------------------------------------------ 
 
-echo Creating Tags...
-if /I "%LANGTYPE%"=="ALL" ctags -o./_tags -R --c++-kinds=+p --fields=+iaS --extra=+q --languages=c,c++,c#,python,vim,html,lua,javascript,uc,math --langmap=c++:+.inl,c:+.fx,c:+.fxh,c:+.hlsl,c:+.vsh,c:+.psh,c:+.cg,c:+.shd,javascript:+.as
-if /I "%LANGTYPE%"=="GENERAL" ctags -o./_tags -R --c++-kinds=+p --fields=+iaS --extra=+q --languages=c,c++,c#,python --langmap=c++:+.inl,c:+.fx,c:+.fxh,c:+.hlsl,c:+.vsh,c:+.psh,c:+.cg,c:+.shd
-if /I "%LANGTYPE%"=="C_ONLY" ctags -o./_tags -R --c-kinds=+p --fields=+iaS --extra=+q --languages=c --langmap=c++:+.inl
-if /I "%LANGTYPE%"=="CPP_ONLY" ctags -o./_tags -R --c++-kinds=+p --fields=+iaS --extra=+q --languages=c++ --langmap=c++:+.inl
-if /I "%LANGTYPE%"=="CSHARP" ctags -o./_tags -R --fields=+iaS --extra=+q --languages=c#
-if /I "%LANGTYPE%"=="HTML" ctags -o./_tags -R  --fields=+iaS --extra=+q --languages=html
-if /I "%LANGTYPE%"=="JS" ctags -o./_tags -R  --fields=+iaS --extra=+q --languages=javascript --langmap=javascript:+.as
-if /I "%LANGTYPE%"=="LUA" ctags -o./_tags -R  --fields=+iaS --extra=+q --languages=lua
-if /I "%LANGTYPE%"=="MATH" ctags -o./_tags -R  --fields=+iaS --extra=+q --languages=math
-if /I "%LANGTYPE%"=="PYTHON" ctags -o./_tags -R --fields=+iaS --extra=+q --languages=python
-if /I "%LANGTYPE%"=="UC" ctags -o./_tags -R  --fields=+iaS --extra=+q --languages=uc
-if /I "%LANGTYPE%"=="VIM" ctags -o./_tags -R  --fields=+iaS --extra=+q --languages=vim
-move /Y ".\_tags" ".\tags"
+rem  ######################### 
+:GEN_TAG
+rem  ######################### 
 
-:SYMBOL
+rem create tags
+echo Creating Tags...
+
+rem process tags by langugage
+
+if /I "%lang_type%" == "all" ( 
+    ctags -o./_tags -R --c++-kinds=+p --fields=+iaS --extra=+q --languages=c,c++,c#,python,vim,html,lua,javascript,uc,math --langmap=c++:+.inl,c:+.fx,c:+.fxh,c:+.hlsl,c:+.vsh,c:+.psh,c:+.cg,c:+.shd,javascript:+.as
+) else if /I "%lang_type%" == "general" (
+    ctags -o./_tags -R --c++-kinds=+p --fields=+iaS --extra=+q --languages=c,c++,c#,python --langmap=c++:+.inl,c:+.fx,c:+.fxh,c:+.hlsl,c:+.vsh,c:+.psh,c:+.cg,c:+.shd
+) else if /I "%lang_type%" == "c" (
+    ctags -o./_tags -R --c-kinds=+p --fields=+iaS --extra=+q --languages=c --langmap=c++:+.inl
+) else if /I "%lang_type%" == "cpp" ( 
+    ctags -o./_tags -R --c++-kinds=+p --fields=+iaS --extra=+q --languages=c++ --langmap=c++:+.inl
+) else if /I "%lang_type%" == "c#" (
+    ctags -o./_tags -R --fields=+iaS --extra=+q --languages=c#
+) else if /I "%lang_type%" == "html" (
+    ctags -o./_tags -R  --fields=+iaS --extra=+q --languages=html
+) else if /I "%lang_type%" == "js" ( 
+    ctags -o./_tags -R  --fields=+iaS --extra=+q --languages=javascript --langmap=javascript:+.as
+) else if /I "%lang_type%" == "lua" (
+    ctags -o./_tags -R  --fields=+iaS --extra=+q --languages=lua
+) else if /I "%lang_type%" == "math" (
+    ctags -o./_tags -R  --fields=+iaS --extra=+q --languages=math
+) else if /I "%lang_type%" == "python" ( 
+    ctags -o./_tags -R --fields=+iaS --extra=+q --languages=python
+) else if /I "%lang_type%" == "uc" ( 
+    ctags -o./_tags -R  --fields=+iaS --extra=+q --languages=uc
+) else if /I "%lang_type%" == "vim" (
+    ctags -o./_tags -R  --fields=+iaS --extra=+q --languages=vim
+)
+
+move /Y ".\_tags" ".\tags"
+goto %return%
 
 rem  ------------------------------------------------------------------ 
 rem  Desc: create symbols
 rem  ------------------------------------------------------------------ 
 
-if /I "%2"=="tag" goto FINISH
+rem  ######################### 
+:GEN_SYMBOL
+rem  ######################### 
+
 echo Creating Symbols...
 gawk -f "%EX_DEV%\Vim\toolkit\gawk\prg_NoStripSymbol.awk" ./tags>./_vimfiles/_symbol
 move /Y ".\_vimfiles\_symbol" ".\_vimfiles\symbol"
-
-:INHERITS
+goto %return%
 
 rem  ------------------------------------------------------------------ 
 rem  Desc: create inherits
 rem  NOTE: only for OO language
 rem  ------------------------------------------------------------------ 
 
-if /I "%2"=="symbol" goto FINISH
-if /I "%LANGTYPE%"=="C_ONLY" goto CSCOPE
-if /I "%LANGTYPE%"=="HTML" goto CSCOPE
-if /I "%LANGTYPE%"=="LUA" goto CSCOPE
-if /I "%LANGTYPE%"=="MATH" goto CSCOPE
-if /I "%LANGTYPE%"=="VIM" goto CSCOPE
-echo Creating Inherits...
-gawk -f "%EX_DEV%\Vim\toolkit\gawk\prg_Inherits.awk" ./tags>./_vimfiles/_inherits
-move /Y ".\_vimfiles\_inherits" ".\_vimfiles\inherits"
+rem  ######################### 
+:GEN_INHERITS
+rem  ######################### 
 
-:CSCOPE
+if /I "%support_inherits%" == "true" (
+    echo Creating Inherits...
+    gawk -f "%EX_DEV%\Vim\toolkit\gawk\prg_Inherits.awk" ./tags>./_vimfiles/_inherits
+    move /Y ".\_vimfiles\_inherits" ".\_vimfiles\inherits"
+)
+goto %return%
 
 rem  ------------------------------------------------------------------ 
 rem  Desc: create cscope files
 rem  NOTE: only for c/cpp
 rem  ------------------------------------------------------------------ 
 
-if /I "%2"=="inherits" goto FINISH
-if /I "%LANGTYPE%"=="CSHARP" goto ID
-if /I "%LANGTYPE%"=="PYTHON" goto ID
-if /I "%LANGTYPE%"=="HTML" goto ID
-if /I "%LANGTYPE%"=="JS" goto ID
-if /I "%LANGTYPE%"=="LUA" goto ID
-if /I "%LANGTYPE%"=="MATH" goto ID
-if /I "%LANGTYPE%"=="UC" goto ID
-if /I "%LANGTYPE%"=="VIM" goto ID
-echo Creating cscope.files...
-dir /s /b %FILEFILTER%|sed "s,\(.*\),\"\1\",g" > cscope.files
-echo Creating cscope.out...
-cscope -b
-move /Y cscope.files ".\_vimfiles\cscope.files"
-move /Y cscope.out ".\_vimfiles\cscope.out"
+rem  ######################### 
+:GEN_CSCOPE
+rem  ######################### 
 
-:ID
+if /I "%support_cscope%" == "true" (
+    echo Creating cscope.files...
+    dir /s /b %file_filter%|sed "s,\(.*\),\"\1\",g" > cscope.files
+    echo Creating cscope.out...
+    cscope -b
+    move /Y cscope.files ".\_vimfiles\cscope.files"
+    move /Y cscope.out ".\_vimfiles\cscope.out"
+)
+goto %return%
 
 rem  ------------------------------------------------------------------ 
 rem  Desc: create IDs
 rem  ------------------------------------------------------------------ 
 
-if /I "%2"=="cscope" goto FINISH
+rem  ######################### 
+:GEN_ID
+rem  ######################### 
+
 echo Creating IDs...
 mkid --include="text"
 rem mkid --include="C C++"
-echo Move ID to ./_vimfiles/ID
 move /Y ID ".\_vimfiles\ID"
-if /I "%2"=="id" goto FINISH
+goto %return%
 
-:FINISH
+rem /////////////////////////////////////////////////////////////////////////////
+rem Start Process
+rem /////////////////////////////////////////////////////////////////////////////
+
+rem  ######################### 
+:START
+rem  ######################### 
+
+rem  ======================================================== 
+rem  Desc: start generate
+rem  ======================================================== 
+
+echo Generate %lang_type% Project
+
+rem  ======================================================== 
+rem  Desc: create directory first
+rem  ======================================================== 
+
+echo Create Diretory: _vimfiles
+mkdir _vimfiles
+
+rem  ======================================================== 
+rem  Desc: choose the generate mode
+rem  ======================================================== 
+
+rem process generate all
+if /I "%gen_type%" == "all" ( 
+    set return=all_1
+    goto GEN_TAG
+:all_1
+    set return=all_2
+    goto GEN_SYMBOL
+:all_2
+    set return=all_3
+    goto GEN_INHERITS
+:all_3
+    set return=all_4
+    goto GEN_CSCOPE
+:all_4
+    set return=all_5
+    goto GEN_ID
+:all_5
+    goto FINISH
+
+rem process generate tag
+) else if /I "%gen_type%" == "tag" (
+    set return=tag_1
+    goto GEN_TAG
+:tag_1
+    goto FINISH
+
+rem process generate symbol
+) else if /I "%gen_type%" == "symbol" ( 
+    set return=symbol_1
+    goto GEN_SYMBOL
+:symbol_1
+    goto FINISH
+
+rem process generate inherits
+) else if /I "%gen_type%" == "inherits" ( 
+    set return=inherits_1
+    goto GEN_INHERITS
+:inherits_1
+    goto FINISH
+
+rem process generate cscope
+) else if /I "%gen_type%" == "cscope" ( 
+    set return=cscope_1
+    goto GEN_CSCOPE
+:cscope_1
+    goto FINISH
+
+rem process generate id
+) else if /I "%gen_type%" == "id" ( 
+    set return=id_1
+    goto GEN_ID
+:id_1
+    goto FINISH
+
+rem process generate unknown
+) else (
+    echo "Please specify tag, symbol, inherits, cscope, id or NA as the second arg"
+)
 
 rem  ------------------------------------------------------------------ 
 rem  Desc: finish process
 rem  ------------------------------------------------------------------ 
 
+rem  ######################### 
+:FINISH
+rem  ######################### 
+
 echo Finish
 echo on
-
 

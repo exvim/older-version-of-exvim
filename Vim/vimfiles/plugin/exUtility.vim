@@ -1671,7 +1671,7 @@ function g:ex_GCCMake(args) " <<<
     let entry_file = glob('gcc_entry*.mk') 
     if entry_file != ''
         " ! start is different with !start, silent ! start will close the 'cmd /c start' window
-        exec "silent ! start make -f" . entry_file . " " . a:args
+        exec "silent !start cmd /c make -f" . entry_file . " " . a:args . " & pause"
     else
         call g:ex_WarningMsg("entry file not found")
     endif
@@ -1687,7 +1687,7 @@ function g:ex_ShaderMake(args) " <<<
 
     let entry_file = glob('shader_entry*.mk') 
     if entry_file != ''
-        exec "silent ! start make -f" . entry_file . " " . a:args
+        exec "silent !start make -f" . entry_file . " " . a:args . " & pause"
     else
         call g:ex_WarningMsg("entry file not found")
     endif
@@ -1703,7 +1703,7 @@ function g:ex_VCMake(args) " <<<
 
     let entry_file = glob('msvc_entry*.mk') 
     if entry_file != ''
-        exec "silent ! start make -f" . entry_file . " " . a:args
+        exec "silent !start make -f" . entry_file . " " . a:args . " & pause"
     else
         call g:ex_WarningMsg("entry file not found")
     endif
@@ -1744,7 +1744,7 @@ function g:ex_VCMakeBAT(cmd, config) " <<<
             endif
 
             " exec make_vs.bat
-            exec "silent ! start make_vs ".cmd.' '.g:exES_Solution.' '.a:config.' '.prj_name
+            exec "silent !start make_vs " . cmd . " " . g:exES_Solution . " " . a:config . " " . prj_name . " & pause"
         else
             call g:ex_WarningMsg("solution not found")
         endif
@@ -1763,23 +1763,23 @@ function g:ex_UpdateVimFiles( type ) " <<<
     if a:type == ""
         if quick_gen_bat != ''
             silent exec "cscope kill " . g:exES_Cscope
-            silent exec "!start " . quick_gen_bat
+            exec "silent !start cmd /c " . quick_gen_bat . " all & pause"
             " we use async update
             " silent exec "cscope add " . g:exES_Cscope
         else
             call g:ex_WarningMsg("quick_gen_project*.bat not found")
         endif
     elseif a:type == "ID"
-        silent exec "!start " . quick_gen_bat . " id"
+        exec "silent !start cmd /c " . quick_gen_bat . " id & pause"
     elseif a:type == "symbol"
-        silent exec "!start " . quick_gen_bat . " symbol"
+        exec "silent !start cmd /c " . quick_gen_bat . " symbol & pause"
     elseif a:type == "inherits"
-        silent exec "!start " . quick_gen_bat . " inherits"
+        exec "silent !start cmd /c " . quick_gen_bat . " inherits & pause"
     elseif a:type == "tag"
-        silent exec "!start " . quick_gen_bat . " tag"
+        exec "silent !start cmd /c " . quick_gen_bat . " tag & pause"
     elseif a:type == "cscope"
         silent exec "cscope kill " . g:exES_Cscope
-        silent exec "!start " . quick_gen_bat . " cscope"
+        exec "silent !start cmd /c " . quick_gen_bat . " cscope & pause"
         " we use async update
         " silent exec "cscope add " . g:exES_Cscope
     else
