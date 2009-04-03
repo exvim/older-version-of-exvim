@@ -1803,29 +1803,44 @@ endfunction " >>>
 " ------------------------------------------------------------------ 
 
 function g:ex_UpdateVimFiles( type ) " <<<
-    " exec bat
-    let update_cmd = ''
+    let script_not_found = 0
+
+    " find quick gen script first
     let quick_gen_script = glob('quick_gen_project*.\(bat\|sh\)') 
+    if quick_gen_script != ''
+        silent exec "cscope kill " . g:exES_Cscope
+        " we use async update
+        " silent exec "cscope add " . g:exES_Cscope
+    else
+        call g:ex_WarningMsg("quick_gen_project script not found")
+        let script_not_found = 1
+    endif
+
+    " if not found, we show a list let usr select project type, then copy the script and running it
+    if script_not_found == 1
+        let type_list = ['unknown', 'all', 'general', 'c', 'cpp', 'csharp', 'html', 'javascript', 'lua', 'math', 'python', 'uc', 'vim']
+        let idx = inputlist ( ['Select Project Type:', '1. all', '2. general', '3. c', '4. cpp', '5. csharp', '6. html', '7. javascript', '8. lua', '9. math', '10. python', '11. uc', '12. vim'])
+        let quick_gen_script = g:ex_CopyQuickGenProject ( type_list[idx] )
+    endif
+
+    " create update cmd
+    let gen_type = ''
     if a:type == ""
-        if quick_gen_script != ''
-            silent exec "cscope kill " . g:exES_Cscope
-            let update_cmd = quick_gen_script . ' all'
-            " we use async update
-            " silent exec "cscope add " . g:exES_Cscope
-        else
-            call g:ex_WarningMsg("quick_gen_project script not found")
-        endif
+        silent exec "cscope kill " . g:exES_Cscope
+        let gen_type = ' all'
+        " we use async update
+        " silent exec "cscope add " . g:exES_Cscope
     elseif a:type == "ID"
-        let update_cmd = quick_gen_script . ' id'
+        let gen_type = ' id'
     elseif a:type == "symbol"
-        let update_cmd = quick_gen_script . ' symbol'
+        let gen_type = ' symbol'
     elseif a:type == "inherit"
-        let update_cmd = quick_gen_script . ' inherit'
+        let gen_type = ' inherit'
     elseif a:type == "tag"
-        let update_cmd = quick_gen_script . ' tag'
+        let gen_type = ' tag'
     elseif a:type == "cscope"
         silent exec "cscope kill " . g:exES_Cscope
-        let update_cmd = quick_gen_script . ' cscope'
+        let gen_type = ' cscope'
         " we use async update
         " silent exec "cscope add " . g:exES_Cscope
     else
@@ -1834,6 +1849,7 @@ function g:ex_UpdateVimFiles( type ) " <<<
     endif
 
     " now process the quick_gen_project script
+    let update_cmd = quick_gen_script . gen_type
     call g:ex_Terminal ( 'prompt', 'nowait', update_cmd )
 endfunction " >>>
 
@@ -1880,6 +1896,9 @@ function g:ex_CopyQuickGenProject( type ) " <<<
         exec 'silent !' . cmd
         echo 'file copied: ' . quick_gen_script
     endif
+
+    "
+    return quick_gen_script
 endfunction " >>>
 
 " ------------------------------------------------------------------ 
