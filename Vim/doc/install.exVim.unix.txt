@@ -6,12 +6,6 @@
 # Description  : 
 # ======================================================================================
 
-# install package we need
-sudo apt-get install libgtk2.0-dev
-sudo apt-get install exuberant-ctags
-sudo apt-get install id-utils
-sudo apt-get install gawk
-
 # copy Makefile to vim72 source directory
 cp Makefile xxx/vim72/src 
 
@@ -25,4 +19,14 @@ sudo make install
 export EX_DEV="/usr/local/share"
 
 # copy files
-cp /usr/local/share/vim/toolkit/idutils/id-lang.map /usr/share/misc/id-lang.map
+sudo cp ${EX_DEV}/vim/toolkit/idutils/id-lang.map /usr/share/misc/id-lang.map
+sudo svn checkout svn://10.0.0.3/gVim/Vim ${EX_DEV}/vim
+sudo cp ${EX_DEV}/vim/_vimrc ~/_vimrc
+
+# install package we need
+sudo apt-get install libgtk2.0-dev
+sudo apt-get install exuberant-ctags
+sudo apt-get install id-utils
+sudo apt-get install gawk
+sudo apt-get install graphviz
+

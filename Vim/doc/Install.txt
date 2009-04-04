@@ -41,9 +41,9 @@ Install:
 
 6. Install gVim
     (1) Copy gVim\Vim to EX_DEV\Vim
-    (2) Copy cTags_VerNr\ctags.exe to EX_DEV\Vim\vim71
-    (3) Copy cscope\cscope.exe to EX_DEV\Vim\vim71
-    (4) Add %EX_DEV%\Vim\vim71 into Environment Path
+    (2) Copy cTags_VerNr\ctags.exe to EX_DEV\Vim\vim72
+    (3) Copy cscope\cscope.exe to EX_DEV\Vim\vim72
+    (4) Add %EX_DEV%\Vim\vim72 into Environment Path
 
 Quick Start:
     (1) Find a small cpp project, for example d:\Project\exUtility.
