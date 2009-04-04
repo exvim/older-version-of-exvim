@@ -28,5 +28,6 @@ sudo apt-get install libgtk2.0-dev
 sudo apt-get install exuberant-ctags
 sudo apt-get install id-utils
 sudo apt-get install gawk
+sudo apt-get install cscope
 sudo apt-get install graphviz
 

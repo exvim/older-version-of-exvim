@@ -112,6 +112,7 @@ PrjLibDir := $(OutDir)/$(Configuration)/bin
 #  ======================================================== 
 
 FullPath_PrjLibs := $(addprefix $(PrjLibDir)/,$(addprefix lib,$(addsuffix .a,$(PrjLibs))))
+LibDirs += $(PrjLibDir)
 
 #  ------------------------------------------------------------------ 
 #  Desc: Target
@@ -121,17 +122,17 @@ FullPath_PrjLibs := $(addprefix $(PrjLibDir)/,$(addprefix lib,$(addsuffix .a,$(P
 #  Target File Output Path & Name
 #  ======================================================== 
 
-ifeq ($(ProjectType),$(EXE_NAME))
+ifeq ($(ProjectType),exe)
 TargetDir := $(OutDir)/$(Configuration)/bin
-Target := $(Project)_$(Configuration).$(ProjectType)
+Target := $(Project)_$(Configuration).$(EXE_NAME)
 else
-ifeq ($(ProjectType),a)
+ifeq ($(ProjectType),lib)
 TargetDir := $(OutDir)/$(Configuration)/bin
-Target := lib$(Project).$(ProjectType)
+Target := lib$(Project).$(LIB_NAME)
 else
 ifeq ($(ProjectType),dll)
 TargetDir := $(OutDir)/$(Configuration)/bin
-Target := $(Project).$(ProjectType)
+Target := $(Project).$(DLL_NAME)
 libTarget := lib$(Project).a
 endif
 endif
@@ -366,12 +367,12 @@ else
 endif
 	$(MKDIR) $(TargetDir)
 	$(MKDIR) $(ErrDir)
-	$(ECHO). > $(ErrDir)/$(ErrLogName)
-	$(ECHO) ^<^<^<^<^<^< $(Target): '$(Project)' >> $(ErrDir)/$(ErrLogName)
-ifeq ($(ProjectType),$(EXE_NAME))
+	$(ECHO_EMPTY_LINE) > $(ErrDir)/$(ErrLogName)
+	$(ECHO) $(OPEN_MARK) $(Target): '$(Project)' >> $(ErrDir)/$(ErrLogName)
+ifeq ($(ProjectType),exe)
 	$(CC) $(filter %.o,$^) $(LFlags) -o $@ 2>>$(ErrDir)/$(ErrLogName)
 else
-ifeq ($(ProjectType),a)
+ifeq ($(ProjectType),lib)
 	$(AR) r $@ $(filter %.o,$^) 2>>$(ErrDir)/$(ErrLogName)
 else
 ifeq ($(ProjectType),dll)
@@ -379,7 +380,7 @@ ifeq ($(ProjectType),dll)
 endif
 endif
 endif
-	$(ECHO) ^>^>^>^>^>^> >> $(ErrDir)/$(ErrLogName)
+	$(ECHO) $(CLOSE_MARK) >> $(ErrDir)/$(ErrLogName)
 	$(ECHO) generate $(@)
 	$(CAT) $(ErrDir)/$(ErrLogName) >> $(ErrDir)/$(Project).err
 	$(POST_BUILD_ALL_PROJECT)
@@ -509,10 +510,10 @@ $(FullPath_Gchs):
 	$(MKDIR) $(ErrDir)
 	$(MKDIR) $(GchDir)
 	$(ECHO) compiling $(basename $@)...
-	$(ECHO). > $(ErrDir)/$(ErrLogName)
-	$(ECHO) ^<^<^<^<^<^< $(patsubst %/,%,$(notdir $@)): '$(Project)' >> $(ErrDir)/$(ErrLogName)
+	$(ECHO_EMPTY_LINE) > $(ErrDir)/$(ErrLogName)
+	$(ECHO) $(OPEN_MARK) $(patsubst %/,%,$(notdir $@)): '$(Project)' >> $(ErrDir)/$(ErrLogName)
 	$(CC) -c $(CFlags) $(basename $(GchDir)) -o $@ 2>>$(ErrDir)/$(ErrLogName)
-	$(ECHO) ^>^>^>^>^>^> >> $(ErrDir)/$(ErrLogName)
+	$(ECHO) $(CLOSE_MARK) >> $(ErrDir)/$(ErrLogName)
 	$(CAT) $(ErrDir)/$(ErrLogName) >> $(ErrDir)/$(Project).err
 
 #  ------------------------------------------------------------------ 
@@ -561,10 +562,10 @@ $(ObjDir)/%.o: %.cpp $(FullPath_Gchs)
 	$(MKDIR) $(ObjDir)
 	$(MKDIR) $(ErrDir)
 	$(ECHO) compiling $<...
-	$(ECHO). > $(ErrDir)/$(ErrLogName)
-	$(ECHO) ^<^<^<^<^<^< $*.cpp: '$(Project)' >> $(ErrDir)/$(ErrLogName)
+	$(ECHO_EMPTY_LINE) > $(ErrDir)/$(ErrLogName)
+	$(ECHO) $(OPEN_MARK) $*.cpp: '$(Project)' >> $(ErrDir)/$(ErrLogName)
 	$(CC) -c $(CFlags) $< -o $@ 2>>$(ErrDir)/$(ErrLogName) 
-	$(ECHO) ^>^>^>^>^>^> >> $(ErrDir)/$(ErrLogName)
+	$(ECHO) $(CLOSE_MARK) >> $(ErrDir)/$(ErrLogName)
 	$(CAT) $(ErrDir)/$(ErrLogName) >> $(ErrDir)/$(Project).err
 
 #  ======================================================== 
@@ -575,10 +576,10 @@ $(ObjDir)/%.o: %.c $(FullPath_Gchs)
 	$(MKDIR) $(ObjDir)
 	$(MKDIR) $(ErrDir)
 	$(ECHO) compiling $<...
-	$(ECHO). > $(ErrDir)/$(ErrLogName)
-	$(ECHO) ^<^<^<^<^<^< $*.c: '$(Project)' >> $(ErrDir)/$(ErrLogName)
+	$(ECHO_EMPTY_LINE) > $(ErrDir)/$(ErrLogName)
+	$(ECHO) $(OPEN_MARK) $*.c: '$(Project)' >> $(ErrDir)/$(ErrLogName)
 	$(CC) -c $(CFlags) $< -o $@ 2>>$(ErrDir)/$(ErrLogName) 
-	$(ECHO) ^>^>^>^>^>^> >> $(ErrDir)/$(ErrLogName)
+	$(ECHO) $(CLOSE_MARK) >> $(ErrDir)/$(ErrLogName)
 	$(CAT) $(ErrDir)/$(ErrLogName) >> $(ErrDir)/$(Project).err
 
 #  ------------------------------------------------------------------ 

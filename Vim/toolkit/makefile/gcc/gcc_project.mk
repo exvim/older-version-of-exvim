@@ -30,7 +30,7 @@ PWD := # TODO: relative-address (sample: ..)
 #  ------------------------------------------------------------------ 
 
 Project := # TODO: current directory name
-ProjectType := # TODO: choose: a,lib,so,dll,exe
+ProjectType := # TODO: choose: lib/dll/exe
 
 #  ------------------------------------------------------------------ 
 #  Desc: Include Path
@@ -52,6 +52,7 @@ SrcDirs += # TODO: relative-address (sample: ./Srcs)
 
 #  ------------------------------------------------------------------ 
 #  Desc: Dependent Library File Paths
+#  NOTE: lib defined in PrjLibs below needn't to specific the lib directory 
 #  ------------------------------------------------------------------ 
 
 LibDirs += # TODO: relative-address (sample: ../Third-Part-Libs)

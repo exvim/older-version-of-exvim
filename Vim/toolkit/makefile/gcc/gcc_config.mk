@@ -9,7 +9,7 @@
 #  System Auto Dectect
 # /////////////////////////////////////////////////////////////////////////////
 
-ifeq ($(@shell uname), Linux)
+ifeq ($(shell uname), Linux)
 CURRENT_OS := Linux
 else
 CURRENT_OS := Win32
@@ -59,8 +59,8 @@ CompileMode = Fast
 # 			  cl 			( msvc )
 #  ------------------------------------------------------------------ 
 
-CPP_COMPILER_WIN32=g++-sjlj
-CPP_COMPILER_LINUX=g++-sjlj
+CPP_COMPILER_WIN32=g++
+CPP_COMPILER_LINUX=g++
 CPP_COMPILER_PS3=ppu-lv2-g++
 
 #  ------------------------------------------------------------------ 
@@ -119,7 +119,7 @@ SHELL := /bin/sh
 #  Desc: Make Debug
 #  ------------------------------------------------------------------ 
 
-SILENT_CMD := @
+SILENT_CMD := @ 
 
 #  ------------------------------------------------------------------ 
 #  Desc: Make Silent
@@ -132,7 +132,7 @@ SILENT_MK :=
 endif
 
 #  ------------------------------------------------------------------ 
-#  Desc: Executable File Name
+#  Desc: platform dependence variables
 #  EXE_NAME: Choose the execute name
 #  CC: Choose the compiler
 #  AR: Choose the linker
@@ -140,20 +140,28 @@ endif
 
 ifeq ($(Platform),Win32)
 EXE_NAME := exe
+LIB_NAME := a
+DLL_NAME := dll
 CC := $(SILENT_CMD)$(CPP_COMPILER_WIN32)
 AR := $(SILENT_CMD)$(CPP_LINKER_WIN32)
 else
 ifeq ($(Platform),Linux)
-EXE_NAME := exe
+EXE_NAME := run
+LIB_NAME := a
+DLL_NAME := so
 CC := $(SILENT_CMD)$(CPP_COMPILER_LINUX)
 AR := $(SILENT_CMD)$(CPP_LINKER_LINUX)
 else
 ifeq ($(Platform),PS3)
 EXE_NAME := elf
+LIB_NAME := a
+DLL_NAME := so
 CC := $(SILENT_CMD)$(CPP_COMPILER_PS3)
 AR := $(SILENT_CMD)$(CPP_LINKER_PS3)
 else #default
 EXE_NAME := exe
+LIB_NAME := lib
+DLL_NAME := dll
 CC := $(SILENT_CMD)g++
 AR := $(SILENT_CMD)ar
 endif
@@ -168,13 +176,21 @@ ECHO := $(SILENT_CMD)echo
 SMAKE := $(SILENT_CMD)$(MAKE) $(SILENT_MK)
 
 #  ------------------------------------------------------------------ 
-#  Desc: Command Path Choose
+#  Desc: OS dependence command
 #  ------------------------------------------------------------------ 
 
 ifeq ($(CURRENT_OS),Linux)
 CMD_PATH_LINUX :=
+ECHO_EMPTY_LINE := $(ECHO)
+OPEN_MARK := "<<<<<<"
+CLOSE_MARK := ">>>>>>"
+VERTICAL_BAR := "|"
 else
 CMD_PATH_LINUX := $(EX_DEV)/msys/1.0/bin/
+ECHO_EMPTY_LINE := $(ECHO).
+OPEN_MARK := ^<^<^<^<^<^<
+CLOSE_MARK := ^>^>^>^>^>^>
+VERTICAL_BAR := ^|
 endif
 
 #  ------------------------------------------------------------------ 

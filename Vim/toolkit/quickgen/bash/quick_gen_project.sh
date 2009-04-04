@@ -200,7 +200,8 @@ gen_cscope ()
 {
     if test "$support_cscope" = "true"; then
         echo "Creating cscope.files..."
-        dir /s /b %file_filter%|sed "s,\(.*\),\"\1\",g" > cscope.files
+        # TODO: ls /s /b ${file_filter}|sed "s,\(.*\),\"\1\",g" > cscope.files
+        echo "Warnning: this feature havn't done in unix/linux."
         echo "Creating cscope.out..."
         cscope -b
         mv -f "cscope.files" "./_vimfiles/cscope.files"

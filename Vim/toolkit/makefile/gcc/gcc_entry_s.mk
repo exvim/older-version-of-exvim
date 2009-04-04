@@ -30,7 +30,7 @@ PWD := .
 #  ------------------------------------------------------------------ 
 
 Project := # TODO: current directory name
-ProjectType := # TODO: choose: a,lib,so,dll,exe
+ProjectType := # TODO: choose: lib/dll/exe
 
 #  ------------------------------------------------------------------ 
 #  Desc: Include Path

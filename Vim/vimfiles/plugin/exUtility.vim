@@ -1716,7 +1716,11 @@ function g:ex_GCCMake(args) " <<<
 
     let entry_file = glob('gcc_entry*.mk') 
     if entry_file != ''
-        call g:ex_Terminal ( 'prompt', 'nowait', 'make -f' . entry_file . ' ' . a:args )
+        if has ("win32")
+            call g:ex_Terminal ( 'prompt', 'nowait', 'make -f' . entry_file . ' ' . a:args )
+        elseif has("unix")
+            exec "!make -f" . entry_file . ' ' . a:args
+        endif
     else
         call g:ex_WarningMsg("entry file not found")
     endif
