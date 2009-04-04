@@ -184,11 +184,11 @@ SMAKE := $(SILENT_CMD)$(MAKE) $(SILENT_MK)
 ifeq ($(CURRENT_OS),Linux)
 CMD_PATH_LINUX :=
 ECHO_EMPTY_LINE := $(ECHO)
-USE_MARK := \\
+VERTICAL_BAR := "|"
 else
 CMD_PATH_LINUX := $(EX_DEV)/msys/1.0/bin/
 ECHO_EMPTY_LINE := $(ECHO).
-USE_MARK := ^
+VERTICAL_BAR := ^|
 endif
 
 #  ------------------------------------------------------------------ 

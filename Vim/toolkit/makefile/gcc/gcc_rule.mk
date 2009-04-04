@@ -311,9 +311,15 @@ VPATH += $(TargetDir)
 #  Desc: MARKS to create directory enter/exit able error log
 #  ------------------------------------------------------------------ 
 
-OPEN_MARK := $(USE_MARK)<$(USE_MARK)<$(USE_MARK)<$(USE_MARK)<$(USE_MARK)<$(USE_MARK)<
-CLOSE_MARK := $(USE_MARK)>$(USE_MARK)>$(USE_MARK)>$(USE_MARK)>$(USE_MARK)>$(USE_MARK)>
-PROJECT_MARK := $(USE_MARK)'$(Project)$(USE_MARK)'
+ifeq ($(CURRENT_OS),Linux)
+OPEN_MARK := "<<<<<<"
+CLOSE_MARK := ">>>>>>"
+PROJECT_MARK := \'$(Project)\'
+else
+OPEN_MARK := ^<^<^<^<^<^<
+CLOSE_MARK := ^>^>^>^>^>^>
+PROJECT_MARK := '$(Project)'
+endif
 
 # /////////////////////////////////////////////////////////////////////////////
 #  Rules
