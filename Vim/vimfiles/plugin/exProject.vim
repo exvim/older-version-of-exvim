@@ -815,6 +815,8 @@ function s:exPJ_GotoSelectResult(edit_cmd) " <<<
         echon 'load quick fix list: ' . full_path_name . "\r"
         call g:ex_GotoPluginBuffer()
         silent exec 'QF '.full_path_name
+        " NOTE: when open error by QF, we don't want to exec g:ex_OperateWindow below ( we want keep stay in the exQF plugin ), so return directly 
+        return 
     elseif file_type == 'mk'
         echon 'set make file: ' . full_path_name . "\r"
         call g:ex_GotoEditBuffer()

@@ -307,6 +307,14 @@ VPATH := $(IncDirs)
 VPATH += $(SrcDirs)
 VPATH += $(TargetDir)
 
+#  ------------------------------------------------------------------ 
+#  Desc: MARKS to create directory enter/exit able error log
+#  ------------------------------------------------------------------ 
+
+OPEN_MARK := $(USE_MARK)<$(USE_MARK)<$(USE_MARK)<$(USE_MARK)<$(USE_MARK)<$(USE_MARK)<
+CLOSE_MARK := $(USE_MARK)>$(USE_MARK)>$(USE_MARK)>$(USE_MARK)>$(USE_MARK)>$(USE_MARK)>
+PROJECT_MARK := $(USE_MARK)'$(Project)$(USE_MARK)'
+
 # /////////////////////////////////////////////////////////////////////////////
 #  Rules
 # /////////////////////////////////////////////////////////////////////////////
@@ -368,7 +376,7 @@ endif
 	$(MKDIR) $(TargetDir)
 	$(MKDIR) $(ErrDir)
 	$(ECHO_EMPTY_LINE) > $(ErrDir)/$(ErrLogName)
-	$(ECHO) $(OPEN_MARK) $(Target): '$(Project)' >> $(ErrDir)/$(ErrLogName)
+	$(ECHO) $(OPEN_MARK) $(Target): $(PROJECT_MARK) >> $(ErrDir)/$(ErrLogName)
 ifeq ($(ProjectType),exe)
 	$(CC) $(filter %.o,$^) $(LFlags) -o $@ 2>>$(ErrDir)/$(ErrLogName)
 else
@@ -511,7 +519,7 @@ $(FullPath_Gchs):
 	$(MKDIR) $(GchDir)
 	$(ECHO) compiling $(basename $@)...
 	$(ECHO_EMPTY_LINE) > $(ErrDir)/$(ErrLogName)
-	$(ECHO) $(OPEN_MARK) $(patsubst %/,%,$(notdir $@)): '$(Project)' >> $(ErrDir)/$(ErrLogName)
+	$(ECHO) $(OPEN_MARK) $(patsubst %/,%,$(notdir $@)): $(PROJECT_MARK) >> $(ErrDir)/$(ErrLogName)
 	$(CC) -c $(CFlags) $(basename $(GchDir)) -o $@ 2>>$(ErrDir)/$(ErrLogName)
 	$(ECHO) $(CLOSE_MARK) >> $(ErrDir)/$(ErrLogName)
 	$(CAT) $(ErrDir)/$(ErrLogName) >> $(ErrDir)/$(Project).err
@@ -563,7 +571,7 @@ $(ObjDir)/%.o: %.cpp $(FullPath_Gchs)
 	$(MKDIR) $(ErrDir)
 	$(ECHO) compiling $<...
 	$(ECHO_EMPTY_LINE) > $(ErrDir)/$(ErrLogName)
-	$(ECHO) $(OPEN_MARK) $*.cpp: '$(Project)' >> $(ErrDir)/$(ErrLogName)
+	$(ECHO) $(OPEN_MARK) $*.cpp: $(PROJECT_MARK) >> $(ErrDir)/$(ErrLogName)
 	$(CC) -c $(CFlags) $< -o $@ 2>>$(ErrDir)/$(ErrLogName) 
 	$(ECHO) $(CLOSE_MARK) >> $(ErrDir)/$(ErrLogName)
 	$(CAT) $(ErrDir)/$(ErrLogName) >> $(ErrDir)/$(Project).err
@@ -577,7 +585,7 @@ $(ObjDir)/%.o: %.c $(FullPath_Gchs)
 	$(MKDIR) $(ErrDir)
 	$(ECHO) compiling $<...
 	$(ECHO_EMPTY_LINE) > $(ErrDir)/$(ErrLogName)
-	$(ECHO) $(OPEN_MARK) $*.c: '$(Project)' >> $(ErrDir)/$(ErrLogName)
+	$(ECHO) $(OPEN_MARK) $*.c: $(PROJECT_MARK) >> $(ErrDir)/$(ErrLogName)
 	$(CC) -c $(CFlags) $< -o $@ 2>>$(ErrDir)/$(ErrLogName) 
 	$(ECHO) $(CLOSE_MARK) >> $(ErrDir)/$(ErrLogName)
 	$(CAT) $(ErrDir)/$(ErrLogName) >> $(ErrDir)/$(Project).err

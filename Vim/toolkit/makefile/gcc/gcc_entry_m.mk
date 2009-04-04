@@ -101,7 +101,7 @@ $(Prj_Cmds):
 	$(ECHO) Project: $(dir $@)
 	$(ECHO) Command: $(notdir $@)
 	$(ECHO) ==========================================================
-	$(ECHO) $(VERTICAL_BAR)
+	$(ECHO) $(USE_MARK)|
 	$(SMAKE) -C$(dir $@) -f$(patsubst %/,%,$(dir $@)).mk $(notdir $@)
  
  #  ======================================================== 
@@ -113,7 +113,7 @@ $(Prj_Cmd_All):
 	$(ECHO) Project: $(dir $@)
 	$(ECHO) Command: $(notdir $@)
 	$(ECHO) ==========================================================
-	$(ECHO) $(VERTICAL_BAR)
+	$(ECHO) $(USE_MARK)|
 	$(SMAKE) -C$(dir $@) -f$(patsubst %/,%,$(dir $@)).mk $(notdir $@)
  
  #  ======================================================== 
@@ -125,7 +125,7 @@ $(Prj_Cmd_Clean):
 	$(ECHO) Project: $(dir $@)
 	$(ECHO) Command: $(notdir $@)
 	$(ECHO) ==========================================================
-	$(ECHO) $(VERTICAL_BAR)
+	$(ECHO) $(USE_MARK)|
 	$(SMAKE) -C$(dir $@) -f$(patsubst %/,%,$(dir $@)).mk $(notdir $@)
  
  #  ======================================================== 
@@ -137,7 +137,7 @@ $(Prj_Cmd_Rebuild):
 	$(ECHO) Project: $(dir $@)
 	$(ECHO) Command: $(notdir $@)
 	$(ECHO) ==========================================================
-	$(ECHO) $(VERTICAL_BAR)
+	$(ECHO) $(USE_MARK)|
 	$(SMAKE) -C$(dir $@) -f$(patsubst %/,%,$(dir $@)).mk $(notdir $@)
  
  #  ======================================================== 
@@ -149,5 +149,5 @@ $(Prj_Cmd_Clean_Deps):
 	$(ECHO) Project: $(dir $@)
 	$(ECHO) Command: $(notdir $@)
 	$(ECHO) ==========================================================
-	$(ECHO) $(VERTICAL_BAR)
+	$(ECHO) $(USE_MARK)|
 	$(SMAKE) -C$(dir $@) -f$(patsubst %/,%,$(dir $@)).mk $(notdir $@)

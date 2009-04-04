@@ -374,6 +374,7 @@ function s:exQF_GetQuickFixResult( file_name ) " <<<
         " clear all the text and put the text to the buffer, by YJR
         normal! gg"_dG
         silent call append( 0 , readfile( full_file_name ) )
+        silent normal gg
 
         "
         if s:exQF_compiler != 'exgcc'
