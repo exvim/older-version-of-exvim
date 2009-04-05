@@ -1324,17 +1324,8 @@ endfunction " >>>
 " ------------------------------------------------------------------ 
 
 function g:ex_Browse(dir, filter) " <<<
-
-    " ECHO full_path for this level
-    " ++++++++++++++++++++++++++++++++++
-    let full_path = ''
-    for level in s:ex_level_list
-		if level.short_dir != ''
-			let full_path = full_path.'/'.level.short_dir
-		endif
-    endfor
-    echon "processing: " . full_path . "\r"
-    " ++++++++++++++++++++++++++++++++++
+    " show progress
+    echon "processing: " . a:dir . "\r"
 
     " get short_dir
     " let short_dir = strpart( a:dir, strridx(a:dir,'\')+1 )
@@ -1633,7 +1624,7 @@ endfunction " >>>
 " Desc: 
 " ------------------------------------------------------------------ 
 
-function g:ex_CursorJump( search_pattern, search_direction )
+function g:ex_CursorJump( search_pattern, search_direction ) " <<<
     let save_cursor = getpos(".")
 
     " get search flags, also move cursors
