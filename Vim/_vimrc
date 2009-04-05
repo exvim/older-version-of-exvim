@@ -703,9 +703,6 @@ nnoremap <unique> <silent> <Leader>cc :CSCD<CR>
 nnoremap <unique> <silent> <Leader>cs :ExcsSelectToggle<CR>
 nnoremap <unique> <silent> <Leader>cq :ExcsQuickViewToggle<CR>
 
-map <unique> <silent> <Leader>cb :BackwardSearchStack<CR>
-map <unique> <silent> <Leader>cf :ForwardSearchStack<CR>
-
 let g:exCS_backto_editbuf = 0
 let g:exCS_close_when_selected = 0
 let g:exCS_window_direction = 'bel'

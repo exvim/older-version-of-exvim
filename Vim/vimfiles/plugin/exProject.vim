@@ -351,7 +351,7 @@ function g:exPJ_InitSelectWindow() " <<<
     hi def exPJ_TreeLine gui=none guifg=DarkGray term=none cterm=none ctermfg=Gray
     hi def exPJ_SynDir gui=bold guifg=Brown term=bold cterm=bold ctermfg=DarkRed
     hi def exPJ_SynFile gui=none guifg=Magenta term=none cterm=none ctermfg=Magenta
-    hi def exPJ_SynFilter gui=italic guifg=DarkCyan term=italic cterm=none ctermfg=DarkCyan
+    hi def exPJ_SynFilter gui=none guifg=DarkCyan term=none cterm=none ctermfg=DarkCyan
 
     hi def exPJ_SynSrcFile gui=none guifg=Blue term=none cterm=none ctermfg=Blue
     hi def exPJ_SynHeaderFile gui=none guifg=DarkGreen term=none cterm=none ctermfg=DarkGreen
@@ -364,9 +364,10 @@ function g:exPJ_InitSelectWindow() " <<<
     nnoremap <silent> <buffer> <S-2-LeftMouse> :call <SID>exPJ_GotoSelectResult('bel sp')<CR>
 
     nnoremap <silent> <buffer> <Space>   :call <SID>exPJ_ResizeWindow()<CR>
-    nnoremap <silent> <buffer> <localleader>C    :call <SID>exPJ_CreateProject('','','')<CR>
-    nnoremap <silent> <buffer> <localleader>R    :call <SID>exPJ_RefreshProject()<CR>
-    nnoremap <silent> <buffer> <localleader>r    :call <SID>exPJ_QuickRefreshProject()<CR>
+    nnoremap <silent> <buffer> <localleader>C    :call <SID>exPJ_CreateProject(1)<CR>
+    nnoremap <silent> <buffer> <localleader>cf   :call <SID>exPJ_RefreshProject(1)<CR>
+    nnoremap <silent> <buffer> <localleader>R    :call <SID>exPJ_CreateProject(0)<CR>
+    nnoremap <silent> <buffer> <localleader>r    :call <SID>exPJ_RefreshProject(0)<CR>
     nnoremap <silent> <buffer> <C-Left>   :echo 'project buffer only'<CR>
     nnoremap <silent> <buffer> <C-Right>  :echo 'project buffer only'<CR>
 
@@ -421,17 +422,13 @@ endfunction " >>>
 " Desc: 
 " ------------------------------------------------------------------ 
 
-function s:exPJ_CreateProject(entry_dir,file_filter,dir_filter) " <<<
+function s:exPJ_CreateProject(with_dialog) " <<<
     call s:exPJ_UpdateFilters()
     call g:ex_SetLevelList(-1, 1)
 
-    "
-    let entry_dir = a:entry_dir
-    let file_filter = a:file_filter
-    let dir_filter = a:dir_filter
-
-    " get entry dir
-    if strlen(entry_dir) == 0
+    " if use dialog
+    if a:with_dialog == 1
+        " get entry dir
         let ex_pwd = getcwd()
         if exists('g:exES_PWD')
             let ex_pwd = g:exES_PWD
@@ -443,26 +440,24 @@ function s:exPJ_CreateProject(entry_dir,file_filter,dir_filter) " <<<
         elseif entry_dir == 'cancle'
             return
         endif
-    endif
 
-    " get file filter
-    if strlen(file_filter) == 0
+        " get file filter
         let file_filter = inputdialog( 'Enter the file filters: sample(cpp c inl)', s:exPJ_file_filter, 'cancle')
         if file_filter == 'cancle'
             return
         else
             let s:exPJ_file_filter = file_filter
         endif
-    endif
 
-    " add dir filter
-    if strlen(dir_filter) == 0
-        let dir_filter = inputdialog( 'Enter the dir filters: sample(folder_name1 folder_name2), empty equals to no filter', s:exPJ_dir_filter, 'cancle')
+        " add dir filter
+        let dir_filter = inputdialog( 'Enter the dir filters: sample(folder1 folder2)', s:exPJ_dir_filter, 'cancle')
         if dir_filter == 'cancle'
             return
         else
             let s:exPJ_dir_filter = dir_filter
         endif
+    else
+        let entry_dir = g:exES_PWD
     endif
 
 
@@ -470,11 +465,13 @@ function s:exPJ_CreateProject(entry_dir,file_filter,dir_filter) " <<<
     let g:exPJ_backto_editbuf = 0
     echon "Creating exProject: " . entry_dir . "\r"
     call s:exPJ_OpenWindow('Select')
-    call g:ex_Browse(entry_dir,g:ex_GetFileFilterPattern(file_filter))
+    call g:ex_Browse( entry_dir, g:ex_GetFileFilterPattern(s:exPJ_file_filter), g:ex_GetDirFilterPattern(s:exPJ_dir_filter) )
 
     silent keepjumps normal! gg
+    silent put! = ''
     silent put! = 'dir filter = ' . s:exPJ_dir_filter
     silent put! = 'file filter = ' . s:exPJ_file_filter
+    silent normal! 3j
 
     let g:exPJ_backto_editbuf = old_bacto_editbuf
     echon "Creating exProject: " . entry_dir . " done!\r"
@@ -493,9 +490,11 @@ function s:exPJ_QuickRefreshProject() " <<<
     endif
 
     " get filter
-    let filter = inputdialog( 'Enter the filters: sample(cpp c inl)', g:exPJ_defualt_filter, 'cancle')
+    let filter = inputdialog( 'Enter the filters: sample(cpp c inl)', s:exPJ_file_filter, 'cancle')
     if filter == 'cancle'
         return
+    else
+        let s:exPJ_file_filter = filter 
     endif
 
     let file_line = getline('.')
@@ -599,16 +598,22 @@ endfunction " >>>
 " Desc: 
 " ------------------------------------------------------------------ 
 
-function s:exPJ_RefreshProject() " <<<
+function s:exPJ_RefreshProject( with_dialog ) " <<<
     " skip empty line, YJR
     if getline('.') == ''
         return
     endif
 
+    call s:exPJ_UpdateFilters()
+
     " get filter
-    let filter = inputdialog( 'Enter the filters: sample(cpp c inl)', g:exPJ_defualt_filter, 'cancle')
-    if filter == 'cancle'
-        return
+    if a:with_dialog == 1
+        let filter = inputdialog( 'Enter the filters: sample(cpp c inl)', s:exPJ_file_filter, 'cancle')
+        if filter == 'cancle'
+            return
+        else
+            let s:exPJ_file_filter = filter 
+        endif
     endif
 
     let file_line = getline('.')
@@ -648,9 +653,9 @@ function s:exPJ_RefreshProject() " <<<
     let s:exPJ_cursor_col = col('.')
 
     " recursively make full path
-    let need_set_list = 1
+    let is_root_dir = 0
     if fold_level == 0
-        let need_set_list = 0
+        let is_root_dir = 1
     else
         while fold_level > 1
             let fold_level -= 1
@@ -674,42 +679,37 @@ function s:exPJ_RefreshProject() " <<<
     echon "Update directory: " . full_path_name . "\r"
 
     " set level list if not the root dir
-    if need_set_list
+    if is_root_dir == 0
         call g:ex_SetLevelList(line('.'), 1)
     endif
     " delete the whole fold
     silent exec "normal! zc"
     silent exec 'normal! "_2dd'
     " broswing
-    call g:ex_Browse(full_path_name,g:ex_GetFileFilterPattern(filter))
+    call g:ex_Browse( full_path_name, g:ex_GetFileFilterPattern(s:exPJ_file_filter), is_root_dir ? g:ex_GetDirFilterPattern(s:exPJ_dir_filter) : '' )
     " reset level list
     call g:ex_SetLevelList(-1, 1)
 
     echon "Update directory: " . full_path_name . " done!\r"
 
     " at the end, we need to rename the folder as simple one
-    if need_set_list
-        " rename the folder
-        let cur_line = getline('.')
+    " rename the folder
+    let cur_line = getline('.')
 
-        " if this is a empty directory, return
-        let pattern = '\C\[F\].*\<' . short_dir . '\> {'
-        if match(cur_line, pattern) == -1
-            call g:ex_WarningMsg("The directory is empty")
-            return
-        endif
-
-        let idx_start = stridx(cur_line, ']')
-        let start_part = strpart(cur_line,0,idx_start+1)
-
-        let idx_end = stridx(cur_line, ' {')
-        let end_part = strpart(cur_line,idx_end)
-
-        silent call setline('.', start_part . short_dir . end_part)
-    else
-        " delete the first empty line then go to the root dir
-        silent exec 'normal! gg"_ddj'
+    " if this is a empty directory, return
+    let pattern = '\C\[F\].*\<' . short_dir . '\> {'
+    if match(cur_line, pattern) == -1
+        call g:ex_WarningMsg("The directory is empty")
+        return
     endif
+
+    let idx_start = stridx(cur_line, ']')
+    let start_part = strpart(cur_line,0,idx_start+1)
+
+    let idx_end = stridx(cur_line, ' {')
+    let end_part = strpart(cur_line,idx_end)
+
+    silent call setline('.', start_part . short_dir . end_part)
 endfunction " >>>
 
 " ------------------------------------------------------------------ 

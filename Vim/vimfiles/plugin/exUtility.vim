@@ -1151,6 +1151,24 @@ endfunction " >>>
 " Desc: 
 " ------------------------------------------------------------------ 
 
+function g:ex_GetDirFilterPattern(filter) " <<<
+    if a:filter ==# ''
+        return ''
+    endif
+
+    let filter_list = split(a:filter,' ')
+    let filter_pattern = '\V'
+    for filter in filter_list
+        let filter_pattern = filter_pattern . '\<' . filter . '\>\$\|'
+    endfor
+    return strpart(filter_pattern, 0, strlen(filter_pattern)-2)
+endfunction " >>>
+
+
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
 function g:ex_BrowseWithEmtpy(dir, filter) " <<<
     " get short_dir
     "let short_dir = strpart( a:dir, strridx(a:dir,'\')+1 )
@@ -1323,7 +1341,7 @@ endfunction " >>>
 " Desc: 
 " ------------------------------------------------------------------ 
 
-function g:ex_Browse(dir, filter) " <<<
+function g:ex_Browse(dir, file_filter, dir_filter) " <<<
     " show progress
     echon "processing: " . a:dir . "\r"
 
@@ -1342,29 +1360,23 @@ function g:ex_Browse(dir, filter) " <<<
         let list_last = len(file_list)-1
         let list_count = 0
         while list_count <= list_last
-            if isdirectory(file_list[list_idx]) == 0 " move the file to the end of the list
-                if match(file_list[list_idx],a:filter) == -1
+            if isdirectory(file_list[list_idx]) == 0 " remove not fit file types
+                if match(file_list[list_idx],a:file_filter) == -1 " if not found file type in file filter
                     silent call remove(file_list,list_idx)
                     let list_idx -= 1
-                else
+                else " move the file to the end of the list
                     let file = remove(file_list,list_idx)
                     silent call add(file_list, file)
                     let list_idx -= 1
                 endif
+            elseif a:dir_filter != '' " remove not fit dirs
+                if match(file_list[list_idx],a:dir_filter) == -1 " if not found dir name in dir filter
+                    silent call remove(file_list,list_idx)
+                    let list_idx -= 1
+                endif
             endif
-            " ++++++++++++++++++++++++++++++++++
-            "if isdirectory(file_list[list_idx]) != 0 " move the dir to the end of the list
-            "    let dir = remove(file_list,list_idx)
-            "    silent call add(file_list, dir)
-            "    let list_idx -= 1
-            "else " filter file
-            "    if match(file_list[list_idx],a:filter) == -1
-            "        silent call remove(file_list,list_idx)
-            "        let list_idx -= 1
-            "    endif
-            "endif
-            " ++++++++++++++++++++++++++++++++++
 
+            "
             let list_idx += 1
             let list_count += 1
         endwhile
@@ -1378,7 +1390,7 @@ function g:ex_Browse(dir, filter) " <<<
             if list_idx != list_last
                 let s:ex_level_list[len(s:ex_level_list)-1].is_last = 0
             endif
-            if g:ex_Browse(file_list[list_idx],a:filter) == 1 " if it is empty
+            if g:ex_Browse(file_list[list_idx],a:file_filter,'') == 1 " if it is empty
                 silent call remove(file_list,list_idx)
                 let list_last = len(file_list)-1
             endif
@@ -1447,9 +1459,6 @@ function g:ex_Browse(dir, filter) " <<<
             silent put! = space.'[F]'.short_dir . ' {' . end_fold
         else
             silent put! = space.'[F]'.short_dir . ' {'
-        endif
-        if list_last == -1 " if len of ex_level_list is 0
-            silent put! = ''
         endif
     endif
 
