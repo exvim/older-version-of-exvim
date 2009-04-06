@@ -23,7 +23,7 @@ include ../shader_config.mk
 #  Desc: Parent Working Directory
 #  ------------------------------------------------------------------ 
 
-PWD := # TODO: relative-address (sample: ..)
+CWD := # TODO: relative-address (sample: ..)
 
 #  ------------------------------------------------------------------ 
 #  Desc: Project Name
@@ -86,7 +86,7 @@ FX_ENTRY=FX_Main
 #  Desc: Parent Working Directory
 #  ------------------------------------------------------------------ 
 
-PWD ?= ..
+CWD ?= ..
 
 # /////////////////////////////////////////////////////////////////////////////
 #  Post Build Even

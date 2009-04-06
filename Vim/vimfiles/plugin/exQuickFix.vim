@@ -328,7 +328,7 @@ function s:exQF_GetQuickFixResult( file_name ) " <<<
 
         " load the quick fix list
         let g:test = s:exQF_compiler
-        let s:exQF_compile_dir = g:exES_PWD
+        let s:exQF_compile_dir = g:exES_CWD
         let cur_dir = getcwd()
 
         " FIXME: this is a bug, the :comiler! xxx not have effect at second time

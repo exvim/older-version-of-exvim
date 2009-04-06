@@ -166,7 +166,7 @@ if /I "%lang_type%" == "all" (
     ctags -o./_tags -R  --fields=+iaS --extra=+q --languages=vim
 )
 
-move /Y ".\_tags" ".\tags"
+move /Y "_tags" "tags"
 goto %return%
 
 rem  ------------------------------------------------------------------ 
@@ -178,7 +178,7 @@ rem  #########################
 rem  ######################### 
 
 echo Creating Symbols...
-gawk -f "%EX_DEV%\Vim\toolkit\gawk\prg_NoStripSymbol.awk" ./tags>./_vimfiles/_symbol
+gawk -f "%EX_DEV%\Vim\toolkit\gawk\prg_NoStripSymbol.awk" "tags">".\_vimfiles\_symbol"
 move /Y ".\_vimfiles\_symbol" ".\_vimfiles\symbol"
 goto %return%
 
@@ -193,7 +193,7 @@ rem  #########################
 
 if /I "%support_inherit%" == "true" (
     echo Creating Inherits...
-    gawk -f "%EX_DEV%\Vim\toolkit\gawk\prg_Inherits.awk" ./tags>./_vimfiles/_inherits
+    gawk -f "%EX_DEV%\Vim\toolkit\gawk\prg_Inherits.awk" "tags">".\_vimfiles\_inherits"
     move /Y ".\_vimfiles\_inherits" ".\_vimfiles\inherits"
 )
 goto %return%

@@ -10,7 +10,7 @@
 # -------------------
 #  Out Directory
 # -------------------
-OutDir := $(PWD)/_gmakes/$(Platform)
+OutDir := $(CWD)/_gmakes/$(Platform)
 
 # -------------------
 #  Include

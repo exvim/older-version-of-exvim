@@ -246,9 +246,10 @@ endfunction " >>>
 " ------------------------------------------------------------------ 
 
 function g:exTS_InitSelectWindow() " <<<
+    " KEEPME: we don't need this, but keep it { 
     " load the tagfiles
     " let s:exTS_tag_file_list = tagfiles()
-    let s:exTS_tag_file_list = []
+    " } KEEPME end 
 
     " syntax highlight
     if g:exTS_highlight_result
@@ -422,7 +423,7 @@ function s:exTS_GetTagSelectResult(tag, direct_jump) " <<<
             let quick_view = strpart( tag_info.cmd, 2, strlen(tag_info.cmd)-4 )
             let quick_view = strpart( quick_view, match(quick_view, '\S') )
         elseif tag_info.cmd =~# '^\d\+'
-            let file_list = readfile(g:ex_MatchTagFile( s:exTS_tag_file_list, tag_info.filename))
+            let file_list = readfile( fnamemodify(tag_info.filename,":p") )
             let line_num = eval(tag_info.cmd) - 1 
             let quick_view = file_list[line_num]
             let quick_view = strpart( quick_view, match(quick_view, '\S') )
@@ -504,7 +505,7 @@ function s:exTS_GotoTagSelectResult() " <<<
 
     " process extractly jump
     let s:exTS_tag_select_idx = tag_idx
-    call g:ex_GotoExCommand( g:ex_MatchTagFile( s:exTS_tag_file_list, s:exTS_tag_stack_list[s:exTS_stack_idx].tag_list[tag_idx-1].filename ), s:exTS_tag_stack_list[s:exTS_stack_idx].tag_list[tag_idx-1].cmd, keepjumps_cmd )
+    call g:ex_GotoExCommand( fnamemodify(s:exTS_tag_stack_list[s:exTS_stack_idx].tag_list[tag_idx-1].filename,":p"), s:exTS_tag_stack_list[s:exTS_stack_idx].tag_list[tag_idx-1].cmd, keepjumps_cmd )
 
     " go back if needed
     call g:ex_OperateWindow ( s:exTS_select_title, g:exTS_close_when_selected, g:exTS_backto_editbuf, 1 )
@@ -650,7 +651,7 @@ function s:exTS_Stack_GotoTag( idx, jump_method ) " <<<
             call setpos('.', s:exTS_tag_stack_list[s:exTS_stack_idx].entry_cursor_pos)
         else
             let tag_idx = s:exTS_tag_stack_list[s:exTS_stack_idx].tag_idx
-            call g:ex_GotoExCommand( g:ex_MatchTagFile( s:exTS_tag_file_list, s:exTS_tag_stack_list[s:exTS_stack_idx].tag_list[tag_idx-1].filename ), s:exTS_tag_stack_list[s:exTS_stack_idx].tag_list[tag_idx-1].cmd, "" )
+            call g:ex_GotoExCommand( fnamemodify(s:exTS_tag_stack_list[s:exTS_stack_idx].tag_list[tag_idx-1].filename,":p"), s:exTS_tag_stack_list[s:exTS_stack_idx].tag_list[tag_idx-1].cmd, "" )
         endif
         exe 'normal! zz'
     endif
@@ -664,26 +665,27 @@ endfunction " >>>
 " ------------------------------------------------------------------ 
 
 function s:exTS_Stack_GoDirect() " <<<
-    if line(".") > 1
-        let cur_line = getline(".")
-        let idx = match(cur_line, '\S')
-        let cur_line = strpart(cur_line, idx)
-        let idx = match(cur_line, ':')
-        let stack_idx = eval(strpart(cur_line, 0, idx))
-        call g:ex_HighlightConfirmLine()
-
-        " if select idx > old idx, jump to tag. else jump to entry
-        if stack_idx > s:exTS_stack_idx
-            call s:exTS_Stack_GotoTag(stack_idx, 'to_tag')
-            let s:exTS_last_jump_method = "to_tag"
-        elseif stack_idx < s:exTS_stack_idx
-            call s:exTS_Stack_GotoTag(stack_idx, 'to_entry')
-            let s:exTS_last_jump_method = "to_entry"
-        else
-            call s:exTS_Stack_GotoTag(stack_idx, s:exTS_last_jump_method)
-        endif
-    else
+    let cur_line = getline(".")
+    let idx = match(cur_line, '\S')
+    let cur_line = strpart(cur_line, idx)
+    let idx = match(cur_line, ':')
+    if idx == -1
         call g:ex_WarningMsg("Can't jump in this line")
+        return
+    endif
+
+    let stack_idx = eval(strpart(cur_line, 0, idx))
+    call g:ex_HighlightConfirmLine()
+
+    " if select idx > old idx, jump to tag. else jump to entry
+    if stack_idx > s:exTS_stack_idx
+        call s:exTS_Stack_GotoTag(stack_idx, 'to_tag')
+        let s:exTS_last_jump_method = "to_tag"
+    elseif stack_idx < s:exTS_stack_idx
+        call s:exTS_Stack_GotoTag(stack_idx, 'to_entry')
+        let s:exTS_last_jump_method = "to_entry"
+    else
+        call s:exTS_Stack_GotoTag(stack_idx, s:exTS_last_jump_method)
     endif
 endfunction " >>>
 

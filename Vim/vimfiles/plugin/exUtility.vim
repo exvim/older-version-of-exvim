@@ -237,8 +237,8 @@ function g:ex_InitWindow(init_func_name) " <<<
     augroup end
 
     " avoid cwd change problem
-    if exists( 'g:exES_PWD' )
-        au BufEnter * silent exec 'lcd ' . g:exES_PWD
+    if exists( 'g:exES_CWD' )
+        au BufEnter * silent exec 'lcd ' . g:exES_CWD
     endif
 
     if a:init_func_name != 'none'
@@ -1108,31 +1108,34 @@ endfunction " >>>
 " Desc: Match tag and find file if it has
 " ------------------------------------------------------------------ 
 
-function g:ex_MatchTagFile( tag_file_list, file_name ) " <<<
-    " if we can use PWD find file, use it first
-    if exists('g:exES_PWD')
-        let full_file_name = substitute(g:exES_PWD,'\','',"g") . '//' . substitute(a:file_name,'\.\\','\\',"g")
-        if findfile(full_file_name) != ''
-            return simplify(full_file_name)
-        endif
-    endif
-
-    "let full_file_name = ''
-    "for tag_file in a:tag_file_list
-    "    let tag_path = strpart( tag_file, 0, strridx(tag_file, '\') )
-    "    let full_file_name = tag_path . a:file_name
-    "    if findfile(full_file_name) != ''
-    "        break
-    "    endif
-    "    let full_file_name = ''
-    "endfor
-
-    if full_file_name == ''
-        call g:ex_WarningMsg( a:file_name . ' not found' )
-    endif
-
-    return simplify(full_file_name)
-endfunction " >>>
+" KEEPME: we don't need this function, but keep it { 
+" function g:ex_MatchTagFile( tag_file_list, file_name ) " <<<
+"     return fnamemodify(a:file_name,":p")
+"     " if we can use CWD find file, use it first
+"     if exists('g:exES_CWD')
+"         let full_file_name = substitute(g:exES_CWD,'\','',"g") . '//' . substitute(a:file_name,'\.\\','\\',"g")
+"         if findfile(full_file_name) != ''
+"             return simplify(full_file_name)
+"         endif
+"     endif
+" 
+"     "let full_file_name = ''
+"     "for tag_file in a:tag_file_list
+"     "    let tag_path = strpart( tag_file, 0, strridx(tag_file, '\') )
+"     "    let full_file_name = tag_path . a:file_name
+"     "    if findfile(full_file_name) != ''
+"     "        break
+"     "    endif
+"     "    let full_file_name = ''
+"     "endfor
+" 
+"     if full_file_name == ''
+"         call g:ex_WarningMsg( a:file_name . ' not found' )
+"     endif
+" 
+"     return simplify(full_file_name)
+" endfunction " >>>
+" } KEEPME end 
 
 " ------------------------------------------------------------------ 
 " Desc: 
@@ -1471,10 +1474,10 @@ endfunction " >>>
 
 function g:ex_QuickFileJump() " <<<
     " make the gf go everywhere in the project
-    if exists( 'g:exES_PWD' )
+    if exists( 'g:exES_CWD' )
         let file_name = expand("<cfile>")
         echomsg "searching file: " . file_name
-        let path = escape(g:exES_PWD, " ") . "/**;"
+        let path = escape(g:exES_CWD, " ") . "/**;"
         let full_path_file = findfile( simplify(file_name), path ) 
 
         " if we found the file
@@ -2081,8 +2084,8 @@ function g:ex_SrcHighlight( line1, line2 ) " <<<
     let last_line = a:line2
 
     " process src-highlight
-    if exists("g:exES_PWD")
-        let temp_directory_path = g:exES_PWD.'/'.g:exES_vimfile_dir.'/_temp' 
+    if exists("g:exES_CWD")
+        let temp_directory_path = g:exES_CWD.'/'.g:exES_vimfile_dir.'/_temp' 
         let temp_file = temp_directory_path.'/'.'_src_highlight.txt' 
         let temp_file_html = temp_file . '.html' 
     else
@@ -2130,7 +2133,7 @@ function g:ex_GenInheritsDot( pattern, gen_method ) " <<<
     endif
 
     " create inherit dot file path
-    let inherit_directory_path = g:exES_PWD.'/'.g:exES_vimfile_dir.'/_hierarchies/' 
+    let inherit_directory_path = g:exES_CWD.'/'.g:exES_vimfile_dir.'/_hierarchies/' 
     if finddir(inherit_directory_path) == ''
         silent call mkdir(inherit_directory_path)
     endif

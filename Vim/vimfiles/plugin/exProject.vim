@@ -430,8 +430,8 @@ function s:exPJ_CreateProject(with_dialog) " <<<
     if a:with_dialog == 1
         " get entry dir
         let ex_pwd = getcwd()
-        if exists('g:exES_PWD')
-            let ex_pwd = g:exES_PWD
+        if exists('g:exES_CWD')
+            let ex_pwd = g:exES_CWD
         endif
         let entry_dir = inputdialog( 'Enter the entry directory: ', ex_pwd, 'cancle' )
         if entry_dir == ''
@@ -457,7 +457,7 @@ function s:exPJ_CreateProject(with_dialog) " <<<
             let s:exPJ_dir_filter = dir_filter
         endif
     else
-        let entry_dir = g:exES_PWD
+        let entry_dir = g:exES_CWD
     endif
 
 

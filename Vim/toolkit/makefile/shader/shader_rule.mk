@@ -13,7 +13,7 @@
 #  Desc: Out Directory
 #  ------------------------------------------------------------------ 
 
-OutDir := $(PWD)/bin/shader/$(SHADER_Platform)
+OutDir := $(CWD)/bin/shader/$(SHADER_Platform)
 
 #  ------------------------------------------------------------------ 
 #  Desc: Source

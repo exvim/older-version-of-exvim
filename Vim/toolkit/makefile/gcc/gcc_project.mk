@@ -23,7 +23,7 @@ include ../gcc_config.mk
 #  Desc: Parent Working Directory
 #  ------------------------------------------------------------------ 
 
-PWD := # TODO: relative-address (sample: ..)
+CWD := # TODO: relative-address (sample: ..)
 
 #  ------------------------------------------------------------------ 
 #  Desc: Project Name
@@ -80,7 +80,7 @@ LFlag_Spec += # TODO: (sample: -L"C:/Program Files/Microsoft DirectX SDK/Lib/x86
 #  Desc: Parent Working Directory
 #  ------------------------------------------------------------------ 
 
-PWD ?= ..
+CWD ?= ..
 
 # /////////////////////////////////////////////////////////////////////////////
 #  Post Build Even

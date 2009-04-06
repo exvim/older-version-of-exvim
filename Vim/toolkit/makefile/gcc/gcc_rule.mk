@@ -13,7 +13,7 @@
 #  Desc: Out Directory
 #  ------------------------------------------------------------------ 
 
-OutDir := $(PWD)/_build/gcc/$(Platform)
+OutDir := $(CWD)/_build/gcc/$(Platform)
 
 #  ------------------------------------------------------------------ 
 #  Desc: Include

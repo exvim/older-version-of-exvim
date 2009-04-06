@@ -58,7 +58,7 @@ function s:exES_WriteDefaultTemplate() " <<<
     let _project_name = fnamemodify( expand('%'), ":t:r" )  
     let _list = []
 
-    silent call add(_list, 'PWD='._cwd)
+    silent call add(_list, 'CWD='._cwd)
     silent call add(_list, 'Version='.s:exES_CurrentVersion)
 
 	" Init the exUtility plugin file path
@@ -144,7 +144,7 @@ function g:exES_SetEnvironment() " <<<
     if s:exES_setted != 1
         let s:exES_setted = 1
 
-        " get PWD
+        " get CWD
         let Line = getline(1)
         let SettingList = split(Line, "=")
         if len(SettingList)>=2
@@ -164,12 +164,12 @@ function g:exES_SetEnvironment() " <<<
 
         " process check
         let _cwd = substitute( getcwd(), "\\", "\/", "g" )
-        if !exists( 'g:exES_PWD' ) || !exists( 'g:exES_Version' )
-            echomsg "g:exES_PWD/g:exES_Version not exists"
+        if !exists( 'g:exES_CWD' ) || !exists( 'g:exES_Version' )
+            echomsg "g:exES_CWD/g:exES_Version not exists"
             let need_update = 1
-        elseif g:exES_PWD != _cwd " check if PWD is correct, rewrite default template if not
-            echomsg "g:exES_PWD != _cwd ==> " . g:exES_PWD . " != " . _cwd
-            let g:exES_PWD = _cwd 
+        elseif g:exES_CWD != _cwd " check if CWD is correct, rewrite default template if not
+            echomsg "g:exES_CWD != _cwd ==> " . g:exES_CWD . " != " . _cwd
+            let g:exES_CWD = _cwd 
             let need_update = 1
         elseif g:exES_Version != s:exES_CurrentVersion " check if Ver is correct, rewrite default template if not
             echomsg "g:exES_Version != s:exES_CurrentVersion ==> " . g:exES_Version . " != " . s:exES_CurrentVersion
@@ -193,18 +193,18 @@ function g:exES_SetEnvironment() " <<<
         endfor
 
         " create _vimfiles directory
-        if finddir(g:exES_PWD.'/'.g:exES_vimfile_dir) == ''
-            silent call mkdir(g:exES_PWD.'/'.g:exES_vimfile_dir)
+        if finddir(g:exES_CWD.'/'.g:exES_vimfile_dir) == ''
+            silent call mkdir(g:exES_CWD.'/'.g:exES_vimfile_dir)
         endif
 
         " create _inherits directory
-        let inherit_directory_path = g:exES_PWD.'/'.g:exES_vimfile_dir.'/_hierarchies' 
+        let inherit_directory_path = g:exES_CWD.'/'.g:exES_vimfile_dir.'/_hierarchies' 
         if finddir(inherit_directory_path) == ''
             silent call mkdir(inherit_directory_path)
         endif
 
         " create _temp directory
-        let temp_directory_path = g:exES_PWD.'/'.g:exES_vimfile_dir.'/_temp' 
+        let temp_directory_path = g:exES_CWD.'/'.g:exES_vimfile_dir.'/_temp' 
         if finddir(temp_directory_path) == ''
             silent call mkdir(temp_directory_path)
         endif

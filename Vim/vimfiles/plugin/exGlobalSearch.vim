@@ -783,6 +783,11 @@ function s:exGS_Stack_GoDirect() " <<<
     let idx = match(cur_line, '\S')
     let cur_line = strpart(cur_line, idx)
     let idx = match(cur_line, ':')
+    if idx == -1
+        call g:ex_WarningMsg("Can't jump in this line")
+        return
+    endif
+
     let stack_idx = eval(strpart(cur_line, 0, idx))
     call g:ex_HighlightConfirmLine()
 
