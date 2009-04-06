@@ -422,6 +422,8 @@ function g:exSL_InitSelectWindow() " <<<
 
     " autocmd
     au CursorMoved <buffer> :call g:ex_HighlightSelectLine()
+
+    let s:exSL_select_idx = line('.') 
 endfunction " >>>
 
 " ------------------------------------------------------------------ 

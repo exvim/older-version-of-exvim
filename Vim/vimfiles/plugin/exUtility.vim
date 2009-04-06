@@ -982,7 +982,7 @@ endfunction " >>>
 " ------------------------------------------------------------------ 
 
 function g:ex_YankBufferNameForCode() " <<<
-    let buf_name = substitute( bufname('%'), "\\", "\/", "g" )
+    let buf_name = g:ex_Pathfmt( bufname('%'), 'unix' )
     silent call g:ex_Yank( fnamemodify(buf_name,"") )
 endfunction " >>>
 
@@ -991,7 +991,7 @@ endfunction " >>>
 " ------------------------------------------------------------------ 
 
 function g:ex_YankFilePathForCode() " <<<
-    let buf_name = substitute( bufname('%'), "\\", "\/", "g" )
+    let buf_name = g:ex_Pathfmt( bufname('%'), 'unix' )
     silent call g:ex_Yank( fnamemodify(buf_name,":h") )
 endfunction " >>>
 
@@ -1078,6 +1078,51 @@ endfunction  " >>>
 " ======================================================== 
 "  file functions
 " ======================================================== 
+
+" ------------------------------------------------------------------ 
+" Desc: 
+"  file_type can be: tag
+"                    symbol
+"                    id
+"                    inherits
+" ------------------------------------------------------------------ 
+
+function g:ex_GetVimFile( entry_path, file_type ) " <<<
+    "
+    let entry_path = fnamemodify( a:entry_path, ':p')
+    let fullpath_file = ''
+    if a:file_type ==# 'tag'
+        let fullpath_file = entry_path . '/tags'
+    elseif a:file_type ==# 'symbol' 
+        let fullpath_file = entry_path . '/' . g:exES_vimfile_dir . '/symbol'
+    elseif a:file_type ==# 'id' 
+        let fullpath_file = entry_path . '/' . g:exES_vimfile_dir . '/ID'
+    elseif a:file_type ==# 'inherits' 
+        let fullpath_file = entry_path . '/' . g:exES_vimfile_dir . '/inherits'
+    else
+        call g:ex_WarningMsg( 'unknown file_type: ' . a:file_type )
+        return
+    endif
+
+    "
+    return simplify(fullpath_file)
+endfunction ">>>
+
+" ------------------------------------------------------------------ 
+" Desc: 
+"  system: 'windows' 'unix'
+" ------------------------------------------------------------------ 
+
+function g:ex_Pathfmt( path, system ) " <<<
+    if a:system == 'windows'
+        return substitute( a:path, "\/", "\\", "g" )
+    elseif a:system == 'unix'
+        return substitute( a:path, "\\", "\/", "g" )
+    else
+        call g:ex_WarningMsg('unknown OS: ' . system)
+    endif
+endfunction ">>>
+
 
 " ------------------------------------------------------------------ 
 " Desc: Convert full file name into the format: file_name (directory)
@@ -1857,7 +1902,103 @@ function g:ex_UpdateVimFiles( type ) " <<<
 
     " now process the quick_gen_project script
     let update_cmd = quick_gen_script . gen_type
+
+    " now process vimentry references
+    let refs_update_cmd = g:ex_GetUpdateVimentryRefsCommand (a:type) 
+    if refs_update_cmd != ''
+        let update_cmd .= refs_update_cmd
+    endif
+
+    "
     call g:ex_Terminal ( 'prompt', 'nowait', update_cmd )
+endfunction " >>>
+
+" ------------------------------------------------------------------ 
+" Desc: get reference vimentry update command
+" ------------------------------------------------------------------ 
+
+function g:ex_GetUpdateVimentryRefsCommand( type ) " <<<
+    let cmd = ''
+
+    if !empty(g:exES_vimentryRefs)
+        if has ('win32')
+            let cmd .= ' & echo.'
+            let cmd .= ' & echo Update vimentry references...'
+
+            let destSymbol = '"' . g:ex_Pathfmt(g:ex_GetVimFile ( g:exES_CWD, 'symbol'),'windows') . '"'
+            let destInherit = '"' . g:ex_Pathfmt(g:ex_GetVimFile ( g:exES_CWD, 'inherits'),'windows') . '"'
+
+            let symbolFiles = destSymbol
+            let inheritFiles = destInherit
+
+            " get process files
+            for vimentry in g:exES_vimentryRefs
+                let entry_dir = fnamemodify( vimentry, ':p:h')
+                let symbolFiles .= '+' . '"' . g:ex_Pathfmt(g:ex_GetVimFile ( entry_dir, 'symbol'),'windows') . '"'
+                let inheritFiles .= '+' . '"' . g:ex_Pathfmt(g:ex_GetVimFile ( entry_dir, 'inherits'),'windows') . '"'
+            endfor
+
+            " get symbol cmd
+            if a:type == "" || a:type == "symbol"
+                let tmpSymbol = '"' . g:ex_Pathfmt( './'.g:exES_vimfile_dir.'/_symbol', 'windows' ) . '"'
+                let tmp_cmd = ' copy ' . symbolFiles . ' ' . tmpSymbol
+                let tmp_cmd .= ' & sort ' . tmpSymbol . ' /O ' . tmpSymbol
+                let tmp_cmd .= ' & move /Y ' . tmpSymbol . ' ' . destSymbol
+
+                let cmd .= ' & echo merge Symbols...'
+                let cmd .= ' & ' . tmp_cmd
+            endif
+
+            " get inherit cmd
+            if a:type == "" || a:type == "inherits"
+                let tmpInherit = '"' . g:ex_Pathfmt( './'.g:exES_vimfile_dir.'/_inherits', 'windows' ) . '"'
+                let tmp_cmd = ' copy ' . inheritFiles . ' ' . tmpInherit
+                let tmp_cmd .= ' & move /Y ' . tmpInherit . ' ' . destInherit
+
+                let cmd .= ' & echo merge Inherits...'
+                let cmd .= ' & ' . tmp_cmd
+            endif
+        elseif has ('unix')
+            let cmd .= ' && echo.'
+            let cmd .= ' && echo Update vimentry references...'
+
+            let destSymbol = '"' . g:ex_Pathfmt(g:ex_GetVimFile ( g:exES_CWD, 'symbol'),'unix') . '"'
+            let destInherit = '"' . g:ex_Pathfmt(g:ex_GetVimFile ( g:exES_CWD, 'inherits'),'unix') . '"'
+
+            let symbolFiles = destSymbol
+            let inheritFiles = destInherit
+
+            " get process files
+            for vimentry in g:exES_vimentryRefs
+                let entry_dir = fnamemodify( vimentry, ':p:h')
+                let symbolFiles .= ' ' . '"' . g:ex_Pathfmt(g:ex_GetVimFile ( entry_dir, 'symbol'),'unix') . '"'
+                let inheritFiles .= ' ' . '"' . g:ex_Pathfmt(g:ex_GetVimFile ( entry_dir, 'inherits'),'unix') . '"'
+            endfor
+
+            " get symbol cmd
+            if a:type == "" || a:type == "symbol"
+                let tmpSymbol = '"' . g:ex_Pathfmt( './'.g:exES_vimfile_dir.'/_symbol', 'unix' ) . '"'
+                let tmp_cmd = ' cat ' . symbolFiles . ' > ' . tmpSymbol
+                let tmp_cmd .= ' && sort ' . tmpSymbol . ' -o ' . tmpSymbol
+                let tmp_cmd .= ' && mv -f ' . tmpSymbol . ' ' . destSymbol
+
+                let cmd .= ' && echo merge Symbols...'
+                let cmd .= ' && ' . tmp_cmd
+            endif
+
+            " get inherit cmd
+            if a:type == "" || a:type == "inherits"
+                let tmpInherit = '"' . g:ex_Pathfmt( './'.g:exES_vimfile_dir.'/_inherits', 'unix' ) . '"'
+                let tmp_cmd = ' cat ' . inheritFiles . ' > ' . tmpInherit
+                let tmp_cmd .= ' && mv -f ' . tmpInherit . ' ' . destInherit
+
+                let cmd .= ' && echo merge Inherits...'
+                let cmd .= ' && ' . tmp_cmd
+            endif
+        endif
+    endif
+
+    return cmd
 endfunction " >>>
 
 " ------------------------------------------------------------------ 
@@ -2109,7 +2250,7 @@ function g:ex_SrcHighlight( line1, line2 ) " <<<
     let shl_result = system(shl_cmd)
 
     " TODO: use if win32, if linux
-    let win_file = substitute( temp_file_html, "\/", "\\", "g" )
+    let win_file = g:ex_Pathfmt( temp_file_html, 'windows')
     silent exec '!start ' . g:exES_WebBrowser . ' ' . win_file
 
     " go back to start line
@@ -2190,7 +2331,7 @@ function g:ex_GenInheritsDot( pattern, gen_method ) " <<<
     let dot_cmd = "!dot " . inherits_dot_file . " -Tpng -o" . image_file_name
     silent exec dot_cmd
     if has("win32")
-        return substitute( fnamemodify( image_file_name, ":p" ), '\/', '\\', 'g' )
+        return g:ex_Pathfmt( fnamemodify( image_file_name, ":p" ), 'windows' )
     else
         return fnamemodify( image_file_name, ":p" )
     endif

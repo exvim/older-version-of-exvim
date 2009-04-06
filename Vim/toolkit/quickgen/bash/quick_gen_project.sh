@@ -122,6 +122,7 @@ echo "language type: ${lang_type}"
 echo "support inheirts: ${support_inherit}"
 echo "support cscope: ${support_cscope}"
 echo "generate type: ${gen_type}"
+echo 
 
 # /////////////////////////////////////////////////////////////////////////////
 # gen functions
@@ -242,6 +243,7 @@ mkdir -p _vimfiles
 # Desc: choose the generate mode
 # ======================================================== 
 
+echo 
 case "$gen_type" in
 
     # process generate all

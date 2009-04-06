@@ -32,7 +32,7 @@ endif
 " Desc: current version. increase this will cause template re-write 
 " ------------------------------------------------------------------ 
 
-let s:exES_CurrentVersion = 8
+let s:exES_CurrentVersion = 9
 
 " ======================================================== 
 " local variable initialization 
@@ -53,7 +53,7 @@ let s:exES_setted = 0
 " ------------------------------------------------------------------ 
 
 function s:exES_WriteDefaultTemplate() " <<<
-    let _cwd = substitute( getcwd(), "\\", "\/", "g" )
+    let _cwd = g:ex_Pathfmt( getcwd(), 'unix' )
     let _dir_name = g:exES_vimfile_dir
     let _project_name = fnamemodify( expand('%'), ":t:r" )  
     let _list = []
@@ -72,6 +72,8 @@ function s:exES_WriteDefaultTemplate() " <<<
     silent call add(_list, 'Macro=./'._dir_name.'/macro')
     silent call add(_list, 'Cscope=./'._dir_name.'/cscope.out')
     silent call add(_list, 'Inherits=./'._dir_name.'/inherits')
+    silent call add(_list, '')
+    silent call add(_list, 'vimentryRefs+=')
 
 	" Init the visual_studio plugin file path
     silent call add(_list, '')
@@ -120,8 +122,8 @@ function g:exES_SetEnvironment() " <<<
 	" syntax highlight
 	syn match exES_SynSetting transparent  "^.\{-}=.*$" contains=exES_SynVar,exES_SynOperator
 	syn match exES_SynVar	"^.\{-}=" contained contains=exES_SynOperator
-	syn match exES_SynOperator	"=.*$" contained contains=exES_SynVal
-	syn match exES_SynVal	"[^=].*$" contained
+	syn match exES_SynOperator	"+*=.*$" contained contains=exES_SynVal
+	syn match exES_SynVal	"[^+=].*$" contained
 	syn match exES_SynComment	"^-- .\+ --$" 
 
 	highlight def exES_SynVar gui=none guifg=DarkCyan term=none cterm=none ctermfg=DarkCyan
@@ -163,7 +165,7 @@ function g:exES_SetEnvironment() " <<<
         let need_update = 0
 
         " process check
-        let _cwd = substitute( getcwd(), "\\", "\/", "g" )
+        let _cwd = g:ex_Pathfmt( getcwd(), 'unix' )
         if !exists( 'g:exES_CWD' ) || !exists( 'g:exES_Version' )
             echomsg "g:exES_CWD/g:exES_Version not exists"
             let need_update = 1
@@ -184,11 +186,29 @@ function g:exES_SetEnvironment() " <<<
 
         " read lines to get settings
         for Line in getline(1, '$')
-            let SettingList = split(Line, "=")
-            if len(SettingList)>=2
-                " let g:exES_{SettingList[0]} = escape(SettingList[1], ' ')
-                " since '\ ' will get error in win32, just disable it here
-                let g:exES_{SettingList[0]} = SettingList[1]
+            if stridx ( Line, '+=') == -1
+                let SettingList = split(Line, "=")
+                if len(SettingList)>=2 " the non-list variable must have value.
+                    " let g:exES_{SettingList[0]} = escape(SettingList[1], ' ')
+                    " since '\ ' will get error in win32, just disable it here
+                    let g:exES_{SettingList[0]} = SettingList[1]
+                endif
+            else " create list variables
+                let SettingList = split(Line, "+=")
+                if len(SettingList)>=1 " we can define a variable if the number of split list itmes more than one
+                    if !exists( 'g:exES_'.SettingList[0] ) " if we don't define this list variable, define it first
+                        let g:exES_{SettingList[0]} = []
+                    endif
+
+                    " now add items to the list
+                    if len(SettingList)>=2 " we can assigne a value if the number of split list items more then two
+                        if findfile( SettingList[1] ) != ''
+                            silent call add ( g:exES_{SettingList[0]}, SettingList[1] )
+                        else
+                            call g:ex_WarningMsg( 'Warning: vimentry ' . SettingList[1] . ' not found! Skip reference it' )
+                        endif
+                    endif
+                endif
             endif
         endfor
 

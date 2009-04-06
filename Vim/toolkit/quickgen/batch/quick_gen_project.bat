@@ -121,6 +121,7 @@ echo language type: %lang_type%
 echo support inheirts: %support_inherit%
 echo support cscope: %support_cscope%
 echo generate type: %gen_type%
+echo.
 goto START
 
 rem /////////////////////////////////////////////////////////////////////////////
@@ -257,6 +258,7 @@ rem  Desc: choose the generate mode
 rem  ======================================================== 
 
 rem process generate all
+echo.
 if /I "%gen_type%" == "all" ( 
     set return=all_1
     goto GEN_TAG

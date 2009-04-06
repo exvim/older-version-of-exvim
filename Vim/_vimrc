@@ -918,6 +918,17 @@ function g:exES_UpdateEnvironment()
         silent call g:exCS_ConnectCscopeFile()
     endif
 
+    " set vimentry references
+    if exists ('g:exES_vimentryRefs')
+        for vimentry in g:exES_vimentryRefs
+            let entry_dir = fnamemodify( vimentry, ':p:h')
+            let fullpath_tagfile = g:ex_GetVimFile ( entry_dir, 'tag')
+            if findfile ( fullpath_tagfile ) != ''
+                let &tags .= ',' . fullpath_tagfile
+            endif
+        endfor
+    endif
+
 	" set visual_studio plugin variables
 	if exists( 'g:exES_vsTaskList' )
 		let g:visual_studio_task_list = g:exES_vsTaskList
