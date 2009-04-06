@@ -113,7 +113,7 @@ endfunction " >>>
 " Desc: 
 " ------------------------------------------------------------------ 
 
-function g:exES_SetEnvironment() " <<<
+function g:exES_SetEnvironment( force_reset ) " <<<
     " do not show it in buffer list
     silent! setlocal bufhidden=hide
     silent! setlocal noswapfile
@@ -142,8 +142,13 @@ function g:exES_SetEnvironment() " <<<
         endif
     endif
 
+    " if we reset the variables, clear list first
+    if a:force_reset && s:exES_setted
+        silent call remove ( g:exES_vimentryRefs, 0, len(g:exES_vimentryRefs)-1 )
+    endif
+
     " get environment value
-    if s:exES_setted != 1
+    if s:exES_setted != 1 || a:force_reset == 1
         let s:exES_setted = 1
 
         " get CWD
@@ -245,7 +250,8 @@ endfunction " >>>
 " Desc: if it is vimentry files, set evironment first
 " ------------------------------------------------------------------ 
 
-au BufEnter *.vimentry call g:exES_SetEnvironment()
+au BufEnter *.vimentry call g:exES_SetEnvironment(0)
+au BufWritePost <buffer> :call g:exES_SetEnvironment(1)
 
 
 "/////////////////////////////////////////////////////////////////////////////
