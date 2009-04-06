@@ -1957,7 +1957,7 @@ function g:ex_GetUpdateVimentryRefsCommand( type ) " <<<
             endif
 
             " get inherit cmd
-            if a:type == "" || a:type == "inherits"
+            if a:type == "" || a:type == "inherit"
                 let tmpInherit = '"' . g:ex_Pathfmt( './'.g:exES_vimfile_dir.'/_inherits', 'windows' ) . '"'
                 let tmp_cmd = ' copy ' . inheritFiles . ' ' . tmpInherit
                 let tmp_cmd .= ' & move /Y ' . tmpInherit . ' ' . destInherit
@@ -1994,7 +1994,7 @@ function g:ex_GetUpdateVimentryRefsCommand( type ) " <<<
             endif
 
             " get inherit cmd
-            if a:type == "" || a:type == "inherits"
+            if a:type == "" || a:type == "inherit"
                 let tmpInherit = '"' . g:ex_Pathfmt( './'.g:exES_vimfile_dir.'/_inherits', 'unix' ) . '"'
                 let tmp_cmd = ' cat ' . inheritFiles . ' > ' . tmpInherit
                 let tmp_cmd .= ' && mv -f ' . tmpInherit . ' ' . destInherit
