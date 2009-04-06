@@ -1966,7 +1966,7 @@ function g:ex_GetUpdateVimentryRefsCommand( type ) " <<<
                 let cmd .= ' & ' . tmp_cmd
             endif
         elseif has ('unix')
-            let cmd .= ' && echo.'
+            let cmd .= ' && echo'
             let cmd .= ' && echo Update vimentry references...'
 
             let destSymbol = '"' . g:ex_Pathfmt(g:ex_GetVimFile ( g:exES_CWD, 'symbol'),'unix') . '"'

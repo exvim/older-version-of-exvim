@@ -923,6 +923,11 @@ function g:exES_UpdateEnvironment()
         for vimentry in g:exES_vimentryRefs
             let entry_dir = fnamemodify( vimentry, ':p:h')
             let fullpath_tagfile = g:ex_GetVimFile ( entry_dir, 'tag')
+            if has ('win32')
+                let fullpath_tagfile = g:ex_Pathfmt( fullpath_tagfile, 'windows' )
+            elseif has ('unix')
+                let fullpath_tagfile = g:ex_Pathfmt( fullpath_tagfile, 'unix' )
+            endif
             if findfile ( fullpath_tagfile ) != ''
                 let &tags .= ',' . fullpath_tagfile
             endif
