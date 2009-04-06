@@ -610,9 +610,9 @@ command -narg=? Update call g:ex_UpdateVimFiles("<args>")
 command -narg=? QCopy call g:ex_CopyQuickGenProject("<args>")
 
 " inherits genreate
-command -narg=1 GV call g:ex_GenInheritsDot('<args>',"all")
-command -narg=1 GVP call g:ex_GenInheritsDot('<args>',"parent")
-command -narg=1 GVC call g:ex_GenInheritsDot('<args>',"children")
+command -narg=1 -complete=tag GV call g:ex_GenInheritsDot('<args>',"all")
+command -narg=1 -complete=tag GVP call g:ex_GenInheritsDot('<args>',"parent")
+command -narg=1 -complete=tag GVC call g:ex_GenInheritsDot('<args>',"children")
 map <unique> <silent> <Leader>gv :call g:ex_ViewInheritsImage()<CR>
 
 " code writing
