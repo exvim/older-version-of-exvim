@@ -1858,7 +1858,14 @@ function g:ex_UpdateVimFiles( type ) " <<<
     let script_not_found = 0
 
     " find quick gen script first
-    let quick_gen_script = glob('quick_gen_project*.\(bat\|sh\)') 
+    let suffix = '\(bat\|sh\)'
+    if has ("win32")
+        let suffix = 'bat'
+    elseif has ("unix")
+        let suffix = 'sh'
+    endif
+
+    let quick_gen_script = glob('quick_gen_project*.'.suffix) 
     if quick_gen_script != ''
         silent exec "cscope kill " . g:exES_Cscope
         " we use async update
