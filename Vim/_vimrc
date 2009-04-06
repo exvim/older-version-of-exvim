@@ -89,7 +89,11 @@ if has("gui_running")
 endif
 
 " color scheme define
-silent exec "colorscheme ex"
+if &term == 'builtin_gui' " if we are in gui mode
+    silent exec "colorscheme ex"
+else " if we are in terminal mode
+    silent exec "colorscheme darkblue"
+endif
 au ColorScheme * call UpdateHighlights()
 
 " update highlights

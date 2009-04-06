@@ -433,7 +433,7 @@ function s:exPJ_CreateProject(with_dialog) " <<<
         if exists('g:exES_PWD')
             let ex_pwd = g:exES_PWD
         endif
-        let entry_dir = inputdialog( 'Enter the entry directory:', ex_pwd, 'cancle' )
+        let entry_dir = inputdialog( 'Enter the entry directory: ', ex_pwd, 'cancle' )
         if entry_dir == ''
             call g:ex_WarningMsg('Entry dir is empty')
             return
@@ -442,7 +442,7 @@ function s:exPJ_CreateProject(with_dialog) " <<<
         endif
 
         " get file filter
-        let file_filter = inputdialog( 'Enter the file filters: sample(cpp c inl)', s:exPJ_file_filter, 'cancle')
+        let file_filter = inputdialog( 'Enter the file filters: sample(cpp c inl): ', s:exPJ_file_filter, 'cancle')
         if file_filter == 'cancle'
             return
         else
@@ -450,7 +450,7 @@ function s:exPJ_CreateProject(with_dialog) " <<<
         endif
 
         " add dir filter
-        let dir_filter = inputdialog( 'Enter the dir filters: sample(folder1 folder2)', s:exPJ_dir_filter, 'cancle')
+        let dir_filter = inputdialog( 'Enter the dir filters: sample(folder1 folder2): ', s:exPJ_dir_filter, 'cancle')
         if dir_filter == 'cancle'
             return
         else
@@ -490,7 +490,7 @@ function s:exPJ_QuickRefreshProject() " <<<
     endif
 
     " get filter
-    let filter = inputdialog( 'Enter the filters: sample(cpp c inl)', s:exPJ_file_filter, 'cancle')
+    let filter = inputdialog( 'Enter the filters: sample(cpp c inl): ', s:exPJ_file_filter, 'cancle')
     if filter == 'cancle'
         return
     else
@@ -608,7 +608,7 @@ function s:exPJ_RefreshProject( with_dialog ) " <<<
 
     " get filter
     if a:with_dialog == 1
-        let filter = inputdialog( 'Enter the filters: sample(cpp c inl)', s:exPJ_file_filter, 'cancle')
+        let filter = inputdialog( 'Enter the filters: sample(cpp c inl): ', s:exPJ_file_filter, 'cancle')
         if filter == 'cancle'
             return
         else
