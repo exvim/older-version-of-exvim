@@ -142,10 +142,12 @@ function g:exES_SetEnvironment( force_reset ) " <<<
         endif
     endif
 
+    " HACK: a little bit hack, if you add new list value, you need to maintain remove code manually { 
     " if we reset the variables, clear list first
     if a:force_reset && s:exES_setted
         silent call remove ( g:exES_vimentryRefs, 0, len(g:exES_vimentryRefs)-1 )
     endif
+    " } HACK end 
 
     " get environment value
     if s:exES_setted != 1 || a:force_reset == 1
