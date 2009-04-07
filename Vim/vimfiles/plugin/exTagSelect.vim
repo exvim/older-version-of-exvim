@@ -694,7 +694,7 @@ endfunction " >>>
 "/////////////////////////////////////////////////////////////////////////////
 
 "
-command -nargs=1 -complete=tag TS call s:exTS_GetTagSelectResult('<args>', 0)
+command -nargs=1 -complete=customlist,g:ex_CompleteBySymbolFile TS call s:exTS_GetTagSelectResult('<args>', 0)
 command BackwardTagStack call s:exTS_Stack_GotoTag(s:exTS_stack_idx-1, 'to_entry')
 command ForwardTagStack call s:exTS_Stack_GotoTag(s:exTS_stack_idx+1, 'to_tag')
 command TAGS call s:exTS_SwitchWindow('Stack')

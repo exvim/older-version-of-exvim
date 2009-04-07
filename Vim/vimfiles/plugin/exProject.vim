@@ -244,7 +244,6 @@ function s:exPJ_GetName( line_num )
     return line
 endfunction
 
-
 " ------------------------------------------------------------------ 
 " Desc: used by exPJ_GetPath, by YJR
 " ------------------------------------------------------------------ 

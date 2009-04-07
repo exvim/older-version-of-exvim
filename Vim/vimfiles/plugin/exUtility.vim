@@ -2408,6 +2408,148 @@ function s:ex_RecursiveGetParent(inherits_list, file_list) " <<<
 endfunction " >>>
 
 " ======================================================== 
+" command custom complete functions
+" ======================================================== 
+
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
+function g:ex_CompleteBySymbolFile( arg_lead, cmd_line, cursor_pos ) " <<<
+    let filter_tag = []
+    if exists ('g:exES_Symbol')
+        let tags = readfile( g:exES_Symbol )
+
+        for tag in tags
+            if tag =~ '^'.a:arg_lead.'.*'
+                silent call add ( filter_tag, tag )
+            endif
+        endfor
+    endif
+    return filter_tag
+endfunction " >>>
+
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
+function s:ex_GetFileName( text )
+    let line = ''
+    " if it is a file
+    if match(a:text,'[^^]-\C\[[^F]\]') != -1
+        let line = a:text
+        let line = substitute(line,'.\{-}\[.\{-}\]\(.\{-}\)','\1','')
+        let idx_end_1 = stridx(line,' {')
+        let idx_end_2 = stridx(line,' }')
+        if idx_end_1 != -1
+            let line = strpart(line,0,idx_end_1)
+        elseif idx_end_2 != -1
+            let line = strpart(line,0,idx_end_2)
+        endif
+    endif
+    return line
+endfunction
+
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
+function g:ex_CompleteByProjectFile( arg_lead, cmd_line, cursor_pos ) " <<<
+    let filter_files = []
+    if exists ('g:exES_Project')
+        let project_files = readfile(g:exES_Project)
+        for file_line in project_files
+            let file_name = s:ex_GetFileName (file_line)
+            if file_name =~ '^'.a:arg_lead.'.*'
+                silent call add ( filter_files, file_name )
+            endif
+        endfor
+    endif
+    return filter_files
+endfunction " >>>
+
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
+function g:ex_CompleteGMakeArgs( arg_lead, cmd_line, cursor_pos ) " <<<
+    let idx = strridx(a:arg_lead,'/')+1
+    let arg_lead_prefix = strpart(a:arg_lead, 0, idx )
+    let arg_lead_suffix = strpart(a:arg_lead, idx )
+
+    let args = ["all","rebuild","rebuild-deps","rebuild-gchs","rebuild-objs","rebuild-target","clean-all","clean-deps","clean-errs","clean-gchs","clean-objs","clean-target"]
+    let filter_result = []
+    for arg in args
+        if arg =~ '^'.arg_lead_suffix.'.*'
+            silent call add ( filter_result, arg_lead_prefix . arg )
+        endif
+    endfor
+    return filter_result
+endfunction " >>>
+
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
+function g:ex_CompleteVMakeArgs( arg_lead, cmd_line, cursor_pos ) " <<<
+    let args = ["all","rebuild","clean-all"]
+    let filter_result = []
+    for arg in args
+        if arg =~ '^'.a:arg_lead.'.*'
+            silent call add ( filter_result, arg )
+        endif
+    endfor
+    return filter_result
+endfunction " >>>
+
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
+function g:ex_CompleteUpdateArgs( arg_lead, cmd_line, cursor_pos ) " <<<
+    let args = ["ID","symbol","inherit","tag","cscope"]
+    let filter_result = []
+    for arg in args
+        if arg =~ '^'.a:arg_lead.'.*'
+            silent call add ( filter_result, arg )
+        endif
+    endfor
+    return filter_result
+endfunction " >>>
+
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
+function g:ex_CompleteQCopyArgs( arg_lead, cmd_line, cursor_pos ) " <<<
+    let args = ["all", "general", "c", "cpp", "csharp", "html", "javascript", "lua", "math", "python", "uc", "vim"]
+    let filter_result = []
+    for arg in args
+        if arg =~ '^'.a:arg_lead.'.*'
+            silent call add ( filter_result, arg )
+        endif
+    endfor
+    return filter_result
+endfunction " >>>
+
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
+function g:ex_CompleteMKArgs( arg_lead, cmd_line, cursor_pos ) " <<<
+    let args = split( g:ex_todo_keyword, ' ' )
+    silent call extend (args, split( g:ex_comment_lable_keyword, ' ' ) )
+
+    let filter_result = []
+    for arg in args
+        if arg =~ '^'.a:arg_lead.'.*'
+            silent call add ( filter_result, arg )
+        endif
+    endfor
+    return filter_result
+endfunction " >>>
+
+" ======================================================== 
 "  Debug functions
 " ======================================================== 
 

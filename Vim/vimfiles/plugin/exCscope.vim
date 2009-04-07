@@ -749,12 +749,12 @@ endfunction " >>>
 " Commands
 "/////////////////////////////////////////////////////////////////////////////
 
-command -nargs=1 CSD call s:exCS_GetSearchResult('<args>', 'da')
-command -nargs=1 CSC call s:exCS_GetSearchResult('<args>', 'c')
-command -nargs=1 CSI call s:exCS_GetSearchResult('<args>', 'i')
-command -nargs=1 CSS call s:exCS_GetSearchResult('<args>', 's')
-command -nargs=1 CSG call s:exCS_GetSearchResult('<args>', 'g')
-command -nargs=1 CSE call s:exCS_GetSearchResult('<args>', 'e')
+command -nargs=1 -complete=customlist,g:ex_CompleteBySymbolFile CSD call s:exCS_GetSearchResult('<args>', 'da')
+command -nargs=1 -complete=customlist,g:ex_CompleteBySymbolFile CSC call s:exCS_GetSearchResult('<args>', 'c')
+command -nargs=1 -complete=customlist,g:ex_CompleteByProjectFile CSI call s:exCS_GetSearchResult('<args>', 'i')
+command -nargs=1 -complete=customlist,g:ex_CompleteBySymbolFile CSS call s:exCS_GetSearchResult('<args>', 's')
+command -nargs=1 -complete=customlist,g:ex_CompleteBySymbolFile CSG call s:exCS_GetSearchResult('<args>', 'g')
+command -nargs=1 -complete=customlist,g:ex_CompleteBySymbolFile CSE call s:exCS_GetSearchResult('<args>', 'e')
 
 command ExcsToggle call s:exCS_ToggleWindow('')
 command ExcsSelectToggle call s:exCS_ToggleWindow('Select')

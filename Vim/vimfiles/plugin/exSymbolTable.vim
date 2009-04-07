@@ -475,7 +475,7 @@ endfunction " >>>
 "/////////////////////////////////////////////////////////////////////////////
 
 "
-command -nargs=1 SL call s:exSL_GetSymbolListResult('<args>')
+command -nargs=1 -complete=customlist,g:ex_CompleteBySymbolFile SL call s:exSL_GetSymbolListResult('<args>')
 command ExslSelectToggle call s:exSL_ToggleWindow('Select')
 command ExslQuickViewToggle call s:exSL_ToggleWindow('QuickView')
 command ExslQuickSearch call s:exSL_QuickSearch()
@@ -483,8 +483,8 @@ command ExslToggle call s:exSL_ToggleWindow('')
 command ExslGoDirectly call s:exSL_GetAndShowPickedResult()
 
 " quick view command
-command -nargs=1 SLPR call s:exSL_ShowPickedResult('<args>',0)
-command -nargs=1 SLPD call s:exSL_ShowPickedResult('<args>',1)
+command -nargs=1 -complete=customlist,g:ex_CompleteBySymbolFile SLPR call s:exSL_ShowPickedResult('<args>',0)
+command -nargs=1 -complete=customlist,g:ex_CompleteBySymbolFile SLPD call s:exSL_ShowPickedResult('<args>',1)
 
 " Ignore case setting
 command SLigc call s:exSL_SetIgnoreCase(1)

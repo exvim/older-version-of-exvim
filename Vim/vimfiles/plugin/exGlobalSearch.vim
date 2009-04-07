@@ -995,12 +995,12 @@ endfunction " >>>
 " Commands
 "/////////////////////////////////////////////////////////////////////////////
 
-command -nargs=1 GS call s:exGS_GetGlobalSearchResult('<args>', '-s', 0)
-command -nargs=1 GSW call s:exGS_GetGlobalSearchResult('<args>', '-w', 0)
-command -nargs=1 GSR call s:exGS_GetGlobalSearchResult('<args>', '-r', 0)
+command -nargs=1 -complete=customlist,g:ex_CompleteBySymbolFile GS call s:exGS_GetGlobalSearchResult('<args>', '-s', 0)
+command -nargs=1 -complete=customlist,g:ex_CompleteBySymbolFile GSW call s:exGS_GetGlobalSearchResult('<args>', '-w', 0)
+command -nargs=1 -complete=customlist,g:ex_CompleteBySymbolFile GSR call s:exGS_GetGlobalSearchResult('<args>', '-r', 0)
 
-command -nargs=1 GSF call s:exGS_GetFilenameSearchResult('<args>', '-s')
-command -nargs=1 GSFW call s:exGS_GetFilenameSearchResult('<args>', '-w')
+command -nargs=1 -complete=customlist,g:ex_CompleteByProjectFile GSF call s:exGS_GetFilenameSearchResult('<args>', '-s')
+command -nargs=1 -complete=customlist,g:ex_CompleteByProjectFile GSFW call s:exGS_GetFilenameSearchResult('<args>', '-w')
 
 command ExgsToggle call s:exGS_ToggleWindow('')
 command ExgsSelectToggle call s:exGS_ToggleWindow('Select')
@@ -1014,10 +1014,10 @@ command ExgsGotoNextResult call s:exGS_GotoResult ( 'next' )
 command ExgsGotoPrevResult call s:exGS_GotoResult ( 'prev' )
 
 " quick view command
-command -nargs=1 GSPR call s:exGS_ShowPickedResult('<args>', 'replace', '', 0 )
-command -nargs=1 GSPRI call s:exGS_ShowPickedResult('<args>', 'replace', '', 1 )
-command -nargs=1 GSPA call s:exGS_ShowPickedResult('<args>', 'append', '', 0 )
-command -nargs=1 GSPAI call s:exGS_ShowPickedResult('<args>', 'append', '', 1 )
+command -nargs=1 -complete=customlist,g:ex_CompleteBySymbolFile GSPR call s:exGS_ShowPickedResult('<args>', 'replace', '', 0 )
+command -nargs=1 -complete=customlist,g:ex_CompleteBySymbolFile GSPRI call s:exGS_ShowPickedResult('<args>', 'replace', '', 1 )
+command -nargs=1 -complete=customlist,g:ex_CompleteBySymbolFile GSPA call s:exGS_ShowPickedResult('<args>', 'append', '', 0 )
+command -nargs=1 -complete=customlist,g:ex_CompleteBySymbolFile GSPAI call s:exGS_ShowPickedResult('<args>', 'append', '', 1 )
 
 " Ignore case setting
 command GSigc call s:exGS_SetIgnoreCase(1)

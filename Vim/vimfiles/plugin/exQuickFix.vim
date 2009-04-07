@@ -574,7 +574,7 @@ endfunction " >>>
 " Commands
 "/////////////////////////////////////////////////////////////////////////////
 
-command -nargs=1 QF call s:exQF_GetQuickFixResult('<args>')
+command -nargs=1 -complete=file QF call s:exQF_GetQuickFixResult('<args>')
 command ExqfToggle call s:exQF_ToggleWindow('')
 command ExqfSelectToggle call s:exQF_ToggleWindow('Select')
 command ExqfQuickViewToggle call s:exQF_ToggleWindow('QuickView')
