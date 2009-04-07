@@ -2120,16 +2120,19 @@ endfunction " >>>
 
 " ------------------------------------------------------------------ 
 " Desc: hightlight match_nr
+" NOTE: the 1,2,3,4 correspond to reg q,w,e,r
 " ------------------------------------------------------------------ 
 
 function g:ex_Highlight_Normal(match_nr) " <<<
     " get word under cursor
     let hl_word = expand('<cword>')
-    call g:ex_Highlight_Text( a:match_nr, '\<'.hl_word.'\>' )
+    let hl_pattern = '\<\C'.hl_word.'\>'
+    call g:ex_Highlight_Text( a:match_nr, hl_pattern )
 endfunction " >>>
 
 " ------------------------------------------------------------------ 
 " Desc: hightlight match_nr with text
+" NOTE: the 1,3 will save word to register as \<word\>, the 2,4 will save word to register as word
 " ------------------------------------------------------------------ 
 
 function g:ex_Highlight_Text(match_nr, args) " <<<
@@ -2153,7 +2156,12 @@ function g:ex_Highlight_Text(match_nr, args) " <<<
         call g:ex_HighlightCancle(a:match_nr)
         let w:ex_hlMatchID[a:match_nr] = matchadd( 'ex_SynHL'.a:match_nr, pattern, a:match_nr )
         let w:ex_HighLightText[a:match_nr] = pattern
-        silent call setreg(s:ex_hlRegMap[a:match_nr],a:args) 
+
+        let hl_pattern = a:args
+        if a:match_nr == 2 || a:match_nr == 4 " if 2,4, remove \<\C...\>
+            let hl_pattern = strpart( hl_pattern, 4, strlen(hl_pattern) - 6)
+        endif
+        silent call setreg(s:ex_hlRegMap[a:match_nr],hl_pattern) 
     endif
 endfunction " >>>
 
@@ -2472,6 +2480,7 @@ endfunction " >>>
 " Desc: 
 " ------------------------------------------------------------------ 
 
+" TODO: can combine args with file,directory search
 function g:ex_CompleteGMakeArgs( arg_lead, cmd_line, cursor_pos ) " <<<
     let idx = strridx(a:arg_lead,'/')+1
     let arg_lead_prefix = strpart(a:arg_lead, 0, idx )
