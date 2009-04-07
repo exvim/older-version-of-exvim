@@ -255,7 +255,7 @@ endfunction " >>>
 " ------------------------------------------------------------------ 
 
 au BufEnter *.vimentry call g:exES_SetEnvironment(0)
-au BufWritePost <buffer> :call g:exES_SetEnvironment(1)
+au BufWritePost *.vimentry :call g:exES_SetEnvironment(1)
 
 
 "/////////////////////////////////////////////////////////////////////////////
