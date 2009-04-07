@@ -447,7 +447,6 @@ function g:exGS_InitSelectWindow() " <<<
     syntax region ex_SynFileName start="^[^:]*" end=":" oneline
     syntax region ex_SynSearchPattern start="^----------" end="----------"
     syntax match ex_SynLineNr '\d\+:'
-    syntax match ex_SynHelpText '^" .*'
 
     " key map
     nnoremap <buffer> <silent> <Return>   \|:call <SID>exGS_GotoInSelectWindow()<CR>
