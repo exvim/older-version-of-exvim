@@ -2041,7 +2041,7 @@ function g:ex_CopyQuickGenProject( type ) " <<<
 
     " copy quick gen script
     let quick_gen_script = ''
-    if a:type == ""
+    if a:type == "all"
         let quick_gen_script = "quick_gen_project_all." . script_suffix
     elseif a:type == "general"
         let quick_gen_script = "quick_gen_project_general." . script_suffix  
