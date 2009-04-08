@@ -842,10 +842,22 @@ function g:ex_Yank( string ) " <<<
     let @* = a:string
 endfunction " >>>
 
-" ======================================================== 
-"  buffer functions
-" ======================================================== 
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
 
+function g:ex_SmartCaseCompare( text, pattern ) " <<<
+    if match(a:pattern, '\u') != -1 " if we have upper case, use case compare
+        return match ( a:text, '\C'.a:pattern ) != -1
+    else " ignore case compare
+        return match ( a:text, a:pattern ) != -1
+    endif 
+endfunction " >>>
+
+
+"/////////////////////////////////////////////////////////////////////////////
+"  buffer functions
+"/////////////////////////////////////////////////////////////////////////////
 
 " ------------------------------------------------------------------ 
 " Desc: Record current buf num when leave
@@ -1075,9 +1087,9 @@ function g:ex_Kwbd(kwbdStage) " <<<
     endif 
 endfunction  " >>>
 
-" ======================================================== 
+"/////////////////////////////////////////////////////////////////////////////
 "  file functions
-" ======================================================== 
+"/////////////////////////////////////////////////////////////////////////////
 
 " ------------------------------------------------------------------ 
 " Desc: 
@@ -1552,9 +1564,9 @@ function g:ex_Explore( path ) " <<<
     endif
 endfunction " >>>
 
-" ======================================================== 
+"/////////////////////////////////////////////////////////////////////////////
 "  fold functions
-" ======================================================== 
+"/////////////////////////////////////////////////////////////////////////////
 
 " ------------------------------------------------------------------ 
 " Desc: 
@@ -1581,9 +1593,9 @@ function g:ex_FoldText() " <<<
     " return line
 endfunction ">>>
 
-" ======================================================== 
+"/////////////////////////////////////////////////////////////////////////////
 "  jump functions
-" ======================================================== 
+"/////////////////////////////////////////////////////////////////////////////
 
 " ------------------------------------------------------------------ 
 " Desc: Goto the position by file name and search pattern
@@ -1704,9 +1716,9 @@ function g:ex_CursorJump( search_pattern, search_direction ) " <<<
     call g:ex_HighlightSelectLine()
 endfunction " >>>
 
-" ======================================================== 
+"/////////////////////////////////////////////////////////////////////////////
 "  terminal functions
-" ======================================================== 
+"/////////////////////////////////////////////////////////////////////////////
 
 " ------------------------------------------------------------------ 
 " Desc: 
@@ -2069,9 +2081,9 @@ function g:ex_Debug( exe_name ) " <<<
     endif
 endfunction " >>>
 
-" ======================================================== 
+"/////////////////////////////////////////////////////////////////////////////
 "  Hightlight functions
-" ======================================================== 
+"/////////////////////////////////////////////////////////////////////////////
 
 " ------------------------------------------------------------------ 
 " Desc: hightlight confirm line
@@ -2272,9 +2284,9 @@ function g:ex_SrcHighlight( line1, line2 ) " <<<
     silent exec ":" . first_line
 endfunction " >>>
 
-" ======================================================== 
+"/////////////////////////////////////////////////////////////////////////////
 "  Inherits functions
-" ======================================================== 
+"/////////////////////////////////////////////////////////////////////////////
 
 " ------------------------------------------------------------------ 
 " Desc: 
@@ -2415,9 +2427,9 @@ function s:ex_RecursiveGetParent(inherits_list, file_list) " <<<
     return result_list
 endfunction " >>>
 
-" ======================================================== 
+"/////////////////////////////////////////////////////////////////////////////
 " command custom complete functions
-" ======================================================== 
+"/////////////////////////////////////////////////////////////////////////////
 
 " ------------------------------------------------------------------ 
 " Desc: 
@@ -2429,7 +2441,7 @@ function g:ex_CompleteBySymbolFile( arg_lead, cmd_line, cursor_pos ) " <<<
         let tags = readfile( g:exES_Symbol )
 
         for tag in tags
-            if tag =~ '^'.a:arg_lead.'.*'
+            if g:ex_SmartCaseCompare ( tag, '^'.a:arg_lead.'.*' )
                 silent call add ( filter_tag, tag )
             endif
         endfor
@@ -2468,7 +2480,7 @@ function g:ex_CompleteByProjectFile( arg_lead, cmd_line, cursor_pos ) " <<<
         let project_files = readfile(g:exES_Project)
         for file_line in project_files
             let file_name = s:ex_GetFileName (file_line)
-            if file_name =~ '^'.a:arg_lead.'.*'
+            if g:ex_SmartCaseCompare( file_name, '^'.a:arg_lead.'.*' )
                 silent call add ( filter_files, file_name )
             endif
         endfor
@@ -2489,7 +2501,7 @@ function g:ex_CompleteGMakeArgs( arg_lead, cmd_line, cursor_pos ) " <<<
     let args = ["all","rebuild","rebuild-deps","rebuild-gchs","rebuild-objs","rebuild-target","clean-all","clean-deps","clean-errs","clean-gchs","clean-objs","clean-target"]
     let filter_result = []
     for arg in args
-        if arg =~ '^'.arg_lead_suffix.'.*'
+        if g:ex_SmartCaseCompare( arg, '^'.arg_lead_suffix.'.*' )
             silent call add ( filter_result, arg_lead_prefix . arg )
         endif
     endfor
@@ -2504,7 +2516,7 @@ function g:ex_CompleteVMakeArgs( arg_lead, cmd_line, cursor_pos ) " <<<
     let args = ["all","rebuild","clean-all"]
     let filter_result = []
     for arg in args
-        if arg =~ '^'.a:arg_lead.'.*'
+        if g:ex_SmartCaseCompare( arg, '^'.a:arg_lead.'.*' )
             silent call add ( filter_result, arg )
         endif
     endfor
@@ -2519,7 +2531,7 @@ function g:ex_CompleteUpdateArgs( arg_lead, cmd_line, cursor_pos ) " <<<
     let args = ["ID","symbol","inherit","tag","cscope"]
     let filter_result = []
     for arg in args
-        if arg =~ '^'.a:arg_lead.'.*'
+        if g:ex_SmartCaseCompare( arg, '^'.a:arg_lead.'.*' )
             silent call add ( filter_result, arg )
         endif
     endfor
@@ -2534,7 +2546,7 @@ function g:ex_CompleteQCopyArgs( arg_lead, cmd_line, cursor_pos ) " <<<
     let args = ["all", "general", "c", "cpp", "csharp", "html", "javascript", "lua", "math", "python", "uc", "vim"]
     let filter_result = []
     for arg in args
-        if arg =~ '^'.a:arg_lead.'.*'
+        if g:ex_SmartCaseCompare( arg, '^'.a:arg_lead.'.*' )
             silent call add ( filter_result, arg )
         endif
     endfor
@@ -2551,16 +2563,16 @@ function g:ex_CompleteMKArgs( arg_lead, cmd_line, cursor_pos ) " <<<
 
     let filter_result = []
     for arg in args
-        if arg =~ '^'.a:arg_lead.'.*'
+        if g:ex_SmartCaseCompare( arg, '^'.a:arg_lead.'.*' )
             silent call add ( filter_result, arg )
         endif
     endfor
     return filter_result
 endfunction " >>>
 
-" ======================================================== 
+"/////////////////////////////////////////////////////////////////////////////
 "  Debug functions
-" ======================================================== 
+"/////////////////////////////////////////////////////////////////////////////
 
 " ------------------------------------------------------------------ 
 " Desc: Display a message using WarningMsg highlight group
@@ -2585,9 +2597,9 @@ function g:ex_VisualPasteFixed() " <<<
     silent normal! gvp
 endfunction " >>>
 
-" ======================================================== 
+"/////////////////////////////////////////////////////////////////////////////
 "  Help text functions
-" ======================================================== 
+"/////////////////////////////////////////////////////////////////////////////
 
 " ------------------------------------------------------------------ 
 " Desc: 
