@@ -523,6 +523,7 @@ endif " has("autocmd")
 " Desc: Buffer
 " ------------------------------------------------------------------ 
 
+au BufNewFile,BufEnter * set cpoptions+=d " NOTE: ctags find the tags file from the current path instead of the path of currect file
 au BufEnter * :syntax sync fromstart " ensure every file does syntax highlighting (full) 
 au BufNewFile,BufRead *.avs set syntax=avs " for avs syntax file.
 au BufWritePost * call g:ex_UpdateCurrentBuffer() 

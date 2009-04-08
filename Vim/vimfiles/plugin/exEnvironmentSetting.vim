@@ -32,7 +32,7 @@ endif
 " Desc: current version. increase this will cause template re-write 
 " ------------------------------------------------------------------ 
 
-let s:exES_CurrentVersion = 10
+let s:exES_CurrentVersion = 11
 
 " ======================================================== 
 " local variable initialization 
@@ -67,7 +67,7 @@ function s:exES_WriteDefaultTemplate() " <<<
     silent call add(_list, '-- exUtility Settings --')
     silent call add(_list, '')
     silent call add(_list, 'Project=./'._dir_name.'/'._project_name.'.exproject')
-    silent call add(_list, 'Tag='._vimfile_fullpath.'/tags') " NOTE: the tags need full path, or will not be able to find
+    silent call add(_list, 'Tag=./'._dir_name.'/tags') " NOTE: if cpoptions+=d not set for each buffer, then the tags need full path or will not be able to find. so pls write 'au BufNewFile,BufEnter * set cpoptions+=d' in your rc
     silent call add(_list, 'ID=./'._dir_name.'/ID')
     silent call add(_list, 'Symbol=./'._dir_name.'/symbol')
     silent call add(_list, 'Macro=./'._dir_name.'/macro')
