@@ -10,5 +10,5 @@
 # ------------------------------------------------------------------ 
 
 export EX_DEV="/usr/local/share"
-bash ${EX_DEV}/vim/toolkit/quickgen/bash/quick_gen_project.sh js $1
+bash ${EX_DEV}/vim/toolkit/quickgen/bash/quick_gen_project.sh js $1 $2
 

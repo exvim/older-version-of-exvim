@@ -1092,7 +1092,7 @@ function g:ex_GetVimFile( entry_path, file_type ) " <<<
     let entry_path = fnamemodify( a:entry_path, ':p')
     let fullpath_file = ''
     if a:file_type ==# 'tag'
-        let fullpath_file = entry_path . '/tags'
+        let fullpath_file = entry_path . '/' . g:exES_vimfile_dir . '/tags'
     elseif a:file_type ==# 'symbol' 
         let fullpath_file = entry_path . '/' . g:exES_vimfile_dir . '/symbol'
     elseif a:file_type ==# 'id' 
@@ -1908,7 +1908,7 @@ function g:ex_UpdateVimFiles( type ) " <<<
     endif
 
     " now process the quick_gen_project script
-    let update_cmd = quick_gen_script . gen_type
+    let update_cmd = quick_gen_script . gen_type . ' ' . g:exES_vimfile_dir
 
     " now process vimentry references
     let refs_update_cmd = g:ex_GetUpdateVimentryRefsCommand (a:type) 
@@ -2285,7 +2285,7 @@ function g:ex_GenInheritsDot( pattern, gen_method ) " <<<
     if exists( g:exES_Inherits )
         let inherits_file = g:exES_Inherits
     else
-        let inherits_file = "./_vimfiles/inherits"
+        let inherits_file = './'.g:exES_vimfile_dir.'/inherits'
     endif
 
     " create inherit dot file path

@@ -399,7 +399,7 @@ function g:exCS_InitSelectWindow() " <<<
     
     " if no scope connect yet, connect it
     if !exists('g:exES_Cscope')
-        let g:exES_Cscope = './_vimfiles/cscope.out'
+        let g:exES_Cscope = './'.g:exES_vimfile_dir.'/cscope.out'
     endif
     if cscope_connection(4, "cscope.out", g:exES_Cscope ) == 0
         call g:exCS_ConnectCscopeFile()

@@ -276,6 +276,7 @@ set tabstop=4 " Set tabstop to 4 characters
 set expandtab " Set expandtab on, the tab will be change to space automaticaly
 au BufEnter *.py,*.pyw call CheckIfExpandTab() " if edit python scripts, check if have \t. ( python said: the programme can only use \t or not, but can use them together )
 function CheckIfExpandTab()
+    " TODO: add '^\t' and '^    ', check, call warnning if they both exist.
 	if search('^\t','wn') == 0
 		set expandtab
 	else

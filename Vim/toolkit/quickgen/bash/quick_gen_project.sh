@@ -16,11 +16,23 @@ export EX_DEV="/usr/local/share"
 # Desc: 
 # arguments:
 # 1  lang_type: "all", "general", "c", "cpp", "c#", "html", "js", "lua", "math", "python", "uc", "vim"
-# 2  gen_type: "all", "tag", "symbol", "inherit", "cscope", "id"
+# 2  gen_type (none eaqual to all): "all", "tag", "symbol", "inherit", "cscope", "id"
+# 3  vimfiles_path (none eaqual to _vimfiles): 
 # ------------------------------------------------------------------ 
 
 lang_type=$1
-gen_type=$2
+
+if test "$2" = ""; then 
+    gen_type=all
+else
+    gen_type=$2
+fi
+
+if test "$3" = ""; then 
+    vimfiles_path=_vimfiles
+else
+    vimfiles_path=$3
+fi
 
 # /////////////////////////////////////////////////////////////////////////////
 # set variables
@@ -138,34 +150,36 @@ gen_tag ()
     echo "Creating Tags..."
 
     # process tags by langugage
+    cd ${vimfiles_path}
     if test "$lang_type" = "all"; then 
-        ctags -o./_tags -R --c++-kinds=+p --fields=+iaS --extra=+q --languages=c,c++,c#,python,vim,html,lua,javascript,uc,math --langmap=c++:+.inl,c:+.fx,c:+.fxh,c:+.hlsl,c:+.vsh,c:+.psh,c:+.cg,c:+.shd,javascript:+.as
+        ctags -o./_tags -R --c++-kinds=+p --fields=+iaS --extra=+q --languages=c,c++,c#,python,vim,html,lua,javascript,uc,math --langmap=c++:+.inl,c:+.fx,c:+.fxh,c:+.hlsl,c:+.vsh,c:+.psh,c:+.cg,c:+.shd,javascript:+.as ..
     elif test "$lang_type" = "general"; then 
-        ctags -o./_tags -R --c++-kinds=+p --fields=+iaS --extra=+q --languages=c,c++,c#,python --langmap=c++:+.inl,c:+.fx,c:+.fxh,c:+.hlsl,c:+.vsh,c:+.psh,c:+.cg,c:+.shd
+        ctags -o./_tags -R --c++-kinds=+p --fields=+iaS --extra=+q --languages=c,c++,c#,python --langmap=c++:+.inl,c:+.fx,c:+.fxh,c:+.hlsl,c:+.vsh,c:+.psh,c:+.cg,c:+.shd ..
     elif test "$lang_type" = "c"; then
-        ctags -o./_tags -R --c-kinds=+p --fields=+iaS --extra=+q --languages=c --langmap=c++:+.inl
+        ctags -o./_tags -R --c-kinds=+p --fields=+iaS --extra=+q --languages=c --langmap=c++:+.inl ..
     elif test "$lang_type" = "cpp"; then
-        ctags -o./_tags -R --c++-kinds=+p --fields=+iaS --extra=+q --languages=c++ --langmap=c++:+.inl
+        ctags -o./_tags -R --c++-kinds=+p --fields=+iaS --extra=+q --languages=c++ --langmap=c++:+.inl ..
     elif test "$lang_type" = "c#"; then
-        ctags -o./_tags -R --fields=+iaS --extra=+q --languages=c#
+        ctags -o./_tags -R --fields=+iaS --extra=+q --languages=c# ..
     elif test "$lang_type" = "html"; then
-        ctags -o./_tags -R  --fields=+iaS --extra=+q --languages=html
+        ctags -o./_tags -R  --fields=+iaS --extra=+q --languages=html ..
     elif test "$lang_type" = "js"; then
-        ctags -o./_tags -R  --fields=+iaS --extra=+q --languages=javascript --langmap=javascript:+.as
+        ctags -o./_tags -R  --fields=+iaS --extra=+q --languages=javascript --langmap=javascript:+.as ..
     elif test "$lang_type" = "lua"; then
-        ctags -o./_tags -R  --fields=+iaS --extra=+q --languages=lua
+        ctags -o./_tags -R  --fields=+iaS --extra=+q --languages=lua ..
     elif test "$lang_type" = "math"; then
-        ctags -o./_tags -R  --fields=+iaS --extra=+q --languages=math
+        ctags -o./_tags -R  --fields=+iaS --extra=+q --languages=math ..
     elif test "$lang_type" = "python"; then
-        ctags -o./_tags -R --fields=+iaS --extra=+q --languages=python
+        ctags -o./_tags -R --fields=+iaS --extra=+q --languages=python ..
     elif test "$lang_type" = "uc"; then
-        ctags -o./_tags -R  --fields=+iaS --extra=+q --languages=uc
+        ctags -o./_tags -R  --fields=+iaS --extra=+q --languages=uc ..
     elif test "$lang_type" = "vim"; then
-        ctags -o./_tags -R  --fields=+iaS --extra=+q --languages=vim
+        ctags -o./_tags -R  --fields=+iaS --extra=+q --languages=vim ..
     fi
 
     # force change _tags to tags
     mv -f "_tags" "tags"
+    cd ..
 }
 
 # ------------------------------------------------------------------ 
@@ -175,8 +189,8 @@ gen_tag ()
 gen_symbols ()
 {
     echo "Creating Symbols..."
-    gawk -f "${EX_DEV}/vim/toolkit/gawk/prg_NoStripSymbol.awk" ./tags>./_vimfiles/_symbol
-    mv -f "./_vimfiles/_symbol" "./_vimfiles/symbol"
+    gawk -f "${EX_DEV}/vim/toolkit/gawk/prg_NoStripSymbol.awk" ./${vimfiles_path}/tags>./${vimfiles_path}/_symbol
+    mv -f "./${vimfiles_path}/_symbol" "./${vimfiles_path}/symbol"
 }
 
 # ------------------------------------------------------------------ 
@@ -188,8 +202,8 @@ gen_inherits ()
 {
     if test "$support_inherit" = "true"; then
         echo "Creating Inherits..."
-        gawk -f "${EX_DEV}/vim/toolkit/gawk/prg_Inherits.awk" ./tags>./_vimfiles/_inherits
-        mv -f "./_vimfiles/_inherits" "./_vimfiles/inherits"
+        gawk -f "${EX_DEV}/vim/toolkit/gawk/prg_Inherits.awk" ./${vimfiles_path}/tags>./${vimfiles_path}/_inherits
+        mv -f "./${vimfiles_path}/_inherits" "./${vimfiles_path}/inherits"
     fi
 }
 
@@ -205,8 +219,8 @@ gen_cscope ()
         echo "Warnning: this feature havn't done in unix/linux."
         echo "Creating cscope.out..."
         cscope -b
-        mv -f "cscope.files" "./_vimfiles/cscope.files"
-        mv -f "cscope.out" "./_vimfiles/cscope.out"
+        mv -f "cscope.files" "./${vimfiles_path}/cscope.files"
+        mv -f "cscope.out" "./${vimfiles_path}/cscope.out"
     fi
 }
 
@@ -219,7 +233,7 @@ gen_id ()
     echo "Creating IDs..."
     mkid --include="text"
     # mkid --include="C C++"
-    mv -f "ID" "./_vimfiles/ID"
+    mv -f "ID" "./${vimfiles_path}/ID"
 }
 
 # /////////////////////////////////////////////////////////////////////////////
@@ -236,8 +250,8 @@ echo "Start Generate Project..."
 # Desc: create directory first
 # ======================================================== 
 
-echo "Create Diretory: _vimfiles"
-mkdir -p _vimfiles
+echo "Create Diretory: ${vimfiles_path}"
+mkdir -p ${vimfiles_path}
 
 # ======================================================== 
 # Desc: choose the generate mode

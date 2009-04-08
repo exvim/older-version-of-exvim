@@ -15,11 +15,24 @@ rem  ------------------------------------------------------------------
 rem  Desc: 
 rem  arguments:
 rem  1  lang_type: "all", "general", "c", "cpp", "c#", "html", "js", "lua", "math", "python", "uc", "vim"
-rem  2  gen_type: "all", "tag", "symbol", "inherit", "cscope", "id"
+rem  2  gen_type (none eaqual to all): "all", "tag", "symbol", "inherit", "cscope", "id"
+rem  3  vimfiles_path (none eaqual to _vimfiles): 
 rem  ------------------------------------------------------------------ 
 
 set lang_type=%1
-set gen_type=%2
+
+if /I "%2" == "" (
+    set gen_type=all
+    ) else (
+    set gen_type=%2
+    )
+
+if /I "%3" == "" (
+    set vimfiles_path=_vimfiles
+    ) else (
+    set vimfiles_path=%3
+    )
+
 
 rem /////////////////////////////////////////////////////////////////////////////
 rem set variables
@@ -140,34 +153,34 @@ rem create tags
 echo Creating Tags...
 
 rem process tags by langugage
-
+cd "%vimfiles_path%"
 if /I "%lang_type%" == "all" ( 
-    ctags -o./_tags -R --c++-kinds=+p --fields=+iaS --extra=+q --languages=c,c++,c#,python,vim,html,lua,javascript,uc,math --langmap=c++:+.inl,c:+.fx,c:+.fxh,c:+.hlsl,c:+.vsh,c:+.psh,c:+.cg,c:+.shd,javascript:+.as
+    ctags -o./_tags -R --c++-kinds=+p --fields=+iaS --extra=+q --languages=c,c++,c#,python,vim,html,lua,javascript,uc,math --langmap=c++:+.inl,c:+.fx,c:+.fxh,c:+.hlsl,c:+.vsh,c:+.psh,c:+.cg,c:+.shd,javascript:+.as ..
 ) else if /I "%lang_type%" == "general" (
-    ctags -o./_tags -R --c++-kinds=+p --fields=+iaS --extra=+q --languages=c,c++,c#,python --langmap=c++:+.inl,c:+.fx,c:+.fxh,c:+.hlsl,c:+.vsh,c:+.psh,c:+.cg,c:+.shd
+    ctags -o./_tags -R --c++-kinds=+p --fields=+iaS --extra=+q --languages=c,c++,c#,python --langmap=c++:+.inl,c:+.fx,c:+.fxh,c:+.hlsl,c:+.vsh,c:+.psh,c:+.cg,c:+.shd ..
 ) else if /I "%lang_type%" == "c" (
-    ctags -o./_tags -R --c-kinds=+p --fields=+iaS --extra=+q --languages=c --langmap=c++:+.inl
+    ctags -o./_tags -R --c-kinds=+p --fields=+iaS --extra=+q --languages=c --langmap=c++:+.inl ..
 ) else if /I "%lang_type%" == "cpp" ( 
-    ctags -o./_tags -R --c++-kinds=+p --fields=+iaS --extra=+q --languages=c++ --langmap=c++:+.inl
+    ctags -o./_tags -R --c++-kinds=+p --fields=+iaS --extra=+q --languages=c++ --langmap=c++:+.inl ..
 ) else if /I "%lang_type%" == "c#" (
-    ctags -o./_tags -R --fields=+iaS --extra=+q --languages=c#
+    ctags -o./_tags -R --fields=+iaS --extra=+q --languages=c# ..
 ) else if /I "%lang_type%" == "html" (
-    ctags -o./_tags -R  --fields=+iaS --extra=+q --languages=html
+    ctags -o./_tags -R  --fields=+iaS --extra=+q --languages=html ..
 ) else if /I "%lang_type%" == "js" ( 
-    ctags -o./_tags -R  --fields=+iaS --extra=+q --languages=javascript --langmap=javascript:+.as
+    ctags -o./_tags -R  --fields=+iaS --extra=+q --languages=javascript --langmap=javascript:+.as ..
 ) else if /I "%lang_type%" == "lua" (
-    ctags -o./_tags -R  --fields=+iaS --extra=+q --languages=lua
+    ctags -o./_tags -R  --fields=+iaS --extra=+q --languages=lua ..
 ) else if /I "%lang_type%" == "math" (
-    ctags -o./_tags -R  --fields=+iaS --extra=+q --languages=math
+    ctags -o./_tags -R  --fields=+iaS --extra=+q --languages=math ..
 ) else if /I "%lang_type%" == "python" ( 
-    ctags -o./_tags -R --fields=+iaS --extra=+q --languages=python
+    ctags -o./_tags -R --fields=+iaS --extra=+q --languages=python ..
 ) else if /I "%lang_type%" == "uc" ( 
-    ctags -o./_tags -R  --fields=+iaS --extra=+q --languages=uc
+    ctags -o./_tags -R  --fields=+iaS --extra=+q --languages=uc ..
 ) else if /I "%lang_type%" == "vim" (
-    ctags -o./_tags -R  --fields=+iaS --extra=+q --languages=vim
+    ctags -o./_tags -R  --fields=+iaS --extra=+q --languages=vim ..
 )
-
 move /Y "_tags" "tags"
+cd ..
 goto %return%
 
 rem  ------------------------------------------------------------------ 
@@ -179,8 +192,8 @@ rem  #########################
 rem  ######################### 
 
 echo Creating Symbols...
-gawk -f "%EX_DEV%\Vim\toolkit\gawk\prg_NoStripSymbol.awk" "tags">".\_vimfiles\_symbol"
-move /Y ".\_vimfiles\_symbol" ".\_vimfiles\symbol"
+gawk -f "%EX_DEV%\Vim\toolkit\gawk\prg_NoStripSymbol.awk" ".\%vimfiles_path%\tags">".\%vimfiles_path%\_symbol"
+move /Y ".\%vimfiles_path%\_symbol" ".\%vimfiles_path%\symbol"
 goto %return%
 
 rem  ------------------------------------------------------------------ 
@@ -194,8 +207,8 @@ rem  #########################
 
 if /I "%support_inherit%" == "true" (
     echo Creating Inherits...
-    gawk -f "%EX_DEV%\Vim\toolkit\gawk\prg_Inherits.awk" "tags">".\_vimfiles\_inherits"
-    move /Y ".\_vimfiles\_inherits" ".\_vimfiles\inherits"
+    gawk -f "%EX_DEV%\Vim\toolkit\gawk\prg_Inherits.awk" ".\%vimfiles_path%\tags">".\%vimfiles_path%\_inherits"
+    move /Y ".\%vimfiles_path%\_inherits" ".\%vimfiles_path%\inherits"
 )
 goto %return%
 
@@ -213,8 +226,8 @@ if /I "%support_cscope%" == "true" (
     dir /s /b %file_filter%|sed "s,\(.*\),\"\1\",g" > cscope.files
     echo Creating cscope.out...
     cscope -b
-    move /Y cscope.files ".\_vimfiles\cscope.files"
-    move /Y cscope.out ".\_vimfiles\cscope.out"
+    move /Y cscope.files ".\%vimfiles_path%\cscope.files"
+    move /Y cscope.out ".\%vimfiles_path%\cscope.out"
 )
 goto %return%
 
@@ -229,7 +242,7 @@ rem  #########################
 echo Creating IDs...
 mkid --include="text"
 rem mkid --include="C C++"
-move /Y ID ".\_vimfiles\ID"
+move /Y ID ".\%vimfiles_path%\ID"
 goto %return%
 
 rem /////////////////////////////////////////////////////////////////////////////
@@ -250,8 +263,8 @@ rem  ========================================================
 rem  Desc: create directory first
 rem  ======================================================== 
 
-echo Create Diretory: _vimfiles
-mkdir _vimfiles
+echo Create Diretory: %vimfiles_path%
+mkdir "%vimfiles_path%"
 
 rem  ======================================================== 
 rem  Desc: choose the generate mode

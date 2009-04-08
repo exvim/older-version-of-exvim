@@ -11,6 +11,6 @@ rem  ------------------------------------------------------------------
 rem  Desc: 
 rem  ------------------------------------------------------------------ 
 
-"%EX_DEV%\Vim\toolkit\quickgen\batch\quick_gen_project.bat" all %1
+"%EX_DEV%\Vim\toolkit\quickgen\batch\quick_gen_project.bat" all %1 %2
 
 echo on

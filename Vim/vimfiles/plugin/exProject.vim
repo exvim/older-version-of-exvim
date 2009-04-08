@@ -483,8 +483,10 @@ endfunction " >>>
 " ------------------------------------------------------------------ 
 
 function s:exPJ_QuickRefreshProject() " <<<
-    " skip empty line, YJR
-    if getline('.') == ''
+    " check if the line is valid file line
+    let file_line = getline('.') 
+    if match(file_line, '.*|.*') == -1
+        call g:ex_WarningMsg ("can't refresh project at this line")
         return
     endif
 
@@ -496,7 +498,6 @@ function s:exPJ_QuickRefreshProject() " <<<
         let s:exPJ_file_filter = filter 
     endif
 
-    let file_line = getline('.')
     " if fold, open it else if not a file return
     if foldclosed('.') != -1
         normal! zr
@@ -598,8 +599,10 @@ endfunction " >>>
 " ------------------------------------------------------------------ 
 
 function s:exPJ_RefreshProject( with_dialog ) " <<<
-    " skip empty line, YJR
-    if getline('.') == ''
+    " check if the line is valid file line
+    let file_line = getline('.') 
+    if match(file_line, '.*|.*') == -1
+        call g:ex_WarningMsg ("can't refresh project at this line")
         return
     endif
 
@@ -615,7 +618,6 @@ function s:exPJ_RefreshProject( with_dialog ) " <<<
         endif
     endif
 
-    let file_line = getline('.')
     " if fold, open it else if not a file return
     if foldclosed('.') != -1
         normal! zr
@@ -716,8 +718,10 @@ endfunction " >>>
 " ------------------------------------------------------------------ 
 
 function s:exPJ_CreateNewFile() " <<<
-    " skip empty line, YJR
-    if getline('.') == ''
+    " check if the line is valid file line
+    let cur_line = getline('.') 
+    if match(cur_line, '\C\[.*\]') == -1
+        call g:ex_WarningMsg ("can't create new file at this line")
         return
     endif
 
@@ -727,7 +731,6 @@ function s:exPJ_CreateNewFile() " <<<
         return
     endif
 
-    let cur_line = getline('.')
     if match(cur_line, '\C\[F\]') != -1 " if this is directory
         let idx = stridx(cur_line, '}')
         if idx == -1
@@ -763,8 +766,10 @@ endfunction " >>>
 " ------------------------------------------------------------------ 
 
 function s:exPJ_CreateNewFold() " <<<
-    " skip empty line, YJR
-    if getline('.') == ''
+    " check if the line is valid folder line
+    let cur_line = getline('.') 
+    if match(cur_line, '\C\[F\]') == -1
+        call g:ex_WarningMsg ("pls create new folder under a parent folder line")
         return
     endif
 
@@ -774,7 +779,6 @@ function s:exPJ_CreateNewFold() " <<<
         return
     endif
 
-    let cur_line = getline('.')
     if match(cur_line, '\C\[F\]') != -1 " if this is directory
         let idx = stridx(cur_line, '}')
         if idx == -1
@@ -821,8 +825,10 @@ endfunction " >>>
 " ------------------------------------------------------------------ 
 
 function s:exPJ_GotoSelectResult(edit_cmd) " <<<
-    " skip empty line, YJR
-    if getline('.') == ''
+    " check if the line is valid file line
+    let cur_line = getline('.') 
+    if match(cur_line, '\C\[.*\]') == -1
+        call g:ex_WarningMsg('Please select a file')
         return
     endif
 

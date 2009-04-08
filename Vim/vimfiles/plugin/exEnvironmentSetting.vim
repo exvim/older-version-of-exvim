@@ -32,7 +32,7 @@ endif
 " Desc: current version. increase this will cause template re-write 
 " ------------------------------------------------------------------ 
 
-let s:exES_CurrentVersion = 9
+let s:exES_CurrentVersion = 10
 
 " ======================================================== 
 " local variable initialization 
@@ -55,6 +55,7 @@ let s:exES_setted = 0
 function s:exES_WriteDefaultTemplate() " <<<
     let _cwd = g:ex_Pathfmt( getcwd(), 'unix' )
     let _dir_name = g:exES_vimfile_dir
+    let _vimfile_fullpath = simplify(_cwd.'/'._dir_name)
     let _project_name = fnamemodify( expand('%'), ":t:r" )  
     let _list = []
 
@@ -66,7 +67,7 @@ function s:exES_WriteDefaultTemplate() " <<<
     silent call add(_list, '-- exUtility Settings --')
     silent call add(_list, '')
     silent call add(_list, 'Project=./'._dir_name.'/'._project_name.'.exproject')
-    silent call add(_list, 'Tag='._cwd.'/tags') " the tags need full path, or will not be able to find
+    silent call add(_list, 'Tag='._vimfile_fullpath.'/tags') " NOTE: the tags need full path, or will not be able to find
     silent call add(_list, 'ID=./'._dir_name.'/ID')
     silent call add(_list, 'Symbol=./'._dir_name.'/symbol')
     silent call add(_list, 'Macro=./'._dir_name.'/macro')
