@@ -2273,6 +2273,7 @@ function g:ex_SrcHighlight( line1, line2 ) " <<<
     call writefile( text, temp_file, "b" )
 
     " browse use browser browse file
+    "KEEPME once we have css version (src 2.6): let shl_cmd = 'source-highlight -f html -s ex_cpp -n --data-dir=%EX_DEV%\GnuWin32\share\source-highlight -css="ex.css"' . ' -i ' . temp_file . ' -o ' . temp_file_html
     let shl_cmd = 'source-highlight -f html -s ex_cpp -n --data-dir=%EX_DEV%\GnuWin32\share\source-highlight' . ' -i ' . temp_file . ' -o ' . temp_file_html
     let shl_result = system(shl_cmd)
 
