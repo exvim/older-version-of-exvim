@@ -2052,7 +2052,7 @@ function g:ex_CopyQuickGenProject( type ) " <<<
     " get quick gen script from repository
     let full_quick_gen_script = ''
     if has("win32")
-        let full_quick_gen_script = fnamemodify( $EX_DEV . "\\Vim\\toolkit\\quickgen\\" . folder_name . "\\" . quick_gen_script, ":p")
+        let full_quick_gen_script = fnamemodify( $EX_DEV . "\\vim\\toolkit\\quickgen\\" . folder_name . "\\" . quick_gen_script, ":p")
     elseif has("unix")
         let full_quick_gen_script = fnamemodify( '/usr/local/share/vim/toolkit/quickgen/' . folder_name . '/' . quick_gen_script, ":p" )
     endif
