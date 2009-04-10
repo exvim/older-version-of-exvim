@@ -722,8 +722,9 @@ let g:exGS_window_direction = 'bel'
 
 nnoremap <unique> <silent> <Leader>ss :ExslSelectToggle<CR>
 nnoremap <unique> <silent> <Leader>sq :ExslQuickViewToggle<CR>
-nnoremap <unique> <A-S-l> :ExslQuickSearch<CR>/
 nnoremap <unique> <silent> <Leader>sg :ExslGoDirectly<CR>
+" NOTE: the / can be mapped to other script ( for example exSearchComplete ), so here use nmap instead of nnoremap 
+nmap <unique> <A-S-l> :ExslQuickSearch<CR>/ 
 
 let g:exSL_SymbolSelectCmd = 'TS'
 
@@ -768,6 +769,7 @@ nnoremap <unique> <silent> <Leader>ad :ExmhHL 0 <CR>
 " ------------------------------------------------------------------ 
 
 map <unique> <silent> <A-S-p> :EXProject<CR>
+" NOTE: the / can be mapped to other script ( for example exSearchComplete ), so here use nmap instead of nnoremap 
 map <unique> <A-S-o> :EXProject<CR>:redraw<CR>/
 map <unique> <leader>ff :EXProject<CR>:redraw<CR>/\[[^F]*\]\c.*
 map <unique> <leader>fd :EXProject<CR>:redraw<CR>/\[F\]\c.*
