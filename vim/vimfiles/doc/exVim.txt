@@ -1,9 +1,9 @@
- ====================================================================================== ~
- File         : exVim.txt ~
- Author       : Wu Jie ~
- Last Change  : 04/10/2009 | 13:59:52 PM | Friday,April ~
- Description  : ~
- ====================================================================================== ~
+====================================================================================== ~
+File         : exVim.txt ~
+Author       : Wu Jie ~
+Last Change  : 04/10/2009 | 13:59:52 PM | Friday,April ~
+Description  : ~
+====================================================================================== ~
 
 *exUtility-Install.txt* exUtility install and quick start manual
 
@@ -35,6 +35,24 @@ CONTENTS                                                   *exVim-contents*
         2. Changelist...................................|Changelist|
         3. Todolist.....................................|Todolist|
         3. Contact......................................|Contact|
+
+==============================================================================
+1. Intro                                                            *Intro*
+
+What is this "exVim"??
+
+exVim is the core part of exDev, which is a dev-environment help you develop
+project as a IDE like environment but all in vim. 
+The exVim consists of serial of vim scripts,
+
+
+
+
+
+
+
+
+
 
 ==============================================================================
 1. Installation~

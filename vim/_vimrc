@@ -166,7 +166,7 @@ function UpdateHighlights()
     " ======================================================== 
 
     " For marks a-z
-    hi ShowMarksHLl term=bold cterm=bold ctermbg=LightBlue ctermfg=Blue gui=bold guibg=LightBlue guifg=Blue                      
+    hi ShowMarksHLl term=none cterm=none ctermbg=LightBlue gui=none guibg=LightBlue
     " For marks A-Z
     hi ShowMarksHLu term=bold cterm=bold ctermbg=LightRed ctermfg=DarkRed gui=bold guibg=LightRed guifg=DarkRed
     " For all other marks
@@ -559,8 +559,13 @@ au FileType vim set comments=sO:\"\ -,mO:\"\ \ ,eO:\"\",f:\"
 " Desc: ShowMarks
 " ------------------------------------------------------------------ 
 
-let showmarks_include = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 let g:showmarks_enable = 1
+let showmarks_include = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+" Ignore help, quickfix, non-modifiable buffers
+let showmarks_ignore_type = "hqm"
+" Hilight lower & upper marks
+let showmarks_hlline_lower = 1
+let showmarks_hlline_upper = 0 
 
 " quick remove mark
 " nmap <F9> \mh
