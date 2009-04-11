@@ -32,7 +32,7 @@ endif
 " Desc: current version. increase this will cause template re-write 
 " ------------------------------------------------------------------ 
 
-let s:exES_CurrentVersion = 11
+let s:exES_CurrentVersion = 12
 
 " ======================================================== 
 " local variable initialization 
@@ -75,6 +75,13 @@ function s:exES_WriteDefaultTemplate() " <<<
     silent call add(_list, 'Inherits=./'._dir_name.'/inherits')
     silent call add(_list, '')
     silent call add(_list, 'vimentryRefs+=')
+
+	" Init the LookupFile plugin file path
+    silent call add(_list, '')
+    silent call add(_list, '-- LookupFile Settings --')
+    silent call add(_list, '')
+
+    silent call add(_list, 'LookupFileTag=./'._dir_name.'/filenametags')
 
 	" Init the visual_studio plugin file path
     silent call add(_list, '')

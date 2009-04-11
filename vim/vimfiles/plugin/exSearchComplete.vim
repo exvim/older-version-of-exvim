@@ -15,11 +15,17 @@ endif
 let loaded_exsearchcomplete = 1
 
 "/////////////////////////////////////////////////////////////////////////////
+" variables
+"/////////////////////////////////////////////////////////////////////////////
+
+let s:usr_input = ''
+let s:init_search_input = 1
+
+"/////////////////////////////////////////////////////////////////////////////
 " Key mappings
 "/////////////////////////////////////////////////////////////////////////////
 
 noremap / :call g:ex_SearchCompleteStart()<CR>/
-
 
 "/////////////////////////////////////////////////////////////////////////////
 " function defines
@@ -31,6 +37,7 @@ noremap / :call g:ex_SearchCompleteStart()<CR>/
 " ------------------------------------------------------------------ 
 
 function g:ex_SearchCompleteStart() " <<<
+    let s:init_search_input = 1
 	cnoremap <Tab> <C-R>=<sid>ex_SearchComplete()<CR>
 	cnoremap <silent> <CR> <CR>:call g:ex_SearchCompleteStop()<CR>
 	cnoremap <silent> <Esc> <C-C>:call g:ex_SearchCompleteStop()<CR>
@@ -41,21 +48,54 @@ endfunction " >>>
 " ------------------------------------------------------------------ 
 
 function s:ex_SearchComplete() " <<<
-	let old_cmdline = getcmdline()
-	let pos = getcmdpos()
+    let jump_to_next = 1
+    if s:init_search_input == 1 
+        let s:usr_input = getcmdline()
+        let s:init_search_input = 0
+        let jump_to_next = 0
+    endif
 
-	let search_end_col = col( "." )
-	let search_start_col = search_end_col - strlen(old_cmdline)
-    silent exec "normal b"
-	let word_start_col = col( "." )
-
-    let cur_word = expand('<cword>')
-    let new_cmdline = strpart( cur_word, search_start_col-word_start_col )
-
-    " TODO: make multi-TAB workable
-
-	return substitute(old_cmdline, ".", "\<c-h>", "g") . new_cmdline
+    let cur_cmdline = getcmdline()
+    let match_result = s:ex_GetNextMatchResult (jump_to_next) 
+    let cmdline = substitute(cur_cmdline, ".", "\<c-h>", "g") . match_result 
+	return cmdline
 endfunction " >>>
+
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
+function s:ex_GetNextMatchResult( jump_to_next ) " <<<
+    let input_strlen = strlen(s:usr_input) 
+
+    " first time search needn't jump
+    if a:jump_to_next 
+        silent call search ( s:usr_input, 'cwe' )
+        let search_end_col = col( "." )
+        let search_start_col = search_end_col - input_strlen + 1
+        " KEEPME { 
+        " silent call search ( s:usr_input, 'w' )
+        " let search_start_col = col( "." )
+        " let search_end_col = search_start_col + input_strlen
+        " } KEEPME end 
+    else " first time search
+        let search_end_col = col( "." )
+        let search_start_col = search_end_col - input_strlen
+    endif
+
+    silent exec "normal b"
+    let cur_word = expand('<cword>')
+    let word_start_col = col( "." )
+
+    if a:jump_to_next " cause the / search mechanism don't allow cursor jump (though it jumped.), so for next search result, it will get the whole word 
+        return '\<'.cur_word.'\>'
+    endif
+
+    " for first time search result, you can get partial word.
+    let result_word = strpart( cur_word, search_start_col-word_start_col )
+    return result_word 
+endfunction " >>>
+
 
 " ------------------------------------------------------------------ 
 " Desc: Remove search complete mappings
@@ -65,5 +105,6 @@ function g:ex_SearchCompleteStop() " <<<
 	cunmap <Tab>
 	cunmap <CR>
 	cunmap <Esc>
+    let s:init_search_input = 0
 endfunction " >>>
 

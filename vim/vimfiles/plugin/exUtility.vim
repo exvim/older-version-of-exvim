@@ -244,6 +244,7 @@ function g:ex_InitWindow(init_func_name) " <<<
     if a:init_func_name != 'none'
         exe 'call ' . a:init_func_name . '()'
     endif
+
 endfunction " >>>
 
 " ------------------------------------------------------------------ 
@@ -1401,7 +1402,7 @@ endfunction " >>>
 " Desc: 
 " ------------------------------------------------------------------ 
 
-function g:ex_Browse(dir, file_filter, dir_filter) " <<<
+function g:ex_Browse(dir, file_filter, dir_filter, tag_contents ) " <<<
     " show progress
     echon "processing: " . a:dir . "\r"
 
@@ -1450,7 +1451,7 @@ function g:ex_Browse(dir, file_filter, dir_filter) " <<<
             if list_idx != list_last
                 let s:ex_level_list[len(s:ex_level_list)-1].is_last = 0
             endif
-            if g:ex_Browse(file_list[list_idx],a:file_filter,'') == 1 " if it is empty
+            if g:ex_Browse(file_list[list_idx],a:file_filter,'',a:tag_contents) == 1 " if it is empty
                 silent call remove(file_list,list_idx)
                 let list_last = len(file_list)-1
             endif
@@ -1501,6 +1502,9 @@ function g:ex_Browse(dir, file_filter, dir_filter) " <<<
         " let file_type = strpart( short_dir, strridx(short_dir,'.')+1, 1 )
         let file_type = strpart( fnamemodify( short_dir, ":e" ), 0, 1 )
         silent put! = space.'['.file_type.']'.short_dir . end_fold
+
+        " add file with full path as tag contents
+        silent call add ( a:tag_contents, short_dir."\t../".fnamemodify(a:dir,':.')."\t1" )
         return 0
     else
 

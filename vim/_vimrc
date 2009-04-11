@@ -166,13 +166,13 @@ function UpdateHighlights()
     " ======================================================== 
 
     " For marks a-z
-    hi ShowMarksHLl term=none cterm=none ctermbg=LightBlue gui=none guibg=LightBlue
+    hi ShowMarksHLl term=bold cterm=none ctermbg=LightBlue gui=none guibg=LightBlue
     " For marks A-Z
     hi ShowMarksHLu term=bold cterm=bold ctermbg=LightRed ctermfg=DarkRed gui=bold guibg=LightRed guifg=DarkRed
     " For all other marks
     hi ShowMarksHLo term=bold cterm=bold ctermbg=LightYellow ctermfg=DarkYellow gui=bold guibg=LightYellow guifg=DarkYellow
     " For multiple marks on the same line.
-    hi ShowMarksHLm term=bold cterm=bold ctermbg=LightGreen ctermfg=DarkGreen gui=bold guibg=LightGreen guifg=DarkGreen
+    hi ShowMarksHLm term=bold cterm=none ctermbg=LightBlue gui=none guibg=SlateBlue
 
     " ======================================================== 
     " MiniBufExplorer
@@ -556,21 +556,6 @@ au FileType vim set comments=sO:\"\ -,mO:\"\ \ ,eO:\"\",f:\"
 "/////////////////////////////////////////////////////////////////////////////
 
 " ------------------------------------------------------------------ 
-" Desc: ShowMarks
-" ------------------------------------------------------------------ 
-
-let g:showmarks_enable = 1
-let showmarks_include = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-" Ignore help, quickfix, non-modifiable buffers
-let showmarks_ignore_type = "hqm"
-" Hilight lower & upper marks
-let showmarks_hlline_lower = 1
-let showmarks_hlline_upper = 0 
-
-" quick remove mark
-" nmap <F9> \mh
-
-" ------------------------------------------------------------------ 
 " Desc: exUtility
 " ------------------------------------------------------------------ 
 
@@ -584,6 +569,21 @@ vmap <unique> <silent> <a-1> :call g:ex_Highlight_Visual(1)<CR>
 vmap <unique> <silent> <a-2> :call g:ex_Highlight_Visual(2)<CR>
 vmap <unique> <silent> <a-3> :call g:ex_Highlight_Visual(3)<CR>
 vmap <unique> <silent> <a-4> :call g:ex_Highlight_Visual(4)<CR>
+
+" used in terminal mode
+" TODO: find some way to check if it is in terminal { 
+nmap <unique> <silent> <leader>h1 :call g:ex_Highlight_Normal(1)<CR>
+nmap <unique> <silent> <leader>h2 :call g:ex_Highlight_Normal(2)<CR>
+nmap <unique> <silent> <leader>h3 :call g:ex_Highlight_Normal(3)<CR>
+nmap <unique> <silent> <leader>h4 :call g:ex_Highlight_Normal(4)<CR>
+
+vmap <unique> <silent> <leader>h1 :call g:ex_Highlight_Visual(1)<CR>
+vmap <unique> <silent> <leader>h2 :call g:ex_Highlight_Visual(2)<CR>
+vmap <unique> <silent> <leader>h3 :call g:ex_Highlight_Visual(3)<CR>
+vmap <unique> <silent> <leader>h4 :call g:ex_Highlight_Visual(4)<CR>
+
+map <unique> <silent> <leader>h0 :call g:ex_HighlightCancle(0)<CR>
+" } TODO end 
 
 command -narg=? -complete=customlist,g:ex_CompleteBySymbolFile HL1 call g:ex_Highlight_Text(1, "<args>")
 command -narg=? -complete=customlist,g:ex_CompleteBySymbolFile HL2 call g:ex_Highlight_Text(2, "<args>")
@@ -682,7 +682,7 @@ nnoremap <unique> <Leader>mk :call g:ex_RemoveSpecialMarkText() <CR>
 command -range -narg=1 -complete=customlist,g:ex_CompleteMKArgs MK call g:ex_MarkText("<args>", <line1>, <line2> )
 
 " add plugin we use to prevent them record as edit-buffer
-let g:exUT_plugin_list = ["-MiniBufExplorer-","__Tag_List__"] 
+let g:exUT_plugin_list = ["-MiniBufExplorer-","__Tag_List__","\[Lookup File\]"] 
 
 " ------------------------------------------------------------------ 
 " Desc: exTagSelect
@@ -714,7 +714,7 @@ nnoremap <unique> <silent> <Leader>N :ExgsGotoPrevResult<CR>
 
 map <unique> <silent> <Leader>gb :BackwardSearchStack<CR>
 map <unique> <silent> <Leader>gf :ForwardSearchStack<CR>
-map <unique> <S-f> :GS 
+map <unique> <Leader><S-f> :GS 
 
 let g:exGS_backto_editbuf = 0
 let g:exGS_close_when_selected = 0
@@ -729,7 +729,7 @@ nnoremap <unique> <silent> <Leader>ss :ExslSelectToggle<CR>
 nnoremap <unique> <silent> <Leader>sq :ExslQuickViewToggle<CR>
 nnoremap <unique> <silent> <Leader>sg :ExslGoDirectly<CR>
 " NOTE: the / can be mapped to other script ( for example exSearchComplete ), so here use nmap instead of nnoremap 
-nmap <unique> <A-S-l> :ExslQuickSearch<CR>/ 
+nmap <unique> <A-S-l> :ExslQuickSearch<CR>/
 
 let g:exSL_SymbolSelectCmd = 'TS'
 
@@ -904,6 +904,37 @@ nmap <unique> <C-F11> <Plug>DeComment
 imap <unique> <C-F11> <ESC><Plug>DeComment
 
 " ------------------------------------------------------------------ 
+" Desc: ShowMarks
+" ------------------------------------------------------------------ 
+
+let g:showmarks_enable = 1
+let showmarks_include = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+" Ignore help, quickfix, non-modifiable buffers
+let showmarks_ignore_type = "hqm"
+" Hilight lower & upper marks
+let showmarks_hlline_lower = 1
+let showmarks_hlline_upper = 0 
+
+" quick remove mark
+" nmap <F9> \mh
+
+" ------------------------------------------------------------------ 
+" Desc: LookupFile 
+" ------------------------------------------------------------------ 
+
+nnoremap <unique> <A-S-i> :LUTags<CR>
+nnoremap <unique> <leader>lf :LUTags<CR>
+nnoremap <unique> <leader>lb :LUBufs<CR>
+nnoremap <unique> <silent> <Leader>lg :LUCurWord<CR>
+let g:LookupFile_TagExpr = ''
+let g:LookupFile_MinPatLength = 1
+let g:LookupFile_PreservePatternHistory = 0
+let g:LookupFile_PreserveLastPattern = 0
+let g:LookupFile_AllowNewFiles = 0
+let g:LookupFile_smartcase = 1
+let g:LookupFile_EscCancelsPopup = 1
+
+" ------------------------------------------------------------------ 
 " Desc: exEnvironmentSetting
 " ------------------------------------------------------------------ 
 
@@ -971,6 +1002,11 @@ function g:exES_UpdateEnvironment()
                 let &tags .= ',' . fullpath_tagfile
             endif
         endfor
+    endif
+
+    " set lookup file plugin variables
+	if exists( 'g:exES_LookupFileTag' )
+        let g:LookupFile_TagExpr='"'.g:exES_LookupFileTag.'"'
     endif
 
 	" set visual_studio plugin variables

@@ -324,6 +324,7 @@ endfunction
 function g:exPJ_InitSelectWindow() " <<<
     silent! setlocal filetype=ft_exproject
     silent! setlocal buftype=
+    silent! setlocal cursorline
 
     " +++++++++++++++++++++++++++++++
     " silent! setlocal foldmethod=expr
@@ -379,7 +380,7 @@ function g:exPJ_InitSelectWindow() " <<<
 
     " Autocommands to keep the window the specified size
     au WinLeave <buffer> :call s:exPJ_RefreshWindow()
-    au CursorMoved <buffer> :call g:ex_HighlightSelectLine()
+    " au CursorMoved <buffer> :call g:ex_HighlightSelectLine()
 
     " buffer command
     command -buffer RM call s:exPJ_RemoveEmptyDir()
@@ -464,7 +465,15 @@ function s:exPJ_CreateProject(with_dialog) " <<<
     let g:exPJ_backto_editbuf = 0
     echon "Creating exProject: " . entry_dir . "\r"
     call s:exPJ_OpenWindow('Select')
-    call g:ex_Browse( entry_dir, g:ex_GetFileFilterPattern(s:exPJ_file_filter), g:ex_GetDirFilterPattern(s:exPJ_dir_filter) )
+
+    let tag_contents = [] 
+    silent call add ( tag_contents, "!_TAG_FILE_SORTED\t2\t/0=unsorted, 1=sorted, 2=foldcase/")
+    call g:ex_Browse( entry_dir, g:ex_GetFileFilterPattern(s:exPJ_file_filter), g:ex_GetDirFilterPattern(s:exPJ_dir_filter), tag_contents )
+    if exists( 'g:exES_LookupFileTag' )
+        echon "sorting filenametags..."
+        silent call writefile( sort(tag_contents), simplify(g:exES_CWD.'/'.g:exES_LookupFileTag))
+        echon "save as ./_vimfiles/filenametags"
+    endif
 
     silent keepjumps normal! gg
     silent put! = ''
@@ -934,7 +943,6 @@ function s:exPJ_GotoCurrentFile( jump_to_project_window ) " <<<
                 norm! zv
                 " if find, set the text line in the middel of the window
                 silent normal! zz
-                call g:ex_HighlightSelectLine()
 
                 "
                 let is_found = 1
