@@ -696,7 +696,11 @@ function s:exPJ_RefreshProject( with_dialog ) " <<<
     silent exec "normal! zc"
     silent exec 'normal! "_2dd'
     " broswing
-    call g:ex_Browse( full_path_name, g:ex_GetFileFilterPattern(s:exPJ_file_filter), is_root_dir ? g:ex_GetDirFilterPattern(s:exPJ_dir_filter) : '' )
+
+    let tag_contents = [] 
+    call g:ex_Browse( full_path_name, g:ex_GetFileFilterPattern(s:exPJ_file_filter), is_root_dir ? g:ex_GetDirFilterPattern(s:exPJ_dir_filter) : '', tag_contents )
+    unlet tag_contents 
+
     " reset level list
     call g:ex_SetLevelList(-1, 1)
 
