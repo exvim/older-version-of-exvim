@@ -161,9 +161,9 @@ function s:exCS_OpenWindow( short_title ) " <<<
     let title = '__exCS_' . s:exCS_short_title . 'Window__'
     " open window
     if g:exCS_use_vertical_window
-        call g:ex_OpenWindow( title, g:exCS_window_direction, g:exCS_window_width, g:exCS_use_vertical_window, g:exCS_edit_mode, g:exCS_backto_editbuf, 'g:exCS_Init'.s:exCS_short_title.'Window', 'g:exCS_Update'.s:exCS_short_title.'Window' )
+        call exUtility#OpenWindow( title, g:exCS_window_direction, g:exCS_window_width, g:exCS_use_vertical_window, g:exCS_edit_mode, g:exCS_backto_editbuf, 'g:exCS_Init'.s:exCS_short_title.'Window', 'g:exCS_Update'.s:exCS_short_title.'Window' )
     else
-        call g:ex_OpenWindow( title, g:exCS_window_direction, g:exCS_window_height, g:exCS_use_vertical_window, g:exCS_edit_mode, g:exCS_backto_editbuf, 'g:exCS_Init'.s:exCS_short_title.'Window', 'g:exCS_Update'.s:exCS_short_title.'Window' )
+        call exUtility#OpenWindow( title, g:exCS_window_direction, g:exCS_window_height, g:exCS_use_vertical_window, g:exCS_edit_mode, g:exCS_backto_editbuf, 'g:exCS_Init'.s:exCS_short_title.'Window', 'g:exCS_Update'.s:exCS_short_title.'Window' )
     endif
 endfunction " >>>
 
@@ -173,9 +173,9 @@ endfunction " >>>
 
 function s:exCS_ResizeWindow() " <<<
     if g:exCS_use_vertical_window
-        call g:ex_ResizeWindow( g:exCS_use_vertical_window, g:exCS_window_width, g:exCS_window_width_increment )
+        call exUtility#ResizeWindow( g:exCS_use_vertical_window, g:exCS_window_width, g:exCS_window_width_increment )
     else
-        call g:ex_ResizeWindow( g:exCS_use_vertical_window, g:exCS_window_height, g:exCS_window_height_increment )
+        call exUtility#ResizeWindow( g:exCS_use_vertical_window, g:exCS_window_height, g:exCS_window_height_increment )
     endif
 endfunction " >>>
 
@@ -188,7 +188,7 @@ function s:exCS_ToggleWindow( short_title ) " <<<
     if a:short_title != ''
         if s:exCS_short_title != a:short_title
             if bufwinnr('__exCS_' . s:exCS_short_title . 'Window__') != -1
-                call g:ex_CloseWindow('__exCS_' . s:exCS_short_title . 'Window__')
+                call exUtility#CloseWindow('__exCS_' . s:exCS_short_title . 'Window__')
             endif
             let s:exCS_short_title = a:short_title
         endif
@@ -197,9 +197,9 @@ function s:exCS_ToggleWindow( short_title ) " <<<
     " toggle exCS window
     let title = '__exCS_' . s:exCS_short_title . 'Window__'
     if g:exCS_use_vertical_window
-        call g:ex_ToggleWindow( title, g:exCS_window_direction, g:exCS_window_width, g:exCS_use_vertical_window, 'none', g:exCS_backto_editbuf, 'g:exCS_Init'.s:exCS_short_title.'Window', 'g:exCS_Update'.s:exCS_short_title.'Window' )
+        call exUtility#ToggleWindow( title, g:exCS_window_direction, g:exCS_window_width, g:exCS_use_vertical_window, 'none', g:exCS_backto_editbuf, 'g:exCS_Init'.s:exCS_short_title.'Window', 'g:exCS_Update'.s:exCS_short_title.'Window' )
     else
-        call g:ex_ToggleWindow( title, g:exCS_window_direction, g:exCS_window_height, g:exCS_use_vertical_window, 'none', g:exCS_backto_editbuf, 'g:exCS_Init'.s:exCS_short_title.'Window', 'g:exCS_Update'.s:exCS_short_title.'Window' )
+        call exUtility#ToggleWindow( title, g:exCS_window_direction, g:exCS_window_height, g:exCS_use_vertical_window, 'none', g:exCS_backto_editbuf, 'g:exCS_Init'.s:exCS_short_title.'Window', 'g:exCS_Update'.s:exCS_short_title.'Window' )
     endif
 endfunction " >>>
 
@@ -237,7 +237,7 @@ function s:exCS_Goto() " <<<
     " check if the line can jump
     let line = getline('.')
     if line !~ '^ \[\d\+\]'
-        call g:ex_WarningMsg("could not jump")
+        call exUtility#WarningMsg("could not jump")
         return 0
     endif
 
@@ -249,7 +249,7 @@ function s:exCS_Goto() " <<<
     let qf_item = qf_list[qf_idx]
 
     " start jump
-    call g:ex_GotoEditBuffer()
+    call exUtility#GotoEditBuffer()
     if bufnr('%') != qf_item.bufnr
         exe 'silent e ' . bufname(qf_item.bufnr)
     endif
@@ -257,7 +257,7 @@ function s:exCS_Goto() " <<<
 
     " go back if needed
     let title = '__exCS_' . s:exCS_short_title . 'Window__'
-    call g:ex_OperateWindow ( title, g:exCS_close_when_selected, g:exCS_backto_editbuf, 1 )
+    call exUtility#OperateWindow ( title, g:exCS_close_when_selected, g:exCS_backto_editbuf, 1 )
 
     return 1
 endfunction " >>>
@@ -291,7 +291,7 @@ function s:exCS_ShowQuickFixResult( search_method ) " <<<
         let qf_idx = 0
         for item in result_list
             if last_bufnr != item.bufnr
-                let convert_file_name = g:ex_ConvertFileName( bufname(item.bufnr) )
+                let convert_file_name = exUtility#ConvertFileName( bufname(item.bufnr) )
                 silent put = convert_file_name 
                 let last_bufnr = item.bufnr
             endif
@@ -304,7 +304,7 @@ function s:exCS_ShowQuickFixResult( search_method ) " <<<
         endfor
     elseif a:search_method ==# 'ds' " select calling function
         " TODO: " ::\S\+\_s\+(
-        let cur_bufnr = g:ex_GetEditBufferNum()
+        let cur_bufnr = exUtility#GetEditBufferNum()
         let qf_idx = 0
         for item in result_list
             if cur_bufnr == item.bufnr
@@ -329,7 +329,7 @@ function s:exCS_ShowQuickFixResult( search_method ) " <<<
     elseif a:search_method ==# 'i' " including file
         let qf_idx = 0
         for item in result_list
-            let convert_file_name = g:ex_ConvertFileName( bufname(item.bufnr) )
+            let convert_file_name = exUtility#ConvertFileName( bufname(item.bufnr) )
             let start_idx = stridx( convert_file_name, "(")
             let short_name = strpart( convert_file_name, 0, start_idx )
             let path_name = strpart( convert_file_name, start_idx )
@@ -362,7 +362,7 @@ function s:exCS_ShowQuickFixResult( search_method ) " <<<
             let qf_idx += 1
         endfor
     else
-        call g:ex_WarningMsg("Wrong search method")
+        call exUtility#WarningMsg("Wrong search method")
         return
     endif
 endfunction " >>>
@@ -377,7 +377,7 @@ function s:exCS_ParseFunction() " <<<
         silent exec "TlistUpdate"
         let search_text = Tlist_Get_Tagname_By_Line()
         if search_text == ""
-            call g:ex_WarningMsg("pattern not found, you're not in a function")
+            call exUtility#WarningMsg("pattern not found, you're not in a function")
             return
         endif
     else
@@ -454,7 +454,7 @@ function g:exCS_InitSelectWindow() " <<<
     vnoremap <buffer> <silent> <Leader>gad <ESC>:call <SID>exCS_ShowPickedResultVisualMode('', 'append', '', 1)<CR>
 
     " autocmd
-    au CursorMoved <buffer> :call g:ex_HighlightSelectLine()
+    au CursorMoved <buffer> :call exUtility#HighlightSelectLine()
 endfunction " >>>
 
 " ------------------------------------------------------------------ 
@@ -463,7 +463,7 @@ endfunction " >>>
 
 function s:exCS_GotoInSelectWindow() " <<<
     let s:exCS_select_idx = line(".")
-    call g:ex_HighlightConfirmLine()
+    call exUtility#HighlightConfirmLine()
     call s:exCS_Goto()
 endfunction " >>>
 
@@ -473,7 +473,7 @@ endfunction " >>>
 
 function g:exCS_UpdateSelectWindow() " <<<
     silent call cursor(s:exCS_select_idx, 1)
-    call g:ex_HighlightConfirmLine()
+    call exUtility#HighlightConfirmLine()
 endfunction " >>>
 
 " ------------------------------------------------------------------ 
@@ -494,7 +494,7 @@ function s:exCS_GetSearchResult(search_pattern, search_method) " <<<
     endif
 
     " jump back to edit buffer first
-    call g:ex_GotoEditBuffer()
+    call exUtility#GotoEditBuffer()
 
     " change window for suitable search method
     if a:search_method =~# '\(d\|i\)'
@@ -510,7 +510,7 @@ function s:exCS_GetSearchResult(search_pattern, search_method) " <<<
     try
         silent exec search_cmd
     catch /^Vim\%((\a\+)\)\=:E259/
-        "call g:ex_WarningMsg("no matches found for " . a:search_pattern )
+        "call exUtility#WarningMsg("no matches found for " . a:search_pattern )
         echohl WarningMsg
         echon "no matches found for " . a:search_pattern . "\r"
         echohl None
@@ -601,7 +601,7 @@ function g:exCS_InitQuickViewWindow() " <<<
     vnoremap <buffer> <silent> <Leader>gad <ESC>:call <SID>exCS_ShowPickedResultVisualMode('', 'append', '', 1)<CR>
 
     " autocmd
-    au CursorMoved <buffer> :call g:ex_HighlightSelectLine()
+    au CursorMoved <buffer> :call exUtility#HighlightSelectLine()
 endfunction " >>>
 
 " ------------------------------------------------------------------ 
@@ -610,7 +610,7 @@ endfunction " >>>
 
 function g:exCS_UpdateQuickViewWindow() " <<<
     silent call cursor(s:exCS_quick_view_idx, 1)
-    call g:ex_HighlightConfirmLine()
+    call exUtility#HighlightConfirmLine()
 endfunction " >>>
 
 " ------------------------------------------------------------------ 
@@ -619,7 +619,7 @@ endfunction " >>>
 
 function s:exCS_GotoInQuickViewWindow() " <<<
     let s:exCS_quick_view_idx = line(".")
-    call g:ex_HighlightConfirmLine()
+    call exUtility#HighlightConfirmLine()
     call s:exCS_Goto()
 endfunction " >>>
 
@@ -635,7 +635,7 @@ function s:exCS_CopyPickedLine( search_pattern, line_start, line_end, search_met
     endif
     if search_pattern == ''
         let s:exCS_quick_view_search_pattern = ''
-        call g:ex_WarningMsg('search pattern not exists')
+        call exUtility#WarningMsg('search pattern not exists')
         return
     else
         let s:exCS_quick_view_search_pattern = '----------' . search_pattern . '----------'
@@ -700,7 +700,7 @@ function s:exCS_ShowPickedResult( search_pattern, line_start, line_end, edit_mod
     if a:edit_mode == 'replace'
         silent exec 'normal! G"_dgg'
         let s:exCS_quick_view_idx = 1
-        call g:ex_HighlightConfirmLine()
+        call exUtility#HighlightConfirmLine()
         silent put = s:exCS_quick_view_search_pattern
         silent put = s:exCS_fold_start
         silent put = s:exCS_picked_search_result
@@ -749,12 +749,12 @@ endfunction " >>>
 " Commands
 "/////////////////////////////////////////////////////////////////////////////
 
-command -nargs=1 -complete=customlist,g:ex_CompleteBySymbolFile CSD call s:exCS_GetSearchResult('<args>', 'da')
-command -nargs=1 -complete=customlist,g:ex_CompleteBySymbolFile CSC call s:exCS_GetSearchResult('<args>', 'c')
-command -nargs=1 -complete=customlist,g:ex_CompleteByProjectFile CSI call s:exCS_GetSearchResult('<args>', 'i')
-command -nargs=1 -complete=customlist,g:ex_CompleteBySymbolFile CSS call s:exCS_GetSearchResult('<args>', 's')
-command -nargs=1 -complete=customlist,g:ex_CompleteBySymbolFile CSG call s:exCS_GetSearchResult('<args>', 'g')
-command -nargs=1 -complete=customlist,g:ex_CompleteBySymbolFile CSE call s:exCS_GetSearchResult('<args>', 'e')
+command -nargs=1 -complete=customlist,exUtility#CompleteBySymbolFile CSD call s:exCS_GetSearchResult('<args>', 'da')
+command -nargs=1 -complete=customlist,exUtility#CompleteBySymbolFile CSC call s:exCS_GetSearchResult('<args>', 'c')
+command -nargs=1 -complete=customlist,exUtility#CompleteByProjectFile CSI call s:exCS_GetSearchResult('<args>', 'i')
+command -nargs=1 -complete=customlist,exUtility#CompleteBySymbolFile CSS call s:exCS_GetSearchResult('<args>', 's')
+command -nargs=1 -complete=customlist,exUtility#CompleteBySymbolFile CSG call s:exCS_GetSearchResult('<args>', 'g')
+command -nargs=1 -complete=customlist,exUtility#CompleteBySymbolFile CSE call s:exCS_GetSearchResult('<args>', 'e')
 
 command ExcsToggle call s:exCS_ToggleWindow('')
 command ExcsSelectToggle call s:exCS_ToggleWindow('Select')

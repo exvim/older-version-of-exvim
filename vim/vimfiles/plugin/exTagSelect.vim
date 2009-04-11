@@ -167,9 +167,9 @@ function s:exTS_OpenWindow( short_title ) " <<<
     let title = '__exTS_' . s:exTS_short_title . 'Window__'
     " open window
     if g:exTS_use_vertical_window
-        call g:ex_OpenWindow( title, g:exTS_window_direction, g:exTS_window_width, g:exTS_use_vertical_window, g:exTS_edit_mode, g:exTS_backto_editbuf, 'g:exTS_Init'.s:exTS_short_title.'Window', 'g:exTS_Update'.s:exTS_short_title.'Window' )
+        call exUtility#OpenWindow( title, g:exTS_window_direction, g:exTS_window_width, g:exTS_use_vertical_window, g:exTS_edit_mode, g:exTS_backto_editbuf, 'g:exTS_Init'.s:exTS_short_title.'Window', 'g:exTS_Update'.s:exTS_short_title.'Window' )
     else
-        call g:ex_OpenWindow( title, g:exTS_window_direction, g:exTS_window_height, g:exTS_use_vertical_window, g:exTS_edit_mode, g:exTS_backto_editbuf, 'g:exTS_Init'.s:exTS_short_title.'Window', 'g:exTS_Update'.s:exTS_short_title.'Window' )
+        call exUtility#OpenWindow( title, g:exTS_window_direction, g:exTS_window_height, g:exTS_use_vertical_window, g:exTS_edit_mode, g:exTS_backto_editbuf, 'g:exTS_Init'.s:exTS_short_title.'Window', 'g:exTS_Update'.s:exTS_short_title.'Window' )
     endif
 endfunction " >>>
 
@@ -179,9 +179,9 @@ endfunction " >>>
 
 function s:exTS_ResizeWindow() " <<<
     if g:exTS_use_vertical_window
-        call g:ex_ResizeWindow( g:exTS_use_vertical_window, g:exTS_window_width, g:exTS_window_width_increment )
+        call exUtility#ResizeWindow( g:exTS_use_vertical_window, g:exTS_window_width, g:exTS_window_width_increment )
     else
-        call g:ex_ResizeWindow( g:exTS_use_vertical_window, g:exTS_window_height, g:exTS_window_height_increment )
+        call exUtility#ResizeWindow( g:exTS_use_vertical_window, g:exTS_window_height, g:exTS_window_height_increment )
     endif
 endfunction " >>>
 
@@ -194,7 +194,7 @@ function s:exTS_ToggleWindow( short_title ) " <<<
     if a:short_title != ''
         if s:exTS_short_title != a:short_title
             if bufwinnr('__exTS_' . s:exTS_short_title . 'Window__') != -1
-                call g:ex_CloseWindow('__exTS_' . s:exTS_short_title . 'Window__')
+                call exUtility#CloseWindow('__exTS_' . s:exTS_short_title . 'Window__')
             endif
             let s:exTS_short_title = a:short_title
         endif
@@ -203,9 +203,9 @@ function s:exTS_ToggleWindow( short_title ) " <<<
     " toggle exTS window
     let title = '__exTS_' . s:exTS_short_title . 'Window__'
     if g:exTS_use_vertical_window
-        call g:ex_ToggleWindow( title, g:exTS_window_direction, g:exTS_window_width, g:exTS_use_vertical_window, 'none', g:exTS_backto_editbuf, 'g:exTS_Init'.s:exTS_short_title.'Window', 'g:exTS_Update'.s:exTS_short_title.'Window' )
+        call exUtility#ToggleWindow( title, g:exTS_window_direction, g:exTS_window_width, g:exTS_use_vertical_window, 'none', g:exTS_backto_editbuf, 'g:exTS_Init'.s:exTS_short_title.'Window', 'g:exTS_Update'.s:exTS_short_title.'Window' )
     else
-        call g:ex_ToggleWindow( title, g:exTS_window_direction, g:exTS_window_height, g:exTS_use_vertical_window, 'none', g:exTS_backto_editbuf, 'g:exTS_Init'.s:exTS_short_title.'Window', 'g:exTS_Update'.s:exTS_short_title.'Window' )
+        call exUtility#ToggleWindow( title, g:exTS_window_direction, g:exTS_window_height, g:exTS_use_vertical_window, 'none', g:exTS_backto_editbuf, 'g:exTS_Init'.s:exTS_short_title.'Window', 'g:exTS_Update'.s:exTS_short_title.'Window' )
     endif
 endfunction " >>>
 
@@ -290,7 +290,7 @@ function g:exTS_UpdateSelectWindow() " <<<
 
     let tag_pattern = '^\s*' .  s:exTS_tag_stack_list[s:exTS_stack_idx].tag_idx . ':'
     silent call search( tag_pattern, 'w')
-    call g:ex_HighlightConfirmLine()
+    call exUtility#HighlightConfirmLine()
     let s:exTS_cursor_idx = line('.')
 endfunction " >>>
 
@@ -302,7 +302,7 @@ function s:exTS_SelectCursorMoved()
     let line_num = line('.')
 
     if line_num == s:exTS_cursor_idx
-        call g:ex_HighlightSelectLine()
+        call exUtility#HighlightSelectLine()
         return
     endif
 
@@ -322,7 +322,7 @@ function s:exTS_SelectCursorMoved()
     endwhile
 
     let s:exTS_cursor_idx = line('.')
-    call g:ex_HighlightSelectLine()
+    call exUtility#HighlightSelectLine()
 endfunction
 
 " ------------------------------------------------------------------ 
@@ -393,7 +393,7 @@ function s:exTS_GetTagSelectResult(tag, direct_jump) " <<<
 
     " clear window
     exe 'normal! G"_dgg'
-    call g:ex_HighlightConfirmLine()
+    call exUtility#HighlightConfirmLine()
 
     if match( result, 'Error detected while processing' ) != -1
         silent put = 'Error: tag not found ==> ' . in_tag
@@ -407,15 +407,15 @@ function s:exTS_GetTagSelectResult(tag, direct_jump) " <<<
     let pre_file_name = tag_list[0].filename
     " put different file name at first
     silent put = pre_tag_name
-    silent put = g:ex_ConvertFileName(pre_file_name)
+    silent put = exUtility#ConvertFileName(pre_file_name)
     " put search result
     for tag_info in tag_list
         if tag_info.name !=# pre_tag_name
             silent put = ''
             silent put = tag_info.name
-            silent put = g:ex_ConvertFileName(tag_info.filename)
+            silent put = exUtility#ConvertFileName(tag_info.filename)
         elseif tag_info.filename !=# pre_file_name
-            silent put = g:ex_ConvertFileName(tag_info.filename)
+            silent put = exUtility#ConvertFileName(tag_info.filename)
         endif
         " put search patterns
         let quick_view = ''
@@ -445,7 +445,7 @@ function s:exTS_GetTagSelectResult(tag, direct_jump) " <<<
     silent exe 'normal! gg'
     let tag_pattern = '^\s*1:'
     call search( tag_pattern, 'w')
-    call g:ex_HighlightSelectLine()
+    call exUtility#HighlightSelectLine()
 
     " after push stack if needed, re-init s:exTS_tag_state_tmp
     let s:exTS_tag_state_tmp.tag_name = in_tag
@@ -466,7 +466,7 @@ function s:exTS_GotoTagSelectResult() " <<<
     " read current line as search pattern
     let cur_line = getline(".")
     if match(cur_line, '^        \S.*$') == -1
-        call g:ex_WarningMsg('Pattern not found')
+        call exUtility#WarningMsg('Pattern not found')
         return
     endif
     let idx = match(cur_line, '\S')
@@ -475,7 +475,7 @@ function s:exTS_GotoTagSelectResult() " <<<
     let tag_idx = eval(strpart(cur_line, 0, idx))
 
     " jump by command
-    call g:ex_GotoEditBuffer()
+    call exUtility#GotoEditBuffer()
 
     " if we don't start a new stack, we pop the old jump, so that the new one
     " will only take the old stack position while we are selecting our result. 
@@ -505,10 +505,10 @@ function s:exTS_GotoTagSelectResult() " <<<
 
     " process extractly jump
     let s:exTS_tag_select_idx = tag_idx
-    call g:ex_GotoExCommand( fnamemodify(s:exTS_tag_stack_list[s:exTS_stack_idx].tag_list[tag_idx-1].filename,":p"), s:exTS_tag_stack_list[s:exTS_stack_idx].tag_list[tag_idx-1].cmd, keepjumps_cmd )
+    call exUtility#GotoExCommand( fnamemodify(s:exTS_tag_stack_list[s:exTS_stack_idx].tag_list[tag_idx-1].filename,":p"), s:exTS_tag_stack_list[s:exTS_stack_idx].tag_list[tag_idx-1].cmd, keepjumps_cmd )
 
     " go back if needed
-    call g:ex_OperateWindow ( s:exTS_select_title, g:exTS_close_when_selected, g:exTS_backto_editbuf, 1 )
+    call exUtility#OperateWindow ( s:exTS_select_title, g:exTS_close_when_selected, g:exTS_backto_editbuf, 1 )
 endfunction " >>>
 
 " ======================================================== 
@@ -535,7 +535,7 @@ function g:exTS_InitStackWindow() " <<<
     nnoremap <buffer> <silent> <C-Right>   :call <SID>exTS_SwitchWindow('Stack')<CR>
 
     " autocmd
-    au CursorMoved <buffer> :call g:ex_HighlightSelectLine()
+    au CursorMoved <buffer> :call exUtility#HighlightSelectLine()
 endfunction " >>>
 
 " ------------------------------------------------------------------ 
@@ -551,10 +551,10 @@ function g:exTS_UpdateStackWindow() " <<<
 
     let pattern = s:exTS_stack_idx . ':'
     if search( pattern, 'w') == 0
-        call g:ex_WarningMsg('Pattern not found')
+        call exUtility#WarningMsg('Pattern not found')
         return
     endif
-    call g:ex_HighlightConfirmLine()
+    call exUtility#HighlightConfirmLine()
 endfunction " >>>
 
 " ------------------------------------------------------------------ 
@@ -612,11 +612,11 @@ function s:exTS_Stack_GotoTag( idx, jump_method ) " <<<
     let list_len = len(s:exTS_tag_stack_list)
     " if idx < 0, return
     if a:idx < 0
-        call g:ex_WarningMsg('at the top of exTagStack')
+        call exUtility#WarningMsg('at the top of exTagStack')
         let s:exTS_stack_idx = 0
         return
     elseif a:idx > list_len-1
-        call g:ex_WarningMsg('at the bottom of exSearchStack')
+        call exUtility#WarningMsg('at the bottom of exSearchStack')
         let s:exTS_stack_idx = list_len-1
         return
     endif
@@ -646,18 +646,18 @@ function s:exTS_Stack_GotoTag( idx, jump_method ) " <<<
 
         " go by tag_idx
         if jump_method == 'to_entry'
-            call g:ex_GotoEditBuffer()
+            call exUtility#GotoEditBuffer()
             silent exec 'e ' . s:exTS_tag_stack_list[s:exTS_stack_idx].entry_file_name
             call setpos('.', s:exTS_tag_stack_list[s:exTS_stack_idx].entry_cursor_pos)
         else
             let tag_idx = s:exTS_tag_stack_list[s:exTS_stack_idx].tag_idx
-            call g:ex_GotoExCommand( fnamemodify(s:exTS_tag_stack_list[s:exTS_stack_idx].tag_list[tag_idx-1].filename,":p"), s:exTS_tag_stack_list[s:exTS_stack_idx].tag_list[tag_idx-1].cmd, "" )
+            call exUtility#GotoExCommand( fnamemodify(s:exTS_tag_stack_list[s:exTS_stack_idx].tag_list[tag_idx-1].filename,":p"), s:exTS_tag_stack_list[s:exTS_stack_idx].tag_list[tag_idx-1].cmd, "" )
         endif
         exe 'normal! zz'
     endif
 
     " go back if needed
-    call g:ex_OperateWindow ( s:exTS_stack_title, g:exTS_stack_close_when_selected || background_op, g:exTS_backto_editbuf, 1 )
+    call exUtility#OperateWindow ( s:exTS_stack_title, g:exTS_stack_close_when_selected || background_op, g:exTS_backto_editbuf, 1 )
 endfunction " >>>
 
 " ------------------------------------------------------------------ 
@@ -670,12 +670,12 @@ function s:exTS_Stack_GoDirect() " <<<
     let cur_line = strpart(cur_line, idx)
     let idx = match(cur_line, ':')
     if idx == -1
-        call g:ex_WarningMsg("Can't jump in this line")
+        call exUtility#WarningMsg("Can't jump in this line")
         return
     endif
 
     let stack_idx = eval(strpart(cur_line, 0, idx))
-    call g:ex_HighlightConfirmLine()
+    call exUtility#HighlightConfirmLine()
 
     " if select idx > old idx, jump to tag. else jump to entry
     if stack_idx > s:exTS_stack_idx
@@ -694,7 +694,7 @@ endfunction " >>>
 "/////////////////////////////////////////////////////////////////////////////
 
 "
-command -nargs=1 -complete=customlist,g:ex_CompleteBySymbolFile TS call s:exTS_GetTagSelectResult('<args>', 0)
+command -nargs=1 -complete=customlist,exUtility#CompleteBySymbolFile TS call s:exTS_GetTagSelectResult('<args>', 0)
 command BackwardTagStack call s:exTS_Stack_GotoTag(s:exTS_stack_idx-1, 'to_entry')
 command ForwardTagStack call s:exTS_Stack_GotoTag(s:exTS_stack_idx+1, 'to_tag')
 command TAGS call s:exTS_SwitchWindow('Stack')

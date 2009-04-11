@@ -162,17 +162,17 @@ if !exists('loaded_taglist')
         let Tlist_WinHeight = 10
     endif
 
-    " jwu added
+    " JWU ADD { 
     " Window increase size
     if !exists('Tlist_WinIncreament')
         let Tlist_WinIncreament = 100
     endif
 
-    " jwu added 
     " Back to edit buffer
     if !exists('Tlist_BackToEditBuffer')
         let Tlist_BackToEditBuffer = 0
     endif
+    " } JWU ADD end 
 
     " Display tag prototypes or tag names in the taglist window
     if !exists('Tlist_Display_Prototype')
@@ -1455,7 +1455,7 @@ function! s:Tlist_Window_Init()
     setlocal noreadonly
 
     " Set the taglist buffer filetype to taglist
-    " jwu modfiy this to close taglist
+    " jwu MODIFY this to close taglist
     "setlocal filetype=taglist
     setlocal filetype=ex_filetype
 
@@ -1586,18 +1586,18 @@ function! s:Tlist_Window_Init()
     nnoremap <buffer> <silent> <kMinus> :silent! foldclose<CR>
     nnoremap <buffer> <silent> <kMultiply> :silent! %foldopen!<CR>
 
-    " jwu modify hot-key to x
+    " jwu MODIFY hot-key to x
     " nnoremap <buffer> <silent> <Space> :call <SID>Tlist_Window_Show_Info()<CR>
     nnoremap <buffer> <silent> x :call <SID>Tlist_Window_Show_Info()<CR>
 
     nnoremap <buffer> <silent> u :call <SID>Tlist_Window_Update_File()<CR>
     nnoremap <buffer> <silent> d :call <SID>Tlist_Remove_File(-1, 1)<CR>
 
-    " jwu modify&add hot-key to space
+    " jwu MODIFY&ADD hot-key to space
     " nnoremap <buffer> <silent> x :call <SID>Tlist_Window_Zoom()<CR>
     nnoremap <buffer> <silent> <Space> :call <SID>Tlist_Window_Zoom()<CR>
     nnoremap <buffer> <silent> <ESC> :call <SID>Tlist_Window_Close()<CR>
-    au CursorMoved <buffer> :call g:ex_HighlightSelectLine()
+    au CursorMoved <buffer> :call exUtility#HighlightSelectLine()
 
     nnoremap <buffer> <silent> [[ :call <SID>Tlist_Window_Move_To_File(-1)<CR>
     nnoremap <buffer> <silent> <BS> :call <SID>Tlist_Window_Move_To_File(-1)<CR>
@@ -2539,8 +2539,9 @@ function! s:Tlist_Window_Close()
     endif
 
     if winnr() == winnum
-        " jwu added to fix jump error
+        " JWU ADD: to fix jump error { 
         let last_buf_num = bufnr('#') 
+        " } JWU ADD end 
 
         " Already in the taglist window. Close it and return
         if winbufnr(2) != -1
@@ -2549,13 +2550,14 @@ function! s:Tlist_Window_Close()
             close
         endif
 
-        " jwu added to fix jump error
+        " JWU ADD to fix jump error { 
         " Need to jump back to the original window only if we are not
         " already in that window
         let winnum = bufwinnr(last_buf_num)
         if winnr() != winnum
             exe winnum . 'wincmd w'
         endif
+        " } JWU ADD end 
     else
         " Goto the taglist window, close it and then come back to the
         " original window
@@ -2571,8 +2573,9 @@ function! s:Tlist_Window_Close()
         endif
     endif
 
-    " jwu added to clear highlight object
-    call g:ex_ClearObjectHighlight()
+    " JWU ADD to clear highlight object { 
+    call exUtility#ClearObjectHighlight()
+    " } JWU ADD end 
 endfunction
 
 " Tlist_Window_Mark_File_Window
@@ -3384,9 +3387,11 @@ function! s:Tlist_Window_Jump_To_Tag(win_ctrl)
 
     call s:Tlist_Window_Open_File(a:win_ctrl, s:tlist_{fidx}_filename, tagpat)
 
-    " jwu added to stick in the taglist window
+    " JWU ADD to stick in the taglist window { 
     " hilight the object line
-    call g:ex_HighlightObjectLine()
+    call exUtility#HighlightObjectLine()
+    " } JWU ADD end 
+
     " back to edit buffer
     if !g:Tlist_Close_On_Select
         if !g:Tlist_BackToEditBuffer

@@ -327,13 +327,14 @@ def dte_list_projects (vs_pid):
     startup_project_index = -1
     index = 0
     lst_result = []
-    # jwu disable 
+    # JWU MODIFY { 
     # lst_project = [project for project in dte.Solution.Projects]
     # for project in sorted(dte.Solution.Projects, cmp=lambda x,y: cmp(x.Name, y.Name)):
+    # } JWU MODIFY end 
     for project in dte.Solution.Projects:
         if project.Name == startup_project_name:
             startup_project_index = index
-        # jwu added: to judge is this a project or a folder (if folder it will not have FullName)
+        # jwu ADD: to judge is this a project or a folder (if folder it will not have FullName)
         if len(project.FullName) != 0:
             lst_result.append (_dte_project_tree(project))
             print 'add project: %s' %project.Name

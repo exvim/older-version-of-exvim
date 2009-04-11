@@ -22,7 +22,7 @@ function! lookupfile#OpenWindow(bang, initPat)
   if &filetype == "ex_filetype"
     silent exec "normal \<Esc>"
   endif
-  call g:ex_GotoEditBuffer()
+  call exUtility#GotoEditBuffer()
   " } JWU ADD end 
 
   let origWinnr = winnr()

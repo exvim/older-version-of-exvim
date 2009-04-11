@@ -381,12 +381,12 @@ else
 endif
 
 " F12: Insert '#if 0' and '#endif' between the selection
-vmap <unique> <F12> :call g:ex_InsertIFZero()<CR>
-nmap <unique> <F12> :call g:ex_RemoveIFZero()<CR>
+vmap <unique> <F12> :call exUtility#InsertIFZero()<CR>
+nmap <unique> <F12> :call exUtility#RemoveIFZero()<CR>
 
 " XXX: F10 looks like have some feature, when map with F10, the gv will take no effects
 " F9:  Insert/Remove macro extend ("\") after all the lines of the selection
-vmap <unique> <F9> :call g:ex_InsertRemoveExtend()<CR>
+vmap <unique> <F9> :call exUtility#InsertRemoveExtend()<CR>
 
 " F8:  Set Search pattern highlight on/off
 nmap <unique> <F8> :let @/=""<CR>
@@ -403,22 +403,22 @@ nmap <unique> <S-Up> <C-W><Up>
 nmap <unique> <S-Down> <C-W><Down>
 nmap <unique> <S-Left> <C-W><Left>
 nmap <unique> <S-Right> <C-W><Right>
-nmap <unique> <silent><Leader><Tab> :call g:ex_SwitchBuffer()<CR>
+nmap <unique> <silent><Leader><Tab> :call exUtility#SwitchBuffer()<CR>
 
 " for the exUtility Plugin
-nmap <unique> <silent><Leader><ESC> :call g:ex_SwitchBuffer()<CR><ESC>
+nmap <unique> <silent><Leader><ESC> :call exUtility#SwitchBuffer()<CR><ESC>
 
 " change the original file jump method to this one
-nnoremap <unique> gf :call g:ex_QuickFileJump()<CR>
+nnoremap <unique> gf :call exUtility#QuickFileJump()<CR>
 
 " VimTip #401: A mapping for easy switching between buffers
 " NOTE: there has a bug, in window (not fullscree) mode, some times the buffer 
 "       will jump to other display screen ( if you use double screen ).      
 " nmap <silent> <C-Right> :bn!<CR>
 " nmap <silent> <C-Left> :bp!<CR>
-nmap <unique> <silent> <C-Right> :call g:ex_GotoBuffer('next')<CR>
-nmap <unique> <silent> <C-Left> :call g:ex_GotoBuffer('prev')<CR>
-nmap <unique> <silent> <C-Tab> :call g:ex_SwapToLastEditBuffer()<CR>
+nmap <unique> <silent> <C-Right> :call exUtility#GotoBuffer('next')<CR>
+nmap <unique> <silent> <C-Left> :call exUtility#GotoBuffer('prev')<CR>
+nmap <unique> <silent> <C-Tab> :call exUtility#SwapToLastEditBuffer()<CR>
 
 " Move in fold
 map <unique> z<Up> zk
@@ -444,9 +444,9 @@ vnoremap <unique> > >gv
 map <unique> <kPlus> zo
 map <unique> <kMinus> zc
 
-" map g:ex_Kwbd(1) to \bd will close buffer and keep window
-nmap <unique> <Leader>bd :call g:ex_Kwbd(1)<CR>
-nmap <unique> <C-F4> :call g:ex_Kwbd(1)<CR>
+" map exUtility#Kwbd(1) to \bd will close buffer and keep window
+nmap <unique> <Leader>bd :call exUtility#Kwbd(1)<CR>
+nmap <unique> <C-F4> :call exUtility#Kwbd(1)<CR>
 
 " map Up & Down to gj & gk, helpful for wrap text edit
 map <unique> <Up> gk
@@ -526,7 +526,7 @@ endif " has("autocmd")
 au BufNewFile,BufEnter * set cpoptions+=d " NOTE: ctags find the tags file from the current path instead of the path of currect file
 au BufEnter * :syntax sync fromstart " ensure every file does syntax highlighting (full) 
 au BufNewFile,BufRead *.avs set syntax=avs " for avs syntax file.
-au BufWritePost * call g:ex_UpdateCurrentBuffer() 
+au BufWritePost * call exUtility#UpdateCurrentBuffer() 
 
 " FIXME: may have some problems with exUtility
 " Change current directory to the file of the buffer ( from Script#65"CD.vim"
@@ -560,53 +560,53 @@ au FileType vim set comments=sO:\"\ -,mO:\"\ \ ,eO:\"\",f:\"
 " ------------------------------------------------------------------ 
 
 " quick highlight 
-nmap <unique> <silent> <a-1> :call g:ex_Highlight_Normal(1)<CR>
-nmap <unique> <silent> <a-2> :call g:ex_Highlight_Normal(2)<CR>
-nmap <unique> <silent> <a-3> :call g:ex_Highlight_Normal(3)<CR>
-nmap <unique> <silent> <a-4> :call g:ex_Highlight_Normal(4)<CR>
+nmap <unique> <silent> <a-1> :call exUtility#Highlight_Normal(1)<CR>
+nmap <unique> <silent> <a-2> :call exUtility#Highlight_Normal(2)<CR>
+nmap <unique> <silent> <a-3> :call exUtility#Highlight_Normal(3)<CR>
+nmap <unique> <silent> <a-4> :call exUtility#Highlight_Normal(4)<CR>
 
-vmap <unique> <silent> <a-1> :call g:ex_Highlight_Visual(1)<CR>
-vmap <unique> <silent> <a-2> :call g:ex_Highlight_Visual(2)<CR>
-vmap <unique> <silent> <a-3> :call g:ex_Highlight_Visual(3)<CR>
-vmap <unique> <silent> <a-4> :call g:ex_Highlight_Visual(4)<CR>
+vmap <unique> <silent> <a-1> :call exUtility#Highlight_Visual(1)<CR>
+vmap <unique> <silent> <a-2> :call exUtility#Highlight_Visual(2)<CR>
+vmap <unique> <silent> <a-3> :call exUtility#Highlight_Visual(3)<CR>
+vmap <unique> <silent> <a-4> :call exUtility#Highlight_Visual(4)<CR>
 
 " used in terminal mode
 " TODO: find some way to check if it is in terminal { 
-nmap <unique> <silent> <leader>h1 :call g:ex_Highlight_Normal(1)<CR>
-nmap <unique> <silent> <leader>h2 :call g:ex_Highlight_Normal(2)<CR>
-nmap <unique> <silent> <leader>h3 :call g:ex_Highlight_Normal(3)<CR>
-nmap <unique> <silent> <leader>h4 :call g:ex_Highlight_Normal(4)<CR>
+nmap <unique> <silent> <leader>h1 :call exUtility#Highlight_Normal(1)<CR>
+nmap <unique> <silent> <leader>h2 :call exUtility#Highlight_Normal(2)<CR>
+nmap <unique> <silent> <leader>h3 :call exUtility#Highlight_Normal(3)<CR>
+nmap <unique> <silent> <leader>h4 :call exUtility#Highlight_Normal(4)<CR>
 
-vmap <unique> <silent> <leader>h1 :call g:ex_Highlight_Visual(1)<CR>
-vmap <unique> <silent> <leader>h2 :call g:ex_Highlight_Visual(2)<CR>
-vmap <unique> <silent> <leader>h3 :call g:ex_Highlight_Visual(3)<CR>
-vmap <unique> <silent> <leader>h4 :call g:ex_Highlight_Visual(4)<CR>
+vmap <unique> <silent> <leader>h1 :call exUtility#Highlight_Visual(1)<CR>
+vmap <unique> <silent> <leader>h2 :call exUtility#Highlight_Visual(2)<CR>
+vmap <unique> <silent> <leader>h3 :call exUtility#Highlight_Visual(3)<CR>
+vmap <unique> <silent> <leader>h4 :call exUtility#Highlight_Visual(4)<CR>
 
-map <unique> <silent> <leader>h0 :call g:ex_HighlightCancle(0)<CR>
+map <unique> <silent> <leader>h0 :call exUtility#HighlightCancle(0)<CR>
 " } TODO end 
 
-command -narg=? -complete=customlist,g:ex_CompleteBySymbolFile HL1 call g:ex_Highlight_Text(1, "<args>")
-command -narg=? -complete=customlist,g:ex_CompleteBySymbolFile HL2 call g:ex_Highlight_Text(2, "<args>")
-command -narg=? -complete=customlist,g:ex_CompleteBySymbolFile HL3 call g:ex_Highlight_Text(3, "<args>")
-command -narg=? -complete=customlist,g:ex_CompleteBySymbolFile HL4 call g:ex_Highlight_Text(4, "<args>")
+command -narg=? -complete=customlist,exUtility#CompleteBySymbolFile HL1 call exUtility#Highlight_Text(1, "<args>")
+command -narg=? -complete=customlist,exUtility#CompleteBySymbolFile HL2 call exUtility#Highlight_Text(2, "<args>")
+command -narg=? -complete=customlist,exUtility#CompleteBySymbolFile HL3 call exUtility#Highlight_Text(3, "<args>")
+command -narg=? -complete=customlist,exUtility#CompleteBySymbolFile HL4 call exUtility#Highlight_Text(4, "<args>")
 
-map <unique> <silent> <a-0> :call g:ex_HighlightCancle(0)<CR>
-map <unique> <silent> <Leader>0 :call g:ex_HighlightCancle(0)<CR>
-map <unique> <silent> <Leader>1 :call g:ex_HighlightCancle(1)<CR>
-map <unique> <silent> <Leader>2 :call g:ex_HighlightCancle(2)<CR>
-map <unique> <silent> <Leader>3 :call g:ex_HighlightCancle(3)<CR>
-map <unique> <silent> <Leader>4 :call g:ex_HighlightCancle(4)<CR>
+map <unique> <silent> <a-0> :call exUtility#HighlightCancle(0)<CR>
+map <unique> <silent> <Leader>0 :call exUtility#HighlightCancle(0)<CR>
+map <unique> <silent> <Leader>1 :call exUtility#HighlightCancle(1)<CR>
+map <unique> <silent> <Leader>2 :call exUtility#HighlightCancle(2)<CR>
+map <unique> <silent> <Leader>3 :call exUtility#HighlightCancle(3)<CR>
+map <unique> <silent> <Leader>4 :call exUtility#HighlightCancle(4)<CR>
 
 " copy only full path name
-nmap <unique> <silent> <leader>y1 :call g:ex_Yank( fnamemodify(bufname('%'),":p:h") )<CR>
+nmap <unique> <silent> <leader>y1 :call exUtility#Yank( fnamemodify(bufname('%'),":p:h") )<CR>
 " copy only file name
-nmap <unique> <silent> <leader>y2 :call g:ex_Yank( fnamemodify(bufname('%'),":p:t") )<CR>
+nmap <unique> <silent> <leader>y2 :call exUtility#Yank( fnamemodify(bufname('%'),":p:t") )<CR>
 " copy full path + filename
-nmap <unique> <silent> <leader>y3 :call g:ex_Yank( fnamemodify(bufname('%'),":p") )<CR>
+nmap <unique> <silent> <leader>y3 :call exUtility#Yank( fnamemodify(bufname('%'),":p") )<CR>
 " copy path + filename for code
-nmap <unique> <silent> <leader>yb :call g:ex_YankBufferNameForCode()<CR>
+nmap <unique> <silent> <leader>yb :call exUtility#YankBufferNameForCode()<CR>
 " copy path for code
-nmap <unique> <silent> <leader>yp :call g:ex_YankFilePathForCode()<CR>
+nmap <unique> <silent> <leader>yp :call exUtility#YankFilePathForCode()<CR>
 
 " VimTip 311: Open the folder containing the currently open file
 " http://vim.sourceforge.net/tip_view.php?tip_id=
@@ -625,61 +625,61 @@ if has("gui_running")
         " :map <silent> <C-F5> :if expand("%:p:h") != ""<CR>:!start explorer.exe %:p:h<CR>:endif<CR><CR>
 
         " explore the vimfile directory
-        :map <unique> <silent> <C-F5> :call g:ex_Yank(getcwd() . "\\_vimfiles")<CR>
-        :map <unique> <silent> <A-F5> :call g:ex_Explore(getcwd() . "\\_vimfiles")<CR>
+        :map <unique> <silent> <C-F5> :call exUtility#Yank(getcwd() . "\\_vimfiles")<CR>
+        :map <unique> <silent> <A-F5> :call exUtility#Explore(getcwd() . "\\_vimfiles")<CR>
         " explore the cwd directory
-        :map <unique> <silent> <C-F6> :call g:ex_Yank(getcwd())<CR>
-        :map <unique> <silent> <A-F6> :call g:ex_Explore(getcwd())<CR>
+        :map <unique> <silent> <C-F6> :call exUtility#Yank(getcwd())<CR>
+        :map <unique> <silent> <A-F6> :call exUtility#Explore(getcwd())<CR>
         " explore the diretory current file in
-        :map <unique> <silent> <C-F7> :call g:ex_Yank(expand("%:p:h"))<CR>
-        :map <unique> <silent> <A-F7> :call g:ex_Explore(expand("%:p:h"))<CR>
+        :map <unique> <silent> <C-F7> :call exUtility#Yank(expand("%:p:h"))<CR>
+        :map <unique> <silent> <A-F7> :call exUtility#Explore(expand("%:p:h"))<CR>
     endif
 endif
 " 
 " Tom.
 
 " project gen/copy/build
-command -narg=? -complete=customlist,g:ex_CompleteGMakeArgs GMake call g:ex_GCCMake("<args>")
-command -narg=? -complete=customlist,g:ex_CompleteGMakeArgs SMake call g:ex_ShaderMake("<args>")
-command -narg=* -complete=customlist,g:ex_CompleteVMakeArgs VMake call g:ex_VCMake("<args>")
-command -narg=* VBat call g:ex_VCMakeBAT(<f-args>)
-command -narg=? -complete=customlist,g:ex_CompleteUpdateArgs Update call g:ex_UpdateVimFiles("<args>")
-command -narg=? -complete=customlist,g:ex_CompleteQCopyArgs QCopy call g:ex_CopyQuickGenProject("<args>")
+command -narg=? -complete=customlist,exUtility#CompleteGMakeArgs GMake call exUtility#GCCMake("<args>")
+command -narg=? -complete=customlist,exUtility#CompleteGMakeArgs SMake call exUtility#ShaderMake("<args>")
+command -narg=* -complete=customlist,exUtility#CompleteVMakeArgs VMake call exUtility#VCMake("<args>")
+command -narg=* VBat call exUtility#VCMakeBAT(<f-args>)
+command -narg=? -complete=customlist,exUtility#CompleteUpdateArgs Update call exUtility#UpdateVimFiles("<args>")
+command -narg=? -complete=customlist,exUtility#CompleteQCopyArgs QCopy call exUtility#CopyQuickGenProject("<args>")
 
 " inherits genreate
-command -narg=1 -complete=customlist,g:ex_CompleteBySymbolFile GV call g:ex_GenInheritsDot('<args>',"all")
-command -narg=1 -complete=customlist,g:ex_CompleteBySymbolFile GVP call g:ex_GenInheritsDot('<args>',"parent")
-command -narg=1 -complete=customlist,g:ex_CompleteBySymbolFile GVC call g:ex_GenInheritsDot('<args>',"children")
-map <unique> <silent> <Leader>gv :call g:ex_ViewInheritsImage()<CR>
+command -narg=1 -complete=customlist,exUtility#CompleteBySymbolFile GV call exUtility#GenInheritsDot('<args>',"all")
+command -narg=1 -complete=customlist,exUtility#CompleteBySymbolFile GVP call exUtility#GenInheritsDot('<args>',"parent")
+command -narg=1 -complete=customlist,exUtility#CompleteBySymbolFile GVC call exUtility#GenInheritsDot('<args>',"children")
+map <unique> <silent> <Leader>gv :call exUtility#ViewInheritsImage()<CR>
 
 " code writing
-command LINE call g:ex_PutLine(86, '-')
-command -narg=1 NSS call g:ex_PutNamespaceStart("<args>")
-command -narg=1 NSE call g:ex_PutNamespaceEnd("<args>")
-command -narg=1 NS call g:ex_PutNamespace("<args>")
-command HEADER call g:ex_PutHeader()
-command SEP call g:ex_PutSeparate()
-command SEG call g:ex_PutSegment()
-command NOTE call g:ex_PutNote()
-command DEF call g:ex_PutDefine()
-command DEC call g:ex_PutDeclaration()
-command DES call g:ex_PutDescription()
-command MAIN call g:ex_PutMain()
-command -narg=1 CLASS call g:ex_PutClass( "class", "<args>" )
-command -narg=1 STRUCT call g:ex_PutClass( "struct", "<args>" )
+command LINE call exUtility#PutLine(86, '-')
+command -narg=1 NSS call exUtility#PutNamespaceStart("<args>")
+command -narg=1 NSE call exUtility#PutNamespaceEnd("<args>")
+command -narg=1 NS call exUtility#PutNamespace("<args>")
+command HEADER call exUtility#PutHeader()
+command SEP call exUtility#PutSeparate()
+command SEG call exUtility#PutSegment()
+command NOTE call exUtility#PutNote()
+command DEF call exUtility#PutDefine()
+command DEC call exUtility#PutDeclaration()
+command DES call exUtility#PutDescription()
+command MAIN call exUtility#PutMain()
+command -narg=1 CLASS call exUtility#PutClass( "class", "<args>" )
+command -narg=1 STRUCT call exUtility#PutClass( "struct", "<args>" )
 
 " src-highlight
-command -range=% SHL call g:ex_SrcHighlight( <line1>, <line2> )
+command -range=% SHL call exUtility#SrcHighlight( <line1>, <line2> )
 
 " mark (special) text
 let g:ex_todo_keyword = 'NOTE REF EXAMPLE SAMPLE CHECK'
-let g:ex_comment_lable_keyword = 'DELME TEMP MODIFY ADD KEEPME ' " for editing
+let g:ex_comment_lable_keyword = 'DELME TEMP MODIFY ADD KEEPME DISABLE ' " for editing
 let g:ex_comment_lable_keyword .= 'DEBUG CRASH DUMMY UNUSED TESTME ' " for testing 
 let g:ex_comment_lable_keyword .= 'HACK OPTME HARDCODE REFACTORING DUPLICATE REDUNDANCY ' " for refactoring
 
 vnoremap <unique> <Leader>mk :MK 
-nnoremap <unique> <Leader>mk :call g:ex_RemoveSpecialMarkText() <CR>
-command -range -narg=1 -complete=customlist,g:ex_CompleteMKArgs MK call g:ex_MarkText("<args>", <line1>, <line2> )
+nnoremap <unique> <Leader>mk :call exUtility#RemoveSpecialMarkText() <CR>
+command -range -narg=1 -complete=customlist,exUtility#CompleteMKArgs MK call exUtility#MarkText("<args>", <line1>, <line2> )
 
 " add plugin we use to prevent them record as edit-buffer
 let g:exUT_plugin_list = ["-MiniBufExplorer-","__Tag_List__","\[Lookup File\]"] 
@@ -992,11 +992,11 @@ function g:exES_UpdateEnvironment()
     if exists ('g:exES_vimentryRefs')
         for vimentry in g:exES_vimentryRefs
             let entry_dir = fnamemodify( vimentry, ':p:h')
-            let fullpath_tagfile = g:ex_GetVimFile ( entry_dir, 'tag')
+            let fullpath_tagfile = exUtility#GetVimFile ( entry_dir, 'tag')
             if has ('win32')
-                let fullpath_tagfile = g:ex_Pathfmt( fullpath_tagfile, 'windows' )
+                let fullpath_tagfile = exUtility#Pathfmt( fullpath_tagfile, 'windows' )
             elseif has ('unix')
-                let fullpath_tagfile = g:ex_Pathfmt( fullpath_tagfile, 'unix' )
+                let fullpath_tagfile = exUtility#Pathfmt( fullpath_tagfile, 'unix' )
             endif
             if findfile ( fullpath_tagfile ) != ''
                 let &tags .= ',' . fullpath_tagfile

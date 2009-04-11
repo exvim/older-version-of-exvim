@@ -138,9 +138,9 @@ function s:exSL_OpenWindow( short_title ) " <<<
     let title = '__exSL_' . s:exSL_short_title . 'Window__'
     " open window
     if g:exSL_use_vertical_window
-        call g:ex_OpenWindow( title, g:exSL_window_direction, g:exSL_window_width, g:exSL_use_vertical_window, g:exSL_edit_mode, s:exSL_backto_editbuf, 'g:exSL_Init'.s:exSL_short_title.'Window', 'g:exSL_Update'.s:exSL_short_title.'Window' )
+        call exUtility#OpenWindow( title, g:exSL_window_direction, g:exSL_window_width, g:exSL_use_vertical_window, g:exSL_edit_mode, s:exSL_backto_editbuf, 'g:exSL_Init'.s:exSL_short_title.'Window', 'g:exSL_Update'.s:exSL_short_title.'Window' )
     else
-        call g:ex_OpenWindow( title, g:exSL_window_direction, g:exSL_window_height, g:exSL_use_vertical_window, g:exSL_edit_mode, s:exSL_backto_editbuf, 'g:exSL_Init'.s:exSL_short_title.'Window', 'g:exSL_Update'.s:exSL_short_title.'Window' )
+        call exUtility#OpenWindow( title, g:exSL_window_direction, g:exSL_window_height, g:exSL_use_vertical_window, g:exSL_edit_mode, s:exSL_backto_editbuf, 'g:exSL_Init'.s:exSL_short_title.'Window', 'g:exSL_Update'.s:exSL_short_title.'Window' )
     endif
 endfunction " >>>
 
@@ -150,9 +150,9 @@ endfunction " >>>
 
 function s:exSL_ResizeWindow() " <<<
     if g:exSL_use_vertical_window
-        call g:ex_ResizeWindow( g:exSL_use_vertical_window, g:exSL_window_width, g:exSL_window_width_increment )
+        call exUtility#ResizeWindow( g:exSL_use_vertical_window, g:exSL_window_width, g:exSL_window_width_increment )
     else
-        call g:ex_ResizeWindow( g:exSL_use_vertical_window, g:exSL_window_height, g:exSL_window_height_increment )
+        call exUtility#ResizeWindow( g:exSL_use_vertical_window, g:exSL_window_height, g:exSL_window_height_increment )
     endif
 endfunction " >>>
 
@@ -167,7 +167,7 @@ function s:exSL_ToggleWindow( short_title ) " <<<
         if exists('g:exES_Symbol')
             let s:exSL_select_title = g:exES_Symbol
         else
-            call g:ex_WarningMsg('not found symbol file')
+            call exUtility#WarningMsg('not found symbol file')
         endif
     endif
 
@@ -182,7 +182,7 @@ function s:exSL_ToggleWindow( short_title ) " <<<
     if a:short_title != ''
         if s:exSL_short_title != a:short_title
             if bufwinnr(s:exSL_cur_title) != -1
-                call g:ex_CloseWindow(s:exSL_cur_title)
+                call exUtility#CloseWindow(s:exSL_cur_title)
             endif
             let s:exSL_short_title = a:short_title
 
@@ -198,9 +198,9 @@ function s:exSL_ToggleWindow( short_title ) " <<<
     " toggle exSL window
     let title = s:exSL_cur_title
     if g:exSL_use_vertical_window
-        call g:ex_ToggleWindow( title, g:exSL_window_direction, g:exSL_window_width, g:exSL_use_vertical_window, 'none', s:exSL_backto_editbuf, 'g:exSL_Init'.s:exSL_short_title.'Window', 'g:exSL_Update'.s:exSL_short_title.'Window' )
+        call exUtility#ToggleWindow( title, g:exSL_window_direction, g:exSL_window_width, g:exSL_use_vertical_window, 'none', s:exSL_backto_editbuf, 'g:exSL_Init'.s:exSL_short_title.'Window', 'g:exSL_Update'.s:exSL_short_title.'Window' )
     else
-        call g:ex_ToggleWindow( title, g:exSL_window_direction, g:exSL_window_height, g:exSL_use_vertical_window, 'none', s:exSL_backto_editbuf, 'g:exSL_Init'.s:exSL_short_title.'Window', 'g:exSL_Update'.s:exSL_short_title.'Window' )
+        call exUtility#ToggleWindow( title, g:exSL_window_direction, g:exSL_window_height, g:exSL_use_vertical_window, 'none', s:exSL_backto_editbuf, 'g:exSL_Init'.s:exSL_short_title.'Window', 'g:exSL_Update'.s:exSL_short_title.'Window' )
     endif
 endfunction " >>>
 
@@ -261,7 +261,7 @@ function s:exSL_GetSymbolListResult( symbol ) " <<<
     endif
 
     if search(symbol_pattern, 'w') == 0
-        call g:ex_WarningMsg('File not found')
+        call exUtility#WarningMsg('File not found')
     endif
 endfunction " >>>
 
@@ -299,7 +299,7 @@ function s:exSL_CopyPickedLine( search_pattern, by_word, inverse_search ) " <<<
         let use_pattern = 0
     endif
     if search_pattern == ''
-        call g:ex_WarningMsg('search pattern not exists')
+        call exUtility#WarningMsg('search pattern not exists')
         return
     else
         " if we don't use \r to pick line, we will meet ~xxx in some case
@@ -336,11 +336,11 @@ endfunction " >>>
 function s:exSL_ShowPickedResult( search_pattern, inverse_search ) " <<<
     " assignment the title
     if s:exSL_short_title == 'Select'
-        call g:ex_HighlightConfirmLine()
+        call exUtility#HighlightConfirmLine()
         let s:exSL_select_idx = line('.')
         let s:exSL_quick_view_idx = 1
     elseif s:exSL_short_title == 'QuickView'
-        call g:ex_HighlightConfirmLine()
+        call exUtility#HighlightConfirmLine()
         let s:exSL_quick_view_idx = line('.')
     endif
 
@@ -349,7 +349,7 @@ function s:exSL_ShowPickedResult( search_pattern, inverse_search ) " <<<
     call s:exSL_SwitchWindow('QuickView')
     silent exec 'normal! G"_dgg'
     let s:exGS_quick_view_idx = 1
-    call g:ex_HighlightConfirmLine()
+    call exUtility#HighlightConfirmLine()
     silent put = s:exSL_picked_search_result
     silent exec 'normal! gg"_dd'
 endfunction " >>>
@@ -382,14 +382,14 @@ endfunction " >>>
 " ------------------------------------------------------------------ 
 
 function s:exSL_GotoResult() " <<<
-    call g:ex_HighlightConfirmLine()
+    call exUtility#HighlightConfirmLine()
     let s:exSL_select_idx = line('.')
     let symbol_key_word = getline('.')
     if symbol_key_word != ''
         call s:exSL_ToggleWindow( s:exSL_short_title )
         exec (g:exSL_SymbolSelectCmd . " " . symbol_key_word)
     else
-        call g:ex_WarningMsg('Please select a symbol')
+        call exUtility#WarningMsg('Please select a symbol')
     endif
 endfunction " >>>
 
@@ -421,7 +421,7 @@ function g:exSL_InitSelectWindow() " <<<
     nnoremap <buffer> <silent> <Leader>d :call <SID>exSL_ShowPickedResult('', 1)<CR>
 
     " autocmd
-    au CursorMoved <buffer> :call g:ex_HighlightSelectLine()
+    au CursorMoved <buffer> :call exUtility#HighlightSelectLine()
 
     let s:exSL_select_idx = line('.') 
 endfunction " >>>
@@ -432,7 +432,7 @@ endfunction " >>>
 
 function g:exSL_UpdateSelectWindow() " <<<
     call cursor( s:exSL_select_idx, 1)
-    call g:ex_HighlightConfirmLine()
+    call exUtility#HighlightConfirmLine()
 endfunction " >>>
 
 " ======================================================== 
@@ -458,7 +458,7 @@ function g:exSL_InitQuickViewWindow() " <<<
     nnoremap <buffer> <silent> <Leader>d :call <SID>exSL_ShowPickedResult('', 1)<CR>
 
     " autocmd
-    au CursorMoved <buffer> :call g:ex_HighlightSelectLine()
+    au CursorMoved <buffer> :call exUtility#HighlightSelectLine()
 endfunction " >>>
 
 " ------------------------------------------------------------------ 
@@ -467,7 +467,7 @@ endfunction " >>>
 
 function g:exSL_UpdateQuickViewWindow() " <<<
     call cursor( s:exSL_quick_view_idx, 1)
-    call g:ex_HighlightConfirmLine()
+    call exUtility#HighlightConfirmLine()
 endfunction " >>>
 
 "/////////////////////////////////////////////////////////////////////////////
@@ -475,7 +475,7 @@ endfunction " >>>
 "/////////////////////////////////////////////////////////////////////////////
 
 "
-command -nargs=1 -complete=customlist,g:ex_CompleteBySymbolFile SL call s:exSL_GetSymbolListResult('<args>')
+command -nargs=1 -complete=customlist,exUtility#CompleteBySymbolFile SL call s:exSL_GetSymbolListResult('<args>')
 command ExslSelectToggle call s:exSL_ToggleWindow('Select')
 command ExslQuickViewToggle call s:exSL_ToggleWindow('QuickView')
 command ExslQuickSearch call s:exSL_QuickSearch()
@@ -483,8 +483,8 @@ command ExslToggle call s:exSL_ToggleWindow('')
 command ExslGoDirectly call s:exSL_GetAndShowPickedResult()
 
 " quick view command
-command -nargs=1 -complete=customlist,g:ex_CompleteBySymbolFile SLPR call s:exSL_ShowPickedResult('<args>',0)
-command -nargs=1 -complete=customlist,g:ex_CompleteBySymbolFile SLPD call s:exSL_ShowPickedResult('<args>',1)
+command -nargs=1 -complete=customlist,exUtility#CompleteBySymbolFile SLPR call s:exSL_ShowPickedResult('<args>',0)
+command -nargs=1 -complete=customlist,exUtility#CompleteBySymbolFile SLPD call s:exSL_ShowPickedResult('<args>',1)
 
 " Ignore case setting
 command SLigc call s:exSL_SetIgnoreCase(1)

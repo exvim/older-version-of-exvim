@@ -53,7 +53,7 @@ let s:exES_setted = 0
 " ------------------------------------------------------------------ 
 
 function s:exES_WriteDefaultTemplate() " <<<
-    let _cwd = g:ex_Pathfmt( getcwd(), 'unix' )
+    let _cwd = exUtility#Pathfmt( getcwd(), 'unix' )
     let _dir_name = g:exES_vimfile_dir
     let _vimfile_fullpath = simplify(_cwd.'/'._dir_name)
     let _project_name = fnamemodify( expand('%'), ":t:r" )  
@@ -140,7 +140,7 @@ function g:exES_SetEnvironment( force_reset ) " <<<
 	highlight link exES_SynComment Comment
 
     " record edit buffer
-    silent! call g:ex_RecordCurrentBufNum()
+    silent! call exUtility#RecordCurrentBufNum()
 
     let _file_name = bufname("%")
     if match(_file_name,"vimentry") != -1
@@ -182,7 +182,7 @@ function g:exES_SetEnvironment( force_reset ) " <<<
         let need_update = 0
 
         " process check
-        let _cwd = g:ex_Pathfmt( getcwd(), 'unix' )
+        let _cwd = exUtility#Pathfmt( getcwd(), 'unix' )
         if !exists( 'g:exES_CWD' ) || !exists( 'g:exES_Version' )
             echomsg "g:exES_CWD/g:exES_Version not exists"
             let need_update = 1
@@ -222,7 +222,7 @@ function g:exES_SetEnvironment( force_reset ) " <<<
                         if findfile( SettingList[1] ) != ''
                             silent call add ( g:exES_{SettingList[0]}, SettingList[1] )
                         else
-                            call g:ex_WarningMsg( 'Warning: vimentry ' . SettingList[1] . ' not found! Skip reference it' )
+                            call exUtility#WarningMsg( 'Warning: vimentry ' . SettingList[1] . ' not found! Skip reference it' )
                         endif
                     endif
                 endif

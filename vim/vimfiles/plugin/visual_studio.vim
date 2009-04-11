@@ -253,7 +253,7 @@ endfunction
 
 function! <Sid>DTEQuickfixOpen(which)
     if g:visual_studio_quickfix_height > 0
-        " jwu disable
+        " jwu DISABLE
         " exe 'copen '.g:visual_studio_quickfix_height
         if a:which == 'Task List'
             exe 'setlocal errorformat='.g:visual_studio_quickfix_errorformat_task_list
@@ -262,7 +262,7 @@ function! <Sid>DTEQuickfixOpen(which)
         endif
     endif
 
-    " jwu disable
+    " jwu DISABLE
     " cfile
     silent exec 'QF '. &errorfile
 endfunction
@@ -395,9 +395,9 @@ function! <Sid>DTESolutionMenuChoice(which)
     let s:visual_studio_pid = s:visual_studio_lst_dte[index][0]
     echo 'Connected: '.s:visual_studio_lst_dte[index][1]
     call <Sid>DTESolutionGuiMenuCreate()
-    " jwu: get project in \vj, this will help connect sln faster
+    " jwu: DISABLE get project in \vj, this will help connect sln faster
     " call DTEGetProjects(0) 
-    " jwu: add this, change solution should change the project list
+    " jwu: ADD this, change solution should change the project list
     let s:visual_studio_lst_project = []
     return 1
 endfunction
@@ -412,14 +412,14 @@ function! DTEGetProjects(...)
     let gui_menu = 0
     if a:0 >= 1 | let verbose = a:1 | endif
     if a:0 >= 2 | let gui_menu = a:2 | endif
-    " jwu disable this
+    " jwu DISABLE this
     " let s:visual_studio_lst_project = []
     " The following call will assign values to s:visual_studio_lst_project
     if verbose
         echo 'Retrieving Projects ...'
     endif
 
-    " jwu judge if empty list, then get project list
+    " jwu MODIFY judge if empty list, then get project list
     if len(s:visual_studio_lst_project) == 0
         call <Sid>DTEExec ('dte_list_projects')
     endif

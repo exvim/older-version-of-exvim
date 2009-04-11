@@ -151,7 +151,7 @@ function s:exPJ_OpenWindow( short_title ) " <<<
                 let _title = s:exPJ_cur_filename
             endif
             if bufwinnr(_title) != -1
-                call g:ex_CloseWindow(_title)
+                call exUtility#CloseWindow(_title)
             endif
             let s:exPJ_short_title = a:short_title
         endif
@@ -164,9 +164,9 @@ function s:exPJ_OpenWindow( short_title ) " <<<
     endif
     " open window
     if g:exPJ_use_vertical_window
-        call g:ex_OpenWindow( title, g:exPJ_window_direction, g:exPJ_window_width, g:exPJ_use_vertical_window, g:exPJ_edit_mode, g:exPJ_backto_editbuf, 'g:exPJ_Init'.s:exPJ_short_title.'Window', 'g:exPJ_Update'.s:exPJ_short_title.'Window' )
+        call exUtility#OpenWindow( title, g:exPJ_window_direction, g:exPJ_window_width, g:exPJ_use_vertical_window, g:exPJ_edit_mode, g:exPJ_backto_editbuf, 'g:exPJ_Init'.s:exPJ_short_title.'Window', 'g:exPJ_Update'.s:exPJ_short_title.'Window' )
     else
-        call g:ex_OpenWindow( title, g:exPJ_window_direction, g:exPJ_window_height, g:exPJ_use_vertical_window, g:exPJ_edit_mode, g:exPJ_backto_editbuf, 'g:exPJ_Init'.s:exPJ_short_title.'Window', 'g:exPJ_Update'.s:exPJ_short_title.'Window' )
+        call exUtility#OpenWindow( title, g:exPJ_window_direction, g:exPJ_window_height, g:exPJ_use_vertical_window, g:exPJ_edit_mode, g:exPJ_backto_editbuf, 'g:exPJ_Init'.s:exPJ_short_title.'Window', 'g:exPJ_Update'.s:exPJ_short_title.'Window' )
     endif
 endfunction " >>>
 
@@ -176,9 +176,9 @@ endfunction " >>>
 
 function s:exPJ_ResizeWindow() " <<<
     if g:exPJ_use_vertical_window
-        call g:ex_ResizeWindow( g:exPJ_use_vertical_window, g:exPJ_window_width, g:exPJ_window_width_increment )
+        call exUtility#ResizeWindow( g:exPJ_use_vertical_window, g:exPJ_window_width, g:exPJ_window_width_increment )
     else
-        call g:ex_ResizeWindow( g:exPJ_use_vertical_window, g:exPJ_window_height, g:exPJ_window_height_increment )
+        call exUtility#ResizeWindow( g:exPJ_use_vertical_window, g:exPJ_window_height, g:exPJ_window_height_increment )
     endif
 endfunction " >>>
 
@@ -195,7 +195,7 @@ function s:exPJ_ToggleWindow( short_title ) " <<<
                 let _title = s:exPJ_cur_filename
             endif
             if bufwinnr(_title) != -1
-                call g:ex_CloseWindow(_title)
+                call exUtility#CloseWindow(_title)
             endif
             let s:exPJ_short_title = a:short_title
         endif
@@ -207,9 +207,9 @@ function s:exPJ_ToggleWindow( short_title ) " <<<
         let title = s:exPJ_cur_filename
     endif
     if g:exPJ_use_vertical_window
-        call g:ex_ToggleWindow( title, g:exPJ_window_direction, g:exPJ_window_width, g:exPJ_use_vertical_window, 'none', g:exPJ_backto_editbuf, 'g:exPJ_Init'.s:exPJ_short_title.'Window', 'g:exPJ_Update'.s:exPJ_short_title.'Window' )
+        call exUtility#ToggleWindow( title, g:exPJ_window_direction, g:exPJ_window_width, g:exPJ_use_vertical_window, 'none', g:exPJ_backto_editbuf, 'g:exPJ_Init'.s:exPJ_short_title.'Window', 'g:exPJ_Update'.s:exPJ_short_title.'Window' )
     else
-        call g:ex_ToggleWindow( title, g:exPJ_window_direction, g:exPJ_window_height, g:exPJ_use_vertical_window, 'none', g:exPJ_backto_editbuf, 'g:exPJ_Init'.s:exPJ_short_title.'Window', 'g:exPJ_Update'.s:exPJ_short_title.'Window' )
+        call exUtility#ToggleWindow( title, g:exPJ_window_direction, g:exPJ_window_height, g:exPJ_use_vertical_window, 'none', g:exPJ_backto_editbuf, 'g:exPJ_Init'.s:exPJ_short_title.'Window', 'g:exPJ_Update'.s:exPJ_short_title.'Window' )
     endif
 endfunction " >>>
 
@@ -262,7 +262,7 @@ endfunction
 " ------------------------------------------------------------------ 
 
 function s:exPJ_GetPath( line_num )
-    let fold_level = g:ex_GetFoldLevel(a:line_num)
+    let fold_level = exUtility#GetFoldLevel(a:line_num)
 
     " recursively make full path
     if match(getline(a:line_num),'[^^]-\C\[F\]') != -1
@@ -280,7 +280,7 @@ function s:exPJ_GetPath( line_num )
         if searchpos
             let full_path = s:exPJ_GetName(searchpos).'/'.full_path
         else
-            call g:ex_WarningMsg('Fold not found')
+            call exUtility#WarningMsg('Fold not found')
             break
         endif
     endwhile
@@ -328,11 +328,11 @@ function g:exPJ_InitSelectWindow() " <<<
 
     " +++++++++++++++++++++++++++++++
     " silent! setlocal foldmethod=expr
-    " silent! setlocal foldexpr=g:ex_GetFoldLevel(v:lnum)
-    " silent! setlocal foldtext=g:ex_FoldText()
+    " silent! setlocal foldexpr=exUtility#GetFoldLevel(v:lnum)
+    " silent! setlocal foldtext=exUtility#FoldText()
     " +++++++++++++++++++++++++++++++
     silent! setlocal foldmethod=marker foldmarker={,} foldlevel=1
-    silent! setlocal foldtext=g:ex_FoldText()
+    silent! setlocal foldtext=exUtility#FoldText()
     silent! setlocal foldminlines=0
     silent! setlocal foldlevel=9999
     syntax match ex_SynTransparent '{'
@@ -371,8 +371,8 @@ function g:exPJ_InitSelectWindow() " <<<
     nnoremap <silent> <buffer> <C-Left>   :echo 'project buffer only'<CR>
     nnoremap <silent> <buffer> <C-Right>  :echo 'project buffer only'<CR>
 
-    nnoremap <silent> <buffer> <C-Up> :call g:ex_CursorJump( 'ErrorLog.err', 'up' )<CR>
-    nnoremap <silent> <buffer> <C-Down> :call g:ex_CursorJump( 'ErrorLog.err', 'down' )<CR>
+    nnoremap <silent> <buffer> <C-Up> :call exUtility#CursorJump( 'ErrorLog.err', 'up' )<CR>
+    nnoremap <silent> <buffer> <C-Down> :call exUtility#CursorJump( 'ErrorLog.err', 'down' )<CR>
 
     "
     nnoremap <silent> <buffer> o  :call <SID>exPJ_CreateNewFile()<CR>
@@ -380,7 +380,7 @@ function g:exPJ_InitSelectWindow() " <<<
 
     " Autocommands to keep the window the specified size
     au WinLeave <buffer> :call s:exPJ_RefreshWindow()
-    " au CursorMoved <buffer> :call g:ex_HighlightSelectLine()
+    " au CursorMoved <buffer> :call exUtility#HighlightSelectLine()
 
     " buffer command
     command -buffer RM call s:exPJ_RemoveEmptyDir()
@@ -424,7 +424,7 @@ endfunction " >>>
 
 function s:exPJ_CreateProject(with_dialog) " <<<
     call s:exPJ_UpdateFilters()
-    call g:ex_SetLevelList(-1, 1)
+    call exUtility#SetLevelList(-1, 1)
 
     " if use dialog
     if a:with_dialog == 1
@@ -435,7 +435,7 @@ function s:exPJ_CreateProject(with_dialog) " <<<
         endif
         let entry_dir = inputdialog( 'Enter the entry directory: ', ex_pwd, 'cancle' )
         if entry_dir == ''
-            call g:ex_WarningMsg('Entry dir is empty')
+            call exUtility#WarningMsg('Entry dir is empty')
             return
         elseif entry_dir == 'cancle'
             return
@@ -468,7 +468,7 @@ function s:exPJ_CreateProject(with_dialog) " <<<
 
     let tag_contents = [] 
     silent call add ( tag_contents, "!_TAG_FILE_SORTED\t2\t/0=unsorted, 1=sorted, 2=foldcase/")
-    call g:ex_Browse( entry_dir, g:ex_GetFileFilterPattern(s:exPJ_file_filter), g:ex_GetDirFilterPattern(s:exPJ_dir_filter), tag_contents )
+    call exUtility#Browse( entry_dir, exUtility#GetFileFilterPattern(s:exPJ_file_filter), exUtility#GetDirFilterPattern(s:exPJ_dir_filter), tag_contents )
     if exists( 'g:exES_LookupFileTag' )
         echon "sorting filenametags..."
         silent call writefile( sort(tag_contents), simplify(g:exES_CWD.'/'.g:exES_LookupFileTag))
@@ -495,7 +495,7 @@ function s:exPJ_QuickRefreshProject() " <<<
     " check if the line is valid file line
     let file_line = getline('.') 
     if match(file_line, '.*|.*') == -1
-        call g:ex_WarningMsg ("can't refresh project at this line")
+        call exUtility#WarningMsg ("can't refresh project at this line")
         return
     endif
 
@@ -513,7 +513,7 @@ function s:exPJ_QuickRefreshProject() " <<<
     endif
 
     " initial variable
-    let fold_level = g:ex_GetFoldLevel(line('.'))
+    let fold_level = exUtility#GetFoldLevel(line('.'))
     let fold_level -= 1
     let level_pattern = repeat('.',fold_level*2)
     let full_path_name = ''
@@ -524,7 +524,7 @@ function s:exPJ_QuickRefreshProject() " <<<
         if search(fold_pattern,'b')
             let full_path_name = s:exPJ_GetName(line('.'))
         else
-            call g:ex_WarningMsg('Fold not found')
+            call exUtility#WarningMsg('Fold not found')
             return
         endif
     else
@@ -554,7 +554,7 @@ function s:exPJ_QuickRefreshProject() " <<<
             if search(fold_pattern,'b')
                 let full_path_name = s:exPJ_GetName(line('.')).'/'.full_path_name
             else
-                call g:ex_WarningMsg('Fold not found')
+                call exUtility#WarningMsg('Fold not found')
                 break
             endif
         endwhile
@@ -572,7 +572,7 @@ function s:exPJ_QuickRefreshProject() " <<<
     silent exec 'normal! $vaB[{v'
     let fold_start = line("'<")
     let fold_end = line("'>")
-    let space_cout = (g:ex_GetFoldLevel(line('.'))+1)*2+1
+    let space_cout = (exUtility#GetFoldLevel(line('.'))+1)*2+1
     let pattern_dot = repeat('.', space_cout)
     let file_pattern = pattern_dot . '-\[.\]'
 
@@ -611,7 +611,7 @@ function s:exPJ_RefreshProject( with_dialog ) " <<<
     " check if the line is valid file line
     let file_line = getline('.') 
     if match(file_line, '.*|.*') == -1
-        call g:ex_WarningMsg ("can't refresh project at this line")
+        call exUtility#WarningMsg ("can't refresh project at this line")
         return
     endif
 
@@ -633,7 +633,7 @@ function s:exPJ_RefreshProject( with_dialog ) " <<<
     endif
 
     " initial variable
-    let fold_level = g:ex_GetFoldLevel(line('.'))
+    let fold_level = exUtility#GetFoldLevel(line('.'))
     let fold_level -= 1
     let level_pattern = repeat('.',fold_level*2)
     let full_path_name = ''
@@ -644,7 +644,7 @@ function s:exPJ_RefreshProject( with_dialog ) " <<<
         if search(fold_pattern,'b')
             let full_path_name = s:exPJ_GetName(line('.'))
         else
-            call g:ex_WarningMsg('Fold not found')
+            call exUtility#WarningMsg('Fold not found')
             return
         endif
     else
@@ -674,7 +674,7 @@ function s:exPJ_RefreshProject( with_dialog ) " <<<
             if search(fold_pattern,'b')
                 let full_path_name = s:exPJ_GetName(line('.')).'/'.full_path_name
             else
-                call g:ex_WarningMsg('Fold not found')
+                call exUtility#WarningMsg('Fold not found')
                 break
             endif
         endwhile
@@ -690,7 +690,7 @@ function s:exPJ_RefreshProject( with_dialog ) " <<<
 
     " set level list if not the root dir
     if is_root_dir == 0
-        call g:ex_SetLevelList(line('.'), 1)
+        call exUtility#SetLevelList(line('.'), 1)
     endif
     " delete the whole fold
     silent exec "normal! zc"
@@ -698,11 +698,11 @@ function s:exPJ_RefreshProject( with_dialog ) " <<<
     " broswing
 
     let tag_contents = [] 
-    call g:ex_Browse( full_path_name, g:ex_GetFileFilterPattern(s:exPJ_file_filter), is_root_dir ? g:ex_GetDirFilterPattern(s:exPJ_dir_filter) : '', tag_contents )
+    call exUtility#Browse( full_path_name, exUtility#GetFileFilterPattern(s:exPJ_file_filter), is_root_dir ? exUtility#GetDirFilterPattern(s:exPJ_dir_filter) : '', tag_contents )
     unlet tag_contents 
 
     " reset level list
-    call g:ex_SetLevelList(-1, 1)
+    call exUtility#SetLevelList(-1, 1)
 
     echon "Update directory: " . full_path_name . " done!\r"
 
@@ -713,7 +713,7 @@ function s:exPJ_RefreshProject( with_dialog ) " <<<
     " if this is a empty directory, return
     let pattern = '\C\[F\].*\<' . short_dir . '\> {'
     if match(cur_line, pattern) == -1
-        call g:ex_WarningMsg("The directory is empty")
+        call exUtility#WarningMsg("The directory is empty")
         return
     endif
 
@@ -734,7 +734,7 @@ function s:exPJ_CreateNewFile() " <<<
     " check if the line is valid file line
     let cur_line = getline('.') 
     if match(cur_line, '\C\[.*\]') == -1
-        call g:ex_WarningMsg ("can't create new file at this line")
+        call exUtility#WarningMsg ("can't create new file at this line")
         return
     endif
 
@@ -782,7 +782,7 @@ function s:exPJ_CreateNewFold() " <<<
     " check if the line is valid folder line
     let cur_line = getline('.') 
     if match(cur_line, '\C\[F\]') == -1
-        call g:ex_WarningMsg ("pls create new folder under a parent folder line")
+        call exUtility#WarningMsg ("pls create new folder under a parent folder line")
         return
     endif
 
@@ -841,7 +841,7 @@ function s:exPJ_GotoSelectResult(edit_cmd) " <<<
     " check if the line is valid file line
     let cur_line = getline('.') 
     if match(cur_line, '\C\[.*\]') == -1
-        call g:ex_WarningMsg('Please select a file')
+        call exUtility#WarningMsg('Please select a file')
         return
     endif
 
@@ -855,14 +855,14 @@ function s:exPJ_GotoSelectResult(edit_cmd) " <<<
         if a:edit_cmd == 'e'
             normal! za
         else
-            call g:ex_Terminal ( 'remain', 'nowait', 'cd '. s:exPJ_GetPath(s:exPJ_cursor_line) )
+            call exUtility#Terminal ( 'remain', 'nowait', 'cd '. s:exPJ_GetPath(s:exPJ_cursor_line) )
         endif
         return
     elseif match(file_line, '\C\[[^F]*\]') == -1
         if a:edit_cmd == 'e'
-            call g:ex_WarningMsg('Please select a file')
+            call exUtility#WarningMsg('Please select a file')
         else
-            call g:ex_Terminal ( 'remain', 'nowait', 'cd '. s:exPJ_GetPath(s:exPJ_cursor_line) )
+            call exUtility#Terminal ( 'remain', 'nowait', 'cd '. s:exPJ_GetPath(s:exPJ_cursor_line) )
         endif
         return
     endif
@@ -880,13 +880,13 @@ function s:exPJ_GotoSelectResult(edit_cmd) " <<<
     let file_type = fnamemodify( full_path_name, ":e" )
     if file_type == 'err'
         echon 'load quick fix list: ' . full_path_name . "\r"
-        call g:ex_GotoPluginBuffer()
+        call exUtility#GotoPluginBuffer()
         silent exec 'QF '.full_path_name
-        " NOTE: when open error by QF, we don't want to exec g:ex_OperateWindow below ( we want keep stay in the exQF plugin ), so return directly 
+        " NOTE: when open error by QF, we don't want to exec exUtility#OperateWindow below ( we want keep stay in the exQF plugin ), so return directly 
         return 
     elseif file_type == 'mk'
         echon 'set make file: ' . full_path_name . "\r"
-        call g:ex_GotoEditBuffer()
+        call exUtility#GotoEditBuffer()
         silent exec a:edit_cmd.' '.full_path_name
         """"""""""""""""""""""""""""""""""""""
         " do not show it in buffer list // jwu: show them have more convienience
@@ -896,13 +896,13 @@ function s:exPJ_GotoSelectResult(edit_cmd) " <<<
         """"""""""""""""""""""""""""""""""""""
     elseif file_type == 'exe'
         echon 'debug: ' . full_path_name . "\r"
-        call g:ex_GotoEditBuffer()
-        call g:ex_Debug( full_path_name )
+        call exUtility#GotoEditBuffer()
+        call exUtility#Debug( full_path_name )
     else " default
         " put the edit file
         echon full_path_name . "\r"
         " silent wincmd p
-        call g:ex_GotoEditBuffer()
+        call exUtility#GotoEditBuffer()
         " do not open again if the current buf is the file to be opened
         if fnamemodify(expand("%"),":p") != fnamemodify(full_path_name,":p")
             silent exec a:edit_cmd.' '.full_path_name
@@ -910,7 +910,7 @@ function s:exPJ_GotoSelectResult(edit_cmd) " <<<
     endif
 
     " go back if needed
-    call g:ex_OperateWindow ( s:exPJ_select_title, g:exPJ_close_when_selected, g:exPJ_backto_editbuf, 0 )
+    call exUtility#OperateWindow ( s:exPJ_select_title, g:exPJ_close_when_selected, g:exPJ_backto_editbuf, 0 )
 endfunction " >>>
 
 " ------------------------------------------------------------------ 
@@ -955,14 +955,14 @@ function s:exPJ_GotoCurrentFile( jump_to_project_window ) " <<<
             endif
         else " if file not found
             silent call cursor ( cursor_line, cursor_col )
-            call g:ex_WarningMsg('Warnning file not found: ' . cur_filefullpath )
+            call exUtility#WarningMsg('Warnning file not found: ' . cur_filefullpath )
             return 
         endif
     endwhile
 
     " back to edit buffer if needed
     if !a:jump_to_project_window
-        call g:ex_GotoEditBuffer()
+        call exUtility#GotoEditBuffer()
     endif
 endfunction " >>>
 

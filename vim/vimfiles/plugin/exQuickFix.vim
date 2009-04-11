@@ -151,7 +151,7 @@ function s:exQF_OpenWindow( short_title ) " <<<
         if s:exQF_short_title != a:short_title
             let _title = '__exQF_' . s:exQF_short_title . 'Window__'
             if bufwinnr(_title) != -1
-                call g:ex_CloseWindow(_title)
+                call exUtility#CloseWindow(_title)
             endif
             let s:exQF_short_title = a:short_title
         endif
@@ -160,9 +160,9 @@ function s:exQF_OpenWindow( short_title ) " <<<
     let title = '__exQF_' . s:exQF_short_title . 'Window__'
     " open window
     if g:exQF_use_vertical_window
-        call g:ex_OpenWindow( title, g:exQF_window_direction, g:exQF_window_width, g:exQF_use_vertical_window, g:exQF_edit_mode, g:exQF_backto_editbuf, 'g:exQF_Init'.s:exQF_short_title.'Window', 'g:exQF_Update'.s:exQF_short_title.'Window' )
+        call exUtility#OpenWindow( title, g:exQF_window_direction, g:exQF_window_width, g:exQF_use_vertical_window, g:exQF_edit_mode, g:exQF_backto_editbuf, 'g:exQF_Init'.s:exQF_short_title.'Window', 'g:exQF_Update'.s:exQF_short_title.'Window' )
     else
-        call g:ex_OpenWindow( title, g:exQF_window_direction, g:exQF_window_height, g:exQF_use_vertical_window, g:exQF_edit_mode, g:exQF_backto_editbuf, 'g:exQF_Init'.s:exQF_short_title.'Window', 'g:exQF_Update'.s:exQF_short_title.'Window' )
+        call exUtility#OpenWindow( title, g:exQF_window_direction, g:exQF_window_height, g:exQF_use_vertical_window, g:exQF_edit_mode, g:exQF_backto_editbuf, 'g:exQF_Init'.s:exQF_short_title.'Window', 'g:exQF_Update'.s:exQF_short_title.'Window' )
     endif
 endfunction " >>>
 
@@ -172,9 +172,9 @@ endfunction " >>>
 
 function s:exQF_ResizeWindow() " <<<
     if g:exQF_use_vertical_window
-        call g:ex_ResizeWindow( g:exQF_use_vertical_window, g:exQF_window_width, g:exQF_window_width_increment )
+        call exUtility#ResizeWindow( g:exQF_use_vertical_window, g:exQF_window_width, g:exQF_window_width_increment )
     else
-        call g:ex_ResizeWindow( g:exQF_use_vertical_window, g:exQF_window_height, g:exQF_window_height_increment )
+        call exUtility#ResizeWindow( g:exQF_use_vertical_window, g:exQF_window_height, g:exQF_window_height_increment )
     endif
 endfunction " >>>
 
@@ -188,7 +188,7 @@ function s:exQF_ToggleWindow( short_title ) " <<<
         if s:exQF_short_title != a:short_title
             let _title = '__exQF_' . s:exQF_short_title . 'Window__'
             if bufwinnr(_title) != -1
-                call g:ex_CloseWindow(_title)
+                call exUtility#CloseWindow(_title)
             endif
             let s:exQF_short_title = a:short_title
         endif
@@ -197,9 +197,9 @@ function s:exQF_ToggleWindow( short_title ) " <<<
     let title = '__exQF_' . s:exQF_short_title . 'Window__'
     " toggle exQF window
     if g:exQF_use_vertical_window
-        call g:ex_ToggleWindow( title, g:exQF_window_direction, g:exQF_window_width, g:exQF_use_vertical_window, 'none', g:exQF_backto_editbuf, 'g:exQF_Init'.s:exQF_short_title.'Window', 'g:exQF_Update'.s:exQF_short_title.'Window' )
+        call exUtility#ToggleWindow( title, g:exQF_window_direction, g:exQF_window_width, g:exQF_use_vertical_window, 'none', g:exQF_backto_editbuf, 'g:exQF_Init'.s:exQF_short_title.'Window', 'g:exQF_Update'.s:exQF_short_title.'Window' )
     else
-        call g:ex_ToggleWindow( title, g:exQF_window_direction, g:exQF_window_height, g:exQF_use_vertical_window, 'none', g:exQF_backto_editbuf, 'g:exQF_Init'.s:exQF_short_title.'Window', 'g:exQF_Update'.s:exQF_short_title.'Window' )
+        call exUtility#ToggleWindow( title, g:exQF_window_direction, g:exQF_window_height, g:exQF_use_vertical_window, 'none', g:exQF_backto_editbuf, 'g:exQF_Init'.s:exQF_short_title.'Window', 'g:exQF_Update'.s:exQF_short_title.'Window' )
     endif
 endfunction " >>>
 
@@ -225,16 +225,16 @@ function s:exQF_Goto(idx) " <<<
     endif
 
     " start jump
-    call g:ex_GotoEditBuffer()
+    call exUtility#GotoEditBuffer()
     try
         silent exec "cr".idx
     catch /^Vim\%((\a\+)\)\=:E42/
-        call g:ex_WarningMsg('No Errors')
+        call exUtility#WarningMsg('No Errors')
     endtry
 
     " go back if needed
     let title = '__exQF_' . s:exQF_short_title . 'Window__'
-    call g:ex_OperateWindow ( title, g:exQF_close_when_selected, g:exQF_backto_editbuf, 1 )
+    call exUtility#OperateWindow ( title, g:exQF_close_when_selected, g:exQF_backto_editbuf, 1 )
 endfunction " >>>
 
 " ======================================================== 
@@ -270,11 +270,11 @@ function g:exQF_InitSelectWindow() " <<<
     nnoremap <buffer> <silent> <C-Right>   :call <SID>exQF_SwitchWindow('Select')<CR>
     nnoremap <buffer> <silent> <C-Left>   :call <SID>exQF_SwitchWindow('QuickView')<CR>
 
-    nnoremap <silent> <buffer> <C-Up> :call g:ex_CursorJump( '\(error\\|warning\)', 'up' )<CR>
-    nnoremap <silent> <buffer> <C-Down> :call g:ex_CursorJump( '\(error\\|warning\)', 'down' )<CR>
+    nnoremap <silent> <buffer> <C-Up> :call exUtility#CursorJump( '\(error\\|warning\)', 'up' )<CR>
+    nnoremap <silent> <buffer> <C-Down> :call exUtility#CursorJump( '\(error\\|warning\)', 'down' )<CR>
 
     " autocmd
-    au CursorMoved <buffer> :call g:ex_HighlightSelectLine()
+    au CursorMoved <buffer> :call exUtility#HighlightSelectLine()
 endfunction " >>>
 
 " ------------------------------------------------------------------ 
@@ -283,7 +283,7 @@ endfunction " >>>
 
 function s:exQF_GotoInSelectWindow() " <<<
     let s:exQF_select_idx = line(".")
-    call g:ex_HighlightConfirmLine()
+    call exUtility#HighlightConfirmLine()
     call s:exQF_Goto(-1)
 endfunction " >>>
 
@@ -293,7 +293,7 @@ endfunction " >>>
 
 function g:exQF_UpdateSelectWindow() " <<<
     silent call cursor(s:exQF_select_idx, 1)
-    call g:ex_HighlightConfirmLine()
+    call exUtility#HighlightConfirmLine()
 endfunction " >>>
 
 " ------------------------------------------------------------------ 
@@ -386,7 +386,7 @@ function s:exQF_GetQuickFixResult( file_name ) " <<<
         silent exec 'cgetb'
         silent exec 'cd '.cur_dir
     else
-        call g:ex_WarningMsg('file: ' . full_file_name . ' not found')
+        call exUtility#WarningMsg('file: ' . full_file_name . ' not found')
     endif
 endfunction " >>>
 
@@ -419,7 +419,7 @@ function g:exQF_InitQuickViewWindow() " <<<
     vnoremap <buffer> <silent> <Leader>r <ESC>:call <SID>exQF_ShowPickedResultVisualMode('', 'replace', 'pattern')<CR>
 
     " autocmd
-    au CursorMoved <buffer> :call g:ex_HighlightSelectLine()
+    au CursorMoved <buffer> :call exUtility#HighlightSelectLine()
 endfunction " >>>
 
 " ------------------------------------------------------------------ 
@@ -428,7 +428,7 @@ endfunction " >>>
 
 function g:exQF_UpdateQuickViewWindow() " <<<
     silent call cursor(s:exQF_quick_view_idx, 1)
-    call g:ex_HighlightConfirmLine()
+    call exUtility#HighlightConfirmLine()
     if s:exQF_need_update_quick_view_window
         let s:exQF_need_update_quick_view_window = 0
 
@@ -449,7 +449,7 @@ endfunction " >>>
 
 function s:exQF_GotoInQuickViewWindow() " <<<
     let s:exQF_quick_view_idx = line(".")
-    call g:ex_HighlightConfirmLine()
+    call exUtility#HighlightConfirmLine()
     let cur_line = getline('.')
     let idx_start = match(cur_line, '\d\+' )
     let idx_end = matchend(cur_line, '\d\+' )
@@ -469,7 +469,7 @@ function s:exQF_CopyPickedLine( search_pattern, line_start, line_end, search_met
     endif
     if search_pattern == ''
         let s:exQF_quick_view_search_pattern = ''
-        call g:ex_WarningMsg('search pattern not exists')
+        call exUtility#WarningMsg('search pattern not exists')
         return
     else
         let s:exQF_quick_view_search_pattern = '----------' . search_pattern . '----------'

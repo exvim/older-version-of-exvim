@@ -180,7 +180,7 @@ function s:exMH_OpenWindow( short_title ) " <<<
         if exists('g:exES_Macro')
             call g:exMH_InitMacroList(g:exES_Macro)
         else
-            call g:ex_WarningMsg('macro file not found, please create one in vimentry')
+            call exUtility#WarningMsg('macro file not found, please create one in vimentry')
             call g:exMH_InitMacroList(s:exMH_select_title)
         endif
     endif
@@ -193,7 +193,7 @@ function s:exMH_OpenWindow( short_title ) " <<<
                 let _title = s:exMH_cur_filename
             endif
             if bufwinnr(_title) != -1
-                call g:ex_CloseWindow(_title)
+                call exUtility#CloseWindow(_title)
             endif
             let s:exMH_short_title = a:short_title
         endif
@@ -206,9 +206,9 @@ function s:exMH_OpenWindow( short_title ) " <<<
     endif
     " open window
     if g:exMH_use_vertical_window
-        call g:ex_OpenWindow( title, g:exMH_window_direction, g:exMH_window_width, g:exMH_use_vertical_window, g:exMH_edit_mode, s:exMH_backto_editbuf, 'g:exMH_Init'.s:exMH_short_title.'Window', 'g:exMH_Update'.s:exMH_short_title.'Window' )
+        call exUtility#OpenWindow( title, g:exMH_window_direction, g:exMH_window_width, g:exMH_use_vertical_window, g:exMH_edit_mode, s:exMH_backto_editbuf, 'g:exMH_Init'.s:exMH_short_title.'Window', 'g:exMH_Update'.s:exMH_short_title.'Window' )
     else
-        call g:ex_OpenWindow( title, g:exMH_window_direction, g:exMH_window_height, g:exMH_use_vertical_window, g:exMH_edit_mode, s:exMH_backto_editbuf, 'g:exMH_Init'.s:exMH_short_title.'Window', 'g:exMH_Update'.s:exMH_short_title.'Window' )
+        call exUtility#OpenWindow( title, g:exMH_window_direction, g:exMH_window_height, g:exMH_use_vertical_window, g:exMH_edit_mode, s:exMH_backto_editbuf, 'g:exMH_Init'.s:exMH_short_title.'Window', 'g:exMH_Update'.s:exMH_short_title.'Window' )
     endif
 endfunction " >>>
 
@@ -218,9 +218,9 @@ endfunction " >>>
 
 function s:exMH_ResizeWindow() " <<<
     if g:exMH_use_vertical_window
-        call g:ex_ResizeWindow( g:exMH_use_vertical_window, g:exMH_window_width, g:exMH_window_width_increment )
+        call exUtility#ResizeWindow( g:exMH_use_vertical_window, g:exMH_window_width, g:exMH_window_width_increment )
     else
-        call g:ex_ResizeWindow( g:exMH_use_vertical_window, g:exMH_window_height, g:exMH_window_height_increment )
+        call exUtility#ResizeWindow( g:exMH_use_vertical_window, g:exMH_window_height, g:exMH_window_height_increment )
     endif
 endfunction " >>>
 
@@ -234,7 +234,7 @@ function s:exMH_ToggleWindow( short_title ) " <<<
         if exists('g:exES_Macro')
             call g:exMH_InitMacroList(g:exES_Macro)
         else
-            call g:ex_WarningMsg('macro file not found, please create one in vimentry')
+            call exUtility#WarningMsg('macro file not found, please create one in vimentry')
             call g:exMH_InitMacroList(s:exMH_select_title)
         endif
     endif
@@ -247,7 +247,7 @@ function s:exMH_ToggleWindow( short_title ) " <<<
                 let _title = s:exMH_cur_filename
             endif
             if bufwinnr(_title) != -1
-                call g:ex_CloseWindow(_title)
+                call exUtility#CloseWindow(_title)
             endif
             let s:exMH_short_title = a:short_title
         endif
@@ -259,9 +259,9 @@ function s:exMH_ToggleWindow( short_title ) " <<<
         let title = s:exMH_cur_filename
     endif
     if g:exMH_use_vertical_window
-        call g:ex_ToggleWindow( title, g:exMH_window_direction, g:exMH_window_width, g:exMH_use_vertical_window, 'none', s:exMH_backto_editbuf, 'g:exMH_Init'.s:exMH_short_title.'Window', 'g:exMH_Update'.s:exMH_short_title.'Window' )
+        call exUtility#ToggleWindow( title, g:exMH_window_direction, g:exMH_window_width, g:exMH_use_vertical_window, 'none', s:exMH_backto_editbuf, 'g:exMH_Init'.s:exMH_short_title.'Window', 'g:exMH_Update'.s:exMH_short_title.'Window' )
     else
-        call g:ex_ToggleWindow( title, g:exMH_window_direction, g:exMH_window_height, g:exMH_use_vertical_window, 'none', s:exMH_backto_editbuf, 'g:exMH_Init'.s:exMH_short_title.'Window', 'g:exMH_Update'.s:exMH_short_title.'Window' )
+        call exUtility#ToggleWindow( title, g:exMH_window_direction, g:exMH_window_height, g:exMH_use_vertical_window, 'none', s:exMH_backto_editbuf, 'g:exMH_Init'.s:exMH_short_title.'Window', 'g:exMH_Update'.s:exMH_short_title.'Window' )
     endif
 endfunction " >>>
 
@@ -580,7 +580,7 @@ function g:exMH_InitSelectWindow() " <<<
     "nnoremap <buffer> <silent> <C-Right>   :call <SID>exMH_SwitchWindow('Select')<CR>
 
     " autocmd
-    au CursorMoved <buffer> :call g:ex_HighlightSelectLine()
+    au CursorMoved <buffer> :call exUtility#HighlightSelectLine()
     au BufWrite <buffer> call s:exMH_UpdateMacroList(getline(1,'$'),0)
     au BufHidden <buffer> call s:exMH_UpdateMacroList(getline(1,'$'),1)
 
@@ -608,7 +608,7 @@ endfunction " >>>
 
 function g:exMH_UpdateSelectWindow() " <<<
     call cursor( s:exMH_select_idx, 1)
-    call g:ex_HighlightConfirmLine()
+    call exUtility#HighlightConfirmLine()
 endfunction " >>>
 
 " ------------------------------------------------------------------ 
@@ -629,8 +629,8 @@ function s:exMH_SelectConfirm() " <<<
         call s:exMH_UpdateMacroList(getline(1,'$'),0)
 
         " update syntax immediately
-        call g:ex_GotoEditBuffer()
-        call g:ex_SwitchBuffer()
+        call exUtility#GotoEditBuffer()
+        call exUtility#SwitchBuffer()
         return
     elseif line =~# ': \[x\]'
         let group = getline('.')
@@ -642,14 +642,14 @@ function s:exMH_SelectConfirm() " <<<
         call s:exMH_UpdateMacroList(getline(1,'$'),0)
 
         " update syntax immediately
-        call g:ex_GotoEditBuffer()
-        call g:ex_SwitchBuffer()
+        call exUtility#GotoEditBuffer()
+        call exUtility#SwitchBuffer()
         return
     endif
 
     " if this is a empty line 
     if substitute(line, ' ', "", "g" ) == ''
-        call g:ex_WarningMsg("Can't select an empty line")
+        call exUtility#WarningMsg("Can't select an empty line")
         return
     endif
 
@@ -664,8 +664,8 @@ function s:exMH_SelectConfirm() " <<<
         call s:exMH_UpdateMacroList(getline(1,'$'),0)
 
         " update syntax immediately
-        call g:ex_GotoEditBuffer()
-        call g:ex_SwitchBuffer()
+        call exUtility#GotoEditBuffer()
+        call exUtility#SwitchBuffer()
         return
     endif
 
@@ -734,8 +734,8 @@ function s:exMH_SelectConfirm() " <<<
     " ------------------------------------------------------
 
     " update syntax immediately
-    call g:ex_GotoEditBuffer()
-    call g:ex_SwitchBuffer()
+    call exUtility#GotoEditBuffer()
+    call exUtility#SwitchBuffer()
 
 endfunction " >>>
 
