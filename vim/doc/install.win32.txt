@@ -47,10 +47,11 @@ Detail-Install
     (1) Install Python25 + pywin32 ( install file can be found as "python-2.5.2.msi" and "pywin32-213.win32-py2.5.exe" )
 
 <7> Install gVim
-    (1) Copy gVim\Vim to EX_DEV\Vim
-    (2) Copy cTags_VerNr\ctags.exe to EX_DEV\Vim\vim72
-    (3) Copy cscope\cscope.exe to EX_DEV\Vim\vim72
-    (4) Add %EX_DEV%\Vim\vim72 into Environment Path
+    (1) Copy compile_vim.win32.bat to vim72/src then run it ( or type the script in cmd window if failed )
+    (2) Copy gVim\vim to EX_DEV\vim
+    (3) Copy cTags_VerNr\ctags.exe to EX_DEV\vim\vim72
+    (4) Copy cscope\cscope.exe to EX_DEV\vim\vim72
+    (5) Add %EX_DEV%\vim\vim72 into Environment Path
 
 /////////////////////////////////////////////////////////////////////////////
 Quick-Install
@@ -65,7 +66,7 @@ Quick-Install
     (1) Add %EX_DEV%\MinGW\bin into Environment Path
     (2) Add %EX_DEV%\GnuWin32\bin into Environment Path
     (3) Add %EX_DEV%\Graphviz\bin into Environment Path
-    (4) Add %EX_DEV%\Vim\vim72 into Environment Path
+    (4) Add %EX_DEV%\vim\vim72 into Environment Path
 
 <3> Copy shared files
     (1) Copy $VIM\toolkit\idutils\id-lang.map to %EX_DEV%\GnuWin32\share\id-lang.map 
@@ -77,5 +78,5 @@ Quick-Install
     (1) Install Python25 + pywin32 ( install file can be found as "python-2.5.2.msi" and "pywin32-213.win32-py2.5.exe" )
 
 <5> Install gVim
-    (1) run install.exe in EX_DEV\Vim\vim72
+    (1) run install.exe in EX_DEV\vim\vim72
     (2) press "d" directly.
