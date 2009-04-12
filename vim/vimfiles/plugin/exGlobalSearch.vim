@@ -53,11 +53,11 @@ endif
 
 " ------------------------------------------------------------------ 
 " Desc: go back to edit buffer
-" 'topleft','botright'
+" 'topleft','botright', 'belowright'
 " ------------------------------------------------------------------ 
 
 if !exists('g:exGS_window_direction')
-    let g:exGS_window_direction = 'botright'
+    let g:exGS_window_direction = 'belowright'
 endif
 
 " ------------------------------------------------------------------ 

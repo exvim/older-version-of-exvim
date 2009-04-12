@@ -595,7 +595,7 @@ function exUtility#PutHeader() " <<<
                 if getline(4) =~# b:ECcommentOpen . " Last Change  : .*" . b:ECcommentClose
                     if getline(5) =~# b:ECcommentOpen . " Description  : .*" . b:ECcommentClose
                         silent call setline ( 2, b:ECcommentOpen . " File         : " . fnamemodify(expand('%'), ":t") . b:ECcommentClose )
-                        silent call setline ( 3, b:ECcommentOpen . " Author       : " . exUtility#usr_name . " " . b:ECcommentClose )
+                        silent call setline ( 3, b:ECcommentOpen . " Author       : " . g:ex_usr_name . " " . b:ECcommentClose )
                         silent call setline ( 4, b:ECcommentOpen . " Last Change  : " . strftime("%m/%d/%Y | %H:%M:%S %p | %A,%B") . b:ECcommentClose )
                         silent call cursor ( 7, 0 )
                         return
@@ -607,7 +607,7 @@ function exUtility#PutHeader() " <<<
 
     silent call append ( 0, b:ECcommentOpen . " ======================================================================================" . b:ECcommentClose )
     silent call append ( 1, b:ECcommentOpen . " File         : " . fnamemodify(expand('%'), ":t") . b:ECcommentClose )
-    silent call append ( 2, b:ECcommentOpen . " Author       : " . exUtility#usr_name . " " . b:ECcommentClose )
+    silent call append ( 2, b:ECcommentOpen . " Author       : " . g:ex_usr_name . " " . b:ECcommentClose )
     silent call append ( 3, b:ECcommentOpen . " Last Change  : " . strftime("%m/%d/%Y | %H:%M:%S %p | %A,%B") . b:ECcommentClose )
     silent call append ( 4, b:ECcommentOpen . " Description  : " . b:ECcommentClose )
     silent call append ( 5, b:ECcommentOpen . " ======================================================================================" . b:ECcommentClose )
@@ -2211,12 +2211,12 @@ endfunction " >>>
 function exUtility#HighlightCancle(match_nr) " <<<
     call exUtility#DefineMatchVariables() 
     if a:match_nr == 0
-        call s:ex_MatchDelete(1)
-        call s:ex_MatchDelete(2)
-        call s:ex_MatchDelete(3)
-        call s:ex_MatchDelete(4)
+        call exUtility#MatchDelete(1)
+        call exUtility#MatchDelete(2)
+        call exUtility#MatchDelete(3)
+        call exUtility#MatchDelete(4)
     else
-        call s:ex_MatchDelete(a:match_nr)
+        call exUtility#MatchDelete(a:match_nr)
     endif
 endfunction " >>>
 

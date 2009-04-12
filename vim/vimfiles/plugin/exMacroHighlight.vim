@@ -53,7 +53,7 @@ endif
 
 " ------------------------------------------------------------------ 
 " Desc: go back to edit buffer
-" 'topleft','botright'
+" 'topleft','botright','belowright'
 " ------------------------------------------------------------------ 
 
 if !exists('g:exMH_window_direction')
