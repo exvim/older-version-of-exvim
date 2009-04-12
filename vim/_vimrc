@@ -31,6 +31,10 @@ set directory=$VIM/data/swap " where to put swap file
 set tags+=./tags,./../tags,./**/tags,tags " which tags files CTRL-] will find 
 set makeef=error.err " the errorfile for :make and :grep 
 
+" NOTE: viminfo
+" for MS-DOS, Windows and OS/2: '20,<50,s10,h,rA:,rB:,
+" for Amiga: '20,<50,s10,h,rdf0:,rdf1:,rdf2:
+" for others: '20,<50,s10,h
 set viminfo+=! " make sure it can save viminfo 
 filetype on " enable file type detection 
 filetype plugin on " enable loading the plugin for appropriate file type 
@@ -375,35 +379,36 @@ if &clipboard ==# "unnamed"
     " vnoremap <silent>p :call g:()<CR>
 else
     " general copy/paste.
+    " NOTE: y,p,P could be mapped by other key-mapping
     map <unique> <leader>y "*y
     map <unique> <leader>p "*p
     map <unique> <leader>P "*P
 endif
 
 " F12: Insert '#if 0' and '#endif' between the selection
-vmap <unique> <F12> :call exUtility#InsertIFZero()<CR>
-nmap <unique> <F12> :call exUtility#RemoveIFZero()<CR>
+vnoremap <unique> <F12> :call exUtility#InsertIFZero()<CR>
+nnoremap <unique> <F12> :call exUtility#RemoveIFZero()<CR>
 
 " XXX: F10 looks like have some feature, when map with F10, the gv will take no effects
 " F9:  Insert/Remove macro extend ("\") after all the lines of the selection
-vmap <unique> <F9> :call exUtility#InsertRemoveExtend()<CR>
+vnoremap <unique> <F9> :call exUtility#InsertRemoveExtend()<CR>
 
 " F8:  Set Search pattern highlight on/off
-nmap <unique> <F8> :let @/=""<CR>
+nnoremap <unique> <F8> :let @/=""<CR>
 
 " A-F1:  Switch to English Mode (Both Enconding and uiFont)
-nmap <unique> <A-F1> :set guifont=Lucida_Console:h9<CR>:set encoding=latin1<CR>
+nnoremap <unique> <A-F1> :set guifont=Lucida_Console:h9<CR>:set encoding=latin1<CR>
 " A-F2:  Switch to Chinese Mode (Both Enconding and uiFont)
-nmap <unique> <A-F2> :set guifont=NSimSun:cGB2312:h9<CR>:set encoding=cp936<CR>
+nnoremap <unique> <A-F2> :set guifont=NSimSun:cGB2312:h9<CR>:set encoding=cp936<CR>
 " A-F3:  Switch to Japanese Mode 
-nmap <unique> <A-F3> :set guifont=MS_Gothic:cSHIFTJIS:h9<CR>:set encoding=cp932<CR>
+nnoremap <unique> <A-F3> :set guifont=MS_Gothic:cSHIFTJIS:h9<CR>:set encoding=cp932<CR>
 
 " map Ctrl-Tab to switch window
-nmap <unique> <S-Up> <C-W><Up>
-nmap <unique> <S-Down> <C-W><Down>
-nmap <unique> <S-Left> <C-W><Left>
-nmap <unique> <S-Right> <C-W><Right>
-nmap <unique> <silent><Leader><Tab> :call exUtility#SwitchBuffer()<CR>
+nnoremap <unique> <S-Up> <C-W><Up>
+nnoremap <unique> <S-Down> <C-W><Down>
+nnoremap <unique> <S-Left> <C-W><Left>
+nnoremap <unique> <S-Right> <C-W><Right>
+nnoremap <unique> <silent><Leader><Tab> :call exUtility#SwitchBuffer()<CR>
 
 " for the exUtility Plugin
 nmap <unique> <silent><Leader><ESC> :call exUtility#SwitchBuffer()<CR><ESC>
@@ -416,19 +421,19 @@ nnoremap <unique> gf :call exUtility#QuickFileJump()<CR>
 "       will jump to other display screen ( if you use double screen ).      
 " nmap <silent> <C-Right> :bn!<CR>
 " nmap <silent> <C-Left> :bp!<CR>
-nmap <unique> <silent> <C-Right> :call exUtility#GotoBuffer('next')<CR>
-nmap <unique> <silent> <C-Left> :call exUtility#GotoBuffer('prev')<CR>
-nmap <unique> <silent> <C-Tab> :call exUtility#SwapToLastEditBuffer()<CR>
+nnoremap <unique> <silent> <C-Right> :call exUtility#GotoBuffer('next')<CR>
+nnoremap <unique> <silent> <C-Left> :call exUtility#GotoBuffer('prev')<CR>
+nnoremap <unique> <silent> <C-Tab> :call exUtility#SwapToLastEditBuffer()<CR>
 
 " Move in fold
-map <unique> z<Up> zk
-map <unique> z<Down> zj
-map <unique> <A-Up> zk
-map <unique> <A-Down> zj
+noremap <unique> z<Up> zk
+noremap <unique> z<Down> zj
+noremap <unique> <A-Up> zk
+noremap <unique> <A-Down> zj
 
 " Easy Diff goto
-map <unique> <C-Up> [c
-map <unique> <C-Down> ]c
+noremap <unique> <C-Up> [c
+noremap <unique> <C-Down> ]c
 
 " VimTip #412: Easy menu-style switch between files with a simple map
 " map <C-b> :buffers<CR>:e #
@@ -441,16 +446,16 @@ vnoremap <unique> < <gv
 vnoremap <unique> > >gv
 
 " Fold close & Fold open
-map <unique> <kPlus> zo
-map <unique> <kMinus> zc
+noremap <unique> <kPlus> zo
+noremap <unique> <kMinus> zc
 
 " map exUtility#Kwbd(1) to \bd will close buffer and keep window
-nmap <unique> <Leader>bd :call exUtility#Kwbd(1)<CR>
-nmap <unique> <C-F4> :call exUtility#Kwbd(1)<CR>
+nnoremap <unique> <Leader>bd :call exUtility#Kwbd(1)<CR>
+nnoremap <unique> <C-F4> :call exUtility#Kwbd(1)<CR>
 
 " map Up & Down to gj & gk, helpful for wrap text edit
-map <unique> <Up> gk
-map <unique> <Down> gj
+noremap <unique> <Up> gk
+noremap <unique> <Down> gj
 
 " map for completion see :help ins-completion for whole completions
 " search tags 
@@ -459,18 +464,18 @@ inoremap <unique> <c-j> <C-X><C-]>
 inoremap <unique> <c-p> <C-X><C-P>
 
 " map for quick add special comments
-map <unique> <leader>ws :SEG<CR>
-map <unique> <leader>wd :DEF<CR>
-map <unique> <leader>we :SEP<CR>
-map <unique> <leader>wc :DEC<CR>
-map <unique> <leader>wh :HEADER<CR>
+nnoremap <unique> <leader>ws :SEG<CR>
+nnoremap <unique> <leader>wd :DEF<CR>
+nnoremap <unique> <leader>we :SEP<CR>
+nnoremap <unique> <leader>wc :DEC<CR>
+nnoremap <unique> <leader>wh :HEADER<CR>
 
 " VimTip 329: A map for swapping words
 " http://vim.sourceforge.net/tip_view.php?tip_id=
 " Then when you put the cursor on or in a word, press "\sw", and
 " the word will be swapped with the next word.  The words may
 " even be separated by punctuation (such as "abc = def").
-nmap <unique> <silent><leader>sw "_yiw:s/\(\%#\w\+\)\(\W\+\)\(\w\+\)/\3\2\1/<cr><c-o>
+nnoremap <unique> <silent><leader>sw "_yiw:s/\(\%#\w\+\)\(\W\+\)\(\w\+\)/\3\2\1/<cr><c-o>
 
 "/////////////////////////////////////////////////////////////////////////////
 " Command
@@ -560,29 +565,29 @@ au FileType vim set comments=sO:\"\ -,mO:\"\ \ ,eO:\"\",f:\"
 " ------------------------------------------------------------------ 
 
 " quick highlight 
-nmap <unique> <silent> <a-1> :call exUtility#Highlight_Normal(1)<CR>
-nmap <unique> <silent> <a-2> :call exUtility#Highlight_Normal(2)<CR>
-nmap <unique> <silent> <a-3> :call exUtility#Highlight_Normal(3)<CR>
-nmap <unique> <silent> <a-4> :call exUtility#Highlight_Normal(4)<CR>
+nnoremap <unique> <silent> <a-1> :call exUtility#Highlight_Normal(1)<CR>
+nnoremap <unique> <silent> <a-2> :call exUtility#Highlight_Normal(2)<CR>
+nnoremap <unique> <silent> <a-3> :call exUtility#Highlight_Normal(3)<CR>
+nnoremap <unique> <silent> <a-4> :call exUtility#Highlight_Normal(4)<CR>
 
-vmap <unique> <silent> <a-1> :call exUtility#Highlight_Visual(1)<CR>
-vmap <unique> <silent> <a-2> :call exUtility#Highlight_Visual(2)<CR>
-vmap <unique> <silent> <a-3> :call exUtility#Highlight_Visual(3)<CR>
-vmap <unique> <silent> <a-4> :call exUtility#Highlight_Visual(4)<CR>
+vnoremap <unique> <silent> <a-1> :call exUtility#Highlight_Visual(1)<CR>
+vnoremap <unique> <silent> <a-2> :call exUtility#Highlight_Visual(2)<CR>
+vnoremap <unique> <silent> <a-3> :call exUtility#Highlight_Visual(3)<CR>
+vnoremap <unique> <silent> <a-4> :call exUtility#Highlight_Visual(4)<CR>
 
 " used in terminal mode
 " TODO: find some way to check if it is in terminal { 
-nmap <unique> <silent> <leader>h1 :call exUtility#Highlight_Normal(1)<CR>
-nmap <unique> <silent> <leader>h2 :call exUtility#Highlight_Normal(2)<CR>
-nmap <unique> <silent> <leader>h3 :call exUtility#Highlight_Normal(3)<CR>
-nmap <unique> <silent> <leader>h4 :call exUtility#Highlight_Normal(4)<CR>
+nnoremap <unique> <silent> <leader>h1 :call exUtility#Highlight_Normal(1)<CR>
+nnoremap <unique> <silent> <leader>h2 :call exUtility#Highlight_Normal(2)<CR>
+nnoremap <unique> <silent> <leader>h3 :call exUtility#Highlight_Normal(3)<CR>
+nnoremap <unique> <silent> <leader>h4 :call exUtility#Highlight_Normal(4)<CR>
 
-vmap <unique> <silent> <leader>h1 :call exUtility#Highlight_Visual(1)<CR>
-vmap <unique> <silent> <leader>h2 :call exUtility#Highlight_Visual(2)<CR>
-vmap <unique> <silent> <leader>h3 :call exUtility#Highlight_Visual(3)<CR>
-vmap <unique> <silent> <leader>h4 :call exUtility#Highlight_Visual(4)<CR>
+vnoremap <unique> <silent> <leader>h1 :call exUtility#Highlight_Visual(1)<CR>
+vnoremap <unique> <silent> <leader>h2 :call exUtility#Highlight_Visual(2)<CR>
+vnoremap <unique> <silent> <leader>h3 :call exUtility#Highlight_Visual(3)<CR>
+vnoremap <unique> <silent> <leader>h4 :call exUtility#Highlight_Visual(4)<CR>
 
-map <unique> <silent> <leader>h0 :call exUtility#HighlightCancle(0)<CR>
+nnoremap <unique> <silent> <leader>h0 :call exUtility#HighlightCancle(0)<CR>
 " } TODO end 
 
 command -narg=? -complete=customlist,exUtility#CompleteBySymbolFile HL1 call exUtility#Highlight_Text(1, "<args>")
@@ -590,23 +595,23 @@ command -narg=? -complete=customlist,exUtility#CompleteBySymbolFile HL2 call exU
 command -narg=? -complete=customlist,exUtility#CompleteBySymbolFile HL3 call exUtility#Highlight_Text(3, "<args>")
 command -narg=? -complete=customlist,exUtility#CompleteBySymbolFile HL4 call exUtility#Highlight_Text(4, "<args>")
 
-map <unique> <silent> <a-0> :call exUtility#HighlightCancle(0)<CR>
-map <unique> <silent> <Leader>0 :call exUtility#HighlightCancle(0)<CR>
-map <unique> <silent> <Leader>1 :call exUtility#HighlightCancle(1)<CR>
-map <unique> <silent> <Leader>2 :call exUtility#HighlightCancle(2)<CR>
-map <unique> <silent> <Leader>3 :call exUtility#HighlightCancle(3)<CR>
-map <unique> <silent> <Leader>4 :call exUtility#HighlightCancle(4)<CR>
+nnoremap <unique> <silent> <a-0> :call exUtility#HighlightCancle(0)<CR>
+nnoremap <unique> <silent> <Leader>0 :call exUtility#HighlightCancle(0)<CR>
+nnoremap <unique> <silent> <Leader>1 :call exUtility#HighlightCancle(1)<CR>
+nnoremap <unique> <silent> <Leader>2 :call exUtility#HighlightCancle(2)<CR>
+nnoremap <unique> <silent> <Leader>3 :call exUtility#HighlightCancle(3)<CR>
+nnoremap <unique> <silent> <Leader>4 :call exUtility#HighlightCancle(4)<CR>
 
 " copy only full path name
-nmap <unique> <silent> <leader>y1 :call exUtility#Yank( fnamemodify(bufname('%'),":p:h") )<CR>
+nnoremap <unique> <silent> <leader>y1 :call exUtility#Yank( fnamemodify(bufname('%'),":p:h") )<CR>
 " copy only file name
-nmap <unique> <silent> <leader>y2 :call exUtility#Yank( fnamemodify(bufname('%'),":p:t") )<CR>
+nnoremap <unique> <silent> <leader>y2 :call exUtility#Yank( fnamemodify(bufname('%'),":p:t") )<CR>
 " copy full path + filename
-nmap <unique> <silent> <leader>y3 :call exUtility#Yank( fnamemodify(bufname('%'),":p") )<CR>
+nnoremap <unique> <silent> <leader>y3 :call exUtility#Yank( fnamemodify(bufname('%'),":p") )<CR>
 " copy path + filename for code
-nmap <unique> <silent> <leader>yb :call exUtility#YankBufferNameForCode()<CR>
+nnoremap <unique> <silent> <leader>yb :call exUtility#YankBufferNameForCode()<CR>
 " copy path for code
-nmap <unique> <silent> <leader>yp :call exUtility#YankFilePathForCode()<CR>
+nnoremap <unique> <silent> <leader>yp :call exUtility#YankFilePathForCode()<CR>
 
 " VimTip 311: Open the folder containing the currently open file
 " http://vim.sourceforge.net/tip_view.php?tip_id=
@@ -622,17 +627,17 @@ if has("gui_running")
         " Open the folder containing the currently open file. Double <CR> at end
         " is so you don't have to hit return after command. Double quotes are
         " not necessary in the 'explorer.exe %:p:h' section.
-        " :map <silent> <C-F5> :if expand("%:p:h") != ""<CR>:!start explorer.exe %:p:h<CR>:endif<CR><CR>
+        " nnoremap <silent> <C-F5> :if expand("%:p:h") != ""<CR>:!start explorer.exe %:p:h<CR>:endif<CR><CR>
 
         " explore the vimfile directory
-        :map <unique> <silent> <C-F5> :call exUtility#Yank(getcwd() . "\\_vimfiles")<CR>
-        :map <unique> <silent> <A-F5> :call exUtility#Explore(getcwd() . "\\_vimfiles")<CR>
+        nnoremap <unique> <silent> <C-F5> :call exUtility#Yank(getcwd() . "\\_vimfiles")<CR>
+        nnoremap <unique> <silent> <A-F5> :call exUtility#Explore(getcwd() . "\\_vimfiles")<CR>
         " explore the cwd directory
-        :map <unique> <silent> <C-F6> :call exUtility#Yank(getcwd())<CR>
-        :map <unique> <silent> <A-F6> :call exUtility#Explore(getcwd())<CR>
+        nnoremap <unique> <silent> <C-F6> :call exUtility#Yank(getcwd())<CR>
+        nnoremap <unique> <silent> <A-F6> :call exUtility#Explore(getcwd())<CR>
         " explore the diretory current file in
-        :map <unique> <silent> <C-F7> :call exUtility#Yank(expand("%:p:h"))<CR>
-        :map <unique> <silent> <A-F7> :call exUtility#Explore(expand("%:p:h"))<CR>
+        nnoremap <unique> <silent> <C-F7> :call exUtility#Yank(expand("%:p:h"))<CR>
+        nnoremap <unique> <silent> <A-F7> :call exUtility#Explore(expand("%:p:h"))<CR>
     endif
 endif
 " 
@@ -650,7 +655,7 @@ command -narg=? -complete=customlist,exUtility#CompleteQCopyArgs QCopy call exUt
 command -narg=1 -complete=customlist,exUtility#CompleteBySymbolFile GV call exUtility#GenInheritsDot('<args>',"all")
 command -narg=1 -complete=customlist,exUtility#CompleteBySymbolFile GVP call exUtility#GenInheritsDot('<args>',"parent")
 command -narg=1 -complete=customlist,exUtility#CompleteBySymbolFile GVC call exUtility#GenInheritsDot('<args>',"children")
-map <unique> <silent> <Leader>gv :call exUtility#ViewInheritsImage()<CR>
+nnoremap <unique> <silent> <Leader>gv :call exUtility#ViewInheritsImage()<CR>
 
 " code writing
 command LINE call exUtility#PutLine(86, '-')
@@ -692,9 +697,9 @@ nnoremap <unique> <silent> <Leader>ts :ExtsSelectToggle<CR>
 nnoremap <unique> <silent> <Leader>tt :ExtsStackToggle<CR>
 nnoremap <unique> <silent> <Leader>tg :ExtsGoDirectly<CR>
 
-map <unique> <silent> <Leader>] :ExtsGoDirectly<CR>
-map <unique> <silent> <Leader>tb :BackwardTagStack<CR>
-map <unique> <silent> <Leader>tf :ForwardTagStack<CR>
+nnoremap <unique> <silent> <Leader>] :ExtsGoDirectly<CR>
+nnoremap <unique> <silent> <Leader>tb :BackwardTagStack<CR>
+nnoremap <unique> <silent> <Leader>tf :ForwardTagStack<CR>
 
 let g:exTS_backto_editbuf = 0
 let g:exTS_close_when_selected = 1
@@ -712,9 +717,9 @@ nnoremap <unique> <silent> <Leader>gg :ExgsGoDirectly<CR>
 nnoremap <unique> <silent> <Leader>n :ExgsGotoNextResult<CR>
 nnoremap <unique> <silent> <Leader>N :ExgsGotoPrevResult<CR>
 
-map <unique> <silent> <Leader>gb :BackwardSearchStack<CR>
-map <unique> <silent> <Leader>gf :ForwardSearchStack<CR>
-map <unique> <Leader><S-f> :GS 
+nnoremap <unique> <silent> <Leader>gb :BackwardSearchStack<CR>
+nnoremap <unique> <silent> <Leader>gf :ForwardSearchStack<CR>
+nnoremap <unique> <Leader><S-f> :GS 
 
 let g:exGS_backto_editbuf = 0
 let g:exGS_close_when_selected = 0
@@ -773,12 +778,12 @@ nnoremap <unique> <silent> <Leader>ad :ExmhHL 0 <CR>
 " Desc: exProject
 " ------------------------------------------------------------------ 
 
-map <unique> <silent> <A-S-p> :EXProject<CR>
+nnoremap <unique> <silent> <A-S-p> :EXProject<CR>
 " NOTE: the / can be mapped to other script ( for example exSearchComplete ), so here use nmap instead of nnoremap 
-map <unique> <A-S-o> :EXProject<CR>:redraw<CR>/
-map <unique> <leader>ff :EXProject<CR>:redraw<CR>/\[[^F]*\]\c.*
-map <unique> <leader>fd :EXProject<CR>:redraw<CR>/\[F\]\c.*
-map <unique> <leader>fc :ExpjGotoCurrentFile<CR>
+nmap <unique> <A-S-o> :EXProject<CR>:redraw<CR>/
+nnoremap <unique> <leader>ff :EXProject<CR>:redraw<CR>/\[[^F]*\]\c.*
+nnoremap <unique> <leader>fd :EXProject<CR>:redraw<CR>/\[F\]\c.*
+nnoremap <unique> <leader>fc :ExpjGotoCurrentFile<CR>
 
 let g:exPJ_backto_editbuf = 1
 let g:exPJ_close_when_selected = 0
@@ -794,6 +799,16 @@ let g:exPJ_defualt_filter .= 'vim awk m '
 let g:exPJ_defualt_filter .= 'dox doxygen '
 let g:exPJ_defualt_filter .= 'ini cfg wiki '
 let g:exPJ_defualt_filter .= 'mk err exe bat sh '
+
+" ------------------------------------------------------------------ 
+" Desc: exMarksBrowser 
+" ------------------------------------------------------------------ 
+
+nnoremap <unique> <leader>ms :ExmbToggle<CR>
+
+let g:exMB_backto_editbuf = 0
+let g:exMB_close_when_selected = 0
+let g:exMB_window_direction = 'bel'
 
 " ------------------------------------------------------------------ 
 " Desc: TagList
@@ -896,6 +911,8 @@ let g:EnhCommentifyPretty = 'yes'
 let g:EnhCommentifyBindInNormal = 'no'
 let g:EnhCommentifyBindInVisual = 'no'
 let g:EnhCommentifyBindInInsert = 'no'
+
+" NOTE: VisualComment,Comment,DeComment are plugin mapping(start with <Plug>), so can't use remap here
 vmap <unique> <F11> <Plug>VisualComment
 nmap <unique> <F11> <Plug>Comment
 imap <unique> <F11> <ESC><Plug>Comment

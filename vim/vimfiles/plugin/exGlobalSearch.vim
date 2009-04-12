@@ -548,7 +548,7 @@ function s:exGS_GetGlobalSearchResult(search_pattern, search_method, direct_jump
     let search_result = '----------' . a:search_pattern . '----------' . "\n" . search_result
 
     " clear screen and put new result
-    silent exec 'normal! G"_dgg'
+    silent exec '1,$d _'
     call exUtility#HighlightConfirmLine()
     let line_num = line('.')
     silent put = search_result
@@ -599,7 +599,7 @@ function s:exGS_GetFilenameSearchResult(search_pattern, search_method) " <<<
     let search_result = '----------' . a:search_pattern . '----------' . "\n" . search_result
 
     " clear screen and put new result
-    silent exec 'normal! G"_dgg'
+    silent exec '1,$d _'
     call exUtility#HighlightConfirmLine()
     let line_num = line('.')
     silent put = search_result
@@ -693,7 +693,7 @@ function s:exGS_ShowStackList() " <<<
     endif
 
     " clear screen
-    silent exec 'normal! G"_dgg'
+    silent exec '1,$d _'
 
     " put an empty line first
     silent put = ''
@@ -942,7 +942,7 @@ function s:exGS_ShowPickedResult( search_pattern, line_start, line_end, edit_mod
     call s:exGS_CopyPickedLine( a:search_pattern, a:line_start, a:line_end, a:search_method, a:inverse_search )
     call s:exGS_SwitchWindow('QuickView')
     if a:edit_mode == 'replace'
-        silent exec 'normal! G"_dgg'
+        silent exec '1,$d _'
         let s:exGS_quick_view_idx = 1
         call exUtility#HighlightConfirmLine()
         silent put = s:exGS_quick_view_search_pattern

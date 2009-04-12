@@ -283,7 +283,7 @@ function g:exTS_UpdateSelectWindow() " <<<
     if s:exTS_need_update_select_window
         let s:exTS_need_update_select_window = 0
         " clear window
-        silent exe 'normal! G"_dgg'
+        silent exec '1,$d _'
         silent put = s:exTS_tag_stack_list[s:exTS_stack_idx].output_result
         silent exec 'normal! gg"_dd'
     endif
@@ -392,7 +392,7 @@ function s:exTS_GetTagSelectResult(tag, direct_jump) " <<<
     endif
 
     " clear window
-    exe 'normal! G"_dgg'
+    silent exec '1,$d _'
     call exUtility#HighlightConfirmLine()
 
     if match( result, 'Error detected while processing' ) != -1
@@ -545,7 +545,7 @@ endfunction " >>>
 function g:exTS_UpdateStackWindow() " <<<
     if s:exTS_need_update_stack_window
         let s:exTS_need_update_stack_window = 0
-        exe 'normal! G"_dgg'
+        silent exec '1,$d _'
         call s:exTS_ShowTagStack()
     endif
 

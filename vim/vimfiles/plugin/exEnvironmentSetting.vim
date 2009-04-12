@@ -197,7 +197,7 @@ function g:exES_SetEnvironment( force_reset ) " <<<
 
         " update if needed
         if need_update == 1
-            silent normal! G"_dgg
+            silent exec '1,$d _'
             call s:exES_WriteDefaultTemplate()
         endif
 

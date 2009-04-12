@@ -534,7 +534,7 @@ function s:exCS_GetSearchResult(search_pattern, search_method) " <<<
     endif
 
     " clear screen and put new result
-    silent exec 'normal! G"_dgg'
+    silent exec '1,$d _'
 
     " processing search result
     let pattern_title = '----------' . a:search_pattern . '----------'
@@ -698,7 +698,7 @@ function s:exCS_ShowPickedResult( search_pattern, line_start, line_end, edit_mod
     call s:exCS_CopyPickedLine( a:search_pattern, a:line_start, a:line_end, a:search_method, a:inverse_search )
     call s:exCS_SwitchWindow('QuickView')
     if a:edit_mode == 'replace'
-        silent exec 'normal! G"_dgg'
+        silent exec '1,$d _'
         let s:exCS_quick_view_idx = 1
         call exUtility#HighlightConfirmLine()
         silent put = s:exCS_quick_view_search_pattern

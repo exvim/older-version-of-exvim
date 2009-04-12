@@ -372,7 +372,7 @@ function s:exQF_GetQuickFixResult( file_name ) " <<<
         endif
 
         " clear all the text and put the text to the buffer, by YJR
-        normal! gg"_dG
+        silent exec '1,$d _'
         silent call append( 0 , readfile( full_file_name ) )
         silent normal gg
 
@@ -433,13 +433,11 @@ function g:exQF_UpdateQuickViewWindow() " <<<
         let s:exQF_need_update_quick_view_window = 0
 
         "
-        let reg_q = @q
-        silent redir @q
+        silent redir =>quickfix_list
         silent! exec 'cl'
         silent redir END
-        silent exec 'normal! G"_dgg'
-        silent put! = @q
-        let @q = reg_q
+        silent exec '1,$d _'
+        silent put! = quickfix_list
     endif
 endfunction " >>>
 
@@ -525,7 +523,7 @@ function s:exQF_ShowPickedResult( search_pattern, line_start, line_end, edit_mod
     call s:exQF_CopyPickedLine( a:search_pattern, a:line_start, a:line_end, a:search_method )
     call s:exQF_SwitchWindow('QuickView')
     if a:edit_mode == 'replace'
-        silent exec 'normal! G"_dgg'
+        silent exec '1,$d _'
         silent put = s:exQF_quick_view_search_pattern
         "silent put = s:exQF_fold_start
         silent put = s:exQF_picked_search_result

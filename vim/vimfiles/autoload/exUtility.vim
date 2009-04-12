@@ -143,7 +143,7 @@ function exUtility#CreateWindow( buffer_name, window_direction, window_size, use
         if a:edit_mode == 'append'
             exe 'normal! G'
         elseif a:edit_mode == 'replace'
-            exe 'normal! gg"_dG'
+            silent exec '1,$d _'
         endif
 
         return
@@ -188,7 +188,7 @@ function exUtility#CreateWindow( buffer_name, window_direction, window_size, use
     if a:edit_mode == 'append'
         exe 'normal! G'
     elseif a:edit_mode == 'replace'
-        exe 'normal! gg"_dG'
+        silent exec '1,$d _'
     endif
 
     " after create the window, record the bufname into the plugin list
@@ -287,7 +287,7 @@ function exUtility#OpenWindow( buffer_name, window_direction, window_size, use_v
         if a:edit_mode == 'append'
             exe 'normal! G'
         elseif a:edit_mode == 'replace'
-            exe 'normal! gg"_dG'
+            silent exec '1,$d _'
         endif
 
         return
@@ -2126,6 +2126,15 @@ function exUtility#HighlightObjectLine() " <<<
 endfunction " >>>
 
 " ------------------------------------------------------------------ 
+" Desc: clear the confirm line hight light
+" ------------------------------------------------------------------ 
+
+function exUtility#ClearConfirmHighlight() " <<<
+    " Clear previously selected name
+    match none
+endfunction " >>>
+
+" ------------------------------------------------------------------ 
 " Desc: clear the object line hight light
 " ------------------------------------------------------------------ 
 
@@ -2563,8 +2572,8 @@ endfunction " >>>
 " ------------------------------------------------------------------ 
 
 function exUtility#CompleteMKArgs( arg_lead, cmd_line, cursor_pos ) " <<<
-    let args = split( exUtility#todo_keyword, ' ' )
-    silent call extend (args, split( exUtility#comment_lable_keyword, ' ' ) )
+    let args = split( g:ex_todo_keyword, ' ' )
+    silent call extend (args, split( g:ex_comment_lable_keyword, ' ' ) )
 
     let filter_result = []
     for arg in args
@@ -2639,7 +2648,7 @@ function exUtility#DisplayHelp() " <<<
         return
     endif
 
-    if !exUtility#help_text_on
+    if !g:ex_help_text_on
         return
     endif
 
@@ -2732,7 +2741,7 @@ endfunction " >>>
 " if Cursor is on the Help, jump to the first line without help
 function exUtility#HelpUpdateCursor() " <<<
     " return immidiaetly if help off
-    if !exUtility#help_text_on
+    if !g:ex_help_text_on
         return 0
     endif
     if getline('.')[0] == '"'
