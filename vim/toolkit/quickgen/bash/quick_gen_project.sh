@@ -42,7 +42,7 @@ fi
 # Desc: init default variables
 # ------------------------------------------------------------------ 
 
-file_filter="*.c *.cpp *.cxx *.h *.hpp *.inl *.hlsl *.vsh *.psh *.fx *.fxh *.cg *.shd *.uc *.m"
+file_filter="c\|cpp\|cxx\|h\|hpp\|inl\|hlsl\|vsh\|psh\|fx\|fxh\|cg\|shd\|uc\|m"
 support_inherit="true"
 support_cscope="true"
 
@@ -52,73 +52,73 @@ support_cscope="true"
 
 # all
 if test "$lang_type" = "all"; then 
-    file_filter="*.c *.cpp *.cxx *.h *.hpp *.inl *.hlsl *.vsh *.psh *.fx *.fxh *.cg *.shd *.uc *.m"
+    file_filter="c\|cpp\|cxx\|h\|hpp\|inl\|hlsl\|vsh\|psh\|fx\|fxh\|cg\|shd\|uc\|m"
     support_inherit="true"
     support_cscope="true"
 
 # cstyle settings
 elif test "$lang_type" = "general"; then
-    file_filter="*.c *.cpp *.cxx *.h *.hpp *.inl *.hlsl *.vsh *.psh *.fx *.fxh *.cg *.shd *.uc *.m"
+    file_filter="c\|cpp\|cxx\|h\|hpp\|inl\|hlsl\|vsh\|psh\|fx\|fxh\|cg\|shd\|uc\|m"
     support_inherit="true"
     support_cscope="true"
 
 # c-only settings
 elif test "$lang_type" = "c"; then
-    file_filter="*.c *.h"
+    file_filter="c\|h"
     support_inherit="false"
     support_cscope="true"
 
 # cpp-only settings
 elif test "$lang_type" = "cpp"; then
-    file_filter="*.cpp *.cxx *.h *.hpp *.inl"
+    file_filter="cpp\|cxx\|h\|hpp\|inl"
     support_inherit="true"
     support_cscope="true"
 
 # c-sharp settings
 elif test "$lang_type" = "c#"; then
-    file_filter="*.cs"
+    file_filter="cs"
     support_inherit="true"
     support_cscope="false"
 
 # html settings
 elif test "$lang_type" = "html"; then
-    file_filter="*.html *.htm *.shtml *.stm"
+    file_filter="html\|htm\|shtml\|stm"
     support_inherit="false"
     support_cscope="false"
 
 # javascript settings
 elif test "$lang_type" = "js"; then
-    file_filter="*.js *.as"
+    file_filter="js\|as"
     support_inherit="true"
     support_cscope="false"
 
 # lua settings
 elif test "$lang_type" = "lua"; then
-    file_filter="*.lua"
+    file_filter="lua"
     support_inherit="false"
     support_cscope="false"
 
 # math settings
 elif test "$lang_type" = "math"; then
-    file_filter="*.m"
+    file_filter="m"
     support_inherit="false"
     support_cscope="false"
 
 # python settings
 elif test "$lang_type" = "python"; then
-    file_filter="*.py"
+    file_filter="py"
     support_inherit="true"
     support_cscope="false"
 
 # unreal-script settings
 elif test "$lang_type" = "uc"; then
-    file_filter="*.uc"
+    file_filter="uc"
     support_inherit="true"
     support_cscope="false"
 
 # vim settings
 elif test "$lang_type" = "vim"; then
-    file_filter="*.vim"
+    file_filter="vim"
     support_inherit="false"
     support_cscope="false"
 
@@ -215,8 +215,7 @@ gen_cscope ()
 {
     if test "$support_cscope" = "true"; then
         echo "Creating cscope.files..."
-        # TODO: ls /s /b ${file_filter}|sed "s,\(.*\),\"\1\",g" > cscope.files
-        echo "Warnning: this feature havn't done in unix/linux."
+        find . -regex '.*\.\('"${file_filter}"'\)' > cscope.files
         echo "Creating cscope.out..."
         cscope -b
         mv -f "cscope.files" "./${vimfiles_path}/cscope.files"
