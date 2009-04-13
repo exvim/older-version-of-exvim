@@ -230,7 +230,7 @@ gen_cscope ()
 gen_id ()
 {
     echo "Creating IDs..."
-    mkid --include="text"
+    mkid --include="text" --lang-map="${EX_DEV}/vim/toolkit/idutils/id-lang.map"
     # mkid --include="C C++"
     mv -f "ID" "./${vimfiles_path}/ID"
 }

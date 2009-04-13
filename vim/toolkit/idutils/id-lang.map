@@ -35,10 +35,11 @@
 */.deps/*		        IGNORE
 
 # ignore svn file
+*/.svn/*		        IGNORE
 *.svn-base              IGNORE
 
 # ignore vimentry files
-_vimfiles               IGNORE
+_vimfiles/*             IGNORE
 quick_gen_project.*     IGNORE
 
 # c/cpp header files

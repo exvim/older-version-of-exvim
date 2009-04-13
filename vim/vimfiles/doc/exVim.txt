@@ -41,10 +41,14 @@ CONTENTS                                                   *exVim-contents*
 
 What is this "exVim"??
 
-exVim is the core part of exDev, which is a dev-environment help you develop
+    exVim is the core part of exDev, which is a develop package help you develop 
 project as a IDE like environment but all in vim. 
-The exVim consists of serial of vim scripts,
-
+    The exVim consists of several of vim scripts, some of them are written by exDev 
+groups, and others are some patched version or orignal copy from vim scripts
+web-site. The main purpose for exVim is let each project have its own vim settings
+( for example: working path, tag files, project files, cscope files, ID files... ),
+and start project by using one file to record these settings, that's call it .vimentry 
+file. It is similar with .sln file in visual studio. 
 
 
 

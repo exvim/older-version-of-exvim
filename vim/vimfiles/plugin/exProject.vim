@@ -475,6 +475,9 @@ function s:exPJ_CreateProject(with_dialog) " <<<
         echon "save as ./_vimfiles/filenametags"
     endif
 
+    " TODO:
+    " call exUtility##CreateIDLangMap ( file_filter )
+
     silent keepjumps normal! gg
     silent put! = ''
     silent put! = 'dir filter = ' . s:exPJ_dir_filter

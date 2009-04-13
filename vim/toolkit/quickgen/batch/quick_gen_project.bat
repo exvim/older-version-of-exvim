@@ -240,7 +240,7 @@ rem  #########################
 rem  ######################### 
 
 echo Creating IDs...
-mkid --include="text"
+mkid --include="text" --lang-map="%EX_DEV%\vim\toolkit\idutils\id-lang.map"
 rem mkid --include="C C++"
 move /Y ID ".\%vimfiles_path%\ID"
 goto %return%
