@@ -24,15 +24,22 @@
 				        # logically matched last.
 
 # Backup files
-*~			    IGNORE
-*.bak			IGNORE
-*.bk[0-9]		IGNORE
+*~			            IGNORE
+*.bak			        IGNORE
+*.bk[0-9]		        IGNORE
 
 # SCCS files
-[sp].*			IGNORE
+[sp].*			        IGNORE
 
 # C dependencies created by automake
-*/.deps/*		IGNORE
+*/.deps/*		        IGNORE
+
+# ignore svn file
+*.svn-base              IGNORE
+
+# ignore vimentry files
+_vimfiles               IGNORE
+quick_gen_project.*     IGNORE
 
 # c/cpp header files
 *.h			    text
