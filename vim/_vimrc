@@ -433,7 +433,9 @@ noremap <unique> <A-Down> zj
 
 " Easy Diff goto
 noremap <unique> <C-Up> [c
+noremap <unique> <C-k> [c
 noremap <unique> <C-Down> ]c
+noremap <unique> <C-j> ]c
 
 " VimTip #412: Easy menu-style switch between files with a simple map
 " map <C-b> :buffers<CR>:e #
