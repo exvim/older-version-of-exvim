@@ -229,8 +229,22 @@ gen_cscope ()
 
 gen_id ()
 {
-    echo "Creating IDs..."
-    mkid --include="text" --lang-map="${EX_DEV}/vim/toolkit/idutils/id-lang.map"
+    # if we have manual configure id language map, we use it as highest priority
+    if [ -f "./${vimfiles_path}/id-lang.map" ]; then
+        echo Creating IDs by custom language map...
+        mkid --include="text" --lang-map="./${vimfiles_path}/id-lang.map"
+
+        # if not, we try to use auto-gen id language map as second option
+    elif [ -f "./${vimfiles_path}/id-lang-autogen.map" ]; then
+        echo Creating IDs by auto-gen language map...
+        mkid --include="text" --lang-map="./${vimfiles_path}/id-lang-autogen.map"
+
+        # if both file not exists, we use default one in toolkit directory
+    else
+        echo Creating IDs by default language map...
+        mkid --include="text" --lang-map="${EX_DEV}/vim/toolkit/idutils/id-lang.map"
+    fi
+
     # mkid --include="C C++"
     mv -f "ID" "./${vimfiles_path}/ID"
 }
