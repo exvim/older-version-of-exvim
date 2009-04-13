@@ -470,13 +470,14 @@ function s:exPJ_CreateProject(with_dialog) " <<<
     silent call add ( tag_contents, "!_TAG_FILE_SORTED\t2\t/0=unsorted, 1=sorted, 2=foldcase/")
     call exUtility#Browse( entry_dir, exUtility#GetFileFilterPattern(s:exPJ_file_filter), exUtility#GetDirFilterPattern(s:exPJ_dir_filter), tag_contents )
     if exists( 'g:exES_LookupFileTag' )
-        echon "sorting filenametags..."
+        echon "sorting filenametags... \r"
         silent call writefile( sort(tag_contents), simplify(g:exES_CWD.'/'.g:exES_LookupFileTag))
-        echon "save as ./_vimfiles/filenametags"
+        echon "save as ./_vimfiles/filenametags \r"
     endif
 
-    " TODO:
-    " call exUtility##CreateIDLangMap ( file_filter )
+    " Create id-lang-autogen map
+    echon "generate id-lang-autogen.map file... \r"
+    call exUtility#CreateIDLangMap( s:exPJ_file_filter )
 
     silent keepjumps normal! gg
     silent put! = ''

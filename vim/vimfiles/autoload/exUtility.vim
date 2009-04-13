@@ -1163,6 +1163,37 @@ function exUtility#GetFullFileName(converted_line) " <<<
 endfunction " >>>
 
 " ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
+function exUtility#CreateIDLangMap( file_filter ) " <<<
+    let text_list = []
+    silent call add ( text_list, '# autogen id-lang.map')
+    silent call add ( text_list, '# NOTE: this file is created automatically after you create/refresh exProject.')
+    silent call add ( text_list, '# CAUTION: you may loose your modification in this file, if you want customize your language map,')
+    silent call add ( text_list, '#          please create your own language map file under ./_vimfiles, and change the file name as id-lang.map')
+    silent call add ( text_list, '*~                    IGNORE')
+    silent call add ( text_list, '*.bak                 IGNORE')
+    silent call add ( text_list, '*.bk[0-9]             IGNORE')
+    silent call add ( text_list, '[sp].*                IGNORE')
+    silent call add ( text_list, '*/.deps/*             IGNORE')
+    silent call add ( text_list, '*/.svn/*              IGNORE')
+    silent call add ( text_list, '*.svn-base            IGNORE')
+    silent call add ( text_list, '_vimfiles/*           IGNORE')
+    silent call add ( text_list, 'quick_gen_project.*   IGNORE')
+    silent call add ( text_list, '*.err                 IGNORE') " never bring error file into global search
+    silent call add ( text_list, '*.exe                 IGNORE') " never bring exe file into global search
+
+    let filter_list = split(a:file_filter,' ')
+    for item in filter_list 
+        silent call add ( text_list, '*.'.item.'    text')
+    endfor
+
+    let idlang_map_file = './'.g:exES_vimfile_dir.'/id-lang-autogen.map'
+    call writefile( text_list, idlang_map_file, "b" )
+endfunction " >>>
+
+" ------------------------------------------------------------------ 
 " Desc: Match tag and find file if it has
 " ------------------------------------------------------------------ 
 

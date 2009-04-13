@@ -239,8 +239,22 @@ rem  #########################
 :GEN_ID
 rem  ######################### 
 
-echo Creating IDs...
-mkid --include="text" --lang-map="%EX_DEV%\vim\toolkit\idutils\id-lang.map"
+rem if we have manual configure id language map, we use it as highest priority
+if exist .\%vimfiles_path%\id-lang.map (
+    echo Creating IDs by custom language map...
+    mkid --include="text" --lang-map=".\%vimfiles_path%\id-lang.map"
+
+rem if not, we try to use auto-gen id language map as second option
+) else if exist .\%vimfiles_path%\id-lang-autogen.map (
+    echo Creating IDs by auto-gen language map...
+    mkid --include="text" --lang-map=".\%vimfiles_path%\id-lang-autogen.map"
+
+rem if both file not exists, we use default one in toolkit directory
+) else (
+    echo Creating IDs by default language map...
+    mkid --include="text" --lang-map="%EX_DEV%\vim\toolkit\idutils\id-lang.map"
+)
+
 rem mkid --include="C C++"
 move /Y ID ".\%vimfiles_path%\ID"
 goto %return%
