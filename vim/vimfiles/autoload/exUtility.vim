@@ -81,10 +81,16 @@ endif
 " Desc: 
 " ------------------------------------------------------------------ 
 
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
+" TODO: change to proper variable { 
 let s:ex_MapHelpText={}
 let s:ex_MapHelpMode={}
 let s:ex_MapHelpOldMode={}
 let s:ex_MapLastCursorLine={}
+" } TODO end 
 
 " ======================================================== 
 " syntax highlight
@@ -509,9 +515,19 @@ endfunction " >>>
 " Desc: 
 " ------------------------------------------------------------------ 
 
-function exUtility#PutNamespace( space_name ) " <<<
-    call exUtility#PutNamespaceStart(a:space_name)
+function exUtility#PutNamespace( space_name, line1, line2 ) " <<<
+    " 
+    let first_line = a:line1
+    let last_line = a:line2
+
+    " put namespace end first
+    silent call cursor( last_line, 1 )
+    silent put = ''
     call exUtility#PutNamespaceEnd(a:space_name)
+
+    " then go back to first line and put namespace start
+    silent call cursor( first_line - 1, 1 )
+    call exUtility#PutNamespaceStart(a:space_name)
 endfunction " >>>
 
 " ------------------------------------------------------------------ 
@@ -823,6 +839,7 @@ endfunction " >>>
 
 " ------------------------------------------------------------------ 
 " Desc: TODO: check if the last character is space, if not, add space
+"       TODO: used the longest column as the base column to insert \
 " ------------------------------------------------------------------ 
 
 function exUtility#InsertRemoveExtend() range " <<<
@@ -925,6 +942,8 @@ endfunction " >>>
 " ------------------------------------------------------------------ 
 
 function exUtility#GotoBuffer(cmd) " <<<
+    " NOTE: there has a bug, in window (not fullscree) mode, some times the buffer will jump to other display screen ( if you use double screen ).      
+
     " save current win pos x,y.
     if has("gui_running")
         let gui_win_pos_x = getwinposx()
@@ -1032,6 +1051,16 @@ endfunction " >>>
 
 function exUtility#Kwbd(kwbdStage) " <<<
     if(a:kwbdStage == 1) 
+        " check it is plugin window, if yes, close it directly to prevent use \bd
+        " close, reopen will loose plugin ability problem
+        let cru_short_bufname = fnamemodify(bufname('%'),":p:t")
+        if index( g:exUT_plugin_list, cru_short_bufname, 0, 1 ) != -1 
+            silent exec 'close'
+            call exUtility#GotoEditBuffer()
+            return
+        endif
+
+        "
         if(!buflisted(winbufnr(0))) 
             bd! 
             return 

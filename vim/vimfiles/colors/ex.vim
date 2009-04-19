@@ -74,9 +74,9 @@ hi PmenuThumb   ctermbg=Black guibg=Black
 hi TabLine      term=underline cterm=underline ctermfg=0 ctermbg=7 gui=underline guibg=LightGrey
 hi TabLineSel   term=bold cterm=bold gui=bold
 hi TabLineFill  term=reverse cterm=reverse gui=reverse
-hi CursorColumn term=reverse ctermbg=7 guibg=Grey90
 " <<<<<<<<<<<<<< jwu custumize
-hi CursorLine   term=none cterm=none ctermbg=LightCyan gui=none guibg=#bfffff 
+hi CursorColumn term=reverse cterm=none ctermbg=LightCyan gui=none guibg=#bfffff
+hi CursorLine   term=reverse cterm=none ctermbg=LightCyan gui=none guibg=#bfffff 
 " >>>>>>>>>>>>>>
 hi Cursor       guifg=bg guibg=fg
 hi lCursor      guifg=bg guibg=fg

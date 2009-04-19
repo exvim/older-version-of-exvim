@@ -361,10 +361,12 @@ let c_no_curly_error = 1
 " Key Mappings
 "/////////////////////////////////////////////////////////////////////////////
 
+" NOTE: F10 looks like have some feature, when map with F10, the map will take no effects
+
 " Don't use Ex mode, use Q for formatting
 map Q gq  
 
-" XXX: currently it is no-use
+" DISABLE: it is no-use now, also we use \fc for exProject { 
 " Set new Rgrep as the grep to search patterns on the C/C++ files as default
 "command -nargs=+ Rgrep :grep -r --include="*.cpp" --include="*.c" --include="*.hpp" --include="*.h" <q-args> *
 "map <Leader>fc :call <SID>Grep_Cfiles()<CR>
@@ -372,6 +374,7 @@ map Q gq
 "    let l_str=input("Input the keyword to be searched: ")
 "    exec ":grep -r --include=\"*.cpp\" --include=\"*.c\" --include=\"*.hpp\" --include=\"*.h\" " . l_str . " *"
 "endfunction
+" } DISABLE end 
 
 " define the copy/paste judged by clipboard
 if &clipboard ==# "unnamed"
@@ -384,14 +387,6 @@ else
     map <unique> <leader>p "*p
     map <unique> <leader>P "*P
 endif
-
-" F12: Insert '#if 0' and '#endif' between the selection
-vnoremap <unique> <F12> :call exUtility#InsertIFZero()<CR>
-nnoremap <unique> <F12> :call exUtility#RemoveIFZero()<CR>
-
-" XXX: F10 looks like have some feature, when map with F10, the gv will take no effects
-" F9:  Insert/Remove macro extend ("\") after all the lines of the selection
-vnoremap <unique> <F9> :call exUtility#InsertRemoveExtend()<CR>
 
 " F8:  Set Search pattern highlight on/off
 nnoremap <unique> <F8> :let @/=""<CR>
@@ -408,22 +403,6 @@ nnoremap <unique> <S-Up> <C-W><Up>
 nnoremap <unique> <S-Down> <C-W><Down>
 nnoremap <unique> <S-Left> <C-W><Left>
 nnoremap <unique> <S-Right> <C-W><Right>
-nnoremap <unique> <silent><Leader><Tab> :call exUtility#SwitchBuffer()<CR>
-
-" for the exUtility Plugin
-nmap <unique> <silent><Leader><ESC> :call exUtility#SwitchBuffer()<CR><ESC>
-
-" change the original file jump method to this one
-nnoremap <unique> gf :call exUtility#QuickFileJump()<CR>
-
-" VimTip #401: A mapping for easy switching between buffers
-" NOTE: there has a bug, in window (not fullscree) mode, some times the buffer 
-"       will jump to other display screen ( if you use double screen ).      
-" nmap <silent> <C-Right> :bn!<CR>
-" nmap <silent> <C-Left> :bp!<CR>
-nnoremap <unique> <silent> <C-Right> :call exUtility#GotoBuffer('next')<CR>
-nnoremap <unique> <silent> <C-Left> :call exUtility#GotoBuffer('prev')<CR>
-nnoremap <unique> <silent> <C-Tab> :call exUtility#SwapToLastEditBuffer()<CR>
 
 " Move in fold
 noremap <unique> z<Up> zk
@@ -450,10 +429,6 @@ vnoremap <unique> > >gv
 " Fold close & Fold open
 noremap <unique> <kPlus> zo
 noremap <unique> <kMinus> zc
-
-" map exUtility#Kwbd(1) to \bd will close buffer and keep window
-nnoremap <unique> <Leader>bd :call exUtility#Kwbd(1)<CR>
-nnoremap <unique> <C-F4> :call exUtility#Kwbd(1)<CR>
 
 " map Up & Down to gj & gk, helpful for wrap text edit
 noremap <unique> <Up> gk
@@ -483,11 +458,10 @@ nnoremap <unique> <silent><leader>sw "_yiw:s/\(\%#\w\+\)\(\W\+\)\(\w\+\)/\3\2\1/
 " Command
 "/////////////////////////////////////////////////////////////////////////////
 
-" TODO
 " perforce key mapping
-"let g:proj_run1='!p4 edit %f'
-"nmap <Leader>po :silent !p4 edit %<CR>
-"nmap <Leader>pr :silent !p4 revert %<CR>
+" let g:proj_run1='!p4 edit %f'
+" nmap <Leader>po :silent !p4 edit %<CR>
+" nmap <Leader>pr :silent !p4 revert %<CR>
 command Checkout :silent !p4 edit %
 command Revert :silent !p4 revert %
 command Changelist :silent !p4 change
@@ -533,11 +507,12 @@ endif " has("autocmd")
 au BufNewFile,BufEnter * set cpoptions+=d " NOTE: ctags find the tags file from the current path instead of the path of currect file
 au BufEnter * :syntax sync fromstart " ensure every file does syntax highlighting (full) 
 au BufNewFile,BufRead *.avs set syntax=avs " for avs syntax file.
-au BufWritePost * call exUtility#UpdateCurrentBuffer() 
 
-" FIXME: may have some problems with exUtility
+" DISABLE { 
+" NOTE: may have problem with exUtility
 " Change current directory to the file of the buffer ( from Script#65"CD.vim"
 " au   BufEnter *   execute ":lcd " . expand("%:p:h") 
+" } DISABLE end 
 
 " ------------------------------------------------------------------ 
 " Desc: 
@@ -566,38 +541,70 @@ au FileType vim set comments=sO:\"\ -,mO:\"\ \ ,eO:\"\",f:\"
 " Desc: exUtility
 " ------------------------------------------------------------------ 
 
-" quick highlight 
-nnoremap <unique> <silent> <a-1> :call exUtility#Highlight_Normal(1)<CR>
-nnoremap <unique> <silent> <a-2> :call exUtility#Highlight_Normal(2)<CR>
-nnoremap <unique> <silent> <a-3> :call exUtility#Highlight_Normal(3)<CR>
-nnoremap <unique> <silent> <a-4> :call exUtility#Highlight_Normal(4)<CR>
+au BufWritePost * call exUtility#UpdateCurrentBuffer() 
 
-vnoremap <unique> <silent> <a-1> :call exUtility#Highlight_Visual(1)<CR>
-vnoremap <unique> <silent> <a-2> :call exUtility#Highlight_Visual(2)<CR>
-vnoremap <unique> <silent> <a-3> :call exUtility#Highlight_Visual(3)<CR>
-vnoremap <unique> <silent> <a-4> :call exUtility#Highlight_Visual(4)<CR>
+" F9:  Insert/Remove macro extend ("\") after all the lines of the selection
+vnoremap <unique> <F9> :call exUtility#InsertRemoveExtend()<CR>
 
-" used in terminal mode
-" TODO: find some way to check if it is in terminal { 
-nnoremap <unique> <silent> <leader>h1 :call exUtility#Highlight_Normal(1)<CR>
-nnoremap <unique> <silent> <leader>h2 :call exUtility#Highlight_Normal(2)<CR>
-nnoremap <unique> <silent> <leader>h3 :call exUtility#Highlight_Normal(3)<CR>
-nnoremap <unique> <silent> <leader>h4 :call exUtility#Highlight_Normal(4)<CR>
+" F12: Insert '#if 0' and '#endif' between the selection
+vnoremap <unique> <F12> :call exUtility#InsertIFZero()<CR>
+nnoremap <unique> <F12> :call exUtility#RemoveIFZero()<CR>
 
-vnoremap <unique> <silent> <leader>h1 :call exUtility#Highlight_Visual(1)<CR>
-vnoremap <unique> <silent> <leader>h2 :call exUtility#Highlight_Visual(2)<CR>
-vnoremap <unique> <silent> <leader>h3 :call exUtility#Highlight_Visual(3)<CR>
-vnoremap <unique> <silent> <leader>h4 :call exUtility#Highlight_Visual(4)<CR>
+" switch between edit and ex-plugin window
+nnoremap <unique> <silent><Leader><Tab> :call exUtility#SwitchBuffer()<CR>
 
-nnoremap <unique> <silent> <leader>h0 :call exUtility#HighlightCancle(0)<CR>
-" } TODO end 
+" close ex-plugin window when in edit window
+nmap <unique> <silent><Leader><ESC> :call exUtility#SwitchBuffer()<CR><ESC>
+
+" change the original file jump method to this one
+nnoremap <unique> gf :call exUtility#QuickFileJump()<CR>
+
+" VimTip #401: A mapping for easy switching between buffers
+" DISABLE: there has a bug, in window (not fullscree) mode, some times the buffer will jump to other display screen ( if you use double screen ). { 
+" nmap <silent> <C-Right> :bn!<CR>
+" nmap <silent> <C-Left> :bp!<CR>
+" } DISABLE end 
+nnoremap <unique> <silent> <C-Right> :call exUtility#GotoBuffer('next')<CR>
+nnoremap <unique> <silent> <C-Left> :call exUtility#GotoBuffer('prev')<CR>
+nnoremap <unique> <silent> <C-Tab> :call exUtility#SwapToLastEditBuffer()<CR>
+
+" map exUtility#Kwbd(1) to \bd will close buffer and keep window
+nnoremap <unique> <Leader>bd :call exUtility#Kwbd(1)<CR>
+nnoremap <unique> <C-F4> :call exUtility#Kwbd(1)<CR>
+
+" quick highlight
+" NOTE: only gui mode can have alt, in terminal we have to use other mapping
+if has("gui_running") " gui mode
+    nnoremap <unique> <silent> <a-1> :call exUtility#Highlight_Normal(1)<CR>
+    nnoremap <unique> <silent> <a-2> :call exUtility#Highlight_Normal(2)<CR>
+    nnoremap <unique> <silent> <a-3> :call exUtility#Highlight_Normal(3)<CR>
+    nnoremap <unique> <silent> <a-4> :call exUtility#Highlight_Normal(4)<CR>
+
+    vnoremap <unique> <silent> <a-1> :call exUtility#Highlight_Visual(1)<CR>
+    vnoremap <unique> <silent> <a-2> :call exUtility#Highlight_Visual(2)<CR>
+    vnoremap <unique> <silent> <a-3> :call exUtility#Highlight_Visual(3)<CR>
+    vnoremap <unique> <silent> <a-4> :call exUtility#Highlight_Visual(4)<CR>
+
+    nnoremap <unique> <silent> <a-0> :call exUtility#HighlightCancle(0)<CR>
+else " terminal mode
+    nnoremap <unique> <silent> <leader>h1 :call exUtility#Highlight_Normal(1)<CR>
+    nnoremap <unique> <silent> <leader>h2 :call exUtility#Highlight_Normal(2)<CR>
+    nnoremap <unique> <silent> <leader>h3 :call exUtility#Highlight_Normal(3)<CR>
+    nnoremap <unique> <silent> <leader>h4 :call exUtility#Highlight_Normal(4)<CR>
+
+    vnoremap <unique> <silent> <leader>h1 :call exUtility#Highlight_Visual(1)<CR>
+    vnoremap <unique> <silent> <leader>h2 :call exUtility#Highlight_Visual(2)<CR>
+    vnoremap <unique> <silent> <leader>h3 :call exUtility#Highlight_Visual(3)<CR>
+    vnoremap <unique> <silent> <leader>h4 :call exUtility#Highlight_Visual(4)<CR>
+
+    nnoremap <unique> <silent> <leader>h0 :call exUtility#HighlightCancle(0)<CR>
+endif
 
 command -narg=? -complete=customlist,exUtility#CompleteBySymbolFile HL1 call exUtility#Highlight_Text(1, "<args>")
 command -narg=? -complete=customlist,exUtility#CompleteBySymbolFile HL2 call exUtility#Highlight_Text(2, "<args>")
 command -narg=? -complete=customlist,exUtility#CompleteBySymbolFile HL3 call exUtility#Highlight_Text(3, "<args>")
 command -narg=? -complete=customlist,exUtility#CompleteBySymbolFile HL4 call exUtility#Highlight_Text(4, "<args>")
 
-nnoremap <unique> <silent> <a-0> :call exUtility#HighlightCancle(0)<CR>
 nnoremap <unique> <silent> <Leader>0 :call exUtility#HighlightCancle(0)<CR>
 nnoremap <unique> <silent> <Leader>1 :call exUtility#HighlightCancle(1)<CR>
 nnoremap <unique> <silent> <Leader>2 :call exUtility#HighlightCancle(2)<CR>
@@ -642,8 +649,6 @@ if has("gui_running")
         nnoremap <unique> <silent> <A-F7> :call exUtility#Explore(expand("%:p:h"))<CR>
     endif
 endif
-" 
-" Tom.
 
 " project gen/copy/build
 command -narg=? -complete=customlist,exUtility#CompleteGMakeArgs GMake call exUtility#GCCMake("<args>")
@@ -663,7 +668,7 @@ nnoremap <unique> <silent> <Leader>gv :call exUtility#ViewInheritsImage()<CR>
 command LINE call exUtility#PutLine(86, '-')
 command -narg=1 NSS call exUtility#PutNamespaceStart("<args>")
 command -narg=1 NSE call exUtility#PutNamespaceEnd("<args>")
-command -narg=1 NS call exUtility#PutNamespace("<args>")
+command -range -narg=1 NS call exUtility#PutNamespace("<args>", <line1>, <line2>)
 command HEADER call exUtility#PutHeader()
 command SEP call exUtility#PutSeparate()
 command SEG call exUtility#PutSegment()
@@ -769,7 +774,7 @@ let g:exQF_close_when_selected = 0
 let g:exQF_window_direction = 'bel'
 
 " ------------------------------------------------------------------ 
-" Desc: exMacroHightlight
+" Desc: exMacroHighlight
 " ------------------------------------------------------------------ 
 
 nnoremap <unique> <silent> <Leader>aa :ExmhSelectToggle<CR>
@@ -964,6 +969,9 @@ let g:exES_project_cmd = 'EXProject'
 
 let g:exES_ImageViewer = ''
 let g:exES_WebBrowser = ''
+
+" NOTE: if you have different programme path and settings, pls create your own vimrc under $HOME, and define these variables by yourself.
+"       And don't forget sourced this rc at the end. 
 if has("gui_running")
     if has("win32")
         let g:exES_WebBrowser = 'c:\Program Files\Mozilla Firefox\firefox.exe'
