@@ -1777,7 +1777,6 @@ function exUtility#CursorJump( search_pattern, search_direction ) " <<<
     else
         silent exec jump_line
     endif
-    call exUtility#HighlightSelectLine()
 endfunction " >>>
 
 "/////////////////////////////////////////////////////////////////////////////

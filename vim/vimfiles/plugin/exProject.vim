@@ -374,6 +374,9 @@ function g:exPJ_InitSelectWindow() " <<<
     nnoremap <silent> <buffer> <C-Up> :call exUtility#CursorJump( 'ErrorLog.err', 'up' )<CR>
     nnoremap <silent> <buffer> <C-Down> :call exUtility#CursorJump( 'ErrorLog.err', 'down' )<CR>
 
+    nnoremap <silent> <buffer> <C-k> :call exUtility#CursorJump( '\[\CF\]', 'up' )<CR>
+    nnoremap <silent> <buffer> <C-j> :call exUtility#CursorJump( '\[\CF\]', 'down' )<CR>
+
     "
     nnoremap <silent> <buffer> o  :call <SID>exPJ_CreateNewFile()<CR>
     nnoremap <silent> <buffer> O  :call <SID>exPJ_CreateNewFold()<CR>
@@ -381,9 +384,6 @@ function g:exPJ_InitSelectWindow() " <<<
     " Autocommands to keep the window the specified size
     au WinLeave <buffer> :call s:exPJ_RefreshWindow()
     " au CursorMoved <buffer> :call exUtility#HighlightSelectLine()
-
-    " buffer command
-    command -buffer RM call s:exPJ_RemoveEmptyDir()
 
     " init filter variables
     call s:exPJ_UpdateFilters ()
