@@ -57,7 +57,7 @@ if !exists('g:exMB_window_width_increment')
 endif
 
 " ------------------------------------------------------------------ 
-" Desc: go back to edit buffer
+" Desc: placement of the window
 " 'topleft','botright'
 " ------------------------------------------------------------------ 
 
