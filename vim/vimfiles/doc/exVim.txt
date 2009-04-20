@@ -1326,10 +1326,17 @@ Default Key:
 <
 															 *ExtsStackToggle*
 :ExtsStackToggle
-	Open the exTagSelect stack-window.
+	Open the exTagSelect stack-window. Recommend mapping:
 >
 		nnoremap <unique> <silent> <Leader>tt :ExtsStackToggle<CR>
 <
+																       *TSigc*
+:TSigc
+	Set ignore case for tag search. 
+
+																     *TSnoigc*
+:TSnoigc
+	Set no-ignore case for tag search. 
 
 ------------------------------------------------------------------------------
 3.5. exSymbolTable                                             *exSymbolTable*
@@ -1412,11 +1419,99 @@ Default Key:
 
 ------------------------------------------------------------------------------
 3.5.2. Key Mappings                               	  *exSymbolTable-mappings*
-    TODO
+
+												 *exSymbolTable-select-symbol*
+<return>
+<2-leftmouse>
+	Select a tag from select/quickview window, when select, it will use 
+	g:exSL_SymbolSelectCmd to execute the tag.
+
+												 *exSymbolTable-pickup-symbol*
+<c-return>
+	This operation will pick up the word in current line, and list matched
+	symbols in quickview window.
+
+												 *exSymbolTable-resize-window*
+<space>
+	Resize the exSymbolTable plugin window by exSL_window_height_increment/
+	exSL_window_width_increment
+
+												  *exSymbolTable-close-window*
+<esc>
+	Close the exSymbolTable plugin window.
+
+									   *exSymbolTable-swtich-to-select-window*
+<ctrl-right>                              
+	Switch to select-window when you are in quickview-window
+
+									*exSymbolTable-swtich-to-quickview-window*
+<ctrl-left>                              
+	Switch to quickview-window when you are in select-window
+
+									    *exSymbolTable-pickup-matched-symbols*
+<leader>r
+	Pick up symbols those have matched patterns, and list them in quickview 
+	window. The matched pattern gives by / or # search result.
+
+									  *exSymbolTable-pickup-unmatched-symbols*
+<leader>d
+	Pick up symbols those have unmatched patterns, and list them in quickview 
+	window. The matched pattern gives by / or # search result.
 
 ------------------------------------------------------------------------------
 3.5.3. Commands                               	      *exSymbolTable-commands*
-    TODO
+
+																		  *SL*  
+:SL {tag-name}
+	locate first matched {tag-name} in exSymbolTable select-window.
+	You can use <tab> to get matched tags when inputing tag names.
+
+																		*SLPR*
+:SLPR {tag-name}
+	list matched {tag-name} in exSymbolTable quickview-window.
+	You can use <tab> to get matched tags when inputing tag names.
+
+																		*SLPD*
+:SLPD {tag-name}
+	list unmatched {tag-name} in exSymbolTable quickview-window.
+	You can use <tab> to get unmatched tags when inputing tag names.
+
+															*ExslSelectToggle*
+:ExslSelectToggle
+	Open the exSymbolTable select-window. Recommend mapping:
+>
+		nnoremap <unique> <silent> <Leader>ss :ExslSelectToggle<CR>
+<
+													     *ExslQuickViewToggle*
+:ExslQuickViewToggle
+	Open the exSymbolTable quickview-window. Recommend mapping:
+>
+		nnoremap <unique> <silent> <Leader>sq :ExslQuickViewToggle<CR>
+<
+
+															  *ExslGoDirectly*
+:ExslGoDirectly
+	Use word under current cursor (<cword>) as tag name, search and list the 
+	possible results in quickview-window. Recommend mapping:
+>
+		nnoremap <unique> <silent> <Leader>sg :ExslGoDirectly<CR>
+<
+
+															 *ExslQuickSearch*
+:ExslQuickSearch
+	Open exSymbolTable select-window and insert search symbole '/' in command
+	line to help quick search a symbol in the window. Recommend mapping:
+>
+		nmap <unique> <A-S-l> :ExslQuickSearch<CR>/
+<
+
+																       *SLigc*
+:SLigc
+	Set ignore case for symbol table item search. 
+
+																     *SLnoigc*
+:SLnoigc
+	Set no-ignore case for symbol table item search. 
 
 ------------------------------------------------------------------------------
 3.6. exGlobalSearch                                           *exGlobalSearch*
