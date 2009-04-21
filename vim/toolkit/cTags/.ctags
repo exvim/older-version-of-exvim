@@ -2,16 +2,16 @@
 --langmap=ini:.ini
 --regex-ini=/^[ \t]*\[(.*)\]/\1/b,block/
 --regex-ini=/^[ \t]*([^\[=]+)=(.*)/\1/k,key/
---langdef=UnrealScript
---langmap=UnrealScript:.uc
---regex-UnrealScript=/^[ \t]*[cC]lass[ \t]+([a-zA-Z0-9_]+)/\1/c,class/
---regex-UnrealScript=/^[ \t]*[sS]tate[() \t]+([a-zA-Z0-9]+)/\1/s,state/
---regex-UnrealScript=/^[ \t]*[sS]imulated[ \t]*(.*)[ \t]+([a-zA-Z0-9_]+)\(/\2/i,simulated/
---regex-UnrealScript=/^[ \t]*[eE]vent[ \t]*[^ \t]*[ \t]+([a-zA-Z0-9_]+)\(/\1/e,event/
---regex-UnrealScript=/^[ \t]*[fF]unction[ \t]*(.*)[ \t]+([a-zA-Z0-9_]+)\(/\2/f,function/
---regex-UnrealScript=/^[ \t]*[eE]xec[ \t]*(.*)[ \t]+([a-zA-Z0-9_]+)\(/\2/x,exec/
---regex-UnrealScript=/^[ \t]*[sS]truct[ \t]*(.*)[ \t]+([a-zA-Z0-9_]+)/\2/t,struct/
---regex-UnrealScript=/^[ \t]*[eE]num[ \t]*(.*)[ \t]+([a-zA-Z0-9_]+)/\2/m,enum/
---langdef=Math
---langmap=Math:.m
---regex-Math=/^[ \t]*function([] A-Za-z0-9,_[]+=[ ]?|[ ]+)([^.(]+).*$/\2/f,function/
+--langdef=uc
+--langmap=uc:.uc
+--regex-uc=/^[ \t]*[cC]lass[ \t]+([a-zA-Z0-9_]+)/\1/c,class/
+--regex-uc=/^[ \t]*[sS]tate[() \t]+([a-zA-Z0-9]+)/\1/s,state/
+--regex-uc=/^[ \t]*[sS]imulated[ \t]*(.*)[ \t]+([a-zA-Z0-9_]+)\(/\2/i,simulated/
+--regex-uc=/^[ \t]*[eE]vent[ \t]*[^ \t]*[ \t]+([a-zA-Z0-9_]+)\(/\1/e,event/
+--regex-uc=/^[ \t]*[fF]unction[ \t]*(.*)[ \t]+([a-zA-Z0-9_]+)\(/\2/f,function/
+--regex-uc=/^[ \t]*[eE]xec[ \t]*(.*)[ \t]+([a-zA-Z0-9_]+)\(/\2/x,exec/
+--regex-uc=/^[ \t]*[sS]truct[ \t]*(.*)[ \t]+([a-zA-Z0-9_]+)/\2/t,struct/
+--regex-uc=/^[ \t]*[eE]num[ \t]*(.*)[ \t]+([a-zA-Z0-9_]+)/\2/m,enum/
+--langdef=math
+--langmap=math:.m
+--regex-math=/^[ \t]*function([] A-Za-z0-9,_[]+=[ ]?|[ ]+)([^.(]+).*$/\2/f,function/

@@ -18,560 +18,800 @@ Last change: 2009 April 10
 ==============================================================================
 CONTENTS                                                      *exVim-contents*
 
-		1. Intro............................................|Intro|
-		2. Getting Start....................................|GettingStart|
-			2.1 Install.....................................|Install|
-			2.2 Create vimentry.............................|Create-vimentry|
-			2.3 Create Project..............................|Create-Project|
-			2.4 Update Project..............................|Update-Project|
-			2.5 Basic Concept...............................|Basic-Concept|
-			2.6 Basic Operation.............................|Basic-Operation|
-		3. Details..........................................|Details|
-			3.1 exUtility...................................|exUtility|
-				3.1.1 Variables.............................|exUtility-variables|
-				3.1.2 Recommend Mappings....................|exUtility-mappings|
-				3.1.3 Recommend Commands....................|exUtility-commands|
-			3.2 exEnvironment...............................|exEnvironment|
-				3.2.1 Variables.............................|exEnvironment-variables|
-				3.2.2 Update Function.......................|exEnvironment-functions|
-			3.3 exProject...................................|exProject|
-				3.3.1 Variables.............................|exProject-variables|
-				3.3.2 Key Mappings..........................|exProject-mappings|
-				3.3.3 Commands..............................|exProject-commands|
-			3.4 exTagSelect.................................|exTagSelect|
-				3.4.1 Variables.............................|exTagSelect-variables|
-				3.4.2 Key Mappings..........................|exTagSelect-mappings|
-				3.4.3 Commands..............................|exTagSelect-commands|
-			3.5 exSymbolTable...............................|exSymbolTable|
-				3.5.1 Variables.............................|exSymbolTable-variables|
-				3.5.2 Key Mappings..........................|exSymbolTable-mappings|
-				3.5.3 Commands..............................|exSymbolTable-commands|
-			3.6 exGlobalSearch..............................|exGlobalSearch|
-				3.6.1 Variables.............................|exGlobalSearch-variables|
-				3.6.2 Key Mappings..........................|exGlobalSearch-mappings|
-				3.6.3 Commands..............................|exGlobalSearch-commands|
-			3.7 exQuickFix..................................|exQuickFix|
-				3.7.1 Variables.............................|exQuickFix-variables|
-				3.7.2 Key Mappings..........................|exQuickFix-mappings|
-				3.7.3 Commands..............................|exQuickFix-commands|
-			3.8 exMacroHighlight............................|exMacroHighlight|
-				3.8.1 Variables.............................|exMacroHighlight-variables|
-				3.8.2 Key Mappings..........................|exMacroHighlight-mappings|
-				3.8.3 Commands..............................|exMacroHighlight-commands|
-			3.9 exCscope....................................|exCscope|
-				3.9.1 Variables.............................|exCscope-variables|
-				3.9.2 Key Mappings..........................|exCscope-mappings|
-				3.9.3 Commands..............................|exCscope-commands|
-			3.10 exMarksBrowser.............................|exMarksBrowser|
-				3.10.1 Variables............................|exMarksBrowser-variables|
-				3.10.2 Key Mappings.........................|exMarksBrowser-mappings|
-				3.10.3 Commands.............................|exMarksBrowser-commands|
-		4. Tips & Tricks....................................|Tips-And-Tricks|
-		5. Contact..........................................|Contact|
+    1. Intro............................................|Intro|
+    2. Getting Start....................................|GettingStart|
+        2.1 Install.....................................|Install|
+        2.2 Create vimentry.............................|Create-vimentry|
+        2.3 Create Project..............................|Create-Project|
+        2.4 Update Project..............................|Update-Project|
+        2.5 Basic Concept...............................|Basic-Concept|
+        2.6 Basic Operation.............................|Basic-Operation|
+    3. Details..........................................|Details|
+        3.1 exUtility...................................|exUtility|
+            3.1.1 Variables.............................|exUtility-variables|
+            3.1.2 Recommend Commands....................|exUtility-commands|
+            3.1.3 Recommend Mappings....................|exUtility-mappings|
+        3.2 exEnvironment...............................|exEnvironment|
+            3.2.1 Variables.............................|exEnvironment-variables|
+            3.2.2 Update Function.......................|exEnvironment-functions|
+        3.3 exProject...................................|exProject|
+            3.3.1 Variables.............................|exProject-variables|
+            3.3.2 Commands..............................|exProject-commands|
+            3.3.3 Key Mappings..........................|exProject-mappings|
+        3.4 exTagSelect.................................|exTagSelect|
+            3.4.1 Variables.............................|exTagSelect-variables|
+            3.4.2 Commands..............................|exTagSelect-commands|
+            3.4.3 Key Mappings..........................|exTagSelect-mappings|
+        3.5 exSymbolTable...............................|exSymbolTable|
+            3.5.1 Variables.............................|exSymbolTable-variables|
+            3.5.2 Commands..............................|exSymbolTable-commands|
+            3.5.3 Key Mappings..........................|exSymbolTable-mappings|
+        3.6 exGlobalSearch..............................|exGlobalSearch|
+            3.6.1 Variables.............................|exGlobalSearch-variables|
+            3.6.2 Commands..............................|exGlobalSearch-commands|
+            3.6.3 Key Mappings..........................|exGlobalSearch-mappings|
+        3.7 exQuickFix..................................|exQuickFix|
+            3.7.1 Variables.............................|exQuickFix-variables|
+            3.7.2 Commands..............................|exQuickFix-commands|
+            3.7.3 Key Mappings..........................|exQuickFix-mappings|
+        3.8 exMacroHighlight............................|exMacroHighlight|
+            3.8.1 Variables.............................|exMacroHighlight-variables|
+            3.8.2 Commands..............................|exMacroHighlight-commands|
+            3.8.3 Key Mappings..........................|exMacroHighlight-mappings|
+        3.9 exCscope....................................|exCscope|
+            3.9.1 Variables.............................|exCscope-variables|
+            3.9.2 Commands..............................|exCscope-commands|
+            3.9.3 Key Mappings..........................|exCscope-mappings|
+        3.10 exMarksBrowser.............................|exMarksBrowser|
+            3.10.1 Variables............................|exMarksBrowser-variables|
+            3.10.2 Commands.............................|exMarksBrowser-commands|
+            3.10.3 Key Mappings.........................|exMarksBrowser-mappings|
+    4. Tips & Tricks....................................|Tips-And-Tricks|
+    5. Contact..........................................|Contact|
 
 ==============================================================================
 1. Intro                                                               *Intro*
 
 What is "exVim"?? ~
 
-	exVim is the core part of exDev, which is a develop package help you develop 
-	project as a IDE like environment but all in vim. 
-	
-	The exVim consists of several of vim scripts, some of them are written by 
-	exDev groups, and others are some patched version or orignal copy from vim 
-	scripts web-site. The main purpose for exVim is let each project have its 
-	own vim settings ( for example: working path, tag files, project files, 
-	cscope files, ID files... ), and start project by using one file to record 
-	these settings, that's call it .vimentry file. It is similar with .sln 
-	file in visual studio. 
+    exVim is the core part of exDev, which is a develop package help you develop 
+    project as a IDE like environment but all in vim. 
+    
+    The exVim consists of several of vim scripts, some of them are written by 
+    exDev groups, and others are some patched version or orignal copy from vim 
+    scripts web-site. The main purpose for exVim is let each project have its 
+    own vim settings ( for example: working path, tag files, project files, 
+    cscope files, ID files... ), and start project by using one file to record 
+    these settings, that's call it .vimentry file. It is similar with .sln 
+    file in visual studio. 
 
 What can "exVim" do??~
 
-	exVim allow you to quick search results in tags, ID, cscope, project file, 
-	and so on. Also it provide some filter method when you need to collect 
-	search result or search other word base on last time results.
-	
-	The main plugin in exVim are:
+    exVim allow you to quick search results in tags, ID, cscope, project file, 
+    and so on. Also it provide some filter method when you need to collect 
+    search result or search other word base on last time results.
+    
+    The main plugin in exVim are:
 
-		* autoload\exUtility.vim~
-			Basic exVim libaray, help handle windows, files and some low level
-			stuff. You can check chapter 3.1 exUtility for detail.   
-		
-		* plugin\exEnvironment.vim~
-			This plugin help create and set up "vimentry" file. When you
-			create a vimentry file with suffix .vimentry, and open it first
-			time, the function in this plugin been called by parsing the
-			contents in the file, and set up the exVim variable at init phase.   
-		
-		* plugin\exProject.vim~
-			exProject is a similar plugin with the famous vim script -- project.vim,
-			but more efficient in creating/refreshing project files. Also it
-			will have some post-processing to help create other files required
-			for exVim. And you can define different edit behavior for
-			different file type ( for example, open error file in quickfix window).
-		
-		* plugin\exTagSelect.vim~
-			exTagSelect help to browse tags you selected in plugin window. Also
-			can record and shows tag jumps in stack window.
-		
-		* plugin\exSymbolTable.vim~
-			exSymbolTable will list tag names from tags you created in plugin window, 
-			alos you can search/filter tags in the list, and jump to the tag if needed. 
-		
-		* plugin\exGlobalSearch.vim~
-			exGlobalSearch used ID created by mkid as global search database
-			for your project. It can list and filter the search results, also 
-			jump to the result if needed.
-		
-		* plugin\exQuickFix.vim~
-			exQuickFix help to shows the quickfix result in plugin window.
-		
-		* plugin\exMacroHighlight.vim~
-			exMacroHighlight used a simple syntax to let usr define macros,
-			and dynamic highlight enable/disable macros, similar like the gray
-			color macro-highlight in visual studio.
-		
-		* plugin\exCscope.vim~
-			exCscope help browse cscope results in plugin-window.
-		
-		* plugin\exMarksBrowser.vim~
-			exMarksBrowser help browse marks in plugin-window, also you can
-			jump to marks you select.
-		
-		* plugin\exSearchComplete.vim~
-			exSearchComplete enhance the '/' search by pressing <TAB>, it will
-			auto-complete the search result based on your input.
+        * autoload\exUtility.vim~
+            Basic exVim libaray, help handle windows, files and some low level
+            stuff. You can check chapter 3.1 exUtility for detail.   
+        
+        * plugin\exEnvironment.vim~
+            This plugin help create and set up "vimentry" file. When you
+            create a vimentry file with suffix .vimentry, and open it first
+            time, the function in this plugin been called by parsing the
+            contents in the file, and set up the exVim variable at init phase.   
+        
+        * plugin\exProject.vim~
+            exProject is a similar plugin with the famous vim script -- project.vim,
+            but more efficient in creating/refreshing project files. Also it
+            will have some post-processing to help create other files required
+            for exVim. And you can define different edit behavior for
+            different file type ( for example, open error file in quickfix window).
+        
+        * plugin\exTagSelect.vim~
+            exTagSelect help to browse tags you selected in plugin window. Also
+            can record and shows tag jumps in stack window.
+        
+        * plugin\exSymbolTable.vim~
+            exSymbolTable will list tag names from tags you created in plugin window, 
+            alos you can search/filter tags in the list, and jump to the tag if needed. 
+        
+        * plugin\exGlobalSearch.vim~
+            exGlobalSearch used ID created by mkid as global search database
+            for your project. It can list and filter the search results, also 
+            jump to the result if needed.
+        
+        * plugin\exQuickFix.vim~
+            exQuickFix help to shows the quickfix result in plugin window.
+        
+        * plugin\exMacroHighlight.vim~
+            exMacroHighlight used a simple syntax to let usr define macros,
+            and dynamic highlight enable/disable macros, similar like the gray
+            color macro-highlight in visual studio.
+        
+        * plugin\exCscope.vim~
+            exCscope help browse cscope results in plugin-window.
+        
+        * plugin\exMarksBrowser.vim~
+            exMarksBrowser help browse marks in plugin-window, also you can
+            jump to marks you select.
+        
+        * plugin\exSearchComplete.vim~
+            exSearchComplete enhance the '/' search by pressing <TAB>, it will
+            auto-complete the search result based on your input.
 
 How can I install "exVim"~
 
-	Check section 2.1. Install for detail.
+    Check section 2.1. Install for detail.
 
 ==============================================================================
 2. Getting Start                                               *Getting-Start*
 
-	This section will guide you how to install exVim, and the basic concepts
-	and operation in exVim.
+    This section will guide you how to install exVim, and the basic concepts
+    and operation in exVim.
 
 ------------------------------------------------------------------------------
 2.1. Install                                                         *Install*
 
-	Copy toolkit to $VIM\toolkit
-	Copy vimfiles to $VIM\vimfiles
-	exVim needs you to have tools below:
-		* ctags
-		* gawk
-		* id-utils
-		* sed
-		* make                  (optional)
-		* cscope                (optional)
-		* src-highlight         (optional)
-		* Graphviz              (optional)
-		* Python25 + pywin32    (optional)
-	Most of them could be found in MinGW and GnuWin32. 
-	
-	In win32, After you install the tools, you need to set the install 
-	path of these tools in environment so that you can access them by 
-	type the short name in command window. Also you need to add a global
-	variable in Environment Settings, named EX_DEV, the value should be your
-	upper directory of vim install path, for example if your vim install in
-	d:\exDev\vim, then the EX_DEV=d:\exDev
-	
-	You can check the doc\install.win32.txt for details.
-	
-	*Todo	install/inherit _exvimrc
+    Copy toolkit to $VIM\toolkit
+    Copy vimfiles to $VIM\vimfiles
+    exVim needs you to have tools below:
+        * ctags
+        * gawk
+        * id-utils
+        * sed
+        * make                  (optional)
+        * cscope                (optional)
+        * src-highlight         (optional)
+        * Graphviz              (optional)
+        * Python25 + pywin32    (optional)
+    Most of them could be found in MinGW and GnuWin32. 
+    
+    In win32, After you install the tools, you need to set the install 
+    path of these tools in environment so that you can access them by 
+    type the short name in command window. Also you need to add a global
+    variable in Environment Settings, named EX_DEV, the value should be your
+    upper directory of vim install path, for example if your vim install in
+    d:\exDev\vim, then the EX_DEV=d:\exDev
+    
+    You can check the doc\install.win32.txt for details.
+    
+    *Todo    install/inherit _exvimrc
 
 ------------------------------------------------------------------------------
 2.2. Setup vimentry                                           *Setup-vimentry*
     
-	Once you install and setup all tools and variables exVim needed, you can
-	start-up exVim by create a .vimentry file under your project's root directory. 
-	For instance, you have a project named MyProject in d:\Projects\MyProject,
-	you should create MyProject.vimentry in d:\Projects\MyProject, then run the
-	file by gVim, you may properly see a scene like this:
+    Once you install and setup all tools and variables exVim needed, you can
+    start-up exVim by create a .vimentry file under your project's root directory. 
+    For instance, you have a project named MyProject in d:\Projects\MyProject,
+    you should create MyProject.vimentry in d:\Projects\MyProject, then run the
+    file by gVim, you may properly see a scene like this:
 >
-		______________________________________________________________________
-		|exProject      |_____________________________________________________
-		|Window         | 1  CWD=D:/Projects/MyProject                                
-		|               | 2  Version=12                                      
-		|               | 3                                                  
-		|               | 4  -- exUtility Settings --                        
-		|               | 5                                                  
-		|               | 6  Project=./_vimfiles/vimdev.exproject            
-		|               | 7  Tag=./_vimfiles/tags                            
-		|               | 8  ID=./_vimfiles/ID                               
-		|               | 9  Symbol=./_vimfiles/symbol                       
-		|               | 10 Macro=./_vimfiles/macro                         
-		|               | 11 Cscope=./_vimfiles/cscope.out                   
-		|               | 12 Inherits=./_vimfiles/inherits                   
-		|               | 13                                                 
-		|               | 14 vimentryRefs+=                                  
-		|               | 15                                                 
-		|               | 16 -- LookupFile Settings --                       
-		|               | 17                                                 
-		|               | 18 LookupFileTag=./_vimfiles/filenametags          
-		|               | 19                                                 
-		|               | 20 -- Visual Studio Settings --                    
-		|               | 21                                                 
-		|               | 22 vsTaskList=./_vimfiles/vs_task_list.txt         
-		|               | 23 vsOutput=./_vimfiles/vs_output.txt              
-		|               | 24 ........
-		|               | 25 ........
-		|               | .. ........
-		|               | 50 
-		|               |~                                                   
-		|               |~                                                   
+        ______________________________________________________________________
+        |exProject      |_____________________________________________________
+        |Window         | 1  CWD=D:/Projects/MyProject                                
+        |               | 2  Version=12                                      
+        |               | 3                                                  
+        |               | 4  -- exUtility Settings --                        
+        |               | 5                                                  
+        |               | 6  Project=./_vimfiles/vimdev.exproject            
+        |               | 7  Tag=./_vimfiles/tags                            
+        |               | 8  ID=./_vimfiles/ID                               
+        |               | 9  Symbol=./_vimfiles/symbol                       
+        |               | 10 Macro=./_vimfiles/macro                         
+        |               | 11 Cscope=./_vimfiles/cscope.out                   
+        |               | 12 Inherits=./_vimfiles/inherits                   
+        |               | 13                                                 
+        |               | 14 vimentryRefs+=                                  
+        |               | 15                                                 
+        |               | 16 -- LookupFile Settings --                       
+        |               | 17                                                 
+        |               | 18 LookupFileTag=./_vimfiles/filenametags          
+        |               | 19                                                 
+        |               | 20 -- Visual Studio Settings --                    
+        |               | 21                                                 
+        |               | 22 vsTaskList=./_vimfiles/vs_task_list.txt         
+        |               | 23 vsOutput=./_vimfiles/vs_output.txt              
+        |               | 24 ........
+        |               | 25 ........
+        |               | .. ........
+        |               | 50 
+        |               |~                                                   
+        |               |~                                                   
 <
-	The main page is the contents of vimentry files you create, it is
-	generated automatically by script first time you open the file, you can
-	change the settings in it, and it will load your settings every time you
-	save or open it. But custom the vimentry file is not recommanded for
-	beginner.
-	
-	The project window is left beside the main page, we'll discuss it in next
-	section.
-	
-	Also, if you install the minibuffer plugin, you'll see the minibuffer
-	window above the main page ( I recommand you to install the patched
-	version of minibuffer scripts, and take the settings in _exvimrc )
+    The main page is the contents of vimentry files you create, it is
+    generated automatically by script first time you open the file, you can
+    change the settings in it, and it will load your settings every time you
+    save or open it. But custom the vimentry file is not recommanded for
+    beginner.
+    
+    The project window is left beside the main page, we'll discuss it in next
+    section.
+    
+    Also, if you install the minibuffer plugin, you'll see the minibuffer
+    window above the main page ( I recommand you to install the patched
+    version of minibuffer scripts, and take the settings in _exvimrc )
 
 ------------------------------------------------------------------------------
 2.3. Create Project                                           *Create-Project*
 
-	* Generate Project Files~
-		Move your cursor to the exProject window, then press \C (<leader>C) to
-		Create a project file browser. Then you will see three input dialog to let
-		you fill the project root directory, file filters and sub-directory name
-		filters. Once you fill up all the values, the exProject plugin start
-		generating files. When finish, save the project file by type :w, then you
-		can open & edit file by press <Enter> on the filename in exProject window.
-	
-	* Generate tags,ID ...~
-		After you generate files in exProject window and save it, you will see
-		MyProject.exproject, id-lang-autogen.map and filenametags in _vimfiles
-		directory. Now we will generate couple of files for project. Type
-		:Up[date] in the vim we opened above, the command will find if there is
-		a quick_gen_project_xxx.(bat\|sh) in our project root directory. If not, it
-		will list project type and let user chooes one. Here for common use we
-		chooes "all" which will copy quick_gen_project_all.bat from
-		toolkit/batch/quick_gen_project_all.bat to your project root directory 
-		in win32 ( in unix/linux it is from toolkit/bash/quick_gen_project_all.sh ),
-		then running the programme and generate tags, ID, symbol, cscope file,
-		inherits... that will be used for exVim plugins.
+    * Generate Project Files~
+        Move your cursor to the exProject window, then press \C (<leader>C) to
+        Create a project file browser. Then you will see three input dialog to let
+        you fill the project root directory, file filters and sub-directory name
+        filters. Once you fill up all the values, the exProject plugin start
+        generating files. When finish, save the project file by type :w, then you
+        can open & edit file by press <Enter> on the filename in exProject window.
+    
+    * Generate tags,ID ...~
+        After you generate files in exProject window and save it, you will see
+        MyProject.exproject, id-lang-autogen.map and filenametags in _vimfiles
+        directory. Now we will generate couple of files for project. Type
+        :Up[date] in the vim we opened above, the command will find if there is
+        a quick_gen_project_xxx.(bat\|sh) in our project root directory. If not, it
+        will list project type and let user chooes one. Here for common use we
+        chooes "all" which will copy quick_gen_project_all.bat from
+        toolkit/batch/quick_gen_project_all.bat to your project root directory 
+        in win32 ( in unix/linux it is from toolkit/bash/quick_gen_project_all.sh ),
+        then running the programme and generate tags, ID, symbol, cscope file,
+        inherits... that will be used for exVim plugins.
 
 ------------------------------------------------------------------------------
 2.4. Update Project                                           *Update-Project*
 
-	Most of project files in exVim don't have incremental update method, so once 
-	you modified your codes in the project, you want the modification added
-	into tags, ID and so on, you need to update those files manually.  
-	type :Up[date] will update all project files in _vimfiles directory. Also
-	you can update one kind of project file by giving argument in this
-	command. They are: ID,symbol,inherit,tag and cscope. The update processing
-	is asynchornous, you can still edit files, jump tags, global search key
-	words during update time cause the update programme won't change the files
-	unless it finished.
+    Most of project files in exVim don't have incremental update method, so once 
+    you modified your codes in the project, you want the modification added
+    into tags, ID and so on, you need to update those files manually.  
+    type :Up[date] will update all project files in _vimfiles directory. Also
+    you can update one kind of project file by giving argument in this
+    command. They are: ID,symbol,inherit,tag and cscope. The update processing
+    is asynchornous, you can still edit files, jump tags, global search key
+    words during update time cause the update programme won't change the files
+    unless it finished.
 
 ------------------------------------------------------------------------------
 2.5. Basic Concept                                             *Basic-Concept*
 
-	- Concept of different window~
+    - Concept of different window~
 
-	Before we introduce some basic operation, let's learn some concept so we
-	can have a better understand how exVim works.
-	exVim divide windows into tree types:
-	
-		1. ex-plugin window
-			the window will keep a buffer create by ex plugins/scripts,
-			also it will register the buffer name into g:exUT_plugin_list
-			automatically, so that system can know this is a window/buffer 
-			for plugin.
-		
-		2. register-plugin window
-			the window is create by other plugin, but you know the buffer it
-			created, and manually register the buffer name into g:exUT_plugin_list. 
-			At this point the system also know is the window a plugin window.
-			It is useful for plugin like MiniBufExplorer or Taglist, they have
-			a fixed buffer in a window it created. Here is some of my register
-			value: 
+    Before we introduce some basic operation, let's learn some concept so we
+    can have a better understand how exVim works.
+    exVim divide windows into tree types:
+    
+        1. ex-plugin window
+            the window will keep a buffer create by ex plugins/scripts,
+            also it will register the buffer name into g:exUT_plugin_list
+            automatically, so that system can know this is a window/buffer 
+            for plugin.
+        
+        2. register-plugin window
+            the window is create by other plugin, but you know the buffer it
+            created, and manually register the buffer name into g:exUT_plugin_list. 
+            At this point the system also know is the window a plugin window.
+            It is useful for plugin like MiniBufExplorer or Taglist, they have
+            a fixed buffer in a window it created. Here is some of my register
+            value: 
 >
-			let g:exUT_plugin_list = ["-MiniBufExplorer-","__Tag_List__","\[Lookup File\]"] 
+            let g:exUT_plugin_list = ["-MiniBufExplorer-","__Tag_List__","\[Lookup File\]"] 
 <
-		
-		3. edit window
-			Those window not in the g:exUT_plugin_list will treat as edit
-			window. And the last edit window will be record, so that you can
-			jump or open new buffer in that window while you are operate in
-			ex-plugin/register-plugin window  
-		
-	- Concept of different ex-plugin window~
-	
-	most ex-plugins have two to three window, but the main window which list
-	results for selecting always called 'select window', And the window which
-	list results from filter process always called 'quickview window'. Some
-	plugin have a 'stack window' to shows the jump history.  
-	
-	- Concept of the ex-plugin window's position~
-	
-	different ex-plugins' window can be showed at the same time if they don't 
-	use same window positoin. If a window of ex-plugin opened in a position
-	that have another window of ex-plugin, the old one will closed.   
+        
+        3. edit window
+            Those window not in the g:exUT_plugin_list will treat as edit
+            window. And the last edit window will be record, so that you can
+            jump or open new buffer in that window while you are operate in
+            ex-plugin/register-plugin window  
+        
+    - Concept of different ex-plugin window~
+    
+    most ex-plugins have two to three window, but the main window which list
+    results for selecting always called 'select window', And the window which
+    list results from filter process always called 'quickview window'. Some
+    plugin have a 'stack window' to shows the jump history.  
+    
+    - Concept of the ex-plugin window's position~
+    
+    different ex-plugins' window can be showed at the same time if they don't 
+    use same window positoin. If a window of ex-plugin opened in a position
+    that have another window of ex-plugin, the old one will closed.   
 
 ------------------------------------------------------------------------------
 2.6. Basic Operation                                         *Basic-Operation*
 
-	Now you know how to create and update project, let's try some basic
-	commands.
-	
-	* exTagSelect~
-		:ExtsGoDirectly will search current word in tags, and show the search
-		result in "tag select" window. I map the command as:
-			nnoremap <unique> <silent> <Leader>] :ExtsGoDirectly<CR>
-		
-		:TS will receive the argument you put as tag name, search and
-		show the result in "tag select" window.
-	
-	* exSymbolTable~
-		:ExslSelectToggle will open the "symbol table select" window, which list all
-		symbol names in it. I map the command as: 
-			nnoremap <unique> <silent> <Leader>ss :ExslSelectToggle<CR>
-		You can search the symbol you want directly by using / or #. When you
-		confirm the search, you have two options:
-			1. Jump to the result directly by type <enter>.
-			2. List all matched search result, and list them in "symbol table quickview" 
-			   window. type <leader>r will accomplish this task.  Actually it 
-			   process by copy the search results of / or #, then close "symbol 
-			   table select" window, open the "symbol table quickview" window, 
-			   finally paste the filter results in the "symbol table quickview" window. 
-		
-		:ExslQuickViewToggle will open the "symbol table quickview" window.
-		
-		:SL will receive the argument you put as symbol name, then open the
-		"symbol table select" window, locate the cursor to the first matched pattern.
-		
-		:ExslGoDirectly will search and filter current word, list the matched
-		result in quickview window. I map the command as:
-		    nnoremap <unique> <silent> <Leader>sg :ExslGoDirectly<CR>
-	
-	* exGlobalSearch~
-		:ExgsGoDirectly will search current word as text in entire project,
-		and list the results in "global search select" window.  Currently we 
-		use id-utils as our global search engine, it require we create ID 
-		file before searching started. I map the command as: 
-			nnoremap <unique> <silent> <Leader>gg :ExgsSelectToggle<CR>
-		Also when you get the global search result, you have several options
-		to help you collect the things you really care. It is similar like the
-		filter method in exSymbolTable ( actually, the ex plugin series share
-		similar way to process filtering search results ). So you can:
-			1. press <enter> to jump to the result directly in "global search 
-			   select" window
-			2. search another pattern in the "global search select" window by
-			   / or #, when you confirm search, you can filter results by 
-			   typing: 
-			
-			   <leader>r  : pick and list matched contents pattern in 
-			                "globa search quickview" window 
-			   <leader>fr : pick and list matched file pattern in "global search 
-			                quickview" window
-			   <leader>gr : pick and list matched all pattern in "global search 
-			                quickview" window
-			
-			   <leader>d  : pick and list unmatched contents pattern in 
-			                "globa search quickview" window 
-			   <leader>fd : pick and list unmatched file pattern in "global search 
-			                quickview" window
-			   <leader>gd : pick and list unmatched all pattern in "global search 
-			                quickview" window
-			
-		:ExgsSelectToggle will open the "global search select" window. I map
-		the command as:
-			nnoremap <unique> <silent> <Leader>gs :ExgsSelectToggle<CR>
-		
-		:ExgsQuickViewToggle will open the "global search quickview" window. I map
-		the command as:
-			nnoremap <unique> <silent> <Leader>gq :ExgsQuickViewToggle<CR>
-	
-		:GS will receive the argument you put as global search key word, then search 
-		and list the results in "global search select" window.
-	
-	* exQuickFix~
-		:QF will receive the argument you put as quick-fix file, load it to
-		the quick fix buffer and show in QuickFix window.
-		
-		Also you can open a quickfix file (suffix .err) in exProject, the plugin will 
-		load the file to exQuickFix window automatically.
-	
-	* exCscope~
-		:CSIC will find files #including this file, and list the result in 
-		exCscope select window.
-		:CSI is similar with CSIC, just more than put an argument to specified the file name.
-		
-		:CSSD will treat current word as C symbol, find and list the result in 
-		exCscope select window.
-		:CSS is similar with CSSD, but you need to put an argument to specified the key word.
-		
-		:CSDD will treat current word as function name, find functoins called 
-		by this function, and list the result in exCscope select window.
-		:CSD is similar with CSDD, but you need to put an argument to specified the key word.
-		
-		:CSCD will treat current word as function name, find functoins calling 
-		this function, and list the result in exCscope select window.
-		:CSC is similar with CSCD, but you need to put an argument to specified the key word.
-	
-	* exMacroHighlight~
-		:ExmhSelectToggle will open the "macro highlight select" window.
-		I map the command as:
-			nnoremap <unique> <silent> <Leader>aa :ExmhSelectToggle<CR>
-		
-		When you open the window, you can now edit it by the syntax below to
-		define a macro group. the syntax: 
-		
-		GroupName1:
-			Macro1
-			Macro2
-			Macro3
-		
-		GroupName2:
-			Macro1
-			Macro2
-			Macro3
-		
-		
-		For example you have a c/cpp code like:
-		
-		#ifdef _M_DEBUG
-			....
-			....
-		#elif defined (_M_RELEASE)
-			....
-			....
-		#else
-			....
-			....
-		#endif
-		
-		you can write the the macro group as
-		
-		Group_Configure:
-		    _M_DEBUG
-		    _M_RELEASE
-		
-		then choose one of the macro, you will see the c/cpp code only highlight
-		the code of the selected macro, you can switch to other macro
-		dynamically.
-		
-	* exMarksBrowser~
-		:ExmbToggle will open the "marks browser" window, shows marks you
-		define and let you jump to it, I map the command as:
-			nnoremap <unique> <leader>ms :ExmbToggle<CR>
-	
-	* exUtility~
-		exUtility is a basic libaray provide functions for other script used
-		in exVim, but it still have some function can be mapped directly to
-		fulfill some simple task. Here are some recommanded mapping.
-		
-		Easy insert '#if 0' and '#endif' between visual selected block:
-			vnoremap <unique> <F12> :call exUtility#InsertIFZero()<CR>
-			nnoremap <unique> <F12> :call exUtility#RemoveIFZero()<CR>
-		
-		Switch quick between ex-plugin window and current edit window: 
-			nnoremap <unique> <silent><Leader><Tab> :call exUtility#SwitchBuffer()<CR>
-		
-		Close ex-plugin window when in edit window:
-			nmap <unique> <silent><Leader><ESC> :call exUtility#SwitchBuffer()<CR><ESC>
-		
-		Swap buffer between current edit and last edit:
-			nnoremap <unique> <silent> <C-Tab> :call exUtility#SwapToLastEditBuffer()<CR>
-		
-		Close current edit buffer and keep the window:
-		NOTE: when you use :q to unload a buffer, it will close the window for
-		      that buffer,too. That will lead to orderless windows at the end.
-		      this method will prevent the problem.
-			nnoremap <unique> <Leader>bd :call exUtility#Kwbd(1)<CR>
-		
-		Highlight words or visual blocks:
-			nnoremap <unique> <silent> <a-1> :call exUtility#Highlight_Normal(1)<CR>
-			vnoremap <unique> <silent> <a-1> :call exUtility#Highlight_Visual(1)<CR>
-			command -narg=? -complete=customlist,exUtility#CompleteBySymbolFile HL1 call exUtility#Highlight_Text(1, "<args>")
-			nnoremap <unique> <silent> <Leader>1 :call exUtility#HighlightCancle(1)<CR>
-			...
-			...
-			...
-			...
-			nnoremap <unique> <silent> <a-4> :call exUtility#Highlight_Normal(4)<CR>
-			vnoremap <unique> <silent> <a-4> :call exUtility#Highlight_Visual(4)<CR>
-			command -narg=? -complete=customlist,exUtility#CompleteBySymbolFile HL4 call exUtility#Highlight_Text(4, "<args>")
-			nnoremap <unique> <silent> <Leader>4 :call exUtility#HighlightCancle(4)<CR>
-		
-		Remove all highlight words or visual blocks:
-			nnoremap <unique> <silent> <Leader>0 :call exUtility#HighlightCancle(0)<CR>
-		
-		Draw the class inherits graphic by the name user gives and save the picture in
-		_vimfiles\_hierarchies\SymbolName.png:
-		NOTE: Need tool Graphviz (http://www.graphviz.org/).
-			command -narg=1 -complete=customlist,exUtility#CompleteBySymbolFile GV call exUtility#GenInheritsDot('<args>',"all")
+    Now you know how to create and update project, let's try some basic
+    commands.
+    
+    * exTagSelect~
+        :ExtsGoDirectly will search current word in tags, and show the search
+        result in "tag select" window. I map the command as:
+            nnoremap <unique> <silent> <Leader>] :ExtsGoDirectly<CR>
+        
+        :TS will receive the argument you put as tag name, search and
+        show the result in "tag select" window.
+    
+    * exSymbolTable~
+        :ExslSelectToggle will open the "symbol table select" window, which list all
+        symbol names in it. I map the command as: 
+            nnoremap <unique> <silent> <Leader>ss :ExslSelectToggle<CR>
+        You can search the symbol you want directly by using / or #. When you
+        confirm the search, you have two options:
+            1. Jump to the result directly by type <enter>.
+            2. List all matched search result, and list them in "symbol table quickview" 
+               window. type <leader>r will accomplish this task.  Actually it 
+               process by copy the search results of / or #, then close "symbol 
+               table select" window, open the "symbol table quickview" window, 
+               finally paste the filter results in the "symbol table quickview" window. 
+        
+        :ExslQuickViewToggle will open the "symbol table quickview" window.
+        
+        :SL will receive the argument you put as symbol name, then open the
+        "symbol table select" window, locate the cursor to the first matched pattern.
+        
+        :ExslGoDirectly will search and filter current word, list the matched
+        result in quickview window. I map the command as:
+            nnoremap <unique> <silent> <Leader>sg :ExslGoDirectly<CR>
+    
+    * exGlobalSearch~
+        :ExgsGoDirectly will search current word as text in entire project,
+        and list the results in "global search select" window.  Currently we 
+        use id-utils as our global search engine, it require we create ID 
+        file before searching started. I map the command as: 
+            nnoremap <unique> <silent> <Leader>gg :ExgsSelectToggle<CR>
+        Also when you get the global search result, you have several options
+        to help you collect the things you really care. It is similar like the
+        filter method in exSymbolTable ( actually, the ex plugin series share
+        similar way to process filtering search results ). So you can:
+            1. press <enter> to jump to the result directly in "global search 
+               select" window
+            2. search another pattern in the "global search select" window by
+               / or #, when you confirm search, you can filter results by 
+               typing: 
+            
+               <leader>r  : pick and list matched contents pattern in 
+                            "globa search quickview" window 
+               <leader>fr : pick and list matched file pattern in "global search 
+                            quickview" window
+               <leader>gr : pick and list matched all pattern in "global search 
+                            quickview" window
+            
+               <leader>d  : pick and list unmatched contents pattern in 
+                            "globa search quickview" window 
+               <leader>fd : pick and list unmatched file pattern in "global search 
+                            quickview" window
+               <leader>gd : pick and list unmatched all pattern in "global search 
+                            quickview" window
+            
+        :ExgsSelectToggle will open the "global search select" window. I map
+        the command as:
+            nnoremap <unique> <silent> <Leader>gs :ExgsSelectToggle<CR>
+        
+        :ExgsQuickViewToggle will open the "global search quickview" window. I map
+        the command as:
+            nnoremap <unique> <silent> <Leader>gq :ExgsQuickViewToggle<CR>
+    
+        :GS will receive the argument you put as global search key word, then search 
+        and list the results in "global search select" window.
+    
+    * exQuickFix~
+        :QF will receive the argument you put as quick-fix file, load it to
+        the quick fix buffer and show in QuickFix window.
+        
+        Also you can open a quickfix file (suffix .err) in exProject, the plugin will 
+        load the file to exQuickFix window automatically.
+    
+    * exCscope~
+        :CSIC will find files #including this file, and list the result in 
+        exCscope select window.
+        :CSI is similar with CSIC, just more than put an argument to specified the file name.
+        
+        :CSSD will treat current word as C symbol, find and list the result in 
+        exCscope select window.
+        :CSS is similar with CSSD, but you need to put an argument to specified the key word.
+        
+        :CSDD will treat current word as function name, find functoins called 
+        by this function, and list the result in exCscope select window.
+        :CSD is similar with CSDD, but you need to put an argument to specified the key word.
+        
+        :CSCD will treat current word as function name, find functoins calling 
+        this function, and list the result in exCscope select window.
+        :CSC is similar with CSCD, but you need to put an argument to specified the key word.
+    
+    * exMacroHighlight~
+        :ExmhSelectToggle will open the "macro highlight select" window.
+        I map the command as:
+            nnoremap <unique> <silent> <Leader>aa :ExmhSelectToggle<CR>
+        
+        When you open the window, you can now edit it by the syntax below to
+        define a macro group. the syntax: 
+>
+        	GroupName1:
+        	    Macro1
+        	    Macro2
+        	    Macro3
+        	
+        	GroupName2:
+        	    Macro1
+        	    Macro2
+        	    Macro3
+<
+        
+        
+        For example you have a c/cpp code like:
+        
+>
+        	#ifdef _M_DEBUG
+        	    ....
+        	    ....
+        	#elif defined (_M_RELEASE)
+        	    ....
+        	    ....
+        	#else
+        	    ....
+        	    ....
+        	#endif
+<        
+
+        you can write the the macro group as
+        
+        Group_Configure:
+            _M_DEBUG
+            _M_RELEASE
+        
+        then choose one of the macro, you will see the c/cpp code only highlight
+        the code of the selected macro, you can switch to other macro
+        dynamically.
+        
+    * exMarksBrowser~
+        :ExmbToggle will open the "marks browser" window, shows marks you
+        define and let you jump to it, I map the command as:
+            nnoremap <unique> <leader>ms :ExmbToggle<CR>
+    
+    * exUtility~
+        exUtility is a basic libaray provide functions for other script used
+        in exVim, but it still have some function can be mapped directly to
+        fulfill some simple task. Here are some recommanded mapping.
+        
+        Easy insert '#if 0' and '#endif' between visual selected block:
+            vnoremap <unique> <F12> :call exUtility#InsertIFZero()<CR>
+            nnoremap <unique> <F12> :call exUtility#RemoveIFZero()<CR>
+        
+        Switch quick between ex-plugin window and current edit window: 
+            nnoremap <unique> <silent><Leader><Tab> :call exUtility#SwitchBuffer()<CR>
+        
+        Close ex-plugin window when in edit window:
+            nmap <unique> <silent><Leader><ESC> :call exUtility#SwitchBuffer()<CR><ESC>
+        
+        Swap buffer between current edit and last edit:
+            nnoremap <unique> <silent> <C-Tab> :call exUtility#SwapToLastEditBuffer()<CR>
+        
+        Close current edit buffer and keep the window:
+        NOTE: when you use :q to unload a buffer, it will close the window for
+              that buffer,too. That will lead to orderless windows at the end.
+              this method will prevent the problem.
+            nnoremap <unique> <Leader>bd :call exUtility#Kwbd(1)<CR>
+        
+        Highlight words or visual blocks:
+            nnoremap <unique> <silent> <a-1> :call exUtility#Highlight_Normal(1)<CR>
+            vnoremap <unique> <silent> <a-1> :call exUtility#Highlight_Visual(1)<CR>
+            command -narg=? -complete=customlist,exUtility#CompleteBySymbolFile HL1 call exUtility#Highlight_Text(1, "<args>")
+            nnoremap <unique> <silent> <Leader>1 :call exUtility#HighlightCancle(1)<CR>
+            ...
+            ...
+            ...
+            ...
+            nnoremap <unique> <silent> <a-4> :call exUtility#Highlight_Normal(4)<CR>
+            vnoremap <unique> <silent> <a-4> :call exUtility#Highlight_Visual(4)<CR>
+            command -narg=? -complete=customlist,exUtility#CompleteBySymbolFile HL4 call exUtility#Highlight_Text(4, "<args>")
+            nnoremap <unique> <silent> <Leader>4 :call exUtility#HighlightCancle(4)<CR>
+        
+        Remove all highlight words or visual blocks:
+            nnoremap <unique> <silent> <Leader>0 :call exUtility#HighlightCancle(0)<CR>
+        
+        Draw the class inherits graphic by the name user gives and save the picture in
+        _vimfiles\_hierarchies\SymbolName.png:
+        NOTE: Need tool Graphviz (http://www.graphviz.org/).
+            command -narg=1 -complete=customlist,exUtility#CompleteBySymbolFile GV call exUtility#GenInheritsDot('<args>',"all")
 
 ==============================================================================
 3. Details                                                           *Details*
-	In this section, we will discuss some details in exVim, also we will list 
-	the commands and options for each ex-plugin.
+    In this section, we will discuss some details in exVim, also we will list 
+    the commands and options for each ex-plugin.
 
 ------------------------------------------------------------------------------
 3.1. exUtility                                                     *exUtility*
-	exUtility it is script libaray including functions used in mappings, commands 
-	and other ex scripts.
+    exUtility it is script libaray including functions used in mappings, commands 
+    and other ex scripts.
 
 ------------------------------------------------------------------------------
 3.1.1. Variables                                         *exUtility-varaibles*
 
-	                                                             *ex_usr_name*                                                       
-	ex_usr_name will used the name you give as the author name, and fill it in
-	the author column when you use exUtility#PutHeader() function to put 
-	a head title for a file
+                                                                 *ex_usr_name*                                                       
+    ex_usr_name will used the name you give as the author name, and fill it in
+    the author column when you use exUtility#PutHeader() function to put 
+    a head title for a file
 >
-		let g:ex_usr_name = "Wu Jie"
+        let g:ex_usr_name = "Wu Jie"
 <
                                                              *ex_todo_keyword*
-	the variable will record giving words as todo keyword, which will have
-	todo highlight. Similar like word TODO in comments.
+    the variable will record giving words as todo keyword, which will have
+    todo highlight. Similar like word TODO in comments.
 >
-		let g:ex_todo_keyword = 'NOTE REF EXAMPLE SAMPLE CHECK'
+        let g:ex_todo_keyword = 'NOTE REF EXAMPLE SAMPLE CHECK'
 <
                                                     *ex_comment_lable_keyword*
-	the variable will record giving words as comment lable keyword, which will have
-	exCommentLable highlight.
+    the variable will record giving words as comment lable keyword, which will have
+    exCommentLable highlight.
 >
-		let g:ex_comment_lable_keyword = 'DELME TEMP MODIFY ADD KEEPME DISABLE '
-		let g:ex_comment_lable_keyword .= 'DEBUG CRASH DUMMY UNUSED TESTME '
-		let g:ex_comment_lable_keyword .= 'HACK OPTME HARDCODE REFACTORING DUPLICATE REDUNDANCY '
+        let g:ex_comment_lable_keyword = 'DELME TEMP MODIFY ADD KEEPME DISABLE '
+        let g:ex_comment_lable_keyword .= 'DEBUG CRASH DUMMY UNUSED TESTME '
+        let g:ex_comment_lable_keyword .= 'HACK OPTME HARDCODE REFACTORING DUPLICATE REDUNDANCY '
 <
 
 ------------------------------------------------------------------------------
-3.1.2. Recommend Mappings                                 *exUtility-mappings*
+3.1.2. Recommend Commands                                 *exUtility-commands*
 
-	* This map help insert/remove '\' at the end of the line. It is useful 
-	  when writing large block of macro define code in c/cpp.
+                                                   *:HL1* *:HL2* *:HL3* *:HL4*
+:HL[num] [word]
+    When you want to highlight a word from argument you put, use these commands:
 >
-		vnoremap <unique> <F9> :call exUtility#InsertRemoveExtend()<CR>
+        command -narg=? -complete=customlist,exUtility#CompleteBySymbolFile HL1 call exUtility#Highlight_Text(1, "<args>")
+        ...
+        ...
+        command -narg=? -complete=customlist,exUtility#CompleteBySymbolFile HL4 call exUtility#Highlight_Text(4, "<args>")
 <
-	* When you want to insert/remove #if 0, #endif between a visual block of
+                                                                     *:Update*
+:Up[date] [{args}]
+    Update exVim project files. This command will call quick_gen_project_xxx.(bat\|sh).
+    Use <TAB> to check possible arguments. Default is update all. 
+    NOTE: if there is not quick_gen_project_xxx.(bat\|sh) under the project
+          working directory, there will show a list of project types let user 
+          choose. 
+>
+        command -narg=? -complete=customlist,exUtility#CompleteUpdateArgs Update call exUtility#UpdateVimFiles("<args>")
+<
+                                                                      *:QCopy*
+:QC[opy] {args}
+    The command will copy the quick_gen_project_xxx.(bat\|sh) file from
+    toolkit/(bash\|batch)/quick_gen_project_xxx.(bat\|sh) to the project
+    working directory. 
+    Use <TAB> to check possible arguments.
+>
+        command -narg=? -complete=customlist,exUtility#CompleteQCopyArgs QCopy call exUtility#CopyQuickGenProject("<args>")
+<
+                                                           *:GV* *:GVP* *:GVC*
+:GV {args}
+:GVP {args}
+:GVC {args}
+    The command will draw the class hierarchy graphic by the name user 
+    gives and save the picture in _vimfiles\_hierarchies\SymbolName.png:
+    NOTE: Need tool Graphviz (http://www.graphviz.org/).
+    NOTE: GV will draw the whole hierarchy of the class you give.
+           GVP will draw the parent hierarchy of the class you give.
+           GVC will draw the children hierarchy of the class you give.
+>
+        command -narg=1 -complete=customlist,exUtility#CompleteBySymbolFile GV call exUtility#GenInheritsDot('<args>',"all")
+        command -narg=1 -complete=customlist,exUtility#CompleteBySymbolFile GVP call exUtility#GenInheritsDot('<args>',"parent")
+        command -narg=1 -complete=customlist,exUtility#CompleteBySymbolFile GVC call exUtility#GenInheritsDot('<args>',"children")
+<
+                                                                        *:SHL*
+:[range]SHL
+    conver the highlight of the source code in visual block into html. 
+    If there is no range, it will highlight the whole file. The converted html
+    file will saved in _vimfiles\_temp\_src_highlight.txt.html
+    NOTE: Need tool src-highlight
+    NOTE: if you define the path of the web browser you are using in g:exES_WebBrowser,
+          after the convert, the function will open the html use the browser
+          you give automatically.
+>
+        command -range=% SHL call exUtility#SrcHighlight( <line1>, <line2> )
+<
+                                                                         *:MK*
+:[range]MK {args}
+    Mark a visual block of code with the {args} you give, as showed below:
+>
+         NAME { 
+        code block
+        ...
+        ...
+        code block
+         } NAME end 
+<
+    NOTE: this help mark some special block of codes for debug, todo, refactoring or
+          some other purpose
+>
+        command -range -narg=1 -complete=customlist,exUtility#CompleteMKArgs MK call exUtility#MarkText("<args>", <line1>, <line2> )
+<
+                                                                       *:LINE*
+:LINE
+    The command will put a 86 words long line in the line current cursor in
+>
+        command LINE call exUtility#PutLine(86, '-')
+<
+                                                           *:NSS* *:NSE* *:NS*
+:NSS {args}
+:NSE {args}
+:[range]NS {args}
+    Put a namespace pair between a visual block like the code below:
+>
+        // ######################### 
+        namespace NS { 
+        // ######################### 
+
+            code block
+            ...
+            ...
+            code block
+
+        // ######################### 
+        } // end namespace NS 
+        // ######################### 
+<
+    NOTE: the NSS will put only namespace header in the code
+          the NSE will put only namespace tail in the code
+>
+        command -narg=1 NSS call exUtility#PutNamespaceStart("<args>")
+        command -narg=1 NSE call exUtility#PutNamespaceEnd("<args>")
+        command -narg=1 NS call exUtility#PutNamespace("<args>")
+<
+                                                                     *:HEADER*
+:HEADER
+    Put a header a the beginning of a file you edit, the header like the code
+    below:
+>
+         // ======================================================================================
+         // File         : exVim.txt
+         // Author       : Wu Jie 
+         // Last Change  : 04/19/2009 | 16:43:03 PM | Sunday,April
+         // Description  : 
+         // ======================================================================================
+<
+    NOTE: the Author name will be the g:ex_usr_name you defined.
+           once you have a header in your file, you run this command again, it
+          will only update the "Last Change: " line.
+>
+        command HEADER call exUtility#PutHeader()
+<
+                                                                        *:SEP*
+:SEP
+    Put a separator under the cursor line, as showed below:
+
+>
+         // ======================================================== 
+         // 
+         // ======================================================== 
+<
+    NOTE: The separator help user define a name for a block of codes, also 
+          separte two defferent group of codes.
+>
+        command SEP call exUtility#PutSeparate()
+<
+                                                                        *:SEG*
+:SEG
+    Put a segment under the cursor line, as showed below:
+>
+        ///////////////////////////////////////////////////////////////////////////////
+        // 
+        ///////////////////////////////////////////////////////////////////////////////
+<
+    NOTE: The segment indicates that there is a new segment of codes.
+>
+        command SEG call exUtility#PutSegment()
+<
+                                                                       *:NOTE*
+:NOTE
+    Put a note under the cursor line, as showed below: 
+>
+        // ############################################################################ 
+        // Note: 
+        // ############################################################################ 
+<
+    NOTE: the note marks a block to write note info.
+>
+        command NOTE call exUtility#PutNote()
+<
+                                                                        *:DEF*
+:DEF
+    Put a define under the cursor line, as showed below:
+>
+     // ------------------------------------------------------------------ 
+     // Desc: 
+     // ------------------------------------------------------------------ 
+<
+    NOTE: the define indicates the code below is a definition.
+>
+        command DEF call exUtility#PutDefine()
+<
+                                                                        *:DEC*
+:DEC
+    Put a declaration under the cursor line, as showed below:
+>
+    ///////////////////////////////////////////////////////////////////////////////
+    // class 
+    // 
+    // Purpose: 
+    // 
+    ///////////////////////////////////////////////////////////////////////////////
+<
+    NOTE: the declaration indicates the code below is a class declaration
+>
+        command DEC call exUtility#PutDeclaration()
+<
+                                                                       *:MAIN*    
+:MAIN
+    Put a simple main function under the cursor line, as showed below:
+>
+    int main( int argc, char* argv[] )
+    {
+    }
+<
+    NOTE: this help quick start a project for testing.
+>
+        command MAIN call exUtility#PutMain()
+<
+                                                            *:CLASS* *:STRUCT*
+:CLASS {class-name}
+:STRUCT {struct-name}
+    Put a class/struct with constructor and destructor, as showed below:
+>
+    ///////////////////////////////////////////////////////////////////////////////
+    // class CTest
+    // 
+    // Purpose: 
+    // 
+    ///////////////////////////////////////////////////////////////////////////////
+    
+    class CTest
+    {
+    public:
+    // internal typedef
+    typedef CTest self_t;
+    
+    public:
+    // con/de-structor
+    CTest ();
+    virtual ~CTest ();
+    
+    public:
+    // copy constructor
+    CTest ( const self_t& _copy );
+    self_t& operator = ( const self_t& _copy );
+    
+    }; // end class CTest
+<
+    NOTE: this help quick create a class/struct
+>
+        command -narg=1 CLASS call exUtility#PutClass( "class", "<args>" )
+        command -narg=1 STRUCT call exUtility#PutClass( "struct", "<args>" )
+<
+
+------------------------------------------------------------------------------
+3.1.3. Recommend Mappings                                 *exUtility-mappings*
+
+    * This map help insert/remove '\' at the end of the line. It is useful 
+      when writing large block of macro define code in c/cpp.
+>
+        vnoremap <unique> <F9> :call exUtility#InsertRemoveExtend()<CR>
+<
+    * When you want to insert/remove #if 0, #endif between a visual block of
       codes, use this map. 
 >
-		vnoremap <unique> <F12> :call exUtility#InsertIFZero()<CR>
-		nnoremap <unique> <F12> :call exUtility#RemoveIFZero()<CR>
+        vnoremap <unique> <F12> :call exUtility#InsertIFZero()<CR>
+        nnoremap <unique> <F12> :call exUtility#RemoveIFZero()<CR>
 <
-	* When you want to move cursor quickly between edit window and last 
+    * When you want to move cursor quickly between edit window and last 
       ex-plugin window, use this map.
 >
-		nnoremap <unique> <silent><Leader><Tab> :call exUtility#SwitchBuffer()<CR>
+        nnoremap <unique> <silent><Leader><Tab> :call exUtility#SwitchBuffer()<CR>
 <
 
-	* When you are in edit window, and want to close last ex-plugin window you
+    * When you are in edit window, and want to close last ex-plugin window you
       are in without move the cursor to it, use this map.
 >
-		nmap <unique> <silent><Leader><ESC> :call exUtility#SwitchBuffer()<CR><ESC>
+        nmap <unique> <silent><Leader><ESC> :call exUtility#SwitchBuffer()<CR><ESC>
 <
 
-	* These two maps will process bn and bp command in a quick way.  
+    * These two maps will process bn and bp command in a quick way.  
 >
         nnoremap <unique> <silent> <C-Right> :call exUtility#GotoBuffer('next')<CR>
         nnoremap <unique> <silent> <C-Left> :call exUtility#GotoBuffer('prev')<CR>
@@ -640,314 +880,77 @@ How can I install "exVim"~
 <
 
 ------------------------------------------------------------------------------
-3.1.3. Recommend Commands                                 *exUtility-commands*
-
-												   *:HL1* *:HL2* *:HL3* *:HL4*
-:HL[num] [word]
-	When you want to highlight a word from argument you put, use these commands:
->
-        command -narg=? -complete=customlist,exUtility#CompleteBySymbolFile HL1 call exUtility#Highlight_Text(1, "<args>")
-        ...
-        ...
-        command -narg=? -complete=customlist,exUtility#CompleteBySymbolFile HL4 call exUtility#Highlight_Text(4, "<args>")
-<
-																	 *:Update*
-:Up[date] [{args}]
-	Update exVim project files. This command will call quick_gen_project_xxx.(bat\|sh).
-	Use <TAB> to check possible arguments. Default is update all. 
-	NOTE: if there is not quick_gen_project_xxx.(bat\|sh) under the project
-		  working directory, there will show a list of project types let user 
-		  choose. 
->
-        command -narg=? -complete=customlist,exUtility#CompleteUpdateArgs Update call exUtility#UpdateVimFiles("<args>")
-<
-																	 *:QCopy*
-:QC[opy] {args}
-	The command will copy the quick_gen_project_xxx.(bat\|sh) file from
-	toolkit/(bash\|batch)/quick_gen_project_xxx.(bat\|sh) to the project
-	working directory. 
-	Use <TAB> to check possible arguments.
->
-        command -narg=? -complete=customlist,exUtility#CompleteQCopyArgs QCopy call exUtility#CopyQuickGenProject("<args>")
-<
-														  *:GV* *:GVP* *:GVC*
-:GV {args}
-:GVP {args}
-:GVC {args}
-	The command will draw the class hierarchy graphic by the name user 
-	gives and save the picture in _vimfiles\_hierarchies\SymbolName.png:
-	NOTE: Need tool Graphviz (http://www.graphviz.org/).
-	NOTE: GV will draw the whole hierarchy of the class you give.
-	 	  GVP will draw the parent hierarchy of the class you give.
-	 	  GVC will draw the children hierarchy of the class you give.
->
-        command -narg=1 -complete=customlist,exUtility#CompleteBySymbolFile GV call exUtility#GenInheritsDot('<args>',"all")
-        command -narg=1 -complete=customlist,exUtility#CompleteBySymbolFile GVP call exUtility#GenInheritsDot('<args>',"parent")
-        command -narg=1 -complete=customlist,exUtility#CompleteBySymbolFile GVC call exUtility#GenInheritsDot('<args>',"children")
-<
-																      *:SHL*
-:[range]SHL
-	conver the highlight of the source code in visual block into html. 
-	If there is no range, it will highlight the whole file. The converted html
-	file will saved in _vimfiles\_temp\_src_highlight.txt.html
-	NOTE: Need tool src-highlight
-	NOTE: if you define the path of the web browser you are using in g:exES_WebBrowser,
-		  after the convert, the function will open the html use the browser
-		  you give automatically.
->
-        command -range=% SHL call exUtility#SrcHighlight( <line1>, <line2> )
-<
-																	   *:MK*
-:[range]MK {args}
-	Mark a visual block of code with the {args} you give, as showed below:
->
-		 NAME { 
-		code block
-		...
-		...
-		code block
-		 } NAME end 
-<
-	NOTE: this help mark some special block of codes for debug, todo, refactoring or
-		  some other purpose
->
-        command -range -narg=1 -complete=customlist,exUtility#CompleteMKArgs MK call exUtility#MarkText("<args>", <line1>, <line2> )
-<
-																	  *:LINE*
-:LINE
-	The command will put a 86 words long line in the line current cursor in
->
-        command LINE call exUtility#PutLine(86, '-')
-<
-													      *:NSS* *:NSE* *:NS*
-:NSS {args}
-:NSE {args}
-:[range]NS {args}
-	Put a namespace pair between a visual block like the code below:
->
-		// ######################### 
-		namespace NS { 
-		// ######################### 
-
-			code block
-			...
-			...
-			code block
-
-		// ######################### 
-		} // end namespace NS 
-		// ######################### 
-<
-	NOTE: the NSS will put only namespace header in the code
-		  the NSE will put only namespace tail in the code
->
-        command -narg=1 NSS call exUtility#PutNamespaceStart("<args>")
-        command -narg=1 NSE call exUtility#PutNamespaceEnd("<args>")
-        command -narg=1 NS call exUtility#PutNamespace("<args>")
-<
-														  		    *:HEADER*
-:HEADER
-	Put a header a the beginning of a file you edit, the header like the code
-	below:
->
- 		// ======================================================================================
- 		// File         : exVim.txt
- 		// Author       : Wu Jie 
- 		// Last Change  : 04/19/2009 | 16:43:03 PM | Sunday,April
- 		// Description  : 
- 		// ======================================================================================
-<
-	NOTE: the Author name will be the g:ex_usr_name you defined.
-	 	  once you have a header in your file, you run this command again, it
-		  will only update the "Last Change: " line.
->
-        command HEADER call exUtility#PutHeader()
-<
-																	   *:SEP*
-:SEP
-	Put a separator under the cursor line, as showed below:
-
->
-     	// ======================================================== 
-     	// 
-     	// ======================================================== 
-<
-	NOTE: The separator help user define a name for a block of codes, also 
-	      separte two defferent group of codes.
->
-        command SEP call exUtility#PutSeparate()
-<
-																	   *:SEG*
-:SEG
-	Put a segment under the cursor line, as showed below:
->
-    	///////////////////////////////////////////////////////////////////////////////
-    	// 
-    	///////////////////////////////////////////////////////////////////////////////
-<
-	NOTE: The segment indicates that there is a new segment of codes.
->
-        command SEG call exUtility#PutSegment()
-<
-																	  *:NOTE*
-:NOTE
-	Put a note under the cursor line, as showed below: 
->
-        // ############################################################################ 
-        // Note: 
-        // ############################################################################ 
-<
-	NOTE: the note marks a block to write note info.
->
-        command NOTE call exUtility#PutNote()
-<
-																	  *:DEF*
-:DEF
-	Put a define under the cursor line, as showed below:
->
-     // ------------------------------------------------------------------ 
-     // Desc: 
-     // ------------------------------------------------------------------ 
-<
-	NOTE: the define indicates the code below is a definition.
->
-        command DEF call exUtility#PutDefine()
-<
-																	  *:DEC*
-:DEC
-	Put a declaration under the cursor line, as showed below:
->
-    ///////////////////////////////////////////////////////////////////////////////
-    // class 
-    // 
-    // Purpose: 
-    // 
-    ///////////////////////////////////////////////////////////////////////////////
-<
-	NOTE: the declaration indicates the code below is a class declaration
->
-        command DEC call exUtility#PutDeclaration()
-<
-																	 *:MAIN*	
-:MAIN
-	Put a simple main function under the cursor line, as showed below:
->
-	int main( int argc, char* argv[] )
-	{
-	}
-<
-	NOTE: this help quick start a project for testing.
->
-        command MAIN call exUtility#PutMain()
-<
-														  *:CLASS* *:STRUCT*
-:CLASS {class-name}
-:STRUCT {struct-name}
-	Put a class/struct with constructor and destructor, as showed below:
->
-	///////////////////////////////////////////////////////////////////////////////
-	// class CTest
-	// 
-	// Purpose: 
-	// 
-	///////////////////////////////////////////////////////////////////////////////
-	
-	class CTest
-	{
-	public:
-	// internal typedef
-	typedef CTest self_t;
-	
-	public:
-	// con/de-structor
-	CTest ();
-	virtual ~CTest ();
-	
-	public:
-	// copy constructor
-	CTest ( const self_t& _copy );
-	self_t& operator = ( const self_t& _copy );
-	
-	}; // end class CTest
-<
-	NOTE: this help quick create a class/struct
->
-        command -narg=1 CLASS call exUtility#PutClass( "class", "<args>" )
-        command -narg=1 STRUCT call exUtility#PutClass( "struct", "<args>" )
-<
-
-------------------------------------------------------------------------------
 3.2. exEnvironment                                             *exEnvironment*
 
-	When you create a new .vimentry file, and open it, there always have some
-	path or variable settings automatically fill in the file, that is what
-	exEnvironment do. 
+    When you create a new .vimentry file, and open it, there always have some
+    path or variable settings automatically fill in the file, that is what
+    exEnvironment do. 
 
-	exEnvironment help exVim parsing the value write in .vimentry file to the
-	script, and it will create a global variable with the value behind "=",
-	And the variabale name will defined with prefix "g:exES_". For example,
-	you have a line of value define as:
+    exEnvironment help exVim parsing the value write in .vimentry file to the
+    script, and it will create a global variable with the value behind "=",
+    And the variabale name will defined with prefix "g:exES_". For example,
+    you have a line of value define as:
 >
-		Variable1='this is a test'
+        Variable1='this is a test'
 <
-	Then the exEnvironment will parse the line, and create a variable named
-	g:exES_Variable1, its value is 'this is a test'. Also exEnvironment
-	support list variable, instead of using "=" to assign value, you choose "+="  
-	to assign each item in the list. For example:
+    Then the exEnvironment will parse the line, and create a variable named
+    g:exES_Variable1, its value is 'this is a test'. Also exEnvironment
+    support list variable, instead of using "=" to assign value, you choose "+="  
+    to assign each item in the list. For example:
 >
-		List1+='item1'
-		List1+='item2'
-		List1+='item3'
+        List1+='item1'
+        List1+='item2'
+        List1+='item3'
 <
-	NOTE: exEnvironment always parse value as string.
+    NOTE: exEnvironment always parse value as string.
 
-	At the beginning, when you create a .vimentry file, exEnvironment will
-	write a default template of variable definitions from script, and give it
-	a version number with current exEnvironment version you used. Then saved
-	the .vimentry file with the filled text. After that, it will parse the
-	text create the variables.
+    At the beginning, when you create a .vimentry file, exEnvironment will
+    write a default template of variable definitions from script, and give it
+    a version number with current exEnvironment version you used. Then saved
+    the .vimentry file with the filled text. After that, it will parse the
+    text create the variables.
 
-		-When you open the .vimentry file again, exEnvironment will check if the
-		 Version is lower then the script version. If yes, it will over write the
-		 original .vimentry file information, this may let you loose the
-		 information you add. If no, it will parse the text from current file. 
+        -When you open the .vimentry file again, exEnvironment will check if the
+         Version is lower then the script version. If yes, it will over write the
+         original .vimentry file information, this may let you loose the
+         information you add. If no, it will parse the text from current file. 
 
-		-When you edit the .vimentry file, and save it by :w, the exEnvironment
-		 will detect and re-parse the variables. 
+        -When you edit the .vimentry file, and save it by :w, the exEnvironment
+         will detect and re-parse the variables. 
 
-		-When you want to apply default template again in current .vimentry
-		 file, just clean the text in the file, and save it. The exEnvironment
-		 will detect is it a blank page in .vimentry file, and then fill in
-		 default template.
+        -When you want to apply default template again in current .vimentry
+         file, just clean the text in the file, and save it. The exEnvironment
+         will detect is it a blank page in .vimentry file, and then fill in
+         default template.
 
 ------------------------------------------------------------------------------
 3.2.1. Variables                                     *exEnvironment-varaibles*
 
-	                                                        *exES_vimfile_dir*                                                       
-	exES_vimfile_dir will set the directory name which stores exVim project 
-	files. Default is '_vimfiles'. This value also affect the default template
-	value writing in .vimentry.
+                                                            *exES_vimfile_dir*                                                       
+    exES_vimfile_dir will set the directory name which stores exVim project 
+    files. Default is '_vimfiles'. This value also affect the default template
+    value writing in .vimentry.
 >
-    	let g:exES_vimfile_dir = "_vimfiles"
+        let g:exES_vimfile_dir = "_vimfiles"
 <
-															*exES_project_cmd*
-	The exES_project_cmd will be used to open a project in project window. It
-	is a fallback solution for those who prefer to use the project.vim plugin
-	than exProject plugin. By default the value is 'EXProject'.
+                                                            *exES_project_cmd*
+    The exES_project_cmd will be used to open a project in project window. It
+    is a fallback solution for those who prefer to use the project.vim plugin
+    than exProject plugin. By default the value is 'EXProject'.
 >
-		let g:exES_project_cmd = 'EXProject'
+        let g:exES_project_cmd = 'EXProject'
 <
 
-															*exES_ImageViewer*
-	The exES_ImageViewer will store the picture viewer tool you specified 
-	for browsing pciture files in vim. By default it use IrfanView in win32.
+                                                            *exES_ImageViewer*
+    The exES_ImageViewer will store the picture viewer tool you specified 
+    for browsing pciture files in vim. By default it use IrfanView in win32.
 >
         let g:exES_ImageViewer = 'd:\exDev\IrfanView\i_view32.exe'
 <
 
-															 *exES_WebBrowser*
-	The exES_WebBrowser will store a full path html browsing tool you
-	specified for browsing html files in vim. By default it use firefox.
+                                                             *exES_WebBrowser*
+    The exES_WebBrowser will store a full path html browsing tool you
+    specified for browsing html files in vim. By default it use firefox.
 >
         let g:exES_WebBrowser = 'c:\Program Files\Mozilla Firefox\firefox.exe'
 <
@@ -955,626 +958,1203 @@ How can I install "exVim"~
 ------------------------------------------------------------------------------
 3.2.2. Update function                               *exEnvironment-functions*
 
-													  *exES_UpdateEnvironment*
-	If you want to do something after exEnvironment parsing the vimentry file,
-	you need to add scripts in exES_UpdateEnvironment in _vimrc. You can use
-	the script "if exists()" to detect if a variable been parse from vimentry,
-	for example, you have write a "CWD=..." line in the vimentry file, and the
-	script would be:
+                                                      *exES_UpdateEnvironment*
+    If you want to do something after exEnvironment parsing the vimentry file,
+    you need to add scripts in exES_UpdateEnvironment in _vimrc. You can use
+    the script "if exists()" to detect if a variable been parse from vimentry,
+    for example, you have write a "CWD=..." line in the vimentry file, and the
+    script would be:
 >
-		if exists( 'g:exES_CWD' )
+        if exists( 'g:exES_CWD' )
 <
-	More tips, check the exES_UpdateEnvironment function in _ex_vimrc.
+    More tips, check the exES_UpdateEnvironment function in _ex_vimrc.
 
 ------------------------------------------------------------------------------
 3.3. exProject                                                     *exProject*
 
 ------------------------------------------------------------------------------
-3.3.1. Variables                               			 *exProject-variables*
+3.3.1. Variables                                         *exProject-variables*
 
-														  *exPJ_window_height*
-	Set the height of the window. This variable only effect when the
-	g:exPJ_use_vertical_window = 0
+                                                          *exPJ_window_height*
+    Set the height of the window. This variable only effect when the
+    g:exPJ_use_vertical_window = 0
 >
-    	let g:exPJ_window_height = 20
+        let g:exPJ_window_height = 20
 <
 
-														   *exPJ_window_width*
-	Set the width of the window. This variable only effect when the
-	g:exPJ_use_vertical_window = 1
+                                                           *exPJ_window_width*
+    Set the width of the window. This variable only effect when the
+    g:exPJ_use_vertical_window = 1
 >
-    	let g:exPJ_window_width = 30
+        let g:exPJ_window_width = 30
 <
 
-											    *exPJ_window_height_increment*
-	Set the height increase value of window. This variable only effect when the
-	g:exPJ_use_vertical_window = 0
+                                                *exPJ_window_height_increment*
+    Set the height increase value of window. This variable only effect when the
+    g:exPJ_use_vertical_window = 0
 >
-    	let g:exPJ_window_height_increment = 30
+        let g:exPJ_window_height_increment = 30
 <
 
-											     *exPJ_window_width_increment*
-	Set the width increase value of window. This variable only effect when the
-	g:exPJ_use_vertical_window = 1
+                                                 *exPJ_window_width_increment*
+    Set the width increase value of window. This variable only effect when the
+    g:exPJ_use_vertical_window = 1
 >
-    	let g:exPJ_window_width_increment = 100
+        let g:exPJ_window_width_increment = 100
 <
 
-											           *exPJ_window_direction*
-														'topleft'
-														'botright'
-														'belowright'
-	Set the window direction. This variable will be affect by
-	g:exPJ_use_vertical_window. When the vertical is true. it picked left, right
-	direction, when the vertical is false, it picked top, bot direction.
+                                                       *exPJ_window_direction*
+                                                        'topleft'
+                                                        'botright'
+                                                        'belowright'
+    Set the window direction. This variable will be affect by
+    g:exPJ_use_vertical_window. When the vertical is true. it picked left, right
+    direction, when the vertical is false, it picked top, bot direction.
 >
-    	let g:exPJ_window_direction = 'topleft'
+        let g:exPJ_window_direction = 'topleft'
 <
 
-											        *exPJ_use_vertical_window*
-	Use the vertical window or the horizontal window
+                                                    *exPJ_use_vertical_window*
+    Use the vertical window or the horizontal window
 >
-    	let g:exPJ_use_vertical_window = 1
+        let g:exPJ_use_vertical_window = 1
 <
 
-											             *exPJ_backto_editbuf*
-	If the value is 1, after choosing a item from explugin-window, the cursor 
-	will jump into the edit-window. Otherwise the cursor will jump back to the 
-	explugin-window. 
+                                                         *exPJ_backto_editbuf*
+    If the value is 1, after choosing a item from explugin-window, the cursor 
+    will jump into the edit-window. Otherwise the cursor will jump back to the 
+    explugin-window. 
 >
-    	let g:exPJ_backto_editbuf = 1
+        let g:exPJ_backto_editbuf = 1
 <
 
-											        *exPJ_close_when_selected*
-	If the value is 1, after choosing a item from explugin-window, the script 
-	will close the explugin-window immediatelly.
+                                                    *exPJ_close_when_selected*
+    If the value is 1, after choosing a item from explugin-window, the script 
+    will close the explugin-window immediatelly.
 >
-    	let g:exPJ_close_when_selected = 0
+        let g:exPJ_close_when_selected = 0
 <
 
-											                  *exPJ_edit_mode*
-	no use at all
+                                                              *exPJ_edit_mode*
+    no use at all
 >
-    	let g:exPJ_edit_mode = 'replace'
+        let g:exPJ_edit_mode = 'replace'
 <
 
-											             *exPJ_defualt_filter*
-	The value will be apply when you create a project with dialog.
+                                                         *exPJ_defualt_filter*
+    The value will be apply when you create a project with dialog.
 >
-    	let g:exPJ_defualt_filter  = 'c cpp cxx c++ C cc '
-    	let g:exPJ_defualt_filter .= 'h H hh hxx hpp inl '
-    	let g:exPJ_defualt_filter .= 'uc '
-    	let g:exPJ_defualt_filter .= 'hlsl vsh psh glsl '
-    	let g:exPJ_defualt_filter .= 'dox doxygen '
-    	let g:exPJ_defualt_filter .= 'ini cfg '
-    	let g:exPJ_defualt_filter .= 'mk err exe '
+        let g:exPJ_defualt_filter  = 'c cpp cxx c++ C cc '
+        let g:exPJ_defualt_filter .= 'h H hh hxx hpp inl '
+        let g:exPJ_defualt_filter .= 'uc '
+        let g:exPJ_defualt_filter .= 'hlsl vsh psh glsl '
+        let g:exPJ_defualt_filter .= 'dox doxygen '
+        let g:exPJ_defualt_filter .= 'ini cfg '
+        let g:exPJ_defualt_filter .= 'mk err exe '
 <
 
 ------------------------------------------------------------------------------
-3.3.2. Key Mappings                               	      *exProject-mappings*
+3.3.2. Commands                                           *exProject-commands*
 
-										               *exProject-select-item*
+                                                                  *:EXProject*
+:EXP[roject] {file-name}
+    Open a project file in project window with the file name. Actually you
+    seldom use this command, cause it will be run automatically in g:exES_UpdateEnvironment
+    when you define g:exES_project_cmd as EXProject.
+    recommend mapping: 
+>
+        nnoremap <unique> <silent> <A-S-p> :EXProject<CR>
+        nmap <unique> <A-S-o> :EXProject<CR>:redraw<CR>/
+<
+
+                                                           *:ExpjSelectToggle*
+:ExpjS[electToggle]
+    Open/Close the project window.
+
+                                                        *:ExpjGotoCurrentFile*
+:ExpjG[otoCurrentFile]
+    When in edit buffer, use the command will let the cursor jump back to the
+    exProject select window, and locate the current edit file in project
+    window if the file can be found.
+    recommend mapping:
+>
+        nnoremap <unique> <leader>fc :ExpjGotoCurrentFile<CR>
+<
+
+------------------------------------------------------------------------------
+3.3.3. Key Mappings                                       *exProject-mappings*
+
+                                                       *exProject-select-item*
 <return>
 <2-LeftMouse>
-	If cursor on a file line, it will open the file in edit-window.
-	If cursor on a folder line, it will fold/unfold the folder.
+    If cursor on a file line, it will open the file in edit-window.
+    If cursor on a folder line, it will fold/unfold the folder.
 
-												 *exProject-shift-select-item*
+                                                 *exProject-shift-select-item*
 <s-return>
 <s-2-LeftMouse>
-	If cursor on a file line, it will open the file and split it edit-window.
-	If cursor on a folder line, it will prompt a command line window with the
-	path is current directory path. (win32 only)
+    If cursor on a file line, it will open the file and split it edit-window.
+    If cursor on a folder line, it will prompt a command line window with the
+    path is current directory path. (win32 only)
 
-												     *exProject-resize-window*
+                                                     *exProject-resize-window*
 <space>
-	Resize the project window by exPJ_window_height_increment/exPJ_window_width_increment
+    Resize the project window by exPJ_window_height_increment/exPJ_window_width_increment
 
-               						    *exProject-create-project-with-dialog*
+                                        *exProject-create-project-with-dialog*
 <localleader>C
-	Build up the project file with dialog asking the working directory, file
-	filter and dir filter you want.
+    Build up the project file with dialog asking the working directory, file
+    filter and dir filter you want.
 
-               						    *exProject-create-project-with-dialog*
+                                     *exProject-create-project-without-dialog*
 <localleader>R
-	Refresh the project file using the working directory, file filter and dir
-	filter you already setted.
-	NOTE: you can manually change the first two lines to change the file
-		  filter and dir filter withou pop up a dialog. When refreshing, the 
-	      script will read them first.
+    Refresh the project file using the working directory, file filter and dir
+    filter you already setted.
+    NOTE: you can manually change the first two lines to change the file
+          filter and dir filter withou pop up a dialog. When refreshing, the 
+          script will read them first.
 
-               						  *exProject-create-directory-with-dialog*
+                                      *exProject-create-directory-with-dialog*
 <localleader>cf
-	Refresh the directory current cursor in with a file filter dialog.
+    Refresh the directory current cursor in with a file filter dialog.
 
-              					   *exProject-create-directory-without-dialog*
+                                   *exProject-create-directory-without-dialog*
 <localleader>r
-	Refresh the directory current cursor in follow the global file filter
-	rules.
+    Refresh the directory current cursor in follow the global file filter
+    rules.
 
-								                *exProject-jump-to-error-file*
+                                                *exProject-jump-to-error-file*
 <c-up>
 <c-down>
-	Find and jump to the up/down nearst error file which name is "ErrorLog.err".
+    Find and jump to the up/down nearst error file which name is "ErrorLog.err".
 
-								                    *exProject-jump-to-folder*
+                                                    *exProject-jump-to-folder*
 <c-j>
 <c-k>
-	Jump to the prev/next folder.
+    Jump to the prev/next folder.
 
-													      *exProject-add-file*
+                                                          *exProject-add-file*
 <o>
-	Add a new file in the folder current cursor in.
-	NOTE: when add a new file, the cursor must in the folder or in a existed
-		  file under that folder. You can't create a file in a empty line.
+    Add a new file in the folder current cursor in.
+    NOTE: when add a new file, the cursor must in the folder or in a existed
+          file under that folder. You can't create a file in a empty line.
 
-													    *exProject-add-folder*
+                                                        *exProject-add-folder*
 <O>
-	Add a new folder in the folder current cursor in. The new folder will be
-	created under current folder.
-	NOTE: when add a new folder, the cursor must in a existed folder. You
-		  can't create a folder in a file line or a empty line. 
+    Add a new folder in the folder current cursor in. The new folder will be
+    created under current folder.
+    NOTE: when add a new folder, the cursor must in a existed folder. You
+          can't create a folder in a file line or a empty line. 
 
-		  											    *exProject-find-files*
+                                                        *exProject-find-files*
 Default Key:
 <leader>ff
-	find only files in the project window.
+    find only files in the project window.
 >
-		nnoremap <unique> <leader>ff :EXProject<CR>:redraw<CR>/\[[^\CF]*\]\c.*
+        nnoremap <unique> <leader>ff :EXProject<CR>:redraw<CR>/\[[^\CF]*\]\c.*
 <
-													  *exProject-find-folders*
+                                                      *exProject-find-folders*
 Default Key:
 <leader>fd
-	find only folders in the project window.
+    find only folders in the project window.
 >
-		nnoremap <unique> <leader>fd :EXProject<CR>:redraw<CR>/\[\CF\]\c.*
+        nnoremap <unique> <leader>fd :EXProject<CR>:redraw<CR>/\[\CF\]\c.*
 <
-
-------------------------------------------------------------------------------
-3.3.3. Commands                               			  *exProject-commands*
-
-																   *EXProject*
-:EXP[roject] {file-name}
-	Open a project file in project window with the file name. Actually you
-	seldom use this command, cause it will be run automatically in g:exES_UpdateEnvironment
-	when you define g:exES_project_cmd as EXProject.
-	recommend mapping: 
->
-		nnoremap <unique> <silent> <A-S-p> :EXProject<CR>
-		nmap <unique> <A-S-o> :EXProject<CR>:redraw<CR>/
-<
-
-															*ExpjSelectToggle*
-:ExpjS[electToggle]
-	Open/Close the project window.
-
-														 *ExpjGotoCurrentFile*
-:ExpjG[otoCurrentFile]
-	When in edit buffer, use the command will let the cursor jump back to the
-	exProject select window, and locate the current edit file in project
-	window if the file can be found.
-	recommend mapping:
->
-		nnoremap <unique> <leader>fc :ExpjGotoCurrentFile<CR>
-<
-	
+    
 ------------------------------------------------------------------------------
 3.4. exTagSelect                                                 *exTagSelect*
 
-	The exTagSelect is responsible for showing the possible tags you gived,
-	list them in select-window.
+    The exTagSelect is responsible for showing the possible tags you gived,
+    list them in select-window.
 
-	If you choose a tag from select-window, it will jump to the position in
-	edit-window, and record the jump. 
+    If you choose a tag from select-window, it will jump to the position in
+    edit-window, and record the jump. 
 
-	You can browse your jump history in exTagSelect stack-window, and if
-	necessary jump back to read that code.
+    You can browse your jump history in exTagSelect stack-window, and if
+    necessary jump back to read that code.
 
-	The exTagSelect loads data from tags file created by cTags. You can get
-	the tool on http://ctags.sourceforge.net/. The recommend command is:
+    The exTagSelect loads data from tags file created by cTags. You can get
+    the tool on http://ctags.sourceforge.net/. The recommend command is:
 >
-    	ctags -o./_tags -R --c++-kinds=+p --fields=+iaS --extra=+q 		\
-			--languages=c,c++,c#,python,vim,html,lua,javascript,uc,math \
-			--langmap=c++:+.inl,c:+.fx,c:+.fxh,c:+.hlsl,c:+.vsh,c:+.psh,c:+.cg,c:+.shd,javascript:+.as ..
+        ctags -o./_tags -R --c++-kinds=+p --fields=+iaS --extra=+q         \
+            --languages=c,c++,c#,python,vim,html,lua,javascript,uc,math \
+            --langmap=c++:+.inl,c:+.fx,c:+.fxh,c:+.hlsl,c:+.vsh,c:+.psh,c:+.cg,c:+.shd,javascript:+.as ..
 <
-	In exVim the process will be done automatcially in quick_gen_project_xxx.(bat\|sh) 
-	shell program, so you really don't need to worry about the tag generation,
-	and setting the path of the tag.
+    In exVim the process will be done automatcially in quick_gen_project_xxx.(bat\|sh) 
+    shell program, so you really don't need to worry about the tag generation,
+    and setting the path of the tag.
 
 ------------------------------------------------------------------------------
-3.4.1. Variables                               		   *exTagSelect-variables*
+3.4.1. Variables                                       *exTagSelect-variables*
 
-														  *exTS_window_height*
-	Set the height of the window. This variable only effect when the
-	g:exTS_use_vertical_window = 0
+                                                          *exTS_window_height*
+    Set the height of the window. This variable only effect when the
+    g:exTS_use_vertical_window = 0
 >
-    	let g:exTS_window_height = 20
+        let g:exTS_window_height = 20
 <
 
-														   *exTS_window_width*
-	Set the width of the window. This variable only effect when the
-	g:exTS_use_vertical_window = 1
+                                                           *exTS_window_width*
+    Set the width of the window. This variable only effect when the
+    g:exTS_use_vertical_window = 1
 >
-    	let g:exTS_window_width = 30
+        let g:exTS_window_width = 30
 <
 
-											    *exTS_window_height_increment*
-	Set the height increase value of window. This variable only effect when the
-	g:exTS_use_vertical_window = 0
+                                                *exTS_window_height_increment*
+    Set the height increase value of window. This variable only effect when the
+    g:exTS_use_vertical_window = 0
 >
-    	let g:exTS_window_height_increment = 30
+        let g:exTS_window_height_increment = 30
 <
 
-											     *exTS_window_width_increment*
-	Set the width increase value of window. This variable only effect when the
-	g:exTS_use_vertical_window = 1
+                                                 *exTS_window_width_increment*
+    Set the width increase value of window. This variable only effect when the
+    g:exTS_use_vertical_window = 1
 >
-    	let g:exTS_window_width_increment = 100
+        let g:exTS_window_width_increment = 100
 <
 
-											           *exTS_window_direction*
-														'topleft'
-														'botright'
-														'belowright'
-	Set the window direction. This variable will be affect by
-	g:exTS_use_vertical_window. When the vertical is true. it picked left, right
-	direction, when the vertical is false, it picked top, bot direction.
+                                                       *exTS_window_direction*
+                                                        'topleft'
+                                                        'botright'
+                                                        'belowright'
+    Set the window direction. This variable will be affect by
+    g:exTS_use_vertical_window. When the vertical is true. it picked left, right
+    direction, when the vertical is false, it picked top, bot direction.
 >
-    	let g:exTS_window_direction = 'topleft'
+        let g:exTS_window_direction = 'topleft'
 <
 
-											        *exTS_use_vertical_window*
-	Use the vertical window or the horizontal window
+                                                    *exTS_use_vertical_window*
+    Use the vertical window or the horizontal window
 >
-    	let g:exTS_use_vertical_window = 1
+        let g:exTS_use_vertical_window = 1
 <
 
-											             *exTS_backto_editbuf*
-	If the value is 1, after choosing a item from explugin-window, the cursor 
-	will jump into the edit-window. Otherwise the cursor will jump back to the 
-	explugin-window. 
+                                                         *exTS_backto_editbuf*
+    If the value is 1, after choosing a item from explugin-window, the cursor 
+    will jump into the edit-window. Otherwise the cursor will jump back to the 
+    explugin-window. 
 >
-    	let g:exTS_backto_editbuf = 1
+        let g:exTS_backto_editbuf = 1
 <
 
-											        *exTS_close_when_selected*
-	If the value is 1, after choosing a item from explugin-select/quickview-window, 
-	the script will close the explugin-select/quickview-window immediatelly.
+                                                    *exTS_close_when_selected*
+    If the value is 1, after choosing a item from explugin-select/quickview-window, 
+    the script will close the explugin-select/quickview-window immediatelly.
 >
-    	let g:exTS_close_when_selected = 0
+        let g:exTS_close_when_selected = 0
 <
 
-											  *exTS_stack_close_when_selected*
-	If the value is 1, after choosing a item from explugin-stack-window, 
-	the script will close the explugin-stack-window immediatelly.
+                                              *exTS_stack_close_when_selected*
+    If the value is 1, after choosing a item from explugin-stack-window, 
+    the script will close the explugin-stack-window immediatelly.
 >
-    	let g:exTS_close_when_selected = 0
+        let g:exTS_close_when_selected = 0
 <
 
-											                  *exTS_edit_mode*
-	no use at all
+                                                              *exTS_edit_mode*
+    no use at all
 >
-    	let g:exTS_edit_mode = 'replace'
+        let g:exTS_edit_mode = 'replace'
 <
 
-											           *exTS_highlight_result*
-	This indicate that will we apply syntax highlight for the search results.
-	NOTE: when I say syntax highlight, it means the syntax highlight of the 
-		  programme language that current project used, not the syntax highlight 
-		  of ex-plugins.
+                                                       *exTS_highlight_result*
+    This indicate that will we apply syntax highlight for the search results.
+    NOTE: when I say syntax highlight, it means the syntax highlight of the 
+          programme language that current project used, not the syntax highlight 
+          of ex-plugins.
 >
-    	let g:exTS_highlight_result = 0
+        let g:exTS_highlight_result = 0
 <
 
 ------------------------------------------------------------------------------
-3.4.2. Key Mappings                               	    *exTagSelect-mappings*
+3.4.2. Commands                                         *exTagSelect-commands*
 
-													 *exTagSelect-select-item*
+                                                             *:ExtsGoDirectly*
+:ExtsGoDirectly
+    Search word under current cursor (<cword>) as tag name, and list the 
+    possible results in select-window. Recommend mapping:
+>
+        nnoremap <unique> <silent> <Leader>] :ExtsGoDirectly<CR>
+<
+                                                                         *:TS*
+:TS {tag-name}
+    Search a tag by {tag-name}, list the possible results in select-window.
+    You can use <tab> to get matched tags when inputing tag names.
+
+                                                           *:BackwardTagStack*
+:BackwardTagStack
+    Go to the last tag jumped position directly. Recommend mapping:
+>
+        nnoremap <unique> <silent> <Leader>tb :BackwardTagStack<CR>
+<
+                                                            *:ForwardTagStack*
+:ForwardTagStack
+    Go to the next tag jumped position directly.
+    NOTE: this works when you already jumped backward several positions.
+    Recommend mapping: 
+>
+        nnoremap <unique> <silent> <Leader>tf :ForwardTagStack<CR>
+<
+                                                           *:ExtsSelectToggle*
+:ExtsSelectToggle
+    Open the exTagSelect select-window. Recommend mapping:
+>
+        nnoremap <unique> <silent> <Leader>ts :ExtsSelectToggle<CR>
+<
+                                                            *:ExtsStackToggle*
+:ExtsStackToggle
+    Open the exTagSelect stack-window. Recommend mapping:
+>
+        nnoremap <unique> <silent> <Leader>tt :ExtsStackToggle<CR>
+<
+                                                                      *:TSigc*
+:TSigc
+    Set ignore case for tag search. 
+
+                                                                    *:TSnoigc*
+:TSnoigc
+    Set no-ignore case for tag search. 
+
+------------------------------------------------------------------------------
+3.4.3. Key Mappings                                     *exTagSelect-mappings*
+
+                                                     *exTagSelect-select-item*
 <return>
 <2-leftmouse>
-	Jump to the select item in edit-window.
-												   *exTagSelect-resize-window*
+    Jump to the select item in edit-window.
+                                                   *exTagSelect-resize-window*
 <space>
-	Resize the project window by exTS_window_height_increment/exTS_window_width_increment
+    Resize the project window by exTS_window_height_increment/exTS_window_width_increment
 
-												    *exTagSelect-close-window*
+                                                    *exTagSelect-close-window*
 <esc>
-	Close the exTagSelect plugin window.
+    Close the exTagSelect plugin window.
 
-										 *exTagSelect-swtich-to-select-window*
+                                         *exTagSelect-swtich-to-select-window*
 <ctrl-left>                              
-	Switch to select-window when you are in stack-window
+    Switch to select-window when you are in stack-window
 
-										  *exTagSelect-swtich-to-stack-window*
+                                          *exTagSelect-swtich-to-stack-window*
 <ctrl-right>                              
-	Switch to stack-window when you are in select-window
-
-------------------------------------------------------------------------------
-3.4.3. Commands                               	        *exTagSelect-commands*
-
-															  *ExtsGoDirectly*
-:ExtsGoDirectly
-	Search word under current cursor (<cword>) as tag name, and list the 
-	possible results in select-window. Recommend mapping:
->
-		nnoremap <unique> <silent> <Leader>] :ExtsGoDirectly<CR>
-<
-															              *TS*
-:TS {tag-name}
-	Search a tag by {tag-name}, list the possible results in select-window.
-	You can use <tab> to get matched tags when inputing tag names.
-
-															*BackwardTagStack*
-:BackwardTagStack
-	Go to the last tag jumped position directly. Recommend mapping:
->
-		nnoremap <unique> <silent> <Leader>tb :BackwardTagStack<CR>
-<
-															 *ForwardTagStack*
-:ForwardTagStack
-	Go to the next tag jumped position directly.
-	NOTE: this works when you already jumped backward several positions.
-	Recommend mapping: 
->
-		nnoremap <unique> <silent> <Leader>tf :ForwardTagStack<CR>
-<
-															*ExtsSelectToggle*
-:ExtsSelectToggle
-	Open the exTagSelect select-window. Recommend mapping:
->
-		nnoremap <unique> <silent> <Leader>ts :ExtsSelectToggle<CR>
-<
-															 *ExtsStackToggle*
-:ExtsStackToggle
-	Open the exTagSelect stack-window. Recommend mapping:
->
-		nnoremap <unique> <silent> <Leader>tt :ExtsStackToggle<CR>
-<
-																       *TSigc*
-:TSigc
-	Set ignore case for tag search. 
-
-																     *TSnoigc*
-:TSnoigc
-	Set no-ignore case for tag search. 
+    Switch to stack-window when you are in select-window
 
 ------------------------------------------------------------------------------
 3.5. exSymbolTable                                             *exSymbolTable*
 
-	exSymbolTable list the names of all available tags in a window, and use a
-	faster way to search and get the tag name you desire. We call these tag
-	names as "Symbol".
+    exSymbolTable list the names of all available tags in a window, and use a
+    faster way to search and get the tag name you desire. We call these tag
+    names as "Symbol".
 
-	exSymbolTable consists of two windows, the select-window and quickview-window. 
-	The select-window lists all symbols, and quickview-window just list 
-	thoes tags you want by the search pattern you give.  
+    exSymbolTable consists of two windows, the select-window and quickview-window. 
+    The select-window lists all symbols, and quickview-window just list 
+    thoes tags you want by the search pattern you give.  
 
-	Though the exSymbolTable is a tool to search filter symbols, but it become
-	powerful depends on the way you use it. For example you can filter the
-	class name, and then the symbol will list the name of the class and at the
-	result you would see the member is comming cause the symbol could properly
-	be class_name::member_name. More tips please check Tips & Tricks section
-	for detail.
-
-------------------------------------------------------------------------------
-3.5.1. Variables                               		 *exSymbolTable-variables*
-
-														  *exSL_window_height*
-	Set the height of the window. This variable only effect when the
-	g:exSL_use_vertical_window = 0
->
-    	let g:exSL_window_height = 20
-<
-
-														   *exSL_window_width*
-	Set the width of the window. This variable only effect when the
-	g:exSL_use_vertical_window = 1
->
-    	let g:exSL_window_width = 30
-<
-
-											    *exSL_window_height_increment*
-	Set the height increase value of window. This variable only effect when the
-	g:exSL_use_vertical_window = 0
->
-    	let g:exSL_window_height_increment = 30
-<
-
-											     *exSL_window_width_increment*
-	Set the width increase value of window. This variable only effect when the
-	g:exSL_use_vertical_window = 1
->
-    	let g:exSL_window_width_increment = 100
-<
-
-											           *exSL_window_direction*
-														'topleft'
-														'botright'
-														'belowright'
-	Set the window direction. This variable will be affect by
-	g:exSL_use_vertical_window. When the vertical is true. it picked left, right
-	direction, when the vertical is false, it picked top, bot direction.
->
-    	let g:exSL_window_direction = 'botright'
-<
-
-											        *exSL_use_vertical_window*
-	Use the vertical window or the horizontal window
->
-    	let g:exSL_use_vertical_window = 1
-<
-											                  *exSL_edit_mode*
-	no use at all
->
-    	let g:exSL_edit_mode = 'replace'
-<
-
-											            *exSL_SymbolSelectCmd*
-	This variable define which tag select tools you prefer to use. Default is
-	ts which means use the default vim tag select command :ts {tagname}. I
-	recommend you use 'TS', the exTagSelect plugin for tag select.
->
-    	let g:exSL_SymbolSelectCmd = 'ts'
-<
+    Though the exSymbolTable is a tool to search filter symbols, but it become
+    powerful depends on the way you use it. For example you can filter the
+    class name, and then the symbol will list the name of the class and at the
+    result you would see the member is comming cause the symbol could properly
+    be class_name::member_name. More tips please check Tips & Tricks section
+    for detail.
 
 ------------------------------------------------------------------------------
-3.5.2. Key Mappings                               	  *exSymbolTable-mappings*
+3.5.1. Variables                                     *exSymbolTable-variables*
 
-												 *exSymbolTable-select-symbol*
+                                                          *exSL_window_height*
+    Set the height of the window. This variable only effect when the
+    g:exSL_use_vertical_window = 0
+>
+        let g:exSL_window_height = 20
+<
+
+                                                           *exSL_window_width*
+    Set the width of the window. This variable only effect when the
+    g:exSL_use_vertical_window = 1
+>
+        let g:exSL_window_width = 30
+<
+
+                                                *exSL_window_height_increment*
+    Set the height increase value of window. This variable only effect when the
+    g:exSL_use_vertical_window = 0
+>
+        let g:exSL_window_height_increment = 30
+<
+
+                                                 *exSL_window_width_increment*
+    Set the width increase value of window. This variable only effect when the
+    g:exSL_use_vertical_window = 1
+>
+        let g:exSL_window_width_increment = 100
+<
+
+                                                       *exSL_window_direction*
+                                                        'topleft'
+                                                        'botright'
+                                                        'belowright'
+    Set the window direction. This variable will be affect by
+    g:exSL_use_vertical_window. When the vertical is true. it picked left, right
+    direction, when the vertical is false, it picked top, bot direction.
+>
+        let g:exSL_window_direction = 'botright'
+<
+
+                                                    *exSL_use_vertical_window*
+    Use the vertical window or the horizontal window
+>
+        let g:exSL_use_vertical_window = 1
+<
+                                                              *exSL_edit_mode*
+    no use at all
+>
+        let g:exSL_edit_mode = 'replace'
+<
+
+                                                        *exSL_SymbolSelectCmd*
+    This variable define which tag select tools you prefer to use. Default is
+    ts which means use the default vim tag select command :ts {tagname}. I
+    recommend you use 'TS', the exTagSelect plugin for tag select.
+>
+        let g:exSL_SymbolSelectCmd = 'ts'
+<
+
+------------------------------------------------------------------------------
+3.5.2. Commands                                       *exSymbolTable-commands*
+
+                                                                         *:SL*  
+:SL {tag-name}
+    locate first matched {tag-name} in exSymbolTable select-window.
+    You can use <tab> to get matched tags when inputing tag names.
+
+                                                                       *:SLPR*
+:SLPR {tag-name}
+    list matched {tag-name} in exSymbolTable quickview-window.
+    You can use <tab> to get matched tags when inputing tag names.
+
+                                                                       *:SLPD*
+:SLPD {tag-name}
+    list unmatched {tag-name} in exSymbolTable quickview-window.
+    You can use <tab> to get unmatched tags when inputing tag names.
+
+                                                           *:ExslSelectToggle*
+:ExslSelectToggle
+    Open the exSymbolTable select-window. Recommend mapping:
+>
+        nnoremap <unique> <silent> <Leader>ss :ExslSelectToggle<CR>
+<
+                                                        *:ExslQuickViewToggle*
+:ExslQuickViewToggle
+    Open the exSymbolTable quickview-window. Recommend mapping:
+>
+        nnoremap <unique> <silent> <Leader>sq :ExslQuickViewToggle<CR>
+<
+
+                                                             *:ExslGoDirectly*
+:ExslGoDirectly
+    Use word under current cursor (<cword>) as tag name, search and list the 
+    possible results in quickview-window. Recommend mapping:
+>
+        nnoremap <unique> <silent> <Leader>sg :ExslGoDirectly<CR>
+<
+
+                                                            *:ExslQuickSearch*
+:ExslQuickSearch
+    Open exSymbolTable select-window and insert search symbole '/' in command
+    line to help quick search a symbol in the window. Recommend mapping:
+>
+        nmap <unique> <A-S-l> :ExslQuickSearch<CR>/
+<
+
+                                                                      *:SLigc*
+:SLigc
+    Set ignore case for symbol table item search. 
+
+                                                                    *:SLnoigc*
+:SLnoigc
+    Set no-ignore case for symbol table item search. 
+
+------------------------------------------------------------------------------
+3.5.3. Key Mappings                                   *exSymbolTable-mappings*
+
+                                                 *exSymbolTable-select-symbol*
 <return>
 <2-leftmouse>
-	Select a tag from select/quickview window, when select, it will use 
-	g:exSL_SymbolSelectCmd to execute the tag.
+    Select a tag from select/quickview window, when select, it will use 
+    g:exSL_SymbolSelectCmd to execute the tag.
 
-												 *exSymbolTable-pickup-symbol*
+                                                 *exSymbolTable-pickup-symbol*
 <c-return>
-	This operation will pick up the word in current line, and list matched
-	symbols in quickview window.
+    This operation will pick up the word in current line, and list matched
+    symbols in quickview window.
 
-												 *exSymbolTable-resize-window*
+                                                 *exSymbolTable-resize-window*
 <space>
-	Resize the exSymbolTable plugin window by exSL_window_height_increment/
-	exSL_window_width_increment
+    Resize the exSymbolTable plugin window by exSL_window_height_increment/
+    exSL_window_width_increment
 
-												  *exSymbolTable-close-window*
+                                                  *exSymbolTable-close-window*
 <esc>
-	Close the exSymbolTable plugin window.
+    Close the exSymbolTable plugin window.
 
-									   *exSymbolTable-swtich-to-select-window*
+                                       *exSymbolTable-swtich-to-select-window*
 <ctrl-right>                              
-	Switch to select-window when you are in quickview-window
+    Switch to select-window when you are in quickview-window
 
-									*exSymbolTable-swtich-to-quickview-window*
+                                    *exSymbolTable-swtich-to-quickview-window*
 <ctrl-left>                              
-	Switch to quickview-window when you are in select-window
+    Switch to quickview-window when you are in select-window
 
-									    *exSymbolTable-pickup-matched-symbols*
+                                        *exSymbolTable-pickup-matched-symbols*
 <leader>r
-	Pick up symbols those have matched patterns, and list them in quickview 
-	window. The matched pattern gives by / or # search result.
+    Pick up symbols those have matched patterns, and list them in quickview 
+    window. The matched pattern gives by / or # search result.
 
-									  *exSymbolTable-pickup-unmatched-symbols*
+                                      *exSymbolTable-pickup-unmatched-symbols*
 <leader>d
-	Pick up symbols those have unmatched patterns, and list them in quickview 
-	window. The matched pattern gives by / or # search result.
-
-------------------------------------------------------------------------------
-3.5.3. Commands                               	      *exSymbolTable-commands*
-
-																		  *SL*  
-:SL {tag-name}
-	locate first matched {tag-name} in exSymbolTable select-window.
-	You can use <tab> to get matched tags when inputing tag names.
-
-																		*SLPR*
-:SLPR {tag-name}
-	list matched {tag-name} in exSymbolTable quickview-window.
-	You can use <tab> to get matched tags when inputing tag names.
-
-																		*SLPD*
-:SLPD {tag-name}
-	list unmatched {tag-name} in exSymbolTable quickview-window.
-	You can use <tab> to get unmatched tags when inputing tag names.
-
-															*ExslSelectToggle*
-:ExslSelectToggle
-	Open the exSymbolTable select-window. Recommend mapping:
->
-		nnoremap <unique> <silent> <Leader>ss :ExslSelectToggle<CR>
-<
-													     *ExslQuickViewToggle*
-:ExslQuickViewToggle
-	Open the exSymbolTable quickview-window. Recommend mapping:
->
-		nnoremap <unique> <silent> <Leader>sq :ExslQuickViewToggle<CR>
-<
-
-															  *ExslGoDirectly*
-:ExslGoDirectly
-	Use word under current cursor (<cword>) as tag name, search and list the 
-	possible results in quickview-window. Recommend mapping:
->
-		nnoremap <unique> <silent> <Leader>sg :ExslGoDirectly<CR>
-<
-
-															 *ExslQuickSearch*
-:ExslQuickSearch
-	Open exSymbolTable select-window and insert search symbole '/' in command
-	line to help quick search a symbol in the window. Recommend mapping:
->
-		nmap <unique> <A-S-l> :ExslQuickSearch<CR>/
-<
-
-																       *SLigc*
-:SLigc
-	Set ignore case for symbol table item search. 
-
-																     *SLnoigc*
-:SLnoigc
-	Set no-ignore case for symbol table item search. 
+    Pick up symbols those have unmatched patterns, and list them in quickview 
+    window. The matched pattern gives by / or # search result.
 
 ------------------------------------------------------------------------------
 3.6. exGlobalSearch                                           *exGlobalSearch*
-    TODO
+
+    exGlobalSearch is the most important search method in exVim, its
+    responsibility is similar like grep, but more efficient cause it use
+    id-utils as search engine. You need to create ID database first by mkid,
+    but this will be done automatically in quick_gen_project shell programme.    
+
+    exGlobalSearch not just list the result from id-utils in the plugin
+    window, and let you choose to jump. It also give you a series of filtering
+    method so that after several filtering processing, you can get a more exact
+    result by yourself.
+
+    Also the plugin will record jumps in the stack-window similar like what
+    exTagSelect do. It help you trace jump history and make you clear what's
+    the code flow like.
 
 ------------------------------------------------------------------------------
-3.6.1. Variables                               		*exGlobalSearch-variables*
-    TODO
+3.6.1. Variables                                    *exGlobalSearch-variables*
+
+                                                          *exGS_window_height*
+    Set the height of the window. This variable only effect when the
+    g:exGS_use_vertical_window = 0
+>
+        let g:exGS_window_height = 20
+<
+
+                                                           *exGS_window_width*
+    Set the width of the window. This variable only effect when the
+    g:exGS_use_vertical_window = 1
+>
+        let g:exGS_window_width = 30
+<
+
+                                                *exGS_window_height_increment*
+    Set the height increase value of window. This variable only effect when the
+    g:exGS_use_vertical_window = 0
+>
+        let g:exGS_window_height_increment = 30
+<
+
+                                                 *exGS_window_width_increment*
+    Set the width increase value of window. This variable only effect when the
+    g:exGS_use_vertical_window = 1
+>
+        let g:exGS_window_width_increment = 100
+<
+
+                                                       *exGS_window_direction*
+                                                        'topleft'
+                                                        'botright'
+                                                        'belowright'
+    Set the window direction. This variable will be affect by
+    g:exGS_use_vertical_window. When the vertical is true. it picked left, right
+    direction, when the vertical is false, it picked top, bot direction.
+>
+        let g:exGS_window_direction = 'belowright'
+<
+
+                                                    *exGS_use_vertical_window*
+    Use the vertical window or the horizontal window
+>
+        let g:exGS_use_vertical_window = 1
+<
+
+                                                              *exGS_edit_mode*
+    no use at all
+>
+        let g:exGS_edit_mode = 'replace'
+<
+
+                                                         *exGS_backto_editbuf*
+    If the value is 1, after choosing a item from explugin-window, the cursor 
+    will jump into the edit-window. Otherwise the cursor will jump back to the 
+    explugin-window. 
+>
+        let g:exGS_backto_editbuf = 1
+<
+
+                                                    *exGS_close_when_selected*
+    If the value is 1, after choosing a item from explugin-select/quickview-window, 
+    the script will close the explugin-select/quickview-window immediatelly.
+>
+        let g:exGS_close_when_selected = 0
+<
+
+                                              *exGS_stack_close_when_selected*
+    If the value is 1, after choosing a item from explugin-stack-window, 
+    the script will close the explugin-stack-window immediatelly.
+>
+        let g:exGS_close_when_selected = 0
+<
+
+                                                       *exGS_highlight_result*
+    This indicate that will we apply syntax highlight for the search results.
+    NOTE: when I say syntax highlight, it means the syntax highlight of the 
+          programme language that current project used, not the syntax highlight 
+          of ex-plugins.
+>
+        let g:exGS_highlight_result = 0
+<
 
 ------------------------------------------------------------------------------
-3.6.2. Key Mappings                               	 *exGlobalSearch-mappings*
-    TODO
+3.6.2. Commands                                      *exGlobalSearch-commands*
+
+                                                                         *:GS*
+:GS {word}
+    Search {word} in ID database, and list the matched results in
+    exGlobalSearch select-window. 
+    NOTE: the result can be partially martch the {word}
+    Recommend mapping:
+>
+        nnoremap <unique> <Leader><S-f> :GS 
+<
+
+                                                                        *:GSW*
+:GSW {word}
+    Search the whole {word} in ID database, and list the matched results in
+    exGlobalSearch select-window. 
+    NOTE: the result must be full match the {word}, similar like \<{word}\>
+          patern.
+
+                                                                        *:GSF*
+:GSF {file-name}
+    Search {file-name} in ID database, and list the matched files in
+    exGlobalSearch select-window.
+    NOTE: the result can be partially martch the {file-name}
+
+                                                                       *:GSFW*
+:GSFW {file-name}
+    Search the whole {file-name} in ID database, and list the matched files in
+    exGlobalSearch select-window. 
+    NOTE: the result must be full match the {file-name}, similar like
+          \<{file-name}\> patern.
+
+                                                           *:ExgsSelectToggle*
+:ExgsSelectToggle
+    Open/Close exGlobalSearch select-window. Recommend mapping: 
+>
+        nnoremap <unique> <silent> <Leader>gs :ExgsSelectToggle<CR>
+<
+
+                                                        *:ExgsQuickViewToggle*
+:ExgsQuickViewToggle
+    Open/Close exGlobalSearch quickview-window. Recommend mapping:
+>
+        nnoremap <unique> <silent> <Leader>gq :ExgsQuickViewToggle<CR>
+<
+
+                                                            *:ExgsStackToggle*
+:ExgsStackToggle
+    Open/Close exGlobalSearch stack-window. Recommend mapping:
+>
+        nnoremap <unique> <silent> <Leader>gt :ExgsStackToggle<CR>
+<
+                                                             *:ExgsGoDirectly*
+:ExgsGoDirectly
+    Search word under current cursor ( as known as <cword> ), and list the
+    matched results in exGlobalSearch select-window. 
+    NOTE: the result can be partially match the <cword>
+    Recommend mapping:
+>
+        nnoremap <unique> <silent> <Leader>gg :ExgsGoDirectly<CR>
+<
+                                                        *:BackwardSearchStack*
+:BackwardSearchStack
+    Go to the last exGlobalSearch jumped position directly. Recommend mapping:
+>
+        nnoremap <unique> <silent> <Leader>gb :BackwardSearchStack<CR>
+<
+
+                                                         *:ForwardSearchStack*
+:ForwardSearchStack
+    Go to the next exGlobalSearch jumped position directly.
+    NOTE: this works when you already jumped backward several positions.
+    Recommend mapping: 
+>
+        nnoremap <unique> <silent> <Leader>gf :ForwardSearchStack<CR>
+<
+                                                         *:ExgsGotoNextResult*
+:ExgsGotoNextResult
+    Go to the next search result list in the exGlobalSearch's select/quickview 
+    window.
+    NOTE: this works only when select/quickview window is opened.
+>
+        nnoremap <unique> <silent> <Leader>n :ExgsGotoNextResult<CR>
+<
+                                                         *:ExgsGotoPrevResult*
+:ExgsGotoPrevResult
+    Go to the last search result list in the exGlobalSearch's select/quickview 
+    window.
+    NOTE: this works only when select/quickview window is opened.
+>
+        nnoremap <unique> <silent> <Leader>N :ExgsGotoPrevResult<CR>
+<
+                                                                      *:GSigc*
+:GSigc
+    Set ignore case for global search. 
+
+                                                                    *:GSnoigc*
+:GSnoigc
+    Set no-ignore case for global search. 
+
+                                                                        *:SUB*
+:SUB /{pattern}/{string}/[flags]
+    It is similar like :s[ubstitute] command in vim, but it apply the sub to
+    the search results listed in select/quickview window.
+    NOTE: there have a space between the command and /, you need to write
+    command like
+>
+        :SUB /foo/bar/g
+<
 
 ------------------------------------------------------------------------------
-3.6.3. Commands                               	     *exGlobalSearch-commands*
-    TODO
+3.6.3. Key Mappings                                  *exGlobalSearch-mappings*
+
+    Before I introduce the key mappings, I will explain the terms of things in
+    the select/quickview window.
+    Basically when you get some result it will list in select/quickview. For
+    instance, you global search 'exCore' in a cpp project, and the window will
+    like:
+>
+    _________________________________________________________________________________
+    |1  
+    |2  ----------exCore----------
+    |3  exEngine/exCore/exCore.h:2:// File         : exCore.h
+    |4  exEngine/testEngine/testEngine.h:19:#include "../exCore/exCore.h" 
+    |5  exEngine/exCore/Global/Enums.h:27:    enum exCore
+    |6  exEngine/exCore/exCore.cpp:2:// File         : exCore.cpp
+    |7  exEngine/exCore/exCore.cpp:12:#include "exCore.h"
+    |8  exEngine/exCore/exCore.cpp:36:    #pragma message("exCore predefine log")
+    |9  exEngine/testEngine/Main.cpp:34:        TestRegistry::runTest( "exCore", tr);
+    |10 exTester/UnitTest/UnitTest.cpp:13:#include "exCore/exCore.h"
+    |11 exEngine/exCore/EngineObject/EngineObject.cpp:12:#include "exCore.h"
+    |12 exEngine/exCore/EngineObject/PropertiesDescriptor.cpp:12:#include "exCore.h"
+    |13 exEngine/testEngine/tests/exCoreTest.cpp:111:TEST( exCore, Normal )
+    |14 exTester/UnitTest/CoreTest/ArrayTest.cpp:12:#include "exCore/exCore.h"
+    |15 ... 
+    |16 ... 
+<
+    we define some term for the item in this window. It should be 
+
+    ________________________________________
+    |
+    | ----------{title}----------
+    |
+    | {file-section}     {preview-section} 
+    | full_path:line_nr: preview_result...
+    | full_path:line_nr: preview_result...
+    | full_path:line_nr: preview_result...
+    | ...
+
+    the concept is separate the result as file-section and preview-section so
+    that we can apply filter in different sections.
+    Now you know the terms we defined, let's check the mappings:
+
+                               *exGlobalSearch-pickup-matched-preview-pattern*
+<leader>r
+    Pick up results in {preview-section} matched the pattern you gived, and list 
+    them in quickview window. The matched pattern gives by / or # search result.
+
+                             *exGlobalSearch-pickup-unmatched-preview-pattern*
+<leader>d
+    Pick up results in {preview-section} unmatched patterns you gived, and list 
+    them in quickview window. The matched pattern gives by / or # search result.
+
+                                  *exGlobalSearch-pickup-matched-file-pattern*
+<leader>fr
+    Pick up results in {file-section} matched the pattern you gived, and list 
+    them in quickview window. The matched pattern gives by / or # search result.
+
+                                *exGlobalSearch-pickup-unmatched-file-pattern*
+<leader>fd
+    Pick up results in {file-section} unmatched patterns you gived, and list 
+    them in quickview window. The matched pattern gives by / or # search result.
+
+                                       *exGlobalSearch-pickup-matched-pattern*
+<leader>gr
+    Pick up results in all sections matched the pattern you gived, and list 
+    them in quickview window. The matched pattern gives by / or # search result.
+
+                                     *exGlobalSearch-pickup-unmatched-pattern*
+<leader>gd
+    Pick up results in all sections unmatched patterns you gived, and list 
+    them in quickview window. The matched pattern gives by / or # search result.
+
+                                                  *exGlobalSearch-select-item*
+<return>
+<2-leftmouse>
+    Select and jump to the preview position of the item in edit window. 
+
+                                                *exGlobalSearch-resize-window*
+<space>
+    Resize the exGlobalSearch plugin window by exGS_window_height_increment/
+    exGS_window_width_increment
+
+                                                 *exGlobalSearch-close-window*
+<esc>
+    Close the exGlobalSearch plugin window.
+
+                                       *exGlobalSearch-switch-to-stack-window*
+<ctrl-up>
+    Switch to stack-window
+
+                                      *exGlobalSearch-switch-to-select-window*
+<ctrl-right>
+    Switch to select-window
+
+                                   *exGlobalSearch-switch-to-quickview-window*
+<ctrl-left>
+    Switch to quickview-window
 
 ------------------------------------------------------------------------------
 3.7. exQuickFix                                                   *exQuickFix*
-    TODO
+    
+    exQuickFix load the compile error result from file or buffer, and create
+    quickfix list, then show the warnings/errors in the plugin-window let you
+    choose to jump to it.
+
+    Compare with the quickfix in vim, the exQuickFix is almost the same but
+    instead of showing just quickfix line, it shows everything in the error
+    file or buffer ( if your error come from vc compile directly, by using the
+    visual studio plugin ).
 
 ------------------------------------------------------------------------------
-3.7.1. Variables                               		    *exQuickFix-variables*
-    TODO
+3.7.1. Variables                                        *exQuickFix-variables*
+
+                                                          *exQF_window_height*
+    Set the height of the window. This variable only effect when the
+    g:exQF_use_vertical_window = 0
+>
+        let g:exQF_window_height = 20
+<
+
+                                                           *exQF_window_width*
+    Set the width of the window. This variable only effect when the
+    g:exQF_use_vertical_window = 1
+>
+        let g:exQF_window_width = 30
+<
+
+                                                *exQF_window_height_increment*
+    Set the height increase value of window. This variable only effect when the
+    g:exQF_use_vertical_window = 0
+>
+        let g:exQF_window_height_increment = 30
+<
+
+                                                 *exQF_window_width_increment*
+    Set the width increase value of window. This variable only effect when the
+    g:exQF_use_vertical_window = 1
+>
+        let g:exQF_window_width_increment = 100
+<
+
+                                                       *exQF_window_direction*
+                                                        'topleft'
+                                                        'botright'
+                                                        'belowright'
+    Set the window direction. This variable will be affect by
+    g:exQF_use_vertical_window. When the vertical is true. it picked left, right
+    direction, when the vertical is false, it picked top, bot direction.
+>
+        let g:exQF_window_direction = 'belowright'
+<
+
+                                                    *exQF_use_vertical_window*
+    Use the vertical window or the horizontal window
+>
+        let g:exQF_use_vertical_window = 1
+<
+
+                                                              *exQF_edit_mode*
+    no use at all
+>
+        let g:exQF_edit_mode = 'replace'
+<
+
+                                                         *exQF_backto_editbuf*
+    If the value is 1, after choosing a item from explugin-window, the cursor 
+    will jump into the edit-window. Otherwise the cursor will jump back to the 
+    explugin-window. 
+>
+        let g:exQF_backto_editbuf = 1
+<
+
+                                                    *exQF_close_when_selected*
+    If the value is 1, after choosing a item from explugin-select/quickview-window, 
+    the script will close the explugin-select/quickview-window immediatelly.
+>
+        let g:exQF_close_when_selected = 0
+<
 
 ------------------------------------------------------------------------------
-3.7.2. Key Mappings                               	     *exQuickFix-mappings*
-    TODO
+3.7.2. Commands                                          *exQuickFix-commands*
+
+                                                                         *:QF*
+:QF {file-name}
+    load a quickfix list from a file, and shows the contents in the exQuickFix
+    select-window. You can jump to the quick fix position by press <enter> on
+    the line have quickfix information. Also you can use <c-left> to switch to
+    the quickview-window to see all the available quick fixes. To swtich back
+    to select-window, press <c-right>.
+
+                                                           *:ExqfSelectToggle*
+:ExqfSelectToggle
+    Open/Close a exQuickFix select-window.
+
+                                                        *:ExqfQuickViewToggle*
+:ExqfQuickViewToggle
+    Open/Close a exQuickFix quickview-window.
 
 ------------------------------------------------------------------------------
-3.7.3. Commands                               	         *exQuickFix-commands*
-    TODO
+3.7.3. Key Mappings                                      *exQuickFix-mappings*
+
+                                                      *exQuickFix-select-item*
+<return>
+<2-leftmouse>
+    Select and jump to the preview position of the item in edit window. 
+
+                                                    *exQuickFix-resize-window*
+<space>
+    Resize the exQuickFix plugin window by exGS_window_height_increment/
+    exGS_window_width_increment
+
+                                                     *exQuickFix-close-window*
+<esc>
+    Close the exQuickFix plugin window.
+
+                                          *exQuickFix-switch-to-select-window*
+<ctrl-right>
+    Switch to select-window
+
+                                       *exQuickFix-switch-to-quickview-window*
+<ctrl-left>
+    Switch to quickview-window
+
+                                                       *exQuickFix-next-error*
+<ctrl-down>
+    Jump to next error in select/quickview window.
+    NOTE: the error here means the line have words "error" or "warning"
+
+                                                       *exQuickFix-prev-error*
+<ctrl-up>
+    Jump to prev error in select/quickview window.
+    NOTE: the error here means the line have words "error" or "warning"
 
 ------------------------------------------------------------------------------
 3.8. exMacroHighlight                                       *exMacroHighlight*
-    TODO
+
+    exMacroHighlight is a plugin working with projects have c-like macro
+    define syntax: #ifdef ... The basic idea is come from visual studio.net
+    2005, in vs.net 2005 and above, it support gray highlight between disabled
+    macro block. In other word, if you define macro _MA_DISABLE_ equals to 0,
+    then in codes between #if _MA_DISABLE_ and #endif, it shows gray looks
+    like the code doesn't work at all. This help programmer reading code with
+    macros and ignore what the real value are of the macros now.
+    
+    Unfortunately, vs.net did a bad job in this, and it even create side
+    effect since the internal macro parsing programme sometimes gets wrong
+    value and disable the valid codes (I always get this error when I switch
+    configuration from Debug to Release). Also its gray color make you hard to
+    read disable code even if you want to read it! And you can't manually
+    switch your macro highlight from one define to another since all process
+    is automatically done in the background. I've been receive lots of
+    complaining of this feature in my company from other programmer, and then
+    decide to develop this plugin to solve the problem.
+
+    exMacroHighlight is not the plugin that can doing the macro parsing
+    automatcally in the background, actually it never read macro from codes
+    which will consume lots of performance from vim. Instead, it will let you
+    write down those macro you care about, and save it as a file, read these
+    defined macro create syntax highlight then apply to those c-like filetype.
+
+    Base on this idea, exMacroHighlight will be efficient, controllable and
+    easy to switch to different macro defines. 
 
 ------------------------------------------------------------------------------
-3.8.1. Variables                               	  *exMacroHighlight-variables*
-    TODO
+3.8.1. Variables                                  *exMacroHighlight-variables*
+
+                                                          *exMH_window_height*
+    Set the height of the window. This variable only effect when the
+    g:exMH_use_vertical_window = 0
+>
+        let g:exMH_window_height = 20
+<
+
+                                                           *exMH_window_width*
+    Set the width of the window. This variable only effect when the
+    g:exMH_use_vertical_window = 1
+>
+        let g:exMH_window_width = 30
+<
+
+                                                *exMH_window_height_increment*
+    Set the height increase value of window. This variable only effect when the
+    g:exMH_use_vertical_window = 0
+>
+        let g:exMH_window_height_increment = 30
+<
+
+                                                 *exMH_window_width_increment*
+    Set the width increase value of window. This variable only effect when the
+    g:exMH_use_vertical_window = 1
+>
+        let g:exMH_window_width_increment = 100
+<
+
+                                                       *exMH_window_direction*
+                                                        'topleft'
+                                                        'botright'
+                                                        'belowright'
+    Set the window direction. This variable will be affect by
+    g:exMH_use_vertical_window. When the vertical is true. it picked left, right
+    direction, when the vertical is false, it picked top, bot direction.
+>
+        let g:exMH_window_direction = 'botright'
+<
+
+                                                    *exMH_use_vertical_window*
+    Use the vertical window or the horizontal window
+>
+        let g:exMH_use_vertical_window = 1
+<
+
+                                                              *exMH_edit_mode*
+    no use at all
+>
+        let g:exMH_edit_mode = 'replace'
+<
 
 ------------------------------------------------------------------------------
-3.8.2. Key Mappings                                *exMacroHighlight-mappings*
-    TODO
+3.8.2. Commands                                    *exMacroHighlight-commands*
+
+                                                           *:ExmhSelectToggle*
+:ExmhSelectToggle
+    Open/Close exMacroHighlight window.
+    Recommend mapping:
+>
+        nnoremap <unique> <silent> <Leader>aa :ExmhSelectToggle<CR>
+<
+    When you open a exMacroHighlight window in a new project, it is a blank
+    page. The window used for writing macros define in groups. The syntax is
+    easier as we know:
+>
+        GroupName_1:
+            MacroName_11
+            MacroName_12
+            MacroName_13
+            ...
+            MacroName_1n
+        
+        GroupName_2:
+            MacroName_21
+            MacroName_22
+            MacroName_23
+            ...
+            MacroName_2n
+        ...
+        ...
+        ...
+        GroupName_n:
+            MacroName_n1
+            MacroName_n2
+            MacroName_n3
+            ...
+            MacroName_nn
+<
+    The GroupName is the name of a group consist of macros, you can named what
+    ever you want just help you group that macros. And the MacroName is the
+    name of the macro same as they in the code of your project. For example,
+    you have macro M_WIN32, M_LINUX, M_XB360, M_PS3, you can named your group
+    as Platform, the text in exMacroHighlight should be like:
+>
+        Platform:
+            M_WIN32
+            M_LINUX
+            M_XB360
+            M_PS3
+<
+    NOTE: a macro group is not organize similar meaning of macro in one group,
+          It is said there can only be one item (macro) been enable/define in
+          one group. Which means, when you choose M_WIN32, the M_LINUX,
+          M_XB360, M_PS3 will be treat as they are undefined, or define as 0.
+          And that is how macro highlight works.
+
+    When you choose a macro by <return>, the choosing macro will have a "star"
+    marks in fron of it, also its color will be different than others. And the
+    code in edit window will highlight obey the rules.
+
+    If you don't want any macros in one group have affect with exMacroHighlight,
+    just disable that group by press <return> in the GroupName. If disable you
+    will see "[x]" marks behind the group name. press <return> again to
+    re-enable it.
+
+                                                                      *ExmhHL*
+:ExmhHL {args}
+    Enable/Disable the macro highlight depends on {args} you give.
+    0 means disable.
+    1 means enable.
+    NOTE: You seldom need to disable macro highlight since it consume less
+          performance than you think. But when you edit a very huge file, 
+	  or running vim in a poor PC, this command may save your life.
+    Recommend mapping:
+>
+        nnoremap <unique> <silent> <Leader>ae :ExmhHL 1 <CR>
+        nnoremap <unique> <silent> <Leader>ad :ExmhHL 0 <CR>
+<
 
 ------------------------------------------------------------------------------
-3.8.3. Commands                               	   *exMacroHighlight-commands*
-    TODO
+3.8.3. Key Mappings                                *exMacroHighlight-mappings*
+
+                                   *exMacroHighlight-enable-disable-highlight*
+<return>
+    Enable/Disable macro highlight or group highlight
+
+                                              *exMacroHighlight-resize-window*
+<space>
+    Resize the exMacroHighlight plugin window by exMH_window_height_increment/
+    exMH_window_width_increment
+
+                                               *exMacroHighlight-close-window*
+<esc>
+    Close the exMacroHighlight plugin window.
 
 ------------------------------------------------------------------------------
 3.9. exCscope                                                       *exCscope*
     TODO
 
 ------------------------------------------------------------------------------
-3.9.1. Variables                               	          *exCscope-variables*
+3.9.1. Variables                                          *exCscope-variables*
     TODO
 
 ------------------------------------------------------------------------------
-3.9.2. Key Mappings                                        *exCscope-mappings*
+3.9.2. Commands                                            *exCscope-commands*
     TODO
 
 ------------------------------------------------------------------------------
-3.9.3. Commands                               	           *exCscope-commands*
+3.9.3. Key Mappings                                        *exCscope-mappings*
     TODO
 
 ------------------------------------------------------------------------------
@@ -1582,20 +2162,29 @@ Default Key:
     TODO
 
 ------------------------------------------------------------------------------
-3.10.1. Variables                               	*exMarksBrowser-variables*
+3.10.1. Variables                                   *exMarksBrowser-variables*
     TODO
 
 ------------------------------------------------------------------------------
-3.10.2. Key Mappings                                 *exMarksBrowser-mappings*
+3.10.2. Commands                                     *exMarksBrowser-commands*
     TODO
 
 ------------------------------------------------------------------------------
-3.10.3. Commands                               	     *exMarksBrowser-commands*
+3.10.3. Key Mappings                                 *exMarksBrowser-mappings*
     TODO
 
 ==============================================================================
 4. Tips & Tricks                                             *Tips-And-Tricks*
-    TODO
+
+    TODOs:    
+    * \sg again and again
+    * \sg check class members
+    * \sg check function in different classes
+    * use whole symbol jump instead of \] jump
+    * \] again and again
+    * \gg again and again
+    * \gg then gd \r
+    * get last/next search results in global search by <u> or <c-r>
 
 ==============================================================================
 5. Contact                                                           *Contact*
@@ -1617,4 +2206,4 @@ Contact Method:
     Yu Jian Rong: YuJianrong (AT) GMail (DOT) com
 
 
-vim: ft=help:norl:ts=4:tw=78:noexpandtab
+vim: ft=help:norl:ts=8:tw=78:noexpandtab
