@@ -90,14 +90,6 @@ if !exists('g:exMB_close_when_selected')
 endif
 
 " ------------------------------------------------------------------ 
-" Desc: use syntax highlight for search result
-" ------------------------------------------------------------------ 
-
-if !exists('g:exMB_highlight_result')
-    let g:exMB_highlight_result = 0
-endif
-
-" ------------------------------------------------------------------ 
 " Desc: set edit mode
 " 'none', 'append', 'replace'
 " ------------------------------------------------------------------ 
