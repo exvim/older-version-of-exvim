@@ -98,120 +98,6 @@ if has("gui_running")
 else " if we are in terminal mode
     silent exec "colorscheme darkblue"
 endif
-au ColorScheme * call UpdateHighlights()
-
-" update highlights
-let s:ex_HighlightsInited = 0 
-function UpdateHighlights()
-
-    let s:ex_HighlightsInited = 1 
-
-    " ======================================================== 
-    " exUtility
-    " ======================================================== 
-
-    hi ex_SynHL1 gui=none guibg=LightCyan term=none cterm=none ctermbg=LightCyan
-    hi ex_SynHL2 gui=none guibg=LightMagenta term=none cterm=none ctermbg=LightMagenta
-    hi ex_SynHL3 gui=none guibg=LightRed term=none cterm=none ctermbg=LightRed
-    hi ex_SynHL4 gui=none guibg=LightGreen term=none cterm=none ctermbg=LightGreen
-
-    hi ex_SynSelectLine gui=none guibg=#bfffff term=none cterm=none ctermbg=LightCyan
-    hi ex_SynConfirmLine gui=none guibg=#ffe4b3 term=none cterm=none ctermbg=DarkYellow
-    hi ex_SynObjectLine gui=none guibg=#ffe4b3 term=none cterm=none ctermbg=DarkYellow
-
-    hi link ex_SynError Error
-    hi link ex_SynFold Comment
-    hi link ex_SynFileName Statement
-    hi link ex_SynLineNr LineNr
-    hi link ex_SynNormal Normal
-
-    hi ex_SynTransparent gui=none guifg=background term=none cterm=none ctermfg=DarkGray
-    hi ex_SynSearchPattern gui=bold guifg=DarkRed guibg=LightGray term=bold cterm=bold ctermfg=DarkRed ctermbg=LightGray
-    hi ex_SynTitle term=bold cterm=bold ctermfg=DarkYellow gui=bold guifg=Brown
-
-    hi ex_SynJumpMethodS term=none cterm=none ctermfg=Red gui=none guifg=Red 
-    hi ex_SynJumpMethodG term=none cterm=none ctermfg=Blue gui=none guifg=Blue 
-    hi link ex_SynJumpSymbol Comment
-
-    hi exCommentLable term=standout ctermfg=DarkYellow ctermbg=Red gui=none guifg=LightYellow guibg=Red
-    " hi exCommentLable term=standout ctermfg=DarkYellow ctermbg=Red gui=none guifg=DarkRed guibg=LightMagenta
-
-    " ======================================================== 
-    " exMacroHighlight
-    " ======================================================== 
-
-    hi exMacroDisable term=none cterm=none ctermfg=DarkGray gui=none guifg=DarkGray
-    hi link cCppOut exMacroDisable                
-    hi exMH_GroupNameEnable term=bold cterm=bold ctermfg=DarkRed ctermbg=LightGray gui=bold guifg=DarkRed guibg=LightGray
-    hi exMH_GroupNameDisable term=bold cterm=bold ctermfg=Red ctermbg=DarkGray gui=bold guifg=DarkGray guibg=LightGray
-    hi link exMH_MacroEnable cPreProc
-    hi link exMH_MacroDisable exMacroDisable
-
-    " ======================================================== 
-    " exProject
-    " ======================================================== 
-
-    hi exPJ_TreeLine gui=none guifg=DarkGray term=none cterm=none ctermfg=Gray
-    hi exPJ_SynDir gui=bold guifg=Brown term=bold cterm=bold ctermfg=DarkRed
-    hi exPJ_SynFile gui=none guifg=Magenta term=none cterm=none ctermfg=Magenta
-
-    hi exPJ_SynSrcFile gui=none guifg=Blue term=none cterm=none ctermfg=Blue
-    hi exPJ_SynHeaderFile gui=none guifg=DarkGreen term=none cterm=none ctermfg=DarkGreen
-    hi exPJ_SynErrorFile gui=none guifg=Red term=none cterm=none ctermfg=Red
-
-    " ======================================================== 
-    " exCScope
-    " ======================================================== 
-
-    hi exCS_SynQfNumber gui=none guifg=Red term=none cterm=none ctermfg=Red
-
-    " ======================================================== 
-    " ShowMarks
-    " ======================================================== 
-
-    " For marks a-z
-    hi ShowMarksHLl term=bold cterm=none ctermbg=LightBlue gui=none guibg=LightBlue
-    " For marks A-Z
-    hi ShowMarksHLu term=bold cterm=bold ctermbg=LightRed ctermfg=DarkRed gui=bold guibg=LightRed guifg=DarkRed
-    " For all other marks
-    hi ShowMarksHLo term=bold cterm=bold ctermbg=LightYellow ctermfg=DarkYellow gui=bold guibg=LightYellow guifg=DarkYellow
-    " For multiple marks on the same line.
-    hi ShowMarksHLm term=bold cterm=none ctermbg=LightBlue gui=none guibg=SlateBlue
-
-    " ======================================================== 
-    " MiniBufExplorer
-    " ======================================================== 
-
-    " for buffers that have NOT CHANGED and are NOT VISIBLE.
-    hi MBENormal ctermbg=LightGray ctermfg=DarkGray guibg=LightGray guifg=DarkGray
-    " for buffers that HAVE CHANGED and are NOT VISIBLE
-    hi MBEChanged ctermbg=Red ctermfg=DarkRed guibg=Red guifg=DarkRed
-    " buffers that have NOT CHANGED and are VISIBLE
-    hi MBEVisibleNormal term=bold cterm=bold ctermbg=Gray ctermfg=Black gui=bold guibg=Gray guifg=Black
-    " buffers that have CHANGED and are VISIBLE
-    hi MBEVisibleChanged term=bold cterm=bold ctermbg=DarkRed ctermfg=Black gui=bold guibg=DarkRed guifg=Black
-
-    " ======================================================== 
-    " TagList
-    " ======================================================== 
-
-    " TagListTagName  - Used for tag names
-    hi MyTagListTagName term=bold cterm=none ctermfg=Black ctermbg=DarkYellow gui=none guifg=Black guibg=#ffe4b3
-    " TagListTagScope - Used for tag scope
-    hi MyTagListTagScope term=NONE cterm=NONE ctermfg=Blue gui=NONE guifg=Blue 
-    " TagListTitle    - Used for tag titles
-    hi MyTagListTitle term=bold cterm=bold ctermfg=DarkRed ctermbg=LightGray gui=bold guifg=DarkRed guibg=LightGray 
-    " TagListComment  - Used for comments
-    hi MyTagListComment ctermfg=DarkGreen guifg=DarkGreen 
-    " TagListFileName - Used for filenames
-    hi MyTagListFileName term=bold cterm=bold ctermfg=Black ctermbg=LightBlue gui=bold guifg=Black guibg=LightBlue
-endfunction
-
-" if you don't use color scheme, you may properly not run the code above, so
-" run it manually here
-if s:ex_HighlightsInited == 0
-    call UpdateHighlights()
-endif
 
 " ------------------------------------------------------------------ 
 " Desc: Vim UI
@@ -541,8 +427,6 @@ au FileType vim set comments=sO:\"\ -,mO:\"\ \ ,eO:\"\",f:\"
 " Desc: exUtility
 " ------------------------------------------------------------------ 
 
-au BufWritePost * call exUtility#UpdateCurrentBuffer() 
-
 " F9:  Insert/Remove macro extend ("\") after all the lines of the selection
 vnoremap <unique> <F9> :call exUtility#InsertRemoveExtend()<CR>
 
@@ -600,11 +484,6 @@ else " terminal mode
     nnoremap <unique> <silent> <leader>h0 :call exUtility#HighlightCancle(0)<CR>
 endif
 
-command -narg=? -complete=customlist,exUtility#CompleteBySymbolFile HL1 call exUtility#Highlight_Text(1, "<args>")
-command -narg=? -complete=customlist,exUtility#CompleteBySymbolFile HL2 call exUtility#Highlight_Text(2, "<args>")
-command -narg=? -complete=customlist,exUtility#CompleteBySymbolFile HL3 call exUtility#Highlight_Text(3, "<args>")
-command -narg=? -complete=customlist,exUtility#CompleteBySymbolFile HL4 call exUtility#Highlight_Text(4, "<args>")
-
 nnoremap <unique> <silent> <Leader>0 :call exUtility#HighlightCancle(0)<CR>
 nnoremap <unique> <silent> <Leader>1 :call exUtility#HighlightCancle(1)<CR>
 nnoremap <unique> <silent> <Leader>2 :call exUtility#HighlightCancle(2)<CR>
@@ -650,38 +529,8 @@ if has("gui_running")
     endif
 endif
 
-" project gen/copy/build
-command -narg=? -complete=customlist,exUtility#CompleteGMakeArgs GMake call exUtility#GCCMake("<args>")
-command -narg=? -complete=customlist,exUtility#CompleteGMakeArgs SMake call exUtility#ShaderMake("<args>")
-command -narg=* -complete=customlist,exUtility#CompleteVMakeArgs VMake call exUtility#VCMake("<args>")
-command -narg=* VBat call exUtility#VCMakeBAT(<f-args>)
-command -narg=? -complete=customlist,exUtility#CompleteUpdateArgs Update call exUtility#UpdateVimFiles("<args>")
-command -narg=? -complete=customlist,exUtility#CompleteQCopyArgs QCopy call exUtility#CopyQuickGenProject("<args>")
-
-" inherits genreate
-command -narg=1 -complete=customlist,exUtility#CompleteBySymbolFile GV call exUtility#GenInheritsDot('<args>',"all")
-command -narg=1 -complete=customlist,exUtility#CompleteBySymbolFile GVP call exUtility#GenInheritsDot('<args>',"parent")
-command -narg=1 -complete=customlist,exUtility#CompleteBySymbolFile GVC call exUtility#GenInheritsDot('<args>',"children")
+" inherit
 nnoremap <unique> <silent> <Leader>gv :call exUtility#ViewInheritsImage()<CR>
-
-" code writing
-command LINE call exUtility#PutLine(86, '-')
-command -narg=1 NSS call exUtility#PutNamespaceStart("<args>")
-command -narg=1 NSE call exUtility#PutNamespaceEnd("<args>")
-command -range -narg=1 NS call exUtility#PutNamespace("<args>", <line1>, <line2>)
-command HEADER call exUtility#PutHeader()
-command SEP call exUtility#PutSeparate()
-command SEG call exUtility#PutSegment()
-command NOTE call exUtility#PutNote()
-command DEF call exUtility#PutDefine()
-command DEC call exUtility#PutDeclaration()
-command DES call exUtility#PutDescription()
-command MAIN call exUtility#PutMain()
-command -narg=1 CLASS call exUtility#PutClass( "class", "<args>" )
-command -narg=1 STRUCT call exUtility#PutClass( "struct", "<args>" )
-
-" src-highlight
-command -range=% SHL call exUtility#SrcHighlight( <line1>, <line2> )
 
 " mark (special) text
 let g:ex_todo_keyword = 'NOTE REF EXAMPLE SAMPLE CHECK'
@@ -691,10 +540,55 @@ let g:ex_comment_lable_keyword .= 'HACK OPTME HARDCODE REFACTORING DUPLICATE RED
 
 vnoremap <unique> <Leader>mk :MK 
 nnoremap <unique> <Leader>mk :call exUtility#RemoveSpecialMarkText() <CR>
-command -range -narg=1 -complete=customlist,exUtility#CompleteMKArgs MK call exUtility#MarkText("<args>", <line1>, <line2> )
 
 " add plugin we use to prevent them record as edit-buffer
 let g:exUT_plugin_list = ["-MiniBufExplorer-","__Tag_List__","\[Lookup File\]"] 
+
+" update custom highlights
+function g:ex_CustomHighlight()
+
+    " ======================================================== 
+    " ShowMarks
+    " ======================================================== 
+
+    " For marks a-z
+    hi ShowMarksHLl term=bold cterm=none ctermbg=LightBlue gui=none guibg=LightBlue
+    " For marks A-Z
+    hi ShowMarksHLu term=bold cterm=bold ctermbg=LightRed ctermfg=DarkRed gui=bold guibg=LightRed guifg=DarkRed
+    " For all other marks
+    hi ShowMarksHLo term=bold cterm=bold ctermbg=LightYellow ctermfg=DarkYellow gui=bold guibg=LightYellow guifg=DarkYellow
+    " For multiple marks on the same line.
+    hi ShowMarksHLm term=bold cterm=none ctermbg=LightBlue gui=none guibg=SlateBlue
+
+    " ======================================================== 
+    " MiniBufExplorer
+    " ======================================================== 
+
+    " for buffers that have NOT CHANGED and are NOT VISIBLE.
+    hi MBENormal ctermbg=LightGray ctermfg=DarkGray guibg=LightGray guifg=DarkGray
+    " for buffers that HAVE CHANGED and are NOT VISIBLE
+    hi MBEChanged ctermbg=Red ctermfg=DarkRed guibg=Red guifg=DarkRed
+    " buffers that have NOT CHANGED and are VISIBLE
+    hi MBEVisibleNormal term=bold cterm=bold ctermbg=Gray ctermfg=Black gui=bold guibg=Gray guifg=Black
+    " buffers that have CHANGED and are VISIBLE
+    hi MBEVisibleChanged term=bold cterm=bold ctermbg=DarkRed ctermfg=Black gui=bold guibg=DarkRed guifg=Black
+
+    " ======================================================== 
+    " TagList
+    " ======================================================== 
+
+    " TagListTagName  - Used for tag names
+    hi MyTagListTagName term=bold cterm=none ctermfg=Black ctermbg=DarkYellow gui=none guifg=Black guibg=#ffe4b3
+    " TagListTagScope - Used for tag scope
+    hi MyTagListTagScope term=NONE cterm=NONE ctermfg=Blue gui=NONE guifg=Blue 
+    " TagListTitle    - Used for tag titles
+    hi MyTagListTitle term=bold cterm=bold ctermfg=DarkRed ctermbg=LightGray gui=bold guifg=DarkRed guibg=LightGray 
+    " TagListComment  - Used for comments
+    hi MyTagListComment ctermfg=DarkGreen guifg=DarkGreen 
+    " TagListFileName - Used for filenames
+    hi MyTagListFileName term=bold cterm=bold ctermfg=Black ctermbg=LightBlue gui=bold guifg=Black guibg=LightBlue
+
+endfunction
 
 " ------------------------------------------------------------------ 
 " Desc: exTagSelect
@@ -816,6 +710,32 @@ nnoremap <unique> <leader>ms :ExmbToggle<CR>
 let g:exMB_backto_editbuf = 0
 let g:exMB_close_when_selected = 0
 let g:exMB_window_direction = 'bel'
+
+" ------------------------------------------------------------------ 
+" Desc: exEnvironmentSetting
+" ------------------------------------------------------------------ 
+
+" NOTE: The exEnvironmentSetting must put at the end of the plugin settings. It may update the default settings of plugin above
+
+let g:exES_vimfile_dir = "_vimfiles"
+let g:exES_project_cmd = 'EXProject'
+
+" NOTE: if you have different programme path and settings, pls create your own vimrc under $HOME, and define these variables by yourself.
+"       And don't forget sourced this rc at the end. 
+"       web browser option: 'c:\Documents\ and\ Settings\Johnny\Local\ Settings\Application Data\Google\Chrome\Application\chrome.exe'
+if has("gui_running")
+    if has("win32")
+        let g:exES_WebBrowser = 'c:\Program Files\Mozilla Firefox\firefox.exe'
+        let g:exES_ImageViewer = 'd:\exDev\IrfanView\i_view32.exe'
+    elseif has("unix")
+        let g:exES_WebBrowser = 'firefox'
+    endif
+endif
+
+" exEnvironmentSetting post update
+function g:exES_PostUpdate()
+    " NOTE: this is a post update environment function used for any custom environment update 
+endfunction
 
 " ------------------------------------------------------------------ 
 " Desc: TagList
@@ -959,105 +879,12 @@ let g:LookupFile_smartcase = 1
 let g:LookupFile_EscCancelsPopup = 1
 
 " ------------------------------------------------------------------ 
-" Desc: exEnvironmentSetting
+" Desc: VimWiki 
 " ------------------------------------------------------------------ 
 
-" NOTE: The exEvironmentSetting must put at the end of the plugin settings. It may update the default settings of plugin above
-
-let g:exES_vimfile_dir = "_vimfiles"
-let g:exES_project_cmd = 'EXProject'
-
-let g:exES_ImageViewer = ''
-let g:exES_WebBrowser = ''
-
-" NOTE: if you have different programme path and settings, pls create your own vimrc under $HOME, and define these variables by yourself.
-"       And don't forget sourced this rc at the end. 
-if has("gui_running")
-    if has("win32")
-        let g:exES_WebBrowser = 'c:\Program Files\Mozilla Firefox\firefox.exe'
-        let g:exES_ImageViewer = 'd:\exDev\IrfanView\i_view32.exe'
-    elseif has("unix")
-        let g:exES_WebBrowser = 'firefox'
-    endif
-endif
-" 'c:\Documents\ and\ Settings\Johnny\Local\ Settings\Application Data\Google\Chrome\Application\chrome.exe'
-
-function g:exES_UpdateEnvironment()
-    " Open Minibuffer always, re-adjust project position
-    let g:miniBufExplorerMoreThanOne = 0 
-    if exists(':MiniBufExplorer')
-        silent exe "MiniBufExplorer"
-    endif
-
-    " set parent working directory
-    if exists( 'g:exES_CWD' )
-        silent exec 'cd ' . g:exES_CWD
-    endif
-
-    " set tag file path
-    if exists( 'g:exES_Tag' )
-        "let &tags = &tags . ',' . g:exES_Tag
-        let &tags = escape(g:exES_Tag, " ")
-    endif
-
-    " open exProject window
-    if exists( 'g:exES_Project' )
-        silent exec g:exES_project_cmd.' '.g:exES_Project
-    endif
-
-    " init macro list
-    if exists( 'g:exES_Macro' )
-        silent call g:exMH_InitMacroList(g:exES_Macro)
-    endif
-
-    " connect cscope file
-    if exists( 'g:exES_Cscope' )
-        silent call g:exCS_ConnectCscopeFile()
-    endif
-
-    " set vimentry references
-    if exists ('g:exES_vimentryRefs')
-        for vimentry in g:exES_vimentryRefs
-            let entry_dir = fnamemodify( vimentry, ':p:h')
-            let fullpath_tagfile = exUtility#GetVimFile ( entry_dir, 'tag')
-            if has ('win32')
-                let fullpath_tagfile = exUtility#Pathfmt( fullpath_tagfile, 'windows' )
-            elseif has ('unix')
-                let fullpath_tagfile = exUtility#Pathfmt( fullpath_tagfile, 'unix' )
-            endif
-            if findfile ( fullpath_tagfile ) != ''
-                let &tags .= ',' . fullpath_tagfile
-            endif
-        endfor
-    endif
-
-    " set lookup file plugin variables
-	if exists( 'g:exES_LookupFileTag' )
-        let g:LookupFile_TagExpr='"'.g:exES_LookupFileTag.'"'
-    endif
-
-	" set visual_studio plugin variables
-	if exists( 'g:exES_vsTaskList' )
-		let g:visual_studio_task_list = g:exES_vsTaskList
-	endif
-	if exists( 'g:exES_vsOutput' )
-		let g:visual_studio_output = g:exES_vsOutput
-	endif
-	if exists( 'g:exES_vsFindResult1' )
-		let g:visual_studio_find_results_1 = g:exES_vsFindResult1
-	endif
-	if exists( 'g:exES_vsFindResult2' )
-		let g:visual_studio_find_results_2 = g:exES_vsFindResult2
-	endif
-
-    " set vimwiki
-	if exists( 'g:exES_wikiHome' )
-        let g:vimwiki_home = g:exES_wikiHome 
-    endif
-	if exists( 'g:exES_wikiHomeHtml' )
-        let g:vimwiki_home_html = g:exES_wikiHomeHtml 
-    endif
-endfunction
+map <silent><unique> <Leader>ww <Plug>VimwikiGoHome
+map <silent><unique> <Leader>wt <Plug>VimwikiTabGoHome
+map <silent><unique> <Leader>wr <Plug>VimwikiUISelect
 
 "/////////////////////////////////////////////////////////////////////////////
 " Other settings

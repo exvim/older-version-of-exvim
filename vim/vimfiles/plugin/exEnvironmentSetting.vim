@@ -23,9 +23,44 @@ let loaded_ex_environment_setting=1
 " Desc: create to specified where to put vim files 
 " ------------------------------------------------------------------ 
 
-" set the vim file dir
 if !exists('g:exES_vimfile_dir')
     let g:exES_vimfile_dir = "_vimfiles"
+endif
+
+" ------------------------------------------------------------------ 
+" Desc: set project command
+" ------------------------------------------------------------------ 
+
+if !exists('g:exES_project_cmd')
+    let g:exES_project_cmd = 'EXProject'
+endif
+
+" ------------------------------------------------------------------ 
+" Desc: set web browser
+" ------------------------------------------------------------------ 
+
+if !exists('g:exES_WebBrowser')
+    if has("gui_running")
+        if has("win32")
+            let g:exES_WebBrowser = 'c:\Program Files\Mozilla Firefox\firefox.exe'
+        elseif has("unix")
+            let g:exES_WebBrowser = 'firefox'
+        endif
+    endif
+endif
+
+" ------------------------------------------------------------------ 
+" Desc: set image viewer
+" ------------------------------------------------------------------ 
+
+if !exists('g:exES_WebBrowser')
+    if has("gui_running")
+        if has("win32")
+            let g:exES_ImageViewer = 'd:\exDev\IrfanView\i_view32.exe'
+        elseif has("unix")
+            " TODO
+        endif
+    endif
 endif
 
 " ------------------------------------------------------------------ 
@@ -247,12 +282,92 @@ function g:exES_SetEnvironment( force_reset ) " <<<
         endif
 
         " update environment
-        if exists('*g:exES_UpdateEnvironment')
-            call g:exES_UpdateEnvironment()
-        endif
+        call g:exES_UpdateEnvironment()
     endif
 endfunction " >>>
 
+" ------------------------------------------------------------------ 
+" Desc: default environment update function 
+" ------------------------------------------------------------------ 
+
+function g:exES_UpdateEnvironment()
+    " Open Minibuffer always, re-adjust project position
+    let g:miniBufExplorerMoreThanOne = 0 
+    if exists(':MiniBufExplorer')
+        silent exe "MiniBufExplorer"
+    endif
+
+    " set parent working directory
+    if exists( 'g:exES_CWD' )
+        silent exec 'cd ' . g:exES_CWD
+    endif
+
+    " set tag file path
+    if exists( 'g:exES_Tag' )
+        "let &tags = &tags . ',' . g:exES_Tag
+        let &tags = escape(g:exES_Tag, " ")
+    endif
+
+    " open exProject window
+    if exists( 'g:exES_Project' )
+        silent exec g:exES_project_cmd.' '.g:exES_Project
+    endif
+
+    " init macro list
+    if exists( 'g:exES_Macro' )
+        silent call g:exMH_InitMacroList(g:exES_Macro)
+    endif
+
+    " connect cscope file
+    if exists( 'g:exES_Cscope' )
+        silent call g:exCS_ConnectCscopeFile()
+    endif
+
+    " set vimentry references
+    if exists ('g:exES_vimentryRefs')
+        for vimentry in g:exES_vimentryRefs
+            let entry_dir = fnamemodify( vimentry, ':p:h')
+            let fullpath_tagfile = exUtility#GetVimFile ( entry_dir, 'tag')
+            if has ('win32')
+                let fullpath_tagfile = exUtility#Pathfmt( fullpath_tagfile, 'windows' )
+            elseif has ('unix')
+                let fullpath_tagfile = exUtility#Pathfmt( fullpath_tagfile, 'unix' )
+            endif
+            if findfile ( fullpath_tagfile ) != ''
+                let &tags .= ',' . fullpath_tagfile
+            endif
+        endfor
+    endif
+
+    " set lookup file plugin variables
+	if exists( 'g:exES_LookupFileTag' )
+        let g:LookupFile_TagExpr='"'.g:exES_LookupFileTag.'"'
+    endif
+
+	" set visual_studio plugin variables
+	if exists( 'g:exES_vsTaskList' )
+		let g:visual_studio_task_list = g:exES_vsTaskList
+	endif
+	if exists( 'g:exES_vsOutput' )
+		let g:visual_studio_output = g:exES_vsOutput
+	endif
+	if exists( 'g:exES_vsFindResult1' )
+		let g:visual_studio_find_results_1 = g:exES_vsFindResult1
+	endif
+	if exists( 'g:exES_vsFindResult2' )
+		let g:visual_studio_find_results_2 = g:exES_vsFindResult2
+	endif
+
+    " set vimwiki
+	if exists( 'g:exES_wikiHome' ) && exists( 'g:exES_wikiHomeHtml' )
+        let g:vimwiki_list = [ {'path': g:exES_wikiHome, 'path_html': g:exES_wikiHomeHtml} ]
+    endif
+
+    " update custom environment
+    if exists('*g:exES_PostUpdate')
+        call g:exES_PostUpdate()
+    endif
+endfunction
 
 "/////////////////////////////////////////////////////////////////////////////
 " commands

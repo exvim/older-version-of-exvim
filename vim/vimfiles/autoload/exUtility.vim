@@ -24,7 +24,7 @@ let loaded_exutility=1
 " ------------------------------------------------------------------ 
 
 if !exists('g:exUT_plugin_list')
-    let g:exUT_plugin_list = []
+    let g:exUT_plugin_list = ["-MiniBufExplorer-","__Tag_List__","\[Lookup File\]"] 
 endif
 
 " ------------------------------------------------------------------ 
@@ -33,6 +33,24 @@ endif
 
 if !exists('g:ex_help_text_on')
     let g:ex_help_text_on = 0
+endif
+
+" ------------------------------------------------------------------ 
+" Desc: add todo syntax keyword 
+" ------------------------------------------------------------------ 
+
+if !exists('g:ex_todo_keyword')
+    let g:ex_todo_keyword = 'NOTE REF EXAMPLE SAMPLE CHECK'
+endif
+
+" ------------------------------------------------------------------ 
+" Desc: add comment lable keyword
+" ------------------------------------------------------------------ 
+
+if !exists('g:ex_comment_lable_keyword')
+    let g:ex_comment_lable_keyword = 'DELME TEMP MODIFY ADD KEEPME DISABLE ' " for editing
+    let g:ex_comment_lable_keyword .= 'DEBUG CRASH DUMMY UNUSED TESTME ' " for testing 
+    let g:ex_comment_lable_keyword .= 'HACK OPTME HARDCODE REFACTORING DUPLICATE REDUNDANCY ' " for refactoring
 endif
 
 " ======================================================== 
@@ -78,8 +96,10 @@ if exists('g:ex_comment_lable_keyword')
 endif
 
 " ------------------------------------------------------------------ 
-" Desc: 
+" Desc:  
 " ------------------------------------------------------------------ 
+
+let s:ex_HighlightsInited = 0 
 
 " ------------------------------------------------------------------ 
 " Desc: 
@@ -91,37 +111,6 @@ let s:ex_MapHelpMode={}
 let s:ex_MapHelpOldMode={}
 let s:ex_MapLastCursorLine={}
 " } TODO end 
-
-" ======================================================== 
-" syntax highlight
-" ======================================================== 
-
-hi def ex_SynHL1 gui=none guibg=LightCyan term=none cterm=none ctermbg=LightCyan
-hi def ex_SynHL2 gui=none guibg=LightMagenta term=none cterm=none ctermbg=LightMagenta
-hi def ex_SynHL3 gui=none guibg=LightRed term=none cterm=none ctermbg=LightRed
-hi def ex_SynHL4 gui=none guibg=LightGreen term=none cterm=none ctermbg=LightGreen
-
-hi def ex_SynSelectLine gui=none guibg=#bfffff term=none cterm=none ctermbg=LightCyan
-hi def ex_SynConfirmLine gui=none guibg=#ffe4b3 term=none cterm=none ctermbg=DarkYellow
-hi def ex_SynObjectLine gui=none guibg=#ffe4b3 term=none cterm=none ctermbg=DarkYellow
-
-hi def link ex_SynError Error
-hi def link ex_SynFold Comment
-hi def link ex_SynFileName Statement
-hi def link ex_SynLineNr LineNr
-hi def link ex_SynNormal Normal
-
-hi def ex_SynTransparent gui=none guifg=background term=none cterm=none ctermfg=DarkGray
-hi def ex_SynSearchPattern gui=bold guifg=DarkRed guibg=LightGray term=bold cterm=bold ctermfg=DarkRed ctermbg=LightGray
-hi def ex_SynTitle term=bold cterm=bold ctermfg=DarkYellow gui=bold guifg=Brown
-
-hi def ex_SynJumpMethodS term=none cterm=none ctermfg=Red gui=none guifg=Red 
-hi def ex_SynJumpMethodG term=none cterm=none ctermfg=Blue gui=none guifg=Blue 
-hi def link ex_SynJumpSymbol Comment
-
-" help syntax color
-highlight def ex_SynHelpText gui=none guifg=DarkGreen
-
 
 "/////////////////////////////////////////////////////////////////////////////
 "  window functions
@@ -2149,6 +2138,80 @@ endfunction " >>>
 "/////////////////////////////////////////////////////////////////////////////
 
 " ------------------------------------------------------------------ 
+" Desc: update the syntax highlight in exVim  
+" ------------------------------------------------------------------ 
+
+function exUtility#UpdateSyntaxHighlights()
+
+    let s:ex_HighlightsInited = 1 
+
+    " ======================================================== 
+    " exUtility
+    " ======================================================== 
+
+    hi ex_SynHL1 gui=none guibg=LightCyan term=none cterm=none ctermbg=LightCyan
+    hi ex_SynHL2 gui=none guibg=LightMagenta term=none cterm=none ctermbg=LightMagenta
+    hi ex_SynHL3 gui=none guibg=LightRed term=none cterm=none ctermbg=LightRed
+    hi ex_SynHL4 gui=none guibg=LightGreen term=none cterm=none ctermbg=LightGreen
+
+    hi ex_SynSelectLine gui=none guibg=#bfffff term=none cterm=none ctermbg=LightCyan
+    hi ex_SynConfirmLine gui=none guibg=#ffe4b3 term=none cterm=none ctermbg=DarkYellow
+    hi ex_SynObjectLine gui=none guibg=#ffe4b3 term=none cterm=none ctermbg=DarkYellow
+
+    hi link ex_SynError Error
+    hi link ex_SynFold Comment
+    hi link ex_SynFileName Statement
+    hi link ex_SynLineNr LineNr
+    hi link ex_SynNormal Normal
+
+    hi ex_SynTransparent gui=none guifg=background term=none cterm=none ctermfg=DarkGray
+    hi ex_SynSearchPattern gui=bold guifg=DarkRed guibg=LightGray term=bold cterm=bold ctermfg=DarkRed ctermbg=LightGray
+    hi ex_SynTitle term=bold cterm=bold ctermfg=DarkYellow gui=bold guifg=Brown
+
+    hi ex_SynJumpMethodS term=none cterm=none ctermfg=Red gui=none guifg=Red 
+    hi ex_SynJumpMethodG term=none cterm=none ctermfg=Blue gui=none guifg=Blue 
+    hi link ex_SynJumpSymbol Comment
+
+    hi exCommentLable term=standout ctermfg=DarkYellow ctermbg=Red gui=none guifg=LightYellow guibg=Red
+    " hi exCommentLable term=standout ctermfg=DarkYellow ctermbg=Red gui=none guifg=DarkRed guibg=LightMagenta
+
+    " ======================================================== 
+    " exMacroHighlight
+    " ======================================================== 
+
+    hi exMacroDisable term=none cterm=none ctermfg=DarkGray gui=none guifg=DarkGray
+    hi link cCppOut exMacroDisable                
+    hi exMH_GroupNameEnable term=bold cterm=bold ctermfg=DarkRed ctermbg=LightGray gui=bold guifg=DarkRed guibg=LightGray
+    hi exMH_GroupNameDisable term=bold cterm=bold ctermfg=Red ctermbg=DarkGray gui=bold guifg=DarkGray guibg=LightGray
+    hi link exMH_MacroEnable cPreProc
+    hi link exMH_MacroDisable exMacroDisable
+
+    " ======================================================== 
+    " exProject
+    " ======================================================== 
+
+    hi exPJ_TreeLine gui=none guifg=DarkGray term=none cterm=none ctermfg=Gray
+    hi exPJ_SynDir gui=bold guifg=Brown term=bold cterm=bold ctermfg=DarkRed
+    hi exPJ_SynFile gui=none guifg=Magenta term=none cterm=none ctermfg=Magenta
+
+    hi exPJ_SynSrcFile gui=none guifg=Blue term=none cterm=none ctermfg=Blue
+    hi exPJ_SynHeaderFile gui=none guifg=DarkGreen term=none cterm=none ctermfg=DarkGreen
+    hi exPJ_SynErrorFile gui=none guifg=Red term=none cterm=none ctermfg=Red
+
+    " ======================================================== 
+    " exCScope
+    " ======================================================== 
+
+    hi exCS_SynQfNumber gui=none guifg=Red term=none cterm=none ctermfg=Red
+
+    " update custom environment
+    if exists('*g:ex_CustomHighlight')
+        call g:ex_CustomHighlight()
+    endif
+
+endfunction
+
+" ------------------------------------------------------------------ 
 " Desc: hightlight confirm line
 " ------------------------------------------------------------------ 
 
@@ -2833,6 +2896,72 @@ endfunction " >>>
 function exUtility#IsFunctionalbuf(Buf_Name) " <<<
     return index( g:exUT_plugin_list, fnamemodify(a:Buf_Name,":p:t") ) >=0
 endfunction " >>>
+
+"/////////////////////////////////////////////////////////////////////////////
+" auto-commands
+"/////////////////////////////////////////////////////////////////////////////
+
+" update buffer ( right now only minibuffer highlight )
+au BufWritePost * call exUtility#UpdateCurrentBuffer() 
+au ColorScheme * call exUtility#UpdateSyntaxHighlights()
+
+" if you don't use color scheme, you may properly not run the code above, so
+" run it manually here
+if s:ex_HighlightsInited == 0
+    call exUtility#UpdateSyntaxHighlights()
+endif
+
+"/////////////////////////////////////////////////////////////////////////////
+" commands
+"/////////////////////////////////////////////////////////////////////////////
+
+" highlight commands
+command -narg=? -complete=customlist,exUtility#CompleteBySymbolFile HL1 call exUtility#Highlight_Text(1, "<args>")
+command -narg=? -complete=customlist,exUtility#CompleteBySymbolFile HL2 call exUtility#Highlight_Text(2, "<args>")
+command -narg=? -complete=customlist,exUtility#CompleteBySymbolFile HL3 call exUtility#Highlight_Text(3, "<args>")
+command -narg=? -complete=customlist,exUtility#CompleteBySymbolFile HL4 call exUtility#Highlight_Text(4, "<args>")
+
+" project gen/copy/build
+command -narg=? -complete=customlist,exUtility#CompleteGMakeArgs GMake call exUtility#GCCMake("<args>")
+command -narg=? -complete=customlist,exUtility#CompleteGMakeArgs SMake call exUtility#ShaderMake("<args>")
+command -narg=* -complete=customlist,exUtility#CompleteVMakeArgs VMake call exUtility#VCMake("<args>")
+command -narg=* VBat call exUtility#VCMakeBAT(<f-args>)
+command -narg=? -complete=customlist,exUtility#CompleteUpdateArgs Update call exUtility#UpdateVimFiles("<args>")
+command -narg=? -complete=customlist,exUtility#CompleteQCopyArgs QCopy call exUtility#CopyQuickGenProject("<args>")
+
+" inherits genreate
+command -narg=1 -complete=customlist,exUtility#CompleteBySymbolFile GV call exUtility#GenInheritsDot('<args>',"all")
+command -narg=1 -complete=customlist,exUtility#CompleteBySymbolFile GVP call exUtility#GenInheritsDot('<args>',"parent")
+command -narg=1 -complete=customlist,exUtility#CompleteBySymbolFile GVC call exUtility#GenInheritsDot('<args>',"children")
+
+" code writing
+command LINE call exUtility#PutLine(86, '-')
+command -narg=1 NSS call exUtility#PutNamespaceStart("<args>")
+command -narg=1 NSE call exUtility#PutNamespaceEnd("<args>")
+command -range -narg=1 NS call exUtility#PutNamespace("<args>", <line1>, <line2>)
+command HEADER call exUtility#PutHeader()
+command SEP call exUtility#PutSeparate()
+command SEG call exUtility#PutSegment()
+command NOTE call exUtility#PutNote()
+command DEF call exUtility#PutDefine()
+command DEC call exUtility#PutDeclaration()
+command DES call exUtility#PutDescription()
+command MAIN call exUtility#PutMain()
+command -narg=1 CLASS call exUtility#PutClass( "class", "<args>" )
+command -narg=1 STRUCT call exUtility#PutClass( "struct", "<args>" )
+
+" src-highlight
+command -range=% SHL call exUtility#SrcHighlight( <line1>, <line2> )
+
+" text mark
+command -range -narg=1 -complete=customlist,exUtility#CompleteMKArgs MK call exUtility#MarkText("<args>", <line1>, <line2> )
+
+"/////////////////////////////////////////////////////////////////////////////
+" default mappings
+"/////////////////////////////////////////////////////////////////////////////
+
+" TODO:
+
 
 "/////////////////////////////////////////////////////////////////////////////
 " finish
