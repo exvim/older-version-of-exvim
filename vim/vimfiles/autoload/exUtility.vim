@@ -2141,7 +2141,7 @@ endfunction " >>>
 " Desc: update the syntax highlight in exVim  
 " ------------------------------------------------------------------ 
 
-function exUtility#UpdateSyntaxHighlights()
+function exUtility#UpdateSyntaxHighlights() " <<<
 
     let s:ex_HighlightsInited = 1 
 
@@ -2209,7 +2209,7 @@ function exUtility#UpdateSyntaxHighlights()
         call g:ex_CustomHighlight()
     endif
 
-endfunction
+endfunction " >>>
 
 " ------------------------------------------------------------------ 
 " Desc: hightlight confirm line
@@ -2955,13 +2955,6 @@ command -range=% SHL call exUtility#SrcHighlight( <line1>, <line2> )
 
 " text mark
 command -range -narg=1 -complete=customlist,exUtility#CompleteMKArgs MK call exUtility#MarkText("<args>", <line1>, <line2> )
-
-"/////////////////////////////////////////////////////////////////////////////
-" default mappings
-"/////////////////////////////////////////////////////////////////////////////
-
-" TODO:
-
 
 "/////////////////////////////////////////////////////////////////////////////
 " finish

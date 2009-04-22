@@ -149,60 +149,21 @@ set	cinoptions=>s,e0,n0,f0,{0,}0,^0,:0,=s,l0,b0,g0,hs,ps,ts,is,+s,c3,C0,0,(0,us,
 " Official diff settings
 set diffexpr=MyDiff()
 function MyDiff()
-  let opt = '-a --binary -w '
-  if &diffopt =~ 'icase' | let opt = opt . '-i ' | endif
-  if &diffopt =~ 'iwhite' | let opt = opt . '-b ' | endif
-  let arg1 = v:fname_in
-  if arg1 =~ ' ' | let arg1 = '"' . arg1 . '"' | endif
-  let arg2 = v:fname_new
-  if arg2 =~ ' ' | let arg2 = '"' . arg2 . '"' | endif
-  let arg3 = v:fname_out
-  if arg3 =~ ' ' | let arg3 = '"' . arg3 . '"' | endif
-  silent execute '!' .  'diff ' . opt . arg1 . ' ' . arg2 . ' > ' . arg3
+    let opt = '-a --binary -w '
+    if &diffopt =~ 'icase' | let opt = opt . '-i ' | endif
+    if &diffopt =~ 'iwhite' | let opt = opt . '-b ' | endif
+    let arg1 = v:fname_in
+    if arg1 =~ ' ' | let arg1 = '"' . arg1 . '"' | endif
+    let arg2 = v:fname_new
+    if arg2 =~ ' ' | let arg2 = '"' . arg2 . '"' | endif
+    let arg3 = v:fname_out
+    if arg3 =~ ' ' | let arg3 = '"' . arg3 . '"' | endif
+    silent execute '!' .  'diff ' . opt . arg1 . ' ' . arg2 . ' > ' . arg3
 endfunction
 
 set cindent shiftwidth=4 " Set cindent on to autoinent when editing C/C++ file, with 4 shift width
 set tabstop=4 " Set tabstop to 4 characters
 set expandtab " Set expandtab on, the tab will be change to space automaticaly
-au BufEnter *.py,*.pyw call CheckIfExpandTab() " if edit python scripts, check if have \t. ( python said: the programme can only use \t or not, but can use them together )
-function CheckIfExpandTab()
-    let has_noexpandtab = search('^\t','wn')
-    let has_expandtab = search('^    ','wn')
-
-    "
-    if has_noexpandtab && has_expandtab
-        let idx = inputlist ( ["ERROR: current file exists both expand and noexpand TAB, python can only use one of these two mode in one file.\nSelect Tab Expand Type:",
-                              \ '1. expand (tab=space, recommended)', 
-                              \ '2. noexpand (tab=\t, currently have risk)',
-                              \ '3. do nothing (I will handle it by myself)'])
-        let tab_space = printf('%*s',&tabstop,'')
-        if idx == 1
-            let has_noexpandtab = 0
-            let has_expandtab = 1
-            silent exec '%s/\t/' . tab_space . '/g'
-        elseif idx == 2
-            let has_noexpandtab = 1
-            let has_expandtab = 0
-            silent exec '%s/' . tab_space . '/\t/g'
-        else
-            return
-        endif
-    endif
-
-    " 
-    if has_noexpandtab == 1 && has_expandtab == 0  
-        echomsg 'substitute space to TAB...'
-        set noexpandtab
-        echomsg 'done!'
-    elseif has_noexpandtab == 0 && has_expandtab == 1
-        echomsg 'substitute TAB to space...'
-        set expandtab
-        echomsg 'done!'
-    else
-        " it may be a new file
-        " we use original vim setting
-    endif
-endfunction
 
 " Set Number format to null(default is octal) , when press CTRL-A on number
 " like 007, it would not become 010
@@ -277,12 +238,22 @@ endif
 " F8:  Set Search pattern highlight on/off
 nnoremap <unique> <F8> :let @/=""<CR>
 
-" A-F1:  Switch to English Mode (Both Enconding and uiFont)
-nnoremap <unique> <A-F1> :set guifont=Lucida_Console:h9<CR>:set encoding=latin1<CR>
-" A-F2:  Switch to Chinese Mode (Both Enconding and uiFont)
-nnoremap <unique> <A-F2> :set guifont=NSimSun:cGB2312:h9<CR>:set encoding=cp936<CR>
-" A-F3:  Switch to Japanese Mode 
-nnoremap <unique> <A-F3> :set guifont=MS_Gothic:cSHIFTJIS:h9<CR>:set encoding=cp932<CR>
+" fast encoding change. 
+if has("gui_running") "  the <alt> key is only available in gui mode.
+    " A-F1:  Switch to English Mode (Both Enconding and uiFont)
+    nnoremap <unique> <A-F1> :set guifont=Lucida_Console:h9<CR>:set encoding=latin1<CR>
+    " A-F2:  Switch to Chinese Mode (Both Enconding and uiFont)
+    nnoremap <unique> <A-F2> :set guifont=NSimSun:cGB2312:h9<CR>:set encoding=cp936<CR>
+    " A-F3:  Switch to Japanese Mode 
+    nnoremap <unique> <A-F3> :set guifont=MS_Gothic:cSHIFTJIS:h9<CR>:set encoding=cp932<CR>
+else
+    " <leader>F1:  Switch to English Mode (Both Enconding and uiFont)
+    nnoremap <unique> <leader><F1> :set guifont=Lucida_Console:h9<CR>:set encoding=latin1<CR>
+    " <leader>F2:  Switch to Chinese Mode (Both Enconding and uiFont)
+    nnoremap <unique> <leader><F2> :set guifont=NSimSun:cGB2312:h9<CR>:set encoding=cp936<CR>
+    " <leader>F3:  Switch to Japanese Mode 
+    nnoremap <unique> <leader><F3> :set guifont=MS_Gothic:cSHIFTJIS:h9<CR>:set encoding=cp932<CR>
+endif
 
 " map Ctrl-Tab to switch window
 nnoremap <unique> <S-Up> <C-W><Up>
@@ -293,8 +264,10 @@ nnoremap <unique> <S-Right> <C-W><Right>
 " Move in fold
 noremap <unique> z<Up> zk
 noremap <unique> z<Down> zj
-noremap <unique> <A-Up> zk
-noremap <unique> <A-Down> zj
+if has("gui_running") "  the <alt> key is only available in gui mode.
+    noremap <unique> <A-Up> zk
+    noremap <unique> <A-Down> zj
+endif
 
 " Easy Diff goto
 noremap <unique> <C-Up> [c
@@ -325,13 +298,6 @@ noremap <unique> <Down> gj
 inoremap <unique> <c-j> <C-X><C-]>
 " search in current files, preview first. remove the original c-p
 inoremap <unique> <c-p> <C-X><C-P>
-
-" map for quick add special comments
-nnoremap <unique> <leader>ws :SEG<CR>
-nnoremap <unique> <leader>wd :DEF<CR>
-nnoremap <unique> <leader>we :SEP<CR>
-nnoremap <unique> <leader>wc :DEC<CR>
-nnoremap <unique> <leader>wh :HEADER<CR>
 
 " VimTip 329: A map for swapping words
 " http://vim.sourceforge.net/tip_view.php?tip_id=
@@ -394,6 +360,46 @@ au BufNewFile,BufEnter * set cpoptions+=d " NOTE: ctags find the tags file from 
 au BufEnter * :syntax sync fromstart " ensure every file does syntax highlighting (full) 
 au BufNewFile,BufRead *.avs set syntax=avs " for avs syntax file.
 
+au BufEnter *.py,*.pyw call CheckIfExpandTab() " if edit python scripts, check if have \t. ( python said: the programme can only use \t or not, but can use them together )
+function CheckIfExpandTab()
+    let has_noexpandtab = search('^\t','wn')
+    let has_expandtab = search('^    ','wn')
+
+    "
+    if has_noexpandtab && has_expandtab
+        let idx = inputlist ( ["ERROR: current file exists both expand and noexpand TAB, python can only use one of these two mode in one file.\nSelect Tab Expand Type:",
+                    \ '1. expand (tab=space, recommended)', 
+                    \ '2. noexpand (tab=\t, currently have risk)',
+                    \ '3. do nothing (I will handle it by myself)'])
+        let tab_space = printf('%*s',&tabstop,'')
+        if idx == 1
+            let has_noexpandtab = 0
+            let has_expandtab = 1
+            silent exec '%s/\t/' . tab_space . '/g'
+        elseif idx == 2
+            let has_noexpandtab = 1
+            let has_expandtab = 0
+            silent exec '%s/' . tab_space . '/\t/g'
+        else
+            return
+        endif
+    endif
+
+    " 
+    if has_noexpandtab == 1 && has_expandtab == 0  
+        echomsg 'substitute space to TAB...'
+        set noexpandtab
+        echomsg 'done!'
+    elseif has_noexpandtab == 0 && has_expandtab == 1
+        echomsg 'substitute TAB to space...'
+        set expandtab
+        echomsg 'done!'
+    else
+        " it may be a new file
+        " we use original vim setting
+    endif
+endfunction
+
 " DISABLE { 
 " NOTE: may have problem with exUtility
 " Change current directory to the file of the buffer ( from Script#65"CD.vim"
@@ -413,9 +419,10 @@ if has("gui_running")
 endif
 
 " ------------------------------------------------------------------ 
-" Desc: Disable auto-comment for c/cpp and vim-script
+" Desc: file types 
 " ------------------------------------------------------------------ 
 
+" Disable auto-comment for c/cpp and vim-script
 au FileType c,cpp set comments=sO:*\ -,mO:*\ \ ,exO:*/,s1:/*,mb:*,ex:*/,f:// 
 au FileType vim set comments=sO:\"\ -,mO:\"\ \ ,eO:\"\",f:\"
 
@@ -426,6 +433,13 @@ au FileType vim set comments=sO:\"\ -,mO:\"\ \ ,eO:\"\",f:\"
 " ------------------------------------------------------------------ 
 " Desc: exUtility
 " ------------------------------------------------------------------ 
+
+" map for quick add special comments
+nnoremap <unique> <leader>ws :SEG<CR>
+nnoremap <unique> <leader>wd :DEF<CR>
+nnoremap <unique> <leader>we :SEP<CR>
+nnoremap <unique> <leader>wc :DEC<CR>
+nnoremap <unique> <leader>wh :HEADER<CR>
 
 " F9:  Insert/Remove macro extend ("\") after all the lines of the selection
 vnoremap <unique> <F9> :call exUtility#InsertRemoveExtend()<CR>
@@ -882,9 +896,13 @@ let g:LookupFile_EscCancelsPopup = 1
 " Desc: VimWiki 
 " ------------------------------------------------------------------ 
 
-map <silent><unique> <Leader>ww <Plug>VimwikiGoHome
 map <silent><unique> <Leader>wt <Plug>VimwikiTabGoHome
-map <silent><unique> <Leader>wr <Plug>VimwikiUISelect
+map <silent><unique> <Leader>wq <Plug>VimwikiUISelect
+map <silent><unique> <Leader>ww <Plug>VimwikiGoHome
+
+" vimwiki file process
+au FileType vimwiki command W echo "converting current buffer to html...\r" | exec 'Vimwiki2HTML' | echon "Done!\r"
+au FileType vimwiki command WA echo 'converting wikies to html...' | exec 'VimwikiAll2HTML'
 
 "/////////////////////////////////////////////////////////////////////////////
 " Other settings

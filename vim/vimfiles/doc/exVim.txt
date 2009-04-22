@@ -31,6 +31,7 @@ CONTENTS                                                      *exVim-contents*
             3.1.1 Variables.............................|exUtility-variables|
             3.1.2 Recommend Commands....................|exUtility-commands|
             3.1.3 Recommend Mappings....................|exUtility-mappings|
+            3.1.4 Custom Highlights.................... |exUtility-highlights|
         3.2 exEnvironment...............................|exEnvironment|
             3.2.1 Variables.............................|exEnvironment-variables|
             3.2.2 Update Function.......................|exEnvironment-functions|
@@ -880,6 +881,76 @@ How can I install "exVim"~
 <
 
 ------------------------------------------------------------------------------
+3.1.4 Custom Highlights					*exUtility-highlights*
+
+    Some times you need to custom highlight by your self, you have to write a
+    function in _vimrc named g:ex_CustomHighlight and define highlights of
+    exUtilities there. Here is a sample of highlights:
+>
+	function g:ex_CustomHighlight() " <<<
+	
+	    " ======================================================== 
+	    " exUtility
+	    " ======================================================== 
+	
+	    hi ex_SynHL1 gui=none guibg=LightCyan term=none cterm=none ctermbg=LightCyan
+	    hi ex_SynHL2 gui=none guibg=LightMagenta term=none cterm=none ctermbg=LightMagenta
+	    hi ex_SynHL3 gui=none guibg=LightRed term=none cterm=none ctermbg=LightRed
+	    hi ex_SynHL4 gui=none guibg=LightGreen term=none cterm=none ctermbg=LightGreen
+	
+	    hi ex_SynSelectLine gui=none guibg=#bfffff term=none cterm=none ctermbg=LightCyan
+	    hi ex_SynConfirmLine gui=none guibg=#ffe4b3 term=none cterm=none ctermbg=DarkYellow
+	    hi ex_SynObjectLine gui=none guibg=#ffe4b3 term=none cterm=none ctermbg=DarkYellow
+	
+	    hi link ex_SynError Error
+	    hi link ex_SynFold Comment
+	    hi link ex_SynFileName Statement
+	    hi link ex_SynLineNr LineNr
+	    hi link ex_SynNormal Normal
+	
+	    hi ex_SynTransparent gui=none guifg=background term=none cterm=none ctermfg=DarkGray
+	    hi ex_SynSearchPattern gui=bold guifg=DarkRed guibg=LightGray term=bold cterm=bold ctermfg=DarkRed ctermbg=LightGray
+	    hi ex_SynTitle term=bold cterm=bold ctermfg=DarkYellow gui=bold guifg=Brown
+	
+	    hi ex_SynJumpMethodS term=none cterm=none ctermfg=Red gui=none guifg=Red 
+	    hi ex_SynJumpMethodG term=none cterm=none ctermfg=Blue gui=none guifg=Blue 
+	    hi link ex_SynJumpSymbol Comment
+	
+	    hi exCommentLable term=standout ctermfg=DarkYellow ctermbg=Red gui=none guifg=LightYellow guibg=Red
+	
+	    " ======================================================== 
+	    " exMacroHighlight
+	    " ======================================================== 
+	
+	    hi exMacroDisable term=none cterm=none ctermfg=DarkGray gui=none guifg=DarkGray
+	    hi link cCppOut exMacroDisable                
+	    hi exMH_GroupNameEnable term=bold cterm=bold ctermfg=DarkRed ctermbg=LightGray gui=bold guifg=DarkRed guibg=LightGray
+	    hi exMH_GroupNameDisable term=bold cterm=bold ctermfg=Red ctermbg=DarkGray gui=bold guifg=DarkGray guibg=LightGray
+	    hi link exMH_MacroEnable cPreProc
+	    hi link exMH_MacroDisable exMacroDisable
+	
+	    " ======================================================== 
+	    " exProject
+	    " ======================================================== 
+	
+	    hi exPJ_TreeLine gui=none guifg=DarkGray term=none cterm=none ctermfg=Gray
+	    hi exPJ_SynDir gui=bold guifg=Brown term=bold cterm=bold ctermfg=DarkRed
+	    hi exPJ_SynFile gui=none guifg=Magenta term=none cterm=none ctermfg=Magenta
+	
+	    hi exPJ_SynSrcFile gui=none guifg=Blue term=none cterm=none ctermfg=Blue
+	    hi exPJ_SynHeaderFile gui=none guifg=DarkGreen term=none cterm=none ctermfg=DarkGreen
+	    hi exPJ_SynErrorFile gui=none guifg=Red term=none cterm=none ctermfg=Red
+	
+	    " ======================================================== 
+	    " exCScope
+	    " ======================================================== 
+	
+	    hi exCS_SynQfNumber gui=none guifg=Red term=none cterm=none ctermfg=Red
+	
+	endfunction " >>>
+<
+
+------------------------------------------------------------------------------
 3.2. exEnvironment                                             *exEnvironment*
 
     When you create a new .vimentry file, and open it, there always have some
@@ -960,14 +1031,17 @@ How can I install "exVim"~
 
                                                       *exES_UpdateEnvironment*
     If you want to do something after exEnvironment parsing the vimentry file,
-    you need to add scripts in exES_UpdateEnvironment in _vimrc. You can use
-    the script "if exists()" to detect if a variable been parse from vimentry,
-    for example, you have write a "CWD=..." line in the vimentry file, and the
-    script would be:
+    you need to define a function named g:exES_PostUpdate() and add scripts in 
+    it in _vimrc. You can use the script "if exists()" to detect if a variable 
+    been parse from vimentry, for example, you have write a "CWD=..." line 
+    in the vimentry file. For example
 >
-        if exists( 'g:exES_CWD' )
+	function g:exES_PostUpdate()
+            if exists( 'g:exES_CWD' )
+                silent exec 'cd ' . g:exES_CWD
+	    endif
+	endfunction
 <
-    More tips, check the exES_UpdateEnvironment function in _ex_vimrc.
 
 ------------------------------------------------------------------------------
 3.3. exProject                                                     *exProject*

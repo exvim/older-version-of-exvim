@@ -290,7 +290,7 @@ endfunction " >>>
 " Desc: default environment update function 
 " ------------------------------------------------------------------ 
 
-function g:exES_UpdateEnvironment()
+function g:exES_UpdateEnvironment() " <<<
     " Open Minibuffer always, re-adjust project position
     let g:miniBufExplorerMoreThanOne = 0 
     if exists(':MiniBufExplorer')
@@ -367,7 +367,7 @@ function g:exES_UpdateEnvironment()
     if exists('*g:exES_PostUpdate')
         call g:exES_PostUpdate()
     endif
-endfunction
+endfunction " >>>
 
 "/////////////////////////////////////////////////////////////////////////////
 " commands

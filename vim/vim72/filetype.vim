@@ -669,8 +669,10 @@ au BufNewFile,BufRead *.factor			setf factor
 " Fetchmail RC file
 au BufNewFile,BufRead .fetchmailrc		setf fetchmail
 
+" DISABLE: this will cause opening your wikifiles makes them changed although there were no changes at all.  { 
 " FlexWiki
-au BufNewFile,BufRead *.wiki			setf flexwiki
+" au BufNewFile,BufRead *.wiki			setf flexwiki
+" } DISABLE end 
 
 " Focus Executable
 au BufNewFile,BufRead *.fex,*.focexec		setf focexec
