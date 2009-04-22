@@ -2374,16 +2374,108 @@ Default Key:
 ==============================================================================
 4. Tips & Tricks                                             *Tips-And-Tricks*
 
-    TODOs:    
-    * \sg again and again
-    * \sg check class members
-    * \sg check function in different classes
-    * use whole symbol jump instead of \] jump
-    * \] again and again
-    * \gg again and again
-    * \gg then gd \r
-    * get last/next search results in global search by <u> or <c-r>
-    * exQuickFix work with visual studio.
+    * use \sg, \gg and \] everywhere ~
+	We don't say that \sg,\gg and \] operations can only used in
+	edit-window, but most user always think at that way. It is encourage
+	to use these operations in other window, and it can bring more
+	convenient. For example you use \] to watch the define of "CPhysicalFile" 
+	in exTagSelect window, and it list:
+>
+	CPhysicalFile
+	PhysicalFile.cpp (exLibs\File)
+	        1: CPhysicalFile::CPhysicalFile( const char* _filename )
+	PhysicalFile.h (exLibs\File)
+	        2: CPhysicalFile( const char* _filename = NULL );
+	        3: class EX_DLL_ENTRY CPhysicalFile : public IFile
+<
+    	And you see that in define 3, there have a IFile which is the parent
+	of CPhysicalFile and you can direct watch its define by use \] on it.
+	And here is the result:
+>
+	IFile
+	File.h (exLibs\File)
+        	1: IFile( const char* _name = NULL ) : 
+        	2: class EX_DLL_ENTRY IFile
+<
+    	Nothing but the key word "EX_DLL_ENTRY" interest you, and you want to
+	see where it is been used, so you start a globa search on it by \gg.
+	If nothing you want, may be you can open the exTagSelect window, and
+	press \sg on "IFile" keyword to see all its members. And that is how
+	you jump here and there by only these three operations.
+
+    * use \sg to check class members ~
+	When you use \sg in a key word which is a class name, it always bring
+	you a list of the class and its member and this is the fast way to
+	browse what is in that class. But remmeber, it only shows the member
+	on current class, not smart enough to shows inherits members.
+
+    * use \sg to check a member in different classes ~
+	Unlike browsing members in a class, the tip let you browsing a member
+	in different classes. For example, you have a TList class, and you use
+	\sg browse all its members, and you may have the result:
+>
+		TList
+		ex::TList
+		ex::TList::Assign
+		ex::TList::Back
+		ex::TList::Begin
+		ex::TList::Clear
+		...
+		...
+		ex::TList::PushBack
+		...
+		...
+<
+	Now you may want to see how many classes have PushBack function, you
+	can move your cursor to "PushBack", and then use \sg, the result
+	should be:
+>
+		PushBack
+		ex::TArray::PushBack
+		ex::TBitArray::PushBack
+		ex::TDeque::PushBack
+		ex::TList::PushBack
+		ex::TString::PushBack
+<
+	And let's the way you clear see interfaces or members in common.
+
+    * use the whole symbol jump instead of \] jump ~
+	As we know \] will list all possible tags, and for example we use \]
+	on "PushBack" keywords, and it will list all matched tags which in
+	several classes like TArray, TBitArray, TList, TString.... But may be
+	you just like to watch PushBack in TArray, so you have two way, one is
+	type :TS TArray::PushBack to get the matched results, the other is use
+	exSymbolTable list TArray member first, and search "PushBack" key word
+	and press <enter> to jump the line have "TArray::PushBack".
+	This also make exTagSelect search the key word more efficient, and is
+	the recommemd way to search tags.
+
+    * \gg then gd \r to get the whole word as result ~
+	We know \gg use partial match to search a word in the whole project,
+	which means you search "CClassTest" keyword, it may list "CClassTest",
+	"CClassTestFoo", "CClassTestBar" ... And you have two way to list just
+	"CClassTest", the first one as we know is use :GSW to search the whole
+	word in the project, But there have a lazy way :), which is after you
+	\gg to list some results, your cursor always on the {title} of the
+	list result, and you just press <gd>, and then press <leader>r. the
+	<gd> operations in vim will help you go to the local declaration, but
+	it brings you another effect which will apply \<{cword}\> search
+	pattern and that is what we want as the filter pattern for <leader>r.
+
+    * get last/next search results in global search by <u> or <c-r> ~
+	Some times, after several global search, you probably need the search
+	results list before, use the <u> and <ctrl-r> to undo and redo the
+	search result which will shows you the history :P. Since the search
+	result have a {title}, it is easy to confirm which one is you need.
+
+    * working with visual studio plugin ~
+    	Todo
+
+    * working with lookup file plugin ~
+    	Todo
+
+    * working with Taglist plugin ~
+    	Todo
 
 ==============================================================================
 5. About                                                               *About*
@@ -2444,10 +2536,10 @@ Default Key:
 	... to be continue...
 
     - Contact Method:
-       If you have any problem on using exVim, feel free to contact us, we 
-       will reply your mail asap. 
+    	If you have any problem on using exVim, feel free to contact us, we 
+       	will reply your mail asap. 
 
-       Wu Jie:       KarasAya (AT) GMail (DOT) com
-       Yu Jian Rong: YuJianrong (AT) GMail (DOT) com
+       	Wu Jie:       KarasAya (AT) GMail (DOT) com
+       	Yu Jian Rong: YuJianrong (AT) GMail (DOT) com
 
 vim: ft=help:norl:ts=8:tw=78:noexpandtab
