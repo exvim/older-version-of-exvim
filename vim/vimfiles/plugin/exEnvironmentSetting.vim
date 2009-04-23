@@ -67,7 +67,7 @@ endif
 " Desc: current version. increase this will cause template re-write 
 " ------------------------------------------------------------------ 
 
-let s:exES_CurrentVersion = 12
+let s:exES_CurrentVersion = 13
 
 " ======================================================== 
 " local variable initialization 
@@ -145,6 +145,7 @@ function s:exES_WriteDefaultTemplate() " <<<
 
     silent call add(_list, 'wikiHome=./_doc/')
     silent call add(_list, 'wikiHomeHtml=./_doc/html/')
+    silent call add(_list, 'wikiHtmlHeader=./_doc/template/header.tpl')
 
     " put the settings into vimentry file
     silent put! = _list
@@ -337,30 +338,6 @@ function g:exES_UpdateEnvironment() " <<<
                 let &tags .= ',' . fullpath_tagfile
             endif
         endfor
-    endif
-
-    " set lookup file plugin variables
-	if exists( 'g:exES_LookupFileTag' )
-        let g:LookupFile_TagExpr='"'.g:exES_LookupFileTag.'"'
-    endif
-
-	" set visual_studio plugin variables
-	if exists( 'g:exES_vsTaskList' )
-		let g:visual_studio_task_list = g:exES_vsTaskList
-	endif
-	if exists( 'g:exES_vsOutput' )
-		let g:visual_studio_output = g:exES_vsOutput
-	endif
-	if exists( 'g:exES_vsFindResult1' )
-		let g:visual_studio_find_results_1 = g:exES_vsFindResult1
-	endif
-	if exists( 'g:exES_vsFindResult2' )
-		let g:visual_studio_find_results_2 = g:exES_vsFindResult2
-	endif
-
-    " set vimwiki
-	if exists( 'g:exES_wikiHome' ) && exists( 'g:exES_wikiHomeHtml' )
-        let g:vimwiki_list = [ {'path': g:exES_wikiHome, 'path_html': g:exES_wikiHomeHtml} ]
     endif
 
     " update custom environment

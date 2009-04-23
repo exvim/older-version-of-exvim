@@ -747,8 +747,64 @@ if has("gui_running")
 endif
 
 " exEnvironmentSetting post update
+" NOTE: this is a post update environment function used for any custom environment update 
 function g:exES_PostUpdate()
-    " NOTE: this is a post update environment function used for any custom environment update 
+
+    " set lookup file plugin variables
+	if exists( 'g:exES_LookupFileTag' )
+        let g:LookupFile_TagExpr='"'.g:exES_LookupFileTag.'"'
+    endif
+
+	" set visual_studio plugin variables
+	if exists( 'g:exES_vsTaskList' )
+		let g:visual_studio_task_list = g:exES_vsTaskList
+	endif
+	if exists( 'g:exES_vsOutput' )
+		let g:visual_studio_output = g:exES_vsOutput
+	endif
+	if exists( 'g:exES_vsFindResult1' )
+		let g:visual_studio_find_results_1 = g:exES_vsFindResult1
+	endif
+	if exists( 'g:exES_vsFindResult2' )
+		let g:visual_studio_find_results_2 = g:exES_vsFindResult2
+	endif
+
+    " set vimwiki
+	if exists( 'g:exES_wikiHome' )
+        " clear the list first
+        if exists( 'g:vimwiki_list' ) && !empty(g:vimwiki_list)
+            silent call remove( g:vimwiki_list, 0, len(g:vimwiki_list)-1 )
+        endif
+
+        " assign vimwiki pathes, 
+        " NOTE: vimwiki need full path.
+        let g:vimwiki_list = [ { 'path':        fnamemodify(g:exES_wikiHome,":p"), 
+                               \ 'path_html':   fnamemodify(g:exES_wikiHomeHtml,":p"),
+                               \ 'html_header': fnamemodify(g:exES_wikiHtmlHeader,":p") } ]
+
+        " write default header if not found one.
+        let html_header_file = fnamemodify(g:exES_wikiHtmlHeader,':p') 
+        if findfile( html_header_file, '.;' ) == "" || empty( readfile(html_header_file) )
+            "
+            let text_list = []
+            silent call add ( text_list, '<html>' )
+            silent call add ( text_list, '<head>' )
+            silent call add ( text_list, '    <link rel="Stylesheet" type="text/css" href="style.css" />' )
+            silent call add ( text_list, '    <title>%title%</title>' )
+            silent call add ( text_list, '    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />' )
+            silent call add ( text_list, '</head>' )
+            silent call add ( text_list, '<body>' )
+            silent call add ( text_list, '<div class="contents">' )
+
+            " create dir before write, if not exist
+            if finddir( fnamemodify(g:exES_wikiHtmlHeader,':p:h') ) == ''
+                silent call mkdir( fnamemodify(g:exES_wikiHtmlHeader,':p:h') )
+            endif
+
+            " finally write file
+            call writefile ( text_list, html_header_file )
+        endif
+    endif
 endfunction
 
 " ------------------------------------------------------------------ 
