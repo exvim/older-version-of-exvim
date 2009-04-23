@@ -566,12 +566,16 @@ function g:ex_CustomHighlight()
     " ======================================================== 
 
     " For marks a-z
+    hi clear ShowMarksHLl
     hi ShowMarksHLl term=bold cterm=none ctermbg=LightBlue gui=none guibg=LightBlue
     " For marks A-Z
+    hi clear ShowMarksHLu
     hi ShowMarksHLu term=bold cterm=bold ctermbg=LightRed ctermfg=DarkRed gui=bold guibg=LightRed guifg=DarkRed
     " For all other marks
+    hi clear ShowMarksHLo
     hi ShowMarksHLo term=bold cterm=bold ctermbg=LightYellow ctermfg=DarkYellow gui=bold guibg=LightYellow guifg=DarkYellow
     " For multiple marks on the same line.
+    hi clear ShowMarksHLm
     hi ShowMarksHLm term=bold cterm=none ctermbg=LightBlue gui=none guibg=SlateBlue
 
     " ======================================================== 
@@ -782,32 +786,8 @@ function g:exES_PostUpdate()
                     \ 'path_html': fnamemodify(g:exES_wikiHomeHtml,":p"),
                     \ 'html_header': fnamemodify(g:exES_wikiHtmlHeader,":p") } ]
 
-        " FIXME: even it works, the first time you use vimwiki, this proces not come in
-        " if we don't exist g:exES_wikiHome directory, don't create default header template 
-        if finddir( fnamemodify(g:exES_wikiHome,':p') ) != ''
-            " write default header if not found one.
-            let html_header_file = fnamemodify(g:exES_wikiHtmlHeader,':p') 
-            if findfile( html_header_file, '.;' ) == "" || empty( readfile(html_header_file) )
-                "
-                let text_list = []
-                silent call add ( text_list, '<html>' )
-                silent call add ( text_list, '<head>' )
-                silent call add ( text_list, '    <link rel="Stylesheet" type="text/css" href="style.css" />' )
-                silent call add ( text_list, '    <title>%title%</title>' )
-                silent call add ( text_list, '    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />' )
-                silent call add ( text_list, '</head>' )
-                silent call add ( text_list, '<body>' )
-                silent call add ( text_list, '<div class="contents">' )
-
-                " create dir before write, if not exist
-                if finddir( fnamemodify(g:exES_wikiHtmlHeader,':p:h') ) == ''
-                    silent call mkdir( fnamemodify(g:exES_wikiHtmlHeader,':p:h') )
-                endif
-
-                " finally write file
-                call writefile ( text_list, html_header_file )
-            endif
-        endif
+        " create vimwiki files
+        call exUtility#CreateVimwikiFiles ()
     endif
 endfunction
 
@@ -961,8 +941,8 @@ map <silent><unique> <Leader>wq <Plug>VimwikiUISelect
 map <silent><unique> <Leader>ww <Plug>VimwikiGoHome
 
 " vimwiki file process
-au FileType vimwiki command! W silent exec 'w' | echo "converting current buffer to html...\r" | exec 'Vimwiki2HTML' | echon "Done!\r"
-au FileType vimwiki command! WA silent exec 'wa' | echo 'converting wikies to html...' | exec 'VimwikiAll2HTML'
+au FileType vimwiki command! W call exUtility#SaveAndConvertVimwiki(0)
+au FileType vimwiki command! WA call exUtility#SaveAndConvertVimwiki(1)
 
 "/////////////////////////////////////////////////////////////////////////////
 " Other settings

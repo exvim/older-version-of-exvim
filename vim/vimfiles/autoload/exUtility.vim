@@ -2149,60 +2149,60 @@ function exUtility#UpdateSyntaxHighlights() " <<<
     " exUtility
     " ======================================================== 
 
-    hi ex_SynHL1 gui=none guibg=LightCyan term=none cterm=none ctermbg=LightCyan
-    hi ex_SynHL2 gui=none guibg=LightMagenta term=none cterm=none ctermbg=LightMagenta
-    hi ex_SynHL3 gui=none guibg=LightRed term=none cterm=none ctermbg=LightRed
-    hi ex_SynHL4 gui=none guibg=LightGreen term=none cterm=none ctermbg=LightGreen
+    hi default ex_SynHL1 gui=none guibg=LightCyan term=none cterm=none ctermbg=LightCyan
+    hi default ex_SynHL2 gui=none guibg=LightMagenta term=none cterm=none ctermbg=LightMagenta
+    hi default ex_SynHL3 gui=none guibg=LightRed term=none cterm=none ctermbg=LightRed
+    hi default ex_SynHL4 gui=none guibg=LightGreen term=none cterm=none ctermbg=LightGreen
 
-    hi ex_SynSelectLine gui=none guibg=#bfffff term=none cterm=none ctermbg=LightCyan
-    hi ex_SynConfirmLine gui=none guibg=#ffe4b3 term=none cterm=none ctermbg=DarkYellow
-    hi ex_SynObjectLine gui=none guibg=#ffe4b3 term=none cterm=none ctermbg=DarkYellow
+    hi default ex_SynSelectLine gui=none guibg=#bfffff term=none cterm=none ctermbg=LightCyan
+    hi default ex_SynConfirmLine gui=none guibg=#ffe4b3 term=none cterm=none ctermbg=DarkYellow
+    hi default ex_SynObjectLine gui=none guibg=#ffe4b3 term=none cterm=none ctermbg=DarkYellow
 
-    hi link ex_SynError Error
-    hi link ex_SynFold Comment
-    hi link ex_SynFileName Statement
-    hi link ex_SynLineNr LineNr
-    hi link ex_SynNormal Normal
+    hi default link ex_SynError Error
+    hi default link ex_SynFold Comment
+    hi default link ex_SynFileName Statement
+    hi default link ex_SynLineNr LineNr
+    hi default link ex_SynNormal Normal
 
-    hi ex_SynTransparent gui=none guifg=background term=none cterm=none ctermfg=DarkGray
-    hi ex_SynSearchPattern gui=bold guifg=DarkRed guibg=LightGray term=bold cterm=bold ctermfg=DarkRed ctermbg=LightGray
-    hi ex_SynTitle term=bold cterm=bold ctermfg=DarkYellow gui=bold guifg=Brown
+    hi default ex_SynTransparent gui=none guifg=background term=none cterm=none ctermfg=DarkGray
+    hi default ex_SynSearchPattern gui=bold guifg=DarkRed guibg=LightGray term=bold cterm=bold ctermfg=DarkRed ctermbg=LightGray
+    hi default ex_SynTitle term=bold cterm=bold ctermfg=DarkYellow gui=bold guifg=Brown
 
-    hi ex_SynJumpMethodS term=none cterm=none ctermfg=Red gui=none guifg=Red 
-    hi ex_SynJumpMethodG term=none cterm=none ctermfg=Blue gui=none guifg=Blue 
-    hi link ex_SynJumpSymbol Comment
+    hi default ex_SynJumpMethodS term=none cterm=none ctermfg=Red gui=none guifg=Red 
+    hi default ex_SynJumpMethodG term=none cterm=none ctermfg=Blue gui=none guifg=Blue 
+    hi default link ex_SynJumpSymbol Comment
 
-    hi exCommentLable term=standout ctermfg=DarkYellow ctermbg=Red gui=none guifg=LightYellow guibg=Red
+    hi default exCommentLable term=standout ctermfg=DarkYellow ctermbg=Red gui=none guifg=LightYellow guibg=Red
     " hi exCommentLable term=standout ctermfg=DarkYellow ctermbg=Red gui=none guifg=DarkRed guibg=LightMagenta
 
     " ======================================================== 
     " exMacroHighlight
     " ======================================================== 
 
-    hi exMacroDisable term=none cterm=none ctermfg=DarkGray gui=none guifg=DarkGray
-    hi link cCppOut exMacroDisable                
-    hi exMH_GroupNameEnable term=bold cterm=bold ctermfg=DarkRed ctermbg=LightGray gui=bold guifg=DarkRed guibg=LightGray
-    hi exMH_GroupNameDisable term=bold cterm=bold ctermfg=Red ctermbg=DarkGray gui=bold guifg=DarkGray guibg=LightGray
-    hi link exMH_MacroEnable cPreProc
-    hi link exMH_MacroDisable exMacroDisable
+    hi default exMacroDisable term=none cterm=none ctermfg=DarkGray gui=none guifg=DarkGray
+    hi default link cCppOut exMacroDisable                
+    hi default exMH_GroupNameEnable term=bold cterm=bold ctermfg=DarkRed ctermbg=LightGray gui=bold guifg=DarkRed guibg=LightGray
+    hi default exMH_GroupNameDisable term=bold cterm=bold ctermfg=Red ctermbg=DarkGray gui=bold guifg=DarkGray guibg=LightGray
+    hi default link exMH_MacroEnable cPreProc
+    hi default link exMH_MacroDisable exMacroDisable
 
     " ======================================================== 
     " exProject
     " ======================================================== 
 
-    hi exPJ_TreeLine gui=none guifg=DarkGray term=none cterm=none ctermfg=Gray
-    hi exPJ_SynDir gui=bold guifg=Brown term=bold cterm=bold ctermfg=DarkRed
-    hi exPJ_SynFile gui=none guifg=Magenta term=none cterm=none ctermfg=Magenta
+    hi default exPJ_TreeLine gui=none guifg=DarkGray term=none cterm=none ctermfg=Gray
+    hi default exPJ_SynDir gui=bold guifg=Brown term=bold cterm=bold ctermfg=DarkRed
+    hi default exPJ_SynFile gui=none guifg=Magenta term=none cterm=none ctermfg=Magenta
 
-    hi exPJ_SynSrcFile gui=none guifg=Blue term=none cterm=none ctermfg=Blue
-    hi exPJ_SynHeaderFile gui=none guifg=DarkGreen term=none cterm=none ctermfg=DarkGreen
-    hi exPJ_SynErrorFile gui=none guifg=Red term=none cterm=none ctermfg=Red
+    hi default exPJ_SynSrcFile gui=none guifg=Blue term=none cterm=none ctermfg=Blue
+    hi default exPJ_SynHeaderFile gui=none guifg=DarkGreen term=none cterm=none ctermfg=DarkGreen
+    hi default exPJ_SynErrorFile gui=none guifg=Red term=none cterm=none ctermfg=Red
 
     " ======================================================== 
     " exCScope
     " ======================================================== 
 
-    hi exCS_SynQfNumber gui=none guifg=Red term=none cterm=none ctermfg=Red
+    hi default exCS_SynQfNumber gui=none guifg=Red term=none cterm=none ctermfg=Red
 
     " update custom environment
     if exists('*g:ex_CustomHighlight')
@@ -2731,6 +2731,67 @@ function exUtility#VisualPasteFixed() " <<<
     silent call getreg('*')
     " silent normal! gvpgvy " <-- this let you be the win32 copy/paste style
     silent normal! gvp
+endfunction " >>>
+
+"/////////////////////////////////////////////////////////////////////////////
+" plugin helper functions
+"/////////////////////////////////////////////////////////////////////////////
+
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
+function exUtility#CreateVimwikiFiles() " <<<
+    " create wiki html header
+    if exists( 'g:exES_wikiHtmlHeader' )
+
+        " if we don't exist g:exES_wikiHome directory, don't create default header template 
+        if finddir( fnamemodify(g:exES_wikiHome,':p') ) != ''
+
+            " write default header if not found one.
+            let html_header_file = fnamemodify(g:exES_wikiHtmlHeader,':p') 
+            if findfile( html_header_file, '.;' ) == "" || empty( readfile(html_header_file) )
+                "
+                let text_list = []
+                silent call add ( text_list, '<html>' )
+                silent call add ( text_list, '<head>' )
+                silent call add ( text_list, '    <link rel="Stylesheet" type="text/css" href="style.css" />' )
+                silent call add ( text_list, '    <title>%title%</title>' )
+                silent call add ( text_list, '    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />' )
+                silent call add ( text_list, '</head>' )
+                silent call add ( text_list, '<body>' )
+                silent call add ( text_list, '<div class="contents">' )
+
+                " create dir before write, if not exist
+                if finddir( fnamemodify(g:exES_wikiHtmlHeader,':p:h') ) == ''
+                    silent call mkdir( fnamemodify(g:exES_wikiHtmlHeader,':p:h') )
+                endif
+
+                " finally write file
+                call writefile ( text_list, html_header_file )
+            endif
+        endif
+    endif
+endfunction " >>>
+
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
+function exUtility#SaveAndConvertVimwiki( save_all ) " <<<
+    " first check and create vimwiki file if needed.
+    call exUtility#CreateVimwikiFiles ()
+
+    if a:save_all == 1
+        silent exec 'wa' 
+        echo 'converting wikies to html...' 
+        exec 'VimwikiAll2HTML'
+    else
+        silent exec 'w'
+        echo "converting current buffer to html...\r"
+        exec 'Vimwiki2HTML'
+        echon "Done!\r"
+    endif
 endfunction " >>>
 
 "/////////////////////////////////////////////////////////////////////////////
