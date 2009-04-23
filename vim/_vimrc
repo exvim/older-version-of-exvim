@@ -901,8 +901,8 @@ map <silent><unique> <Leader>wq <Plug>VimwikiUISelect
 map <silent><unique> <Leader>ww <Plug>VimwikiGoHome
 
 " vimwiki file process
-au FileType vimwiki command! W echo "converting current buffer to html...\r" | exec 'Vimwiki2HTML' | echon "Done!\r"
-au FileType vimwiki command! WA echo 'converting wikies to html...' | exec 'VimwikiAll2HTML'
+au FileType vimwiki command! W exec 'w' | echo "converting current buffer to html...\r" | exec 'Vimwiki2HTML' | echon "Done!\r"
+au FileType vimwiki command! WA exec 'wa' | echo 'converting wikies to html...' | exec 'VimwikiAll2HTML'
 
 "/////////////////////////////////////////////////////////////////////////////
 " Other settings
