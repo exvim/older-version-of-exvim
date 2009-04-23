@@ -770,7 +770,7 @@ function g:exES_PostUpdate()
 	endif
 
     " set vimwiki
-	if exists( 'g:exES_wikiHome' )
+    if exists( 'g:exES_wikiHome' )
         " clear the list first
         if exists( 'g:vimwiki_list' ) && !empty(g:vimwiki_list)
             silent call remove( g:vimwiki_list, 0, len(g:vimwiki_list)-1 )
@@ -778,31 +778,35 @@ function g:exES_PostUpdate()
 
         " assign vimwiki pathes, 
         " NOTE: vimwiki need full path.
-        let g:vimwiki_list = [ { 'path':        fnamemodify(g:exES_wikiHome,":p"), 
-                               \ 'path_html':   fnamemodify(g:exES_wikiHomeHtml,":p"),
-                               \ 'html_header': fnamemodify(g:exES_wikiHtmlHeader,":p") } ]
+        let g:vimwiki_list = [ { 'path': fnamemodify(g:exES_wikiHome,":p"), 
+                    \ 'path_html': fnamemodify(g:exES_wikiHomeHtml,":p"),
+                    \ 'html_header': fnamemodify(g:exES_wikiHtmlHeader,":p") } ]
 
-        " write default header if not found one.
-        let html_header_file = fnamemodify(g:exES_wikiHtmlHeader,':p') 
-        if findfile( html_header_file, '.;' ) == "" || empty( readfile(html_header_file) )
-            "
-            let text_list = []
-            silent call add ( text_list, '<html>' )
-            silent call add ( text_list, '<head>' )
-            silent call add ( text_list, '    <link rel="Stylesheet" type="text/css" href="style.css" />' )
-            silent call add ( text_list, '    <title>%title%</title>' )
-            silent call add ( text_list, '    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />' )
-            silent call add ( text_list, '</head>' )
-            silent call add ( text_list, '<body>' )
-            silent call add ( text_list, '<div class="contents">' )
+        " FIXME: even it works, the first time you use vimwiki, this proces not come in
+        " if we don't exist g:exES_wikiHome directory, don't create default header template 
+        if finddir( fnamemodify(g:exES_wikiHome,':p') ) != ''
+            " write default header if not found one.
+            let html_header_file = fnamemodify(g:exES_wikiHtmlHeader,':p') 
+            if findfile( html_header_file, '.;' ) == "" || empty( readfile(html_header_file) )
+                "
+                let text_list = []
+                silent call add ( text_list, '<html>' )
+                silent call add ( text_list, '<head>' )
+                silent call add ( text_list, '    <link rel="Stylesheet" type="text/css" href="style.css" />' )
+                silent call add ( text_list, '    <title>%title%</title>' )
+                silent call add ( text_list, '    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />' )
+                silent call add ( text_list, '</head>' )
+                silent call add ( text_list, '<body>' )
+                silent call add ( text_list, '<div class="contents">' )
 
-            " create dir before write, if not exist
-            if finddir( fnamemodify(g:exES_wikiHtmlHeader,':p:h') ) == ''
-                silent call mkdir( fnamemodify(g:exES_wikiHtmlHeader,':p:h') )
+                " create dir before write, if not exist
+                if finddir( fnamemodify(g:exES_wikiHtmlHeader,':p:h') ) == ''
+                    silent call mkdir( fnamemodify(g:exES_wikiHtmlHeader,':p:h') )
+                endif
+
+                " finally write file
+                call writefile ( text_list, html_header_file )
             endif
-
-            " finally write file
-            call writefile ( text_list, html_header_file )
         endif
     endif
 endfunction
