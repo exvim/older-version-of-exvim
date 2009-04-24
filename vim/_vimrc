@@ -314,8 +314,10 @@ nnoremap <unique> <silent><leader>sw "_yiw:s/\(\%#\w\+\)\(\W\+\)\(\w\+\)/\3\2\1/
 " let g:proj_run1='!p4 edit %f'
 " nmap <Leader>po :silent !p4 edit %<CR>
 " nmap <Leader>pr :silent !p4 revert %<CR>
-command Checkout :silent !p4 edit %
-command Revert :silent !p4 revert %
+command Checkout silent exec '!p4 edit ' . fnamemodify( bufname('%'), ':p' )
+command Revert silent exec '!p4 revert ' . fnamemodify( bufname('%'), ':p' )
+command Add silent exec '!p4 add ' . fnamemodify( bufname('%'), ':p' )
+command Delete silent exec '!p4 delete ' . fnamemodify( bufname('%'), ':p' )
 command Changelist :silent !p4 change
 command ShowChangelist :!p4 changes -s pending -u jwu
 
