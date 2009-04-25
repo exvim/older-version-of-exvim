@@ -2852,6 +2852,7 @@ function exUtility#CopySyntaxHighlighterFiles( dest_path ) " <<<
 
         let dest = full_path 
         let src = '' 
+        let cmd = ''
         if has("win32")
             let src = fnamemodify( $EX_DEV . "\\vim\\toolkit\\SyntaxHighlighter", ":p")
 
@@ -2864,14 +2865,22 @@ function exUtility#CopySyntaxHighlighterFiles( dest_path ) " <<<
             if ( dest[strlen(dest)-1] == '\' )
                 let dest = strpart ( dest, 0, strlen(dest)-1 )
             endif
+
+            let cmd = copy_cmd . ' ' . src . ' ' . dest 
         elseif has("unix")
             let src = fnamemodify( '/usr/local/share/vim/toolkit/SyntaxHighlighter/', ":p" )
+
+            " remove last \ if found in dest path
+            if ( dest[strlen(dest)-1] == '/' )
+                let dest = strpart ( dest, 0, strlen(dest)-1 )
+            endif
+
+            let cmd = copy_cmd . ' ' . src . '*' . ' ' . dest 
         endif
 
         if finddir( src ) == ""
             call exUtility#WarningMsg('Error: toolkit SyntaxHighligter not found, please install it.')
         else
-            let cmd = copy_cmd . ' ' . src . ' ' . dest 
             exec 'silent !' . cmd
             echo 'syntax highligter files copied!'
         endif
