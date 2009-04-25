@@ -2799,8 +2799,6 @@ function exUtility#CreateVimwikiFiles() " <<<
                 " finally write file
                 call writefile ( text_list, html_header_file )
             endif
-        else
-            call exUtility#WarningMsg ( "wiki home directory havn't been created, please create it first." )
         endif
     endif
 endfunction " >>>
@@ -2827,7 +2825,7 @@ function exUtility#SaveAndConvertVimwiki( save_all ) " <<<
 
     " copy syntax highlighter js files
     if exists ( 'g:exES_wikiHomeHtml' )
-        let dest_path = fnamemodify( g:exES_wikiHomeHtml . '/syntax_highlighter', ':p' ) 
+        let dest_path = fnamemodify( simplify(g:exES_wikiHomeHtml . '/syntax_highlighter'), ':p' ) 
         " if we don't have ./html/syntax_highlighter, create it, and copy files to it
         if finddir ( dest_path ) == ''
             silent call mkdir( dest_path )
@@ -2849,7 +2847,7 @@ function exUtility#CopySyntaxHighlighterFiles( dest_path ) " <<<
         if has("win32")
             let copy_cmd = 'xcopy /E /Y'
         elseif has("unix")
-            let copy_cmd = 'cp'
+            let copy_cmd = 'cp -r'
         endif
 
         let dest = full_path 
@@ -2867,7 +2865,7 @@ function exUtility#CopySyntaxHighlighterFiles( dest_path ) " <<<
                 let dest = strpart ( dest, 0, strlen(dest)-1 )
             endif
         elseif has("unix")
-            let src = fnamemodify( '/usr/local/share/vim/toolkit/quickgen/', ":p" )
+            let src = fnamemodify( '/usr/local/share/vim/toolkit/SyntaxHighlighter/', ":p" )
         endif
 
         if finddir( src ) == ""
