@@ -67,7 +67,7 @@ endif
 " Desc: current version. increase this will cause template re-write 
 " ------------------------------------------------------------------ 
 
-let s:exES_CurrentVersion = 13
+let s:exES_CurrentVersion = 14
 
 " ======================================================== 
 " local variable initialization 
@@ -144,7 +144,7 @@ function s:exES_WriteDefaultTemplate() " <<<
     silent call add(_list, '')
 
     silent call add(_list, 'wikiHome=./_doc/')
-    silent call add(_list, 'wikiHomeHtml=./_doc/html/')
+    silent call add(_list, 'wikiHomeHtml=./wiki_html/')
     silent call add(_list, 'wikiHtmlHeader=./_doc/template/header.tpl')
 
     " put the settings into vimentry file

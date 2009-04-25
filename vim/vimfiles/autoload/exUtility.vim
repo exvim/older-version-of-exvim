@@ -2780,7 +2780,7 @@ function exUtility#CreateVimwikiFiles() " <<<
 	            silent call add ( text_list, "\t<script type=\"text/javascript\" src=\"syntax_highlighter/scripts/shBrushVb.js\"></script>" )
 	            silent call add ( text_list, "\t<script type=\"text/javascript\" src=\"syntax_highlighter/scripts/shBrushXml.js\"></script>" )
 	            silent call add ( text_list, "\t<link type=\"text/css\" rel=\"stylesheet\" href=\"syntax_highlighter/styles/shCore.css\"/>" )
-	            silent call add ( text_list, "\t<link type=\"text/css\" rel=\"stylesheet\" href=\"syntax_highlighter/styles/shThemeDefault.css\"/>" )
+	            silent call add ( text_list, "\t<link type=\"text/css\" rel=\"stylesheet\" href=\"syntax_highlighter/styles/shThemeEX.css\"/>" )
 	            silent call add ( text_list, "\t<script type=\"text/javascript\">" )
 	            silent call add ( text_list, "\t\tSyntaxHighlighter.config.clipboardSwf = \"syntax_highlighter/scripts/clipboard.swf\";" )
 	            silent call add ( text_list, "\t\tSyntaxHighlighter.all();" )
