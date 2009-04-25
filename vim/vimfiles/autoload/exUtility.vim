@@ -2753,14 +2753,43 @@ function exUtility#CreateVimwikiFiles() " <<<
             if findfile( html_header_file, '.;' ) == "" || empty( readfile(html_header_file) )
                 "
                 let text_list = []
-                silent call add ( text_list, '<html>' )
-                silent call add ( text_list, '<head>' )
-                silent call add ( text_list, '    <link rel="Stylesheet" type="text/css" href="style.css" />' )
-                silent call add ( text_list, '    <title>%title%</title>' )
-                silent call add ( text_list, '    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />' )
-                silent call add ( text_list, '</head>' )
-                silent call add ( text_list, '<body>' )
-                silent call add ( text_list, '<div class="contents">' )
+                " add title and charset
+                silent call add ( text_list, "<html>" )
+                silent call add ( text_list, "<head>" )
+                silent call add ( text_list, "\t<link rel=\"Stylesheet\" type=\"text/css\" href=\"style.css\" />" )
+                silent call add ( text_list, "\t<title>%title%</title>" )
+                silent call add ( text_list, "\t<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />" )
+
+                " add syntax highlighter js
+	            silent call add ( text_list, "\t<script type=\"text/javascript\" src=\"syntax_highlighter/scripts/shCore.js\"></script>" )
+	            silent call add ( text_list, "\t<script type=\"text/javascript\" src=\"syntax_highlighter/scripts/shBrushBash.js\"></script>" )
+	            silent call add ( text_list, "\t<script type=\"text/javascript\" src=\"syntax_highlighter/scripts/shBrushCpp.js\"></script>" )
+	            silent call add ( text_list, "\t<script type=\"text/javascript\" src=\"syntax_highlighter/scripts/shBrushCSharp.js\"></script>" )
+	            silent call add ( text_list, "\t<script type=\"text/javascript\" src=\"syntax_highlighter/scripts/shBrushCss.js\"></script>" )
+	            silent call add ( text_list, "\t<script type=\"text/javascript\" src=\"syntax_highlighter/scripts/shBrushDelphi.js\"></script>" )
+	            silent call add ( text_list, "\t<script type=\"text/javascript\" src=\"syntax_highlighter/scripts/shBrushDiff.js\"></script>" )
+	            silent call add ( text_list, "\t<script type=\"text/javascript\" src=\"syntax_highlighter/scripts/shBrushGroovy.js\"></script>" )
+	            silent call add ( text_list, "\t<script type=\"text/javascript\" src=\"syntax_highlighter/scripts/shBrushJava.js\"></script>" )
+	            silent call add ( text_list, "\t<script type=\"text/javascript\" src=\"syntax_highlighter/scripts/shBrushJScript.js\"></script>" )
+	            silent call add ( text_list, "\t<script type=\"text/javascript\" src=\"syntax_highlighter/scripts/shBrushPhp.js\"></script>" )
+	            silent call add ( text_list, "\t<script type=\"text/javascript\" src=\"syntax_highlighter/scripts/shBrushPlain.js\"></script>" )
+	            silent call add ( text_list, "\t<script type=\"text/javascript\" src=\"syntax_highlighter/scripts/shBrushPython.js\"></script>" )
+	            silent call add ( text_list, "\t<script type=\"text/javascript\" src=\"syntax_highlighter/scripts/shBrushRuby.js\"></script>" )
+	            silent call add ( text_list, "\t<script type=\"text/javascript\" src=\"syntax_highlighter/scripts/shBrushScala.js\"></script>" )
+	            silent call add ( text_list, "\t<script type=\"text/javascript\" src=\"syntax_highlighter/scripts/shBrushSql.js\"></script>" )
+	            silent call add ( text_list, "\t<script type=\"text/javascript\" src=\"syntax_highlighter/scripts/shBrushVb.js\"></script>" )
+	            silent call add ( text_list, "\t<script type=\"text/javascript\" src=\"syntax_highlighter/scripts/shBrushXml.js\"></script>" )
+	            silent call add ( text_list, "\t<link type=\"text/css\" rel=\"stylesheet\" href=\"syntax_highlighter/styles/shCore.css\"/>" )
+	            silent call add ( text_list, "\t<link type=\"text/css\" rel=\"stylesheet\" href=\"syntax_highlighter/styles/shThemeDefault.css\"/>" )
+	            silent call add ( text_list, "\t<script type=\"text/javascript\">" )
+	            silent call add ( text_list, "\t\tSyntaxHighlighter.config.clipboardSwf = \"syntax_highlighter/scripts/clipboard.swf\";" )
+	            silent call add ( text_list, "\t\tSyntaxHighlighter.all();" )
+	            silent call add ( text_list, "\t</script>" )
+
+                " end header
+                silent call add ( text_list, "</head>" )
+                silent call add ( text_list, "<body>" )
+                silent call add ( text_list, "<div class=\"contents\">" )
 
                 " create dir before write, if not exist
                 if finddir( fnamemodify(g:exES_wikiHtmlHeader,':p:h') ) == ''
@@ -2770,6 +2799,8 @@ function exUtility#CreateVimwikiFiles() " <<<
                 " finally write file
                 call writefile ( text_list, html_header_file )
             endif
+        else
+            call exUtility#WarningMsg ( "wiki home directory havn't been created, please create it first." )
         endif
     endif
 endfunction " >>>
@@ -2782,6 +2813,7 @@ function exUtility#SaveAndConvertVimwiki( save_all ) " <<<
     " first check and create vimwiki file if needed.
     call exUtility#CreateVimwikiFiles ()
 
+    " parsing wiki to html
     if a:save_all == 1
         silent exec 'wa' 
         echo 'converting wikies to html...' 
@@ -2791,6 +2823,62 @@ function exUtility#SaveAndConvertVimwiki( save_all ) " <<<
         echo "converting current buffer to html...\r"
         exec 'Vimwiki2HTML'
         echon "Done!\r"
+    endif
+
+    " copy syntax highlighter js files
+    if exists ( 'g:exES_wikiHomeHtml' )
+        let dest_path = fnamemodify( g:exES_wikiHomeHtml . '/syntax_highlighter', ':p' ) 
+        " if we don't have ./html/syntax_highlighter, create it, and copy files to it
+        if finddir ( dest_path ) == ''
+            silent call mkdir( dest_path )
+            silent call exUtility#CopySyntaxHighlighterFiles ( dest_path )
+        endif
+    endif
+endfunction " >>>
+
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
+function exUtility#CopySyntaxHighlighterFiles( dest_path ) " <<<
+    let full_path = fnamemodify(a:dest_path,':p') 
+    " if we don't exist g:exES_wikiHome directory, don't create default header template 
+    if finddir( full_path ) != ''
+        " init platform dependence value
+        let copy_cmd = ''
+        if has("win32")
+            let copy_cmd = 'xcopy /E /Y'
+        elseif has("unix")
+            let copy_cmd = 'cp'
+        endif
+
+        let dest = full_path 
+        let src = '' 
+        if has("win32")
+            let src = fnamemodify( $EX_DEV . "\\vim\\toolkit\\SyntaxHighlighter", ":p")
+
+            " remove last \ if found in src path
+            if ( src[strlen(src)-1] == '\' )
+                let src = strpart ( src, 0, strlen(src)-1 )
+            endif
+
+            " remove last \ if found in dest path
+            if ( dest[strlen(dest)-1] == '\' )
+                let dest = strpart ( dest, 0, strlen(dest)-1 )
+            endif
+        elseif has("unix")
+            let src = fnamemodify( '/usr/local/share/vim/toolkit/quickgen/', ":p" )
+        endif
+
+        if finddir( src ) == ""
+            call exUtility#WarningMsg('Error: toolkit SyntaxHighligter not found, please install it.')
+        else
+            let cmd = copy_cmd . ' ' . src . ' ' . dest 
+            exec 'silent !' . cmd
+            echo 'syntax highligter files copied!'
+        endif
+    else
+        call exUtility#WarningMsg ("Can't find path: " . full_path )
     endif
 endfunction " >>>
 
