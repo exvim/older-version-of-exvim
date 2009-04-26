@@ -9,6 +9,16 @@
 # copy Makefile to vim72 source directory
 cp Makefile xxx/vim72/src 
 
+# install package we need
+sudo apt-get install ncurses-dev
+sudo apt-get install libqt4-dev
+sudo apt-get install libgtk2.0-dev
+sudo apt-get install exuberant-ctags
+sudo apt-get install id-utils
+sudo apt-get install gawk
+sudo apt-get install cscope
+sudo apt-get install graphviz
+
 # clean, compile and install the source
 sudo make distclean
 sudo make config
@@ -22,12 +32,4 @@ export EX_DEV="/usr/local/share"
 sudo cp ${EX_DEV}/vim/toolkit/idutils/id-lang.map /usr/share/misc/id-lang.map
 sudo svn checkout svn://10.0.0.3/gVim/Vim ${EX_DEV}/vim
 sudo cp ${EX_DEV}/vim/_vimrc ~/_vimrc
-
-# install package we need
-sudo apt-get install libgtk2.0-dev
-sudo apt-get install exuberant-ctags
-sudo apt-get install id-utils
-sudo apt-get install gawk
-sudo apt-get install cscope
-sudo apt-get install graphviz
 

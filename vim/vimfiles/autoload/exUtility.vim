@@ -1201,6 +1201,7 @@ function exUtility#CreateIDLangMap( file_filter ) " <<<
     silent call add ( text_list, 'quick_gen_project.*   IGNORE')
     silent call add ( text_list, '*.err                 IGNORE') " never bring error file into global search
     silent call add ( text_list, '*.exe                 IGNORE') " never bring exe file into global search
+    silent call add ( text_list, '*.lnk                 IGNORE') " never bring lnk file into global search
 
     let filter_list = split(a:file_filter,' ')
     for item in filter_list 
