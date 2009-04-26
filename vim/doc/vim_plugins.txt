@@ -24,6 +24,7 @@ Description  : ~
     TagList                             4.5 (patched by jwu)
     Visincr                             19
     visual_studio                       1.2 (patched by jwu)
+    vimwiki                             0.9.1
 ==============================================================================
 
 vim: ft=help:norl:ts=4:tw=78
