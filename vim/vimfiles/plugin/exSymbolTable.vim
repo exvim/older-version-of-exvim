@@ -82,7 +82,7 @@ endif
 " ------------------------------------------------------------------ 
 
 if !exists('g:exSL_SymbolSelectCmd')
-    let g:exSL_SymbolSelectCmd = 'ts'
+    let g:exSL_SymbolSelectCmd = 'TS'
 endif
 
 " ======================================================== 

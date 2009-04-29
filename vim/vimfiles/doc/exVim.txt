@@ -162,7 +162,7 @@ How can I install "exVim"~
         * ctags
         * gawk
         * id-utils
-        * sed
+        * sed			(optional)
         * make                  (optional)
         * cscope                (optional)
         * src-highlight         (optional)
@@ -188,7 +188,7 @@ How can I install "exVim"~
     start-up exVim by create a .vimentry file under your project's root directory. 
     For instance, you have a project named MyProject in d:\Projects\MyProject,
     you should create MyProject.vimentry in d:\Projects\MyProject, then run the
-    file by gVim, you may properly see a scene like this:
+    file by gVim, you may see a scene like this:
 >
         ______________________________________________________________________
         |exProject      |_____________________________________________________

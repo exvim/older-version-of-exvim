@@ -73,7 +73,7 @@ endif
 " ------------------------------------------------------------------ 
 
 if !exists('g:exGS_backto_editbuf')
-    let g:exGS_backto_editbuf = 1
+    let g:exGS_backto_editbuf = 0
 endif
 
 " ------------------------------------------------------------------ 

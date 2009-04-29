@@ -48,7 +48,7 @@ endif
 " ------------------------------------------------------------------ 
 
 if !exists('g:exPJ_window_width_increment')
-    let g:exPJ_window_width_increment = 100
+    let g:exPJ_window_width_increment = 50
 endif
 
 " ------------------------------------------------------------------ 

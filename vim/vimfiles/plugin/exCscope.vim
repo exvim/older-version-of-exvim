@@ -32,7 +32,7 @@ endif
 " ------------------------------------------------------------------ 
 
 if !exists('g:exCS_window_width')
-    let g:exCS_window_width = 30
+    let g:exCS_window_width = 48
 endif
 
 " ------------------------------------------------------------------ 
@@ -73,7 +73,7 @@ endif
 " ------------------------------------------------------------------ 
 
 if !exists('g:exCS_backto_editbuf')
-    let g:exCS_backto_editbuf = 1
+    let g:exCS_backto_editbuf = 0
 endif
 
 " ------------------------------------------------------------------ 

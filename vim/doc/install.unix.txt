@@ -29,7 +29,6 @@ sudo make install
 export EX_DEV="/usr/local/share"
 
 # copy files
-sudo cp ${EX_DEV}/vim/toolkit/idutils/id-lang.map /usr/share/misc/id-lang.map
 # source control: sudo svn checkout svn://10.0.0.3/gVim/vim ${EX_DEV}/vim
 # NOTE: ${package} is your download package
 sudo cp ${package}/vim ${EX_DEV}/vim

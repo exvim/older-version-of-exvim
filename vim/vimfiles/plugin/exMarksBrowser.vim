@@ -78,7 +78,7 @@ endif
 " ------------------------------------------------------------------ 
 
 if !exists('g:exMB_backto_editbuf')
-    let g:exMB_backto_editbuf = 1
+    let g:exMB_backto_editbuf = 0
 endif
 
 " ------------------------------------------------------------------ 

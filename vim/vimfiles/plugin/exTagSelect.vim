@@ -57,7 +57,7 @@ endif
 " ------------------------------------------------------------------ 
 
 if !exists('g:exTS_window_direction')
-    let g:exTS_window_direction = 'botright'
+    let g:exTS_window_direction = 'belowright'
 endif
 
 " ------------------------------------------------------------------ 
@@ -73,7 +73,7 @@ endif
 " ------------------------------------------------------------------ 
 
 if !exists('g:exTS_backto_editbuf')
-    let g:exTS_backto_editbuf = 1
+    let g:exTS_backto_editbuf = 0
 endif
 
 " ------------------------------------------------------------------ 
@@ -81,7 +81,7 @@ endif
 " ------------------------------------------------------------------ 
 
 if !exists('g:exTS_close_when_selected')
-    let g:exTS_close_when_selected = 0
+    let g:exTS_close_when_selected = 1
 endif
 
 " ------------------------------------------------------------------ 
