@@ -949,6 +949,7 @@ function s:exGS_ShowPickedResult( search_pattern, line_start, line_end, edit_mod
         silent put = s:exGS_fold_start
         silent put = s:exGS_picked_search_result
         silent put = s:exGS_fold_end
+        silent call search('<<<<<<', 'w')
     elseif a:edit_mode == 'append'
         silent exec 'normal! G'
         silent put = ''

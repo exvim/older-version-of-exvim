@@ -438,6 +438,7 @@ function g:exQF_UpdateQuickViewWindow() " <<<
         silent redir END
         silent exec '1,$d _'
         silent put! = quickfix_list
+        silent exec 'normal! gg'
     endif
 endfunction " >>>
 
