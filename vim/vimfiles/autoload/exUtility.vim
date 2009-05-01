@@ -2319,6 +2319,13 @@ function exUtility#GenInheritsDot( pattern, gen_method ) " <<<
         let inherits_file = './'.g:exES_vimfile_dir.'/inherits'
     endif
 
+    if findfile ( inherits_file ) == ''
+        call exUtility#WarningMsg ('the project not support inherits.')
+        return ""
+    endif
+
+    echomsg "generating inherits: " . a:pattern
+
     " create inherit dot file path
     let inherit_directory_path = g:exES_CWD.'/'.g:exES_vimfile_dir.'/_hierarchies/' 
     if finddir(inherit_directory_path) == ''
@@ -2390,8 +2397,14 @@ endfunction " >>>
 function exUtility#ViewInheritsImage() " <<<
     let inherit_class_name = expand("<cword>")
     let inherit_class_name = "\\<" . inherit_class_name . "\\>"
-    echomsg inherit_class_name
-    silent exec '!start ' . g:exES_ImageViewer ' ' . exUtility#GenInheritsDot(inherit_class_name,"all")
+
+    " check if we create image
+    let file_name = exUtility#GenInheritsDot(inherit_class_name,"all")
+    if file_name == ""
+        return
+    endif
+
+    silent exec '!start ' . g:exES_ImageViewer ' ' . file_name
 endfunction " >>>
 
 " ------------------------------------------------------------------ 

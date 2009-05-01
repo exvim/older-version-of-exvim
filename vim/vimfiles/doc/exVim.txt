@@ -222,15 +222,15 @@ How can I install "exVim"~
         |               |~                                                   
         |               |~                                                   
 <
-    The main page is the contents of vimentry files you create, it is
-    generated automatically by script first time you open the file, you can
-    change the settings in it, and it will load your settings every time you
-    save or open it. But custom the vimentry file is not recommanded for
+    The main page contains the contents of vimentry files you create, it is
+    generated automatically by script at the first time you open the file. 
+    You can change the settings in it, and it will load your settings every 
+    time you save or open it. But custom the vimentry file is not recommanded for
     beginner.
     
-    The project window is left beside the main page, we'll discuss it in next
-    section.
-    
+    The project window is on the left of main page, I'll introduce it in next
+    section
+
     Also, if you install the minibuffer plugin, you'll see the minibuffer
     window above the main page ( I recommand you to install the patched
     version of minibuffer scripts, and take the settings in _exvimrc )
@@ -253,8 +253,8 @@ How can I install "exVim"~
         :Up[date] in the vim we opened above, the command will find if there is
         a quick_gen_project_xxx.(bat\|sh) in our project root directory. If not, it
         will list project type and let user chooes one. Here for common use we
-        chooes "all" which will copy quick_gen_project_all.bat from
-        toolkit/batch/quick_gen_project_all.bat to your project root directory 
+        chooe "general" which will copy quick_gen_project_general.bat from
+        toolkit/batch/quick_gen_project_general.bat to your project root directory 
         in win32 ( in unix/linux it is from toolkit/bash/quick_gen_project_all.sh ),
         then running the programme and generate tags, ID, symbol, cscope file,
         inherits... that will be used for exVim plugins.
@@ -262,22 +262,24 @@ How can I install "exVim"~
 ------------------------------------------------------------------------------
 2.4. Update Project                                           *Update-Project*
 
-    Most of project files in exVim don't have incremental update method, so once 
-    you modified your codes in the project, you want the modification added
-    into tags, ID and so on, you need to update those files manually.  
-    type :Up[date] will update all project files in _vimfiles directory. Also
-    you can update one kind of project file by giving argument in this
-    command. They are: ID,symbol,inherit,tag and cscope. The update processing
-    is asynchornous, you can still edit files, jump tags, global search key
-    words during update time cause the update programme won't change the files
-    unless it finished.
+    Most of the files in _vimfiles directory used by exVim plugins don't have 
+    incremental update method in the project, you want the modification added
+    into tags, ID and so on, you need to update the file manually, and it will 
+    update the whole file. Type :Up[date] will update all project files in 
+    _vimfiles directory. 
+
+    Also you can update specific file by giving an argument in :Up[date] command. 
+    The options are: ID, symbol, inherit, tag and cscope. 
+
+    During the update, you can still edit files, jump tags, global search key 
+    words cause the update programme won't change the files unless it finished.
 
 ------------------------------------------------------------------------------
 2.5. Basic Concept                                             *Basic-Concept*
 
-    - Concept of different window~
+    - Concept of different windows~
 
-    Before we introduce some basic operation, let's learn some concept so we
+    Before we introduce basic operation, let's learn some concepts so we
     can have a better understand how exVim works.
     exVim divide windows into tree types:
     
@@ -304,18 +306,18 @@ How can I install "exVim"~
             jump or open new buffer in that window while you are operate in
             ex-plugin/register-plugin window  
         
-    - Concept of different ex-plugin window~
+    - Concept of ex-plugin window~
     
-    most ex-plugins have two to three window, but the main window which list
-    results for selecting always called 'select window', And the window which
-    list results from filter process always called 'quickview window'. Some
-    plugin have a 'stack window' to shows the jump history.  
+    Most ex-plugins have two to three window, but the main window which list results 
+    for selecting always called 'select-window', And the window which list results 
+    from filter process always called 'quickview-window'. Some plugin have a 
+    'stack-window' to shows the jump history.  
     
-    - Concept of the ex-plugin window's position~
+    - Concept of the position of ex-plugin window ~
     
-    different ex-plugins' window can be showed at the same time if they don't 
-    use same window positoin. If a window of ex-plugin opened in a position
-    that have another window of ex-plugin, the old one will closed.   
+    Different ex-plugin windows can be showed at the same time if they don't use 
+    same window positoin. If a window of ex-plugin opened in a position that exsits 
+    another ex-plugin window, the old one will be closed.   
 
 ------------------------------------------------------------------------------
 2.6. Basic Operation                                         *Basic-Operation*
