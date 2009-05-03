@@ -1171,7 +1171,7 @@ How can I install "exVim"~
 <s-2-LeftMouse>
     If cursor on a file line, it will open the file and split it edit-window.
     If cursor on a folder line, it will prompt a command line window with the
-    path is current directory path. (win32 only)
+    path of current directory. (win32 only)
 
                                                      *exProject-resize-window*
 <space>
@@ -1186,8 +1186,8 @@ How can I install "exVim"~
 <localleader>R
     Refresh the project file using the working directory, file filter and dir
     filter you already setted.
-    NOTE: you can manually change the first two lines to change the file
-          filter and dir filter withou pop up a dialog. When refreshing, the 
+    NOTE: you can manually modify the first two lines to change the file
+          filter and dir filter without pop up a dialog. When refreshing, the 
           script will read them first.
 
                                       *exProject-create-directory-with-dialog*
@@ -1914,10 +1914,13 @@ Default Key:
     quickfix list, then show the warnings/errors in the plugin-window let you
     choose to jump to it.
 
-    Compare with the quickfix in vim, the exQuickFix is almost the same but
-    instead of showing just quickfix line, it shows everything in the error
-    file or buffer ( if your error come from vc compile directly, by using the
-    visual studio plugin ).
+
+    Compare with the quickfix in vim, the exQuickFix is almost the same but 
+    more easy to operate. Also it is write to work with other plugin such as 
+    exProject and visual-studio.  You can directly open the exQuickFix window 
+    by open a ".err" file in exProject.  Also when you compile single file in 
+    MS-VS.net through visual-studio plugin(patched version) you will get the 
+    error result in exQuickFix window when compile finished. 
 
 ------------------------------------------------------------------------------
 3.7.1. Variables                                        *exQuickFix-variables*
@@ -2045,13 +2048,14 @@ Default Key:
 ------------------------------------------------------------------------------
 3.8. exMacroHighlight                                       *exMacroHighlight*
 
-    exMacroHighlight is a plugin working with projects have c-like macro
-    define syntax: #ifdef ... The basic idea is come from visual studio.net
-    2005, in vs.net 2005 and above, it support gray highlight between disabled
-    macro block. In other word, if you define macro _MA_DISABLE_ equals to 0,
-    then in codes between #if _MA_DISABLE_ and #endif, it shows gray looks
-    like the code doesn't work at all. This help programmer reading code with
-    macros and ignore what the real value are of the macros now.
+
+    exMacroHighlight is a plugin working with projects have c-like macro define 
+    syntax: `#ifdef`. The basic idea is come from visual studio.net 2005, in 
+    vs.net 2005 and above, it support gray highlight between disabled macro block. 
+    In other word, if you define macro `_MA_DISABLE_` equals to 0, then in codes 
+    between `#if _MA_DISABLE_` and `#endif`, it shows gray color to represent 
+    the code doesn't work at all. This help programmer reading code with macros 
+    without knowing what the real value are of the macros.
     
     Unfortunately, vs.net did a bad job in this, and it even create side
     effect since the internal macro parsing programme sometimes gets wrong
@@ -2136,9 +2140,10 @@ Default Key:
 >
         nnoremap <unique> <silent> <Leader>aa :ExmhSelectToggle<CR>
 <
-    When you open a exMacroHighlight window in a new project, it is a blank
-    page. The window used for writing macros define in groups. The syntax is
-    easier as we know:
+
+    When you open a exMacroHighlight window in a new project, it is a blank 
+    page. The window used for writing macro defines in groups. The syntax as 
+    shows as:
 >
         GroupName_1:
             MacroName_11
@@ -2233,9 +2238,13 @@ Default Key:
     analysis tool, with limited cpp support. 
     
     But there still have one thing shows the power of cscope and make valuable 
-    for me. It is the "cscope find i" command, which will find files #including 
-    this file. This is very useful when you want to know which file includes
-    me, also can help you detect those redundant includes. 
+    for me.  It is the "cscope find i" command, which will find files #including 
+    the specific file.  This is very useful when you want to know which file 
+    includes me, also can help you detect those redundant includes. I map it as:
+>
+	nnoremap <unique> <silent> <F2> :CSIC<CR>
+<
+     you can press `<F2>` in a header file to have a try. 
     
 
 ------------------------------------------------------------------------------
@@ -2313,8 +2322,10 @@ Default Key:
 								       *:CSIC*
 :CSIC
     will find files #including current edit file (aka <cfile>), and list the 
-    result in exCscope select window.
-
+    result in exCscope select window. recommanded mapping:
+>
+	nnoremap <unique> <silent> <F2> :CSIC<CR>
+<
 								        *:CSI*
 :CSI {file-name} 
     will find files #including {file-name}, and list the result in 
@@ -2344,13 +2355,13 @@ Default Key:
     exMarksBrowser will browse available marks in the plugin window. You can
     select a mark and jump to its position in edit window.
 
-    There are several kinds of marks in vim, and the lowercase mark and
-    uppercase mark are the most useful two marks. As we know lowercase mark
-    used in buffer scope otherwise the uppercase used in global scope. When
-    you use exMarkBrowser, it will shows all marks including the lower and
-    upper case mark. And if your current edit file changes, the lowercase mark
-    changes, so it is said in exMarkBrowser when you jump from a uppercase
-    mark, it may probably refresh marks in exMarkBrowser.  
+    There are several kinds of marks in vim, the lowercase mark and uppercase 
+    mark are the most useful two marks. As we know lowercase mark used in buffer 
+    scope otherwise the uppercase used in global scope. When you use exMarkBrowser, 
+    it will shows all marks including the lower and upper case mark. And if 
+    your current edit file changes, the lowercase mark changes, so it is said 
+    in exMarkBrowser when you jump from a uppercase mark, it will refresh marks 
+    in exMarkBrowser.  
 
 ------------------------------------------------------------------------------
 3.10.1. Variables                                   *exMarksBrowser-variables*
@@ -2451,7 +2462,7 @@ Default Key:
 4. Tips & Tricks                                             *Tips-And-Tricks*
 
     * use \sg, \gg and \] everywhere ~
-	We don't say that \sg,\gg and \] operations can only used in
+	I never say that \sg,\gg and \] operations can only used in
 	edit-window, but most user always think at that way. It is encourage
 	to use these operations in other window, and it can bring more
 	convenient. For example you use \] to watch the define of "CPhysicalFile" 
