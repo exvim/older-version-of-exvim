@@ -927,7 +927,7 @@ nnoremap <unique> <leader>lf :LUTags<CR>
 nnoremap <unique> <leader>lb :LUBufs<CR>
 nnoremap <unique> <silent> <Leader>lg :LUCurWord<CR>
 let g:LookupFile_TagExpr = ''
-let g:LookupFile_MinPatLength = 1
+let g:LookupFile_MinPatLength = 3
 let g:LookupFile_PreservePatternHistory = 0
 let g:LookupFile_PreserveLastPattern = 0
 let g:LookupFile_AllowNewFiles = 0
