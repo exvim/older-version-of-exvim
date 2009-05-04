@@ -63,20 +63,20 @@ function! s:setup_buffer_enter() "{{{
   endif
 endfunction "}}}
 " }}}
-
 " DEFAULT wiki {{{
 let s:vimwiki_defaults = {}
 let s:vimwiki_defaults.path = '~/vimwiki/'
 let s:vimwiki_defaults.path_html = '~/vimwiki_html/'
+let s:vimwiki_defaults.css_name = 'style.css'
 let s:vimwiki_defaults.index = 'index'
 let s:vimwiki_defaults.ext = '.wiki'
+let s:vimwiki_defaults.folding = 1
 let s:vimwiki_defaults.maxhi = 1
 let s:vimwiki_defaults.syntax = 'default'
 let s:vimwiki_defaults.gohome = 'split'
 let s:vimwiki_defaults.html_header = ''
 let s:vimwiki_defaults.html_footer = ''
 "}}}
-
 " DEFAULT options {{{
 call s:default('upper', 'A-ZА-Я')
 call s:default('lower', 'a-zа-я')
@@ -85,6 +85,7 @@ call s:default('stripsym', '_')
 call s:default('auto_listitem', 1)
 call s:default('auto_checkbox', 1)
 call s:default('use_mouse', 0)
+call s:default('menu', 1)
 call s:default('current_idx', 0)
 call s:default('list', [s:vimwiki_defaults])
 
@@ -95,11 +96,11 @@ let nup = low.oth
 let nlo = upp.oth
 let any = upp.nup
 
-let g:vimwiki_word1 = '\C\<['.upp.']['.nlo.']*['.low.']['.nup.']*['.upp.']['.any.']*\>'
+let g:vimwiki_word1 = '\C\<['.upp.']['.nlo.']*['.
+      \ low.']['.nup.']*['.upp.']['.any.']*\>'
 let g:vimwiki_word2 = '\[\[[^\]]\+\]\]'
 let g:vimwiki_rxWikiWord = g:vimwiki_word1.'\|'.g:vimwiki_word2
 "}}}
-
 " OPTION get/set functions {{{
 " return value of option for current wiki or if second parameter exists for
 " wiki with a given index.
@@ -112,15 +113,15 @@ function! VimwikiGet(option, ...) "{{{
   if !has_key(g:vimwiki_list[idx], a:option) &&
         \ has_key(s:vimwiki_defaults, a:option)
     if a:option == 'path_html'
-      let g:vimwiki_list[idx][a:option] = 
+      let g:vimwiki_list[idx][a:option] =
             \VimwikiGet('path', idx)[:-2].'_html/'
     else
-      let g:vimwiki_list[idx][a:option] = 
+      let g:vimwiki_list[idx][a:option] =
             \s:vimwiki_defaults[a:option]
     endif
   endif
 
-  " if path's ending is not a / or \ 
+  " if path's ending is not a / or \
   " then add it
   if a:option == 'path' || a:option == 'path_html'
     let p = g:vimwiki_list[idx][a:option]
@@ -143,7 +144,6 @@ function! VimwikiSet(option, value, ...) "{{{
   let g:vimwiki_list[idx][a:option] = a:value
 endfunction "}}}
 " }}}
-
 " FILETYPE setup for all known wiki extensions {{{
 " Getting all extensions that different wikies could have
 let extensions = {}
@@ -167,15 +167,13 @@ augroup vimwiki
   endfor
 augroup END
 "}}}
-
 " COMMANDS {{{
 command! VimwikiUISelect call vimwiki#WikiUISelect()
-command! -count VimwikiGoHome 
+command! -count VimwikiGoHome
       \ call vimwiki#WikiGoHome(v:count1)
-command! -count VimwikiTabGoHome tabedit <bar> 
+command! -count VimwikiTabGoHome tabedit <bar>
       \ call vimwiki#WikiGoHome(v:count1)
 "}}}
-
 " MAPPINGS {{{
 if !hasmapto('<Plug>VimwikiGoHome')
   map <silent><unique> <Leader>ww <Plug>VimwikiGoHome
@@ -193,5 +191,21 @@ endif
 noremap <unique><script> <Plug>VimwikiUISelect :VimwikiUISelect<CR>
 
 "}}}
+" MENU {{{
+function! s:build_menu(path)
+  let idx = 0
+  while idx < len(g:vimwiki_list)
+    execute 'menu '.a:path.'.'.VimwikiGet('path', idx).
+          \ ' :call vimwiki#WikiGoHome('.(idx + 1).')<CR>'
+    let idx += 1
+  endwhile
+endfunction
+
+if g:vimwiki_menu == 1
+  call s:build_menu('Vimwiki')
+elseif g:vimwiki_menu == 2
+  call s:build_menu('Plugin.Vimwiki')
+endif
+" }}}
 
 let &cpo = s:old_cpo

@@ -24,7 +24,9 @@ else
   execute 'syntax match wikiWord /'.g:vimwiki_word2.'/'
 endif
 
-let g:vimwiki_rxWeblink = '\%("[^"(]\+\((\([^)]\+\))\)\?":\)\?\%(https\?\|ftp\|gopher\|telnet\|file\|notes\|ms-help\):\%(\%(\%(//\)\|\%(\\\\\)\)\+[A-Za-z0-9:#@%/;$~_?+=.&\\\-]*\)'
+let g:vimwiki_rxWeblink = '\%("[^"(]\+\((\([^)]\+\))\)\?":\)\?'.
+      \'\%(https\?\|ftp\|gopher\|telnet\|file\|notes\|ms-help\):'.
+      \'\%(\%(\%(//\)\|\%(\\\\\)\)\+[A-Za-z0-9:#@%/;$~()_?+=.&\\\-]*\)'
 execute 'syntax match wikiLink `'.g:vimwiki_rxWeblink.'`'
 
 " Emoticons: must come after the Textilisms, as later rules take precedence
@@ -57,7 +59,8 @@ execute 'syntax match wikiSubScript /'.g:vimwiki_rxSubScript.'/'
 execute 'syntax match wikiCode /'.g:vimwiki_rxCode.'/'
 
 " Aggregate all the regular text highlighting into wikiText
-" syntax cluster wikiText contains=wikiItalic,wikiBold,wikiCode,wikiDelText,wikiSuperScript,wikiSubScript,wikiWord,wikiEmoticons
+" syntax cluster wikiText contains=wikiItalic,wikiBold,wikiCode,
+      " \wikiDelText,wikiSuperScript,wikiSubScript,wikiWord,wikiEmoticons
 
 " <hr> horizontal rule
 execute 'syntax match wikiHR /'.g:vimwiki_rxHR.'/'
@@ -70,7 +73,8 @@ execute 'syntax match wikiList /'.g:vimwiki_rxListDefine.'/'
 " Treat all other lines that start with spaces as PRE-formatted text.
 execute 'syntax match wikiPre /'.g:vimwiki_rxPre1.'/ contains=wikiComment'
 
-execute 'syntax region wikiPre start=/'.g:vimwiki_rxPreStart.'/ end=/'.g:vimwiki_rxPreEnd.'/ contains=wikiComment'
+execute 'syntax region wikiPre start=/'.g:vimwiki_rxPreStart.
+      \ '/ end=/'.g:vimwiki_rxPreEnd.'/ contains=wikiComment'
 
 " List item checkbox
 syntax match wikiCheckBox /\[.\?\]/

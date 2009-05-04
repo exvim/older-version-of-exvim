@@ -14,26 +14,26 @@ function! s:msg(message) "{{{
   echohl WarningMsg
   echomsg 'vimwiki: '.a:message
   echohl None
-endfunction "}}}
-
+endfunction
+" }}}
 function! s:get_file_name_only(filename) "{{{
   let word = substitute(a:filename, '\'.VimwikiGet('ext'), "", "g")
   let word = substitute(word, '.*[/\\]', "", "g")
   return word
-endfunction "}}}
-
+endfunction
+" }}}
 function! s:edit_file(command, filename) "{{{
   let fname = escape(a:filename, '% ')
   execute a:command.' '.fname
-endfunction "}}}
-
+endfunction
+" }}}
 function! s:search_word(wikiRx, cmd) "{{{
   let match_line = search(a:wikiRx, 's'.a:cmd)
   if match_line == 0
     call s:msg('WikiWord not found')
   endif
-endfunction "}}}
-
+endfunction
+" }}}
 function! s:get_word_at_cursor(wikiRX) "{{{
   let col = col('.') - 1
   let line = getline('.')
@@ -55,7 +55,6 @@ function! s:get_word_at_cursor(wikiRX) "{{{
     return ""
   endif
 endf "}}}
-
 function! s:strip_word(word, sym) "{{{
   function! s:strip_word_helper(word, sym)
     return substitute(a:word, s:wiki_badsymbols, a:sym, 'g')
@@ -70,8 +69,8 @@ function! s:strip_word(word, sym) "{{{
     let result = s:strip_word_helper(w, a:sym)
   endif
   return result
-endfunction "}}}
-
+endfunction
+" }}}
 function! s:is_link_to_non_wiki_file(word) "{{{
   " Check if word is link to a non-wiki file.
   " The easiest way is to check if it has extension like .txt or .html
@@ -79,8 +78,8 @@ function! s:is_link_to_non_wiki_file(word) "{{{
     return 1
   endif
   return 0
-endfunction "}}}
-
+endfunction
+" }}}
 function! s:print_wiki_list() "{{{
   let idx = 0
   while idx < len(g:vimwiki_list)
@@ -95,16 +94,16 @@ function! s:print_wiki_list() "{{{
     let idx += 1
   endwhile
   echohl None
-endfunction "}}}
-
+endfunction
+" }}}
 function! s:wiki_select(wnum)"{{{
   if a:wnum < 1 || a:wnum > len(g:vimwiki_list)
     return
   endif
   let b:vimwiki_idx = g:vimwiki_current_idx
   let g:vimwiki_current_idx = a:wnum - 1
-endfunction"}}}
-
+endfunction
+" }}}
 function! vimwiki#mkdir(path) "{{{
   " TODO: add exception handling...
   let path = expand(a:path)
@@ -114,8 +113,8 @@ function! vimwiki#mkdir(path) "{{{
     endif
     call mkdir(path, "p")
   endif
-endfunction "}}}
-
+endfunction
+" }}}
 function! s:update_wiki_link(fname, old, new) " {{{
   echo "Updating links in ".a:fname
   let has_updates = 0
@@ -129,20 +128,42 @@ function! s:update_wiki_link(fname, old, new) " {{{
   " add exception handling...
   if has_updates
     call rename(a:fname, a:fname.'#vimwiki_upd#')
-    call writefile(dest, a:fname) 
-    call delete(a:fname.'#vimwiki_upd#') 
+    call writefile(dest, a:fname)
+    call delete(a:fname.'#vimwiki_upd#')
   endif
-endfunction " }}}
-
+endfunction
+" }}}
 function! s:update_wiki_links(old, new) " {{{
   let files = split(glob(VimwikiGet('path').'*'.VimwikiGet('ext')), '\n')
   for fname in files
     call s:update_wiki_link(fname, a:old, a:new)
   endfor
-endfunction " }}}
-
+endfunction
 " }}}
-
+function! s:get_wiki_buffers() "{{{
+  let blist = []
+  let bcount = 1
+  while bcount<=bufnr("$")
+    if bufexists(bcount)
+      let bname = fnamemodify(bufname(bcount), ":p")
+      if bname =~ VimwikiGet('ext')."$"
+        let bitem = [bname, getbufvar(bname, "vimwiki_prev_word")]
+        call add(blist, bitem)
+      endif
+    endif
+    let bcount = bcount + 1
+  endwhile
+  return blist
+endfunction
+" }}}
+function! s:open_wiki_buffer(item) "{{{
+  call s:edit_file('e', a:item[0])
+  if !empty(a:item[1])
+    call setbufvar(a:item[0], "vimwiki_prev_word", a:item[1])
+  endif
+endfunction
+" }}}
+" }}}
 " SYNTAX highlight {{{
 function! vimwiki#WikiHighlightWords() "{{{
   let wikies = glob(VimwikiGet('path').'*'.VimwikiGet('ext'))
@@ -158,11 +179,13 @@ function! vimwiki#WikiHighlightWords() "{{{
     if word =~ g:vimwiki_word1 && !s:is_link_to_non_wiki_file(word)
       execute 'syntax match wikiWord /\%(^\|[^!]\)\zs\<'.word.'\>/'
     endif
-    execute 'syntax match wikiWord /\[\[\<'.substitute(word,  g:vimwiki_stripsym, s:wiki_badsymbols, "g").'\>\%(|\+.*\)*\]\]/'
+    execute 'syntax match wikiWord /\[\[\<'.
+          \ substitute(word, g:vimwiki_stripsym, s:wiki_badsymbols, "g").
+          \ '\>\%(|\+.*\)*\]\]/'
   endfor
   execute 'syntax match wikiWord /\[\[.\+\.\%(jpg\|png\|gif\)\%(|\+.*\)*\]\]/'
-endfunction "}}}
-
+endfunction
+" }}}
 function! vimwiki#hl_exists(hl)"{{{
   if !hlexists(a:hl)
     return 0
@@ -171,19 +194,19 @@ function! vimwiki#hl_exists(hl)"{{{
   exe "silent hi" a:hl
   redir END
   return (hlstatus !~ "cleared")
-endfunc 
-"}}}
+endfunction
 "}}}
 
+"}}}
 " WIKI functions {{{
 function! vimwiki#WikiNextWord() "{{{
   call s:search_word(g:vimwiki_rxWikiWord, '')
-endfunction "}}}
-
+endfunction
+" }}}
 function! vimwiki#WikiPrevWord() "{{{
   call s:search_word(g:vimwiki_rxWikiWord, 'b')
-endfunction "}}}
-
+endfunction
+" }}}
 function! vimwiki#WikiFollowWord(split) "{{{
   if a:split == "split"
     let cmd = ":split "
@@ -192,7 +215,8 @@ function! vimwiki#WikiFollowWord(split) "{{{
   else
     let cmd = ":e "
   endif
-  let word = s:strip_word(s:get_word_at_cursor(g:vimwiki_rxWikiWord), g:vimwiki_stripsym)
+  let word = s:strip_word(s:get_word_at_cursor(g:vimwiki_rxWikiWord),
+        \                                      g:vimwiki_stripsym)
   " insert doesn't work properly inside :if. Check :help :if.
   if word == ""
     execute "normal! \n"
@@ -205,8 +229,8 @@ function! vimwiki#WikiFollowWord(split) "{{{
     call s:edit_file(cmd, VimwikiGet('path').word.VimwikiGet('ext'))
     let b:vimwiki_prev_word = vimwiki_prev_word
   endif
-endfunction "}}}
-
+endfunction
+" }}}
 function! vimwiki#WikiGoBackWord() "{{{
   if exists("b:vimwiki_prev_word")
     " go back to saved WikiWord
@@ -214,8 +238,8 @@ function! vimwiki#WikiGoBackWord() "{{{
     execute ":e ".substitute(prev_word[0], '\s', '\\\0', 'g')
     call setpos('.', prev_word[1])
   endif
-endfunction "}}}
-
+endfunction
+" }}}
 function! vimwiki#WikiGoHome(index) "{{{
   call s:wiki_select(a:index)
   call vimwiki#mkdir(VimwikiGet('path'))
@@ -224,14 +248,17 @@ function! vimwiki#WikiGoHome(index) "{{{
     execute ':e '.VimwikiGet('path').VimwikiGet('index').VimwikiGet('ext')
   catch /E37/ " catch 'No write since last change' error
     " this is really unsecure!!!
-    execute ':'.VimwikiGet('gohome').' '.VimwikiGet('path').VimwikiGet('index').VimwikiGet('ext')
+    execute ':'.VimwikiGet('gohome').' '.
+          \ VimwikiGet('path').
+          \ VimwikiGet('index').
+          \ VimwikiGet('ext')
   catch /E325/ " catch 'ATTENTION' error
     " TODO: Hmmm, if open already opened index.wiki there is an error...
     " Find out what is the reason and how to avoid it. Is it dangerous?
     echomsg "Unknown error!"
   endtry
-endfunction "}}}
-
+endfunction
+"}}}
 function! vimwiki#WikiDeleteWord() "{{{
   "" file system funcs
   "" Delete WikiWord you are in from filesystem
@@ -252,21 +279,22 @@ function! vimwiki#WikiDeleteWord() "{{{
   if expand('%:p') != ""
     execute "e"
   endif
-endfunction "}}}
-
+endfunction
+"}}}
 function! vimwiki#WikiRenameWord() "{{{
   "" Rename WikiWord, update all links to renamed WikiWord
   let wwtorename = expand('%:t:r')
   let isOldWordComplex = 0
   if wwtorename !~ g:vimwiki_word1
-    let wwtorename = substitute(wwtorename,  g:vimwiki_stripsym, s:wiki_badsymbols, "g")
+    let wwtorename = substitute(wwtorename, g:vimwiki_stripsym,
+          \ s:wiki_badsymbols, "g")
     let isOldWordComplex = 1
   endif
 
   " there is no file (new one maybe)
-  " if glob(g:vimwiki_home.expand('%')) == ''
   if glob(expand('%:p')) == ''
-    call s:msg('Cannot rename "'.expand('%:p').'". It does not exist! (New file? Save it before renaming.)')
+    call s:msg('Cannot rename "'.expand('%:p').
+          \ '". It does not exist! (New file? Save it before renaming.)')
     return
   endif
 
@@ -294,7 +322,8 @@ function! vimwiki#WikiRenameWord() "{{{
   " do not rename if word with such name exists
   let fname = glob(VimwikiGet('path').newFileName)
   if fname != ''
-    call s:msg('Cannot rename to "'.newFileName.'". File with that name exist!')
+    call s:msg('Cannot rename to "'.newFileName.
+          \ '". File with that name exist!')
     return
   endif
   " rename WikiWord file
@@ -311,33 +340,22 @@ function! vimwiki#WikiRenameWord() "{{{
 
   let &buftype="nofile"
 
-  " save wiki buffers before link update
-  " let cur_buffer = wwtorename.VimwikiGet('ext')
-  let cur_buffer = expand('%:p')
-  let blist = []
-  let bcount = 1
-  while bcount<=bufnr("$")
-    if bufexists(bcount)
-      let bname = fnamemodify(bufname(bcount), ":p")
-      " let bname = bufname(bcount)
-      if bname =~ VimwikiGet('ext')."$" && bname != cur_buffer
-        call add(blist, bname)
-      endif
-    endif
-    let bcount = bcount + 1
-  endwhile
+  let cur_buffer = [expand('%:p'),
+        \getbufvar(expand('%:p'), "vimwiki_prev_word")]
+
+  let blist = s:get_wiki_buffers()
 
   " save wiki buffers
-  for bname in blist
-    execute ':b '.escape(bname, ' ')
+  for bitem in blist
+    execute ':b '.escape(bitem[0], ' ')
     execute ':update'
   endfor
 
-  execute ':b '.escape(cur_buffer, ' ')
+  execute ':b '.escape(cur_buffer[0], ' ')
 
   " remove wiki buffers
-  for bname in blist
-    execute 'bwipeout '.escape(bname, ' ')
+  for bitem in blist
+    execute 'bwipeout '.escape(bitem[0], ' ')
   endfor
 
   let setting_more = &more
@@ -351,18 +369,20 @@ function! vimwiki#WikiRenameWord() "{{{
   endif
 
   " restore wiki buffers
-  for bname in blist
-    call s:edit_file('e', bname)
+  for bitem in blist
+    if bitem[0] != cur_buffer[0]
+      call s:open_wiki_buffer(bitem)
+    endif
   endfor
 
-  call s:edit_file('e', VimwikiGet('path').newFileName)
-  execute 'bwipeout '.escape(cur_buffer, ' ')
+  call s:open_wiki_buffer([VimwikiGet('path').newFileName, cur_buffer[1]])
+  " execute 'bwipeout '.escape(cur_buffer[0], ' ')
 
   echomsg wwtorename." is renamed to ".newWord
 
   let &more = setting_more
-endfunction "}}}
-
+endfunction
+" }}}
 function! vimwiki#WikiUISelect()"{{{
   call s:print_wiki_list()
   let idx = input("Select Wiki (specify number): ")
@@ -370,6 +390,73 @@ function! vimwiki#WikiUISelect()"{{{
     return
   endif
   call vimwiki#WikiGoHome(idx)
-endfunction"}}}
+endfunction
+"}}}
+" }}}
+" TEXT OBJECTS functions {{{
+
+function! vimwiki#TO_header(inner) "{{{
+  if !search('^\(=\+\)[^=]\+\1\s*$', 'bcW')
+    return
+  endif
+  let level = vimwiki#count_first_sym(getline(line('.')))
+  normal V
+  if search('^\(=\{1,'.level.'}\)[^=]\+\1\s*$', 'W')
+    call cursor(line('.') - 1, 0)
+  else
+    call cursor(line('$'), 0)
+  endif
+  if a:inner && getline(line('.')) =~ '^\s*$'
+    let lnum = prevnonblank(line('.') - 1)
+    call cursor(lnum, 0)
+  endif
+endfunction
+"}}}
+function! vimwiki#count_first_sym(line) "{{{
+  let idx = 0
+  while a:line[idx] == a:line[0] && idx < len(a:line)
+    let idx += 1
+  endwhile
+  return idx
+endfunction "}}}
+
+function! vimwiki#AddHeaderLevel() "{{{
+  let lnum = line('.')
+  let line = getline(lnum)
+
+  if line =~ '^\s*$'
+    return
+  endif
+
+  if line !~ '^\(=\+\).\+\1\s*$'
+    let line = substitute(line, '^\s*', ' ', '')
+    let line = substitute(line, '\s*$', ' ', '')
+  endif
+  let level = vimwiki#count_first_sym(line)
+  if level < 6
+    call setline(lnum, '='.line.'=')
+  endif
+endfunction
+"}}}
+function! vimwiki#RemoveHeaderLevel() "{{{
+  let lnum = line('.')
+  let line = getline(lnum)
+
+  if line =~ '^\s*$'
+    return
+  endif
+
+  if line =~ '^\(=\+\).\+\1\s*$'
+    let line = strpart(line, 1, len(line) - 2)
+    if line =~ '^\s'
+      let line = strpart(line, 1, len(line))
+    endif
+    if line =~ '\s$'
+      let line = strpart(line, 0, len(line) - 1)
+    endif
+    call setline(lnum, line)
+  endif
+endfunction
+" }}}
 
 " }}}

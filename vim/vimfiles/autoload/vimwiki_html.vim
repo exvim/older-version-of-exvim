@@ -33,7 +33,9 @@ endfunction " }}}
 
 function! s:create_default_CSS(path) " {{{
   let path = expand(a:path)
-  if glob(path.'style.css') == ""
+  let css_full_name = path.VimwikiGet('css_name')
+  if glob(css_full_name) == ""
+    call vimwiki#mkdir(fnamemodify(css_full_name, ':p:h'))
     let lines = []
 
     call add(lines, 'body {margin: 1em 2em 1em 2em; font-size: 100%; line-height: 130%;}')
@@ -59,7 +61,7 @@ function! s:create_default_CSS(path) " {{{
     call add(lines, '.justright {text-align: right;}')
     call add(lines, '.justcenter {text-align: center;}')
 
-    call writefile(lines, path.'style.css')
+    call writefile(lines, css_full_name)
     echomsg "Default style.css is created."
   endif
 endfunction "}}}
@@ -101,7 +103,8 @@ function! s:get_html_header(title, charset) "{{{
       return lines
     catch /E484/
       let s:warn_html_header = 1
-      call s:msg("Header template ". VimwikiGet('html_header'). " does not exist!")
+      call s:msg("Header template ".VimwikiGet('html_header').
+            \ " does not exist!")
     endtry
   endif
 
@@ -109,9 +112,11 @@ function! s:get_html_header(title, charset) "{{{
   " file -- use default header.
   call add(lines, '<html>')
   call add(lines, '<head>')
-  call add(lines, '<link rel="Stylesheet" type="text/css" href="style.css" />')
+  call add(lines, '<link rel="Stylesheet" type="text/css" href="'.
+        \ VimwikiGet('css_name').'" />')
   call add(lines, '<title>'.a:title.'</title>')
-  call add(lines, '<meta http-equiv="Content-Type" content="text/html; charset='.a:charset.'" />')
+  call add(lines, '<meta http-equiv="Content-Type" content="text/html;'.
+        \ ' charset='.a:charset.'" />')
   call add(lines, '</head>')
   call add(lines, '<body>')
 
@@ -127,7 +132,8 @@ function! s:get_html_footer() "{{{
       return lines
     catch /E484/
       let s:warn_html_footer = 1
-      call s:msg("Footer template ". VimwikiGet('html_footer'). " does not exist!")
+      call s:msg("Footer template ".VimwikiGet('html_footer').
+            \ " does not exist!")
     endtry
   endif
 
@@ -226,7 +232,7 @@ function! s:process_tag_pre(line, pre) "{{{
   elseif pre && a:line =~ '^\s*$'
     let processed = 1
     call add(lines, a:line)
-  elseif pre 
+  elseif pre
     call add(lines, "</pre>")
     let pre = 0
   endif
@@ -246,7 +252,7 @@ function! s:process_tag_list(line, lists) "{{{
     let lstTagClose = '</ul>'
     let lstRegExp = '^\s\+\*'
     let processed = 1
-  elseif a:line =~ '^\s\+#' 
+  elseif a:line =~ '^\s\+#'
     let lstSym = '#'
     let lstTagOpen = '<ol>'
     let lstTagClose = '</ol>'
@@ -399,7 +405,7 @@ function! s:process_tag_table(line, table) "{{{
       if line == ''
         continue
       endif
-      if strpart(line, 0, 1) == ' ' && 
+      if strpart(line, 0, 1) == ' ' &&
             \ strpart(line, len(line) - 1, 1) == ' '
         call add(lines, '<td class="justcenter">'.line.'</td>')
       elseif strpart(line, 0, 1) == ' '
@@ -419,22 +425,31 @@ endfunction "}}}
 
 function! s:process_tags(line) "{{{
   let line = a:line
-  let line = s:make_tag(line, '\[\[.\{-}\]\]', '', '', 2, 's:make_internal_link')
+  let line = s:make_tag(line, '\[\[.\{-}\]\]',
+        \ '', '', 2, 's:make_internal_link')
   let line = s:make_tag(line, '\[.\{-}\]', '', '', 1, 's:make_external_link')
-  let line = s:make_tag(line, g:vimwiki_rxWeblink, '', '', 0, 's:make_barebone_link')
-  let line = s:make_tag(line, '!\?'.g:vimwiki_rxWikiWord, '', '', 0, 's:make_wikiword_link')
+  let line = s:make_tag(line, g:vimwiki_rxWeblink,
+        \ '', '', 0, 's:make_barebone_link')
+  let line = s:make_tag(line, '!\?'.g:vimwiki_rxWikiWord,
+        \ '', '', 0, 's:make_wikiword_link')
   let line = s:make_tag(line, g:vimwiki_rxItalic, '<em>', '</em>')
   let line = s:make_tag(line, g:vimwiki_rxBold, '<strong>', '</strong>')
   " let line = s:make_tag(line, g:vimwiki_rxItalic, '<em>', '</em>')
-  let line = s:make_tag(line, g:vimwiki_rxTodo, '<span class="todo">', '</span>', 0)
-  let line = s:make_tag(line, g:vimwiki_rxDelText, '<span class="strike">', '</span>', 2)
-  let line = s:make_tag(line, g:vimwiki_rxSuperScript, '<sup><small>', '</small></sup>', 1)
-  let line = s:make_tag(line, g:vimwiki_rxSubScript, '<sub><small>', '</small></sub>', 2)
+  let line = s:make_tag(line, g:vimwiki_rxTodo,
+        \ '<span class="todo">', '</span>', 0)
+  let line = s:make_tag(line, g:vimwiki_rxDelText,
+        \ '<span class="strike">', '</span>', 2)
+  let line = s:make_tag(line, g:vimwiki_rxSuperScript,
+        \ '<sup><small>', '</small></sup>', 1)
+  let line = s:make_tag(line, g:vimwiki_rxSubScript,
+        \ '<sub><small>', '</small></sub>', 2)
   let line = s:make_tag(line, g:vimwiki_rxCode, '<code>', '</code>')
   " TODO: change make_tag function: delete cSym parameter -- count of symbols
   " to strip from 2 sides of tag. Add 2 new instead -- OpenWikiTag length
-  " and CloseWikiTag length as for preformatted text there could be {{{,}}} and <pre>,</pre>.
-  let line = s:make_tag(line, g:vimwiki_rxPreStart.'.\+'.g:vimwiki_rxPreEnd, '<code>', '</code>', 3)
+  " and CloseWikiTag length as for preformatted text there could be {{{,}}}
+  " and <pre>,</pre>.
+  let line = s:make_tag(line, g:vimwiki_rxPreStart.'.\+'.g:vimwiki_rxPreEnd,
+        \ '<code>', '</code>', 3)
   return line
 endfunction " }}}
 
@@ -447,7 +462,8 @@ function! s:safe_html(line) "{{{
   return line
 endfunction "}}}
 
-function! s:make_tag_helper(line, regexp_match, tagOpen, tagClose, cSymRemove, func) " {{{
+function! s:make_tag_helper(line, regexp_match,
+      \ tagOpen, tagClose, cSymRemove, func) " {{{
   "" Substitute text found by regexp_match with tagOpen.regexp_subst.tagClose
 
   let pos = 0
@@ -457,7 +473,8 @@ function! s:make_tag_helper(line, regexp_match, tagOpen, tagClose, cSymRemove, f
     let res_line = res_line.line
     let matched = matchstr(a:line, a:regexp_match, pos)
     if matched != ""
-      let toReplace = strpart(matched, a:cSymRemove, len(matched)-2*a:cSymRemove)
+      let toReplace = strpart(matched,
+            \ a:cSymRemove, len(matched) - 2 * a:cSymRemove)
       if a:func!=""
         let toReplace = {a:func}(toReplace)
       else
@@ -485,9 +502,11 @@ function! s:make_tag(line, regexp_match, tagOpen, tagClose, ...) " {{{
     let cSym = a:1
   endif
 
-  let patt_splitter = '\(`[^`]\+`\)\|\({{{.\+}}}\)\|\(<a href.\{-}</a>\)\|\(<img src.\{-}/>\)'
+  let patt_splitter = '\(`[^`]\+`\)\|\({{{.\+}}}\)\|'.
+        \ '\(<a href.\{-}</a>\)\|\(<img src.\{-}/>\)'
   if '`[^`]\+`' == a:regexp_match || '{{{.\+}}}' == a:regexp_match
-    let res_line = s:make_tag_helper(a:line, a:regexp_match, a:tagOpen, a:tagClose, cSym, func)
+    let res_line = s:make_tag_helper(a:line, a:regexp_match,
+          \ a:tagOpen, a:tagClose, cSym, func)
   else
     let pos = 0
     " split line with patt_splitter to have parts of line before and after
@@ -499,7 +518,8 @@ function! s:make_tag(line, regexp_match, tagOpen, tagClose, ...) " {{{
     let lines = split(a:line, patt_splitter, 1)
     let res_line = ""
     for line in lines
-      let res_line = res_line.s:make_tag_helper(line, a:regexp_match, a:tagOpen, a:tagClose, cSym, func)
+      let res_line = res_line.s:make_tag_helper(line, a:regexp_match,
+            \ a:tagOpen, a:tagClose, cSym, func)
       let res_line = res_line.matchstr(a:line, patt_splitter, pos)
       let pos = matchend(a:line, patt_splitter, pos)
     endfor
@@ -539,30 +559,41 @@ function! s:make_external_link(entag) "{{{
 endfunction "}}}
 
 function! s:make_internal_link(entag) "{{{
-  "" Make <a href="This is a link">This is a link</a>
-  "" from [[This is a link]]
-  "" Make <a href="link">This is a link</a>
-  "" from [[link|This is a link]]
+  " Make <a href="This is a link">This is a link</a>
+  " from [[This is a link]]
+  " Make <a href="link">This is a link</a>
+  " from [[link|This is a link]]
+  " TODO: rename function -- it makes not only internal links.
 
   let line = ''
-  let link_parts = split(a:entag, "|")
+  let link_parts = split(a:entag, "|", 1)
+
   if len(link_parts) > 1
-    if s:is_img_link(link_parts[0])
-      let line = '<img src="'.link_parts[0].'" alt="'.join(link_parts[1:], "|").'" />'
-    elseif s:is_non_wiki_link(link_parts[0])
-      let line = '<a href="'.link_parts[0].'">'.join(link_parts[1:], "|").'</a>'
+    if len(link_parts) < 3
+      let style = ""
     else
-      let line = '<a href="'.link_parts[0].'.html">'.join(link_parts[1:], "|").'</a>'
+      let style = link_parts[2]
+    endif
+
+    if s:is_img_link(link_parts[1])
+      let line = '<a href="'.link_parts[0].'"><img src="'.link_parts[1].
+            \ '" style="'.style.'" /></a>'
+    elseif len(link_parts) < 3
+      let line = '<a href="'.link_parts[0].'">'.link_parts[1].'</a>'
+    elseif s:is_img_link(link_parts[0])
+      let line = '<img src="'.link_parts[0].'" alt="'.
+            \ link_parts[1].'" style="'.style.'" />'
     endif
   else
     if s:is_img_link(a:entag)
       let line = '<img src="'.a:entag.'" />'
-    elseif s:is_non_wiki_link(a:entag)
+    elseif s:is_non_wiki_link(link_parts[0])
       let line = '<a href="'.a:entag.'">'.a:entag.'</a>'
     else
       let line = '<a href="'.a:entag.'.html">'.a:entag.'</a>'
     endif
   endif
+
   return line
 endfunction "}}}
 
@@ -589,7 +620,7 @@ function! s:make_barebone_link(entag) "{{{
   return line
 endfunction "}}}
 
-function! s:get_html_from_wiki_line(line, para, pre, code, 
+function! s:get_html_from_wiki_line(line, para, pre, code,
       \ table, lists, deflist) " {{{
   let para = a:para
   let pre = a:pre
@@ -750,7 +781,7 @@ function! s:remove_comments(lines) "{{{
     if multiline_comment
       let col = matchend(line, '-->',)
       if col != -1
-        let multiline_comment = 0 
+        let multiline_comment = 0
         let line = strpart(line, col)
       else
         continue
@@ -767,7 +798,7 @@ function! s:remove_comments(lines) "{{{
     if !multiline_comment
       let col = match(line, '<!--',)
       if col != -1
-        let multiline_comment = 1 
+        let multiline_comment = 1
         let line = strpart(line, 1, col - 1)
       endif
     endif
@@ -801,8 +832,8 @@ function! vimwiki_html#Wiki2HTML(path, wikifile) "{{{
 
   for line in lsource
     let oldpre = pre
-    let [lines, para, pre, code, table, lists, deflist] = 
-          \ s:get_html_from_wiki_line(line, para, pre, code, 
+    let [lines, para, pre, code, table, lists, deflist] =
+          \ s:get_html_from_wiki_line(line, para, pre, code,
           \ table, lists, deflist)
 
     " A dirty hack: There could be a lot of empty strings before

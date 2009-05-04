@@ -15,35 +15,33 @@ let b:undo_ftplugin = "setlocal wrap< linebreak< ".
       \ "formatoptions< foldtext< ".
       \ "foldmethod< foldexpr< commentstring< "
 " UNDO }}}
-
 " MISC STUFF {{{
 setlocal wrap
 setlocal linebreak
 setlocal autowriteall
 setlocal commentstring=<!--%s-->
 " MISC }}}
-
 " GOTO FILE: gf {{{
 execute 'setlocal suffixesadd='.VimwikiGet('ext')
 setlocal isfname-=[,]
 " gf}}}
-
 " COMMENTS: autocreate list items {{{
 " for list items, and list items with checkboxes
 if VimwikiGet('syntax') == 'default'
-  setlocal comments=b:\ *\ [\ ],b:\ *[\ ],b:\ *\ [],b:\ *[],b:\ *\ [x],b:\ *[x]
-  setlocal comments+=b:\ #\ [\ ],b:\ #[\ ],b:\ #\ [],b:\ #[],b:\ #\ [x],b:\ #[x]
-  setlocal comments+=b:\ *,b:\ #
+  setl comments=b:\ *\ [\ ],b:\ *[\ ],b:\ *\ [],b:\ *[],b:\ *\ [x],b:\ *[x]
+  setl comments+=b:\ #\ [\ ],b:\ #[\ ],b:\ #\ [],b:\ #[],b:\ #\ [x],b:\ #[x]
+  setl comments+=b:\ *,b:\ #
 else
-  setlocal comments=n:*\ [\ ],n:*[\ ],n:*\ [],n:*[],n:*\ [x],n:*[x]
-  setlocal comments+=n:#\ [\ ],n:#[\ ],n:#\ [],n:#[],n:#\ [x],n:#[x]
-  setlocal comments+=n:*,n:#
+  setl comments=n:*\ [\ ],n:*[\ ],n:*\ [],n:*[],n:*\ [x],n:*[x]
+  setl comments+=n:#\ [\ ],n:#[\ ],n:#\ [],n:#[],n:#\ [x],n:#[x]
+  setl comments+=n:*,n:#
 endif
 setlocal formatoptions=ctnqro
 " COMMENTS }}}
-
 " FOLDING for headers and list items using expr fold method. {{{
-setlocal fdm=expr
+if VimwikiGet('folding')
+  setlocal fdm=expr
+endif
 setlocal foldexpr=VimwikiFoldLevel(v:lnum)
 function! VimwikiFoldLevel(lnum) "{{{
   let line = getline(a:lnum)
@@ -51,7 +49,7 @@ function! VimwikiFoldLevel(lnum) "{{{
 
   " Header folding...
   if line =~ g:vimwiki_rxHeader
-    let n = s:count_first_sym(line)
+    let n = vimwiki#count_first_sym(line)
     return '>' . n
   endif
 
@@ -73,7 +71,7 @@ endfunction "}}}
 
 function! s:get_li_level(lnum, nnum) "{{{
   if VimwikiGet('syntax') == 'media'
-    let level = s:count_first_sym(getline(a:nnum)) - 
+    let level = s:count_first_sym(getline(a:nnum)) -
           \ s:count_first_sym(getline(a:lnum))
     if level > 0
       return "a".level
@@ -102,14 +100,6 @@ function! s:get_li_level_last(lnum) "{{{
   endif
 endfunction "}}}
 
-function! s:count_first_sym(line) "{{{
-  let idx = 0
-  while a:line[idx] == a:line[0] && idx < len(a:line)
-    let idx += 1
-  endwhile
-  return idx
-endfunction "}}}
-
 setlocal foldtext=VimwikiFoldText()
 function! VimwikiFoldText() "{{{
   let line = getline(v:foldstart)
@@ -117,10 +107,12 @@ function! VimwikiFoldText() "{{{
 endfunction "}}}
 
 " FOLDING }}}
-
 " COMMANDS {{{
-command! -buffer Vimwiki2HTML call vimwiki_html#Wiki2HTML(expand(VimwikiGet('path_html')), expand('%'))
-command! -buffer VimwikiAll2HTML call vimwiki_html#WikiAll2HTML(expand(VimwikiGet('path_html')))
+command! -buffer Vimwiki2HTML
+      \ call vimwiki_html#Wiki2HTML(expand(VimwikiGet('path_html')),
+      \                             expand('%'))
+command! -buffer VimwikiAll2HTML
+      \ call vimwiki_html#WikiAll2HTML(expand(VimwikiGet('path_html')))
 
 command! -buffer VimwikiNextWord call vimwiki#WikiNextWord()
 command! -buffer VimwikiPrevWord call vimwiki#WikiPrevWord()
@@ -131,9 +123,8 @@ command! -buffer VimwikiGoBackWord call vimwiki#WikiGoBackWord()
 command! -buffer VimwikiSplitWord call vimwiki#WikiFollowWord('split')
 command! -buffer VimwikiVSplitWord call vimwiki#WikiFollowWord('vsplit')
 
-command! -buffer VimwikiGTDToggleItem call vimwiki_gtd#GTDToggleItem()
+command! -buffer VimwikiToggleListItem call vimwiki_lst#ToggleListItem()
 " COMMANDS }}}
-
 " KEYBINDINGS {{{
 if g:vimwiki_use_mouse
   nmap <buffer> <S-LeftMouse> <NOP>
@@ -147,55 +138,67 @@ endif
 if !hasmapto('<Plug>VimwikiFollowWord')
   nmap <silent><buffer> <CR> <Plug>VimwikiFollowWord
 endif
-noremap <silent><script><buffer> 
+noremap <silent><script><buffer>
       \ <Plug>VimwikiFollowWord :VimwikiFollowWord<CR>
 
 if !hasmapto('<Plug>VimwikiSplitWord')
   nmap <silent><buffer> <S-CR> <Plug>VimwikiSplitWord
 endif
-noremap <silent><script><buffer> 
+noremap <silent><script><buffer>
       \ <Plug>VimwikiSplitWord :VimwikiSplitWord<CR>
 
 if !hasmapto('<Plug>VimwikiVSplitWord')
   nmap <silent><buffer> <C-CR> <Plug>VimwikiVSplitWord
 endif
-noremap <silent><script><buffer> 
+noremap <silent><script><buffer>
       \ <Plug>VimwikiVSplitWord :VimwikiVSplitWord<CR>
 
 if !hasmapto('<Plug>VimwikiGoBackWord')
   nmap <silent><buffer> <BS> <Plug>VimwikiGoBackWord
 endif
-noremap <silent><script><buffer> 
+noremap <silent><script><buffer>
       \ <Plug>VimwikiGoBackWord :VimwikiGoBackWord<CR>
 
 if !hasmapto('<Plug>VimwikiNextWord')
   nmap <silent><buffer> <TAB> <Plug>VimwikiNextWord
 endif
-noremap <silent><script><buffer> 
+noremap <silent><script><buffer>
       \ <Plug>VimwikiNextWord :VimwikiNextWord<CR>
 
 if !hasmapto('<Plug>VimwikiPrevWord')
   nmap <silent><buffer> <S-TAB> <Plug>VimwikiPrevWord
 endif
-noremap <silent><script><buffer> 
+noremap <silent><script><buffer>
       \ <Plug>VimwikiPrevWord :VimwikiPrevWord<CR>
 
 if !hasmapto('<Plug>VimwikiDeleteWord')
   nmap <silent><buffer> <Leader>wd <Plug>VimwikiDeleteWord
 endif
-noremap <silent><script><buffer> 
+noremap <silent><script><buffer>
       \ <Plug>VimwikiDeleteWord :VimwikiDeleteWord<CR>
 
 if !hasmapto('<Plug>VimwikiRenameWord')
   nmap <silent><buffer> <Leader>wr <Plug>VimwikiRenameWord
 endif
-noremap <silent><script><buffer> 
+noremap <silent><script><buffer>
       \ <Plug>VimwikiRenameWord :VimwikiRenameWord<CR>
 
 if !hasmapto('<Plug>VimwikiToggleListItem')
   nmap <silent><buffer> <C-Space> <Plug>VimwikiToggleListItem
 endif
-noremap <silent><script><buffer> 
-      \ <Plug>VimwikiToggleListItem :VimwikiGTDToggleItem<CR>
+noremap <silent><script><buffer>
+      \ <Plug>VimwikiToggleListItem :VimwikiToggleListItem<CR>
+
+" Text objects {{{
+omap <silent><buffer> ah :<C-U>call vimwiki#TO_header(0)<CR>
+vmap <silent><buffer> ah :<C-U>call vimwiki#TO_header(0)<CR>
+
+omap <silent><buffer> ih :<C-U>call vimwiki#TO_header(1)<CR>
+vmap <silent><buffer> ih :<C-U>call vimwiki#TO_header(1)<CR>
+
+nmap <silent><buffer> = :call vimwiki#AddHeaderLevel()<CR>
+nmap <silent><buffer> - :call vimwiki#RemoveHeaderLevel()<CR>
+
+" }}}
 
 " KEYBINDINGS }}}
