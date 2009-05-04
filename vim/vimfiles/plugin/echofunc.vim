@@ -6,8 +6,8 @@
 "               supports.
 " Authors:      Ming Bai <mbbill AT gmail DOT com>,
 "               Wu Yongwei <wuyongwei AT gmail DOT com>
-" Last Change:  2007-12-26 21:41:48
-" Version:      1.18
+" Last Change:  2009-04-30 21:17:26
+" Version:      1.19
 "
 " Install:      1. Put echofunc.vim to /plugin directory.
 "               2. Use the command below to create tags
@@ -44,7 +44,7 @@
 "               g:EchoFuncKeyPrev
 "                 Key to echo the previous function
 "
-" Thanks:       edyfox
+" Thanks:       edyfox minux
 "
 "==================================================
 
@@ -258,9 +258,8 @@ function! EchoFuncStart()
     " jwu: disable them 
     " for (: if the function have thousands of tags, it will be slow
     " for ): I don't want the func info disappeared  
-    " inoremap    <silent>    <buffer>    (       (<c-r>=EchoFunc('')<cr>
-    " inoremap    <silent>    <buffer>    )       <c-\><c-o>:echo<cr>)
-
+    " inoremap <silent> <buffer>  (   (<c-r>=EchoFunc()<cr>
+    " inoremap <silent> <buffer>  )    <c-r>=EchoFuncClear()<cr>)
     exec 'inoremap <silent> <buffer> ' . g:EchoFuncKeyNext . ' <c-r>=EchoFuncN()<cr>'
     exec 'inoremap <silent> <buffer> ' . g:EchoFuncKeyPrev . ' <c-r>=EchoFuncP()<cr>'
 
@@ -270,6 +269,11 @@ function! EchoFuncStart()
     " jwu: add noremap, I think normal mode can use them, too
     exec 'nnoremap <silent> <buffer> ' . g:EchoFuncKeyNext . ' :call EchoFuncN()<cr>'
     exec 'nnoremap <silent> <buffer> ' . g:EchoFuncKeyPrev . ' :call EchoFuncP()<cr>'
+endfunction
+
+function! EchoFuncClear()
+    echo ''
+    return ''
 endfunction
 
 function! EchoFuncStop()

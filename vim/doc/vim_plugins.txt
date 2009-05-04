@@ -11,7 +11,7 @@ Description  : ~
 >
     AlternateFiles                      2.18
     cmdline-complete                    1.1.3
-    echofunc                            1.18 (patched by jwu)
+    echofunc                            1.19 (patched by jwu)
     EnhancedCommentify                  2.3
     CRefVim                             1.0.4 (patched by jwu)
     MiniBufExpl                         6.3.2 (patched by jwu)
