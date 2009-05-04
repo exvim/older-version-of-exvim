@@ -557,6 +557,7 @@ function s:exGS_GetGlobalSearchResult(search_pattern, search_method, direct_jump
     let s:exGS_search_state_tmp.pattern = a:search_pattern
     let s:exGS_select_idx = line_num+1
     silent call cursor( line_num+1, 1 )
+    silent normal zz
 endfunction " >>>
 
 " ------------------------------------------------------------------ 
