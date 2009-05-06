@@ -465,6 +465,7 @@ function s:exPJ_CreateProject(with_dialog) " <<<
     let g:exPJ_backto_editbuf = 0
     echon "Creating exProject: " . entry_dir . "\r"
     call s:exPJ_OpenWindow('Select')
+    let g:exPJ_backto_editbuf = old_bacto_editbuf
 
     let tag_contents = [] 
     silent call add ( tag_contents, "!_TAG_FILE_SORTED\t2\t/0=unsorted, 1=sorted, 2=foldcase/")
@@ -485,7 +486,6 @@ function s:exPJ_CreateProject(with_dialog) " <<<
     silent put! = 'file filter = ' . s:exPJ_file_filter
     silent normal! 3j
 
-    let g:exPJ_backto_editbuf = old_bacto_editbuf
     echon "Creating exProject: " . entry_dir . " done!\r"
 endfunction " >>>
 
