@@ -434,7 +434,6 @@ function! s:process_tags(line) "{{{
         \ '', '', 0, 's:make_wikiword_link')
   let line = s:make_tag(line, g:vimwiki_rxItalic, '<em>', '</em>')
   let line = s:make_tag(line, g:vimwiki_rxBold, '<strong>', '</strong>')
-  " let line = s:make_tag(line, g:vimwiki_rxItalic, '<em>', '</em>')
   let line = s:make_tag(line, g:vimwiki_rxTodo,
         \ '<span class="todo">', '</span>', 0)
   let line = s:make_tag(line, g:vimwiki_rxDelText,

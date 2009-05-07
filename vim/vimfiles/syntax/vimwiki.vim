@@ -33,7 +33,7 @@ execute 'syntax match wikiLink `'.g:vimwiki_rxWeblink.'`'
 " over earlier ones. This match is an approximation for the ~70 distinct
 syntax match wikiEmoticons /\%((.)\|:[()|$@]\|:-[DOPS()\]|$@]\|;)\|:'(\)/
 
-let g:vimwiki_rxTodo = '\%(TODO:\|DONE:\|FIXME:\|FIXED:\)'
+let g:vimwiki_rxTodo = '\C\%(TODO:\|DONE:\|FIXME:\|FIXED:\|XXX:\)'
 execute 'syntax match wikiTodo /'. g:vimwiki_rxTodo .'/'
 
 " Load concrete Wiki syntax

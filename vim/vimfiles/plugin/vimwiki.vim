@@ -155,6 +155,11 @@ for wiki in g:vimwiki_list
   endif
 endfor
 
+augroup filetypedetect
+  " clear FlexWiki's stuff
+  au! * *.wiki
+augroup end
+
 augroup vimwiki
   autocmd!
   for ext in keys(extensions)
