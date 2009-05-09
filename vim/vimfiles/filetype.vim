@@ -24,3 +24,5 @@ au BufNewFile,BufRead *.geo                 setf gmsh
 " as (actionscript/flash) I use java analyasis it
 au BufNewFile,BufRead *.as                  setf javascript
 
+" nsis
+au BufNewFile,BufRead *.nsh                 setf nsis

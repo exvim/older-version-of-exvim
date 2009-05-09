@@ -563,6 +563,7 @@ function! s:make_internal_link(entag) "{{{
   " Make <a href="link">This is a link</a>
   " from [[link|This is a link]]
   " TODO: rename function -- it makes not only internal links.
+  " TODO: refactor it.
 
   let line = ''
   let link_parts = split(a:entag, "|", 1)
@@ -578,7 +579,11 @@ function! s:make_internal_link(entag) "{{{
       let line = '<a href="'.link_parts[0].'"><img src="'.link_parts[1].
             \ '" style="'.style.'" /></a>'
     elseif len(link_parts) < 3
-      let line = '<a href="'.link_parts[0].'">'.link_parts[1].'</a>'
+      if s:is_non_wiki_link(link_parts[0])
+        let line = '<a href="'.link_parts[0].'">'.link_parts[1].'</a>'
+      else
+        let line = '<a href="'.link_parts[0].'.html">'.link_parts[1].'</a>'
+      endif
     elseif s:is_img_link(link_parts[0])
       let line = '<img src="'.link_parts[0].'" alt="'.
             \ link_parts[1].'" style="'.style.'" />'

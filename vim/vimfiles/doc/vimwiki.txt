@@ -8,7 +8,7 @@
        \ `\___/ /\_____\\ \_\\ \_\ `\___x___/ /\_____\\ \_\ \_\ /\_____\~
         `\/__/  \/_____/ \/_/ \/_/'\/__//__/  \/_____/ \/_/\/_/ \/_____/~
 
-                               Version: 0.9.3 ~
+                               Version: 0.9.2c ~
 
 ==============================================================================
 CONTENTS                                                    *vimwiki-contents*
@@ -836,6 +836,9 @@ Vim plugins website: http://www.vim.org/scripts/script.php?script_id=2226
 
 ==============================================================================
 11. Changelog                                              *vimwiki-changelog*
+
+0.9.2c
+  * [fix] Regression: Export HTML link error with [[Link|Text]].
 
 0.9.2b
   * [fix] Installation on Linux doesn't work. (Dos line endings in Vimball
