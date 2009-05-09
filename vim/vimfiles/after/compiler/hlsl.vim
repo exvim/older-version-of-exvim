@@ -1,7 +1,9 @@
-" Vim compiler file
-" Compiler:	Miscrosoft hlsl
-" Maintainer:	Wu Jie
-" Last Change:	2008 Jul 8
+" ======================================================================================
+" File         : hlsl.vim
+" Author       : Wu Jie 
+" Last Change  : 05/10/2009 | 00:45:12 AM | Sunday,May
+" Description  : 
+" ======================================================================================
 
 if exists("current_compiler")
   finish

@@ -1,7 +1,9 @@
-" Vim compiler file
-" Compiler:	Miscrosoft Visual C 2005
-" Maintainer:	Wu Jie
-" Last Change:	2008 Jul 8
+" ======================================================================================
+" File         : msvc2005.vim
+" Author       : Wu Jie 
+" Last Change  : 05/10/2009 | 00:45:19 AM | Sunday,May
+" Description  : 
+" ======================================================================================
 
 if exists("current_compiler")
   finish

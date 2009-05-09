@@ -1,7 +1,9 @@
-" Vim compiler file
-" Compiler:         GNU C Compiler
-" Maintainer:       Nikolai Weibull <now@bitwi.se>
-" Latest Revision:  2006-12-20
+" ======================================================================================
+" File         : exgcc.vim
+" Author       : Wu Jie 
+" Last Change  : 05/10/2009 | 00:44:56 AM | Sunday,May
+" Description  : 
+" ======================================================================================
 
 if exists("current_compiler")
   finish
