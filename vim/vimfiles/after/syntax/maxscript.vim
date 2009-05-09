@@ -1,8 +1,9 @@
-" Vim syntax file
-" Language:	3ds Max Script
-" Maintainer:	Johnny
-" Credits:	Based on the hlsl.vim syntax file by Mark Ferrell
-" Last change:	2007 Mat 14
+" ======================================================================================
+" File         : maxscript.vim
+" Author       : Wu Jie 
+" Last Change  : 05/10/2009 | 00:41:49 AM | Sunday,May
+" Description  : Based on the hlsl.vim syntax file by Mark Ferrell
+" ======================================================================================
 
 if version < 600
   syntax clear
