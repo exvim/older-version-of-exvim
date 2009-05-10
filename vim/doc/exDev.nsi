@@ -261,6 +261,9 @@ Section # "PostInstall"
 
     ; Create Environment variable EX_DEV
     WriteRegStr HKCU "Environment" "EX_DEV" $INSTDIR
+
+    ; Refresh environment variables
+    SendMessage ${HWND_BROADCAST} ${WM_WININICHANGE} 0 "STR:Environment" 
 SectionEnd
 
 ; /////////////////////////////////////////////////////////////////////////////
