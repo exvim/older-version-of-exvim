@@ -1,0 +1,30 @@
+====================================================================================== ~
+File         : vim_plugins.txt~
+Author       : Wu Jie ~
+Last Change  : 04/11/2009 | 10:48:07 AM | Saturday,April ~
+Description  : ~
+====================================================================================== ~
+
+
+==============================================================================
+*plugin-version*
+>
+    AlternateFiles                      2.18
+    cmdline-complete                    1.1.3
+    echofunc                            1.19 (patched by jwu)
+    EnhancedCommentify                  2.3
+    CRefVim                             1.0.4 (patched by jwu)
+    MiniBufExpl                         6.3.2 (patched by jwu)
+    NERD_tree                           3.1.0
+    OmniCppComplete                     0.41
+    genutils                            2.4
+    lookupfile                          1.8 (require genutils 2.4) (patched by jwu)
+    ShowMarks                           2.2 (patched by Easwy Yang) (patched by jwu)
+    surround                            1.34
+    TagList                             4.5 (patched by jwu)
+    Visincr                             19
+    visual_studio                       1.2 (patched by jwu)
+    vimwiki                             0.9.1
+==============================================================================
+
+vim: ft=help:norl:ts=4:tw=78
