@@ -18,7 +18,7 @@ import zipfile
 
 # general
 version = "7.04a"
-source_path = ".."
+source_path = "."
 dest_root_path = "d:/Project/Dev/exVim_google/release_version" 
 dest_version_path = dest_root_path + "/" + version
 
@@ -96,7 +96,7 @@ def CreateFullPackage ():
 
     # create a full-package zip file
     full_package_path = dest_version_path + "/" + full_package_name + "-" + version + ".zip"
-    zipfp = zipfile.ZipFile( full_package_path, "w" )
+    zipfp = zipfile.ZipFile( full_package_path, "w", zipfile.ZIP_DEFLATED )
 
     # copy toolkit folder
     AddDirToZip ( zipfp, os.path.join( source_path, "toolkit" ) )
@@ -124,7 +124,7 @@ def CreateExPluginsPackage ():
 
     # create a ex-package zip file
     ex_package_path = dest_version_path + "/" + ex_package_name + "-" + version + ".zip"
-    zipfp = zipfile.ZipFile( ex_package_path, "w" )
+    zipfp = zipfile.ZipFile( ex_package_path, "w", zipfile.ZIP_DEFLATED )
 
     # copy toolkit folder
     AddDirToZip ( zipfp, os.path.join( source_path, "toolkit" ) )
@@ -179,7 +179,7 @@ def CreatePatchedPluginsPackage ():
 
     # create a patched-package zip file
     patched_package_path = dest_root_path + "/" + patched_package_name + ".zip"
-    zipfp = zipfile.ZipFile( patched_package_path, "w" )
+    zipfp = zipfile.ZipFile( patched_package_path, "w", zipfile.ZIP_DEFLATED )
 
     # copy patched-plugins files
     zipfp.write ( os.path.join( source_path, "vimfiles/autoload/lookupfile.vim" ) )
