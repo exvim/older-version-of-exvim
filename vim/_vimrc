@@ -362,7 +362,7 @@ au BufNewFile,BufEnter * set cpoptions+=d " NOTE: ctags find the tags file from 
 au BufEnter * :syntax sync fromstart " ensure every file does syntax highlighting (full) 
 au BufNewFile,BufRead *.avs set syntax=avs " for avs syntax file.
 
-au BufEnter *.py,*.pyw call CheckIfExpandTab() " if edit python scripts, check if have \t. ( python said: the programme can only use \t or not, but can use them together )
+au BufEnter *.py,*.pyw call CheckIfExpandTab() " if edit python scripts, check if have \t. ( python said: the programme can only use \t or not, but can't use them together )
 function CheckIfExpandTab()
     let has_noexpandtab = search('^\t','wn')
     let has_expandtab = search('^    ','wn')
