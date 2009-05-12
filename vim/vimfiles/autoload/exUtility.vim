@@ -1062,6 +1062,43 @@ function exUtility#Kwbd(kwbdStage) " <<<
     endif 
 endfunction  " >>>
 
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
+function exUtility#SaveRestoreBuffersInfo() " <<<
+    if exists ('g:exES_RestoreBuffersInfo')
+        let nb_buffers = bufnr('$')     " Get the number of the last buffer.
+        let idx = 1                     " Set the buffer index to one, NOTE: zero is represent to last edit buffer.
+        let listed_buffers = []
+
+        " store listed buffers
+        while idx <= nb_buffers
+            if getbufvar( idx, '&buflisted') == 1
+                silent call add ( listed_buffers, bufname(idx) )
+            endif
+            let idx = idx + 1
+        endwhile
+
+        "
+        call writefile( listed_buffers, g:exES_RestoreBuffersInfo )
+    endif
+endfunction  " >>>
+
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
+function exUtility#RestoreLastEditBuffers() " <<<
+    if exists ('g:exES_RestoreBuffersInfo')
+        call exUtility#GotoEditBuffer()
+        let listed_buffers = readfile ( g:exES_RestoreBuffersInfo )
+        for buffer_name in listed_buffers 
+            silent exec 'badd ' . buffer_name 
+        endfor
+    endif
+endfunction  " >>>
+
 "/////////////////////////////////////////////////////////////////////////////
 "  file functions
 "/////////////////////////////////////////////////////////////////////////////

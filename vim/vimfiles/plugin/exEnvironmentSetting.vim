@@ -67,7 +67,7 @@ endif
 " Desc: current version. increase this will cause template re-write 
 " ------------------------------------------------------------------ 
 
-let s:exES_CurrentVersion = 14
+let s:exES_CurrentVersion = 15
 
 " ======================================================== 
 " local variable initialization 
@@ -99,7 +99,7 @@ function s:exES_WriteDefaultTemplate() " <<<
 
 	" Init the exUtility plugin file path
     silent call add(_list, '')
-    silent call add(_list, '-- exUtility Settings --')
+    silent call add(_list, '-- ex-plugins File Settings --')
     silent call add(_list, '')
     silent call add(_list, 'Project=./'._dir_name.'/'._project_name.'.exproject')
     silent call add(_list, 'Tag=./'._dir_name.'/tags') " NOTE: if cpoptions+=d not set for each buffer, then the tags need full path or will not be able to find. so pls write 'au BufNewFile,BufEnter * set cpoptions+=d' in your rc
@@ -110,6 +110,11 @@ function s:exES_WriteDefaultTemplate() " <<<
     silent call add(_list, 'Inherits=./'._dir_name.'/inherits')
     silent call add(_list, '')
     silent call add(_list, 'vimentryRefs+=')
+    silent call add(_list, '')
+    silent call add(_list, '-- ex-plugins Behavior Settings --')
+    silent call add(_list, '')
+    silent call add(_list, 'RestoreBuffers=false')
+    silent call add(_list, 'RestoreBuffersInfo=./'._dir_name.'/restore_buffers')
 
 	" Init the LookupFile plugin file path
     silent call add(_list, '')
@@ -340,6 +345,17 @@ function g:exES_UpdateEnvironment() " <<<
         endfor
     endif
 
+    " check if load last opened buffer
+    if exists ('g:exES_RestoreBuffers')
+        if g:exES_RestoreBuffers ==? 'true'
+            autocmd VimLeave * call exUtility#SaveRestoreBuffersInfo ()
+            let choice = confirm("Restore last edit buffers?", "&Yes\n&No", 1)
+            if choice == 1 " if yes
+                call exUtility#RestoreLastEditBuffers ()
+            endif
+        endif
+    endif
+
     " update custom environment
     if exists('*g:exES_PostUpdate')
         call g:exES_PostUpdate()
@@ -354,7 +370,7 @@ endfunction " >>>
 " Desc: if it is vimentry files, set evironment first
 " ------------------------------------------------------------------ 
 
-au BufEnter *.vimentry call g:exES_SetEnvironment(0)
+au VimEnter *.vimentry call g:exES_SetEnvironment(0)
 au BufWritePost *.vimentry :call g:exES_SetEnvironment(1)
 
 
