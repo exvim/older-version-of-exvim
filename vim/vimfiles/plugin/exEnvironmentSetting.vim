@@ -370,9 +370,8 @@ endfunction " >>>
 " Desc: if it is vimentry files, set evironment first
 " ------------------------------------------------------------------ 
 
-au VimEnter *.vimentry call g:exES_SetEnvironment(0)
+au BufEnter *.vimentry call g:exES_SetEnvironment(0)
 au BufWritePost *.vimentry :call g:exES_SetEnvironment(1)
-
 
 "/////////////////////////////////////////////////////////////////////////////
 " finish

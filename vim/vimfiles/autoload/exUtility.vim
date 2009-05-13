@@ -1096,6 +1096,9 @@ function exUtility#RestoreLastEditBuffers() " <<<
         for buffer_name in listed_buffers 
             silent exec 'badd ' . buffer_name 
         endfor
+        " TODO: last edit buffer
+        argglobal
+        call exUtility#GotoEditBuffer()
     endif
 endfunction  " >>>
 
