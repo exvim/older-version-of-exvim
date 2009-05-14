@@ -152,32 +152,39 @@ rem  #########################
 rem create tags
 echo Creating Tags...
 
+rem choose ctags command
+if exist .\%vimfiles_path%\filenamelist (
+    set ctags_options=-L filenamelist 
+) else (
+    set ctags_options=-R .. 
+)
+
 rem process tags by langugage
 cd "%vimfiles_path%"
 if /I "%lang_type%" == "all" ( 
-    ctags -o./_tags -R --c++-kinds=+p --fields=+iaS --extra=+q --languages=c,c++,c#,python,vim,html,lua,javascript,uc,math --langmap=c++:+.inl,c:+.fx,c:+.fxh,c:+.hlsl,c:+.vsh,c:+.psh,c:+.cg,c:+.shd,javascript:+.as ..
+    ctags -o./_tags --c++-kinds=+p --fields=+iaS --extra=+q --languages=c,c++,c#,python,vim,html,lua,javascript,java --langmap=c++:+.inl,c:+.fx,c:+.fxh,c:+.hlsl,c:+.vsh,c:+.psh,c:+.cg,c:+.shd,javascript:+.as %ctags_options%
 ) else if /I "%lang_type%" == "general" (
-    ctags -o./_tags -R --c++-kinds=+p --fields=+iaS --extra=+q --languages=c,c++,c#,python --langmap=c++:+.inl,c:+.fx,c:+.fxh,c:+.hlsl,c:+.vsh,c:+.psh,c:+.cg,c:+.shd ..
+    ctags -o./_tags --c++-kinds=+p --fields=+iaS --extra=+q --languages=c,c++,c#,python --langmap=c++:+.inl,c:+.fx,c:+.fxh,c:+.hlsl,c:+.vsh,c:+.psh,c:+.cg,c:+.shd %ctags_options%
 ) else if /I "%lang_type%" == "c" (
-    ctags -o./_tags -R --c-kinds=+p --fields=+iaS --extra=+q --languages=c --langmap=c++:+.inl ..
+    ctags -o./_tags --c-kinds=+p --fields=+iaS --extra=+q --languages=c --langmap=c++:+.inl %ctags_options%
 ) else if /I "%lang_type%" == "cpp" ( 
-    ctags -o./_tags -R --c++-kinds=+p --fields=+iaS --extra=+q --languages=c++ --langmap=c++:+.inl ..
+    ctags -o./_tags --c++-kinds=+p --fields=+iaS --extra=+q --languages=c++ --langmap=c++:+.inl %ctags_options%
 ) else if /I "%lang_type%" == "c#" (
-    ctags -o./_tags -R --fields=+iaS --extra=+q --languages=c# ..
+    ctags -o./_tags --fields=+iaS --extra=+q --languages=c# %ctags_options%
 ) else if /I "%lang_type%" == "html" (
-    ctags -o./_tags -R  --fields=+iaS --extra=+q --languages=html ..
+    ctags -o./_tags  --fields=+iaS --extra=+q --languages=html %ctags_options%
 ) else if /I "%lang_type%" == "js" ( 
-    ctags -o./_tags -R  --fields=+iaS --extra=+q --languages=javascript --langmap=javascript:+.as ..
+    ctags -o./_tags  --fields=+iaS --extra=+q --languages=javascript --langmap=javascript:+.as %ctags_options%
 ) else if /I "%lang_type%" == "lua" (
-    ctags -o./_tags -R  --fields=+iaS --extra=+q --languages=lua ..
+    ctags -o./_tags  --fields=+iaS --extra=+q --languages=lua %ctags_options%
 ) else if /I "%lang_type%" == "math" (
-    ctags -o./_tags -R  --fields=+iaS --extra=+q --languages=math ..
+    ctags -o./_tags  --fields=+iaS --extra=+q --languages=math %ctags_options%
 ) else if /I "%lang_type%" == "python" ( 
-    ctags -o./_tags -R --fields=+iaS --extra=+q --languages=python ..
+    ctags -o./_tags --fields=+iaS --extra=+q --languages=python %ctags_options%
 ) else if /I "%lang_type%" == "uc" ( 
-    ctags -o./_tags -R  --fields=+iaS --extra=+q --languages=uc ..
+    ctags -o./_tags  --fields=+iaS --extra=+q --languages=uc %ctags_options%
 ) else if /I "%lang_type%" == "vim" (
-    ctags -o./_tags -R  --fields=+iaS --extra=+q --languages=vim ..
+    ctags -o./_tags  --fields=+iaS --extra=+q --languages=vim %ctags_options%
 )
 move /Y "_tags" "tags"
 cd ..

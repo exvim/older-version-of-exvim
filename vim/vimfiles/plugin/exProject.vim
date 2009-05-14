@@ -98,13 +98,13 @@ endif
 " ------------------------------------------------------------------ 
 
 if !exists('g:exPJ_defualt_filter')
-    let g:exPJ_defualt_filter  = 'c cpp cxx c++ C cc '
-    let g:exPJ_defualt_filter .= 'h H hh hxx hpp inl '
-    let g:exPJ_defualt_filter .= 'uc '
-    let g:exPJ_defualt_filter .= 'hlsl vsh psh glsl '
-    let g:exPJ_defualt_filter .= 'dox doxygen '
-    let g:exPJ_defualt_filter .= 'ini cfg '
-    let g:exPJ_defualt_filter .= 'mk err exe '
+    let g:exPJ_defualt_filter  = 'c,cpp,cxx,c++,C,cc,'
+    let g:exPJ_defualt_filter .= 'h,H,hh,hxx,hpp,inl,'
+    let g:exPJ_defualt_filter .= 'uc,'
+    let g:exPJ_defualt_filter .= 'hlsl,vsh,psh,glsl,'
+    let g:exPJ_defualt_filter .= 'dox,doxygen,'
+    let g:exPJ_defualt_filter .= 'ini,cfg,'
+    let g:exPJ_defualt_filter .= 'mk,err,exe,'
 endif
 
 " ======================================================== 
@@ -467,13 +467,23 @@ function s:exPJ_CreateProject(with_dialog) " <<<
     call s:exPJ_OpenWindow('Select')
     let g:exPJ_backto_editbuf = old_bacto_editbuf
 
-    let tag_contents = [] 
-    silent call add ( tag_contents, "!_TAG_FILE_SORTED\t2\t/0=unsorted, 1=sorted, 2=foldcase/")
-    call exUtility#Browse( entry_dir, exUtility#GetFileFilterPattern(s:exPJ_file_filter), exUtility#GetDirFilterPattern(s:exPJ_dir_filter), tag_contents )
+    " create filname list and filanmetag list
+    let filename_list = [[],[]] " NOTE: 0 is the filename list, 1 is the filenametag list 
+    silent call add ( filename_list[1], "!_TAG_FILE_SORTED\t2\t/0=unsorted, 1=sorted, 2=foldcase/")
+    call exUtility#Browse( entry_dir, exUtility#GetFileFilterPattern(s:exPJ_file_filter), exUtility#GetDirFilterPattern(s:exPJ_dir_filter), filename_list )
+
+    " save filename list
+    if exists( 'g:exES_FilenameList' )
+        echon "sorting filenamelist... \r"
+        silent call writefile( filename_list[0], simplify(g:exES_CWD.'/'.g:exES_FilenameList))
+        echon "save as " . g:exES_FilenameList . " \r"
+    endif
+
+    " save filenametag list
     if exists( 'g:exES_LookupFileTag' )
         echon "sorting filenametags... \r"
-        silent call writefile( sort(tag_contents), simplify(g:exES_CWD.'/'.g:exES_LookupFileTag))
-        echon "save as ./_vimfiles/filenametags \r"
+        silent call writefile( sort(filename_list[1]), simplify(g:exES_CWD.'/'.g:exES_LookupFileTag))
+        echon "save as " . g:exES_LookupFileTag . " \r"
     endif
 
     " Create id-lang-autogen map
@@ -982,7 +992,7 @@ endfunction " >>>
 " Commands
 "/////////////////////////////////////////////////////////////////////////////
 
-command -narg=? EXProject call s:exPJ_OpenProject("<args>")
+command -narg=? -complete=file EXProject call s:exPJ_OpenProject("<args>")
 command ExpjSelectToggle call s:exPJ_ToggleWindow('Select')
 command ExpjGotoCurrentFile call s:exPJ_GotoCurrentFile(1)
 

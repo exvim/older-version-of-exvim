@@ -569,6 +569,7 @@ function g:exMH_InitSelectWindow() " <<<
     silent! setlocal nonumber
     " this will help Update symbol relate with it.
     silent! setlocal buftype=
+    silent! setlocal cursorline
     
     " key map
     nnoremap <buffer> <silent> <Space>   :call <SID>exMH_ResizeWindow()<CR>
@@ -580,7 +581,7 @@ function g:exMH_InitSelectWindow() " <<<
     "nnoremap <buffer> <silent> <C-Right>   :call <SID>exMH_SwitchWindow('Select')<CR>
 
     " autocmd
-    au CursorMoved <buffer> :call exUtility#HighlightSelectLine()
+    " au CursorMoved <buffer> :call exUtility#HighlightSelectLine()
     au BufWrite <buffer> call s:exMH_UpdateMacroList(getline(1,'$'),0)
     au BufHidden <buffer> call s:exMH_UpdateMacroList(getline(1,'$'),1)
 
@@ -607,8 +608,8 @@ endfunction " >>>
 " ------------------------------------------------------------------ 
 
 function g:exMH_UpdateSelectWindow() " <<<
-    call cursor( s:exMH_select_idx, 1)
-    call exUtility#HighlightConfirmLine()
+    " call cursor( s:exMH_select_idx, 1)
+    " call exUtility#HighlightConfirmLine()
 endfunction " >>>
 
 " ------------------------------------------------------------------ 

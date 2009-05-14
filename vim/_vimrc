@@ -710,16 +710,16 @@ let g:exPJ_backto_editbuf = 1
 let g:exPJ_close_when_selected = 0
 let g:exPJ_window_width_increment = 50
 
-let g:exPJ_defualt_filter  = 'c cpp cxx c++ C cc '
-let g:exPJ_defualt_filter .= 'h H hh hxx hpp inl '
-let g:exPJ_defualt_filter .= 'cs '
-let g:exPJ_defualt_filter .= 'uc '
-let g:exPJ_defualt_filter .= 'hlsl vsh psh fx fxh cg shd glsl '
-let g:exPJ_defualt_filter .= 'py pyw '
-let g:exPJ_defualt_filter .= 'vim awk m '
-let g:exPJ_defualt_filter .= 'dox doxygen '
-let g:exPJ_defualt_filter .= 'ini cfg wiki '
-let g:exPJ_defualt_filter .= 'mk err exe bat sh '
+let g:exPJ_defualt_filter  = 'c,cpp,cxx,c++,C,cc,'
+let g:exPJ_defualt_filter .= 'h,H,hh,hxx,hpp,inl,'
+let g:exPJ_defualt_filter .= 'cs,'
+let g:exPJ_defualt_filter .= 'uc,'
+let g:exPJ_defualt_filter .= 'hlsl,vsh,psh,fx,fxh,cg,shd,glsl,'
+let g:exPJ_defualt_filter .= 'py,pyw,'
+let g:exPJ_defualt_filter .= 'vim,awk,m,'
+let g:exPJ_defualt_filter .= 'dox,doxygen,'
+let g:exPJ_defualt_filter .= 'ini,cfg,wiki,'
+let g:exPJ_defualt_filter .= 'mk,err,exe,bat,sh,'
 
 " ------------------------------------------------------------------ 
 " Desc: exMarksBrowser 

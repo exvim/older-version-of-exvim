@@ -1066,22 +1066,37 @@ endfunction  " >>>
 " Desc: 
 " ------------------------------------------------------------------ 
 
-function exUtility#SaveRestoreBuffersInfo() " <<<
-    if exists ('g:exES_RestoreBuffersInfo')
+function exUtility#SaveRestoreInfo() " <<<
+    if exists ('g:exES_RestoreInfo')
         let nb_buffers = bufnr('$')     " Get the number of the last buffer.
         let idx = 1                     " Set the buffer index to one, NOTE: zero is represent to last edit buffer.
-        let listed_buffers = []
+        let cmdlist = []
 
         " store listed buffers
         while idx <= nb_buffers
             if getbufvar( idx, '&buflisted') == 1
-                silent call add ( listed_buffers, bufname(idx) )
+                silent call add ( cmdlist, "badd " . bufname(idx) )
             endif
-            let idx = idx + 1
+            let idx += 1
         endwhile
 
+        " save the last edit buffer detail info
+        call exUtility#GotoEditBuffer()
+        let last_buf_nr = bufnr('%')
+        if getbufvar( last_buf_nr, '&buflisted') == 1
+            " load last edit buffer
+            silent call add ( cmdlist, "edit " . bufname(last_buf_nr) )
+            silent call add ( cmdlist, "setlocal filetype=" . getbufvar(last_buf_nr,'&filetype') )
+            let save_cursor = getpos(".")
+            silent call add ( cmdlist, "call cursor(" . save_cursor[1] . "," . save_cursor[2] . ")" )
+
+            " redraw screen
+            silent call add ( cmdlist, "redraw!" )
+            silent call add ( cmdlist, "redrawstatus!" )
+        endif
+
         "
-        call writefile( listed_buffers, g:exES_RestoreBuffersInfo )
+        call writefile( cmdlist, g:exES_RestoreInfo )
     endif
 endfunction  " >>>
 
@@ -1090,14 +1105,16 @@ endfunction  " >>>
 " ------------------------------------------------------------------ 
 
 function exUtility#RestoreLastEditBuffers() " <<<
-    if exists ('g:exES_RestoreBuffersInfo')
+    if exists ('g:exES_RestoreInfo') && findfile( fnamemodify(g:exES_RestoreInfo,':p'), '.;' ) != ""
         call exUtility#GotoEditBuffer()
-        let listed_buffers = readfile ( g:exES_RestoreBuffersInfo )
-        for buffer_name in listed_buffers 
-            silent exec 'badd ' . buffer_name 
+        let cmdlist = readfile ( g:exES_RestoreInfo )
+
+        " load all buffers
+        for cmd in cmdlist 
+            silent exec cmd 
         endfor
-        " TODO: last edit buffer
-        argglobal
+
+        " go to last edit buffer
         call exUtility#GotoEditBuffer()
     endif
 endfunction  " >>>
@@ -1199,8 +1216,11 @@ function exUtility#CreateIDLangMap( file_filter ) " <<<
     silent call add ( text_list, '*.exe                 IGNORE') " never bring exe file into global search
     silent call add ( text_list, '*.lnk                 IGNORE') " never bring lnk file into global search
 
-    let filter_list = split(a:file_filter,' ')
+    let filter_list = split(a:file_filter,',')
     for item in filter_list 
+        if item == ''
+            continue
+        endif
         silent call add ( text_list, '*.'.item.'    text')
     endfor
 
@@ -1246,10 +1266,13 @@ endfunction " >>>
 " ------------------------------------------------------------------ 
 
 function exUtility#GetFileFilterPattern(filter) " <<<
-    let filter_list = split(a:filter,' ')
+    let filter_list = split(a:filter,',')
     let filter_pattern = '\V'
     for filter in filter_list
-        let filter_pattern = filter_pattern . '.' . '\<' . filter . '\>\$\|'
+        if filter == ''
+            continue
+        endif
+        let filter_pattern = filter_pattern . '\<' . filter . '\>\$\|'
     endfor
     return strpart(filter_pattern, 0, strlen(filter_pattern)-2)
 endfunction " >>>
@@ -1263,9 +1286,12 @@ function exUtility#GetDirFilterPattern(filter) " <<<
         return ''
     endif
 
-    let filter_list = split(a:filter,' ')
+    let filter_list = split(a:filter,',')
     let filter_pattern = '\V'
     for filter in filter_list
+        if filter == ''
+            continue
+        endif
         let filter_pattern = filter_pattern . '\<' . filter . '\>\$\|'
     endfor
     return strpart(filter_pattern, 0, strlen(filter_pattern)-2)
@@ -1448,7 +1474,7 @@ endfunction " >>>
 " Desc: 
 " ------------------------------------------------------------------ 
 
-function exUtility#Browse(dir, file_filter, dir_filter, tag_contents ) " <<<
+function exUtility#Browse(dir, file_filter, dir_filter, filename_list ) " <<<
     " show progress
     echon "processing: " . a:dir . "\r"
 
@@ -1468,7 +1494,8 @@ function exUtility#Browse(dir, file_filter, dir_filter, tag_contents ) " <<<
         let list_count = 0
         while list_count <= list_last
             if isdirectory(file_list[list_idx]) == 0 " remove not fit file types
-                if match(file_list[list_idx],a:file_filter) == -1 " if not found file type in file filter
+                let suffix = fnamemodify ( file_list[list_idx], ":e" ) 
+                if match ( suffix, a:file_filter ) == -1 " if not found file type in file filter
                     silent call remove(file_list,list_idx)
                     let list_idx -= 1
                 else " move the file to the end of the list
@@ -1477,7 +1504,7 @@ function exUtility#Browse(dir, file_filter, dir_filter, tag_contents ) " <<<
                     let list_idx -= 1
                 endif
             elseif a:dir_filter != '' " remove not fit dirs
-                if match(file_list[list_idx],a:dir_filter) == -1 " if not found dir name in dir filter
+                if match( file_list[list_idx], a:dir_filter ) == -1 " if not found dir name in dir filter
                     silent call remove(file_list,list_idx)
                     let list_idx -= 1
                 endif
@@ -1497,7 +1524,7 @@ function exUtility#Browse(dir, file_filter, dir_filter, tag_contents ) " <<<
             if list_idx != list_last
                 let s:ex_level_list[len(s:ex_level_list)-1].is_last = 0
             endif
-            if exUtility#Browse(file_list[list_idx],a:file_filter,'',a:tag_contents) == 1 " if it is empty
+            if exUtility#Browse(file_list[list_idx],a:file_filter,'',a:filename_list) == 1 " if it is empty
                 silent call remove(file_list,list_idx)
                 let list_last = len(file_list)-1
             endif
@@ -1550,7 +1577,9 @@ function exUtility#Browse(dir, file_filter, dir_filter, tag_contents ) " <<<
         silent put! = space.'['.file_type.']'.short_dir . end_fold
 
         " add file with full path as tag contents
-        silent call add ( a:tag_contents, short_dir."\t../".fnamemodify(a:dir,':.')."\t1" )
+        let filename_relative_path = exUtility#Pathfmt('../'.fnamemodify(a:dir,':.'),'unix')
+        silent call add ( a:filename_list[0], filename_relative_path )
+        silent call add ( a:filename_list[1], short_dir."\t".filename_relative_path."\t1" )
         return 0
     else
 

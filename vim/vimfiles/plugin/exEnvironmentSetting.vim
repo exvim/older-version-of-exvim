@@ -67,7 +67,7 @@ endif
 " Desc: current version. increase this will cause template re-write 
 " ------------------------------------------------------------------ 
 
-let s:exES_CurrentVersion = 15
+let s:exES_CurrentVersion = 16
 
 " ======================================================== 
 " local variable initialization 
@@ -102,6 +102,7 @@ function s:exES_WriteDefaultTemplate() " <<<
     silent call add(_list, '-- ex-plugins File Settings --')
     silent call add(_list, '')
     silent call add(_list, 'Project=./'._dir_name.'/'._project_name.'.exproject')
+    silent call add(_list, 'FilenameList=./'._dir_name.'/filenamelist')
     silent call add(_list, 'Tag=./'._dir_name.'/tags') " NOTE: if cpoptions+=d not set for each buffer, then the tags need full path or will not be able to find. so pls write 'au BufNewFile,BufEnter * set cpoptions+=d' in your rc
     silent call add(_list, 'ID=./'._dir_name.'/ID')
     silent call add(_list, 'Symbol=./'._dir_name.'/symbol')
@@ -114,7 +115,8 @@ function s:exES_WriteDefaultTemplate() " <<<
     silent call add(_list, '-- ex-plugins Behavior Settings --')
     silent call add(_list, '')
     silent call add(_list, 'RestoreBuffers=false')
-    silent call add(_list, 'RestoreBuffersInfo=./'._dir_name.'/restore_buffers')
+    silent call add(_list, 'AskForRestoration=true')
+    silent call add(_list, 'RestoreInfo=./'._dir_name.'/restore_info')
 
 	" Init the LookupFile plugin file path
     silent call add(_list, '')
@@ -348,9 +350,12 @@ function g:exES_UpdateEnvironment() " <<<
     " check if load last opened buffer
     if exists ('g:exES_RestoreBuffers')
         if g:exES_RestoreBuffers ==? 'true'
-            autocmd VimLeave * call exUtility#SaveRestoreBuffersInfo ()
-            let choice = confirm("Restore last edit buffers?", "&Yes\n&No", 1)
-            if choice == 1 " if yes
+            autocmd VimLeave * call exUtility#SaveRestoreInfo ()
+            let choice = 1
+            if exists ('g:exES_AskForRestoration') && g:exES_AskForRestoration ==? 'true'
+                let choice = confirm("Restore last edit buffers?", "&Yes\n&No", 1)
+            endif
+            if choice == 1 " if ask for restoration
                 call exUtility#RestoreLastEditBuffers ()
             endif
         endif
