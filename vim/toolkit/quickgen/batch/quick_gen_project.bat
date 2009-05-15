@@ -228,6 +228,8 @@ rem  #########################
 :GEN_CSCOPE
 rem  ######################### 
 
+rem TODO: cscope can use gawk process filenamelist
+
 if /I "%support_cscope%" == "true" (
     echo Creating cscope.files...
     dir /s /b %file_filter%|sed "s,\(.*\),\"\1\",g" > cscope.files
@@ -245,6 +247,9 @@ rem  ------------------------------------------------------------------
 rem  ######################### 
 :GEN_ID
 rem  ######################### 
+
+rem TODO: mkid --include="text" --lang-map=".\%vimfiles_path%\id-lang.map" "./folder1" "./folder2" ... 
+rem TODO: but how to include files in root directory???
 
 rem if we have manual configure id language map, we use it as highest priority
 if exist .\%vimfiles_path%\id-lang.map (
