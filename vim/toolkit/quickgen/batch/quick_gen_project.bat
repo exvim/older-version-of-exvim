@@ -14,38 +14,81 @@ rem ////////////////////////////////////////////////////////////////////////////
 rem  ------------------------------------------------------------------ 
 rem  Desc: 
 rem  arguments:
-rem  1  lang_type: "all", "general", "c", "cpp", "c#", "html", "js", "lua", "math", "python", "uc", "vim"
-rem  2  gen_type (none eaqual to all): "all", "tag", "symbol", "inherit", "cscope", "id"
-rem  3  vimfiles_path (none eaqual to _vimfiles): 
+rem  1  gen_type (none eaqual to all): "all", "tag", "symbol", "inherit", "cscope", "id"
 rem  ------------------------------------------------------------------ 
 
-set lang_type=%1
-
-if /I "%2" == "" (
+if /I "%1" == "" (
     set gen_type=all
     ) else (
-    set gen_type=%2
+    set gen_type=%1
     )
-
-if /I "%3" == "" (
-    set vimfiles_path=_vimfiles
-    ) else (
-    set vimfiles_path=%3
-    )
-
 
 rem /////////////////////////////////////////////////////////////////////////////
 rem set variables
 rem /////////////////////////////////////////////////////////////////////////////
 
 rem  ------------------------------------------------------------------ 
-rem  Desc: init default variables
+rem  Desc: lang_type
+rem  ------------------------------------------------------------------ 
+
+if /I "%lang_type%" == "" (
+    set lang_type=all
+    )
+
+rem  ------------------------------------------------------------------ 
+rem  Desc: vimfiles_path
+rem  ------------------------------------------------------------------ 
+
+if /I "%vimfiles_path%" == "" (
+    set vimfiles_path=_vimfiles
+    )
+
+rem  ------------------------------------------------------------------ 
+rem  Desc: file_filter 
+rem  ------------------------------------------------------------------ 
+
+if /I "%file_filter%" == "" (
+    set file_filter=*.c *.cpp *.cxx *.c++ *.cc *.h *.hh *.hxx *.hpp *.inl *.cs *.uc *.hlsl *.vsh *.psh *.fx *.fxh *.cg *.shd *.glsl *.py *.pyw *.vim *.awk *.m *.dox *.doxygen *.ini *.cfg *.wiki *.mk *.err *.exe *.bat *.sh *.txt
+    )
+
+rem  ------------------------------------------------------------------ 
+rem  Desc: dir_filter 
+rem  ------------------------------------------------------------------ 
+
+if /I "%dir_filter%" == "" (
+    set dir_filter=
+    )
+
+rem  ------------------------------------------------------------------ 
+rem  Desc: cwd 
+rem  ------------------------------------------------------------------ 
+
+if /I "%cwd%" == "" (
+    echo error: variable: cwd not set
+    goto FINISH
+    )
+
+rem  ------------------------------------------------------------------ 
+rem  Desc: support_inherit
+rem  ------------------------------------------------------------------ 
+
+if /I "%support_inherit%" == "" (
+    set support_inherit=true
+    )
+
+rem  ------------------------------------------------------------------ 
+rem  Desc: support_cscope 
+rem  ------------------------------------------------------------------ 
+
+if /I "%support_cscope%" == "" (
+    set support_cscope=true
+    )
+
+rem  ------------------------------------------------------------------ 
+rem  Desc: return
 rem  ------------------------------------------------------------------ 
 
 set return=FINISH
-set file_filter=*.c *.cpp *.cxx *.h *.hpp *.inl *.hlsl *.vsh *.psh *.fx *.fxh *.cg *.shd *.uc *.m
-set support_inherit=true
-set support_cscope=true
 
 rem  ------------------------------------------------------------------ 
 rem  Desc: set variable depends on differnet language
@@ -53,73 +96,61 @@ rem  ------------------------------------------------------------------
 
 rem all
 if /I "%lang_type%" == "all" (
-    set file_filter=*.c *.cpp *.cxx *.h *.hpp *.inl *.hlsl *.vsh *.psh *.fx *.fxh *.cg *.shd *.uc *.m
     set support_inherit=true
     set support_cscope=true
 
 rem cstyle settings
     ) else if /I "%lang_type%" == "general" (
-    set file_filter=*.c *.cpp *.cxx *.h *.hpp *.inl *.hlsl *.vsh *.psh *.fx *.fxh *.cg *.shd *.uc *.m
     set support_inherit=true
     set support_cscope=true
 
 rem c-only settings
     ) else if /I "%lang_type%" == "c" (
-    set file_filter=*.c *.h
     set support_inherit=false
     set support_cscope=true
 
 rem cpp-only settings
     ) else if /I "%lang_type%" == "cpp" (
-    set file_filter=*.cpp *.cxx *.h *.hpp *.inl
     set support_inherit=true
     set support_cscope=true
 
 rem c-sharp settings
     ) else if /I "%lang_type%" == "c#" (
-    set file_filter=*.cs
     set support_inherit=true
     set support_cscope=false
 
 rem html settings
     ) else if /I "%lang_type%" == "html" (
-    set file_filter=*.html *.htm *.shtml *.stm
     set support_inherit=false
     set support_cscope=false
 
 rem javascript settings
     ) else if /I "%lang_type%" == "js" (
-    set file_filter=*.js *.as
     set support_inherit=true
     set support_cscope=false
 
 rem lua settings
     ) else if /I "%lang_type%" == "lua" (
-    set file_filter=*.lua
     set support_inherit=false
     set support_cscope=false
 
 rem math settings
     ) else if /I "%lang_type%" == "math" (
-    set file_filter=*.m
     set support_inherit=false
     set support_cscope=false
 
 rem python settings
     ) else if /I "%lang_type%" == "python" (
-    set file_filter=*.py
     set support_inherit=true
     set support_cscope=false
 
 rem unreal-script settings
     ) else if /I "%lang_type%" == "uc" (
-    set file_filter=*.uc
     set support_inherit=true
     set support_cscope=false
 
 rem vim settings
     ) else if /I "%lang_type%" == "vim" (
-    set file_filter=*.vim
     set support_inherit=false
     set support_cscope=false
 
@@ -134,12 +165,52 @@ echo language type: %lang_type%
 echo support inheirts: %support_inherit%
 echo support cscope: %support_cscope%
 echo generate type: %gen_type%
+echo file filter: %file_filter%
+echo dir filter: %dir_filter%
+echo vimfiles path: %vimfiles_path%
+echo cwd: %cwd%
 echo.
 goto START
 
 rem /////////////////////////////////////////////////////////////////////////////
 rem gen functions 
 rem /////////////////////////////////////////////////////////////////////////////
+
+rem  ------------------------------------------------------------------ 
+rem  Desc: create filenamelist_cwd and filenamelist_vimfiles 
+rem  ------------------------------------------------------------------ 
+
+rem  ######################### 
+:GEN_FILENAME_LIST
+rem  ######################### 
+
+echo Creating Filename List...
+
+rem create cwd pattern for sed
+set cwd_pattern=%cwd%
+for /f "delims=" %%a in ('echo %cwd%^|sed "s,\\,\\\\,g"') do (
+    set cwd_pattern=%%a
+    )
+
+rem create filenamelist_cwd
+if /I "%dir_filter%" == "" (
+    dir /s /b %file_filter%|sed "s,\(%cwd_pattern%\)\(.*\),.\\\2,gI" >> ".\%vimfiles_path%\_filenamelist_cwd"
+    ) else (
+    dir /b %file_filter%|sed "s,\(.*\),.\\\1,gI" >> ".\%vimfiles_path%\_filenamelist_cwd"
+    for %%i in (%dir_filter%) do (
+        cd %%i
+        dir /s /b %file_filter%|sed "s,\(%cwd_pattern%\)\(.*\),.\\\2,gI" >> "..\%vimfiles_path%\_filenamelist_cwd"
+        cd ..
+        )
+    )
+
+rem create filenamelist_vimfiles
+sed "s,\(.*\),.\1,g" ".\%vimfiles_path%\_filenamelist_cwd" >> ".\%vimfiles_path%\_filenamelist_vimfiles"
+
+rem move filenamelist files to vimfiles_path
+move /Y ".\%vimfiles_path%\_filenamelist_cwd" ".\%vimfiles_path%\filenamelist_cwd"
+move /Y ".\%vimfiles_path%\_filenamelist_vimfiles" ".\%vimfiles_path%\filenamelist_vimfiles"
+goto %return%
 
 rem  ------------------------------------------------------------------ 
 rem  Desc: create tags
@@ -153,8 +224,8 @@ rem create tags
 echo Creating Tags...
 
 rem choose ctags command
-if exist .\%vimfiles_path%\filenamelist (
-    set ctags_options=-L filenamelist 
+if exist .\%vimfiles_path%\filenamelist_vimfiles (
+    set ctags_options=-L filenamelist_vimfiles 
 ) else (
     set ctags_options=-R .. 
 )
@@ -232,7 +303,11 @@ rem TODO: cscope can use gawk process filenamelist
 
 if /I "%support_cscope%" == "true" (
     echo Creating cscope.files...
-    dir /s /b %file_filter%|sed "s,\(.*\),\"\1\",g" > cscope.files
+    if exist .\%vimfiles_path%\filenamelist_cwd (
+        copy ".\%vimfiles_path%\filenamelist_cwd" cscope.files 
+    ) else (
+        dir /s /b %file_filter%|sed "s,\(.*\),\"\1\",g" > cscope.files
+    )
     echo Creating cscope.out...
     cscope -b
     move /Y cscope.files ".\%vimfiles_path%\cscope.files"
@@ -300,20 +375,30 @@ rem process generate all
 echo.
 if /I "%gen_type%" == "all" ( 
     set return=all_1
-    goto GEN_TAG
+    goto GEN_FILENAME_LIST
 :all_1
     set return=all_2
-    goto GEN_SYMBOL
+    goto GEN_TAG
 :all_2
     set return=all_3
-    goto GEN_INHERIT
+    goto GEN_SYMBOL
 :all_3
     set return=all_4
-    goto GEN_CSCOPE
+    goto GEN_INHERIT
 :all_4
     set return=all_5
-    goto GEN_ID
+    goto GEN_CSCOPE
 :all_5
+    set return=all_6
+    goto GEN_ID
+:all_6
+    goto FINISH
+
+rem process generate filenamelist
+) else if /I "%gen_type%" == "filenamelist" (
+    set return=filenamelist_1
+    goto GEN_FILENAME_LIST
+:filenamelist_1
     goto FINISH
 
 rem process generate tag

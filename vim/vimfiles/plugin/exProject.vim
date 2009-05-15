@@ -127,8 +127,8 @@ let s:exPJ_cursor_line = 0
 let s:exPJ_cursor_col = 0
 let s:exPJ_need_update_select_window = 0
 
-let s:exPJ_file_filter = g:exPJ_defualt_filter 
-let s:exPJ_dir_filter = '' " null-string means include all directories
+silent call exUtility#SetProjectFilter ( "file_filter", g:exPJ_defualt_filter )
+silent call exUtility#SetProjectFilter ( "dir_filter", "" ) " null-string means include all directories
 
 "/////////////////////////////////////////////////////////////////////////////
 " function defines
@@ -304,12 +304,12 @@ endfunction
 function s:exPJ_UpdateFilters()
     let file_filter_txt = getline(1)
     if match( file_filter_txt, '^file filter =' ) != -1
-        let s:exPJ_file_filter = strpart( file_filter_txt, stridx(file_filter_txt, "=")+2 ) 
+        silent call exUtility#SetProjectFilter ( "file_filter", strpart( file_filter_txt, stridx(file_filter_txt, "=")+2 ) )
     endif
 
     let dir_filter_txt = getline(2)
     if match( dir_filter_txt, '^dir filter =' ) != -1
-        let s:exPJ_dir_filter = strpart( dir_filter_txt, stridx(dir_filter_txt, "=")+2 )
+        silent call exUtility#SetProjectFilter ( "dir_filter", strpart( dir_filter_txt, stridx(dir_filter_txt, "=")+2 ) )
     endif
 endfunction
 
@@ -442,19 +442,21 @@ function s:exPJ_CreateProject(with_dialog) " <<<
         endif
 
         " get file filter
-        let file_filter = inputdialog( 'Enter the file filters: sample(cpp c inl): ', s:exPJ_file_filter, 'cancle')
+        let project_file_filter = exUtility#GetProjectFilter ( "file_filter" )
+        let file_filter = inputdialog( 'Enter the file filters: sample(cpp c inl): ', project_file_filter, 'cancle')
         if file_filter == 'cancle'
             return
         else
-            let s:exPJ_file_filter = file_filter
+            silent call exUtility#SetProjectFilter ( "file_filter", file_filter )
         endif
 
         " add dir filter
-        let dir_filter = inputdialog( 'Enter the dir filters: sample(folder1 folder2): ', s:exPJ_dir_filter, 'cancle')
+        let project_dir_filter = exUtility#GetProjectFilter ( "dir_filter" )
+        let dir_filter = inputdialog( 'Enter the dir filters: sample(folder1 folder2): ', project_dir_filter, 'cancle')
         if dir_filter == 'cancle'
             return
         else
-            let s:exPJ_dir_filter = dir_filter
+            silent call exUtility#SetProjectFilter ( "dir_filter", dir_filter )
         endif
     else
         let entry_dir = g:exES_CWD
@@ -468,32 +470,37 @@ function s:exPJ_CreateProject(with_dialog) " <<<
     let g:exPJ_backto_editbuf = old_bacto_editbuf
 
     " create filname list and filanmetag list
-    let filename_list = [[],[]] " NOTE: 0 is the filename list, 1 is the filenametag list 
-    silent call add ( filename_list[1], "!_TAG_FILE_SORTED\t2\t/0=unsorted, 1=sorted, 2=foldcase/")
-    call exUtility#Browse( entry_dir, exUtility#GetFileFilterPattern(s:exPJ_file_filter), exUtility#GetDirFilterPattern(s:exPJ_dir_filter), filename_list )
-
-    " save filename list
-    if exists( 'g:exES_FilenameList' )
-        echon "sorting filenamelist... \r"
-        silent call writefile( filename_list[0], simplify(g:exES_CWD.'/'.g:exES_FilenameList))
-        echon "save as " . g:exES_FilenameList . " \r"
-    endif
+    let filename_list = [[],[],[]] " NOTE: 0 is the filenametag, 1 is the filenamelist_cwd, 2 is the filenamelist_vimfiles
+    silent call add ( filename_list[0], "!_TAG_FILE_SORTED\t2\t/0=unsorted, 1=sorted, 2=foldcase/")
+    let project_file_filter = exUtility#GetProjectFilter ( "file_filter" )
+    let project_dir_filter = exUtility#GetProjectFilter ( "dir_filter" )
+    call exUtility#Browse( entry_dir, exUtility#GetFileFilterPattern(project_file_filter), exUtility#GetDirFilterPattern(project_dir_filter), filename_list )
 
     " save filenametag list
     if exists( 'g:exES_LookupFileTag' )
         echon "sorting filenametags... \r"
-        silent call writefile( sort(filename_list[1]), simplify(g:exES_CWD.'/'.g:exES_LookupFileTag))
+        silent call writefile( sort(filename_list[0]), simplify(g:exES_CWD.'/'.g:exES_LookupFileTag))
         echon "save as " . g:exES_LookupFileTag . " \r"
     endif
 
+    " save filenamelist_cwd & filenamelist_vimfiles
+    if exists( 'g:exES_FilenameList' )
+        silent call writefile( filename_list[1], simplify(g:exES_CWD.'/'.g:exES_FilenameList.'_cwd'))
+        echon "save as " . g:exES_FilenameList . "_cwd \r"
+        silent call writefile( filename_list[2], simplify(g:exES_CWD.'/'.g:exES_FilenameList.'_vimfiles'))
+        echon "save as " . g:exES_FilenameList . "_vimfiles \r"
+    endif
+
+    " TODO: add need createIDLangMap, only affect with file filter.
+    " TODO: add need update filenamelist filenametag, only affect when project file changed, or ...
     " Create id-lang-autogen map
     echon "generate id-lang-autogen.map file... \r"
-    call exUtility#CreateIDLangMap( s:exPJ_file_filter )
+    call exUtility#CreateIDLangMap( project_file_filter )
 
     silent keepjumps normal! gg
     silent put! = ''
-    silent put! = 'dir filter = ' . s:exPJ_dir_filter
-    silent put! = 'file filter = ' . s:exPJ_file_filter
+    silent put! = 'dir filter = ' . project_dir_filter
+    silent put! = 'file filter = ' . project_file_filter
     silent normal! 3j
 
     echon "Creating exProject: " . entry_dir . " done!\r"
@@ -514,11 +521,12 @@ function s:exPJ_QuickRefreshProject() " <<<
     endif
 
     " get filter
-    let filter = inputdialog( 'Enter the filters: sample(cpp c inl): ', s:exPJ_file_filter, 'cancle')
+    let project_file_filter = exUtility#GetProjectFilter ( "file_filter" )
+    let filter = inputdialog( 'Enter the filters: sample(cpp c inl): ', project_file_filter, 'cancle')
     if filter == 'cancle'
         return
     else
-        let s:exPJ_file_filter = filter 
+        silent call exUtility#SetProjectFilter ( "file_filter", filter )
     endif
 
     " if fold, open it else if not a file return
@@ -633,11 +641,10 @@ function s:exPJ_RefreshProject( with_dialog ) " <<<
 
     " get filter
     if a:with_dialog == 1
-        let filter = inputdialog( 'Enter the filters: sample(cpp c inl): ', s:exPJ_file_filter, 'cancle')
         if filter == 'cancle'
             return
         else
-            let s:exPJ_file_filter = filter 
+            silent call exUtility#SetProjectFilter ( "file_filter", filter )
         endif
     endif
 
@@ -712,7 +719,9 @@ function s:exPJ_RefreshProject( with_dialog ) " <<<
     " broswing
 
     let tag_contents = [] 
-    call exUtility#Browse( full_path_name, exUtility#GetFileFilterPattern(s:exPJ_file_filter), is_root_dir ? exUtility#GetDirFilterPattern(s:exPJ_dir_filter) : '', tag_contents )
+    let project_file_filter = exUtility#GetProjectFilter ( "file_filter" )
+    let project_dir_filter = exUtility#GetProjectFilter ( "dir_filter" )
+    call exUtility#Browse( full_path_name, exUtility#GetFileFilterPattern(project_file_filter), is_root_dir ? exUtility#GetDirFilterPattern(project_dir_filter) : '', tag_contents )
     unlet tag_contents 
 
     " reset level list

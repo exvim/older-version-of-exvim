@@ -58,6 +58,24 @@ if exists('g:ex_comment_lable_keyword')
 endif
 
 " ------------------------------------------------------------------ 
+" Desc: project file filter 
+" ------------------------------------------------------------------ 
+
+let s:ex_project_file_filter  = 'c,cpp,cxx,c++,C,cc,'
+let s:ex_project_file_filter .= 'h,H,hh,hxx,hpp,inl,'
+let s:ex_project_file_filter .= 'uc,'
+let s:ex_project_file_filter .= 'hlsl,vsh,psh,glsl,'
+let s:ex_project_file_filter .= 'dox,doxygen,'
+let s:ex_project_file_filter .= 'ini,cfg,'
+let s:ex_project_file_filter .= 'mk,err,exe,'
+
+" ------------------------------------------------------------------ 
+" Desc: project dir filter 
+" ------------------------------------------------------------------ 
+
+let s:ex_project_dir_filter = '' " null-string means include all directories
+
+" ------------------------------------------------------------------ 
 " Desc: 
 " ------------------------------------------------------------------ 
 
@@ -1228,11 +1246,11 @@ function exUtility#CreateIDLangMap( file_filter ) " <<<
     call writefile( text_list, idlang_map_file, "b" )
 endfunction " >>>
 
+" KEEPME: we don't need this function, but keep it { 
 " ------------------------------------------------------------------ 
 " Desc: Match tag and find file if it has
 " ------------------------------------------------------------------ 
 
-" KEEPME: we don't need this function, but keep it { 
 " function exUtility#MatchTagFile( tag_file_list, file_name ) " <<<
 "     return fnamemodify(a:file_name,":p")
 "     " if we can use CWD find file, use it first
@@ -1260,6 +1278,56 @@ endfunction " >>>
 "     return simplify(full_file_name)
 " endfunction " >>>
 " } KEEPME end 
+
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
+function exUtility#SetProjectFilter( filter_type, filter ) " <<<
+    if a:filter_type ==# 'file_filter'
+        let s:ex_project_file_filter = a:filter
+    elseif a:filter_type ==# 'dir_filter'
+        let s:ex_project_dir_filter = a:filter
+    endif
+endfunction " >>>
+
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
+function exUtility#GetProjectFilter(filter_type) " <<<
+    if a:filter_type ==# 'file_filter'
+        return s:ex_project_file_filter
+    elseif a:filter_type ==# 'dir_filter'
+        return s:ex_project_dir_filter
+    endif
+endfunction " >>>
+
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
+function exUtility#GetProjectFileFilterCommand() " <<<
+    let filter_list = split(s:ex_project_file_filter,',')
+    let filter_command = ''
+    for item in filter_list 
+        let filter_command .= '*.' . item . ' '
+    endfor
+    return filter_command
+endfunction " >>>
+
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
+function exUtility#GetProjectDirFilterCommand() " <<<
+    let filter_list = split(s:ex_project_dir_filter,',')
+    let filter_command = ''
+    for item in filter_list 
+        let filter_command .= '"' . item . '" '
+    endfor
+    return filter_command
+endfunction " >>>
 
 " ------------------------------------------------------------------ 
 " Desc: 
@@ -1298,132 +1366,134 @@ function exUtility#GetDirFilterPattern(filter) " <<<
 endfunction " >>>
 
 
-" ------------------------------------------------------------------ 
-" Desc: 
-" ------------------------------------------------------------------ 
+" KEEPME: we don't need this function, but keep it { 
+" " ------------------------------------------------------------------ 
+" " Desc: 
+" " ------------------------------------------------------------------ 
 
-function exUtility#BrowseWithEmtpy(dir, filter) " <<<
-    " get short_dir
-    "let short_dir = strpart( a:dir, strridx(a:dir,'\')+1 )
-    let short_dir = fnamemodify( a:dir, ":t" )
-    if short_dir == ''
-        let short_dir = a:dir
-    endif
+" function exUtility#BrowseWithEmtpy(dir, filter) " <<<
+"     " get short_dir
+"     "let short_dir = strpart( a:dir, strridx(a:dir,'\')+1 )
+"     let short_dir = fnamemodify( a:dir, ":t" )
+"     if short_dir == ''
+"         let short_dir = a:dir
+"     endif
 
-    " write space
-    let space = ''
-    let list_idx = 0
-    let list_last = len(s:ex_level_list)-1
-    for level in s:ex_level_list
-        if level.is_last != 0 && list_idx != list_last
-            let space = space . '  '
-        else
-            let space = space . ' |'
-        endif
-        let list_idx += 1
-    endfor
-    let space = space.'-'
+"     " write space
+"     let space = ''
+"     let list_idx = 0
+"     let list_last = len(s:ex_level_list)-1
+"     for level in s:ex_level_list
+"         if level.is_last != 0 && list_idx != list_last
+"             let space = space . '  '
+"         else
+"             let space = space . ' |'
+"         endif
+"         let list_idx += 1
+"     endfor
+"     let space = space.'-'
 
-    " get end_fold
-    let end_fold = ''
-    let rev_list = reverse(copy(s:ex_level_list))
-    for level in rev_list
-        if level.is_last != 0
-            let end_fold = end_fold . ' }'
-        else
-            break
-        endif
-    endfor
+"     " get end_fold
+"     let end_fold = ''
+"     let rev_list = reverse(copy(s:ex_level_list))
+"     for level in rev_list
+"         if level.is_last != 0
+"             let end_fold = end_fold . ' }'
+"         else
+"             break
+"         endif
+"     endfor
 
-    " judge if it is a dir
-    if isdirectory(a:dir) == 0
-        " put it
-        " let file_type = strpart( short_dir, strridx(short_dir,'.')+1, 1 )
-        let file_type = strpart( fnamemodify( short_dir, ":e" ), 0, 1 )
-        silent put = space.'['.file_type.']'.short_dir  . end_fold
-        " if file_end enter a new line for it
-        if end_fold != ''
-            let end_space = strpart(space,0,strridx(space,'-')-1)
-            let end_space = strpart(end_space,0,strridx(end_space,'|')+1)
-            silent put = end_space " . end_fold
-        endif
-        return
-    else
-        " split the first level to file_list
-        let file_list = split(globpath(a:dir,'*'),'\n')
+"     " judge if it is a dir
+"     if isdirectory(a:dir) == 0
+"         " put it
+"         " let file_type = strpart( short_dir, strridx(short_dir,'.')+1, 1 )
+"         let file_type = strpart( fnamemodify( short_dir, ":e" ), 0, 1 )
+"         silent put = space.'['.file_type.']'.short_dir  . end_fold
+"         " if file_end enter a new line for it
+"         if end_fold != ''
+"             let end_space = strpart(space,0,strridx(space,'-')-1)
+"             let end_space = strpart(end_space,0,strridx(end_space,'|')+1)
+"             silent put = end_space " . end_fold
+"         endif
+"         return
+"     else
+"         " split the first level to file_list
+"         let file_list = split(globpath(a:dir,'*'),'\n')
 
-        " first sort the list as we want (file|dir )
-        let list_idx = 0
-        let list_last = len(file_list)-1
-        let list_count = 0
-        while list_count <= list_last
-            if isdirectory(file_list[list_idx]) == 0 " move the file to the end of the list
-                if match(file_list[list_idx],a:filter) == -1
-                    silent call remove(file_list,list_idx)
-                    let list_idx -= 1
-                else
-                    let file = remove(file_list,list_idx)
-                    silent call add(file_list, file)
-                    let list_idx -= 1
-                endif
-            endif
-            " ++++++++++++++++++++++++++++++++++
-            " if isdirectory(file_list[list_idx]) != 0 " move the dir to the end of the list
-            "     let dir = remove(file_list,list_idx)
-            "     silent call add(file_list, dir)
-            "     let list_idx -= 1
-            " else " filter file
-            "     if match(file_list[list_idx],a:filter) == -1
-            "         silent call remove(file_list,list_idx)
-            "         let list_idx -= 1
-            "     endif
-            " endif
-            " ++++++++++++++++++++++++++++++++++
+"         " first sort the list as we want (file|dir )
+"         let list_idx = 0
+"         let list_last = len(file_list)-1
+"         let list_count = 0
+"         while list_count <= list_last
+"             if isdirectory(file_list[list_idx]) == 0 " move the file to the end of the list
+"                 if match(file_list[list_idx],a:filter) == -1
+"                     silent call remove(file_list,list_idx)
+"                     let list_idx -= 1
+"                 else
+"                     let file = remove(file_list,list_idx)
+"                     silent call add(file_list, file)
+"                     let list_idx -= 1
+"                 endif
+"             endif
+"             " ++++++++++++++++++++++++++++++++++
+"             " if isdirectory(file_list[list_idx]) != 0 " move the dir to the end of the list
+"             "     let dir = remove(file_list,list_idx)
+"             "     silent call add(file_list, dir)
+"             "     let list_idx -= 1
+"             " else " filter file
+"             "     if match(file_list[list_idx],a:filter) == -1
+"             "         silent call remove(file_list,list_idx)
+"             "         let list_idx -= 1
+"             "     endif
+"             " endif
+"             " ++++++++++++++++++++++++++++++++++
 
-            let list_idx += 1
-            let list_count += 1
-        endwhile
+"             let list_idx += 1
+"             let list_count += 1
+"         endwhile
 
-        "silent put = strpart(space, 0, strridx(space,'\|-')+1)
-        if len(file_list) == 0 " if it is a empty directory
-            if end_fold == ''
-                " if dir_end enter a new line for it
-                let end_space = strpart(space,0,strridx(space,'-'))
-            else
-                " if dir_end enter a new line for it
-                let end_space = strpart(space,0,strridx(space,'-')-1)
-                let end_space = strpart(end_space,0,strridx(end_space,'|')+1)
-            endif
-            let end_fold = end_fold . ' }'
-            silent put = space.'[F]'.short_dir . ' {' . end_fold
-            silent put = end_space
-        else
-            silent put = space.'[F]'.short_dir . ' {'
-        endif
-        silent call add(s:ex_level_list, {'is_last':0,'short_dir':short_dir})
-    endif
+"         "silent put = strpart(space, 0, strridx(space,'\|-')+1)
+"         if len(file_list) == 0 " if it is a empty directory
+"             if end_fold == ''
+"                 " if dir_end enter a new line for it
+"                 let end_space = strpart(space,0,strridx(space,'-'))
+"             else
+"                 " if dir_end enter a new line for it
+"                 let end_space = strpart(space,0,strridx(space,'-')-1)
+"                 let end_space = strpart(end_space,0,strridx(end_space,'|')+1)
+"             endif
+"             let end_fold = end_fold . ' }'
+"             silent put = space.'[F]'.short_dir . ' {' . end_fold
+"             silent put = end_space
+"         else
+"             silent put = space.'[F]'.short_dir . ' {'
+"         endif
+"         silent call add(s:ex_level_list, {'is_last':0,'short_dir':short_dir})
+"     endif
 
-    " ECHO full_path for this level
-    " ++++++++++++++++++++++++++++++++++
-    " let full_path = ''
-    " for level in s:ex_level_list
-    "     let full_path = level.short_dir.'/'.full_path
-    " endfor
-    " echon full_path."\r"
-    " ++++++++++++++++++++++++++++++++++
+"     " ECHO full_path for this level
+"     " ++++++++++++++++++++++++++++++++++
+"     " let full_path = ''
+"     " for level in s:ex_level_list
+"     "     let full_path = level.short_dir.'/'.full_path
+"     " endfor
+"     " echon full_path."\r"
+"     " ++++++++++++++++++++++++++++++++++
 
-    " recuseve browse list
-    let list_idx = 0
-    let list_last = len(file_list)-1
-    for dir in file_list
-        if list_idx == list_last
-            let s:ex_level_list[len(s:ex_level_list)-1].is_last = 1
-        endif
-        call exUtility#BrowseWithEmtpy(dir,a:filter)
-        let list_idx += 1
-    endfor
-    silent call remove( s:ex_level_list, len(s:ex_level_list)-1 )
-endfunction " >>>
+"     " recuseve browse list
+"     let list_idx = 0
+"     let list_last = len(file_list)-1
+"     for dir in file_list
+"         if list_idx == list_last
+"             let s:ex_level_list[len(s:ex_level_list)-1].is_last = 1
+"         endif
+"         call exUtility#BrowseWithEmtpy(dir,a:filter)
+"         let list_idx += 1
+"     endfor
+"     silent call remove( s:ex_level_list, len(s:ex_level_list)-1 )
+" endfunction " >>>
+" } KEEPME end 
 
 " ------------------------------------------------------------------ 
 " Desc: 
@@ -1577,9 +1647,10 @@ function exUtility#Browse(dir, file_filter, dir_filter, filename_list ) " <<<
         silent put! = space.'['.file_type.']'.short_dir . end_fold
 
         " add file with full path as tag contents
-        let filename_relative_path = exUtility#Pathfmt('../'.fnamemodify(a:dir,':.'),'unix')
-        silent call add ( a:filename_list[0], filename_relative_path )
-        silent call add ( a:filename_list[1], short_dir."\t".filename_relative_path."\t1" )
+        let filename_path = exUtility#Pathfmt(fnamemodify(a:dir,':.'),'unix')
+        silent call add ( a:filename_list[0], short_dir."\t".'../'.filename_path."\t1" )
+        silent call add ( a:filename_list[1], './'.filename_path )
+        silent call add ( a:filename_list[2], '../'.filename_path )
         return 0
     else
 
@@ -1941,7 +2012,22 @@ function exUtility#VCMakeBAT(cmd, config) " <<<
 endfunction " >>>
 
 " ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
+function exUtility#Debug( exe_name ) " <<<
+    if glob(a:exe_name) == ''
+        call exUtility#WarningMsg('file: ' . a:exe_name . ' not found')
+    else
+        " TODO: call exUtility#Terminal ( 'remain', 'wait', 'insight ' . a:exe_name ) " right now can't use this...
+        silent exec '!start insight ' . a:exe_name
+    endif
+endfunction " >>>
+
+" ------------------------------------------------------------------ 
 " Desc: type: ID,symbol,tag,none=all
+" TODO: add filanmelist update
+" TODO: update are always relative
 " ------------------------------------------------------------------ 
 
 function exUtility#UpdateVimFiles( type ) " <<<
@@ -2150,13 +2236,32 @@ endfunction " >>>
 " Desc: 
 " ------------------------------------------------------------------ 
 
-function exUtility#Debug( exe_name ) " <<<
-    if glob(a:exe_name) == ''
-        call exUtility#WarningMsg('file: ' . a:exe_name . ' not found')
-    else
-        " TODO: call exUtility#Terminal ( 'remain', 'wait', 'insight ' . a:exe_name ) " right now can't use this...
-        silent exec '!start insight ' . a:exe_name
+function exUtility#CreateQuickGenProject() " <<<
+    " init platform dependence value
+    let script_suffix = ''
+    if has("win32")
+        let script_suffix = 'bat'
+    elseif has("unix")
+        let script_suffix = 'sh'
     endif
+
+    " init variables
+    let file_name = "quick_gen_project_autogen." . script_suffix
+    let text_list = []
+
+    " TODO: windows and unix have differnt script
+    " write script
+    silent call add( text_list, '@echo off' )
+    silent call add( text_list, 'set lang_type=all' ) " TODO: should have project language
+    silent call add( text_list, 'set vimfiles_path='.g:exES_vimfile_dir )
+    silent call add( text_list, 'set file_filter='.exUtility#GetProjectFileFilterCommand() )
+    silent call add( text_list, 'set dir_filter='.exUtility#GetProjectDirFilterCommand() )
+    silent call add( text_list, 'set cwd=%~pd0' )
+    silent call add( text_list, 'set support_inherit=true' ) " TODO: detect if support inherit
+    silent call add( text_list, 'set support_cscope=true' ) " TODO: detect if support cscope
+    silent call add( text_list, '"%EX_DEV%\vim\toolkit\quickgen\batch\quick_gen_project.bat" %1' )
+    silent call add( text_list, 'echo on' ) " TODO: detect if support cscope
+    call writefile ( text_list, file_name )
 endfunction " >>>
 
 "/////////////////////////////////////////////////////////////////////////////

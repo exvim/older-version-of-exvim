@@ -11,6 +11,16 @@ rem  ------------------------------------------------------------------
 rem  Desc: 
 rem  ------------------------------------------------------------------ 
 
-"%EX_DEV%\Vim\toolkit\quickgen\batch\quick_gen_project.bat" all %1 %2
+set lang_type=all
+set vimfiles_path=_vimfiles
+
+set file_filter=*.c *.cpp *.cxx *.c++ *.cc *.h *.hh *.hxx *.hpp *.inl *.cs *.uc *.hlsl *.vsh *.psh *.fx *.fxh *.cg *.shd *.glsl *.py *.pyw *.vim *.awk *.m *.dox *.doxygen *.ini *.cfg *.wiki *.mk *.err *.exe *.bat *.sh *.txt
+set dir_filter=
+set cwd=%~pd0
+
+set support_inherit=true
+set support_cscope=true
+
+"%EX_DEV%\Vim\toolkit\quickgen\batch\quick_gen_project.bat" %1
 
 echo on
