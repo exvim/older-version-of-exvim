@@ -1276,9 +1276,18 @@ endfunction " >>>
 function exUtility#GetProjectFileFilterCommand() " <<<
     let filter_list = split(s:ex_project_file_filter,',')
     let filter_command = ''
-    for item in filter_list 
-        let filter_command .= '*.' . item . ' '
-    endfor
+
+    if has ('win32')
+        for item in filter_list 
+            let filter_command .= '*.' . item . ' '
+        endfor
+    elseif has ('unix')
+        for item in filter_list 
+            let filter_command .= item . '\|'
+        endfor
+        let filter_command = strpart( filter_command, 0, len(filter_command) - 2)
+    endif
+
     return filter_command
 endfunction " >>>
 
@@ -2461,38 +2470,53 @@ function exUtility#CreateQuickGenProject() " <<<
     " create id-lang map first
     call exUtility#CreateIDLangMap( s:ex_project_file_filter )
 
-    " init platform dependence value
-    let script_suffix = ''
-    if has("win32")
-        let script_suffix = 'bat'
-    elseif has("unix")
-        let script_suffix = 'sh'
-    endif
-
     " init variables
-    let file_name = "quick_gen_project_autogen." . script_suffix
     let text_list = []
     let lang_type = exUtility#GetLangType()
     let support_map = exUtility#GetQuickGenSupportMap(lang_type) 
     let ctags_options = exUtility#GetCtagsOptions(lang_type) 
 
-    " TODO: windows and unix have differnt script
-    " write script
-    silent call add( text_list, '@echo off' )
-    silent call add( text_list, 'set lang_type='.lang_type ) " 
-    silent call add( text_list, 'set cwd=%~pd0' )
-    silent call add( text_list, 'set vimfiles_path='.g:exES_vimfile_dir )
-    silent call add( text_list, 'set file_filter='.exUtility#GetProjectFileFilterCommand() )
-    silent call add( text_list, 'set dir_filter='.exUtility#GetProjectDirFilterCommand() )
-    silent call add( text_list, 'set support_filenamelist='.support_map['filenamelist'] )
-    silent call add( text_list, 'set support_ctags='.support_map['ctags'] )
-    silent call add( text_list, 'set support_symbol='.support_map['symbol'] )
-    silent call add( text_list, 'set support_inherit='.support_map['inherit'] )
-    silent call add( text_list, 'set support_cscope='.support_map['cscope'] )
-    silent call add( text_list, 'set support_idutils='.support_map['idutils'] )
-    silent call add( text_list, 'set ctags_options='.ctags_options )
-    silent call add( text_list, '"%EX_DEV%\vim\toolkit\quickgen\batch\quick_gen_project.bat" %1' )
-    silent call add( text_list, 'echo on' )
+
+    " init platform dependence value and write script
+    if has ('win32')
+        let script_suffix = 'bat'
+
+        silent call add( text_list, '@echo off' )
+        silent call add( text_list, 'set cwd=%~pd0' )
+        silent call add( text_list, 'set lang_type='.lang_type ) " 
+        silent call add( text_list, 'set vimfiles_path='.g:exES_vimfile_dir )
+        silent call add( text_list, 'set file_filter='.exUtility#GetProjectFileFilterCommand() )
+        silent call add( text_list, 'set dir_filter='.exUtility#GetProjectDirFilterCommand() )
+        silent call add( text_list, 'set support_filenamelist='.support_map['filenamelist'] )
+        silent call add( text_list, 'set support_ctags='.support_map['ctags'] )
+        silent call add( text_list, 'set support_symbol='.support_map['symbol'] )
+        silent call add( text_list, 'set support_inherit='.support_map['inherit'] )
+        silent call add( text_list, 'set support_cscope='.support_map['cscope'] )
+        silent call add( text_list, 'set support_idutils='.support_map['idutils'] )
+        silent call add( text_list, 'set ctags_options='.ctags_options )
+        silent call add( text_list, '"%EX_DEV%\vim\toolkit\quickgen\batch\quick_gen_project.bat" %1' )
+        silent call add( text_list, 'echo on' )
+    elseif has ('unix')
+        let script_suffix = 'sh'
+
+        silent call add( text_list, 'export EX_DEV="/usr/local/share"' )
+        silent call add( text_list, 'export cwd=${PWD}' ) " 
+        silent call add( text_list, 'export lang_type='.'"'.lang_type.'"' ) " 
+        silent call add( text_list, 'export vimfiles_path='.'"'.g:exES_vimfile_dir.'"' )
+        silent call add( text_list, 'export file_filter='.'"'.exUtility#GetProjectFileFilterCommand().'"' )
+        silent call add( text_list, 'export dir_filter='.'"'.exUtility#GetProjectDirFilterCommand().'"' )
+        silent call add( text_list, 'export support_filenamelist='.'"'.support_map['filenamelist'].'"' )
+        silent call add( text_list, 'export support_ctags='.'"'.support_map['ctags'].'"' )
+        silent call add( text_list, 'export support_symbol='.'"'.support_map['symbol'].'"' )
+        silent call add( text_list, 'export support_inherit='.'"'.support_map['inherit'].'"' )
+        silent call add( text_list, 'export support_cscope='.'"'.support_map['cscope'].'"' )
+        silent call add( text_list, 'export support_idutils='.'"'.support_map['idutils'].'"' )
+        silent call add( text_list, 'export ctags_options='.'"'.ctags_options.'"' )
+        silent call add( text_list, 'bash ${EX_DEV}/vim/toolkit/quickgen/batch/quick_gen_project.sh $1' )
+    endif
+
+    "
+    let file_name = "quick_gen_project_autogen." . script_suffix
     call writefile ( text_list, file_name )
 
     " 

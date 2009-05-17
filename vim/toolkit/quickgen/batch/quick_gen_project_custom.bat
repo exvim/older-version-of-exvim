@@ -11,8 +11,8 @@ rem ////////////////////////////////////////////////////////////////////////////
 rem general 
 rem /////////////////////////////////////////////////////////////////////////////
 
-set lang_type=c cpp c# uc shader python vim math
 set cwd=%~pd0
+set lang_type=c cpp c# uc shader python vim math
 set vimfiles_path=_vimfiles
 set file_filter=*.c *.cpp *.cxx *.c++ *.C *.cc *.h *.H *.hh *.hxx *.hpp *.inl *.cs *.uc *.hlsl *.vsh *.psh *.fx *.fxh *.cg *.shd *.glsl *.py *.pyw *.vim *.awk *.m *.dox *.doxygen *.ini *.cfg *.wiki *.mk *.err *.exe *.bat *.sh 
 set dir_filter=
