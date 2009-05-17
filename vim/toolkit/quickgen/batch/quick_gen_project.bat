@@ -69,6 +69,22 @@ if /I "%cwd%" == "" (
     )
 
 rem  ------------------------------------------------------------------ 
+rem  Desc: support_ctags
+rem  ------------------------------------------------------------------ 
+
+if /I "%support_ctags%" == "" (
+    set support_ctags=true
+    )
+
+rem  ------------------------------------------------------------------ 
+rem  Desc: support_symbol 
+rem  ------------------------------------------------------------------ 
+
+if /I "%support_symbol%" == "" (
+    set support_symbol=true
+    )
+
+rem  ------------------------------------------------------------------ 
 rem  Desc: support_inherit
 rem  ------------------------------------------------------------------ 
 
@@ -85,90 +101,51 @@ if /I "%support_cscope%" == "" (
     )
 
 rem  ------------------------------------------------------------------ 
+rem  Desc: support_idutils 
+rem  ------------------------------------------------------------------ 
+
+if /I "%support_idutils%" == "" (
+    set support_idutils=true
+    )
+
+rem  ------------------------------------------------------------------ 
+rem  Desc: ctags_options 
+rem  ------------------------------------------------------------------ 
+
+if /I "%ctags_options%" == "" (
+    set ctags_options=--c++-kinds=+p --fields=+iaS --extra=+q --languages=c,c++,c#,python,vim,html,lua,javascript,java,uc,math --langmap=c++:+.inl,c:+.fx,c:+.fxh,c:+.hlsl,c:+.vsh,c:+.psh,c:+.cg,c:+.shd,javascript:+.as
+    )
+
+rem  ------------------------------------------------------------------ 
 rem  Desc: return
 rem  ------------------------------------------------------------------ 
 
 set return=FINISH
 
-rem  ------------------------------------------------------------------ 
-rem  Desc: set variable depends on differnet language
-rem  ------------------------------------------------------------------ 
-
-rem all
-if /I "%lang_type%" == "all" (
-    set support_inherit=true
-    set support_cscope=true
-
-rem cstyle settings
-    ) else if /I "%lang_type%" == "general" (
-    set support_inherit=true
-    set support_cscope=true
-
-rem c-only settings
-    ) else if /I "%lang_type%" == "c" (
-    set support_inherit=false
-    set support_cscope=true
-
-rem cpp-only settings
-    ) else if /I "%lang_type%" == "cpp" (
-    set support_inherit=true
-    set support_cscope=true
-
-rem c-sharp settings
-    ) else if /I "%lang_type%" == "c#" (
-    set support_inherit=true
-    set support_cscope=false
-
-rem html settings
-    ) else if /I "%lang_type%" == "html" (
-    set support_inherit=false
-    set support_cscope=false
-
-rem javascript settings
-    ) else if /I "%lang_type%" == "js" (
-    set support_inherit=true
-    set support_cscope=false
-
-rem lua settings
-    ) else if /I "%lang_type%" == "lua" (
-    set support_inherit=false
-    set support_cscope=false
-
-rem math settings
-    ) else if /I "%lang_type%" == "math" (
-    set support_inherit=false
-    set support_cscope=false
-
-rem python settings
-    ) else if /I "%lang_type%" == "python" (
-    set support_inherit=true
-    set support_cscope=false
-
-rem unreal-script settings
-    ) else if /I "%lang_type%" == "uc" (
-    set support_inherit=true
-    set support_cscope=false
-
-rem vim settings
-    ) else if /I "%lang_type%" == "vim" (
-    set support_inherit=false
-    set support_cscope=false
-
-rem unknown language settings
-    ) else (
-    echo error: can't find language type
-    goto FINISH
-    )
-
+rem /////////////////////////////////////////////////////////////////////////////
 rem echo setting infos
+rem /////////////////////////////////////////////////////////////////////////////
+
+echo '---------------------------------------------'
+echo 'pre-check'
+echo '---------------------------------------------'
+echo.
 echo language type: %lang_type%
+echo support ctags: %support_ctags%
+echo support symbol: %support_symbol%
 echo support inheirts: %support_inherit%
 echo support cscope: %support_cscope%
+echo support id-utils: %support_idutils%
+echo.
 echo generate type: %gen_type%
+echo cwd: %cwd%
 echo file filter: %file_filter%
 echo dir filter: %dir_filter%
 echo vimfiles path: %vimfiles_path%
-echo cwd: %cwd%
+echo.
+echo '---------------------------------------------'
+echo 'process'
+echo '---------------------------------------------'
 echo.
 goto START
 
@@ -192,6 +169,7 @@ for /f "delims=" %%a in ('echo %cwd%^|sed "s,\\,\\\\,g"') do (
     set cwd_pattern=%%a
     )
 
+rem TODO: dir /s /b *.cpp will list xxx.cpp~ also, I don't like this happend
 rem create filenamelist_cwd
 if /I "%dir_filter%" == "" (
     dir /s /b %file_filter%|sed "s,\(%cwd_pattern%\)\(.*\),.\\\2,gI" >> ".\%vimfiles_path%\_filenamelist_cwd"
@@ -219,46 +197,26 @@ rem  ------------------------------------------------------------------
 rem  ######################### 
 :GEN_TAG
 rem  ######################### 
-
-rem create tags
-echo Creating Tags...
-
-rem choose ctags command
+    
+rem choose ctags path first
+rem NOTE: the set ctags_path can't put in support_ctags if scope, or it will failed. 
 if exist .\%vimfiles_path%\filenamelist_vimfiles (
-    set ctags_options=-L filenamelist_vimfiles 
+    set ctags_path=-L filenamelist_vimfiles 
 ) else (
-    set ctags_options=-R .. 
+    set ctags_path=-R .. 
 )
 
-rem process tags by langugage
-cd "%vimfiles_path%"
-if /I "%lang_type%" == "all" ( 
-    ctags -o./_tags --c++-kinds=+p --fields=+iaS --extra=+q --languages=c,c++,c#,python,vim,html,lua,javascript,java --langmap=c++:+.inl,c:+.fx,c:+.fxh,c:+.hlsl,c:+.vsh,c:+.psh,c:+.cg,c:+.shd,javascript:+.as %ctags_options%
-) else if /I "%lang_type%" == "general" (
-    ctags -o./_tags --c++-kinds=+p --fields=+iaS --extra=+q --languages=c,c++,c#,python --langmap=c++:+.inl,c:+.fx,c:+.fxh,c:+.hlsl,c:+.vsh,c:+.psh,c:+.cg,c:+.shd %ctags_options%
-) else if /I "%lang_type%" == "c" (
-    ctags -o./_tags --c-kinds=+p --fields=+iaS --extra=+q --languages=c --langmap=c++:+.inl %ctags_options%
-) else if /I "%lang_type%" == "cpp" ( 
-    ctags -o./_tags --c++-kinds=+p --fields=+iaS --extra=+q --languages=c++ --langmap=c++:+.inl %ctags_options%
-) else if /I "%lang_type%" == "c#" (
-    ctags -o./_tags --fields=+iaS --extra=+q --languages=c# %ctags_options%
-) else if /I "%lang_type%" == "html" (
-    ctags -o./_tags  --fields=+iaS --extra=+q --languages=html %ctags_options%
-) else if /I "%lang_type%" == "js" ( 
-    ctags -o./_tags  --fields=+iaS --extra=+q --languages=javascript --langmap=javascript:+.as %ctags_options%
-) else if /I "%lang_type%" == "lua" (
-    ctags -o./_tags  --fields=+iaS --extra=+q --languages=lua %ctags_options%
-) else if /I "%lang_type%" == "math" (
-    ctags -o./_tags  --fields=+iaS --extra=+q --languages=math %ctags_options%
-) else if /I "%lang_type%" == "python" ( 
-    ctags -o./_tags --fields=+iaS --extra=+q --languages=python %ctags_options%
-) else if /I "%lang_type%" == "uc" ( 
-    ctags -o./_tags  --fields=+iaS --extra=+q --languages=uc %ctags_options%
-) else if /I "%lang_type%" == "vim" (
-    ctags -o./_tags  --fields=+iaS --extra=+q --languages=vim %ctags_options%
+rem process ctags 
+if /I "%support_ctags%" == "true" (
+    rem create tags
+    echo Creating Tags...
+    
+    rem process tags by langugage
+    cd "%vimfiles_path%"
+    ctags -o./_tags %ctags_path% %ctags_options%
+    move /Y "_tags" "tags"
+    cd ..
 )
-move /Y "_tags" "tags"
-cd ..
 goto %return%
 
 rem  ------------------------------------------------------------------ 
@@ -269,9 +227,11 @@ rem  #########################
 :GEN_SYMBOL
 rem  ######################### 
 
-echo Creating Symbols...
-gawk -f "%EX_DEV%\Vim\toolkit\gawk\prg_NoStripSymbol.awk" ".\%vimfiles_path%\tags">".\%vimfiles_path%\_symbol"
-move /Y ".\%vimfiles_path%\_symbol" ".\%vimfiles_path%\symbol"
+if /I "%support_symbol%" == "true" (
+    echo Creating Symbols...
+    gawk -f "%EX_DEV%\vim\toolkit\gawk\prg_NoStripSymbol.awk" ".\%vimfiles_path%\tags">".\%vimfiles_path%\_symbol"
+    move /Y ".\%vimfiles_path%\_symbol" ".\%vimfiles_path%\symbol"
+)
 goto %return%
 
 rem  ------------------------------------------------------------------ 
@@ -285,7 +245,7 @@ rem  #########################
 
 if /I "%support_inherit%" == "true" (
     echo Creating Inherits...
-    gawk -f "%EX_DEV%\Vim\toolkit\gawk\prg_Inherits.awk" ".\%vimfiles_path%\tags">".\%vimfiles_path%\_inherits"
+    gawk -f "%EX_DEV%\vim\toolkit\gawk\prg_Inherits.awk" ".\%vimfiles_path%\tags">".\%vimfiles_path%\_inherits"
     move /Y ".\%vimfiles_path%\_inherits" ".\%vimfiles_path%\inherits"
 )
 goto %return%
@@ -323,27 +283,29 @@ rem  #########################
 :GEN_ID
 rem  ######################### 
 
-rem TODO: mkid --include="text" --lang-map=".\%vimfiles_path%\id-lang.map" "./folder1" "./folder2" ... 
-rem TODO: but how to include files in root directory???
-
-rem if we have manual configure id language map, we use it as highest priority
-if exist .\%vimfiles_path%\id-lang.map (
-    echo Creating IDs by custom language map...
-    mkid --include="text" --lang-map=".\%vimfiles_path%\id-lang.map"
-
-rem if not, we try to use auto-gen id language map as second option
-) else if exist .\%vimfiles_path%\id-lang-autogen.map (
-    echo Creating IDs by auto-gen language map...
-    mkid --include="text" --lang-map=".\%vimfiles_path%\id-lang-autogen.map"
-
-rem if both file not exists, we use default one in toolkit directory
-) else (
-    echo Creating IDs by default language map...
-    mkid --include="text" --lang-map="%EX_DEV%\vim\toolkit\idutils\id-lang.map"
+if /I "%support_idutils%" == "true" (
+    rem TODO: mkid --include="text" --lang-map=".\%vimfiles_path%\id-lang.map" "./folder1" "./folder2" ... 
+    rem TODO: but how to include files in root directory???
+    
+    rem if we have manual configure id language map, we use it as highest priority
+    if exist .\%vimfiles_path%\id-lang.map (
+        echo Creating IDs by custom language map...
+        mkid --include="text" --lang-map=".\%vimfiles_path%\id-lang.map" %dir_filter%
+    
+    rem if not, we try to use auto-gen id language map as second option
+    ) else if exist .\%vimfiles_path%\id-lang-autogen.map (
+        echo Creating IDs by auto-gen language map...
+        mkid --include="text" --lang-map=".\%vimfiles_path%\id-lang-autogen.map" %dir_filter%
+    
+    rem if both file not exists, we use default one in toolkit directory
+    ) else (
+        echo Creating IDs by default language map...
+        mkid --include="text" --lang-map="%EX_DEV%\vim\toolkit\idutils\id-lang.map" %dir_filter%
+    )
+    
+    rem mkid --include="C C++"
+    move /Y ID ".\%vimfiles_path%\ID"
 )
-
-rem mkid --include="C C++"
-move /Y ID ".\%vimfiles_path%\ID"
 goto %return%
 
 rem /////////////////////////////////////////////////////////////////////////////

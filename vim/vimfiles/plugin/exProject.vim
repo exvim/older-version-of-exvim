@@ -383,6 +383,7 @@ function g:exPJ_InitSelectWindow() " <<<
 
     " Autocommands to keep the window the specified size
     au WinLeave <buffer> :call s:exPJ_RefreshWindow()
+    au BufWritePost <buffer> :call s:exPJ_UpdateFilters()
     " au CursorMoved <buffer> :call exUtility#HighlightSelectLine()
 
     " init filter variables
@@ -470,8 +471,9 @@ function s:exPJ_CreateProject(with_dialog) " <<<
     let g:exPJ_backto_editbuf = old_bacto_editbuf
 
     " create filname list and filanmetag list
-    let filename_list = [[],[],[]] " NOTE: 0 is the filenametag, 1 is the filenamelist_cwd, 2 is the filenamelist_vimfiles
-    silent call add ( filename_list[0], "!_TAG_FILE_SORTED\t2\t/0=unsorted, 1=sorted, 2=foldcase/")
+    " KEEPME: let filename_list = [[],[],[]] " NOTE: 0 is the filenametag, 1 is the filenamelist_cwd, 2 is the filenamelist_vimfiles
+    let filename_list = []
+    silent call add ( filename_list, "!_TAG_FILE_SORTED\t2\t/0=unsorted, 1=sorted, 2=foldcase/")
     let project_file_filter = exUtility#GetProjectFilter ( "file_filter" )
     let project_dir_filter = exUtility#GetProjectFilter ( "dir_filter" )
     call exUtility#Browse( entry_dir, exUtility#GetFileFilterPattern(project_file_filter), exUtility#GetDirFilterPattern(project_dir_filter), filename_list )
@@ -479,23 +481,25 @@ function s:exPJ_CreateProject(with_dialog) " <<<
     " save filenametag list
     if exists( 'g:exES_LookupFileTag' )
         echon "sorting filenametags... \r"
-        silent call writefile( sort(filename_list[0]), simplify(g:exES_CWD.'/'.g:exES_LookupFileTag))
+        silent call writefile( sort(filename_list), simplify(g:exES_CWD.'/'.g:exES_LookupFileTag))
         echon "save as " . g:exES_LookupFileTag . " \r"
     endif
 
+    " KEEPME: we don't use this method now { 
     " save filenamelist_cwd & filenamelist_vimfiles
-    if exists( 'g:exES_FilenameList' )
-        silent call writefile( filename_list[1], simplify(g:exES_CWD.'/'.g:exES_FilenameList.'_cwd'))
-        echon "save as " . g:exES_FilenameList . "_cwd \r"
-        silent call writefile( filename_list[2], simplify(g:exES_CWD.'/'.g:exES_FilenameList.'_vimfiles'))
-        echon "save as " . g:exES_FilenameList . "_vimfiles \r"
-    endif
+    " if exists( 'g:exES_FilenameList' )
+    "     silent call writefile( filename_list[1], simplify(g:exES_CWD.'/'.g:exES_FilenameList.'_cwd'))
+    "     echon "save as " . g:exES_FilenameList . "_cwd \r"
+    "     silent call writefile( filename_list[2], simplify(g:exES_CWD.'/'.g:exES_FilenameList.'_vimfiles'))
+    "     echon "save as " . g:exES_FilenameList . "_vimfiles \r"
+    " endif
+    " } KEEPME end 
 
-    " TODO: add need createIDLangMap, only affect with file filter.
-    " TODO: add need update filenamelist filenametag, only affect when project file changed, or ...
+    " DELME: since exUtility#CreateIDLangMap will be call in SetProjectFilter ('file_filter'), I don't think here we need it { 
     " Create id-lang-autogen map
-    echon "generate id-lang-autogen.map file... \r"
-    call exUtility#CreateIDLangMap( project_file_filter )
+    " echon "generate id-lang-autogen.map file... \r"
+    " call exUtility#CreateIDLangMap( project_file_filter )
+    " } DELME end 
 
     silent keepjumps normal! gg
     silent put! = ''

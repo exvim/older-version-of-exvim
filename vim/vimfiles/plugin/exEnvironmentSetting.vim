@@ -101,6 +101,7 @@ function s:exES_WriteDefaultTemplate() " <<<
     silent call add(_list, '')
     silent call add(_list, '-- ex-plugins File Settings --')
     silent call add(_list, '')
+    silent call add(_list, 'LangType=auto') " NOTE: null means depends on file_filter
     silent call add(_list, 'Project=./'._dir_name.'/'._project_name.'.exproject')
     silent call add(_list, 'FilenameList=./'._dir_name.'/filenamelist')
     silent call add(_list, 'Tag=./'._dir_name.'/tags') " NOTE: if cpoptions+=d not set for each buffer, then the tags need full path or will not be able to find. so pls write 'au BufNewFile,BufEnter * set cpoptions+=d' in your rc
@@ -246,12 +247,18 @@ function g:exES_SetEnvironment( force_reset ) " <<<
 
         " read lines to get settings
         for Line in getline(1, '$')
+            if match(Line,'+=\|=') == -1 " if the line is comment line, skip it.
+                continue 
+            endif
+
             if stridx ( Line, '+=') == -1
                 let SettingList = split(Line, "=")
-                if len(SettingList)>=2 " the non-list variable must have value.
+                if len(SettingList)>=2 " set value as string to the non-list variable.
                     " let g:exES_{SettingList[0]} = escape(SettingList[1], ' ')
                     " since '\ ' will get error in win32, just disable it here
                     let g:exES_{SettingList[0]} = SettingList[1]
+                elseif len(SettingList)>=1 " if don't have value, set '' value
+                    let g:exES_{SettingList[0]} = ''
                 endif
             else " create list variables
                 let SettingList = split(Line, "+=")
@@ -291,6 +298,9 @@ function g:exES_SetEnvironment( force_reset ) " <<<
 
         " update environment
         call g:exES_UpdateEnvironment()
+
+        "
+        call exUtility#CreateQuickGenProject ()
     endif
 endfunction " >>>
 

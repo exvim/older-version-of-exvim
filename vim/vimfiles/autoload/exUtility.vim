@@ -1211,41 +1211,6 @@ function exUtility#GetFullFileName(converted_line) " <<<
     return strpart(file_path, 0, idx_bracket_last) . '\' . simple_file_name
 endfunction " >>>
 
-" ------------------------------------------------------------------ 
-" Desc: 
-" ------------------------------------------------------------------ 
-
-function exUtility#CreateIDLangMap( file_filter ) " <<<
-    let text_list = []
-    silent call add ( text_list, '# autogen id-lang.map')
-    silent call add ( text_list, '# NOTE: this file is created automatically after you create/refresh exProject.')
-    silent call add ( text_list, '# CAUTION: you may loose your modification in this file, if you want customize your language map,')
-    silent call add ( text_list, '#          please create your own language map file under ./_vimfiles, and change the file name as id-lang.map')
-    silent call add ( text_list, '*~                    IGNORE')
-    silent call add ( text_list, '*.bak                 IGNORE')
-    silent call add ( text_list, '*.bk[0-9]             IGNORE')
-    silent call add ( text_list, '[sp].*                IGNORE')
-    silent call add ( text_list, '*/.deps/*             IGNORE')
-    silent call add ( text_list, '*/.svn/*              IGNORE')
-    silent call add ( text_list, '*.svn-base            IGNORE')
-    silent call add ( text_list, '_vimfiles/*           IGNORE')
-    silent call add ( text_list, 'quick_gen_project.*   IGNORE')
-    silent call add ( text_list, '*.err                 IGNORE') " never bring error file into global search
-    silent call add ( text_list, '*.exe                 IGNORE') " never bring exe file into global search
-    silent call add ( text_list, '*.lnk                 IGNORE') " never bring lnk file into global search
-
-    let filter_list = split(a:file_filter,',')
-    for item in filter_list 
-        if item == ''
-            continue
-        endif
-        silent call add ( text_list, '*.'.item.'    text')
-    endfor
-
-    let idlang_map_file = './'.g:exES_vimfile_dir.'/id-lang-autogen.map'
-    call writefile( text_list, idlang_map_file, "b" )
-endfunction " >>>
-
 " KEEPME: we don't need this function, but keep it { 
 " ------------------------------------------------------------------ 
 " Desc: Match tag and find file if it has
@@ -1286,6 +1251,7 @@ endfunction " >>>
 function exUtility#SetProjectFilter( filter_type, filter ) " <<<
     if a:filter_type ==# 'file_filter'
         let s:ex_project_file_filter = a:filter
+        call exUtility#CreateIDLangMap( s:ex_project_file_filter )
     elseif a:filter_type ==# 'dir_filter'
         let s:ex_project_dir_filter = a:filter
     endif
@@ -1648,9 +1614,11 @@ function exUtility#Browse(dir, file_filter, dir_filter, filename_list ) " <<<
 
         " add file with full path as tag contents
         let filename_path = exUtility#Pathfmt(fnamemodify(a:dir,':.'),'unix')
-        silent call add ( a:filename_list[0], short_dir."\t".'../'.filename_path."\t1" )
-        silent call add ( a:filename_list[1], './'.filename_path )
-        silent call add ( a:filename_list[2], '../'.filename_path )
+        silent call add ( a:filename_list, short_dir."\t".'../'.filename_path."\t1" )
+        " KEEPME: we don't use this method now { 
+        " silent call add ( a:filename_list[1], './'.filename_path )
+        " silent call add ( a:filename_list[2], '../'.filename_path )
+        " } KEEPME end 
         return 0
     else
 
@@ -2041,6 +2009,18 @@ function exUtility#UpdateVimFiles( type ) " <<<
         let suffix = 'sh'
     endif
 
+    " DELME { 
+    " " if not found, we show a list let usr select project type, then copy the script and running it
+    " if script_not_found == 1
+    "     let type_list = ['unknown', 'all', 'general', 'c', 'cpp', 'csharp', 'html', 'javascript', 'lua', 'math', 'python', 'uc', 'vim']
+    "     let idx = inputlist ( ['Select Project Type:', '1. all', '2. general', '3. c', '4. cpp', '5. csharp', '6. html', '7. javascript', '8. lua', '9. math', '10. python', '11. uc', '12. vim'])
+    "     let quick_gen_script = exUtility#CopyQuickGenProject ( type_list[idx] )
+    " endif
+    " } DELME end 
+    let quick_gen_script = exUtility#CreateQuickGenProject()
+
+    " TODO: rewrite this section
+    " create quick gen project script
     let quick_gen_script = glob('quick_gen_project*.'.suffix) 
     if quick_gen_script != ''
         silent exec "cscope kill " . g:exES_Cscope
@@ -2049,13 +2029,6 @@ function exUtility#UpdateVimFiles( type ) " <<<
     else
         call exUtility#WarningMsg("quick_gen_project script not found")
         let script_not_found = 1
-    endif
-
-    " if not found, we show a list let usr select project type, then copy the script and running it
-    if script_not_found == 1
-        let type_list = ['unknown', 'all', 'general', 'c', 'cpp', 'csharp', 'html', 'javascript', 'lua', 'math', 'python', 'uc', 'vim']
-        let idx = inputlist ( ['Select Project Type:', '1. all', '2. general', '3. c', '4. cpp', '5. csharp', '6. html', '7. javascript', '8. lua', '9. math', '10. python', '11. uc', '12. vim'])
-        let quick_gen_script = exUtility#CopyQuickGenProject ( type_list[idx] )
     endif
 
     " create update cmd
@@ -2184,6 +2157,7 @@ function exUtility#GetUpdateVimentryRefsCommand( type ) " <<<
     return cmd
 endfunction " >>>
 
+" DELME { 
 " ------------------------------------------------------------------ 
 " Desc: 
 " ------------------------------------------------------------------ 
@@ -2231,12 +2205,263 @@ function exUtility#CopyQuickGenProject( type ) " <<<
     "
     return quick_gen_script
 endfunction " >>>
+" } DELME end 
+
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
+function exUtility#GetLangType() " <<<
+    if exists('g:exES_LangType')
+        let lang_list = []
+        if g:exES_LangType == 'auto' " if user don't specific language type, use filter as language type.
+            let filter_list = split( s:ex_project_file_filter, ',' )
+            for item in filter_list 
+                if item =~# '^c$\|^cpp$\|^cxx$\|^c++$\|^C$\|^cc$\|^h$\|^H$\|^hh$\|^hxx$\|^hpp$\|^inl$'
+                    if index ( lang_list, 'c' ) == -1
+                        silent call add ( lang_list, 'c' )
+                    endif
+                    if index ( lang_list, 'cpp' ) == -1
+                        silent call add ( lang_list, 'cpp' )
+                    endif
+                elseif item =~# '^cs$'
+                    if index ( lang_list, 'c#' ) == -1
+                        silent call add ( lang_list, 'c#' )
+                    endif
+                elseif item =~# '^hlsl$\|^vsh$\|^psh$\|^fx$\|^fxh$\|^cg$\|^shd$\|^glsl$'
+                    if index ( lang_list, 'shader' ) == -1
+                        silent call add ( lang_list, 'shader' )
+                    endif
+                elseif item =~# '^py$\|^pyw$'
+                    if index ( lang_list, 'python' ) == -1
+                        silent call add ( lang_list, 'python' )
+                    endif
+                elseif item =~# '^vim$'
+                    if index ( lang_list, 'vim' ) == -1
+                        silent call add ( lang_list, 'vim' )
+                    endif
+                elseif item =~# '^m$'
+                    if index ( lang_list, 'math' ) == -1
+                        silent call add ( lang_list, 'math' )
+                    endif
+                elseif item =~# '^uc$'
+                    if index ( lang_list, 'uc' ) == -1
+                        silent call add ( lang_list, 'uc' )
+                    endif
+                elseif item =~# '^js$'
+                    if index ( lang_list, 'javascript' ) == -1
+                        silent call add ( lang_list, 'javascript' )
+                    endif
+                elseif item =~# '^java$'
+                    if index ( lang_list, 'java' ) == -1
+                        silent call add ( lang_list, 'java' )
+                    endif
+                elseif item =~# '^html$\|^xml$'
+                    if index ( lang_list, 'html' ) == -1
+                        silent call add ( lang_list, 'html' )
+                    endif
+                elseif item =~# '^lua$'
+                    if index ( lang_list, 'lua' ) == -1
+                        silent call add ( lang_list, 'lua' )
+                    endif
+                endif
+            endfor
+        else
+            let lang_list = split( g:exES_LangType, ',' )
+        endif
+
+        " return lang list
+        if empty(lang_list)
+            return "unknown"
+        else
+            let lang_text = ''
+            for item in lang_list
+                let lang_text = lang_text . ' ' . item
+            endfor
+            let idx = match( lang_text, '\S' )
+            return strpart (lang_text, idx)
+        endif
+    else
+        return "unknown"
+    endif
+endfunction " >>>
+
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
+function exUtility#GetQuickGenSupportMap( lang_type ) " <<<
+    let support_map = {'ctags':'false', 'symbol':'false', 'inherit':'false', 'cscope':'false', 'idutils':'false'}
+
+    " check plugin level support
+    if exists('g:loaded_extagselect') && g:loaded_extagselect 
+        let support_map['ctags'] = 'true'
+    endif
+    if exists('g:loaded_exsymboltable') && g:loaded_exsymboltable 
+        let support_map['symbol'] = 'true'
+    endif
+    if exists('g:loaded_exutility_auto') && g:loaded_exutility_auto 
+        let support_map['inherit'] = 'true'
+    endif
+    if exists('g:loaded_excscope') && g:loaded_excscope 
+        let support_map['cscope'] = 'true'
+    endif
+    if exists('g:loaded_exglobalsearch') && g:loaded_exglobalsearch 
+        let support_map['idutils'] = 'true'
+    endif
+
+    " check language level support
+
+    " check ctags support
+    if support_map['ctags'] == 'true'
+        if a:lang_type !~# '\<c\>\|\<cpp\>\|\<c\>#\|\<shader\>\|\<python\>\|\<vim\>\|\<javascript\>\|\<java\>\|\<html\>\|\<lua\>\|\<uc\>\|\<math\>'
+            let support_map['ctags'] = 'false'
+        endif
+    endif
+
+    " check symbol support
+    if support_map['ctags'] == 'false' || support_map['symbol'] == 'false'
+        let support_map['symbol'] = 'false'
+    endif
+
+    " check inherit support
+    if support_map['ctags'] == 'false' || support_map['inherit'] == 'false'
+        let support_map['inherit'] = 'false'
+    else
+        if a:lang_type !~# '\<c\>\|\<cpp\>\|\<c\>#\|\<python\>\|\<javascript\>\|\<java\>\|\<uc\>'
+            let support_map['inherit'] = 'false'
+        endif
+    endif
+
+    " check cscope support
+    if support_map['cscope'] == 'true'
+        if a:lang_type !~# '\<c\>\|\<cpp\>'
+            let support_map['cscope'] = 'false'
+        endif
+    endif
+
+    " check global support
+    " nothing to check
+
+    return support_map
+endfunction " >>>
+
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
+function exUtility#GetCtagsOptions( lang_type ) " <<<
+    let ctags_kinds=''
+    let ctags_fields='--fields=+iaS'
+    let ctags_extra='--extra=+q'
+    let ctags_languages='--languages='
+    let ctags_langmap='--langmap='
+
+    " process language list
+    let lang_list = split( a:lang_type, ' ' )
+
+    " first check kinds, since some language use same-kinds
+    if a:lang_type =~# '\<c\>\|\<shader\>'
+        let ctags_kinds.=' --c-kinds=+p'
+    endif
+
+    " check other things
+    if index ( lang_list, 'c' ) >= 0
+        let ctags_languages.='c,'
+    endif
+    if index ( lang_list, 'cpp' ) >= 0
+        let ctags_kinds.=' --c++-kinds=+p'
+        let ctags_languages.='c++,'
+        let ctags_langmap.='c++:+.inl,'
+    endif
+    if index ( lang_list, 'c#' ) >= 0
+        let ctags_languages.='c#,'
+    endif
+    if index ( lang_list, 'shader' ) >= 0
+        let ctags_languages.='c,'
+        let ctags_langmap.='c:+.fx,c:+.fxh,c:+.hlsl,c:+.vsh,c:+.psh,c:+.cg,c:+.shd,'
+    endif
+    if index ( lang_list, 'python' ) >= 0
+        let ctags_languages.='python,'
+    endif
+    if index ( lang_list, 'vim' ) >= 0
+        let ctags_languages.='vim,'
+    endif
+    if index ( lang_list, 'math' ) >= 0
+        let ctags_languages.='math,'
+    endif
+    if index ( lang_list, 'uc' ) >= 0
+        let ctags_languages.='uc,'
+    endif
+    if index ( lang_list, 'javascript' ) >= 0
+        let ctags_languages.='javascript,'
+        let ctags_langmap.='javascript:+.as,'
+    endif
+    if index ( lang_list, 'java' ) >= 0
+        let ctags_languages.='java,'
+    endif
+    if index ( lang_list, 'html' ) >= 0
+        let ctags_languages.='html,'
+    endif
+    if index ( lang_list, 'lua' ) >= 0
+        let ctags_languages.='lua,'
+    endif
+
+    " return ctags_options
+    let ctags_options = ctags_kinds.' '.ctags_fields.' '.ctags_extra.' '.ctags_languages.' '.ctags_langmap
+    return ctags_options 
+endfunction " >>>
+
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
+function exUtility#CreateIDLangMap( file_filter ) " <<<
+    if exists('g:exES_vimfile_dir')
+        let idlang_map_file = './'.g:exES_vimfile_dir.'/id-lang-autogen.map'
+        if finddir( './'.g:exES_vimfile_dir ) == ""
+            call exUtility#WarningMsg('Error: ' . './'.g:exES_vimfile_dir . ' not found!')
+            return 
+        endif
+
+        let text_list = []
+        silent call add ( text_list, '# autogen id-lang.map')
+        silent call add ( text_list, '# NOTE: this file is created automatically after you create/refresh exProject.')
+        silent call add ( text_list, '# CAUTION: you may loose your modification in this file, if you want customize your language map,')
+        silent call add ( text_list, '#          please create your own language map file under ./_vimfiles, and change the file name as id-lang.map')
+        silent call add ( text_list, '*~                    IGNORE')
+        silent call add ( text_list, '*.bak                 IGNORE')
+        silent call add ( text_list, '*.bk[0-9]             IGNORE')
+        silent call add ( text_list, '[sp].*                IGNORE')
+        silent call add ( text_list, '*/.deps/*             IGNORE')
+        silent call add ( text_list, '*/.svn/*              IGNORE')
+        silent call add ( text_list, '*.svn-base            IGNORE')
+        silent call add ( text_list, '_vimfiles/*           IGNORE')
+        silent call add ( text_list, 'quick_gen_project.*   IGNORE')
+        silent call add ( text_list, '*.err                 IGNORE') " never bring error file into global search
+        silent call add ( text_list, '*.exe                 IGNORE') " never bring exe file into global search
+        silent call add ( text_list, '*.lnk                 IGNORE') " never bring lnk file into global search
+
+        let filter_list = split(a:file_filter,',')
+        for item in filter_list 
+            if item == ''
+                continue
+            endif
+            silent call add ( text_list, '*.'.item.'    text')
+        endfor
+
+        call writefile( text_list, idlang_map_file, "b" )
+    endif
+endfunction " >>>
 
 " ------------------------------------------------------------------ 
 " Desc: 
 " ------------------------------------------------------------------ 
 
 function exUtility#CreateQuickGenProject() " <<<
+    " create id-lang map first
+    call exUtility#CreateIDLangMap( s:ex_project_file_filter )
+
     " init platform dependence value
     let script_suffix = ''
     if has("win32")
@@ -2248,20 +2473,30 @@ function exUtility#CreateQuickGenProject() " <<<
     " init variables
     let file_name = "quick_gen_project_autogen." . script_suffix
     let text_list = []
+    let lang_type = exUtility#GetLangType()
+    let support_map = exUtility#GetQuickGenSupportMap(lang_type) 
+    let ctags_options = exUtility#GetCtagsOptions(lang_type) 
 
     " TODO: windows and unix have differnt script
     " write script
     silent call add( text_list, '@echo off' )
-    silent call add( text_list, 'set lang_type=all' ) " TODO: should have project language
+    silent call add( text_list, 'set lang_type='.lang_type ) " 
+    silent call add( text_list, 'set cwd=%~pd0' )
     silent call add( text_list, 'set vimfiles_path='.g:exES_vimfile_dir )
     silent call add( text_list, 'set file_filter='.exUtility#GetProjectFileFilterCommand() )
     silent call add( text_list, 'set dir_filter='.exUtility#GetProjectDirFilterCommand() )
-    silent call add( text_list, 'set cwd=%~pd0' )
-    silent call add( text_list, 'set support_inherit=true' ) " TODO: detect if support inherit
-    silent call add( text_list, 'set support_cscope=true' ) " TODO: detect if support cscope
+    silent call add( text_list, 'set support_ctags='.support_map['ctags'] )
+    silent call add( text_list, 'set support_symbol='.support_map['symbol'] )
+    silent call add( text_list, 'set support_inherit='.support_map['inherit'] )
+    silent call add( text_list, 'set support_cscope='.support_map['cscope'] )
+    silent call add( text_list, 'set support_idutils='.support_map['idutils'] )
+    silent call add( text_list, 'set ctags_options='.ctags_options )
     silent call add( text_list, '"%EX_DEV%\vim\toolkit\quickgen\batch\quick_gen_project.bat" %1' )
-    silent call add( text_list, 'echo on' ) " TODO: detect if support cscope
+    silent call add( text_list, 'echo on' )
     call writefile ( text_list, file_name )
+
+    " 
+    return file_name
 endfunction " >>>
 
 "/////////////////////////////////////////////////////////////////////////////
