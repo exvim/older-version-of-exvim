@@ -15,23 +15,13 @@ export EX_DEV="/usr/local/share"
 # ------------------------------------------------------------------ 
 # Desc: 
 # arguments:
-# 1  lang_type: "all", "general", "c", "cpp", "c#", "html", "js", "lua", "math", "python", "uc", "vim"
-# 2  gen_type (none eaqual to all): "all", "tag", "symbol", "inherit", "cscope", "id"
-# 3  vimfiles_path (none eaqual to _vimfiles): 
+# 1  gen_type (none eaqual to all): "all", "filenamelist", "tag", "symbol", "inherit", "cscope", "id"
 # ------------------------------------------------------------------ 
 
-lang_type=$1
-
-if test "$2" = ""; then 
+if test "$1" = ""; then 
     gen_type=all
 else
-    gen_type=$2
-fi
-
-if test "$3" = ""; then 
-    vimfiles_path=_vimfiles
-else
-    vimfiles_path=$3
+    gen_type=$1
 fi
 
 # /////////////////////////////////////////////////////////////////////////////

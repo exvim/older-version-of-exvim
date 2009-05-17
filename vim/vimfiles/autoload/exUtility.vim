@@ -1994,13 +1994,9 @@ endfunction " >>>
 
 " ------------------------------------------------------------------ 
 " Desc: type: ID,symbol,tag,none=all
-" TODO: add filanmelist update
-" TODO: update are always relative
 " ------------------------------------------------------------------ 
 
 function exUtility#UpdateVimFiles( type ) " <<<
-    let script_not_found = 0
-
     " find quick gen script first
     let suffix = '\(bat\|sh\)'
     if has ("win32")
@@ -2017,18 +2013,22 @@ function exUtility#UpdateVimFiles( type ) " <<<
     "     let quick_gen_script = exUtility#CopyQuickGenProject ( type_list[idx] )
     " endif
     " } DELME end 
-    let quick_gen_script = exUtility#CreateQuickGenProject()
 
-    " TODO: rewrite this section
-    " create quick gen project script
-    let quick_gen_script = glob('quick_gen_project*.'.suffix) 
+    " rule: if we have quick_gen_project_custom, use it first, else we use auto-gen one
+    let quick_gen_script = exUtility#CreateQuickGenProject()
+    let quick_gen_custom = 'quick_gen_project_custom.' . suffix
+    if findfile( quick_gen_custom ) != ""
+        let quick_gen_script = quick_gen_custom
+    endif
+
+    " check if we have quick_gen_script, if not, return
     if quick_gen_script != ''
         silent exec "cscope kill " . g:exES_Cscope
         " we use async update
         " silent exec "cscope add " . g:exES_Cscope
     else
         call exUtility#WarningMsg("quick_gen_project script not found")
-        let script_not_found = 1
+        return
     endif
 
     " create update cmd
@@ -2051,6 +2051,8 @@ function exUtility#UpdateVimFiles( type ) " <<<
         let gen_type = ' cscope'
         " we use async update
         " silent exec "cscope add " . g:exES_Cscope
+    elseif a:type == "filenamelist"
+        let gen_type = ' filenamelist'
     else
         call exUtility#WarningMsg("do not found update-type: " . a:type )
         return
@@ -2157,12 +2159,11 @@ function exUtility#GetUpdateVimentryRefsCommand( type ) " <<<
     return cmd
 endfunction " >>>
 
-" DELME { 
 " ------------------------------------------------------------------ 
 " Desc: 
 " ------------------------------------------------------------------ 
 
-function exUtility#CopyQuickGenProject( type ) " <<<
+function exUtility#CopyQuickGenProject() " <<<
     " init platform dependence value
     let script_suffix = ''
     let folder_name = ''
@@ -2178,14 +2179,7 @@ function exUtility#CopyQuickGenProject( type ) " <<<
     endif
 
     " copy quick gen script
-    let quick_gen_script = ''
-    if a:type == "all"
-        let quick_gen_script = "quick_gen_project_all." . script_suffix
-    elseif a:type == "general"
-        let quick_gen_script = "quick_gen_project_general." . script_suffix  
-    else
-        let quick_gen_script = "quick_gen_project_" . a:type . "_only." . script_suffix
-    endif
+    let quick_gen_script = 'quick_gen_project_custom.' . script_suffix
 
     " get quick gen script from repository
     let full_quick_gen_script = ''
@@ -2205,7 +2199,6 @@ function exUtility#CopyQuickGenProject( type ) " <<<
     "
     return quick_gen_script
 endfunction " >>>
-" } DELME end 
 
 " ------------------------------------------------------------------ 
 " Desc: 
@@ -2291,7 +2284,7 @@ endfunction " >>>
 " ------------------------------------------------------------------ 
 
 function exUtility#GetQuickGenSupportMap( lang_type ) " <<<
-    let support_map = {'ctags':'false', 'symbol':'false', 'inherit':'false', 'cscope':'false', 'idutils':'false'}
+    let support_map = {'ctags':'false', 'symbol':'false', 'inherit':'false', 'cscope':'false', 'idutils':'false', 'filenamelist':'false'}
 
     " check plugin level support
     if exists('g:loaded_extagselect') && g:loaded_extagselect 
@@ -2309,6 +2302,7 @@ function exUtility#GetQuickGenSupportMap( lang_type ) " <<<
     if exists('g:loaded_exglobalsearch') && g:loaded_exglobalsearch 
         let support_map['idutils'] = 'true'
     endif
+    let support_map['filenamelist'] = 'true'
 
     " check language level support
 
@@ -2338,6 +2332,11 @@ function exUtility#GetQuickGenSupportMap( lang_type ) " <<<
         if a:lang_type !~# '\<c\>\|\<cpp\>'
             let support_map['cscope'] = 'false'
         endif
+    endif
+
+    " check filenamelist support
+    if support_map['ctags'] == 'false' && support_map['cscope'] == 'false'
+        let support_map['filenamelist'] = 'false'
     endif
 
     " check global support
@@ -2485,6 +2484,7 @@ function exUtility#CreateQuickGenProject() " <<<
     silent call add( text_list, 'set vimfiles_path='.g:exES_vimfile_dir )
     silent call add( text_list, 'set file_filter='.exUtility#GetProjectFileFilterCommand() )
     silent call add( text_list, 'set dir_filter='.exUtility#GetProjectDirFilterCommand() )
+    silent call add( text_list, 'set support_filenamelist='.support_map['filenamelist'] )
     silent call add( text_list, 'set support_ctags='.support_map['ctags'] )
     silent call add( text_list, 'set support_symbol='.support_map['symbol'] )
     silent call add( text_list, 'set support_inherit='.support_map['inherit'] )
@@ -2969,22 +2969,7 @@ endfunction " >>>
 " ------------------------------------------------------------------ 
 
 function exUtility#CompleteUpdateArgs( arg_lead, cmd_line, cursor_pos ) " <<<
-    let args = ["ID","symbol","inherit","tag","cscope"]
-    let filter_result = []
-    for arg in args
-        if exUtility#SmartCaseCompare( arg, '^'.a:arg_lead.'.*' )
-            silent call add ( filter_result, arg )
-        endif
-    endfor
-    return filter_result
-endfunction " >>>
-
-" ------------------------------------------------------------------ 
-" Desc: 
-" ------------------------------------------------------------------ 
-
-function exUtility#CompleteQCopyArgs( arg_lead, cmd_line, cursor_pos ) " <<<
-    let args = ["all", "general", "c", "cpp", "csharp", "html", "javascript", "lua", "math", "python", "uc", "vim"]
+    let args = ["ID","symbol","inherit","tag","cscope","filenamelist"]
     let filter_result = []
     for arg in args
         if exUtility#SmartCaseCompare( arg, '^'.a:arg_lead.'.*' )

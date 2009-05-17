@@ -14,7 +14,7 @@ rem ////////////////////////////////////////////////////////////////////////////
 rem  ------------------------------------------------------------------ 
 rem  Desc: 
 rem  arguments:
-rem  1  gen_type (none eaqual to all): "all", "tag", "symbol", "inherit", "cscope", "id"
+rem  1  gen_type (none eaqual to all): "all", "filenamelist", "tag", "symbol", "inherit", "cscope", "id"
 rem  ------------------------------------------------------------------ 
 
 if /I "%1" == "" (
@@ -28,11 +28,20 @@ rem set variables
 rem /////////////////////////////////////////////////////////////////////////////
 
 rem  ------------------------------------------------------------------ 
+rem  Desc: cwd 
+rem  ------------------------------------------------------------------ 
+
+if /I "%cwd%" == "" (
+    echo error: variable: cwd not set
+    goto FINISH
+    )
+
+rem  ------------------------------------------------------------------ 
 rem  Desc: lang_type
 rem  ------------------------------------------------------------------ 
 
 if /I "%lang_type%" == "" (
-    set lang_type=all
+    set lang_type=auto
     )
 
 rem  ------------------------------------------------------------------ 
@@ -60,12 +69,11 @@ if /I "%dir_filter%" == "" (
     )
 
 rem  ------------------------------------------------------------------ 
-rem  Desc: cwd 
+rem  Desc: support_filenamelist
 rem  ------------------------------------------------------------------ 
 
-if /I "%cwd%" == "" (
-    echo error: variable: cwd not set
-    goto FINISH
+if /I "%support_filenamelist%" == "" (
+    set support_filenamelist=true
     )
 
 rem  ------------------------------------------------------------------ 
@@ -131,6 +139,7 @@ echo 'pre-check'
 echo '---------------------------------------------'
 echo.
 echo language type: %lang_type%
+echo support filenamelist: %support_filenamelist%
 echo support ctags: %support_ctags%
 echo support symbol: %support_symbol%
 echo support inheirts: %support_inherit%
@@ -169,25 +178,27 @@ for /f "delims=" %%a in ('echo %cwd%^|sed "s,\\,\\\\,g"') do (
     set cwd_pattern=%%a
     )
 
-rem TODO: dir /s /b *.cpp will list xxx.cpp~ also, I don't like this happend
-rem create filenamelist_cwd
-if /I "%dir_filter%" == "" (
-    dir /s /b %file_filter%|sed "s,\(%cwd_pattern%\)\(.*\),.\\\2,gI" >> ".\%vimfiles_path%\_filenamelist_cwd"
-    ) else (
-    dir /b %file_filter%|sed "s,\(.*\),.\\\1,gI" >> ".\%vimfiles_path%\_filenamelist_cwd"
-    for %%i in (%dir_filter%) do (
-        cd %%i
-        dir /s /b %file_filter%|sed "s,\(%cwd_pattern%\)\(.*\),.\\\2,gI" >> "..\%vimfiles_path%\_filenamelist_cwd"
-        cd ..
+if /I "%support_filenamelist%" == "true" (
+    rem TODO: dir /s /b *.cpp will list xxx.cpp~ also, I don't like this happend
+    rem create filenamelist_cwd
+    if /I "%dir_filter%" == "" (
+        dir /s /b %file_filter%|sed "s,\(%cwd_pattern%\)\(.*\),.\\\2,gI" >> ".\%vimfiles_path%\_filenamelist_cwd"
+        ) else (
+        dir /b %file_filter%|sed "s,\(.*\),.\\\1,gI" >> ".\%vimfiles_path%\_filenamelist_cwd"
+        for %%i in (%dir_filter%) do (
+            cd %%i
+            dir /s /b %file_filter%|sed "s,\(%cwd_pattern%\)\(.*\),.\\\2,gI" >> "..\%vimfiles_path%\_filenamelist_cwd"
+            cd ..
+            )
         )
-    )
-
-rem create filenamelist_vimfiles
-sed "s,\(.*\),.\1,g" ".\%vimfiles_path%\_filenamelist_cwd" >> ".\%vimfiles_path%\_filenamelist_vimfiles"
-
-rem move filenamelist files to vimfiles_path
-move /Y ".\%vimfiles_path%\_filenamelist_cwd" ".\%vimfiles_path%\filenamelist_cwd"
-move /Y ".\%vimfiles_path%\_filenamelist_vimfiles" ".\%vimfiles_path%\filenamelist_vimfiles"
+    
+    rem create filenamelist_vimfiles
+    sed "s,\(.*\),.\1,g" ".\%vimfiles_path%\_filenamelist_cwd" >> ".\%vimfiles_path%\_filenamelist_vimfiles"
+    
+    rem move filenamelist files to vimfiles_path
+    move /Y ".\%vimfiles_path%\_filenamelist_cwd" ".\%vimfiles_path%\filenamelist_cwd"
+    move /Y ".\%vimfiles_path%\_filenamelist_vimfiles" ".\%vimfiles_path%\filenamelist_vimfiles"
+)
 goto %return%
 
 rem  ------------------------------------------------------------------ 

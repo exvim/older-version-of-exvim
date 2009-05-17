@@ -172,7 +172,7 @@ command -narg=? -complete=customlist,exUtility#CompleteGMakeArgs SMake call exUt
 command -narg=* -complete=customlist,exUtility#CompleteVMakeArgs VMake call exUtility#VCMake("<args>")
 command -narg=* VBat call exUtility#VCMakeBAT(<f-args>)
 command -narg=? -complete=customlist,exUtility#CompleteUpdateArgs Update call exUtility#UpdateVimFiles("<args>")
-command -narg=? -complete=customlist,exUtility#CompleteQCopyArgs QCopy call exUtility#CopyQuickGenProject("<args>")
+command -narg=? QCopy call exUtility#CopyQuickGenProject()
 
 " inherits genreate
 command -narg=1 -complete=customlist,exUtility#CompleteBySymbolFile GV call exUtility#GenInheritsDot('<args>',"all")
