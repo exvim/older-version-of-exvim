@@ -9,6 +9,7 @@
 # general
 #/////////////////////////////////////////////////////////////////////////////
 
+export script_type="custom"
 export EX_DEV="/usr/local/share"
 export cwd=${PWD}
 export lang_type="c cpp c# uc shader python vim math"

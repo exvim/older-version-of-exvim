@@ -2482,6 +2482,7 @@ function exUtility#CreateQuickGenProject() " <<<
         let script_suffix = 'bat'
 
         silent call add( text_list, '@echo off' )
+        silent call add( text_list, 'set script_type=autogen' )
         silent call add( text_list, 'set cwd=%~pd0' )
         silent call add( text_list, 'set lang_type='.lang_type ) " 
         silent call add( text_list, 'set vimfiles_path='.g:exES_vimfile_dir )
@@ -2499,6 +2500,7 @@ function exUtility#CreateQuickGenProject() " <<<
     elseif has ('unix')
         let script_suffix = 'sh'
 
+        silent call add( text_list, 'export script_type="autogen"' )
         silent call add( text_list, 'export EX_DEV="/usr/local/share"' )
         silent call add( text_list, 'export cwd=${PWD}' ) " 
         silent call add( text_list, 'export lang_type='.'"'.lang_type.'"' ) " 
@@ -2512,7 +2514,7 @@ function exUtility#CreateQuickGenProject() " <<<
         silent call add( text_list, 'export support_cscope='.'"'.support_map['cscope'].'"' )
         silent call add( text_list, 'export support_idutils='.'"'.support_map['idutils'].'"' )
         silent call add( text_list, 'export ctags_options='.'"'.ctags_options.'"' )
-        silent call add( text_list, 'bash ${EX_DEV}/vim/toolkit/quickgen/batch/quick_gen_project.sh $1' )
+        silent call add( text_list, 'bash ${EX_DEV}/vim/toolkit/quickgen/bash/quick_gen_project.sh $1' )
     endif
 
     "
