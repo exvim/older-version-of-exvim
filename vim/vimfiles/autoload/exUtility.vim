@@ -1298,9 +1298,17 @@ endfunction " >>>
 function exUtility#GetProjectDirFilterCommand() " <<<
     let filter_list = split(s:ex_project_dir_filter,',')
     let filter_command = ''
-    for item in filter_list 
-        let filter_command .= '"' . item . '" '
-    endfor
+
+    if has ('win32')
+        for item in filter_list 
+            let filter_command .= '"' . item . '" '
+        endfor
+    elseif has ('unix')
+        for item in filter_list 
+            let filter_command .= '"./' . item . '" '
+        endfor
+    endif
+
     return filter_command
 endfunction " >>>
 
@@ -2026,7 +2034,7 @@ function exUtility#UpdateVimFiles( type ) " <<<
     " rule: if we have quick_gen_project_custom, use it first, else we use auto-gen one
     let quick_gen_script = exUtility#CreateQuickGenProject()
     let quick_gen_custom = 'quick_gen_project_custom.' . suffix
-    if findfile( quick_gen_custom ) != ""
+    if findfile( quick_gen_custom, getcwd() ) != ""
         let quick_gen_script = quick_gen_custom
     endif
 

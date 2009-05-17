@@ -165,6 +165,8 @@ echo
 gen_filenamelist () 
 {
     if test "$support_filenamelist" = "true"; then
+        echo Creating Filename List...
+
         # create filenamelist_cwd
         find ${dir_filter} -regex '.*\.\('"${file_filter}"'\)' >> "./${vimfiles_path}/_filenamelist_cwd"
         # NOTE: if we have dir filter, we still need get files in root directory 
@@ -193,9 +195,9 @@ gen_tag ()
 
         # choose ctags path first
         if [ -f "./${vimfiles_path}/filenamelist_vimfiles" ]; then
-            ctags_path=-L filenamelist_vimfiles 
+            ctags_path="-L ./filenamelist_vimfiles" 
         else
-            ctags_path=-R .. 
+            ctags_path="-R .." 
         fi
 
         # process tags by langugage
@@ -243,7 +245,7 @@ gen_cscope ()
 {
     if test "$support_cscope" = "true"; then
         echo "Creating cscope.files..."
-        if [ -f "./${vimfiles_path}/filenamelist_cwd"]; then
+        if [ -f "./${vimfiles_path}/filenamelist_cwd" ]; then
             cp "./${vimfiles_path}/filenamelist_cwd" cscope.files 
         else
             find . -regex '.*\.\('"${file_filter}"'\)' > cscope.files
