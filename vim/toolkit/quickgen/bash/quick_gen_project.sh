@@ -142,6 +142,7 @@ echo "support inheirts: ${support_inherit}"
 echo "support cscope: ${support_cscope}"
 echo "support id-utils: ${support_idutils}"
 echo
+echo "script type: ${script_type}"
 echo "generate type: ${gen_type}"
 echo "cwd: ${cwd}"
 echo "file filter: ${file_filter}"
