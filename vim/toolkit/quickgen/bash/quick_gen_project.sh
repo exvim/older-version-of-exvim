@@ -204,7 +204,7 @@ gen_filenamelist ()
 
         # create filenamelist_vimfiles
         echo "  |- generate _filenamelist_vimfiles"
-        sed "s,\(.*\),.\1,g" "./${vimfiles_path}/_filenamelist_cwd" >> "./${vimfiles_path}/_filenamelist_vimfiles"
+        sed "s,\(.*\),.\1,g" "./${vimfiles_path}/filenamelist_cwd" >> "./${vimfiles_path}/_filenamelist_vimfiles"
         echo "  |- rename _filenamelist_vimfiles to filenamelist_vimfiles"
         mv -f "./${vimfiles_path}/_filenamelist_vimfiles" "./${vimfiles_path}/filenamelist_vimfiles"
         echo "  |- done!"

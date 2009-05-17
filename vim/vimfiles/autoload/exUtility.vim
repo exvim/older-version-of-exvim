@@ -1306,14 +1306,14 @@ function exUtility#GetProjectFileFilterCommand() " <<<
 
         for item in filter_list2
             let filter_command .= '*.' . item . ' '
-            if item =~ 'c\|cpp\|cxx\|c++\|cc\|h\|hh\|hxx\|hpp\|inl\|hlsl\|vsh\|psh\|fx\|fxh\|cg\|shd\|glsl'
+            if item =~ '^c$\|^cpp$\|^cxx$\|^c++$\|^cc$\|^h$\|^hh$\|^hxx$\|^hpp$\|^inl$\|^hlsl$\|^vsh$\|^psh$\|^fx$\|^fxh$\|^cg$\|^shd$\|^glsl$'
                 let cscope_filter_command .= '*.' . item . ' '
             endif
         endfor
     elseif has ('unix')
         for item in filter_list 
             let filter_command .= item . '\|'
-            if item =~ 'c\|cpp\|cxx\|c++\|cc\|h\|hh\|hxx\|hpp\|inl\|hlsl\|vsh\|psh\|fx\|fxh\|cg\|shd\|glsl'
+            if item =~ '^c$\|^cpp$\|^cxx$\|^c++$\|^cc$\|^h$\|^hh$\|^hxx$\|^hpp$\|^inl$\|^hlsl$\|^vsh$\|^psh$\|^fx$\|^fxh$\|^cg$\|^shd$\|^glsl$'
                 let cscope_filter_command .= item . '\|'
             endif
         endfor
@@ -1335,7 +1335,7 @@ function exUtility#GetProjectFileFilterPattern() " <<<
 
     for item in filter_list
         let filter_pattern .= '\\.' . item . '$|'
-        if item =~ 'c\|cpp\|cxx\|c++\|cc\|h\|hh\|hxx\|hpp\|inl\|hlsl\|vsh\|psh\|fx\|fxh\|cg\|shd\|glsl'
+        if item =~ '^c$\|^cpp$\|^cxx$\|^c++$\|^cc$\|^h$\|^hh$\|^hxx$\|^hpp$\|^inl$\|^hlsl$\|^vsh$\|^psh$\|^fx$\|^fxh$\|^cg$\|^shd$\|^glsl$'
             let cscope_filter_pattern .= '\\.' . item . '$|'
         endif
     endfor
@@ -2571,10 +2571,10 @@ function exUtility#CreateQuickGenProject() " <<<
         silent call add( text_list, 'export cwd=${PWD}' ) " 
         silent call add( text_list, 'export lang_type='.'"'.lang_type.'"' ) " 
         silent call add( text_list, 'export vimfiles_path='.'"'.g:exES_vimfile_dir.'"' )
-        silent call add( text_list, 'set file_filter='.'"'.file_filter_list[0].'"' )
-        silent call add( text_list, 'set file_filter_pattern='.'"'.file_filter_pattern_list[0].'"' )
-        silent call add( text_list, 'set cscope_file_filter='.'"'.file_filter_list[1].'"' )
-        silent call add( text_list, 'set cscope_file_filter_pattern='.'"'.file_filter_pattern_list[1].'"' )
+        silent call add( text_list, 'export file_filter='.'"'.file_filter_list[0].'"' )
+        silent call add( text_list, 'export file_filter_pattern='."'".file_filter_pattern_list[0]."'" )
+        silent call add( text_list, 'export cscope_file_filter='.'"'.file_filter_list[1].'"' )
+        silent call add( text_list, 'export cscope_file_filter_pattern='."'".file_filter_pattern_list[1]."'" )
         silent call add( text_list, 'export dir_filter='.'"'.exUtility#GetProjectDirFilterCommand().'"' )
         silent call add( text_list, 'export support_filenamelist='.'"'.support_map['filenamelist'].'"' )
         silent call add( text_list, 'export support_ctags='.'"'.support_map['ctags'].'"' )
