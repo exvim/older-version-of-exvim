@@ -1249,11 +1249,19 @@ endfunction " >>>
 " ------------------------------------------------------------------ 
 
 function exUtility#SetProjectFilter( filter_type, filter ) " <<<
+    " first strip filter
+    let idx = match( a:filter, '\S' )
+    let idx = idx >= 0 ? idx : 0 
+    let idx_end = match( a:filter, '\s$' )
+    let idx_end = idx_end >= 0 ? idx_end : len(a:filter) 
+    let filter = strpart( a:filter, idx, idx_end-idx )
+
+    " 
     if a:filter_type ==# 'file_filter'
-        let s:ex_project_file_filter = a:filter
+        let s:ex_project_file_filter = filter
         call exUtility#CreateIDLangMap( s:ex_project_file_filter )
     elseif a:filter_type ==# 'dir_filter'
-        let s:ex_project_dir_filter = a:filter
+        let s:ex_project_dir_filter = filter
     endif
 endfunction " >>>
 
