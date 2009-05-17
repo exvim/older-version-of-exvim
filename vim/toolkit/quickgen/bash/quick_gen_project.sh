@@ -63,6 +63,30 @@ if test "${file_filter}" == ""; then
 fi
 
 # ------------------------------------------------------------------ 
+# Desc: file_filter_pattern 
+# ------------------------------------------------------------------ 
+
+if test "${file_filter_pattern}" == ""; then
+    file_filter_pattern="\\.c$|\\.C$|\\.cpp$|\\.cxx$|\\.c++$|\\.cc$|\\.h$|\\.H$|\\.hh$|\\.hxx$|\\.hpp$|\\.inl$|\\.cs$|\\.uc$|\\.hlsl$|\\.vsh$|\\.psh$|\\.fx$|\\.fxh$|\\.cg$|\\.shd$|\\.glsl$|\\.py$|\\.pyw$|\\.vim$|\\.awk$|\\.m$|\\.dox$|\\.doxygen$|\\.ini$|\\.cfg$|\\.wiki$|\\.mk$|\\.err$|\\.exe$|\\.bat$|\\.sh$|\\.txt$"
+fi
+
+# ------------------------------------------------------------------ 
+# Desc: cscope_file_filter 
+# ------------------------------------------------------------------ 
+
+if test "${cscope_file_filter}" == ""; then
+    cscope_file_filter="c\|cpp\|cxx\|c++\|C\|cc\|h\|H\|hh\|hxx\|hpp\|inl\|hlsl\|vsh\|psh\|fx\|fxh\|cg\|shd\|glsl"
+fi
+
+# ------------------------------------------------------------------ 
+# Desc: cscope_file_filter_pattern 
+# ------------------------------------------------------------------ 
+
+if test "${cscope_file_filter_pattern}" == ""; then
+    cscope_file_filter_pattern="\\.c$|\\.C$\\.cpp$|\\.cxx$|\\.c++$|\\.cc$|\\.h$|\\.H$|\\.hh$|\\.hxx$|\\.hpp$|\\.inl$|\\.hlsl$|\\.vsh$|\\.psh$|\\.fx$|\\.fxh$|\\.cg$|\\.shd$|\\.glsl$"
+fi
+
+# ------------------------------------------------------------------ 
 # Desc: dir_filter 
 # ------------------------------------------------------------------ 
 
@@ -122,7 +146,7 @@ fi
 # Desc: ctags_options 
 # ------------------------------------------------------------------ 
 
-if test "%ctags_options%" == ""; then
+if test "${ctags_options}" == ""; then
     ctags_options="--c++-kinds=+p --fields=+iaS --extra=+q --languages=c,c++,c#,python,vim,html,lua,javascript,java,uc,math --langmap=c++:+.inl,c:+.fx,c:+.fxh,c:+.hlsl,c:+.vsh,c:+.psh,c:+.cg,c:+.shd,javascript:+.as"
 fi
 
@@ -146,6 +170,7 @@ echo "script type: ${script_type}"
 echo "generate type: ${gen_type}"
 echo "cwd: ${cwd}"
 echo "file filter: ${file_filter}"
+echo "cscope file filter: ${cscope_file_filter}"
 echo "dir filter: ${dir_filter}"
 echo "vimfiles path: ${vimfiles_path}"
 echo
@@ -165,21 +190,24 @@ echo
 gen_filenamelist () 
 {
     if test "$support_filenamelist" = "true"; then
-        echo Creating Filename List...
+        echo "Creating Filename List..."
 
         # create filenamelist_cwd
+        echo "  |- generate _filenamelist_cwd"
         find ${dir_filter} -regex '.*\.\('"${file_filter}"'\)' >> "./${vimfiles_path}/_filenamelist_cwd"
         # NOTE: if we have dir filter, we still need get files in root directory 
         if test "${dir_filter}" != ""; then
             find . -maxdepth 1 -regex '.*\.\('"${file_filter}"'\)' >> "./${vimfiles_path}/_filenamelist_cwd"
         fi
+        echo "  |- rename _filenamelist_cwd to filenamelist_cwd"
+        mv -f "./${vimfiles_path}/_filenamelist_cwd" "./${vimfiles_path}/filenamelist_cwd"
 
         # create filenamelist_vimfiles
+        echo "  |- generate _filenamelist_vimfiles"
         sed "s,\(.*\),.\1,g" "./${vimfiles_path}/_filenamelist_cwd" >> "./${vimfiles_path}/_filenamelist_vimfiles"
-
-        # move filenamelist files to vimfiles_path
-        mv -f "./${vimfiles_path}/_filenamelist_cwd" "./${vimfiles_path}/filenamelist_cwd"
+        echo "  |- rename _filenamelist_vimfiles to filenamelist_vimfiles"
         mv -f "./${vimfiles_path}/_filenamelist_vimfiles" "./${vimfiles_path}/filenamelist_vimfiles"
+        echo "  |- done!"
     fi
 }
 
@@ -202,11 +230,14 @@ gen_tag ()
 
         # process tags by langugage
         cd ${vimfiles_path}
-        ctags -o./_tags ${ctags_path} ${ctags_options}
+        echo "  |- generate _tags"
+        ctags -o./_tags ${ctags_options} ${ctags_path}
 
         # force change _tags to tags
+        echo "  |- rename _tags to tags"
         mv -f "_tags" "tags"
         cd ..
+        echo "  |- done!"
     fi
 }
 
@@ -218,8 +249,11 @@ gen_symbols ()
 {
     if test "$support_symbol" = "true"; then
         echo "Creating Symbols..."
+        echo "  |- generate _symbol"
         gawk -f "${EX_DEV}/vim/toolkit/gawk/prg_NoStripSymbol.awk" ./${vimfiles_path}/tags>./${vimfiles_path}/_symbol
+        echo "  |- rename _symbol to symbol"
         mv -f "./${vimfiles_path}/_symbol" "./${vimfiles_path}/symbol"
+        echo "  |- done!"
     fi
 }
 
@@ -232,8 +266,11 @@ gen_inherits ()
 {
     if test "$support_inherit" = "true"; then
         echo "Creating Inherits..."
+        echo "  |- generate _inherits"
         gawk -f "${EX_DEV}/vim/toolkit/gawk/prg_Inherits.awk" ./${vimfiles_path}/tags>./${vimfiles_path}/_inherits
+        echo "  |- rename _inherits to inherits"
         mv -f "./${vimfiles_path}/_inherits" "./${vimfiles_path}/inherits"
+        echo "  |- done!"
     fi
 }
 
@@ -244,17 +281,21 @@ gen_inherits ()
 gen_cscope ()
 {
     if test "$support_cscope" = "true"; then
-        echo "Creating cscope.files..."
+        echo "Creating cscope data..."
+        echo "  |- generate cscope.files"
         if [ -f "./${vimfiles_path}/filenamelist_cwd" ]; then
-            cp "./${vimfiles_path}/filenamelist_cwd" cscope.files 
+            gawk -v filter_pattern=${cscope_file_filter_pattern} -f "${EX_DEV}/vim/toolkit/gawk/prg_FileFilter.awk" "./${vimfiles_path}/filenamelist_cwd" > cscope.files
         else
-            find . -regex '.*\.\('"${file_filter}"'\)' > cscope.files
+            find . -regex '.*\.\('"${cscope_file_filter}"'\)' > cscope.files
         fi
 
-        echo "Creating cscope.out..."
+        echo "  |- generate cscope.out"
         cscope -b
+        echo "  |- move cscope.files to ./${vimfiles_path}/cscope.files"
         mv -f "cscope.files" "./${vimfiles_path}/cscope.files"
+        echo "  |- move cscope.out to ./${vimfiles_path}/cscope.out"
         mv -f "cscope.out" "./${vimfiles_path}/cscope.out"
+        echo "  |- done!"
     fi
 }
 
@@ -264,24 +305,27 @@ gen_cscope ()
 
 gen_id ()
 {
+    echo "Creating ID..."
     # if we have manual configure id language map, we use it as highest priority
     if [ -f "./${vimfiles_path}/id-lang.map" ]; then
-        echo Creating IDs by custom language map...
+        echo "  |- generate ID by custom language map"
         mkid --include="text" --lang-map="./${vimfiles_path}/id-lang.map" ${dir_filter}
 
         # if not, we try to use auto-gen id language map as second option
     elif [ -f "./${vimfiles_path}/id-lang-autogen.map" ]; then
-        echo Creating IDs by auto-gen language map...
+        echo "  |- generate ID by auto-gen language map"
         mkid --include="text" --lang-map="./${vimfiles_path}/id-lang-autogen.map" ${dir_filter}
 
         # if both file not exists, we use default one in toolkit directory
     else
-        echo Creating IDs by default language map...
+        echo "  |- generate ID by default language map"
         mkid --include="text" --lang-map="${EX_DEV}/vim/toolkit/idutils/id-lang.map" ${dir_filter}
     fi
 
     # mkid --include="C C++"
+    echo "  |- move ID to ./${vimfiles_path}/ID"
     mv -f "ID" "./${vimfiles_path}/ID"
+    echo "  |- done!"
 }
 
 # /////////////////////////////////////////////////////////////////////////////

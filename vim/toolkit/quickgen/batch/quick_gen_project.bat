@@ -1,4 +1,3 @@
-@echo off
 
 rem  ======================================================================================
 rem  File         : quick_gen_project.bat
@@ -54,10 +53,36 @@ if /I "%vimfiles_path%" == "" (
 
 rem  ------------------------------------------------------------------ 
 rem  Desc: file_filter 
+rem  NOTE: dir /s /b accept *.H and output files with *.h, *.H.
 rem  ------------------------------------------------------------------ 
 
 if /I "%file_filter%" == "" (
-    set file_filter=*.c *.cpp *.cxx *.c++ *.cc *.h *.hh *.hxx *.hpp *.inl *.cs *.uc *.hlsl *.vsh *.psh *.fx *.fxh *.cg *.shd *.glsl *.py *.pyw *.vim *.awk *.m *.dox *.doxygen *.ini *.cfg *.wiki *.mk *.err *.exe *.bat *.sh *.txt
+    set file_filter=*.C *.CPP *.CXX *.C++ *.CC *.H *.HH *.HXX *.HPP *.INL *.CS *.UC *.HLSL *.VSH *.PSH *.FX *.FXH *.CG *.SHD *.GLSL *.PY *.PYW *.VIM *.AWK *.M *.DOX *.DOXYGEN *.INI *.CFG *.WIKI *.MK *.ERR *.EXE *.BAT *.SH *.TXT
+    )
+
+rem  ------------------------------------------------------------------ 
+rem  Desc: file_filter_pattern 
+rem  ------------------------------------------------------------------ 
+
+if /I %file_filter_pattern% == "" (
+    set file_filter_pattern="\\.c$|\\.C$|\\.cpp$|\\.cxx$|\\.c++$|\\.cc$|\\.h$|\\.H$|\\.hh$|\\.hxx$|\\.hpp$|\\.inl$|\\.cs$|\\.uc$|\\.hlsl$|\\.vsh$|\\.psh$|\\.fx$|\\.fxh$|\\.cg$|\\.shd$|\\.glsl$|\\.py$|\\.pyw$|\\.vim$|\\.awk$|\\.m$|\\.dox$|\\.doxygen$|\\.ini$|\\.cfg$|\\.wiki$|\\.mk$|\\.err$|\\.exe$|\\.bat$|\\.sh$|\\.txt$"
+    )
+
+rem  ------------------------------------------------------------------ 
+rem  Desc: cscope_file_filter 
+rem  NOTE: dir /s /b accept *.H and output files with *.h, *.H.
+rem  ------------------------------------------------------------------ 
+
+if /I "%cscope_file_filter%" == "" (
+    set cscope_file_filter=*.C *.CPP *.CXX *.C++ *.CC *.H *.HH *.HXX *.HPP *.INL *.HLSL *.VSH *.PSH *.FX *.FXH *.CG *.SHD *.GLSL
+    )
+
+rem  ------------------------------------------------------------------ 
+rem  Desc: cscope_file_filter_pattern 
+rem  ------------------------------------------------------------------ 
+
+if /I %cscope_file_filter_pattern% == "" (
+    set cscope_file_filter_pattern="\\.c$|\\.C$\\.cpp$|\\.cxx$|\\.c++$|\\.cc$|\\.h$|\\.H$|\\.hh$|\\.hxx$|\\.hpp$|\\.inl$|\\.hlsl$|\\.vsh$|\\.psh$|\\.fx$|\\.fxh$|\\.cg$|\\.shd$|\\.glsl$"
     )
 
 rem  ------------------------------------------------------------------ 
@@ -150,6 +175,7 @@ echo script type: %script_type%
 echo generate type: %gen_type%
 echo cwd: %cwd%
 echo file filter: %file_filter%
+echo cscope file filter: %cscope_file_filter%
 echo dir filter: %dir_filter%
 echo vimfiles path: %vimfiles_path%
 echo.
@@ -180,25 +206,31 @@ for /f "delims=" %%a in ('echo %cwd%^|sed "s,\\,\\\\,g"') do (
     )
 
 if /I "%support_filenamelist%" == "true" (
-    rem TODO: dir /s /b *.cpp will list xxx.cpp~ also, I don't like this happend
+    echo    ^|- generate _filenamelist_cwd_gawk
     rem create filenamelist_cwd
     if /I "%dir_filter%" == "" (
-        dir /s /b %file_filter%|sed "s,\(%cwd_pattern%\)\(.*\),.\\\2,gI" >> ".\%vimfiles_path%\_filenamelist_cwd"
+        dir /s /b %file_filter%|sed "s,\(%cwd_pattern%\)\(.*\),.\\\2,gI" >> ".\%vimfiles_path%\_filenamelist_cwd_gawk"
         ) else (
-        dir /b %file_filter%|sed "s,\(.*\),.\\\1,gI" >> ".\%vimfiles_path%\_filenamelist_cwd"
+        dir /b %file_filter%|sed "s,\(.*\),.\\\1,gI" >> ".\%vimfiles_path%\_filenamelist_cwd_gawk"
         for %%i in (%dir_filter%) do (
             cd %%i
-            dir /s /b %file_filter%|sed "s,\(%cwd_pattern%\)\(.*\),.\\\2,gI" >> "..\%vimfiles_path%\_filenamelist_cwd"
+            dir /s /b %file_filter%|sed "s,\(%cwd_pattern%\)\(.*\),.\\\2,gI" >> "..\%vimfiles_path%\_filenamelist_cwd_gawk"
             cd ..
             )
         )
+    echo    ^|- process _filenamelist_cwd_gawk to _filenamelist_cwd
+    rem NOTE: dir /s /b *.cpp will list xxx.cpp~, too. So use gawk here to filter out thoes things.
+    gawk -v filter_pattern=%file_filter_pattern% -f "%EX_DEV%\vim\toolkit\gawk\prg_FileFilter.awk" ".\%vimfiles_path%\_filenamelist_cwd_gawk">".\%vimfiles_path%\_filenamelist_cwd"
+    del ".\%vimfiles_path%\_filenamelist_cwd_gawk"
+    echo    ^|- rename _filenamelist_cwd to filenamelist_cwd
+    move /Y ".\%vimfiles_path%\_filenamelist_cwd" ".\%vimfiles_path%\filenamelist_cwd"
     
     rem create filenamelist_vimfiles
-    sed "s,\(.*\),.\1,g" ".\%vimfiles_path%\_filenamelist_cwd" >> ".\%vimfiles_path%\_filenamelist_vimfiles"
-    
-    rem move filenamelist files to vimfiles_path
-    move /Y ".\%vimfiles_path%\_filenamelist_cwd" ".\%vimfiles_path%\filenamelist_cwd"
+    echo    ^|- generate _filenamelist_vimfiles
+    sed "s,\(.*\),.\1,g" ".\%vimfiles_path%\filenamelist_cwd" >> ".\%vimfiles_path%\_filenamelist_vimfiles"
+    echo    ^|- rename _filenamelist_vimfiles to filenamelist_vimfiles
     move /Y ".\%vimfiles_path%\_filenamelist_vimfiles" ".\%vimfiles_path%\filenamelist_vimfiles"
+    echo    ^|- done!
 )
 goto %return%
 
@@ -225,9 +257,12 @@ if /I "%support_ctags%" == "true" (
     
     rem process tags by langugage
     cd "%vimfiles_path%"
-    ctags -o./_tags %ctags_path% %ctags_options%
+    echo    ^|- generate _tags
+    ctags -o./_tags %ctags_options% %ctags_path%
+    echo    ^|- rename _tags to tags
     move /Y "_tags" "tags"
     cd ..
+    echo    ^|- done!
 )
 goto %return%
 
@@ -241,8 +276,11 @@ rem  #########################
 
 if /I "%support_symbol%" == "true" (
     echo Creating Symbols...
+    echo    ^|- generate _symbol
     gawk -f "%EX_DEV%\vim\toolkit\gawk\prg_NoStripSymbol.awk" ".\%vimfiles_path%\tags">".\%vimfiles_path%\_symbol"
+    echo    ^|- rename _symbol to symbol
     move /Y ".\%vimfiles_path%\_symbol" ".\%vimfiles_path%\symbol"
+    echo    ^|- done
 )
 goto %return%
 
@@ -257,8 +295,11 @@ rem  #########################
 
 if /I "%support_inherit%" == "true" (
     echo Creating Inherits...
+    echo    ^|- generate _inherits
     gawk -f "%EX_DEV%\vim\toolkit\gawk\prg_Inherits.awk" ".\%vimfiles_path%\tags">".\%vimfiles_path%\_inherits"
+    echo    ^|- rename _inherits to inherits
     move /Y ".\%vimfiles_path%\_inherits" ".\%vimfiles_path%\inherits"
+    echo    ^|- done
 )
 goto %return%
 
@@ -271,19 +312,21 @@ rem  #########################
 :GEN_CSCOPE
 rem  ######################### 
 
-rem TODO: cscope can use gawk process filenamelist
-
 if /I "%support_cscope%" == "true" (
-    echo Creating cscope.files...
+    echo Creating cscope data...
+    echo    ^|- generate cscope.files
     if exist .\%vimfiles_path%\filenamelist_cwd (
-        copy ".\%vimfiles_path%\filenamelist_cwd" cscope.files 
+        gawk -v filter_pattern=%cscope_file_filter_pattern% -f "%EX_DEV%\vim\toolkit\gawk\prg_FileFilter.awk" ".\%vimfiles_path%\filenamelist_cwd" > cscope.files
     ) else (
-        dir /s /b %file_filter%|sed "s,\(.*\),\"\1\",g" > cscope.files
+        dir /s /b %cscope_file_filter%|sed "s,\(.*\),\"\1\",g" > cscope.files
     )
-    echo Creating cscope.out...
+    echo    ^|- generate cscope.out
     cscope -b
+    echo    ^|- move cscope.files to .\%vimfiles_path%\cscope.files
     move /Y cscope.files ".\%vimfiles_path%\cscope.files"
+    echo    ^|- move cscope.out to .\%vimfiles_path%\cscope.out
     move /Y cscope.out ".\%vimfiles_path%\cscope.out"
+    echo    ^|- done
 )
 goto %return%
 
@@ -299,24 +342,27 @@ if /I "%support_idutils%" == "true" (
     rem TODO: mkid --include="text" --lang-map=".\%vimfiles_path%\id-lang.map" "./folder1" "./folder2" ... 
     rem TODO: but how to include files in root directory???
     
+    echo Creating ID...
     rem if we have manual configure id language map, we use it as highest priority
     if exist .\%vimfiles_path%\id-lang.map (
-        echo Creating IDs by custom language map...
+        echo    ^|- generate ID by custom language map 
         mkid --include="text" --lang-map=".\%vimfiles_path%\id-lang.map" %dir_filter%
     
     rem if not, we try to use auto-gen id language map as second option
     ) else if exist .\%vimfiles_path%\id-lang-autogen.map (
-        echo Creating IDs by auto-gen language map...
+        echo    ^|- generate ID by auto-gen language map 
         mkid --include="text" --lang-map=".\%vimfiles_path%\id-lang-autogen.map" %dir_filter%
     
     rem if both file not exists, we use default one in toolkit directory
     ) else (
-        echo Creating IDs by default language map...
+        echo    ^|- generate ID by default language map 
         mkid --include="text" --lang-map="%EX_DEV%\vim\toolkit\idutils\id-lang.map" %dir_filter%
     )
     
     rem mkid --include="C C++"
+    echo    ^|- move ID to .\%vimfiles_path%\ID
     move /Y ID ".\%vimfiles_path%\ID"
+    echo    ^|- done
 )
 goto %return%
 

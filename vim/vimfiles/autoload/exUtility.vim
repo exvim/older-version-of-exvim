@@ -1284,19 +1284,64 @@ endfunction " >>>
 function exUtility#GetProjectFileFilterCommand() " <<<
     let filter_list = split(s:ex_project_file_filter,',')
     let filter_command = ''
+    let cscope_filter_command = ''
 
     if has ('win32')
-        for item in filter_list 
+        " NOTE: in win32, since we use dir /s /b, the result *.h and *.H will 
+        "       list .h files twice, also *.h will not list .H files. To prevent 
+        "       this, we detect the filter_list if same file suffix found, we 
+        "       choose upper case. 
+        let filter_list2 = []
+        for item1 in filter_list
+            let found = 0
+            for item2 in filter_list2
+                if item1 ==? item2
+                    let found = 1
+                endif
+            endfor
+            if found == 0
+                silent call add ( filter_list2, toupper(item1) )
+            endif
+        endfor
+
+        for item in filter_list2
             let filter_command .= '*.' . item . ' '
+            if item =~ 'c\|cpp\|cxx\|c++\|cc\|h\|hh\|hxx\|hpp\|inl\|hlsl\|vsh\|psh\|fx\|fxh\|cg\|shd\|glsl'
+                let cscope_filter_command .= '*.' . item . ' '
+            endif
         endfor
     elseif has ('unix')
         for item in filter_list 
             let filter_command .= item . '\|'
+            if item =~ 'c\|cpp\|cxx\|c++\|cc\|h\|hh\|hxx\|hpp\|inl\|hlsl\|vsh\|psh\|fx\|fxh\|cg\|shd\|glsl'
+                let cscope_filter_command .= item . '\|'
+            endif
         endfor
         let filter_command = strpart( filter_command, 0, len(filter_command) - 2)
+        let cscope_filter_command = strpart( cscope_filter_command, 0, len(cscope_filter_command) - 2)
     endif
 
-    return filter_command
+    return [filter_command,cscope_filter_command]
+endfunction " >>>
+
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
+function exUtility#GetProjectFileFilterPattern() " <<<
+    let filter_list = split(s:ex_project_file_filter,',')
+    let filter_pattern = ''
+    let cscope_filter_pattern = ''
+
+    for item in filter_list
+        let filter_pattern .= '\\.' . item . '$|'
+        if item =~ 'c\|cpp\|cxx\|c++\|cc\|h\|hh\|hxx\|hpp\|inl\|hlsl\|vsh\|psh\|fx\|fxh\|cg\|shd\|glsl'
+            let cscope_filter_pattern .= '\\.' . item . '$|'
+        endif
+    endfor
+    let filter_pattern = strpart( filter_pattern, 0, len(filter_pattern) - 1)
+    let cscope_filter_pattern = strpart( cscope_filter_pattern, 0, len(cscope_filter_pattern) - 1)
+    return [filter_pattern,cscope_filter_pattern]
 endfunction " >>>
 
 " ------------------------------------------------------------------ 
@@ -2491,6 +2536,8 @@ function exUtility#CreateQuickGenProject() " <<<
     let lang_type = exUtility#GetLangType()
     let support_map = exUtility#GetQuickGenSupportMap(lang_type) 
     let ctags_options = exUtility#GetCtagsOptions(lang_type) 
+    let file_filter_list = exUtility#GetProjectFileFilterCommand() " NOTE: 0: file_filter, 1: cscope_file_filter
+    let file_filter_pattern_list = exUtility#GetProjectFileFilterPattern() " NOTE: 0: file_filter_pattern, 1: cscope_file_filter_pattern
 
 
     " init platform dependence value and write script
@@ -2502,7 +2549,10 @@ function exUtility#CreateQuickGenProject() " <<<
         silent call add( text_list, 'set cwd=%~pd0' )
         silent call add( text_list, 'set lang_type='.lang_type ) " 
         silent call add( text_list, 'set vimfiles_path='.g:exES_vimfile_dir )
-        silent call add( text_list, 'set file_filter='.exUtility#GetProjectFileFilterCommand() )
+        silent call add( text_list, 'set file_filter='.file_filter_list[0] )
+        silent call add( text_list, 'set file_filter_pattern='.'"'.file_filter_pattern_list[0].'"' )
+        silent call add( text_list, 'set cscope_file_filter='.file_filter_list[1] )
+        silent call add( text_list, 'set cscope_file_filter_pattern='.'"'.file_filter_pattern_list[1].'"' )
         silent call add( text_list, 'set dir_filter='.exUtility#GetProjectDirFilterCommand() )
         silent call add( text_list, 'set support_filenamelist='.support_map['filenamelist'] )
         silent call add( text_list, 'set support_ctags='.support_map['ctags'] )
@@ -2521,7 +2571,10 @@ function exUtility#CreateQuickGenProject() " <<<
         silent call add( text_list, 'export cwd=${PWD}' ) " 
         silent call add( text_list, 'export lang_type='.'"'.lang_type.'"' ) " 
         silent call add( text_list, 'export vimfiles_path='.'"'.g:exES_vimfile_dir.'"' )
-        silent call add( text_list, 'export file_filter='.'"'.exUtility#GetProjectFileFilterCommand().'"' )
+        silent call add( text_list, 'set file_filter='.'"'.file_filter_list[0].'"' )
+        silent call add( text_list, 'set file_filter_pattern='.'"'.file_filter_pattern_list[0].'"' )
+        silent call add( text_list, 'set cscope_file_filter='.'"'.file_filter_list[1].'"' )
+        silent call add( text_list, 'set cscope_file_filter_pattern='.'"'.file_filter_pattern_list[1].'"' )
         silent call add( text_list, 'export dir_filter='.'"'.exUtility#GetProjectDirFilterCommand().'"' )
         silent call add( text_list, 'export support_filenamelist='.'"'.support_map['filenamelist'].'"' )
         silent call add( text_list, 'export support_ctags='.'"'.support_map['ctags'].'"' )

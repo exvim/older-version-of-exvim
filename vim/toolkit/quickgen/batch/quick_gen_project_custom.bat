@@ -15,7 +15,10 @@ set script_type=custom
 set cwd=%~pd0
 set lang_type=c cpp c# uc shader python vim math
 set vimfiles_path=_vimfiles
-set file_filter=*.c *.cpp *.cxx *.c++ *.C *.cc *.h *.H *.hh *.hxx *.hpp *.inl *.cs *.uc *.hlsl *.vsh *.psh *.fx *.fxh *.cg *.shd *.glsl *.py *.pyw *.vim *.awk *.m *.dox *.doxygen *.ini *.cfg *.wiki *.mk *.err *.exe *.bat *.sh 
+set file_filter=*.C *.CPP *.CXX *.C++ *.CC *.H *.HH *.HXX *.HPP *.INL *.CS *.UC *.HLSL *.VSH *.PSH *.FX *.FXH *.CG *.SHD *.GLSL *.PY *.PYW *.VIM *.AWK *.M *.DOX *.DOXYGEN *.INI *.CFG *.WIKI *.MK *.ERR *.EXE *.BAT *.SH 
+set file_filter_pattern="\\.c$|\\.cpp$|\\.cxx$|\\.c++$|\\.C$|\\.cc$|\\.h$|\\.H$|\\.hh$|\\.hxx$|\\.hpp$|\\.inl$|\\.cs$|\\.uc$|\\.hlsl$|\\.vsh$|\\.psh$|\\.fx$|\\.fxh$|\\.cg$|\\.shd$|\\.glsl$|\\.py$|\\.pyw$|\\.vim$|\\.awk$|\\.m$|\\.dox$|\\.doxygen$|\\.ini$|\\.cfg$|\\.wiki$|\\.mk$|\\.err$|\\.exe$|\\.bat$|\\.sh$"
+set cscope_file_filter=*.C *.CPP *.CXX *.C++ *.CC *.H *.HH *.HXX *.HPP *.INL *.CS *.UC *.HLSL *.VSH *.PSH *.FX *.FXH *.CG *.SHD *.GLSL *.CFG *.SH 
+set cscope_file_filter_pattern="\\.c$|\\.cpp$|\\.cxx$|\\.c++$|\\.C$|\\.cc$|\\.h$|\\.H$|\\.hh$|\\.hxx$|\\.hpp$|\\.inl$|\\.cs$|\\.uc$|\\.hlsl$|\\.vsh$|\\.psh$|\\.fx$|\\.fxh$|\\.cg$|\\.shd$|\\.glsl$|\\.cfg$|\\.sh$"
 set dir_filter=
 
 rem /////////////////////////////////////////////////////////////////////////////
