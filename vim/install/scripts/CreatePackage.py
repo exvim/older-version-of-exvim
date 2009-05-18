@@ -10,6 +10,7 @@
 #/////////////////////////////////////////////////////////////////////////////
 
 import os.path
+import shutil
 import zipfile
 
 #/////////////////////////////////////////////////////////////////////////////
@@ -221,7 +222,7 @@ def CreatePatchedPluginsPackage ():
 
 def CopyDir ( _src, _dest ):
     # walk through the path
-    for root, dirs, files in os.walk( _path, topdown=True ):
+    for root, dirs, files in os.walk( _src, topdown=True ):
         # don't visit .svn directories
         if '.svn' in dirs:
             dirs.remove('.svn') 
@@ -230,15 +231,14 @@ def CopyDir ( _src, _dest ):
         for name in files:
             file_full_path = os.path.join( root, name ) 
             # get relative path
-            relative_path = "." + file_full_path[len(source_path):]
+            relative_path = "." + file_full_path[len(_src):]
             dest_path = os.path.abspath( os.path.join( _dest, relative_path ) )
 
             # if relative path not exist, create it
             if os.path.isdir( os.path.dirname(dest_path) ) == False :
-                print "create directory: %s" % os.path.dirname(dest_path) 
                 os.makedirs( os.path.dirname(dest_path) )
             # copy file from local project to google project
-            print "coping file: %s" % file_full_path, dest_path 
+            print "coping file: %s" % file_full_path
             shutil.copy ( file_full_path, dest_path )
 
 # ------------------------------------------------------------------ 
@@ -253,8 +253,13 @@ def CreateInstaller ():
     print ""
 
     print "Creating installer"
-    installer_path = dest_root_path + "/" + installer_name
-    CopyDir ( os.path.join(source_path, "install"), installer_path )
+    installer_path = dest_version_path + "/" + installer_name
+    CopyDir ( os.path.join(source_path, "vim72"), os.path.join(installer_path,"exDev/exVim/vim") )
+    # TODO: in NSIS copy only vim-plugins, no matter ex-plugins or other-plugins.
+
+    # TODO: confirm this
+    os.makedirs( os.path.join(installer_path, "exDev/exVim/data/backup") )
+    os.makedirs( os.path.join(installer_path, "exDev/exVim/data/swap") )
 
     
 
