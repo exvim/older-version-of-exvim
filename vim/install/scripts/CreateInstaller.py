@@ -201,13 +201,19 @@ def CompileInstaller ():
     installer_exe_ver_path = os.path.join(dest_root_path, installer_exe_name + "-" + version + ".exe")
 
     # compile installer by exDev.nsi
+    if os.path.isfile (installer_exe_ver_path) == True:
+        print "%s already exists, if you want to re-generate one, remove it manually." % (installer_exe_name + "-" + version)
+        return
+
+    cwd = os.getcwd()
     os.chdir( dest_root_path )
     os.system( 'makensis exDev.nsi')
+    os.chdir( cwd )
     if os.path.isfile(installer_exe_path) == True :
         os.rename( installer_exe_path, installer_exe_ver_path) 
-        "Success: %s created!" % installer_exe_ver_path
+        print "Success: %s created!" % installer_exe_ver_path
     else :
-        "Failed: %s not found!" % installer_exe_name
+        print "Failed: %s not found!" % installer_exe_name
 
 
 #/////////////////////////////////////////////////////////////////////////////
