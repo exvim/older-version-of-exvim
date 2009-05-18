@@ -203,6 +203,10 @@ SectionGroup "other tools" sec_other_tools
 
             ; copy sed files
             SetOutPath $INSTDIR\GnuWin32
+            File /r exDev\GnuWin32\regex\*
+
+            ; copy sed files
+            SetOutPath $INSTDIR\GnuWin32
             File /r exDev\GnuWin32\sed\*
         SectionEnd
 

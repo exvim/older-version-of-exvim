@@ -17,8 +17,8 @@ import zipfile
 #/////////////////////////////////////////////////////////////////////////////
 
 # general
-version = "7.04a"
-source_path = "."
+version = "7.05a"
+source_path = "d:/exDev/vim"
 dest_root_path = "d:/Project/Dev/exVim_google/release_version" 
 dest_version_path = dest_root_path + "/" + version
 
@@ -26,6 +26,7 @@ dest_version_path = dest_root_path + "/" + version
 full_package_name = "full-package"
 ex_package_name = "ex-plugins-package"
 patched_package_name = "patched-plugins-package"
+installer_name = "installer"
 
 #/////////////////////////////////////////////////////////////////////////////
 # functions
@@ -213,6 +214,48 @@ def CreatePatchedPluginsPackage ():
     # close zip file
     zipfp.close()
     print "patched-pugins-package created!"
+
+# ------------------------------------------------------------------ 
+# Desc: CopyDir 
+# ------------------------------------------------------------------ 
+
+def CopyDir ( _src, _dest ):
+    # walk through the path
+    for root, dirs, files in os.walk( _path, topdown=True ):
+        # don't visit .svn directories
+        if '.svn' in dirs:
+            dirs.remove('.svn') 
+
+        # copy files
+        for name in files:
+            file_full_path = os.path.join( root, name ) 
+            # get relative path
+            relative_path = "." + file_full_path[len(source_path):]
+            dest_path = os.path.abspath( os.path.join( _dest, relative_path ) )
+
+            # if relative path not exist, create it
+            if os.path.isdir( os.path.dirname(dest_path) ) == False :
+                print "create directory: %s" % os.path.dirname(dest_path) 
+                os.makedirs( os.path.dirname(dest_path) )
+            # copy file from local project to google project
+            print "coping file: %s" % file_full_path, dest_path 
+            shutil.copy ( file_full_path, dest_path )
+
+# ------------------------------------------------------------------ 
+# Desc: CreateInstaller 
+# ------------------------------------------------------------------ 
+
+def CreateInstaller ():
+    print "" 
+    print "#########################" 
+    print "installer"
+    print "#########################" 
+    print ""
+
+    print "Creating installer"
+    installer_path = dest_root_path + "/" + installer_name
+    CopyDir ( os.path.join(source_path, "install"), installer_path )
+
     
 
 #/////////////////////////////////////////////////////////////////////////////
@@ -224,3 +267,4 @@ if __name__ == "__main__":
         CreateFullPackage()
         CreateExPluginsPackage()
         CreatePatchedPluginsPackage()
+        CreateInstaller()
