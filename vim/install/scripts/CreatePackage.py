@@ -27,7 +27,6 @@ dest_version_path = dest_root_path + "/" + version
 full_package_name = "full-package"
 ex_package_name = "ex-plugins-package"
 patched_package_name = "patched-plugins-package"
-installer_name = "installer"
 
 #/////////////////////////////////////////////////////////////////////////////
 # functions
@@ -216,53 +215,6 @@ def CreatePatchedPluginsPackage ():
     zipfp.close()
     print "patched-pugins-package created!"
 
-# ------------------------------------------------------------------ 
-# Desc: CopyDir 
-# ------------------------------------------------------------------ 
-
-def CopyDir ( _src, _dest ):
-    # walk through the path
-    for root, dirs, files in os.walk( _src, topdown=True ):
-        # don't visit .svn directories
-        if '.svn' in dirs:
-            dirs.remove('.svn') 
-
-        # copy files
-        for name in files:
-            file_full_path = os.path.join( root, name ) 
-            # get relative path
-            relative_path = "." + file_full_path[len(_src):]
-            dest_path = os.path.abspath( os.path.join( _dest, relative_path ) )
-
-            # if relative path not exist, create it
-            if os.path.isdir( os.path.dirname(dest_path) ) == False :
-                os.makedirs( os.path.dirname(dest_path) )
-            # copy file from local project to google project
-            print "coping file: %s" % file_full_path
-            shutil.copy ( file_full_path, dest_path )
-
-# ------------------------------------------------------------------ 
-# Desc: CreateInstaller 
-# ------------------------------------------------------------------ 
-
-def CreateInstaller ():
-    print "" 
-    print "#########################" 
-    print "installer"
-    print "#########################" 
-    print ""
-
-    print "Creating installer"
-    installer_path = dest_version_path + "/" + installer_name
-    CopyDir ( os.path.join(source_path, "vim72"), os.path.join(installer_path,"exDev/exVim/vim") )
-    # TODO: in NSIS copy only vim-plugins, no matter ex-plugins or other-plugins.
-
-    # TODO: confirm this
-    os.makedirs( os.path.join(installer_path, "exDev/exVim/data/backup") )
-    os.makedirs( os.path.join(installer_path, "exDev/exVim/data/swap") )
-
-    
-
 #/////////////////////////////////////////////////////////////////////////////
 # main
 #/////////////////////////////////////////////////////////////////////////////
@@ -272,4 +224,3 @@ if __name__ == "__main__":
         CreateFullPackage()
         CreateExPluginsPackage()
         CreatePatchedPluginsPackage()
-        CreateInstaller()

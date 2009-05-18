@@ -113,27 +113,15 @@ SectionGroup "!exVim" sec_exVim
     SectionEnd
 
     ;  ======================================================== 
-    ;  ex-plugins  
+    ;  vim-plugins  
     ;  ======================================================== 
 
-    Section "ex-plugins" sec_ex_plugins
+    Section "vim-plugins" sec_vim_plugins
         SectionIn 1 2
 
-        ; copy ex-plugin files
+        ; copy vim-plugin files
         SetOutPath $INSTDIR\vim
-        File /r exDev\exVim\ex-plugins\*
-    SectionEnd
-
-    ;  ======================================================== 
-    ;  other plugins 
-    ;  ======================================================== 
-
-    Section "other plugins" sec_other_plugins
-        SectionIn 1 2
-
-        ; copy other plugin files
-        SetOutPath $INSTDIR\vim
-        File /r exDev\exVim\other-plugins\*
+        File /r exDev\exVim\vim-plugins\*
     SectionEnd
 
 SectionGroupEnd
@@ -277,8 +265,7 @@ SectionEnd
 ;Language strings
 LangString DESC_exVim ${LANG_ENGLISH} "exVim"
 LangString DESC_vim ${LANG_ENGLISH} "vim compile with python,cscope"
-LangString DESC_ex_plugins ${LANG_ENGLISH} "ex-plugins for vim"
-LangString DESC_other_plugins ${LANG_ENGLISH} "other-plugins for vim"
+LangString DESC_vim_plugins ${LANG_ENGLISH} "vim-plugins for vim"
 LangString DESC_other_tools ${LANG_ENGLISH} "terminal tools"
 LangString DESC_gnu_win32 ${LANG_ENGLISH} "GnuWin32 tools"
 LangString DESC_gawk ${LANG_ENGLISH} "gawk"
@@ -292,8 +279,7 @@ LangString DESC_graphviz ${LANG_ENGLISH} "Graphviz"
 !insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
     !insertmacro MUI_DESCRIPTION_TEXT ${sec_exVim} $(DESC_exVim)
     !insertmacro MUI_DESCRIPTION_TEXT ${sec_vim} $(DESC_vim)
-    !insertmacro MUI_DESCRIPTION_TEXT ${sec_ex_plugins} $(DESC_ex_plugins)
-    !insertmacro MUI_DESCRIPTION_TEXT ${sec_other_plugins} $(DESC_other_plugins)
+    !insertmacro MUI_DESCRIPTION_TEXT ${sec_vim_plugins} $(DESC_vim_plugins)
     !insertmacro MUI_DESCRIPTION_TEXT ${sec_other_tools} $(DESC_other_tools)
     !insertmacro MUI_DESCRIPTION_TEXT ${sec_gnu_win32} $(DESC_gnu_win32)
     !insertmacro MUI_DESCRIPTION_TEXT ${sec_gawk} $(DESC_gawk)
