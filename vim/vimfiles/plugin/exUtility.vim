@@ -113,7 +113,7 @@ function s:UpdateSyntaxHighlights() " <<<
     hi default link cCppOut exMacroDisable                
     hi default exMH_GroupNameEnable term=bold cterm=bold ctermfg=DarkRed ctermbg=LightGray gui=bold guifg=DarkRed guibg=LightGray
     hi default exMH_GroupNameDisable term=bold cterm=bold ctermfg=Red ctermbg=DarkGray gui=bold guifg=DarkGray guibg=LightGray
-    hi default link exMH_MacroEnable cPreProc
+    hi default link exMH_MacroEnable PreProc
     hi default link exMH_MacroDisable exMacroDisable
 
     " ======================================================== 

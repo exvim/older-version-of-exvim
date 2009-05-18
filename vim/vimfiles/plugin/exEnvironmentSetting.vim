@@ -67,7 +67,7 @@ endif
 " Desc: current version. increase this will cause template re-write 
 " ------------------------------------------------------------------ 
 
-let s:exES_CurrentVersion = 16
+let s:exES_CurrentVersion = 17
 
 " ======================================================== 
 " local variable initialization 
