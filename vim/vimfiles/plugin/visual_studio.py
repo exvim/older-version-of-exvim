@@ -441,7 +441,10 @@ def _get_dte_from_rot (pid=None, sln=None):
                 if pid:
                     logging.info ('_get_dte_from_rot returning dte for pid: %s' % (pid, ))
                     return dte
-                dte_sln = str(dte.Solution.FullName)
+                # MODIFY: jwu, support unicode encoding project { 
+                # dte_sln = str(dte.Solution.FullName)
+                dte_sln = str(dte.Solution.FullName.encode('utf8'))
+                # } MODIFY end 
                 if sln and dte_sln.endswith (sln):
                     return dte
                 if not dte_sln:
