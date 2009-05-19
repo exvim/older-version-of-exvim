@@ -18,7 +18,7 @@ import zipfile
 #/////////////////////////////////////////////////////////////////////////////
 
 # general
-version = "7.05a"
+version = "7.05b"
 source_path = "d:/exDev/vim"
 dest_root_path = "d:/Project/Dev/exVim_google/release_version" 
 dest_version_path = dest_root_path + "/" + version
