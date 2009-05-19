@@ -2561,7 +2561,7 @@ function exUtility#CreateQuickGenProject() " <<<
         silent call add( text_list, 'set support_cscope='.support_map['cscope'] )
         silent call add( text_list, 'set support_idutils='.support_map['idutils'] )
         silent call add( text_list, 'set ctags_options='.ctags_options )
-        silent call add( text_list, '"%EX_DEV%\vim\toolkit\quickgen\batch\quick_gen_project.bat" %1' )
+        silent call add( text_list, 'call "%EX_DEV%\vim\toolkit\quickgen\batch\quick_gen_project.bat" %1' )
         silent call add( text_list, 'echo on' )
     elseif has ('unix')
         let script_suffix = 'sh'
