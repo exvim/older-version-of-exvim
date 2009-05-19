@@ -63,12 +63,6 @@ if !exists('g:exES_WebBrowser')
     endif
 endif
 
-" ------------------------------------------------------------------ 
-" Desc: current version. increase this will cause template re-write 
-" ------------------------------------------------------------------ 
-
-let s:exES_CurrentVersion = 17
-
 " ======================================================== 
 " local variable initialization 
 " ======================================================== 
@@ -79,6 +73,12 @@ let s:exES_CurrentVersion = 17
 
 let s:exES_setted = 0
 
+" ------------------------------------------------------------------ 
+" Desc: current version. increase this will cause template re-write 
+" ------------------------------------------------------------------ 
+
+let s:exES_CurrentVersion = 18
+
 "/////////////////////////////////////////////////////////////////////////////
 " function defines
 "/////////////////////////////////////////////////////////////////////////////
@@ -88,12 +88,15 @@ let s:exES_setted = 0
 " ------------------------------------------------------------------ 
 
 function s:exES_WriteDefaultTemplate() " <<<
-    let _cwd = exUtility#Pathfmt( getcwd(), 'unix' )
+    " NOTE: we use the dir path of .vimentry instead of getcwd().  
+    let _cwd = exUtility#Pathfmt( fnamemodify( bufname('%'), ':p:h' ), 'unix' )
     let _dir_name = g:exES_vimfile_dir
     let _vimfile_fullpath = simplify(_cwd.'/'._dir_name)
     let _project_name = fnamemodify( expand('%'), ":t:r" )  
     let _list = []
 
+    silent call add(_list, '-- auto-gen settings (DO NOT MODIFY) --')
+    silent call add(_list, '')
     silent call add(_list, 'CWD='._cwd)
     silent call add(_list, 'Version='.s:exES_CurrentVersion)
 
@@ -162,6 +165,45 @@ function s:exES_WriteDefaultTemplate() " <<<
 endfunction " >>>
 
 " ------------------------------------------------------------------ 
+" Desc: default environment update function 
+" ------------------------------------------------------------------ 
+
+function s:exES_LoadSettings( start, end ) " <<<
+    for Line in getline( a:start, a:end )
+        if match(Line,'+=\|=') == -1 " if the line is comment line, skip it.
+            continue 
+        endif
+
+        if stridx ( Line, '+=') == -1
+            let SettingList = split(Line, "=")
+            if len(SettingList)>=2 " set value as string to the non-list variable.
+                " let g:exES_{SettingList[0]} = escape(SettingList[1], ' ')
+                " since '\ ' will get error in win32, just disable it here
+                let g:exES_{SettingList[0]} = SettingList[1]
+            elseif len(SettingList)>=1 " if don't have value, set '' value
+                let g:exES_{SettingList[0]} = ''
+            endif
+        else " create list variables
+            let SettingList = split(Line, "+=")
+            if len(SettingList)>=1 " we can define a variable if the number of split list itmes more than one
+                if !exists( 'g:exES_'.SettingList[0] ) " if we don't define this list variable, define it first
+                    let g:exES_{SettingList[0]} = []
+                endif
+
+                " now add items to the list
+                if len(SettingList)>=2 " we can assigne a value if the number of split list items more then two
+                    if findfile( SettingList[1] ) != ''
+                        silent call add ( g:exES_{SettingList[0]}, SettingList[1] )
+                    else
+                        call exUtility#WarningMsg( 'Warning: vimentry ' . SettingList[1] . ' not found! Skip reference it' )
+                    endif
+                endif
+            endif
+        endif
+    endfor
+endfunction " >>>
+
+" ------------------------------------------------------------------ 
 " Desc: 
 " ------------------------------------------------------------------ 
 
@@ -207,20 +249,8 @@ function g:exES_SetEnvironment( force_reset ) " <<<
     if s:exES_setted != 1 || a:force_reset == 1
         let s:exES_setted = 1
 
-        " get CWD
-        let Line = getline(1)
-        let SettingList = split(Line, "=")
-        if len(SettingList)>=2
-            " let g:exES_{SettingList[0]} = escape(SettingList[1], ' ')
-            " since '\ ' will get error in win32, just disable it here
-            let g:exES_{SettingList[0]} = SettingList[1]
-        endif
-		" get Ver.
-        let Line = getline(2)
-        let SettingList = split(Line, "=")
-        if len(SettingList)>=2
-            let g:exES_{SettingList[0]} = SettingList[1]
-        endif
+        " get CWD and Version
+        call s:exES_LoadSettings ( 1, 4 )
 
         " check if need to update setting file
         let need_update = 0
@@ -232,7 +262,6 @@ function g:exES_SetEnvironment( force_reset ) " <<<
             let need_update = 1
         elseif g:exES_CWD != _cwd " check if CWD is correct, rewrite default template if not
             echomsg "g:exES_CWD != _cwd ==> " . g:exES_CWD . " != " . _cwd
-            let g:exES_CWD = _cwd 
             let need_update = 1
         elseif g:exES_Version != s:exES_CurrentVersion " check if Ver is correct, rewrite default template if not
             echomsg "g:exES_Version != s:exES_CurrentVersion ==> " . g:exES_Version . " != " . s:exES_CurrentVersion
@@ -246,38 +275,8 @@ function g:exES_SetEnvironment( force_reset ) " <<<
         endif
 
         " read lines to get settings
-        for Line in getline(1, '$')
-            if match(Line,'+=\|=') == -1 " if the line is comment line, skip it.
-                continue 
-            endif
-
-            if stridx ( Line, '+=') == -1
-                let SettingList = split(Line, "=")
-                if len(SettingList)>=2 " set value as string to the non-list variable.
-                    " let g:exES_{SettingList[0]} = escape(SettingList[1], ' ')
-                    " since '\ ' will get error in win32, just disable it here
-                    let g:exES_{SettingList[0]} = SettingList[1]
-                elseif len(SettingList)>=1 " if don't have value, set '' value
-                    let g:exES_{SettingList[0]} = ''
-                endif
-            else " create list variables
-                let SettingList = split(Line, "+=")
-                if len(SettingList)>=1 " we can define a variable if the number of split list itmes more than one
-                    if !exists( 'g:exES_'.SettingList[0] ) " if we don't define this list variable, define it first
-                        let g:exES_{SettingList[0]} = []
-                    endif
-
-                    " now add items to the list
-                    if len(SettingList)>=2 " we can assigne a value if the number of split list items more then two
-                        if findfile( SettingList[1] ) != ''
-                            silent call add ( g:exES_{SettingList[0]}, SettingList[1] )
-                        else
-                            call exUtility#WarningMsg( 'Warning: vimentry ' . SettingList[1] . ' not found! Skip reference it' )
-                        endif
-                    endif
-                endif
-            endif
-        endfor
+        " NOTE: since we may rewrite the CWD and Version, we need to load from first line.
+        call s:exES_LoadSettings ( 1, '$' )
 
         " create _vimfiles directory
         if finddir(g:exES_CWD.'/'.g:exES_vimfile_dir) == ''
