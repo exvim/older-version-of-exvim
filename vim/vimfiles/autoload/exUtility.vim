@@ -1149,18 +1149,18 @@ endfunction  " >>>
 "                    inherits
 " ------------------------------------------------------------------ 
 
-function exUtility#GetVimFile( entry_path, file_type ) " <<<
+function exUtility#GetVimFile( entry_path, vimfiles_dirname, file_type ) " <<<
     "
     let entry_path = fnamemodify( a:entry_path, ':p')
     let fullpath_file = ''
     if a:file_type ==# 'tag'
-        let fullpath_file = entry_path . '/' . g:exES_vimfile_dir . '/tags'
+        let fullpath_file = entry_path . '/' . a:vimfiles_dirname . '/tags'
     elseif a:file_type ==# 'symbol' 
-        let fullpath_file = entry_path . '/' . g:exES_vimfile_dir . '/symbol'
+        let fullpath_file = entry_path . '/' . a:vimfiles_dirname . '/symbol'
     elseif a:file_type ==# 'id' 
-        let fullpath_file = entry_path . '/' . g:exES_vimfile_dir . '/ID'
+        let fullpath_file = entry_path . '/' . a:vimfiles_dirname . '/ID'
     elseif a:file_type ==# 'inherits' 
-        let fullpath_file = entry_path . '/' . g:exES_vimfile_dir . '/inherits'
+        let fullpath_file = entry_path . '/' . a:vimfiles_dirname . '/inherits'
     else
         call exUtility#WarningMsg( 'unknown file_type: ' . a:file_type )
         return
@@ -2129,7 +2129,7 @@ function exUtility#UpdateVimFiles( type ) " <<<
     endif
 
     " now process the quick_gen_project script
-    let update_cmd = quick_gen_script . gen_type . ' ' . g:exES_vimfile_dir
+    let update_cmd = quick_gen_script . gen_type . ' ' . g:exES_vimfiles_dirname
 
     " now process vimentry references
     let refs_update_cmd = exUtility#GetUpdateVimentryRefsCommand (a:type) 
@@ -2153,22 +2153,23 @@ function exUtility#GetUpdateVimentryRefsCommand( type ) " <<<
             let cmd .= ' & echo.'
             let cmd .= ' & echo Update vimentry references...'
 
-            let destSymbol = '"' . exUtility#Pathfmt(exUtility#GetVimFile ( g:exES_CWD, 'symbol'),'windows') . '"'
-            let destInherit = '"' . exUtility#Pathfmt(exUtility#GetVimFile ( g:exES_CWD, 'inherits'),'windows') . '"'
+            let destSymbol = '"' . exUtility#Pathfmt(exUtility#GetVimFile ( g:exES_CWD, g:exES_vimfiles_dirname, 'symbol'),'windows') . '"'
+            let destInherit = '"' . exUtility#Pathfmt(exUtility#GetVimFile ( g:exES_CWD, g:exES_vimfiles_dirname, 'inherits'),'windows') . '"'
 
             let symbolFiles = destSymbol
             let inheritFiles = destInherit
 
             " get process files
             for vimentry in g:exES_vimentryRefs
-                let entry_dir = fnamemodify( vimentry, ':p:h')
-                let symbolFiles .= '+' . '"' . exUtility#Pathfmt(exUtility#GetVimFile ( entry_dir, 'symbol'),'windows') . '"'
-                let inheritFiles .= '+' . '"' . exUtility#Pathfmt(exUtility#GetVimFile ( entry_dir, 'inherits'),'windows') . '"'
+                let ref_entry_dir = fnamemodify( vimentry, ':p:h')
+                let ref_vimfiles_dirname = '_vimfiles_' . fnamemodify( vimentry, ":t:r" )
+                let symbolFiles .= '+' . '"' . exUtility#Pathfmt(exUtility#GetVimFile ( ref_entry_dir, ref_vimfiles_dirname, 'symbol'),'windows') . '"'
+                let inheritFiles .= '+' . '"' . exUtility#Pathfmt(exUtility#GetVimFile ( ref_entry_dir, ref_vimfiles_dirname, 'inherits'),'windows') . '"'
             endfor
 
             " get symbol cmd
             if a:type == "" || a:type == "symbol"
-                let tmpSymbol = '"' . exUtility#Pathfmt( './'.g:exES_vimfile_dir.'/_symbol', 'windows' ) . '"'
+                let tmpSymbol = '"' . exUtility#Pathfmt( './'.g:exES_vimfiles_dirname.'/_symbol', 'windows' ) . '"'
                 let tmp_cmd = ' copy ' . symbolFiles . ' ' . tmpSymbol
                 let tmp_cmd .= ' & sort ' . tmpSymbol . ' /O ' . tmpSymbol
                 let tmp_cmd .= ' & move /Y ' . tmpSymbol . ' ' . destSymbol
@@ -2179,7 +2180,7 @@ function exUtility#GetUpdateVimentryRefsCommand( type ) " <<<
 
             " get inherit cmd
             if a:type == "" || a:type == "inherit"
-                let tmpInherit = '"' . exUtility#Pathfmt( './'.g:exES_vimfile_dir.'/_inherits', 'windows' ) . '"'
+                let tmpInherit = '"' . exUtility#Pathfmt( './'.g:exES_vimfiles_dirname.'/_inherits', 'windows' ) . '"'
                 let tmp_cmd = ' copy ' . inheritFiles . ' ' . tmpInherit
                 let tmp_cmd .= ' & move /Y ' . tmpInherit . ' ' . destInherit
 
@@ -2198,14 +2199,15 @@ function exUtility#GetUpdateVimentryRefsCommand( type ) " <<<
 
             " get process files
             for vimentry in g:exES_vimentryRefs
-                let entry_dir = fnamemodify( vimentry, ':p:h')
-                let symbolFiles .= ' ' . '"' . exUtility#Pathfmt(exUtility#GetVimFile ( entry_dir, 'symbol'),'unix') . '"'
-                let inheritFiles .= ' ' . '"' . exUtility#Pathfmt(exUtility#GetVimFile ( entry_dir, 'inherits'),'unix') . '"'
+                let ref_entry_dir = fnamemodify( vimentry, ':p:h')
+                let ref_vimfiles_dirname = '_vimfiles_' . fnamemodify( vimentry, ":t:r" )
+                let symbolFiles .= ' ' . '"' . exUtility#Pathfmt(exUtility#GetVimFile ( ref_entry_dir, ref_vimfiles_dirname, 'symbol'),'unix') . '"'
+                let inheritFiles .= ' ' . '"' . exUtility#Pathfmt(exUtility#GetVimFile ( ref_entry_dir, ref_vimfiles_dirname, 'inherits'),'unix') . '"'
             endfor
 
             " get symbol cmd
             if a:type == "" || a:type == "symbol"
-                let tmpSymbol = '"' . exUtility#Pathfmt( './'.g:exES_vimfile_dir.'/_symbol', 'unix' ) . '"'
+                let tmpSymbol = '"' . exUtility#Pathfmt( './'.g:exES_vimfiles_dirname.'/_symbol', 'unix' ) . '"'
                 let tmp_cmd = ' cat ' . symbolFiles . ' > ' . tmpSymbol
                 let tmp_cmd .= ' && sort ' . tmpSymbol . ' -o ' . tmpSymbol
                 let tmp_cmd .= ' && mv -f ' . tmpSymbol . ' ' . destSymbol
@@ -2216,7 +2218,7 @@ function exUtility#GetUpdateVimentryRefsCommand( type ) " <<<
 
             " get inherit cmd
             if a:type == "" || a:type == "inherit"
-                let tmpInherit = '"' . exUtility#Pathfmt( './'.g:exES_vimfile_dir.'/_inherits', 'unix' ) . '"'
+                let tmpInherit = '"' . exUtility#Pathfmt( './'.g:exES_vimfiles_dirname.'/_inherits', 'unix' ) . '"'
                 let tmp_cmd = ' cat ' . inheritFiles . ' > ' . tmpInherit
                 let tmp_cmd .= ' && mv -f ' . tmpInherit . ' ' . destInherit
 
@@ -2486,10 +2488,10 @@ endfunction " >>>
 " ------------------------------------------------------------------ 
 
 function exUtility#CreateIDLangMap( file_filter ) " <<<
-    if exists('g:exES_vimfile_dir')
-        let idlang_map_file = './'.g:exES_vimfile_dir.'/id-lang-autogen.map'
-        if finddir( './'.g:exES_vimfile_dir ) == ""
-            call exUtility#WarningMsg('Error: ' . './'.g:exES_vimfile_dir . ' not found!')
+    if exists('g:exES_vimfiles_dirname')
+        let idlang_map_file = './'.g:exES_vimfiles_dirname.'/id-lang-autogen.map'
+        if finddir( './'.g:exES_vimfiles_dirname ) == ""
+            call exUtility#WarningMsg('Error: ' . './'.g:exES_vimfiles_dirname . ' not found!')
             return 
         endif
 
@@ -2497,7 +2499,7 @@ function exUtility#CreateIDLangMap( file_filter ) " <<<
         silent call add ( text_list, '# autogen id-lang.map')
         silent call add ( text_list, '# NOTE: this file is created automatically after you create/refresh exProject.')
         silent call add ( text_list, '# CAUTION: you may loose your modification in this file, if you want customize your language map,')
-        silent call add ( text_list, '#          please create your own language map file under ./_vimfiles, and change the file name as id-lang.map')
+        silent call add ( text_list, '#          please create your own language map file under ./_vimfiles*, and change the file name as id-lang.map')
         silent call add ( text_list, '*~                    IGNORE')
         silent call add ( text_list, '*.bak                 IGNORE')
         silent call add ( text_list, '*.bk[0-9]             IGNORE')
@@ -2505,8 +2507,8 @@ function exUtility#CreateIDLangMap( file_filter ) " <<<
         silent call add ( text_list, '*/.deps/*             IGNORE')
         silent call add ( text_list, '*/.svn/*              IGNORE')
         silent call add ( text_list, '*.svn-base            IGNORE')
-        silent call add ( text_list, '_vimfiles/*           IGNORE')
-        silent call add ( text_list, 'quick_gen_project.*   IGNORE')
+        silent call add ( text_list, '_vimfiles*/*          IGNORE')
+        silent call add ( text_list, 'quick_gen_project*.*  IGNORE')
         silent call add ( text_list, '*.err                 IGNORE') " never bring error file into global search
         silent call add ( text_list, '*.exe                 IGNORE') " never bring exe file into global search
         silent call add ( text_list, '*.lnk                 IGNORE') " never bring lnk file into global search
@@ -2548,7 +2550,7 @@ function exUtility#CreateQuickGenProject() " <<<
         silent call add( text_list, 'set script_type=autogen' )
         silent call add( text_list, 'set cwd=%~pd0' )
         silent call add( text_list, 'set lang_type='.lang_type ) " 
-        silent call add( text_list, 'set vimfiles_path='.g:exES_vimfile_dir )
+        silent call add( text_list, 'set vimfiles_path='.g:exES_vimfiles_dirname )
         silent call add( text_list, 'set file_filter='.file_filter_list[0] )
         silent call add( text_list, 'set file_filter_pattern='.'"'.file_filter_pattern_list[0].'"' )
         silent call add( text_list, 'set cscope_file_filter='.file_filter_list[1] )
@@ -2570,7 +2572,7 @@ function exUtility#CreateQuickGenProject() " <<<
         silent call add( text_list, 'export EX_DEV="/usr/local/share"' )
         silent call add( text_list, 'export cwd=${PWD}' ) " 
         silent call add( text_list, 'export lang_type='.'"'.lang_type.'"' ) " 
-        silent call add( text_list, 'export vimfiles_path='.'"'.g:exES_vimfile_dir.'"' )
+        silent call add( text_list, 'export vimfiles_path='.'"'.g:exES_vimfiles_dirname.'"' )
         silent call add( text_list, 'export file_filter='.'"'.file_filter_list[0].'"' )
         silent call add( text_list, 'export file_filter_pattern='."'".file_filter_pattern_list[0]."'" )
         silent call add( text_list, 'export cscope_file_filter='.'"'.file_filter_list[1].'"' )
@@ -2587,7 +2589,11 @@ function exUtility#CreateQuickGenProject() " <<<
     endif
 
     "
-    let file_name = "quick_gen_project_autogen." . script_suffix
+    let vimentry_name = ''
+    if exists('g:exES_VimEntryName')
+        let vimentry_name = '_' . g:exES_VimEntryName
+    endif
+    let file_name = 'quick_gen_project' . vimentry_name . '_autogen.' . script_suffix
     call writefile ( text_list, file_name )
 
     " 
@@ -2775,7 +2781,7 @@ function exUtility#SrcHighlight( line1, line2 ) " <<<
 
     " process src-highlight
     if exists("g:exES_CWD")
-        let temp_directory_path = g:exES_CWD.'/'.g:exES_vimfile_dir.'/_temp' 
+        let temp_directory_path = g:exES_CWD.'/'.g:exES_vimfiles_dirname.'/_temp' 
         let temp_file = temp_directory_path.'/'.'_src_highlight.txt' 
         let temp_file_html = temp_file . '.html' 
     else
@@ -2820,7 +2826,7 @@ function exUtility#GenInheritsDot( pattern, gen_method ) " <<<
     if exists( g:exES_Inherits )
         let inherits_file = g:exES_Inherits
     else
-        let inherits_file = './'.g:exES_vimfile_dir.'/inherits'
+        let inherits_file = './'.g:exES_vimfiles_dirname.'/inherits'
     endif
 
     if findfile ( inherits_file ) == ''
@@ -2831,7 +2837,7 @@ function exUtility#GenInheritsDot( pattern, gen_method ) " <<<
     echomsg "generating inherits: " . a:pattern
 
     " create inherit dot file path
-    let inherit_directory_path = g:exES_CWD.'/'.g:exES_vimfile_dir.'/_hierarchies/' 
+    let inherit_directory_path = g:exES_CWD.'/'.g:exES_vimfiles_dirname.'/_hierarchies/' 
     if finddir(inherit_directory_path) == ''
         silent call mkdir(inherit_directory_path)
     endif
@@ -2961,6 +2967,25 @@ function exUtility#RecursiveGetParent(inherits_list, file_list) " <<<
         let result_list += exUtility#RecursiveGetParent( parent_list, a:file_list ) 
     endfor
     return result_list
+endfunction " >>>
+
+"/////////////////////////////////////////////////////////////////////////////
+" environment functions
+"/////////////////////////////////////////////////////////////////////////////
+
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
+function exUtility#EditVimEntry() " <<<
+    if exists( 'g:exES_VimEntryName' ) && exists( 'g:exES_CWD' ) && findfile ( g:exES_VimEntryName.'.vimentry', g:exES_CWD ) != ""
+        let vimentry_file = g:exES_VimEntryName . '.vimentry'
+        echon 'edit vimentry file: ' . vimentry_file . "\r"
+        call exUtility#GotoEditBuffer ()
+        silent exec 'e ' . g:exES_CWD . '/' . vimentry_file
+    else
+        call exUtility#WarningMsg ("can't find current vimentry file")
+    endif
 endfunction " >>>
 
 "/////////////////////////////////////////////////////////////////////////////

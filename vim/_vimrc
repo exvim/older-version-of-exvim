@@ -436,6 +436,9 @@ au FileType vim set comments=sO:\"\ -,mO:\"\ \ ,eO:\"\",f:\"
 " Desc: exUtility
 " ------------------------------------------------------------------ 
 
+" edit current vimentry
+nnoremap <unique> <leader>ve :call exUtility#EditVimEntry ()<CR>
+
 " map for quick add special comments
 nnoremap <unique> <leader>ws :SEG<CR>
 nnoremap <unique> <leader>wd :DEF<CR>
@@ -737,7 +740,7 @@ let g:exMB_window_direction = 'bel'
 
 " NOTE: The exEnvironmentSetting must put at the end of the plugin settings. It may update the default settings of plugin above
 
-let g:exES_vimfile_dir = "_vimfiles"
+let g:exES_default_vimfiles_dirname = "_vimfiles"
 let g:exES_project_cmd = 'EXProject'
 
 " NOTE: if you have different programme path and settings, pls create your own vimrc under $HOME, and define these variables by yourself.

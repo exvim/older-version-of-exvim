@@ -23,9 +23,12 @@ let loaded_ex_environment_setting=1
 " Desc: create to specified where to put vim files 
 " ------------------------------------------------------------------ 
 
-if !exists('g:exES_vimfile_dir')
-    let g:exES_vimfile_dir = "_vimfiles"
+if !exists('g:exES_default_vimfiles_dirname')
+    let g:exES_default_vimfiles_dirname = "_vimfiles"
 endif
+
+" NOTE: this value will be set automatically
+let g:exES_vimfiles_dirname = g:exES_default_vimfiles_dirname
 
 " ------------------------------------------------------------------ 
 " Desc: set project command
@@ -77,7 +80,7 @@ let s:exES_setted = 0
 " Desc: current version. increase this will cause template re-write 
 " ------------------------------------------------------------------ 
 
-let s:exES_CurrentVersion = 18
+let s:exES_CurrentVersion = 20
 
 "/////////////////////////////////////////////////////////////////////////////
 " function defines
@@ -89,23 +92,28 @@ let s:exES_CurrentVersion = 18
 
 function s:exES_WriteDefaultTemplate() " <<<
     " NOTE: we use the dir path of .vimentry instead of getcwd().  
-    let _cwd = exUtility#Pathfmt( fnamemodify( bufname('%'), ':p:h' ), 'unix' )
-    let _dir_name = g:exES_vimfile_dir
-    let _vimfile_fullpath = simplify(_cwd.'/'._dir_name)
-    let _project_name = fnamemodify( expand('%'), ":t:r" )  
+    let _cwd = exUtility#Pathfmt( fnamemodify( expand('%'), ':p:h' ), 'unix' )
+    let _vimentry_name = fnamemodify( expand('%'), ":t:r" )  
+    let _dir_name = '_vimfiles_'._vimentry_name
+    " DELME { 
+    " let _dir_name = g:exES_default_vimfiles_dirname
+    " let _vimfile_fullpath = simplify(_cwd.'/'._dir_name)
+    " } DELME end 
     let _list = []
 
     silent call add(_list, '-- auto-gen settings (DO NOT MODIFY) --')
     silent call add(_list, '')
     silent call add(_list, 'CWD='._cwd)
     silent call add(_list, 'Version='.s:exES_CurrentVersion)
+    silent call add(_list, 'VimEntryName='._vimentry_name)
+    silent call add(_list, 'VimfilesDir='._dir_name)
 
 	" Init the exUtility plugin file path
     silent call add(_list, '')
     silent call add(_list, '-- ex-plugins File Settings --')
     silent call add(_list, '')
     silent call add(_list, 'LangType=auto') " NOTE: null means depends on file_filter
-    silent call add(_list, 'Project=./'._dir_name.'/'._project_name.'.exproject')
+    silent call add(_list, 'Project=./'._dir_name.'/'.'project_tree.exproject')
     silent call add(_list, 'FilenameList=./'._dir_name.'/filenamelist')
     silent call add(_list, 'Tag=./'._dir_name.'/tags') " NOTE: if cpoptions+=d not set for each buffer, then the tags need full path or will not be able to find. so pls write 'au BufNewFile,BufEnter * set cpoptions+=d' in your rc
     silent call add(_list, 'ID=./'._dir_name.'/ID')
@@ -134,10 +142,10 @@ function s:exES_WriteDefaultTemplate() " <<<
     silent call add(_list, '-- Visual Studio Settings --')
     silent call add(_list, '')
 
-    silent call add(_list, 'vsTaskList=./'._dir_name.'/vs_task_list.txt')
-    silent call add(_list, 'vsOutput=./'._dir_name.'/vs_output.txt')
-    silent call add(_list, 'vsFindResult1=./'._dir_name.'/vs_find_results_1.txt')
-    silent call add(_list, 'vsFindResult2=./'._dir_name.'/vs_find_results_2.txt')
+    silent call add(_list, 'vsTaskList=./'._dir_name.'/vs_task_list')
+    silent call add(_list, 'vsOutput=./'._dir_name.'/vs_output')
+    silent call add(_list, 'vsFindResult1=./'._dir_name.'/vs_find_results_1')
+    silent call add(_list, 'vsFindResult2=./'._dir_name.'/vs_find_results_2')
 
 	" TODO: use list for souliton results, and apply this list in
 	" visual_studio plugin search
@@ -217,13 +225,15 @@ function g:exES_SetEnvironment( force_reset ) " <<<
 	syn match exES_SynSetting transparent  "^.\{-}=.*$" contains=exES_SynVar,exES_SynOperator
 	syn match exES_SynVar	"^.\{-}=" contained contains=exES_SynOperator
 	syn match exES_SynOperator	"+*=.*$" contained contains=exES_SynVal
-	syn match exES_SynVal	"[^+=].*$" contained
+	syn match exES_SynVal	"[^+=].*$" contained " contains=exES_SynDeref
 	syn match exES_SynComment	"^-- .\+ --$" 
+    " KEEPME: syn region exES_SynDeref start="\${" end="}" contained
 
 	highlight def exES_SynVar gui=none guifg=DarkCyan term=none cterm=none ctermfg=DarkCyan
 	highlight link exES_SynOperator Normal
 	highlight def exES_SynVal gui=none guifg=Brown term=none cterm=none ctermfg=Brown
 	highlight link exES_SynComment Comment
+    " KEEPME highlight link exES_SynDeref Preproc
 
     " record edit buffer
     silent! call exUtility#RecordCurrentBufNum()
@@ -250,7 +260,7 @@ function g:exES_SetEnvironment( force_reset ) " <<<
         let s:exES_setted = 1
 
         " get CWD and Version
-        call s:exES_LoadSettings ( 1, 4 )
+        call s:exES_LoadSettings ( 1, 6 )
 
         " check if need to update setting file
         let need_update = 0
@@ -275,22 +285,25 @@ function g:exES_SetEnvironment( force_reset ) " <<<
         endif
 
         " read lines to get settings
-        " NOTE: since we may rewrite the CWD and Version, we need to load from first line.
+        " NOTE: since we may rewrite the 'auto-gen settings' section, we need to load from first line.
         call s:exES_LoadSettings ( 1, '$' )
+        if exists ('g:exES_VimfilesDir')
+            let g:exES_vimfiles_dirname = g:exES_VimfilesDir
+        endif
 
         " create _vimfiles directory
-        if finddir(g:exES_CWD.'/'.g:exES_vimfile_dir) == ''
-            silent call mkdir(g:exES_CWD.'/'.g:exES_vimfile_dir)
+        if finddir(g:exES_CWD.'/'.g:exES_vimfiles_dirname) == ''
+            silent call mkdir(g:exES_CWD.'/'.g:exES_vimfiles_dirname)
         endif
 
         " create _inherits directory
-        let inherit_directory_path = g:exES_CWD.'/'.g:exES_vimfile_dir.'/_hierarchies' 
+        let inherit_directory_path = g:exES_CWD.'/'.g:exES_vimfiles_dirname.'/_hierarchies' 
         if finddir(inherit_directory_path) == ''
             silent call mkdir(inherit_directory_path)
         endif
 
         " create _temp directory
-        let temp_directory_path = g:exES_CWD.'/'.g:exES_vimfile_dir.'/_temp' 
+        let temp_directory_path = g:exES_CWD.'/'.g:exES_vimfiles_dirname.'/_temp' 
         if finddir(temp_directory_path) == ''
             silent call mkdir(temp_directory_path)
         endif
@@ -343,8 +356,9 @@ function g:exES_UpdateEnvironment() " <<<
     " set vimentry references
     if exists ('g:exES_vimentryRefs')
         for vimentry in g:exES_vimentryRefs
-            let entry_dir = fnamemodify( vimentry, ':p:h')
-            let fullpath_tagfile = exUtility#GetVimFile ( entry_dir, 'tag')
+            let ref_entry_dir = fnamemodify( vimentry, ':p:h')
+            let ref_vimfiles_dirname = '_vimfiles_' . fnamemodify( vimentry, ":t:r" )
+            let fullpath_tagfile = exUtility#GetVimFile ( ref_entry_dir, ref_vimfiles_dirname, 'tag')
             if has ('win32')
                 let fullpath_tagfile = exUtility#Pathfmt( fullpath_tagfile, 'windows' )
             elseif has ('unix')
