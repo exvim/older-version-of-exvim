@@ -97,14 +97,14 @@ endif
 " Desc: set defualt filter
 " ------------------------------------------------------------------ 
 
-if !exists('g:exPJ_defualt_filter')
-    let g:exPJ_defualt_filter  = 'c,cpp,cxx,c++,C,cc,'
-    let g:exPJ_defualt_filter .= 'h,H,hh,hxx,hpp,inl,'
-    let g:exPJ_defualt_filter .= 'uc,'
-    let g:exPJ_defualt_filter .= 'hlsl,vsh,psh,glsl,'
-    let g:exPJ_defualt_filter .= 'dox,doxygen,'
-    let g:exPJ_defualt_filter .= 'ini,cfg,'
-    let g:exPJ_defualt_filter .= 'mk,err,exe,'
+if !exists('g:exPJ_default_filter')
+    let g:exPJ_default_filter  = 'c,cpp,cxx,c++,C,cc,'
+    let g:exPJ_default_filter .= 'h,H,hh,hxx,hpp,inl,'
+    let g:exPJ_default_filter .= 'uc,'
+    let g:exPJ_default_filter .= 'hlsl,vsh,psh,glsl,'
+    let g:exPJ_default_filter .= 'dox,doxygen,'
+    let g:exPJ_default_filter .= 'ini,cfg,'
+    let g:exPJ_default_filter .= 'mk,err,exe,'
 endif
 
 " ======================================================== 
@@ -127,7 +127,7 @@ let s:exPJ_cursor_line = 0
 let s:exPJ_cursor_col = 0
 let s:exPJ_need_update_select_window = 0
 
-silent call exUtility#SetProjectFilter ( "file_filter", g:exPJ_defualt_filter )
+silent call exUtility#SetProjectFilter ( "file_filter", g:exPJ_default_filter )
 silent call exUtility#SetProjectFilter ( "dir_filter", "" ) " null-string means include all directories
 
 "/////////////////////////////////////////////////////////////////////////////

@@ -710,16 +710,16 @@ let g:exPJ_backto_editbuf = 1
 let g:exPJ_close_when_selected = 0
 let g:exPJ_window_width_increment = 50
 
-let g:exPJ_defualt_filter  = 'c,cpp,cxx,c++,C,cc,'
-let g:exPJ_defualt_filter .= 'h,H,hh,hxx,hpp,inl,'
-let g:exPJ_defualt_filter .= 'cs,'
-let g:exPJ_defualt_filter .= 'uc,'
-let g:exPJ_defualt_filter .= 'hlsl,vsh,psh,fx,fxh,cg,shd,glsl,'
-let g:exPJ_defualt_filter .= 'py,pyw,'
-let g:exPJ_defualt_filter .= 'vim,awk,m,'
-let g:exPJ_defualt_filter .= 'dox,doxygen,'
-let g:exPJ_defualt_filter .= 'ini,cfg,wiki,'
-let g:exPJ_defualt_filter .= 'mk,err,exe,bat,sh,'
+let g:exPJ_default_filter  = 'c,cpp,cxx,c++,C,cc,'
+let g:exPJ_default_filter .= 'h,H,hh,hxx,hpp,inl,'
+let g:exPJ_default_filter .= 'cs,'
+let g:exPJ_default_filter .= 'uc,'
+let g:exPJ_default_filter .= 'hlsl,vsh,psh,fx,fxh,cg,shd,glsl,'
+let g:exPJ_default_filter .= 'py,pyw,'
+let g:exPJ_default_filter .= 'vim,awk,m,'
+let g:exPJ_default_filter .= 'dox,doxygen,'
+let g:exPJ_default_filter .= 'ini,cfg,wiki,'
+let g:exPJ_default_filter .= 'mk,err,exe,bat,sh,'
 
 " ------------------------------------------------------------------ 
 " Desc: exMarksBrowser 
@@ -826,7 +826,7 @@ let Tlist_Compact_Format = 1 " do not show help
 let g:miniBufExplTabWrap = 1 " make tabs show complete (no broken on two lines) 
 let g:miniBufExplModSelTarget = 1 " If you use other explorers like TagList you can (As of 6.2.8) set it at 1:
 let g:miniBufExplUseSingleClick = 1 " If you would like to single click on tabs rather than double clicking on them to goto the selected buffer. 
-let g:miniBufExplMaxSize = 1 " <max lines: defualt 0> setting this to 0 will mean the window gets as big as needed to fit all your buffers. 
+let g:miniBufExplMaxSize = 1 " <max lines: default 0> setting this to 0 will mean the window gets as big as needed to fit all your buffers. 
 " comment out this, when we open a single file by we, we don't need minibuf opened. Minibu always open in exDev mode, in EnvironmentUpdate 
 " let g:miniBufExplorerMoreThanOne = 0 " Setting this to 0 will cause the MBE window to be loaded even
 

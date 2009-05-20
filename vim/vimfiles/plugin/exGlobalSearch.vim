@@ -456,7 +456,7 @@ function g:exGS_InitSelectWindow() " <<<
 
     nnoremap <buffer> <silent> <C-Up>   :call <SID>exGS_SwitchWindow('Stack')<CR>
     nnoremap <buffer> <silent> <C-Left>   :call <SID>exGS_SwitchWindow('QuickView')<CR>
-    " nnoremap <buffer> <silent> <C-Right>   :call <SID>exGS_SwitchWindow('Select')<CR>
+    nnoremap <buffer> <silent> <C-Right>   :call <SID>exGS_SwitchWindow('Select')<CR>
 
     call s:exGS_MapPickupResultKeys()
 
@@ -631,9 +631,9 @@ function g:exGS_InitStackWindow() " <<<
     nnoremap <buffer> <silent> <Space>   :call <SID>exGS_ResizeWindow()<CR>
     nnoremap <buffer> <silent> <ESC>   :call <SID>exGS_ToggleWindow('Stack')<CR>
 
-    "nnoremap <buffer> <silent> <C-Up>   :call <SID>exGS_SwitchWindow('Stack')<CR>
-    nnoremap <buffer> <silent> <Left>   :call <SID>exGS_SwitchWindow('Select')<CR>
-    nnoremap <buffer> <silent> <Right>   :call <SID>exGS_SwitchWindow('QuickView')<CR>
+    nnoremap <buffer> <silent> <C-Up>   :call <SID>exGS_SwitchWindow('Stack')<CR>
+    nnoremap <buffer> <silent> <C-Left>   :call <SID>exGS_SwitchWindow('Select')<CR>
+    nnoremap <buffer> <silent> <C-Right>   :call <SID>exGS_SwitchWindow('QuickView')<CR>
 
     " autocmd
     au CursorMoved <buffer> :call exUtility#HighlightSelectLine()
@@ -837,7 +837,7 @@ function g:exGS_InitQuickViewWindow() " <<<
 
     nnoremap <buffer> <silent> <C-Up>   :call <SID>exGS_SwitchWindow('Stack')<CR>
     nnoremap <buffer> <silent> <C-Right>   :call <SID>exGS_SwitchWindow('Select')<CR>
-    " nnoremap <buffer> <silent> <C-Left>   :call <SID>exGS_SwitchWindow('QuickView')<CR>
+    nnoremap <buffer> <silent> <C-Left>   :call <SID>exGS_SwitchWindow('QuickView')<CR>
 
     call s:exGS_MapPickupResultKeys()
 
