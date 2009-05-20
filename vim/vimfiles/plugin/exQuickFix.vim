@@ -297,6 +297,47 @@ function g:exQF_UpdateSelectWindow() " <<<
 endfunction " >>>
 
 " ------------------------------------------------------------------ 
+" Desc: choose compiler 
+" ------------------------------------------------------------------ 
+
+function s:exQF_ChooseCompiler( file_name ) " <<<
+    " choose compiler
+    let s:exQF_compiler = 'gcc'
+    for line in readfile( a:file_name, '', 2 )
+        " process gcc error log formation
+        if match(line, '^<<<<<< \S\+: ' . "'" . '\a\+\' . "'" ) != -1
+            let s:exQF_compiler = 'exgcc'
+        elseif match(line, '^<<<<<< \S\+ error log >>>>>>') != -1
+            " TODO: use the text choose compiler
+            let s:exQF_compiler = 'msvc2005'
+        elseif match(line, '^.*------ Build started.*------') != -1
+            let s:exQF_compiler = 'msvc2005'
+        endif
+    endfor
+
+    " FIXME: this is a bug, the :comiler! xxx not have effect at second time
+    silent! exec 'compiler! '.s:exQF_compiler
+    if s:exQF_compiler == 'exgcc'
+        silent set errorformat=\%*[^\"]\"%f\"%*\\D%l:\ %m
+        silent set errorformat+=\"%f\"%*\\D%l:\ %m
+        silent set errorformat+=%-G%f:%l:\ %trror:\ (Each\ undeclared\ identifier\ is\ reported\ only\ once
+        silent set errorformat+=%-G%f:%l:\ %trror:\ for\ each\ function\ it\ appears\ in.)
+        silent set errorformat+=%f:%l:\ %m
+        silent set errorformat+=\"%f\"\\,\ line\ %l%*\\D%c%*[^\ ]\ %m
+        silent set errorformat+=%D%\\S%\\+:\ Entering\ directory\ '%f'%.%#
+        silent set errorformat+=%X%\\S%\\+:\ Leaving\ directory\ '%f'%.%#
+        silent set errorformat+=%DEntering\ directory\ '%f'%.%#
+        silent set errorformat+=%XLeaving\ directory\ '%f'%.%#
+        silent set errorformat+=%D\<\<\<\<\<\<\ %\\S%\\+:\ '%f'%.%#
+        silent set errorformat+=%X\>\>\>\>\>\>\ %\\S%\\+:\ '%f'%.%#
+    elseif s:exQF_compiler == 'msvc2005'
+        silent set errorformat=%D%\\d%\\+\>------\ %.%#Project:\ %f%.%#%\\,%.%#
+        silent set errorformat+=%X%\\d%\\+\>%.%#%\\d%\\+\ error(s)%.%#%\\d%\\+\ warning(s)
+        silent set errorformat+=%\\d%\\+\>%f(%l)\ :\ %t%*\\D%n:\ %m
+    endif
+endfunction " >>>
+
+" ------------------------------------------------------------------ 
 " Desc: get error file and load quick fix list
 " ------------------------------------------------------------------ 
 
@@ -312,45 +353,12 @@ function s:exQF_GetQuickFixResult( file_name ) " <<<
             silent exec "normal \<Esc>"
         endif
         
-        " choose compiler
-        let s:exQF_compiler = 'gcc'
-        for line in readfile( full_file_name, '', 2 )
-            " process gcc error log formation
-            if match(line, '^<<<<<< \S\+: ' . "'" . '\a\+\' . "'" ) != -1
-                let s:exQF_compiler = 'exgcc'
-            elseif match(line, '^<<<<<< \S\+ error log >>>>>>') != -1
-                " TODO: use the text choose compiler
-                let s:exQF_compiler = 'msvc2005'
-            elseif match(line, '^.*------ Build started.*------') != -1
-                let s:exQF_compiler = 'msvc2005'
-            endif
-        endfor
+        " choose compiler automatically
+        call s:exQF_ChooseCompiler (full_file_name)
 
-        " load the quick fix list
-        let g:test = s:exQF_compiler
+        " init compiler dir and current working dir
         let s:exQF_compile_dir = g:exES_CWD
         let cur_dir = getcwd()
-
-        " FIXME: this is a bug, the :comiler! xxx not have effect at second time
-        silent! exec 'compiler! '.s:exQF_compiler
-        if s:exQF_compiler == 'exgcc'
-            silent set errorformat=\%*[^\"]\"%f\"%*\\D%l:\ %m
-            silent set errorformat+=\"%f\"%*\\D%l:\ %m
-            silent set errorformat+=%-G%f:%l:\ %trror:\ (Each\ undeclared\ identifier\ is\ reported\ only\ once
-            silent set errorformat+=%-G%f:%l:\ %trror:\ for\ each\ function\ it\ appears\ in.)
-            silent set errorformat+=%f:%l:\ %m
-            silent set errorformat+=\"%f\"\\,\ line\ %l%*\\D%c%*[^\ ]\ %m
-            silent set errorformat+=%D%\\S%\\+:\ Entering\ directory\ '%f'%.%#
-            silent set errorformat+=%X%\\S%\\+:\ Leaving\ directory\ '%f'%.%#
-            silent set errorformat+=%DEntering\ directory\ '%f'%.%#
-            silent set errorformat+=%XLeaving\ directory\ '%f'%.%#
-            silent set errorformat+=%D\<\<\<\<\<\<\ %\\S%\\+:\ '%f'%.%#
-            silent set errorformat+=%X\>\>\>\>\>\>\ %\\S%\\+:\ '%f'%.%#
-        elseif s:exQF_compiler == 'msvc2005'
-            silent set errorformat=%D%\\d%\\+\>------\ %.%#Project:\ %f%.%#%\\,%.%#
-            silent set errorformat+=%X%\\d%\\+\>%.%#%\\d%\\+\ error(s)%.%#%\\d%\\+\ warning(s)
-            silent set errorformat+=%\\d%\\+\>%f(%l)\ :\ %t%*\\D%n:\ %m
-        endif
 
         " save the file size end file name
         let s:exQF_error_file_size = getfsize(full_file_name)
