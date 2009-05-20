@@ -220,15 +220,15 @@ if /I "%support_filenamelist%" == "true" (
     echo    ^|- process _filenamelist_cwd_gawk to _filenamelist_cwd
     rem NOTE: dir /s /b *.cpp will list xxx.cpp~, too. So use gawk here to filter out thoes things.
     gawk -v filter_pattern=%file_filter_pattern% -f "%EX_DEV%\vim\toolkit\gawk\prg_FileFilter.awk" ".\%vimfiles_path%\_filenamelist_cwd_gawk">".\%vimfiles_path%\_filenamelist_cwd"
-    del ".\%vimfiles_path%\_filenamelist_cwd_gawk"
+    del ".\%vimfiles_path%\_filenamelist_cwd_gawk" > nul
     echo    ^|- rename _filenamelist_cwd to filenamelist_cwd
-    move /Y ".\%vimfiles_path%\_filenamelist_cwd" ".\%vimfiles_path%\filenamelist_cwd"
+    move /Y ".\%vimfiles_path%\_filenamelist_cwd" ".\%vimfiles_path%\filenamelist_cwd" > nul
     
     rem create filenamelist_vimfiles
     echo    ^|- generate _filenamelist_vimfiles
     sed "s,\(.*\),.\1,g" ".\%vimfiles_path%\filenamelist_cwd" >> ".\%vimfiles_path%\_filenamelist_vimfiles"
     echo    ^|- rename _filenamelist_vimfiles to filenamelist_vimfiles
-    move /Y ".\%vimfiles_path%\_filenamelist_vimfiles" ".\%vimfiles_path%\filenamelist_vimfiles"
+    move /Y ".\%vimfiles_path%\_filenamelist_vimfiles" ".\%vimfiles_path%\filenamelist_vimfiles" > nul
     echo    ^|- done!
 )
 goto %return%
@@ -259,7 +259,7 @@ if /I "%support_ctags%" == "true" (
     echo    ^|- generate _tags
     ctags -o./_tags %ctags_options% %ctags_path%
     echo    ^|- rename _tags to tags
-    move /Y "_tags" "tags"
+    move /Y "_tags" "tags" > nul
     cd ..
     echo    ^|- done!
 )
@@ -278,7 +278,7 @@ if /I "%support_symbol%" == "true" (
     echo    ^|- generate _symbol
     gawk -f "%EX_DEV%\vim\toolkit\gawk\prg_NoStripSymbol.awk" ".\%vimfiles_path%\tags">".\%vimfiles_path%\_symbol"
     echo    ^|- rename _symbol to symbol
-    move /Y ".\%vimfiles_path%\_symbol" ".\%vimfiles_path%\symbol"
+    move /Y ".\%vimfiles_path%\_symbol" ".\%vimfiles_path%\symbol" > nul
     echo    ^|- done
 )
 goto %return%
@@ -297,7 +297,7 @@ if /I "%support_inherit%" == "true" (
     echo    ^|- generate _inherits
     gawk -f "%EX_DEV%\vim\toolkit\gawk\prg_Inherits.awk" ".\%vimfiles_path%\tags">".\%vimfiles_path%\_inherits"
     echo    ^|- rename _inherits to inherits
-    move /Y ".\%vimfiles_path%\_inherits" ".\%vimfiles_path%\inherits"
+    move /Y ".\%vimfiles_path%\_inherits" ".\%vimfiles_path%\inherits" > nul
     echo    ^|- done
 )
 goto %return%
@@ -322,9 +322,9 @@ if /I "%support_cscope%" == "true" (
     echo    ^|- generate cscope.out
     cscope -b
     echo    ^|- move cscope.files to .\%vimfiles_path%\cscope.files
-    move /Y cscope.files ".\%vimfiles_path%\cscope.files"
+    move /Y cscope.files ".\%vimfiles_path%\cscope.files" > nul
     echo    ^|- move cscope.out to .\%vimfiles_path%\cscope.out
-    move /Y cscope.out ".\%vimfiles_path%\cscope.out"
+    move /Y cscope.out ".\%vimfiles_path%\cscope.out" > nul
     echo    ^|- done
 )
 goto %return%
@@ -360,7 +360,7 @@ if /I "%support_idutils%" == "true" (
     
     rem mkid --include="C C++"
     echo    ^|- move ID to .\%vimfiles_path%\ID
-    move /Y ID ".\%vimfiles_path%\ID"
+    move /Y ID ".\%vimfiles_path%\ID" > nul
     echo    ^|- done
 )
 goto %return%
