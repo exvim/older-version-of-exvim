@@ -80,7 +80,7 @@ let s:exES_setted = 0
 " Desc: current version. increase this will cause template re-write 
 " ------------------------------------------------------------------ 
 
-let s:exES_CurrentVersion = 20
+let s:exES_CurrentVersion = 21
 
 "/////////////////////////////////////////////////////////////////////////////
 " function defines
@@ -106,7 +106,7 @@ function s:exES_WriteDefaultTemplate() " <<<
     silent call add(_list, 'CWD='._cwd)
     silent call add(_list, 'Version='.s:exES_CurrentVersion)
     silent call add(_list, 'VimEntryName='._vimentry_name)
-    silent call add(_list, 'VimfilesDir='._dir_name)
+    silent call add(_list, 'VimfilesDirName='._dir_name)
 
 	" Init the exUtility plugin file path
     silent call add(_list, '')
@@ -287,8 +287,8 @@ function g:exES_SetEnvironment( force_reset ) " <<<
         " read lines to get settings
         " NOTE: since we may rewrite the 'auto-gen settings' section, we need to load from first line.
         call s:exES_LoadSettings ( 1, '$' )
-        if exists ('g:exES_VimfilesDir')
-            let g:exES_vimfiles_dirname = g:exES_VimfilesDir
+        if exists ('g:exES_VimfilesDirName')
+            let g:exES_vimfiles_dirname = g:exES_VimfilesDirName
         endif
 
         " create _vimfiles directory

@@ -537,8 +537,8 @@ if has("gui_running")
         " nnoremap <silent> <C-F5> :if expand("%:p:h") != ""<CR>:!start explorer.exe %:p:h<CR>:endif<CR><CR>
 
         " explore the vimfile directory
-        nnoremap <unique> <silent> <C-F5> :call exUtility#Yank(getcwd() . "\\_vimfiles")<CR>
-        nnoremap <unique> <silent> <A-F5> :call exUtility#Explore(getcwd() . "\\_vimfiles")<CR>
+        nnoremap <unique> <silent> <C-F5> :call exUtility#Yank( getcwd() . '\' . g:exES_VimfilesDirName )<CR>
+        nnoremap <unique> <silent> <A-F5> :call exUtility#Explore( getcwd() . '\' . g:exES_VimfilesDirName )<CR>
         " explore the cwd directory
         nnoremap <unique> <silent> <C-F6> :call exUtility#Yank(getcwd())<CR>
         nnoremap <unique> <silent> <A-F6> :call exUtility#Explore(getcwd())<CR>
