@@ -736,11 +736,11 @@ let g:exMB_window_direction = 'bel'
 
 " ------------------------------------------------------------------ 
 " Desc: exEnvironmentSetting
+" NOTE: The exEnvironmentSetting must put at the end of the plugin 
+"       settings. It may update the default settings of plugin above
 " ------------------------------------------------------------------ 
 
-" NOTE: The exEnvironmentSetting must put at the end of the plugin settings. It may update the default settings of plugin above
-
-let g:exES_default_vimfiles_dirname = "_vimfiles"
+"
 let g:exES_project_cmd = 'EXProject'
 
 " NOTE: if you have different programme path and settings, pls create your own vimrc under $HOME, and define these variables by yourself.

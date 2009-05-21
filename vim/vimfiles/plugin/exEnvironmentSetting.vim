@@ -20,15 +20,11 @@ let loaded_ex_environment_setting=1
 " ======================================================== 
 
 " ------------------------------------------------------------------ 
-" Desc: create to specified where to put vim files 
+" Desc: 
+" NOTE: this value will be set automatically
 " ------------------------------------------------------------------ 
 
-if !exists('g:exES_default_vimfiles_dirname')
-    let g:exES_default_vimfiles_dirname = "_vimfiles"
-endif
-
-" NOTE: this value will be set automatically
-let g:exES_vimfiles_dirname = g:exES_default_vimfiles_dirname
+let g:exES_vimfiles_dirname = "_vimfiles"
 
 " ------------------------------------------------------------------ 
 " Desc: set project command
@@ -95,10 +91,6 @@ function s:exES_WriteDefaultTemplate() " <<<
     let _cwd = exUtility#Pathfmt( fnamemodify( expand('%'), ':p:h' ), 'unix' )
     let _vimentry_name = fnamemodify( expand('%'), ":t:r" )  
     let _dir_name = '_vimfiles_'._vimentry_name
-    " DELME { 
-    " let _dir_name = g:exES_default_vimfiles_dirname
-    " let _vimfile_fullpath = simplify(_cwd.'/'._dir_name)
-    " } DELME end 
     let _list = []
 
     silent call add(_list, '-- auto-gen settings (DO NOT MODIFY) --')
@@ -266,7 +258,7 @@ function g:exES_SetEnvironment( force_reset ) " <<<
         let need_update = 0
 
         " process check
-        let _cwd = exUtility#Pathfmt( getcwd(), 'unix' )
+        let _cwd = exUtility#Pathfmt( fnamemodify( expand('%'), ':p:h' ), 'unix' )
         if !exists( 'g:exES_CWD' ) || !exists( 'g:exES_Version' )
             echomsg "g:exES_CWD/g:exES_Version not exists"
             let need_update = 1
@@ -287,9 +279,28 @@ function g:exES_SetEnvironment( force_reset ) " <<<
         " read lines to get settings
         " NOTE: since we may rewrite the 'auto-gen settings' section, we need to load from first line.
         call s:exES_LoadSettings ( 1, '$' )
-        if exists ('g:exES_VimfilesDirName')
-            let g:exES_vimfiles_dirname = g:exES_VimfilesDirName
-        endif
+
+        " update environment
+        call g:exES_UpdateEnvironment()
+
+        "
+        call exUtility#CreateQuickGenProject ()
+    endif
+endfunction " >>>
+
+" ------------------------------------------------------------------ 
+" Desc: default environment update function 
+" ------------------------------------------------------------------ 
+
+function g:exES_UpdateEnvironment() " <<<
+    " set parent working directory
+    if exists( 'g:exES_CWD' )
+        silent exec 'cd ' . g:exES_CWD
+    endif
+
+    " create _vimfiles directories
+    if exists ('g:exES_VimfilesDirName')
+        let g:exES_vimfiles_dirname = g:exES_VimfilesDirName
 
         " create _vimfiles directory
         if finddir(g:exES_CWD.'/'.g:exES_vimfiles_dirname) == ''
@@ -307,29 +318,12 @@ function g:exES_SetEnvironment( force_reset ) " <<<
         if finddir(temp_directory_path) == ''
             silent call mkdir(temp_directory_path)
         endif
-
-        " update environment
-        call g:exES_UpdateEnvironment()
-
-        "
-        call exUtility#CreateQuickGenProject ()
     endif
-endfunction " >>>
 
-" ------------------------------------------------------------------ 
-" Desc: default environment update function 
-" ------------------------------------------------------------------ 
-
-function g:exES_UpdateEnvironment() " <<<
     " Open Minibuffer always, re-adjust project position
     let g:miniBufExplorerMoreThanOne = 0 
     if exists(':MiniBufExplorer')
         silent exe "MiniBufExplorer"
-    endif
-
-    " set parent working directory
-    if exists( 'g:exES_CWD' )
-        silent exec 'cd ' . g:exES_CWD
     endif
 
     " set tag file path
