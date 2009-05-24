@@ -307,9 +307,9 @@ gen_id ()
 {
     echo "Creating ID..."
     # if we have manual configure id language map, we use it as highest priority
-    if [ -f "./${vimfiles_path}/id-lang.map" ]; then
+    if [ -f "./${vimfiles_path}/id-lang-custom.map" ]; then
         echo "  |- generate ID by custom language map"
-        mkid --include="text" --lang-map="./${vimfiles_path}/id-lang.map" ${dir_filter}
+        mkid --include="text" --lang-map="./${vimfiles_path}/id-lang-custom.map" ${dir_filter}
 
         # if not, we try to use auto-gen id language map as second option
     elif [ -f "./${vimfiles_path}/id-lang-autogen.map" ]; then

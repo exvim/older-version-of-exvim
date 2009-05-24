@@ -76,22 +76,32 @@ CONTENTS                                                      *exVim-contents*
 What is "exVim"?? ~
 
     exVim is the core part of exDev, which is a develop package help you develop 
-    project as a IDE like environment but all in vim. 
+    project as a IDE like environment but all in vim.
     
-    The exVim consists of several of vim scripts, some of them are written by 
-    exDev groups, and others are some patched version or orignal copy from vim 
-    scripts web-site. The main purpose for exVim is let each project have its 
-    own vim settings ( for example: working path, tag files, project files, 
-    cscope files, ID files... ), and start project by using one file to record 
-    these settings, that's call it .vimentry file. It is similar with .sln 
-    file in visual studio. 
+    The exVim consists of several vim scripts and external tools. The goal is 
+    let the vim be the base platform, and use the vim script doing those IDE like 
+    operations just in vim as possible as it can. But if a task is too difficult 
+    to write in vim script, it still have chance to invoke external tools and 
+    bring the result back to vim.
+    
+    The ex-plugins is designed to achieve these tasks, it manages the layout of 
+    the windows in vim, controls the external tools, save settings in different 
+    project and so on. Also exVim introduce several great plugins in vim-scripts 
+    website, and do some small changes to let them work together without conflicts.
 
 What can "exVim" do??~
 
-    exVim allow you to quick search results in tags, ID, cscope, project file, 
-    and so on. Also it provide some filter method when you need to collect 
-    search result or search other word base on last time results.
-    
+    With exVim you can:
+     * use one file ".vimentry" access your project.
+     * update all files need for your project in one command.
+     * browse specific files in project window.
+     * search files, tags, symbols and text in a faster way.
+     * trace your code by jump stack.
+     * reading code faster by word highlight and macro highlight.
+     * view classes hierarchy pictures.
+     * compile project in vc/gcc and get error result from them directly through vim.
+     * and so on... 
+
     The main plugin in exVim are:
 
         * autoload\exUtility.vim~
@@ -162,7 +172,7 @@ How can I install "exVim"~
         * ctags
         * gawk
         * id-utils
-        * sed			(optional)
+        * sed
         * make                  (optional)
         * cscope                (optional)
         * src-highlight         (optional)
@@ -177,18 +187,19 @@ How can I install "exVim"~
     upper directory of vim install path, for example if your vim install in
     d:\exDev\vim, then the EX_DEV=d:\exDev
     
-    You can check the doc\install.win32.txt for details.
+    You can check the wiki page for details:
+    	http://code.google.com/p/exvim/wiki/Install
     
     *Todo    install/inherit _exvimrc
 
 ------------------------------------------------------------------------------
-2.2. Setup vimentry                                           *Setup-vimentry*
+2.2. Create vimentry                                           *Create-vimentry*
     
-    Once you install and setup all tools and variables exVim needed, you can
-    start-up exVim by create a .vimentry file under your project's root directory. 
-    For instance, you have a project named MyProject in d:\Projects\MyProject,
-    you should create MyProject.vimentry in d:\Projects\MyProject, then run the
-    file by gVim, you may see a scene like this:
+    To start up exVim, you need to create a file with suffix ".vimentry" under 
+    your project's root directory. For instance, you have a project named 
+    "MyProject" in d:\Projects\MyProject, you should create "MyProject.vimentry" 
+    in d:\Projects\MyProject, then run the file by vim. You may see a scene as 
+    below: 
 >
         ______________________________________________________________________
         |exProject      |_____________________________________________________
@@ -222,42 +233,42 @@ How can I install "exVim"~
         |               |~                                                   
         |               |~                                                   
 <
-    The main page contains the contents of vimentry files you create, it is
-    generated automatically by script at the first time you open the file. 
-    You can change the settings in it, and it will load your settings every 
-    time you save or open it. But custom the vimentry file is not recommanded for
-    beginner.
-    
-    The project window is on the left of main page, I'll introduce it in next
-    section
+    The main page contains the contents of vimentry files you create, it is generated 
+    automatically by script at the first time you open the file. We also call this 
+    window edit-window. You can change the settings in it, and it will load your settings 
+    every time you save or open it. But custom the vimentry file is not recommanded 
+    for beginner. We will discuss vimentry file customization in the chapter of 
+    exEnvironment.
 
-    Also, if you install the minibuffer plugin, you'll see the minibuffer
-    window above the main page ( I recommand you to install the patched
-    version of minibuffer scripts, and take the settings in _exvimrc )
+    The project window is on the left of the edit window. I'll introduce it in next 
+    section.
+
+    And you can see the "Mini Buf Explorer" window if you install the minibufffer plugin. 
+    ( I recommand you to install the patched version of minibuffer scripts, and take the 
+      settings in exvimrc ) 
 
 ------------------------------------------------------------------------------
 2.3. Create Project                                           *Create-Project*
 
     * Generate Project Files~
-        Move your cursor to the exProject window, then press \C (<leader>C) to
-        Create a project file browser. Then you will see three input dialog to let
-        you fill the project root directory, file filters and sub-directory name
-        filters. Once you fill up all the values, the exProject plugin start
-        generating files. When finish, save the project file by type :w, then you
-        can open & edit file by press <Enter> on the filename in exProject window.
-    
-    * Generate tags,ID ...~
-        After you generate files in exProject window and save it, you will see
-        MyProject.exproject, id-lang-autogen.map and filenametags in _vimfiles
-        directory. Now we will generate couple of files for project. Type
-        :Up[date] in the vim we opened above, the command will find if there is
-        a quick_gen_project_xxx.(bat\|sh) in our project root directory. If not, it
-        will list project type and let user chooes one. Here for common use we
-        chooe "general" which will copy quick_gen_project_general.bat from
-        toolkit/batch/quick_gen_project_general.bat to your project root directory 
-        in win32 ( in unix/linux it is from toolkit/bash/quick_gen_project_all.sh ),
-        then running the programme and generate tags, ID, symbol, cscope file,
-        inherits... that will be used for exVim plugins.
+        Move your cursor to the project-window, then press \C (<leader>C). Then 
+	you will see three input dialog ask you fill root directory, file filters 
+	and sub-directory name filters of the project. We keep them as default. 
+
+        Once you finish the dialog, the exProject plugin start browsing and 
+	generating files recursively from the root directory of your project. 
+	When finish, the project window will shows files as the pciture below. 
+	Save the project file by type :w, then you can open & edit files by 
+	press <Enter> on the files in project-window. 
+
+    * Generate tags,ID...~
+        After you generate files in project window and save it, you will see 
+	MyProject.exproject, id-lang-autogen.map and filenametags in _vimfiles 
+	directory. Now we will generate the rest of files for project. Type 
+	:Up[date] in the vim we opened above, the command will create a 
+	quick_gen_project_auto.(bat\|sh) in our project root directory and 
+	running it to generate files used by exVim plugins, whiches are tags, 
+	ID, symbol, cscope-files, inherits and so on.  
 
 ------------------------------------------------------------------------------
 2.4. Update Project                                           *Update-Project*
@@ -1117,16 +1128,19 @@ How can I install "exVim"~
         let g:exPJ_edit_mode = 'replace'
 <
 
-                                                         *exPJ_defualt_filter*
+                                                         *exPJ_default_filter*
     The value will be apply when you create a project with dialog.
 >
-        let g:exPJ_defualt_filter  = 'c cpp cxx c++ C cc '
-        let g:exPJ_defualt_filter .= 'h H hh hxx hpp inl '
-        let g:exPJ_defualt_filter .= 'uc '
-        let g:exPJ_defualt_filter .= 'hlsl vsh psh glsl '
-        let g:exPJ_defualt_filter .= 'dox doxygen '
-        let g:exPJ_defualt_filter .= 'ini cfg '
-        let g:exPJ_defualt_filter .= 'mk err exe '
+	let g:exPJ_default_filter  = 'c,cpp,cxx,c++,C,cc,'
+	let g:exPJ_default_filter .= 'h,H,hh,hxx,hpp,inl,'
+	let g:exPJ_default_filter .= 'cs,'
+	let g:exPJ_default_filter .= 'uc,'
+	let g:exPJ_default_filter .= 'hlsl,vsh,psh,fx,fxh,cg,shd,glsl,'
+	let g:exPJ_default_filter .= 'py,pyw,'
+	let g:exPJ_default_filter .= 'vim,awk,m,'
+	let g:exPJ_default_filter .= 'dox,doxygen,'
+	let g:exPJ_default_filter .= 'ini,cfg,wiki,'
+	let g:exPJ_default_filter .= 'mk,err,exe,bat,sh,'
 <
 
 ------------------------------------------------------------------------------

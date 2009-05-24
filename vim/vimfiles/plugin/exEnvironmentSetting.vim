@@ -259,6 +259,7 @@ function g:exES_SetEnvironment( force_reset ) " <<<
 
         " process check
         let _cwd = exUtility#Pathfmt( fnamemodify( expand('%'), ':p:h' ), 'unix' )
+        let _vimentry_name = fnamemodify( expand('%'), ":t:r" )  
         if !exists( 'g:exES_CWD' ) || !exists( 'g:exES_Version' )
             echomsg "g:exES_CWD/g:exES_Version not exists"
             let need_update = 1
@@ -267,6 +268,9 @@ function g:exES_SetEnvironment( force_reset ) " <<<
             let need_update = 1
         elseif g:exES_Version != s:exES_CurrentVersion " check if Ver is correct, rewrite default template if not
             echomsg "g:exES_Version != s:exES_CurrentVersion ==> " . g:exES_Version . " != " . s:exES_CurrentVersion
+            let need_update = 1
+        elseif g:exES_VimEntryName != _vimentry_name
+            echomsg "g:exES_VimEntryName != _vimentry_name ==> " . g:exES_VimEntryName . " != " . _vimentry_name
             let need_update = 1
         endif
 
@@ -284,6 +288,7 @@ function g:exES_SetEnvironment( force_reset ) " <<<
         call g:exES_UpdateEnvironment()
 
         "
+        call exUtility#CreateIDLangMap ( exUtility#GetProjectFilter("file_filter") )
         call exUtility#CreateQuickGenProject ()
     endif
 endfunction " >>>

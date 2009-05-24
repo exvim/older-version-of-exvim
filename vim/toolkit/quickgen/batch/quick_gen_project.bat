@@ -343,9 +343,9 @@ if /I "%support_idutils%" == "true" (
     
     echo Creating ID...
     rem if we have manual configure id language map, we use it as highest priority
-    if exist .\%vimfiles_path%\id-lang.map (
+    if exist .\%vimfiles_path%\id-lang-custom.map (
         echo    ^|- generate ID by custom language map 
-        mkid --include="text" --lang-map=".\%vimfiles_path%\id-lang.map" %dir_filter%
+        mkid --include="text" --lang-map=".\%vimfiles_path%\id-lang-custom.map" %dir_filter%
     
     rem if not, we try to use auto-gen id language map as second option
     ) else if exist .\%vimfiles_path%\id-lang-autogen.map (

@@ -2084,8 +2084,11 @@ function exUtility#UpdateVimFiles( type ) " <<<
     " endif
     " } DELME end 
 
-    " rule: if we have quick_gen_project_custom, use it first, else we use auto-gen one
+    " create id-lang map and quick_gen_project script 
+    call exUtility#CreateIDLangMap( s:ex_project_file_filter )
     let quick_gen_script = exUtility#CreateQuickGenProject()
+
+    " rule: if we have quick_gen_project_custom, use it first, else we use auto-gen one
     let quick_gen_custom = 'quick_gen_project_custom.' . suffix
     if findfile( quick_gen_custom, getcwd() ) != ""
         let quick_gen_script = quick_gen_custom
@@ -2530,9 +2533,6 @@ endfunction " >>>
 " ------------------------------------------------------------------ 
 
 function exUtility#CreateQuickGenProject() " <<<
-    " create id-lang map first
-    call exUtility#CreateIDLangMap( s:ex_project_file_filter )
-
     " init variables
     let text_list = []
     let lang_type = exUtility#GetLangType()
