@@ -948,6 +948,14 @@ endfunction " >>>
 " ------------------------------------------------------------------ 
 
 function s:exPJ_GotoCurrentFile( jump_to_project_window ) " <<<
+    " close the ex-plugin window
+    if &filetype == "ex_filetype"
+        silent exec "normal \<Esc>"
+    endif
+
+    " first make sure we are in edit buffer.
+    call exUtility#GotoEditBuffer()
+
     " get current buffer name then jump
     let cur_filename = fnamemodify(bufname("%") , ":t")
     let cur_filefullpath = fnamemodify(bufname("%") , ":p")
