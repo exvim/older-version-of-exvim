@@ -272,6 +272,7 @@ function g:exQF_InitSelectWindow() " <<<
 
     nnoremap <silent> <buffer> <C-Up> :call exUtility#CursorJump( '\(error\\|warning\)', 'up' )<CR>
     nnoremap <silent> <buffer> <C-Down> :call exUtility#CursorJump( '\(error\\|warning\)', 'down' )<CR>
+    nnoremap <silent> <buffer> <leader>p :call <SID>exQF_PasteQuickFixResult()<CR>
 
     " autocmd
     au CursorMoved <buffer> :call exUtility#HighlightSelectLine()
@@ -297,13 +298,35 @@ function g:exQF_UpdateSelectWindow() " <<<
 endfunction " >>>
 
 " ------------------------------------------------------------------ 
+" Desc: Paste the error result ro quickfix
+" ------------------------------------------------------------------ 
+
+function s:exQF_PasteQuickFixResult() " <<<
+    silent exec '1,$d _'
+    silent put! = getreg('*')
+    silent normal gg
+
+    " choose compiler automatically
+    call s:exQF_ChooseCompiler ()
+
+    " init compiler dir and current working dir
+    let s:exQF_compile_dir = g:exES_CWD
+    let cur_dir = getcwd()
+
+    " get the quick fix result
+    silent exec 'cd '.s:exQF_compile_dir
+    silent exec 'cgetb'
+    silent exec 'cd '.cur_dir
+endfunction " >>>
+
+" ------------------------------------------------------------------ 
 " Desc: choose compiler 
 " ------------------------------------------------------------------ 
 
-function s:exQF_ChooseCompiler( file_name ) " <<<
+function s:exQF_ChooseCompiler() " <<<
     " choose compiler
     let s:exQF_compiler = 'gcc'
-    for line in readfile( a:file_name, '', 2 )
+    for line in getline( 1, 4 ) " actual we just need to check line 1-2, but give a protected buffer check to 4 in case. 
         " process gcc error log formation
         if match(line, '^<<<<<< \S\+: ' . "'" . '\a\+\' . "'" ) != -1
             let s:exQF_compiler = 'exgcc'
@@ -316,12 +339,15 @@ function s:exQF_ChooseCompiler( file_name ) " <<<
     endfor
 
     " FIXME: this is a bug, the :comiler! xxx not have effect at second time
+    " NOTE: the errorformat matches by order, so the first matches order will
+    "       be used. That's why we put %f:%l:%c in front of %f:%l
     silent! exec 'compiler! '.s:exQF_compiler
     if s:exQF_compiler == 'exgcc'
         silent set errorformat=\%*[^\"]\"%f\"%*\\D%l:\ %m
         silent set errorformat+=\"%f\"%*\\D%l:\ %m
         silent set errorformat+=%-G%f:%l:\ %trror:\ (Each\ undeclared\ identifier\ is\ reported\ only\ once
         silent set errorformat+=%-G%f:%l:\ %trror:\ for\ each\ function\ it\ appears\ in.)
+        silent set errorformat+=%f:%l:%c:\ %m
         silent set errorformat+=%f:%l:\ %m
         silent set errorformat+=\"%f\"\\,\ line\ %l%*\\D%c%*[^\ ]\ %m
         silent set errorformat+=%D%\\S%\\+:\ Entering\ directory\ '%f'%.%#
@@ -334,6 +360,12 @@ function s:exQF_ChooseCompiler( file_name ) " <<<
         silent set errorformat=%D%\\d%\\+\>------\ %.%#Project:\ %f%.%#%\\,%.%#
         silent set errorformat+=%X%\\d%\\+\>%.%#%\\d%\\+\ error(s)%.%#%\\d%\\+\ warning(s)
         silent set errorformat+=%\\d%\\+\>%f(%l)\ :\ %t%*\\D%n:\ %m
+    endif
+
+    "
+    let error_pattern = '^\d\+>'
+    if s:exQF_compiler != 'exgcc' && search(error_pattern, 'W') != 0
+        silent exec 'sort nr /'.error_pattern.'/'
     endif
 endfunction " >>>
 
@@ -352,13 +384,6 @@ function s:exQF_GetQuickFixResult( file_name ) " <<<
         if &filetype == "ex_filetype"
             silent exec "normal \<Esc>"
         endif
-        
-        " choose compiler automatically
-        call s:exQF_ChooseCompiler (full_file_name)
-
-        " init compiler dir and current working dir
-        let s:exQF_compile_dir = g:exES_CWD
-        let cur_dir = getcwd()
 
         " save the file size end file name
         let s:exQF_error_file_size = getfsize(full_file_name)
@@ -383,11 +408,13 @@ function s:exQF_GetQuickFixResult( file_name ) " <<<
         silent exec '1,$d _'
         silent call append( 0 , readfile( full_file_name ) )
         silent normal gg
+        
+        " choose compiler automatically
+        call s:exQF_ChooseCompiler ()
 
-        "
-        if s:exQF_compiler != 'exgcc'
-            silent exec 'sort /^\d\+>/ or'
-        endif
+        " init compiler dir and current working dir
+        let s:exQF_compile_dir = g:exES_CWD
+        let cur_dir = getcwd()
 
         " get the quick fix result
         silent exec 'cd '.s:exQF_compile_dir
