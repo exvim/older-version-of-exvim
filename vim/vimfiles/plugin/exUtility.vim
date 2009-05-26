@@ -161,17 +161,17 @@ endif
 "/////////////////////////////////////////////////////////////////////////////
 
 " highlight commands
-command -narg=? -complete=customlist,exUtility#CompleteBySymbolFile HL1 call exUtility#Highlight_Text(1, "<args>")
-command -narg=? -complete=customlist,exUtility#CompleteBySymbolFile HL2 call exUtility#Highlight_Text(2, "<args>")
-command -narg=? -complete=customlist,exUtility#CompleteBySymbolFile HL3 call exUtility#Highlight_Text(3, "<args>")
-command -narg=? -complete=customlist,exUtility#CompleteBySymbolFile HL4 call exUtility#Highlight_Text(4, "<args>")
+command -narg=? -complete=customlist,exUtility#CompleteBySymbolFile HL1 call exUtility#Highlight_Text(1, '<args>')
+command -narg=? -complete=customlist,exUtility#CompleteBySymbolFile HL2 call exUtility#Highlight_Text(2, '<args>')
+command -narg=? -complete=customlist,exUtility#CompleteBySymbolFile HL3 call exUtility#Highlight_Text(3, '<args>')
+command -narg=? -complete=customlist,exUtility#CompleteBySymbolFile HL4 call exUtility#Highlight_Text(4, '<args>')
 
 " project gen/copy/build
-command -narg=? -complete=customlist,exUtility#CompleteGMakeArgs GMake call exUtility#GCCMake("<args>")
-command -narg=? -complete=customlist,exUtility#CompleteGMakeArgs SMake call exUtility#ShaderMake("<args>")
-command -narg=* -complete=customlist,exUtility#CompleteVMakeArgs VMake call exUtility#VCMake("<args>")
+command -narg=? -complete=customlist,exUtility#CompleteGMakeArgs GMake call exUtility#GCCMake('<args>')
+command -narg=? -complete=customlist,exUtility#CompleteGMakeArgs SMake call exUtility#ShaderMake('<args>')
+command -narg=* -complete=customlist,exUtility#CompleteVMakeArgs VMake call exUtility#VCMake('<args>')
 command -narg=* VBat call exUtility#VCMakeBAT(<f-args>)
-command -narg=? -complete=customlist,exUtility#CompleteUpdateArgs Update call exUtility#UpdateVimFiles("<args>")
+command -narg=? -complete=customlist,exUtility#CompleteUpdateArgs Update call exUtility#UpdateVimFiles('<args>')
 command -narg=? QCopy call exUtility#CopyQuickGenProject()
 
 " inherits genreate
@@ -181,9 +181,9 @@ command -narg=1 -complete=customlist,exUtility#CompleteBySymbolFile GVC call exU
 
 " code writing
 command LINE call exUtility#PutLine(86, '-')
-command -narg=1 NSS call exUtility#PutNamespaceStart("<args>")
-command -narg=1 NSE call exUtility#PutNamespaceEnd("<args>")
-command -range -narg=1 NS call exUtility#PutNamespace("<args>", <line1>, <line2>)
+command -narg=1 NSS call exUtility#PutNamespaceStart('<args>')
+command -narg=1 NSE call exUtility#PutNamespaceEnd('<args>')
+command -range -narg=1 NS call exUtility#PutNamespace('<args>', <line1>, <line2>)
 command HEADER call exUtility#PutHeader()
 command SEP call exUtility#PutSeparate()
 command SEG call exUtility#PutSegment()
@@ -192,14 +192,14 @@ command DEF call exUtility#PutDefine()
 command DEC call exUtility#PutDeclaration()
 command DES call exUtility#PutDescription()
 command MAIN call exUtility#PutMain()
-command -narg=1 CLASS call exUtility#PutClass( "class", "<args>" )
-command -narg=1 STRUCT call exUtility#PutClass( "struct", "<args>" )
+command -narg=1 CLASS call exUtility#PutClass( "class", '<args>' )
+command -narg=1 STRUCT call exUtility#PutClass( "struct", '<args>' )
 
 " src-highlight
 command -range=% SHL call exUtility#SrcHighlight( <line1>, <line2> )
 
 " text mark
-command -range -narg=1 -complete=customlist,exUtility#CompleteMKArgs MK call exUtility#MarkText("<args>", <line1>, <line2> )
+command -range -narg=1 -complete=customlist,exUtility#CompleteMKArgs MK call exUtility#MarkText('<args>', <line1>, <line2> )
 
 "/////////////////////////////////////////////////////////////////////////////
 " finish

@@ -1013,7 +1013,7 @@ endfunction " >>>
 " Commands
 "/////////////////////////////////////////////////////////////////////////////
 
-command -narg=? -complete=file EXProject call s:exPJ_OpenProject("<args>")
+command -narg=? -complete=file EXProject call s:exPJ_OpenProject('<args>')
 command ExpjSelectToggle call s:exPJ_ToggleWindow('Select')
 command ExpjGotoCurrentFile call s:exPJ_GotoCurrentFile(1)
 

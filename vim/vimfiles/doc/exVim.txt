@@ -508,7 +508,7 @@ How can I install "exVim"~
         Highlight words or visual blocks:
             nnoremap <unique> <silent> <a-1> :call exUtility#Highlight_Normal(1)<CR>
             vnoremap <unique> <silent> <a-1> :call exUtility#Highlight_Visual(1)<CR>
-            command -narg=? -complete=customlist,exUtility#CompleteBySymbolFile HL1 call exUtility#Highlight_Text(1, "<args>")
+            command -narg=? -complete=customlist,exUtility#CompleteBySymbolFile HL1 call exUtility#Highlight_Text(1, '<args>')
             nnoremap <unique> <silent> <Leader>1 :call exUtility#HighlightCancle(1)<CR>
             ...
             ...
@@ -516,7 +516,7 @@ How can I install "exVim"~
             ...
             nnoremap <unique> <silent> <a-4> :call exUtility#Highlight_Normal(4)<CR>
             vnoremap <unique> <silent> <a-4> :call exUtility#Highlight_Visual(4)<CR>
-            command -narg=? -complete=customlist,exUtility#CompleteBySymbolFile HL4 call exUtility#Highlight_Text(4, "<args>")
+            command -narg=? -complete=customlist,exUtility#CompleteBySymbolFile HL4 call exUtility#Highlight_Text(4, '<args>')
             nnoremap <unique> <silent> <Leader>4 :call exUtility#HighlightCancle(4)<CR>
         
         Remove all highlight words or visual blocks:
@@ -569,10 +569,10 @@ How can I install "exVim"~
 :HL[num] {word}
     When you want to highlight a word from argument you put, use these commands:
 >
-        command -narg=? -complete=customlist,exUtility#CompleteBySymbolFile HL1 call exUtility#Highlight_Text(1, "<args>")
+        command -narg=? -complete=customlist,exUtility#CompleteBySymbolFile HL1 call exUtility#Highlight_Text(1, '<args>')
         ...
         ...
-        command -narg=? -complete=customlist,exUtility#CompleteBySymbolFile HL4 call exUtility#Highlight_Text(4, "<args>")
+        command -narg=? -complete=customlist,exUtility#CompleteBySymbolFile HL4 call exUtility#Highlight_Text(4, '<args>')
 <
                                                                      *:Update*
 :Up[date] [{args}]
@@ -582,7 +582,7 @@ How can I install "exVim"~
           working directory, there will show a list of project types let user 
           choose. 
 >
-        command -narg=? -complete=customlist,exUtility#CompleteUpdateArgs Update call exUtility#UpdateVimFiles("<args>")
+        command -narg=? -complete=customlist,exUtility#CompleteUpdateArgs Update call exUtility#UpdateVimFiles('<args>')
 <
                                                                       *:QCopy*
 :QC[opy] {args}
@@ -591,7 +591,7 @@ How can I install "exVim"~
     working directory. 
     Use <TAB> to check possible arguments.
 >
-        command -narg=? -complete=customlist,exUtility#CompleteQCopyArgs QCopy call exUtility#CopyQuickGenProject("<args>")
+        command -narg=? -complete=customlist,exUtility#CompleteQCopyArgs QCopy call exUtility#CopyQuickGenProject('<args>')
 <
                                                            *:GV* *:GVP* *:GVC*
 :GV {args}
@@ -634,7 +634,7 @@ How can I install "exVim"~
     NOTE: this help mark some special block of codes for debug, todo, refactoring or
           some other purpose
 >
-        command -range -narg=1 -complete=customlist,exUtility#CompleteMKArgs MK call exUtility#MarkText("<args>", <line1>, <line2> )
+        command -range -narg=1 -complete=customlist,exUtility#CompleteMKArgs MK call exUtility#MarkText('<args>', <line1>, <line2> )
 <
                                                                        *:LINE*
 :LINE
@@ -664,9 +664,9 @@ How can I install "exVim"~
     NOTE: the NSS will put only namespace header in the code
           the NSE will put only namespace tail in the code
 >
-        command -narg=1 NSS call exUtility#PutNamespaceStart("<args>")
-        command -narg=1 NSE call exUtility#PutNamespaceEnd("<args>")
-        command -narg=1 NS call exUtility#PutNamespace("<args>")
+        command -narg=1 NSS call exUtility#PutNamespaceStart('<args>')
+        command -narg=1 NSE call exUtility#PutNamespaceEnd('<args>')
+        command -narg=1 NS call exUtility#PutNamespace('<args>')
 <
                                                                      *:HEADER*
 :HEADER
@@ -795,8 +795,8 @@ How can I install "exVim"~
 <
     NOTE: this help quick create a class/struct
 >
-        command -narg=1 CLASS call exUtility#PutClass( "class", "<args>" )
-        command -narg=1 STRUCT call exUtility#PutClass( "struct", "<args>" )
+        command -narg=1 CLASS call exUtility#PutClass( "class", '<args>' )
+        command -narg=1 STRUCT call exUtility#PutClass( "struct", '<args>' )
 <
 
 ------------------------------------------------------------------------------

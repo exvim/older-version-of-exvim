@@ -746,7 +746,7 @@ endfunction " >>>
 
 command ExmhSelectToggle call s:exMH_ToggleWindow('Select')
 command ExmhToggle call s:exMH_ToggleWindow('')
-command -narg=? ExmhHL call s:exMH_SyntaxHL("<args>")
+command -narg=? ExmhHL call s:exMH_SyntaxHL('<args>')
 
 "/////////////////////////////////////////////////////////////////////////////
 " finish
