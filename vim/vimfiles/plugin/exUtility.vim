@@ -58,7 +58,7 @@ endif
 " ------------------------------------------------------------------ 
 
 if !exists ( "g:ex_default_langs" )
-    let g:ex_default_langs = ['c', 'cpp', 'c#', 'java', 'shader', 'python', 'vim', 'uc', 'math', 'wiki', 'config', 'make', 'shell', 'debug' ] 
+    let g:ex_default_langs = ['c', 'cpp', 'c#', 'java', 'shader', 'python', 'vim', 'uc', 'math', 'wiki', 'ini', 'make', 'sh', 'batch', 'debug' ] 
 endif
 
 " ======================================================== 
