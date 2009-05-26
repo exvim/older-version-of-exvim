@@ -150,9 +150,6 @@ function s:exPJ_OpenWindow( short_title ) " <<<
             if s:exPJ_short_title == 'Select'
                 let _title = s:exPJ_cur_filename
             endif
-            if bufwinnr(_title) != -1
-                call exUtility#CloseWindow(_title)
-            endif
             let s:exPJ_short_title = a:short_title
         endif
     endif
@@ -322,7 +319,7 @@ endfunction
 " ------------------------------------------------------------------ 
 
 function g:exPJ_InitSelectWindow() " <<<
-    silent! setlocal filetype=ft_exproject
+    silent! setlocal filetype=ex_filetype
     silent! setlocal buftype=
     silent! setlocal cursorline
 
@@ -404,6 +401,14 @@ endfunction " >>>
 function s:exPJ_OpenProject(project_name) " <<<
     " set and find project file
     if a:project_name != ''
+        " if we open a different project, close the old one first.
+        if a:project_name !=# s:exPJ_cur_filename
+            if bufwinnr(s:exPJ_cur_filename) != -1
+                call exUtility#CloseWindow(s:exPJ_cur_filename)
+            endif
+        endif
+
+        " reset project filename and title.
         let s:exPJ_cur_filename = a:project_name
         let s:exPJ_select_title = s:exPJ_cur_filename
     endif

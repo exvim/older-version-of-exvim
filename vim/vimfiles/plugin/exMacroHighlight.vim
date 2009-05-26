@@ -175,14 +175,15 @@ let s:elifn_disable_pattern = s:elifn_and_pattern . s:def_macro_pattern . s:end_
 " ------------------------------------------------------------------ 
 
 function s:exMH_OpenWindow( short_title ) " <<<
+    " read the file first, if file name changes, reset title.
     " if s:exMH_cur_filename don't load, we load and do MH init 
-    if s:exMH_cur_filename == ''
-        if exists('g:exES_Macro')
+    if exists('g:exES_Macro')
+        if s:exMH_cur_filename != g:exES_Macro
             call g:exMH_InitMacroList(g:exES_Macro)
-        else
-            call exUtility#WarningMsg('macro file not found, please create one in vimentry')
-            call g:exMH_InitMacroList(s:exMH_select_title)
         endif
+    else
+        call exUtility#WarningMsg('macro file not found, please create one in vimentry')
+        call g:exMH_InitMacroList(s:exMH_select_title)
     endif
 
     " if need switch window
@@ -229,14 +230,15 @@ endfunction " >>>
 " ------------------------------------------------------------------ 
 
 function s:exMH_ToggleWindow( short_title ) " <<<
+    " read the file first, if file name changes, reset title.
     " if s:exMH_cur_filename don't load, we load and do MH init 
-    if s:exMH_cur_filename == ''
-        if exists('g:exES_Macro')
+    if exists('g:exES_Macro')
+        if s:exMH_cur_filename != g:exES_Macro
             call g:exMH_InitMacroList(g:exES_Macro)
-        else
-            call exUtility#WarningMsg('macro file not found, please create one in vimentry')
-            call g:exMH_InitMacroList(s:exMH_select_title)
         endif
+    else
+        call exUtility#WarningMsg('macro file not found, please create one in vimentry')
+        call g:exMH_InitMacroList(s:exMH_select_title)
     endif
 
     " if need switch window

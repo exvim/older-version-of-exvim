@@ -161,14 +161,13 @@ endfunction " >>>
 " ------------------------------------------------------------------ 
 
 function s:exSL_ToggleWindow( short_title ) " <<<
-    " read the file first
-    if s:exSL_get_symbol_file
-        let s:exSL_get_symbol_file = 0
-        if exists('g:exES_Symbol')
+    " read the file first, if file name changes, reset title.
+    if exists('g:exES_Symbol') 
+        if s:exSL_select_title !=# g:exES_Symbol
             let s:exSL_select_title = g:exES_Symbol
-        else
-            call exUtility#WarningMsg('not found symbol file')
         endif
+    else
+        call exUtility#WarningMsg('not found symbol file')
     endif
 
     " assignment the title

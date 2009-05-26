@@ -397,6 +397,28 @@ function exUtility#OperateWindow( title, close_when_selected, backto_edibut, hl_
     endif
 endfunction " >>>
 
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
+function exUtility#CloseAllExpluginWindow() " <<<
+    " walk through all window in exVim
+    let i = 1
+    let bufnum_list = []
+    while i <= winnr("$")
+        let bnum = winbufnr(i)
+        if bnum != -1 && getbufvar(bnum, '&filetype') ==# 'ex_filetype'
+            silent call add ( bufnum_list, bnum )
+        endif
+        let i += 1
+    endwhile
+
+    "
+    for bnum in bufnum_list
+        call exUtility#CloseWindow ( bufname(bnum) )
+    endfor
+endfunction " >>>
+
 "/////////////////////////////////////////////////////////////////////////////
 "  string functions
 "/////////////////////////////////////////////////////////////////////////////

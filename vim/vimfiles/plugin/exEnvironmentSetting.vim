@@ -52,7 +52,7 @@ endif
 " Desc: set image viewer
 " ------------------------------------------------------------------ 
 
-if !exists('g:exES_WebBrowser')
+if !exists('g:exES_ImageViewer')
     if has("gui_running")
         if has("win32")
             let g:exES_ImageViewer = 'd:\exDev\IrfanView\i_view32.exe'
@@ -207,6 +207,18 @@ endfunction " >>>
 " Desc: 
 " ------------------------------------------------------------------ 
 
+function s:exES_ClearListVariables() " <<<
+    " HACK: a little bit hack, if you add new list value, you need to maintain remove code manually { 
+    if !empty(g:exES_vimentryRefs)
+        silent call remove ( g:exES_vimentryRefs, 0, len(g:exES_vimentryRefs)-1 )
+    endif
+    " } HACK end 
+endfunction " >>>
+
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
 function g:exES_SetEnvironment( force_reset ) " <<<
     " do not show it in buffer list
     silent! setlocal bufhidden=hide
@@ -230,25 +242,39 @@ function g:exES_SetEnvironment( force_reset ) " <<<
     " record edit buffer
     silent! call exUtility#RecordCurrentBufNum()
 
+    " if the file is empty, we creat a template for it
     let _file_name = bufname("%")
     if match(_file_name,"vimentry") != -1
         if findfile( fnamemodify(_file_name,':p'), '.;' ) == "" || empty( readfile(_file_name) )
-            " if the file is empty, we creat a template for it
             call s:exES_WriteDefaultTemplate()
         endif
     endif
 
-    " HACK: a little bit hack, if you add new list value, you need to maintain remove code manually { 
-    " if we reset the variables, clear list first
-    if a:force_reset && s:exES_setted
-        if !empty(g:exES_vimentryRefs)
-            silent call remove ( g:exES_vimentryRefs, 0, len(g:exES_vimentryRefs)-1 )
+    " init force reset
+    let force_reset = a:force_reset
+
+    " if we already in a vimentry file, and open another vimentry file.
+    if s:exES_setted == 1
+        let cur_vimentry_name = fnamemodify( expand('%'), ":t:r" )  
+        if cur_vimentry_name !=# g:exES_VimEntryName
+            " close all ex-plugin windows
+            call exUtility#CloseAllExpluginWindow ()
+
+            " NOTE: no use at all, since some time we may use :e xxx.vimentry in a plugin window, and :e command have lower level than GotoEditBuffer to control window.
+            " " first make sure we are back to edit buffer
+            " call exUtility#GotoEditBuffer()
+
+            let force_reset = 1
         endif
     endif
-    " } HACK end 
+
+    " if we reset the variables, clear list first
+    if force_reset && s:exES_setted
+        call s:exES_ClearListVariables ()
+    endif
 
     " get environment value
-    if s:exES_setted != 1 || a:force_reset == 1
+    if s:exES_setted != 1 || force_reset == 1
         let s:exES_setted = 1
 
         " get CWD and Version
