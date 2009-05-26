@@ -93,20 +93,6 @@ if !exists('g:exPJ_edit_mode')
     let g:exPJ_edit_mode = 'replace'
 endif
 
-" ------------------------------------------------------------------ 
-" Desc: set defualt filter
-" ------------------------------------------------------------------ 
-
-if !exists('g:exPJ_default_filter')
-    let g:exPJ_default_filter  = 'c,cpp,cxx,c++,C,cc,'
-    let g:exPJ_default_filter .= 'h,H,hh,hxx,hpp,inl,'
-    let g:exPJ_default_filter .= 'uc,'
-    let g:exPJ_default_filter .= 'hlsl,vsh,psh,glsl,'
-    let g:exPJ_default_filter .= 'dox,doxygen,'
-    let g:exPJ_default_filter .= 'ini,cfg,'
-    let g:exPJ_default_filter .= 'mk,err,exe,'
-endif
-
 " ======================================================== 
 " local variable initialization
 " ======================================================== 
@@ -126,9 +112,6 @@ let s:exPJ_cur_filename = '__exPJ_SelectWindow__'
 let s:exPJ_cursor_line = 0
 let s:exPJ_cursor_col = 0
 let s:exPJ_need_update_select_window = 0
-
-silent call exUtility#SetProjectFilter ( "file_filter", g:exPJ_default_filter )
-silent call exUtility#SetProjectFilter ( "dir_filter", "" ) " null-string means include all directories
 
 "/////////////////////////////////////////////////////////////////////////////
 " function defines
@@ -648,8 +631,12 @@ function s:exPJ_RefreshProject( with_dialog ) " <<<
 
     call s:exPJ_UpdateFilters()
 
-    " get filter
     if a:with_dialog == 1
+        " get filter
+        let project_file_filter = exUtility#GetProjectFilter ( "file_filter" )
+        let filter = inputdialog( 'Enter the filters: sample(cpp c inl): ', project_file_filter, 'cancle')
+
+        "
         if filter == 'cancle'
             return
         else
@@ -1021,6 +1008,7 @@ endfunction " >>>
 command -narg=? -complete=file EXProject call s:exPJ_OpenProject('<args>')
 command ExpjSelectToggle call s:exPJ_ToggleWindow('Select')
 command ExpjGotoCurrentFile call s:exPJ_GotoCurrentFile(1)
+command ExpjUpdateFilters call s:exPJ_UpdateFilters()
 
 "/////////////////////////////////////////////////////////////////////////////
 " finish

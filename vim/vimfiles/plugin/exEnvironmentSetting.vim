@@ -351,6 +351,14 @@ function g:exES_UpdateEnvironment() " <<<
         endif
     endif
 
+    " set default language type map
+    if exists('g:exES_LangType')
+        if g:exES_LangType != 'auto' " if auto, we use default language map.
+            let lang_list = split( g:exES_LangType, ',' )
+            silent call exUtility#SetProjectFilter ( "file_filter", exUtility#GetFileFilterByLanguage (lang_list) )
+        endif
+    endif
+
     " Open Minibuffer always, re-adjust project position
     let g:miniBufExplorerMoreThanOne = 0 
     if exists(':MiniBufExplorer')
@@ -366,6 +374,7 @@ function g:exES_UpdateEnvironment() " <<<
     " open exProject window
     if exists( 'g:exES_Project' )
         silent exec g:exES_project_cmd.' '.g:exES_Project
+        silent exec 'ExpjUpdateFilters'
     endif
 
     " init macro list

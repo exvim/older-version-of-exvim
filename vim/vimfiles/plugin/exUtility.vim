@@ -53,6 +53,14 @@ if !exists('g:ex_comment_lable_keyword')
     let g:ex_comment_lable_keyword .= 'HACK OPTME HARDCODE REFACTORING DUPLICATE REDUNDANCY ' " for refactoring
 endif
 
+" ------------------------------------------------------------------ 
+" Desc: default supported languages 
+" ------------------------------------------------------------------ 
+
+if !exists ( "g:ex_default_langs" )
+    let g:ex_default_langs = ['c', 'cpp', 'c#', 'java', 'shader', 'python', 'vim', 'uc', 'math', 'wiki', 'config', 'make', 'shell', 'debug' ] 
+endif
+
 " ======================================================== 
 " local variable initialization
 " ======================================================== 
@@ -62,6 +70,13 @@ endif
 " ------------------------------------------------------------------ 
 
 let s:ex_HighlightsInited = 0 
+
+" ======================================================== 
+" function settings
+" ======================================================== 
+
+silent call exUtility#SetProjectFilter ( "file_filter", exUtility#GetFileFilterByLanguage (g:ex_default_langs) )
+silent call exUtility#SetProjectFilter ( "dir_filter", "" ) " null-string means include all directories
 
 "/////////////////////////////////////////////////////////////////////////////
 " functions
