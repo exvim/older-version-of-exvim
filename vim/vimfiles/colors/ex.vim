@@ -12,7 +12,7 @@
 " Set 'background' back to the default.  The value can't always be estimated
 " and is then guessed.
 hi clear Normal
-set bg&
+set background=light
 
 " Remove all existing highlighting and set the defaults.
 hi clear

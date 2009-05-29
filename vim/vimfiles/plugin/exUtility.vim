@@ -99,7 +99,8 @@ function s:UpdateSyntaxHighlights() " <<<
     hi default ex_SynHL3 gui=none guibg=LightRed term=none cterm=none ctermbg=LightRed
     hi default ex_SynHL4 gui=none guibg=LightGreen term=none cterm=none ctermbg=LightGreen
 
-    hi default ex_SynSelectLine gui=none guibg=#bfffff term=none cterm=none ctermbg=LightCyan
+    " hi default ex_SynSelectLine gui=none guibg=#bfffff term=none cterm=none ctermbg=LightCyan
+    hi default link ex_SynSelectLine CursorLine  
     hi default ex_SynConfirmLine gui=none guibg=#ffe4b3 term=none cterm=none ctermbg=DarkYellow
     hi default ex_SynObjectLine gui=none guibg=#ffe4b3 term=none cterm=none ctermbg=DarkYellow
 
@@ -148,6 +149,20 @@ function s:UpdateSyntaxHighlights() " <<<
     " ======================================================== 
 
     hi default exCS_SynQfNumber gui=none guifg=Red term=none cterm=none ctermfg=Red
+
+    " ======================================================== 
+    " Dark Scheme Special
+    " ======================================================== 
+
+    if &background == "dark"
+        hi ex_SynHL1 gui=none guibg=DarkCyan term=none cterm=none ctermbg=DarkCyan
+        hi ex_SynHL2 gui=none guibg=DarkMagenta term=none cterm=none ctermbg=DarkMagenta
+        hi ex_SynHL3 gui=none guibg=DarkRed term=none cterm=none ctermbg=DarkRed
+        hi ex_SynHL4 gui=none guibg=DarkGreen term=none cterm=none ctermbg=DarkGreen
+
+        hi ex_SynConfirmLine gui=none guibg=DarkRed term=none cterm=none ctermbg=DarkRed
+        hi ex_SynObjectLine gui=none guibg=DarkRed term=none cterm=none ctermbg=DarkRed
+    endif
 
     " update custom environment
     if exists('*g:ex_CustomHighlight')
