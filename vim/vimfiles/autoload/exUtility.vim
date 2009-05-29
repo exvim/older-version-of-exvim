@@ -61,29 +61,30 @@ endif
 " Desc: language file maps 
 " ------------------------------------------------------------------ 
 
-let s:ex_lang_map = {}
-let s:ex_lang_map['asm'] = [ 'asm', 'ASM' ]
-let s:ex_lang_map['awk'] = [ 'awk', 'gawk', 'mawk' ]
-let s:ex_lang_map['batch'] = [ 'bat' ]
-let s:ex_lang_map['c'] = [ 'c', 'C' ]
-let s:ex_lang_map['cpp'] = ['c++', 'cc', 'cp', 'cpp', 'cxx', 'h', 'H', 'h++', 'hh', 'hp', 'hpp', 'hxx', 'inl', 'ipp' ]
-let s:ex_lang_map['c#'] = [ 'cs' ]
-let s:ex_lang_map['doxygen'] = [ 'dox', 'doxygen' ]
-let s:ex_lang_map['debug'] = [ 'log', 'err', 'exe' ]
-let s:ex_lang_map['html'] = [ 'htm', 'html' ]
-let s:ex_lang_map['ini'] = [ 'ini', 'cfg' ]
-let s:ex_lang_map['java'] = [ 'java' ]
-let s:ex_lang_map['javascript'] = [ 'js', 'as' ]
-let s:ex_lang_map['lua'] = [ 'lua' ]
-let s:ex_lang_map['make'] = [ 'mak', 'mk', 'Makefile', 'makefile' ]
-let s:ex_lang_map['math'] = [ 'm' ]
-let s:ex_lang_map['python'] = [ 'py', 'pyw', 'pyx', 'pxd' ]
-let s:ex_lang_map['sh'] = [ 'sh', 'SH', 'bsh', 'bash', 'ksh', 'zsh' ]
-let s:ex_lang_map['shader'] = [ 'hlsl', 'vsh', 'psh', 'fx', 'fxh', 'cg', 'shd', 'glsl' ]
-let s:ex_lang_map['uc'] = [ 'uc' ]
-let s:ex_lang_map['vim'] = [ 'vim' ]
-let s:ex_lang_map['wiki'] = [ 'wiki' ]
-let s:ex_lang_map['xml'] = [ 'xml' ]
+let s:ex_exvim_lang_map = {}
+let s:ex_exvim_lang_map['asm'] = [ 'asm', 'ASM' ]
+let s:ex_exvim_lang_map['awk'] = [ 'awk', 'gawk', 'mawk' ]
+let s:ex_exvim_lang_map['batch'] = [ 'bat' ]
+let s:ex_exvim_lang_map['c'] = [ 'c', 'C' ]
+let s:ex_exvim_lang_map['cpp'] = ['c++', 'cc', 'cp', 'cpp', 'cxx', 'h', 'H', 'h++', 'hh', 'hp', 'hpp', 'hxx', 'inl', 'ipp' ]
+let s:ex_exvim_lang_map['c#'] = [ 'cs' ]
+let s:ex_exvim_lang_map['doxygen'] = [ 'dox', 'doxygen' ]
+let s:ex_exvim_lang_map['debug'] = [ 'log', 'err', 'exe' ]
+let s:ex_exvim_lang_map['html'] = [ 'htm', 'html' ]
+let s:ex_exvim_lang_map['ini'] = [ 'ini', 'cfg' ]
+let s:ex_exvim_lang_map['java'] = [ 'java' ]
+let s:ex_exvim_lang_map['javascript'] = [ 'js' ]
+let s:ex_exvim_lang_map['lua'] = [ 'lua' ]
+let s:ex_exvim_lang_map['make'] = [ 'mak', 'mk', 'Makefile', 'makefile' ]
+let s:ex_exvim_lang_map['math'] = [ 'm' ]
+let s:ex_exvim_lang_map['python'] = [ 'py', 'pyw', 'pyx', 'pxd' ]
+let s:ex_exvim_lang_map['ruby'] = [ 'rb', 'ruby' ]
+let s:ex_exvim_lang_map['sh'] = [ 'sh', 'SH', 'bsh', 'bash', 'ksh', 'zsh' ]
+let s:ex_exvim_lang_map['shader'] = [ 'hlsl', 'vsh', 'psh', 'fx', 'fxh', 'cg', 'shd', 'glsl' ]
+let s:ex_exvim_lang_map['uc'] = [ 'uc' ]
+let s:ex_exvim_lang_map['vim'] = [ 'vim' ]
+let s:ex_exvim_lang_map['wiki'] = [ 'wiki' ]
+let s:ex_exvim_lang_map['xml'] = [ 'xml' ]
 
 " ------------------------------------------------------------------ 
 " Desc: ctags language file maps 
@@ -91,21 +92,39 @@ let s:ex_lang_map['xml'] = [ 'xml' ]
 
 let s:ex_ctags_lang_map = {}
 let s:ex_ctags_lang_map['asm'] = [ 'asm', 'ASM', 's', 'S', 'A51' ]
+let s:ex_ctags_lang_map['asp'] = [ 'asp', 'asa' ]
 let s:ex_ctags_lang_map['awk'] = [ 'awk', 'gawk', 'mawk' ]
+let s:ex_ctags_lang_map['basic'] = [ 'bas', 'bi', 'bb', 'pb' ]
+let s:ex_ctags_lang_map['beta'] = [ 'bet' ]
 let s:ex_ctags_lang_map['c'] = [ 'c' ]
 let s:ex_ctags_lang_map['cpp'] = [ 'c++', 'cc', 'cp', 'cpp', 'cxx', 'h', 'h++', 'hh', 'hp', 'hpp', 'hxx' ]
 let s:ex_ctags_lang_map['c#'] = [ 'cs' ]
+let s:ex_ctags_lang_map['cobol'] = [ 'cbl', 'cob', 'CBL', 'COB' ]
+let s:ex_ctags_lang_map['eiffel'] = [ 'e' ]
+let s:ex_ctags_lang_map['erlang'] = [ 'erl', 'ERL', 'hrl', 'HRL' ]
+let s:ex_ctags_lang_map['fortran'] = [ 'fo', 'ft', 'f7', 'f9', 'f95' ]
 let s:ex_ctags_lang_map['html'] = [ 'htm', 'html' ]
 let s:ex_ctags_lang_map['java'] = [ 'java' ]
 let s:ex_ctags_lang_map['javascript'] = [ 'js' ]
+let s:ex_ctags_lang_map['lisp'] = [ 'cl', 'clisp', 'el', 'l', 'lisp', 'lsp', 'ml' ]
 let s:ex_ctags_lang_map['lua'] = [ 'lua' ]
 let s:ex_ctags_lang_map['make'] = [ 'mak', 'mk', 'Makefile', 'makefile' ]
+let s:ex_ctags_lang_map['pascal'] = [ 'p', 'pas' ]
+let s:ex_ctags_lang_map['perl'] = [ 'pl', 'pm', 'plx', 'perl' ]
+let s:ex_ctags_lang_map['php'] = [ 'php', 'php3', 'phtml' ]
 let s:ex_ctags_lang_map['python'] = [ 'py', 'pyx', 'pxd', 'scons' ]
+let s:ex_ctags_lang_map['rexx'] = [ 'cmd', 'rexx', 'rx' ]
+let s:ex_ctags_lang_map['ruby'] = [ 'rb', 'ruby' ]
+let s:ex_ctags_lang_map['scheme'] = [ 'SCM', 'SM', 'sch', 'scheme', 'scm', 'sm' ]
 let s:ex_ctags_lang_map['sh'] = [ 'sh', 'SH', 'bsh', 'bash', 'ksh', 'zsh' ]
+let s:ex_ctags_lang_map['slang'] = [ 'sl' ]
+let s:ex_ctags_lang_map['sml'] = ['sml', 'sig' ]
+let s:ex_ctags_lang_map['sql'] = ['sql' ]
+let s:ex_ctags_lang_map['tcl'] = ['tcl', 'tk', 'wish', 'itcl' ]
+let s:ex_ctags_lang_map['vera'] = ['vr', 'vri', 'vrh' ]
+let s:ex_ctags_lang_map['verilog'] = [ 'v' ]
 let s:ex_ctags_lang_map['vim'] = [ 'vim' ]
-let s:ex_ctags_lang_map['ini'] = [ 'ini' ]
-let s:ex_ctags_lang_map['uc'] = [ 'uc' ]
-let s:ex_ctags_lang_map['math'] = [ 'm' ]
+let s:ex_ctags_lang_map['yacc'] = [ 'y' ]
 
 " ------------------------------------------------------------------ 
 " Desc: project file filter 
@@ -1326,8 +1345,8 @@ endfunction " >>>
 function exUtility#GetFileFilterByLanguage( lang_type_list ) " <<<
     let file_filter = ''
     for lang_type in a:lang_type_list 
-        if has_key (s:ex_lang_map, lang_type)
-            for file_type in s:ex_lang_map[lang_type] 
+        if has_key (s:ex_exvim_lang_map, lang_type)
+            for file_type in s:ex_exvim_lang_map[lang_type] 
                 let file_filter .= file_type . ',' 
             endfor
         endif
@@ -2370,24 +2389,24 @@ endfunction " >>>
 " Desc: 
 " ------------------------------------------------------------------ 
 
-function exUtility#ResetLangMap( lang_type, file_type_list ) " <<<
-    let s:ex_lang_map[a:lang_type] = a:file_type_list
+function exUtility#ResetLangMap( langmap_type, lang_type, file_type_list ) " <<<
+    let s:ex_{a:langmap_type}_lang_map[a:lang_type] = a:file_type_list
 endfunction " >>>
 
 " ------------------------------------------------------------------ 
 " Desc: 
 " ------------------------------------------------------------------ 
 
-function exUtility#AddLangMap( lang_type, file_type_list ) " <<<
+function exUtility#AddLangMap( langmap_type, lang_type, file_type_list ) " <<<
     " we there have the lang_type, just add those new file types 
-    if has_key (s:ex_lang_map, a:lang_type)
+    if has_key (s:ex_{a:langmap_type}_lang_map, a:lang_type)
         for new_file_type in a:file_type_list
-            if index ( s:ex_lang_map[a:lang_type], new_file_type ) == -1
-                silent call add ( s:ex_lang_map[a:lang_type], new_file_type )
+            if index ( s:ex_{a:langmap_type}_lang_map[a:lang_type], new_file_type ) == -1
+                silent call add ( s:ex_{a:langmap_type}_lang_map[a:lang_type], new_file_type )
             endif
         endfor
     else
-        let s:ex_lang_map[a:lang_type] = a:file_type_list
+        let s:ex_{a:langmap_type}_lang_map[a:lang_type] = a:file_type_list
     endif
 endfunction " >>>
 
@@ -2403,7 +2422,7 @@ function exUtility#GetLangType() " <<<
             let filter_list = split( s:ex_project_file_filter, ',' )
             for filter in filter_list 
                 " walk through the language map to get language type and its file type list
-                for [lang_type,file_type_list] in items (s:ex_lang_map)
+                for [lang_type,file_type_list] in items (s:ex_exvim_lang_map)
                     " check if the filter is in the file_type_list of the language
                     if index ( file_type_list, filter ) != -1
                         " add the language type to language list if not exists
@@ -2523,7 +2542,7 @@ function exUtility#GetCtagsOptions( lang_type ) " <<<
 
     " process general language options
     for lang_type in lang_list
-        if has_key ( s:ex_ctags_lang_map, lang_type ) && has_key ( s:ex_lang_map, lang_type )
+        if has_key ( s:ex_ctags_lang_map, lang_type ) && has_key ( s:ex_exvim_lang_map, lang_type )
             " convert language type first
             let ctags_lang_type = lang_type
             if lang_type ==# 'cpp'
@@ -2534,7 +2553,7 @@ function exUtility#GetCtagsOptions( lang_type ) " <<<
             let ctags_languages.=ctags_lang_type.','
 
             " add langmap
-            for file_type in s:ex_lang_map[lang_type]
+            for file_type in s:ex_exvim_lang_map[lang_type]
                 if index ( s:ex_ctags_lang_map[lang_type], file_type ) == -1
                     let ctags_langmap.=ctags_lang_type.':+.'.file_type.','
                 endif
@@ -2545,8 +2564,8 @@ function exUtility#GetCtagsOptions( lang_type ) " <<<
     " process special language options
     if index ( lang_list, 'shader' ) >= 0
         let ctags_languages.='c,'
-        if has_key (s:ex_lang_map, 'shader')
-            for file_type in s:ex_lang_map['shader'] 
+        if has_key (s:ex_exvim_lang_map, 'shader')
+            for file_type in s:ex_exvim_lang_map['shader'] 
                 let ctags_langmap.='c:+.'.file_type.',' 
             endfor
         endif

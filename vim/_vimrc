@@ -566,6 +566,14 @@ let g:exUT_plugin_list = ["-MiniBufExplorer-","__Tag_List__","\[Lookup File\]"]
 " default languages
 let g:ex_default_langs = ['c', 'cpp', 'c#', 'java', 'shader', 'python', 'vim', 'uc', 'math', 'wiki', 'ini', 'make', 'sh', 'batch', 'debug' ] 
 
+" set exvim language map
+call exUtility#AddLangMap ( 'exvim', 'javascript', ['as'] )
+
+" set ctags language map
+call exUtility#AddLangMap ( 'ctags', 'ini', ['ini'] )
+call exUtility#AddLangMap ( 'ctags', 'uc', ['uc'] )
+call exUtility#AddLangMap ( 'ctags', 'math', ['m'] )
+
 " update custom highlights
 function g:ex_CustomHighlight()
 
