@@ -186,11 +186,16 @@ function s:exPJ_ToggleWindow( short_title ) " <<<
     if a:short_title == 'Select'
         let title = s:exPJ_cur_filename
     endif
+
+    " when toggle on, we expect the cursor can be focus on that window.
+    let old_bacto_editbuf = g:exPJ_backto_editbuf
+    let g:exPJ_backto_editbuf = 0
     if g:exPJ_use_vertical_window
         call exUtility#ToggleWindow( title, g:exPJ_window_direction, g:exPJ_window_width, g:exPJ_use_vertical_window, 'none', g:exPJ_backto_editbuf, 'g:exPJ_Init'.s:exPJ_short_title.'Window', 'g:exPJ_Update'.s:exPJ_short_title.'Window' )
     else
         call exUtility#ToggleWindow( title, g:exPJ_window_direction, g:exPJ_window_height, g:exPJ_use_vertical_window, 'none', g:exPJ_backto_editbuf, 'g:exPJ_Init'.s:exPJ_short_title.'Window', 'g:exPJ_Update'.s:exPJ_short_title.'Window' )
     endif
+    let g:exPJ_backto_editbuf = old_bacto_editbuf
 endfunction " >>>
 
 " ------------------------------------------------------------------ 
