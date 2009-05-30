@@ -233,8 +233,8 @@ function exUtility#CreateWindow( buffer_name, window_direction, window_size, use
     endif
 
     " after create the window, record the bufname into the plugin list
-    if index( g:exUT_plugin_list, fnamemodify(a:buffer_name,":p:t") ) == -1
-        silent call add(g:exUT_plugin_list, fnamemodify(a:buffer_name,":p:t"))
+    if index( g:ex_plugin_list, fnamemodify(a:buffer_name,":p:t") ) == -1
+        silent call add(g:ex_plugin_list, fnamemodify(a:buffer_name,":p:t"))
     endif
 
 endfunction " >>>
@@ -942,7 +942,7 @@ endfunction " >>>
 
 function exUtility#RecordCurrentBufNum() " <<<
     let short_bufname = fnamemodify(bufname('%'),":p:t")
-    if index( g:exUT_plugin_list, short_bufname, 0, 1 ) == -1 " compare ignore case
+    if index( g:ex_plugin_list, short_bufname, 0, 1 ) == -1 " compare ignore case
         let s:ex_editbuf_num = bufnr('%')
     elseif short_bufname !=# "-MiniBufExplorer-"
         let s:ex_pluginbuf_num = bufnr('%')
@@ -956,7 +956,7 @@ endfunction " >>>
 function exUtility#RecordSwapBufInfo() " <<<
     let bufnr = bufnr('%')
     let short_bufname = fnamemodify(bufname(bufnr),":p:t")
-    if buflisted(bufnr) && bufloaded(bufnr) && bufexists(bufnr) && index( g:exUT_plugin_list, short_bufname, 0, 1 ) == -1
+    if buflisted(bufnr) && bufloaded(bufnr) && bufexists(bufnr) && index( g:ex_plugin_list, short_bufname, 0, 1 ) == -1
         let s:ex_swap_buf_num = bufnr
         let s:ex_swap_buf_pos = getpos('.')
     endif
@@ -971,7 +971,7 @@ function exUtility#SwapToLastEditBuffer() " <<<
     let cur_bufnr = bufnr('%')
     let cru_short_bufname = fnamemodify(bufname('%'),":p:t")
 
-    if index( g:exUT_plugin_list, cru_short_bufname, 0, 1 ) != -1 " check it is plugin window or not
+    if index( g:ex_plugin_list, cru_short_bufname, 0, 1 ) != -1 " check it is plugin window or not
         call exUtility#WarningMsg("Buffer: " .bufname(cur_bufnr).  " can't be switch.")
         return
     endif
@@ -979,7 +979,7 @@ function exUtility#SwapToLastEditBuffer() " <<<
     " check if last buffer existed and listed, swap if accessable
     let last_bufnr = bufnr("#")
     let last_short_bufname = fnamemodify(bufname(last_bufnr),":p:t")
-    if buflisted(last_bufnr) && bufloaded(last_bufnr) && bufexists(last_bufnr) && index( g:exUT_plugin_list, last_short_bufname, 0, 1 ) == -1
+    if buflisted(last_bufnr) && bufloaded(last_bufnr) && bufexists(last_bufnr) && index( g:ex_plugin_list, last_short_bufname, 0, 1 ) == -1
         let tmp_swap_buf_pos = deepcopy(s:ex_swap_buf_pos)
         let tmp_swap_buf_nr = s:ex_swap_buf_num
         let s:ex_swap_buf_pos = getpos('.')
@@ -1111,7 +1111,7 @@ function exUtility#Kwbd(kwbdStage) " <<<
         " check it is plugin window, if yes, close it directly to prevent use \bd
         " close, reopen will loose plugin ability problem
         let cru_short_bufname = fnamemodify(bufname('%'),":p:t")
-        if index( g:exUT_plugin_list, cru_short_bufname, 0, 1 ) != -1 
+        if index( g:ex_plugin_list, cru_short_bufname, 0, 1 ) != -1 
             silent exec 'close'
             call exUtility#GotoEditBuffer()
             return
@@ -3550,7 +3550,7 @@ endfunction " >>>
 " --ex_IsFunctionalbuf--
 " return true if the buf is a functional buf
 function exUtility#IsFunctionalbuf(Buf_Name) " <<<
-    return index( g:exUT_plugin_list, fnamemodify(a:Buf_Name,":p:t") ) >=0
+    return index( g:ex_plugin_list, fnamemodify(a:Buf_Name,":p:t") ) >=0
 endfunction " >>>
 
 "/////////////////////////////////////////////////////////////////////////////

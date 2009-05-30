@@ -23,8 +23,8 @@ let loaded_exutility=1
 " Desc: store the plugins buffer name, so we can ensure not recore name as edit-buffer
 " ------------------------------------------------------------------ 
 
-if !exists('g:exUT_plugin_list')
-    let g:exUT_plugin_list = ["-MiniBufExplorer-","__Tag_List__","\[Lookup File\]"] 
+if !exists('g:ex_plugin_list')
+    let g:ex_plugin_list = ["-MiniBufExplorer-","__Tag_List__","\[Lookup File\]"] 
 endif
 
 " ------------------------------------------------------------------ 

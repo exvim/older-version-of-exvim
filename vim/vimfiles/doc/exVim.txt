@@ -296,23 +296,23 @@ How can I install "exVim"~
     
         1. ex-plugin window
             the window will keep a buffer create by ex plugins/scripts,
-            also it will register the buffer name into g:exUT_plugin_list
+            also it will register the buffer name into g:ex_plugin_list
             automatically, so that system can know this is a window/buffer 
             for plugin.
         
         2. register-plugin window
             the window is create by other plugin, but you know the buffer it
-            created, and manually register the buffer name into g:exUT_plugin_list. 
+            created, and manually register the buffer name into g:ex_plugin_list. 
             At this point the system also know is the window a plugin window.
             It is useful for plugin like MiniBufExplorer or Taglist, they have
             a fixed buffer in a window it created. Here is some of my register
             value: 
 >
-            let g:exUT_plugin_list = ["-MiniBufExplorer-","__Tag_List__","\[Lookup File\]"] 
+            let g:ex_plugin_list = ["-MiniBufExplorer-","__Tag_List__","\[Lookup File\]"] 
 <
         
         3. edit window
-            Those window not in the g:exUT_plugin_list will treat as edit
+            Those window not in the g:ex_plugin_list will treat as edit
             window. And the last edit window will be record, so that you can
             jump or open new buffer in that window while you are operate in
             ex-plugin/register-plugin window  
@@ -540,12 +540,33 @@ How can I install "exVim"~
 ------------------------------------------------------------------------------
 3.1.1. Variables                                         *exUtility-varaibles*
 
+							      *ex_plugin_list*                                                       
+    ex_plugin_list is a variable let user input its plugin window buffer name 
+    into it, so that the window will be recognized as a register-plugin-window, 
+    so that the edit file will not opened in that window to prevent unexpect 
+    error. 
+>
+    	let g:ex_plugin_list = ["-MiniBufExplorer-","__Tag_List__","\[Lookup File\]"] 
+<
                                                                  *ex_usr_name*                                                       
     ex_usr_name will used the name you give as the author name, and fill it in
     the author column when you use exUtility#PutHeader() function to put 
     a head title for a file
 >
         let g:ex_usr_name = "Wu Jie"
+<
+							    *ex_default_langs*                                                       
+    ex_default_langs will let the user input a list of the languages as the 
+    default languages when start a new project. The languages you input will 
+    link to the language maps, which includes all filetype mappings to that 
+    languages. For example, the languages 'cpp' will have the filetype list: 
+    ['c++', 'cc', 'cp', 'cpp', 'cxx', 'h', 'H', 'h++', 'hh', 'hp', 'hpp', 'hxx', 'inl', 'ipp' ].
+    You can check all the file type mappings in autoload/exUtility.vim, at 
+    the define s:ex_exvim_lang_map.  If you want to add your own mappings, you 
+    need to call the function exUtility#AddLangMap and exUtility#ResetLangMap 
+    in your _vimrc. 
+>
+	let g:ex_default_langs = ['c', 'cpp', 'c#', 'java', 'shader', 'python', 'vim', 'uc', 'math', 'wiki', 'ini', 'make', 'sh', 'batch', 'debug' ] 
 <
                                                              *ex_todo_keyword*
     the variable will record giving words as todo keyword, which will have
@@ -1126,21 +1147,6 @@ How can I install "exVim"~
     no use at all
 >
         let g:exPJ_edit_mode = 'replace'
-<
-
-                                                         *exPJ_default_filter*
-    The value will be apply when you create a project with dialog.
->
-	let g:exPJ_default_filter  = 'c,cpp,cxx,c++,C,cc,'
-	let g:exPJ_default_filter .= 'h,H,hh,hxx,hpp,inl,'
-	let g:exPJ_default_filter .= 'cs,'
-	let g:exPJ_default_filter .= 'uc,'
-	let g:exPJ_default_filter .= 'hlsl,vsh,psh,fx,fxh,cg,shd,glsl,'
-	let g:exPJ_default_filter .= 'py,pyw,'
-	let g:exPJ_default_filter .= 'vim,awk,m,'
-	let g:exPJ_default_filter .= 'dox,doxygen,'
-	let g:exPJ_default_filter .= 'ini,cfg,wiki,'
-	let g:exPJ_default_filter .= 'mk,err,exe,bat,sh,'
 <
 
 ------------------------------------------------------------------------------

@@ -561,7 +561,7 @@ vnoremap <unique> <Leader>mk :MK
 nnoremap <unique> <Leader>mk :call exUtility#RemoveSpecialMarkText() <CR>
 
 " add plugin we use to prevent them record as edit-buffer
-let g:exUT_plugin_list = ["-MiniBufExplorer-","__Tag_List__","\[Lookup File\]"] 
+let g:ex_plugin_list = ["-MiniBufExplorer-","__Tag_List__","\[Lookup File\]"] 
 
 " default languages
 let g:ex_default_langs = ['c', 'cpp', 'c#', 'java', 'shader', 'python', 'vim', 'uc', 'math', 'wiki', 'ini', 'make', 'sh', 'batch', 'debug' ] 
