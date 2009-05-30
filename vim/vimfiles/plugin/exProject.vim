@@ -144,9 +144,9 @@ function s:exPJ_OpenWindow( short_title ) " <<<
     endif
     " open window
     if g:exPJ_use_vertical_window
-        call exUtility#OpenWindow( title, g:exPJ_window_direction, g:exPJ_window_width, g:exPJ_use_vertical_window, g:exPJ_edit_mode, g:exPJ_backto_editbuf, 'g:exPJ_Init'.s:exPJ_short_title.'Window', 'g:exPJ_Update'.s:exPJ_short_title.'Window' )
+        call exUtility#OpenWindow( title, g:exPJ_window_direction, g:exPJ_window_width, g:exPJ_use_vertical_window, g:exPJ_edit_mode, 1, 'g:exPJ_Init'.s:exPJ_short_title.'Window', 'g:exPJ_Update'.s:exPJ_short_title.'Window' )
     else
-        call exUtility#OpenWindow( title, g:exPJ_window_direction, g:exPJ_window_height, g:exPJ_use_vertical_window, g:exPJ_edit_mode, g:exPJ_backto_editbuf, 'g:exPJ_Init'.s:exPJ_short_title.'Window', 'g:exPJ_Update'.s:exPJ_short_title.'Window' )
+        call exUtility#OpenWindow( title, g:exPJ_window_direction, g:exPJ_window_height, g:exPJ_use_vertical_window, g:exPJ_edit_mode, 1, 'g:exPJ_Init'.s:exPJ_short_title.'Window', 'g:exPJ_Update'.s:exPJ_short_title.'Window' )
     endif
 endfunction " >>>
 
@@ -188,14 +188,11 @@ function s:exPJ_ToggleWindow( short_title ) " <<<
     endif
 
     " when toggle on, we expect the cursor can be focus on that window.
-    let old_bacto_editbuf = g:exPJ_backto_editbuf
-    let g:exPJ_backto_editbuf = 0
     if g:exPJ_use_vertical_window
-        call exUtility#ToggleWindow( title, g:exPJ_window_direction, g:exPJ_window_width, g:exPJ_use_vertical_window, 'none', g:exPJ_backto_editbuf, 'g:exPJ_Init'.s:exPJ_short_title.'Window', 'g:exPJ_Update'.s:exPJ_short_title.'Window' )
+        call exUtility#ToggleWindow( title, g:exPJ_window_direction, g:exPJ_window_width, g:exPJ_use_vertical_window, 'none', 0, 'g:exPJ_Init'.s:exPJ_short_title.'Window', 'g:exPJ_Update'.s:exPJ_short_title.'Window' )
     else
-        call exUtility#ToggleWindow( title, g:exPJ_window_direction, g:exPJ_window_height, g:exPJ_use_vertical_window, 'none', g:exPJ_backto_editbuf, 'g:exPJ_Init'.s:exPJ_short_title.'Window', 'g:exPJ_Update'.s:exPJ_short_title.'Window' )
+        call exUtility#ToggleWindow( title, g:exPJ_window_direction, g:exPJ_window_height, g:exPJ_use_vertical_window, 'none', 0, 'g:exPJ_Init'.s:exPJ_short_title.'Window', 'g:exPJ_Update'.s:exPJ_short_title.'Window' )
     endif
-    let g:exPJ_backto_editbuf = old_bacto_editbuf
 endfunction " >>>
 
 " ------------------------------------------------------------------ 
@@ -403,13 +400,11 @@ function s:exPJ_OpenProject(project_name) " <<<
 
     " open project select window
     let old_edit_mode = g:exPJ_edit_mode
-    let old_bacto_editbuf = g:exPJ_backto_editbuf
-
     let g:exPJ_edit_mode = 'none'
-    let g:exPJ_backto_editbuf = 0
+
     call s:exPJ_OpenWindow('Select')
+
     let g:exPJ_edit_mode = old_edit_mode
-    let g:exPJ_backto_editbuf = old_bacto_editbuf
 endfunction " >>>
 
 " ------------------------------------------------------------------ 
@@ -456,12 +451,8 @@ function s:exPJ_CreateProject(with_dialog) " <<<
         let entry_dir = g:exES_CWD
     endif
 
-
-    let old_bacto_editbuf = g:exPJ_backto_editbuf
-    let g:exPJ_backto_editbuf = 0
     echon "Creating exProject: " . entry_dir . "\r"
     call s:exPJ_OpenWindow('Select')
-    let g:exPJ_backto_editbuf = old_bacto_editbuf
 
     " create filname list and filanmetag list
     " KEEPME: let filename_list = [[],[],[]] " NOTE: 0 is the filenametag, 1 is the filenamelist_cwd, 2 is the filenamelist_vimfiles

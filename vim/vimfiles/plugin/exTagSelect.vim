@@ -167,9 +167,9 @@ function s:exTS_OpenWindow( short_title ) " <<<
     let title = '__exTS_' . s:exTS_short_title . 'Window__'
     " open window
     if g:exTS_use_vertical_window
-        call exUtility#OpenWindow( title, g:exTS_window_direction, g:exTS_window_width, g:exTS_use_vertical_window, g:exTS_edit_mode, g:exTS_backto_editbuf, 'g:exTS_Init'.s:exTS_short_title.'Window', 'g:exTS_Update'.s:exTS_short_title.'Window' )
+        call exUtility#OpenWindow( title, g:exTS_window_direction, g:exTS_window_width, g:exTS_use_vertical_window, g:exTS_edit_mode, 1, 'g:exTS_Init'.s:exTS_short_title.'Window', 'g:exTS_Update'.s:exTS_short_title.'Window' )
     else
-        call exUtility#OpenWindow( title, g:exTS_window_direction, g:exTS_window_height, g:exTS_use_vertical_window, g:exTS_edit_mode, g:exTS_backto_editbuf, 'g:exTS_Init'.s:exTS_short_title.'Window', 'g:exTS_Update'.s:exTS_short_title.'Window' )
+        call exUtility#OpenWindow( title, g:exTS_window_direction, g:exTS_window_height, g:exTS_use_vertical_window, g:exTS_edit_mode, 1, 'g:exTS_Init'.s:exTS_short_title.'Window', 'g:exTS_Update'.s:exTS_short_title.'Window' )
     endif
 endfunction " >>>
 
@@ -203,9 +203,9 @@ function s:exTS_ToggleWindow( short_title ) " <<<
     " toggle exTS window
     let title = '__exTS_' . s:exTS_short_title . 'Window__'
     if g:exTS_use_vertical_window
-        call exUtility#ToggleWindow( title, g:exTS_window_direction, g:exTS_window_width, g:exTS_use_vertical_window, 'none', g:exTS_backto_editbuf, 'g:exTS_Init'.s:exTS_short_title.'Window', 'g:exTS_Update'.s:exTS_short_title.'Window' )
+        call exUtility#ToggleWindow( title, g:exTS_window_direction, g:exTS_window_width, g:exTS_use_vertical_window, 'none', 0, 'g:exTS_Init'.s:exTS_short_title.'Window', 'g:exTS_Update'.s:exTS_short_title.'Window' )
     else
-        call exUtility#ToggleWindow( title, g:exTS_window_direction, g:exTS_window_height, g:exTS_use_vertical_window, 'none', g:exTS_backto_editbuf, 'g:exTS_Init'.s:exTS_short_title.'Window', 'g:exTS_Update'.s:exTS_short_title.'Window' )
+        call exUtility#ToggleWindow( title, g:exTS_window_direction, g:exTS_window_height, g:exTS_use_vertical_window, 'none', 0, 'g:exTS_Init'.s:exTS_short_title.'Window', 'g:exTS_Update'.s:exTS_short_title.'Window' )
     endif
 endfunction " >>>
 
@@ -216,10 +216,7 @@ endfunction " >>>
 function s:exTS_SwitchWindow( short_title ) " <<<
     let title = '__exTS_' . a:short_title . 'Window__'
     if bufwinnr(title) == -1
-        let tmp_backup = g:exTS_backto_editbuf
-        let g:exTS_backto_editbuf = 0
         call s:exTS_ToggleWindow(a:short_title)
-        let g:exTS_backto_editbuf = tmp_backup
     endif
 endfunction " >>>
 
@@ -383,10 +380,7 @@ function s:exTS_GetTagSelectResult(tag, direct_jump) " <<<
     " open window
     let ts_winnr = bufwinnr(s:exTS_select_title)
     if ts_winnr == -1
-        let old_opt = g:exTS_backto_editbuf
-        let g:exTS_backto_editbuf = 0
         call s:exTS_ToggleWindow('Select')
-        let g:exTS_backto_editbuf = old_opt
     else
         exe ts_winnr . 'wincmd w'
     endif
@@ -631,10 +625,7 @@ function s:exTS_Stack_GotoTag( idx, jump_method ) " <<<
     " open and go to stack window first
     let background_op = 0
     if bufwinnr(s:exTS_stack_title) == -1
-        let old_setting = g:exTS_backto_editbuf
-        let g:exTS_backto_editbuf = 0
         call s:exTS_ToggleWindow('Stack')
-        let g:exTS_backto_editbuf = old_setting
         let background_op = 1
     else
         call g:exTS_UpdateStackWindow()

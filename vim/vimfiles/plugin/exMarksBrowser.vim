@@ -140,9 +140,9 @@ function s:exMB_OpenWindow( short_title ) " <<<
     let title = '__exMB_' . s:exMB_short_title . 'Window__'
     " open window
     if g:exMB_use_vertical_window
-        call exUtility#OpenWindow( title, g:exMB_window_direction, g:exMB_window_width, g:exMB_use_vertical_window, g:exMB_edit_mode, g:exMB_backto_editbuf, 'g:exMB_Init'.s:exMB_short_title.'Window', 'g:exMB_Update'.s:exMB_short_title.'Window' )
+        call exUtility#OpenWindow( title, g:exMB_window_direction, g:exMB_window_width, g:exMB_use_vertical_window, g:exMB_edit_mode, 1, 'g:exMB_Init'.s:exMB_short_title.'Window', 'g:exMB_Update'.s:exMB_short_title.'Window' )
     else
-        call exUtility#OpenWindow( title, g:exMB_window_direction, g:exMB_window_height, g:exMB_use_vertical_window, g:exMB_edit_mode, g:exMB_backto_editbuf, 'g:exMB_Init'.s:exMB_short_title.'Window', 'g:exMB_Update'.s:exMB_short_title.'Window' )
+        call exUtility#OpenWindow( title, g:exMB_window_direction, g:exMB_window_height, g:exMB_use_vertical_window, g:exMB_edit_mode, 1, 'g:exMB_Init'.s:exMB_short_title.'Window', 'g:exMB_Update'.s:exMB_short_title.'Window' )
     endif
 endfunction " >>>
 
@@ -178,9 +178,9 @@ function s:exMB_ToggleWindow( short_title ) " <<<
     " toggle exMB window
     let title = '__exMB_' . s:exMB_short_title . 'Window__'
     if g:exMB_use_vertical_window
-        call exUtility#ToggleWindow( title, g:exMB_window_direction, g:exMB_window_width, g:exMB_use_vertical_window, 'none', g:exMB_backto_editbuf, 'g:exMB_Init'.s:exMB_short_title.'Window', 'g:exMB_Update'.s:exMB_short_title.'Window' )
+        call exUtility#ToggleWindow( title, g:exMB_window_direction, g:exMB_window_width, g:exMB_use_vertical_window, 'none', 0, 'g:exMB_Init'.s:exMB_short_title.'Window', 'g:exMB_Update'.s:exMB_short_title.'Window' )
     else
-        call exUtility#ToggleWindow( title, g:exMB_window_direction, g:exMB_window_height, g:exMB_use_vertical_window, 'none', g:exMB_backto_editbuf, 'g:exMB_Init'.s:exMB_short_title.'Window', 'g:exMB_Update'.s:exMB_short_title.'Window' )
+        call exUtility#ToggleWindow( title, g:exMB_window_direction, g:exMB_window_height, g:exMB_use_vertical_window, 'none', 0, 'g:exMB_Init'.s:exMB_short_title.'Window', 'g:exMB_Update'.s:exMB_short_title.'Window' )
     endif
 endfunction " >>>
 

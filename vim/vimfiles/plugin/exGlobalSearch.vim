@@ -175,9 +175,9 @@ function s:exGS_OpenWindow( short_title ) " <<<
     let title = '__exGS_' . s:exGS_short_title . 'Window__'
     " open window
     if g:exGS_use_vertical_window
-        call exUtility#OpenWindow( title, g:exGS_window_direction, g:exGS_window_width, g:exGS_use_vertical_window, g:exGS_edit_mode, g:exGS_backto_editbuf, 'g:exGS_Init'.s:exGS_short_title.'Window', 'g:exGS_Update'.s:exGS_short_title.'Window' )
+        call exUtility#OpenWindow( title, g:exGS_window_direction, g:exGS_window_width, g:exGS_use_vertical_window, g:exGS_edit_mode, 1, 'g:exGS_Init'.s:exGS_short_title.'Window', 'g:exGS_Update'.s:exGS_short_title.'Window' )
     else
-        call exUtility#OpenWindow( title, g:exGS_window_direction, g:exGS_window_height, g:exGS_use_vertical_window, g:exGS_edit_mode, g:exGS_backto_editbuf, 'g:exGS_Init'.s:exGS_short_title.'Window', 'g:exGS_Update'.s:exGS_short_title.'Window' )
+        call exUtility#OpenWindow( title, g:exGS_window_direction, g:exGS_window_height, g:exGS_use_vertical_window, g:exGS_edit_mode, 1, 'g:exGS_Init'.s:exGS_short_title.'Window', 'g:exGS_Update'.s:exGS_short_title.'Window' )
     endif
 endfunction " >>>
 
@@ -211,9 +211,9 @@ function s:exGS_ToggleWindow( short_title ) " <<<
     " toggle exGS window
     let title = '__exGS_' . s:exGS_short_title . 'Window__'
     if g:exGS_use_vertical_window
-        call exUtility#ToggleWindow( title, g:exGS_window_direction, g:exGS_window_width, g:exGS_use_vertical_window, 'none', g:exGS_backto_editbuf, 'g:exGS_Init'.s:exGS_short_title.'Window', 'g:exGS_Update'.s:exGS_short_title.'Window' )
+        call exUtility#ToggleWindow( title, g:exGS_window_direction, g:exGS_window_width, g:exGS_use_vertical_window, 'none', 0, 'g:exGS_Init'.s:exGS_short_title.'Window', 'g:exGS_Update'.s:exGS_short_title.'Window' )
     else
-        call exUtility#ToggleWindow( title, g:exGS_window_direction, g:exGS_window_height, g:exGS_use_vertical_window, 'none', g:exGS_backto_editbuf, 'g:exGS_Init'.s:exGS_short_title.'Window', 'g:exGS_Update'.s:exGS_short_title.'Window' )
+        call exUtility#ToggleWindow( title, g:exGS_window_direction, g:exGS_window_height, g:exGS_use_vertical_window, 'none', 0, 'g:exGS_Init'.s:exGS_short_title.'Window', 'g:exGS_Update'.s:exGS_short_title.'Window' )
     endif
 endfunction " >>>
 
@@ -224,10 +224,7 @@ endfunction " >>>
 function s:exGS_SwitchWindow( short_title ) " <<<
     let title = '__exGS_' . a:short_title . 'Window__'
     if bufwinnr(title) == -1
-        let tmp_backup = g:exGS_backto_editbuf
-        let g:exGS_backto_editbuf = 0
         call s:exGS_ToggleWindow(a:short_title)
-        let g:exGS_backto_editbuf = tmp_backup
     endif
 endfunction " >>>
 
@@ -518,10 +515,7 @@ function s:exGS_GetGlobalSearchResult(search_pattern, search_method, direct_jump
 
     if gs_winnr == -1
         " open window
-        let old_opt = g:exGS_backto_editbuf
-        let g:exGS_backto_editbuf = 0
         call s:exGS_ToggleWindow('Select')
-        let g:exGS_backto_editbuf = old_opt
     else
         exe gs_winnr . 'wincmd w'
     endif
@@ -576,10 +570,7 @@ function s:exGS_GetFilenameSearchResult(search_pattern, search_method) " <<<
     let gs_winnr = bufwinnr(s:exGS_select_title)
     if gs_winnr == -1
         " open window
-        let old_opt = g:exGS_backto_editbuf
-        let g:exGS_backto_editbuf = 0
         call s:exGS_ToggleWindow('Select')
-        let g:exGS_backto_editbuf = old_opt
     else
         exe gs_winnr . 'wincmd w'
     endif
@@ -685,10 +676,7 @@ function s:exGS_ShowStackList() " <<<
     let gs_winnr = bufwinnr(s:exGS_stack_title)
     if gs_winnr == -1
         " open window
-        let old_opt = g:exGS_backto_editbuf
-        let g:exGS_backto_editbuf = 0
         call s:exGS_ToggleWindow('Stack')
-        let g:exGS_backto_editbuf = old_opt
     else
         exe gs_winnr . 'wincmd w'
     endif
@@ -745,10 +733,7 @@ function s:exGS_Stack_GotoTag( idx, jump_method ) " <<<
     " open and go to stack window first
     let background_op = 0
     if bufwinnr(s:exGS_stack_title) == -1
-        let old_setting = g:exTS_backto_editbuf
-        let g:exGS_backto_editbuf = 0
         call s:exGS_ToggleWindow('Stack')
-        let g:exGS_backto_editbuf = old_setting
         let background_op = 1
     else
         call g:exGS_UpdateStackWindow()

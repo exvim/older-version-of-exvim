@@ -161,9 +161,9 @@ function s:exCS_OpenWindow( short_title ) " <<<
     let title = '__exCS_' . s:exCS_short_title . 'Window__'
     " open window
     if g:exCS_use_vertical_window
-        call exUtility#OpenWindow( title, g:exCS_window_direction, g:exCS_window_width, g:exCS_use_vertical_window, g:exCS_edit_mode, g:exCS_backto_editbuf, 'g:exCS_Init'.s:exCS_short_title.'Window', 'g:exCS_Update'.s:exCS_short_title.'Window' )
+        call exUtility#OpenWindow( title, g:exCS_window_direction, g:exCS_window_width, g:exCS_use_vertical_window, g:exCS_edit_mode, 1, 'g:exCS_Init'.s:exCS_short_title.'Window', 'g:exCS_Update'.s:exCS_short_title.'Window' )
     else
-        call exUtility#OpenWindow( title, g:exCS_window_direction, g:exCS_window_height, g:exCS_use_vertical_window, g:exCS_edit_mode, g:exCS_backto_editbuf, 'g:exCS_Init'.s:exCS_short_title.'Window', 'g:exCS_Update'.s:exCS_short_title.'Window' )
+        call exUtility#OpenWindow( title, g:exCS_window_direction, g:exCS_window_height, g:exCS_use_vertical_window, g:exCS_edit_mode, 1, 'g:exCS_Init'.s:exCS_short_title.'Window', 'g:exCS_Update'.s:exCS_short_title.'Window' )
     endif
 endfunction " >>>
 
@@ -197,9 +197,9 @@ function s:exCS_ToggleWindow( short_title ) " <<<
     " toggle exCS window
     let title = '__exCS_' . s:exCS_short_title . 'Window__'
     if g:exCS_use_vertical_window
-        call exUtility#ToggleWindow( title, g:exCS_window_direction, g:exCS_window_width, g:exCS_use_vertical_window, 'none', g:exCS_backto_editbuf, 'g:exCS_Init'.s:exCS_short_title.'Window', 'g:exCS_Update'.s:exCS_short_title.'Window' )
+        call exUtility#ToggleWindow( title, g:exCS_window_direction, g:exCS_window_width, g:exCS_use_vertical_window, 'none', 0, 'g:exCS_Init'.s:exCS_short_title.'Window', 'g:exCS_Update'.s:exCS_short_title.'Window' )
     else
-        call exUtility#ToggleWindow( title, g:exCS_window_direction, g:exCS_window_height, g:exCS_use_vertical_window, 'none', g:exCS_backto_editbuf, 'g:exCS_Init'.s:exCS_short_title.'Window', 'g:exCS_Update'.s:exCS_short_title.'Window' )
+        call exUtility#ToggleWindow( title, g:exCS_window_direction, g:exCS_window_height, g:exCS_use_vertical_window, 'none', 0, 'g:exCS_Init'.s:exCS_short_title.'Window', 'g:exCS_Update'.s:exCS_short_title.'Window' )
     endif
 endfunction " >>>
 
@@ -210,10 +210,7 @@ endfunction " >>>
 function s:exCS_SwitchWindow( short_title ) " <<<
     let title = '__exCS_' . a:short_title . 'Window__'
     if bufwinnr(title) == -1
-        let tmp_backup = g:exCS_backto_editbuf
-        let g:exCS_backto_editbuf = 0
         call s:exCS_ToggleWindow(a:short_title)
-        let g:exCS_backto_editbuf = tmp_backup
     endif
 endfunction " >>>
 
@@ -525,10 +522,7 @@ function s:exCS_GetSearchResult(search_pattern, search_method) " <<<
     let bufnr = bufnr('%')
     if gs_winnr == -1
         " open window
-        let old_opt = g:exCS_backto_editbuf
-        let g:exCS_backto_editbuf = 0
         call s:exCS_ToggleWindow('Select')
-        let g:exCS_backto_editbuf = old_opt
     else
         exe gs_winnr . 'wincmd w'
     endif

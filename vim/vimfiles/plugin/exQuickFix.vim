@@ -160,9 +160,9 @@ function s:exQF_OpenWindow( short_title ) " <<<
     let title = '__exQF_' . s:exQF_short_title . 'Window__'
     " open window
     if g:exQF_use_vertical_window
-        call exUtility#OpenWindow( title, g:exQF_window_direction, g:exQF_window_width, g:exQF_use_vertical_window, g:exQF_edit_mode, g:exQF_backto_editbuf, 'g:exQF_Init'.s:exQF_short_title.'Window', 'g:exQF_Update'.s:exQF_short_title.'Window' )
+        call exUtility#OpenWindow( title, g:exQF_window_direction, g:exQF_window_width, g:exQF_use_vertical_window, g:exQF_edit_mode, 1, 'g:exQF_Init'.s:exQF_short_title.'Window', 'g:exQF_Update'.s:exQF_short_title.'Window' )
     else
-        call exUtility#OpenWindow( title, g:exQF_window_direction, g:exQF_window_height, g:exQF_use_vertical_window, g:exQF_edit_mode, g:exQF_backto_editbuf, 'g:exQF_Init'.s:exQF_short_title.'Window', 'g:exQF_Update'.s:exQF_short_title.'Window' )
+        call exUtility#OpenWindow( title, g:exQF_window_direction, g:exQF_window_height, g:exQF_use_vertical_window, g:exQF_edit_mode, 1, 'g:exQF_Init'.s:exQF_short_title.'Window', 'g:exQF_Update'.s:exQF_short_title.'Window' )
     endif
 endfunction " >>>
 
@@ -197,9 +197,9 @@ function s:exQF_ToggleWindow( short_title ) " <<<
     let title = '__exQF_' . s:exQF_short_title . 'Window__'
     " toggle exQF window
     if g:exQF_use_vertical_window
-        call exUtility#ToggleWindow( title, g:exQF_window_direction, g:exQF_window_width, g:exQF_use_vertical_window, 'none', g:exQF_backto_editbuf, 'g:exQF_Init'.s:exQF_short_title.'Window', 'g:exQF_Update'.s:exQF_short_title.'Window' )
+        call exUtility#ToggleWindow( title, g:exQF_window_direction, g:exQF_window_width, g:exQF_use_vertical_window, 'none', 0, 'g:exQF_Init'.s:exQF_short_title.'Window', 'g:exQF_Update'.s:exQF_short_title.'Window' )
     else
-        call exUtility#ToggleWindow( title, g:exQF_window_direction, g:exQF_window_height, g:exQF_use_vertical_window, 'none', g:exQF_backto_editbuf, 'g:exQF_Init'.s:exQF_short_title.'Window', 'g:exQF_Update'.s:exQF_short_title.'Window' )
+        call exUtility#ToggleWindow( title, g:exQF_window_direction, g:exQF_window_height, g:exQF_use_vertical_window, 'none', 0, 'g:exQF_Init'.s:exQF_short_title.'Window', 'g:exQF_Update'.s:exQF_short_title.'Window' )
     endif
 endfunction " >>>
 
@@ -396,10 +396,7 @@ function s:exQF_GetQuickFixResult( file_name ) " <<<
         let gs_winnr = bufwinnr(s:exQF_select_title)
         if gs_winnr == -1
             " open window
-            let old_opt = g:exQF_backto_editbuf
-            let g:exQF_backto_editbuf = 0
             call s:exQF_ToggleWindow('Select')
-            let g:exQF_backto_editbuf = old_opt
         else
             exe gs_winnr . 'wincmd w'
         endif
