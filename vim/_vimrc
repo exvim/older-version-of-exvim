@@ -94,7 +94,8 @@ endif
 
 " color scheme define
 if has("gui_running")
-    silent exec "colorscheme ex"
+    " silent exec "colorscheme ex"
+    silent exec "colorscheme ex_lightgray"
 else " if we are in terminal mode
     silent exec "colorscheme darkblue"
 endif
@@ -622,6 +623,21 @@ function g:ex_CustomHighlight()
     hi MyTagListComment ctermfg=DarkGreen guifg=DarkGreen 
     " TagListFileName - Used for filenames
     hi MyTagListFileName term=bold cterm=bold ctermfg=Black ctermbg=LightBlue gui=bold guifg=Black guibg=LightBlue
+
+    " ======================================================== 
+    " special color settings 
+    " ======================================================== 
+
+    if g:colors_name == 'ex_lightgray'
+        " ex plugins
+        hi ex_SynSearchPattern gui=bold guifg=DarkRed guibg=Gray term=bold cterm=bold ctermfg=DarkRed ctermbg=Gray
+        hi exMH_GroupNameEnable term=bold cterm=bold ctermfg=DarkRed ctermbg=Gray gui=bold guifg=DarkRed guibg=Gray
+        hi exMH_GroupNameDisable term=bold cterm=bold ctermfg=Red ctermbg=DarkGray gui=bold guifg=DarkGray guibg=Gray
+
+        " other plugins
+        hi MBENormal ctermbg=Gray ctermfg=DarkGray guibg=Gray guifg=DarkGray
+        hi MyTagListTitle term=bold cterm=bold ctermfg=DarkRed ctermbg=Gray gui=bold guifg=DarkRed guibg=Gray 
+    endif
 
 endfunction
 
