@@ -270,9 +270,14 @@ function g:exQF_InitSelectWindow() " <<<
     nnoremap <buffer> <silent> <C-Right>   :call <SID>exQF_SwitchWindow('Select')<CR>
     nnoremap <buffer> <silent> <C-Left>   :call <SID>exQF_SwitchWindow('QuickView')<CR>
 
-    nnoremap <silent> <buffer> <C-Up> :call exUtility#CursorJump( '\(error\\|warning\)', 'up' )<CR>
-    nnoremap <silent> <buffer> <C-Down> :call exUtility#CursorJump( '\(error\\|warning\)', 'down' )<CR>
-    nnoremap <silent> <buffer> <leader>p :call <SID>exQF_PasteQuickFixResult()<CR>
+    nnoremap <buffer> <silent> <C-Up> :call exUtility#CursorJump( '\(error\\|warning\)', 'up' )<CR>
+    nnoremap <buffer> <silent> <C-Down> :call exUtility#CursorJump( '\(error\\|warning\)', 'down' )<CR>
+
+    " let \p, p (including visual) can paste error and read to the quick fix list.
+    nnoremap <buffer> <silent> <leader>p :call <SID>exQF_PasteQuickFixResult('*')<CR>
+    nnoremap <buffer> <silent> p :call <SID>exQF_PasteQuickFixResult('"')<CR>
+    vnoremap <buffer> <silent> <leader>p :call <SID>exQF_VisualPasteQuickFixResult('*')<CR>
+    vnoremap <buffer> <silent> p :call <SID>exQF_VisualPasteQuickFixResult('"')<CR>
 
     " autocmd
     au CursorMoved <buffer> :call exUtility#HighlightSelectLine()
@@ -301,9 +306,9 @@ endfunction " >>>
 " Desc: Paste the error result ro quickfix
 " ------------------------------------------------------------------ 
 
-function s:exQF_PasteQuickFixResult() " <<<
+function s:exQF_PasteQuickFixResult(register) " <<<
     silent exec '1,$d _'
-    silent put! = getreg('*')
+    silent put! = getreg(a:register)
     silent normal gg
 
     " choose compiler automatically
@@ -317,6 +322,15 @@ function s:exQF_PasteQuickFixResult() " <<<
     silent exec 'cd '.s:exQF_compile_dir
     silent exec 'cgetb'
     silent exec 'cd '.cur_dir
+endfunction " >>>
+
+" ------------------------------------------------------------------ 
+" Desc: Visual Paste the error result ro quickfix
+" ------------------------------------------------------------------ 
+
+function s:exQF_VisualPasteQuickFixResult(register) range " <<<
+    call exUtility#WarningMsg('visual-paste not allowed! change to paste operation.')
+    call s:exQF_PasteQuickFixResult(a:register)
 endfunction " >>>
 
 " ------------------------------------------------------------------ 
@@ -360,6 +374,9 @@ function s:exQF_ChooseCompiler() " <<<
         silent set errorformat=%D%\\d%\\+\>------\ %.%#Project:\ %f%.%#%\\,%.%#
         silent set errorformat+=%X%\\d%\\+\>%.%#%\\d%\\+\ error(s)%.%#%\\d%\\+\ warning(s)
         silent set errorformat+=%\\d%\\+\>%f(%l)\ :\ %t%*\\D%n:\ %m
+    elseif s:exQF_compiler == 'gcc'
+        " this is for exGlobaSearch result, some one may copy the global search result to exQuickFix
+        silent set errorformat+=%f:%l:%m
     endif
 
     "
