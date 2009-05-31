@@ -67,7 +67,8 @@ endif
 " ------------------------------------------------------------------ 
 
 if $EX_DEV ==# ""
-    call confirm ('exVim error: Please setup the EX_DEV environment variable!')
+    call confirm ("exVim error: Please set the EX_DEV in _vimrc, default is let $EX_DEV='/usr/local/share'")
+    let $EX_DEV='/usr/local/share'
 endif
 
 " ======================================================== 

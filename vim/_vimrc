@@ -437,6 +437,11 @@ au FileType vim set comments=sO:\"\ -,mO:\"\ \ ,eO:\"\",f:\"
 " Desc: exUtility
 " ------------------------------------------------------------------ 
 
+" set EX_DEV variable for linux
+if has ("unix")
+    let $EX_DEV='/usr/local/share'
+endif
+
 " edit current vimentry
 nnoremap <unique> <leader>ve :call exUtility#EditVimEntry ()<CR>
 
