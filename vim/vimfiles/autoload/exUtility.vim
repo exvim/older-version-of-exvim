@@ -2371,7 +2371,7 @@ function exUtility#CopyQuickGenProject() " <<<
     if has("win32")
         let full_quick_gen_script = fnamemodify( $EX_DEV . "\\vim\\toolkit\\quickgen\\" . folder_name . "\\" . quick_gen_script, ":p")
     elseif has("unix")
-        let full_quick_gen_script = fnamemodify( '/usr/local/share/vim/toolkit/quickgen/' . folder_name . '/' . quick_gen_script, ":p" )
+        let full_quick_gen_script = fnamemodify( $EX_DEV . '/vim/toolkit/quickgen/' . folder_name . '/' . quick_gen_script, ":p" )
     endif
     if findfile( full_quick_gen_script ) == ""
         call exUtility#WarningMsg('Error: file ' . full_quick_gen_script . ' not found')
@@ -2659,7 +2659,6 @@ function exUtility#CreateQuickGenProject() " <<<
         let script_suffix = 'sh'
 
         silent call add( text_list, 'export script_type="autogen"' )
-        silent call add( text_list, 'export EX_DEV="/usr/local/share"' )
         silent call add( text_list, 'export cwd=${PWD}' ) " 
         silent call add( text_list, 'export lang_type='.'"'.lang_type.'"' ) " 
         silent call add( text_list, 'export vimfiles_path='.'"'.g:exES_vimfiles_dirname.'"' )
@@ -2892,7 +2891,14 @@ function exUtility#SrcHighlight( line1, line2 ) " <<<
 
     " browse use browser browse file
     "KEEPME once we have css version (src 2.6): let shl_cmd = 'source-highlight -f html -s ex_cpp -n --data-dir=%EX_DEV%\GnuWin32\share\source-highlight -css="ex.css"' . ' -i ' . temp_file . ' -o ' . temp_file_html
-    let shl_cmd = 'source-highlight -f html -s ex_cpp -n --data-dir=%EX_DEV%\GnuWin32\share\source-highlight' . ' -i ' . temp_file . ' -o ' . temp_file_html
+    let share_path = ''
+    if has ('win32')
+        let share_path = '%EX_DEV%\GnuWin32\share'
+    elseif has ('unix')
+        let share_path = '${EX_DEV}\local\share'
+    endif
+    let shl_cmd = 'source-highlight -f html -s ex_cpp -n --data-dir='.share_path.'\source-highlight' . ' -i ' . temp_file . ' -o ' . temp_file_html
+
     let shl_result = system(shl_cmd)
 
     " TODO: use if win32, if linux
@@ -3368,7 +3374,7 @@ function exUtility#CopySyntaxHighlighterFiles( dest_path ) " <<<
 
             let cmd = copy_cmd . ' ' . src . ' ' . dest 
         elseif has("unix")
-            let src = fnamemodify( '/usr/local/share/vim/toolkit/SyntaxHighlighter/', ":p" )
+            let src = fnamemodify( $EX_DEV . '/vim/toolkit/SyntaxHighlighter/', ":p" )
 
             " remove last \ if found in dest path
             if ( dest[strlen(dest)-1] == '/' )

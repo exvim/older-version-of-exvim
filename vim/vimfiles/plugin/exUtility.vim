@@ -61,6 +61,15 @@ if !exists ( "g:ex_default_langs" )
     let g:ex_default_langs = ['c', 'cpp', 'c#', 'java', 'shader', 'python', 'vim', 'uc', 'math', 'wiki', 'ini', 'make', 'sh', 'batch', 'debug' ] 
 endif
 
+" ------------------------------------------------------------------ 
+" Desc: ex_dev environment variable 
+" NOTE: we don't recommend to set the g:ex_dev_path directly in vim/_vimrc
+" ------------------------------------------------------------------ 
+
+if $EX_DEV ==# ""
+    silent call confirm ('exVim error: Please setup the EX_DEV environment variable!')
+endif
+
 " ======================================================== 
 " local variable initialization
 " ======================================================== 
