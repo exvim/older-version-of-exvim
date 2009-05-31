@@ -2659,6 +2659,7 @@ function exUtility#CreateQuickGenProject() " <<<
         let script_suffix = 'sh'
 
         silent call add( text_list, 'export script_type="autogen"' )
+        silent call add( text_list, 'export EX_DEV='.'"'.$EX_DEV.'"' )
         silent call add( text_list, 'export cwd=${PWD}' ) " 
         silent call add( text_list, 'export lang_type='.'"'.lang_type.'"' ) " 
         silent call add( text_list, 'export vimfiles_path='.'"'.g:exES_vimfiles_dirname.'"' )
