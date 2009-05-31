@@ -67,7 +67,7 @@ endif
 " ------------------------------------------------------------------ 
 
 if $EX_DEV ==# ""
-    silent call confirm ('exVim error: Please setup the EX_DEV environment variable!')
+    call confirm ('exVim error: Please setup the EX_DEV environment variable!')
 endif
 
 " ======================================================== 
