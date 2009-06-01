@@ -501,12 +501,6 @@ let s:tlist_def_vim_settings = 'vim;a:autocmds;v:variable;f:function'
 " yacc language
 let s:tlist_def_yacc_settings = 'yacc;l:label'
 
-" JWU ADD { 
-" shader
-let s:tlist_def_hlsl_settings = 'c;d:macro;g:enum;s:struct;u:union;t:typedef;' .
-                           \ 'v:variable;f:function'
-" } JWU ADD end 
-
 "------------------- end of language specific options --------------------
 
 " Vim window size is changed by the taglist plugin or not
