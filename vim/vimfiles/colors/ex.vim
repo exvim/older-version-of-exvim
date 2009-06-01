@@ -38,46 +38,36 @@ hi IncSearch    term=reverse cterm=reverse gui=reverse
 hi Search       term=reverse ctermfg=0 ctermbg=14 guifg=NONE guibg=Yellow
 hi MoreMsg      term=bold ctermfg=2 gui=bold guifg=SeaGreen
 hi ModeMsg      term=bold cterm=bold gui=bold
-" <<<<<<<<<<<<<< jwu custumize
 hi LineNr       term=underline cterm=none ctermfg=DarkRed gui=none guifg=Brown
-" >>>>>>>>>>>>>>
 hi Question     term=standout ctermfg=2 gui=bold guifg=SeaGreen
 hi StatusLine   term=bold,reverse cterm=bold,reverse gui=bold,reverse
 hi StatusLineNC term=reverse cterm=reverse gui=reverse
 hi VertSplit    term=reverse cterm=reverse gui=reverse
 hi Title        term=bold ctermfg=5 gui=bold guifg=Magenta
-" <<<<<<<<<<<<<< jwu custumize
 hi Visual       term=reverse ctermbg=LightGray guibg=LightGray
-" >>>>>>>>>>>>>>
 hi VisualNOS    term=bold,underline cterm=bold,underline gui=bold,underline
 hi WarningMsg   term=standout ctermfg=4 guifg=Red
 hi WildMenu     term=standout ctermfg=0 ctermbg=14 guifg=Black guibg=Yellow
-" <<<<<<<<<<<<<< jwu custumize
 hi Folded       term=standout ctermfg=1 ctermbg=7 guifg=DarkBlue guibg=LightGrey
 hi FoldColumn   term=standout ctermfg=1 ctermbg=7 guifg=DarkBlue guibg=Grey
 hi DiffAdd      cterm=none ctermbg=LightGreen gui=none guibg=LightGreen
 hi DiffChange   term=bold cterm=none ctermbg=LightCyan gui=none guibg=LightCyan
 hi DiffDelete   term=bold cterm=bold ctermfg=Red ctermbg=LightRed gui=bold guifg=Red guibg=LightRed
 hi DiffText     term=reverse cterm=underline ctermbg=LightCyan gui=none guibg=Violet
-" >>>>>>>>>>>>>>
 hi SignColumn   term=standout ctermfg=1 ctermbg=7 guifg=DarkBlue guibg=Grey
 hi SpellBad     term=reverse ctermbg=12 gui=undercurl guisp=Red
 hi SpellCap     term=reverse ctermbg=9 gui=undercurl guisp=Blue
 hi SpellRare    term=reverse ctermbg=13 gui=undercurl guisp=Magenta
 hi SpellLocal   term=underline ctermbg=11 gui=undercurl guisp=DarkCyan
-" <<<<<<<<<<<<<< jwu custumize
 hi Pmenu        ctermbg=LightGray guibg=LightGray
 hi PmenuSel     ctermbg=DarkBlue ctermfg=White guibg=DarkBlue guifg=White
 hi PmenuSbar    ctermbg=DarkGray guibg=DarkGray
 hi PmenuThumb   ctermbg=Black guibg=Black
-" >>>>>>>>>>>>>>
 hi TabLine      term=underline cterm=underline ctermfg=0 ctermbg=7 gui=underline guibg=LightGrey
 hi TabLineSel   term=bold cterm=bold gui=bold
 hi TabLineFill  term=reverse cterm=reverse gui=reverse
-" <<<<<<<<<<<<<< jwu custumize
 hi CursorColumn term=reverse cterm=none ctermbg=LightCyan gui=none guibg=#bfffff
 hi CursorLine   term=reverse cterm=none ctermbg=LightCyan gui=none guibg=#bfffff 
-" >>>>>>>>>>>>>>
 hi Cursor       guifg=bg guibg=fg
 hi lCursor      guifg=bg guibg=fg
 hi MatchParen   term=reverse ctermbg=11 guibg=Cyan
