@@ -683,6 +683,8 @@ let g:exGS_backto_editbuf = 0
 let g:exGS_close_when_selected = 0
 let g:exGS_stack_close_when_selected = 0
 let g:exGS_window_direction = 'bel'
+let g:exGS_auto_sort = 1
+let g:exGS_lines_for_autosort = 200
 
 " ------------------------------------------------------------------ 
 " Desc: exSymbolTable

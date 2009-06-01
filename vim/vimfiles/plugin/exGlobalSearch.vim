@@ -109,6 +109,22 @@ if !exists('g:exGS_edit_mode')
     let g:exGS_edit_mode = 'replace'
 endif
 
+" ------------------------------------------------------------------ 
+" Desc: set if auto sort result if the result less than g:exGS_lines_for_autosort lines 
+" ------------------------------------------------------------------ 
+
+if !exists('g:exGS_auto_sort')
+    let g:exGS_auto_sort = 0
+endif
+
+" ------------------------------------------------------------------ 
+" Desc: less than ? lines, will trigger auto sort
+" ------------------------------------------------------------------ 
+
+if !exists('g:exGS_lines_for_autosort')
+    let g:exGS_lines_for_autosort = 500
+endif
+
 " ======================================================== 
 " local variable initialization
 " ======================================================== 
@@ -425,6 +441,9 @@ function s:exGS_MapPickupResultKeys() " <<<
     vnoremap <buffer> <silent> <LocalLeader>gd <ESC>:call <SID>exGS_ShowPickedResultVisualMode('', 'replace', '', 1)<CR>
     vnoremap <buffer> <silent> <LocalLeader>gar <ESC>:call <SID>exGS_ShowPickedResultVisualMode('', 'append', '', 0)<CR>
     vnoremap <buffer> <silent> <LocalLeader>gad <ESC>:call <SID>exGS_ShowPickedResultVisualMode('', 'append', '', 1)<CR>
+
+    nnoremap <buffer> <silent> <LocalLeader>sr :call <SID>exGS_SortSearchResults()<CR>
+    vnoremap <buffer> <silent> <LocalLeader>sr :call <SID>exGS_SortSearchResultsByRange()<CR>
 endfunction " >>>
 
 " ------------------------------------------------------------------ 
@@ -482,6 +501,31 @@ function g:exGS_UpdateSelectWindow() " <<<
     silent call cursor(s:exGS_select_idx, 1)
     call exUtility#HighlightConfirmLine()
 endfunction " >>>
+
+
+" ------------------------------------------------------------------ 
+" Desc: compare the search result line. (by YJR)
+" ------------------------------------------------------------------ 
+
+function! s:exGS_SearchResultComp(line1, line2) " <<<
+    let line1lst = matchlist(a:line1 , '^\([^:]*\):\(\d\+\):')
+    let line2lst = matchlist(a:line2 , '^\([^:]*\):\(\d\+\):')
+    if empty(line1lst) && empty(line2lst)
+        return 0
+    elseif empty(line1lst)
+        return -1
+    elseif empty(line2lst)
+        return 1
+    else
+        if line1lst[1]!=line2lst[1]
+            return line1lst[1]<line2lst[1]?-1:1
+        else
+            let linenum1 = eval(line1lst[2])
+            let linenum2 = eval(line2lst[2])
+            return linenum1==linenum2?0:(linenum1<linenum2?-1:1)
+        endif
+    endif
+endfunction ">>>
 
 " ------------------------------------------------------------------ 
 " Desc: Get Global Search Result
@@ -547,11 +591,57 @@ function s:exGS_GetGlobalSearchResult(search_pattern, search_method, direct_jump
     let line_num = line('.')
     silent put = search_result
 
+    " auto sort search results if the number of results less than g:exGS_lines_for_autosort lines
+    if g:exGS_auto_sort == 1
+        if line('$') <= g:exGS_lines_for_autosort
+            call s:exGS_SortSearchResults ()
+        endif
+    endif
+
     " Init search state
     let s:exGS_search_state_tmp.pattern = a:search_pattern
     let s:exGS_select_idx = line_num+1
     silent call cursor( line_num+1, 1 )
     silent normal zz
+endfunction " >>>
+
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
+function s:exGS_SortSearchResults() " <<<
+    if bufname('%') ==# s:exGS_select_title
+        let lines = getline(3, '$')
+        silent call sort(lines, "s:exGS_SearchResultComp")
+        silent call setline(3, lines)
+    elseif bufname('%') ==# s:exGS_quick_view_title
+        let save_cursor = getpos(".")
+        silent normal gg
+        while 1
+            let start_ln = search('<<<<<<', 'W')
+            let end_ln = search('>>>>>>', 'W')
+            if start_ln == 0
+                break
+            else
+                let start_ln += 1 
+                let end_ln -= 1 
+                let lines = getline(start_ln, end_ln)
+                silent call sort(lines, "s:exGS_SearchResultComp")
+                silent call setline(start_ln, lines)
+            endif
+        endwhile
+        silent call setpos(".", save_cursor)
+    endif
+endfunction " >>>
+
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+"
+function s:exGS_SortSearchResultsByRange() range " <<<
+    let lines = getline(a:firstline, a:lastline)
+    silent call sort(lines, "s:exGS_SearchResultComp")
+    silent call setline(a:firstline, lines)
 endfunction " >>>
 
 " ------------------------------------------------------------------ 
