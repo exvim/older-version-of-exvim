@@ -1716,6 +1716,25 @@ Default Key:
 >
         let g:exGS_highlight_result = 0
 <
+							      *exGS_auto_sort*
+
+    If the value is 1, the exGlobalSearch will sort the search results by filename 
+    and line number. ( it depends on the value g:exGS_lines_for_autosort, if the 
+    number of the results is more than the lines we define, it will not sort no 
+    matter what exGS_auto_sort value is ).
+>
+	let g:exGS_auto_sort = 0
+<
+
+						     *exGS_lines_for_autosort*
+
+    When g:exGS_auto_sort = 1, after getting the search result, exGlobalSearch 
+    will check if the number of the results is more than the exGS_lines_for_autosort, 
+    if yes, it will not sort. You can use \sr operations to force sort the search 
+    results.
+>
+	let g:exGS_lines_for_autosort = 500
+<
 
 ------------------------------------------------------------------------------
 3.6.2. Commands                                      *exGlobalSearch-commands*
@@ -1900,6 +1919,11 @@ Default Key:
 <leader>gd
     Pick up results in all sections unmatched patterns you gived, and list 
     them in quickview window. The matched pattern gives by / or # search result.
+
+                                          *exGlobalSearch-sort-search-results*
+<leader>sr
+
+    Force sort the search results. can be used in visual mode.
 
                                                   *exGlobalSearch-select-item*
 <return>
