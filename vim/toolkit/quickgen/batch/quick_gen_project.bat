@@ -315,7 +315,7 @@ if /I "%support_cscope%" == "true" (
     echo Creating cscope data...
     echo    ^|- generate cscope.files
     if exist .\%vimfiles_path%\filenamelist_cwd (
-        gawk -v filter_pattern=%cscope_file_filter_pattern% -f "%EX_DEV%\vim\toolkit\gawk\prg_FileFilter.awk" ".\%vimfiles_path%\filenamelist_cwd" > cscope.files
+        gawk -v filter_pattern=%cscope_file_filter_pattern% -f "%EX_DEV%\vim\toolkit\gawk\prg_FileFilterWithQuotes.awk" ".\%vimfiles_path%\filenamelist_cwd" > cscope.files
     ) else (
         dir /s /b %cscope_file_filter%|sed "s,\(.*\),\"\1\",g" > cscope.files
     )

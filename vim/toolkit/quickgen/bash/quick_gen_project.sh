@@ -284,7 +284,7 @@ gen_cscope ()
         echo "Creating cscope data..."
         echo "  |- generate cscope.files"
         if [ -f "./${vimfiles_path}/filenamelist_cwd" ]; then
-            gawk -v filter_pattern=${cscope_file_filter_pattern} -f "${EX_DEV}/vim/toolkit/gawk/prg_FileFilter.awk" "./${vimfiles_path}/filenamelist_cwd" > cscope.files
+            gawk -v filter_pattern=${cscope_file_filter_pattern} -f "${EX_DEV}/vim/toolkit/gawk/prg_FileFilterWithQuotes.awk" "./${vimfiles_path}/filenamelist_cwd" > cscope.files
         else
             find . -regex '.*\.\('"${cscope_file_filter}"'\)' > cscope.files
         fi
