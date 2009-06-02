@@ -284,13 +284,13 @@ endfunction
 " ------------------------------------------------------------------ 
 
 function s:exPJ_UpdateFilters()
-    let file_filter_txt = getline(1)
-    if match( file_filter_txt, '^file filter =' ) != -1
+    let file_filter_txt = getline( search('^file filter =', 'nw') )
+    if file_filter_txt != ''
         silent call exUtility#SetProjectFilter ( "file_filter", strpart( file_filter_txt, stridx(file_filter_txt, "=")+2 ) )
     endif
 
-    let dir_filter_txt = getline(2)
-    if match( dir_filter_txt, '^dir filter =' ) != -1
+    let dir_filter_txt = getline( search('^dir filter =', 'nw') )
+    if dir_filter_txt != ''
         silent call exUtility#SetProjectFilter ( "dir_filter", strpart( dir_filter_txt, stridx(dir_filter_txt, "=")+2 ) )
     endif
 endfunction
