@@ -934,6 +934,19 @@ vmap <unique> <C-F11> <Plug>VisualDeComment
 nmap <unique> <C-F11> <Plug>DeComment
 imap <unique> <C-F11> <ESC><Plug>DeComment
 
+" ======================================================== 
+"  add new languages for comment
+" ======================================================== 
+
+function EnhCommentifyCallback(ft)
+    " add hlsl
+    if a:ft == 'hlsl'
+        let b:ECcommentOpen = '//'
+        let b:ECcommentClose = ''
+    endif
+endfunction
+let g:EnhCommentifyCallbackExists = 'Yes'
+
 " ------------------------------------------------------------------ 
 " Desc: ShowMarks
 " ------------------------------------------------------------------ 
