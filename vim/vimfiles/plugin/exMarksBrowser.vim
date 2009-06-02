@@ -205,6 +205,10 @@ function g:exMB_InitSelectWindow() " <<<
     nnoremap <buffer> <silent> <Space>   :call <SID>exMB_ResizeWindow()<CR>
     nnoremap <buffer> <silent> <ESC>   :call <SID>exMB_ToggleWindow('Select')<CR>
 
+    " dummy mapping
+    nnoremap <buffer> <silent> <C-Left>   :call exUtility#WarningMsg("only select window")<CR>
+    nnoremap <buffer> <silent> <C-Right>   :call exUtility#WarningMsg("only select window")<CR>
+
     " autocmd
     au CursorMoved <buffer> :call s:exMB_SelectCursorMoved()
 endfunction " >>>

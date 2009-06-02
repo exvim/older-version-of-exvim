@@ -210,7 +210,18 @@ endfunction " >>>
 function s:exCS_SwitchWindow( short_title ) " <<<
     let title = '__exCS_' . a:short_title . 'Window__'
     if bufwinnr(title) == -1
+        " use the width & height of current window
+        let old_height = g:exCS_window_height
+        let g:exCS_window_height = winheight('.')
+        let old_width = g:exCS_window_width
+        let g:exCS_window_width = winwidth('.')
+
+        " switch to the new plugin window
         call s:exCS_ToggleWindow(a:short_title)
+
+        " recover the width and height
+        let g:exCS_window_height = old_height
+        let g:exCS_window_width = old_width
     endif
 endfunction " >>>
 

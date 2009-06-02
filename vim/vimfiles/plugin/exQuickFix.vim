@@ -210,7 +210,18 @@ endfunction " >>>
 function s:exQF_SwitchWindow( short_title ) " <<<
     let title = '__exQF_' . a:short_title . 'Window__'
     if bufwinnr(title) == -1
+        " use the width & height of current window
+        let old_height = g:exQF_window_height
+        let g:exQF_window_height = winheight('.')
+        let old_width = g:exQF_window_width
+        let g:exQF_window_width = winwidth('.')
+
+        " switch to the new plugin window
         call s:exQF_ToggleWindow(a:short_title)
+
+        " recover the width and height
+        let g:exQF_window_height = old_height
+        let g:exQF_window_width = old_width
     endif
 endfunction " >>>
 

@@ -271,20 +271,6 @@ endfunction " >>>
 " Desc: 
 " ------------------------------------------------------------------ 
 
-function s:exMH_SwitchWindow( short_title ) " <<<
-    let title = '__exMH_' . a:short_title . 'Window__'
-    if a:short_title == 'Select'
-        let title = s:exMH_cur_filename
-    endif
-    if bufwinnr(title) == -1
-        call s:exMH_ToggleWindow(a:short_title)
-    endif
-endfunction " >>>
-
-" ------------------------------------------------------------------ 
-" Desc: 
-" ------------------------------------------------------------------ 
-
 function g:exMH_InitMacroList(macrofile_name) " <<<
     " init file name and read the file into line_list
     let s:exMH_cur_filename = a:macrofile_name
@@ -563,7 +549,7 @@ endfunction " >>>
 " ======================================================== 
 
 " ------------------------------------------------------------------ 
-" Desc: Init exSymbolList window
+" Desc: Init macro higlihgt select window
 " ------------------------------------------------------------------ 
 
 function g:exMH_InitSelectWindow() " <<<
@@ -579,8 +565,8 @@ function g:exMH_InitSelectWindow() " <<<
     nnoremap <buffer> <silent> <Return>   :call <SID>exMH_SelectConfirm()<CR>
 
     " dummy mapping
-    nnoremap <buffer> <silent> <C-Left>   :call <SID>exMH_SwitchWindow('Select')<CR>
-    nnoremap <buffer> <silent> <C-Right>   :call <SID>exMH_SwitchWindow('Select')<CR>
+    nnoremap <buffer> <silent> <C-Left>   :call exUtility#WarningMsg("only select window")<CR>
+    nnoremap <buffer> <silent> <C-Right>   :call exUtility#WarningMsg("only select window")<CR>
 
     " autocmd
     " au CursorMoved <buffer> :call exUtility#HighlightSelectLine()

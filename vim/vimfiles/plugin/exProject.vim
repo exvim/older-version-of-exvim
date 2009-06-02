@@ -350,9 +350,12 @@ function g:exPJ_InitSelectWindow() " <<<
     nnoremap <silent> <buffer> <localleader>cf   :call <SID>exPJ_RefreshProject(1)<CR>
     nnoremap <silent> <buffer> <localleader>R    :call <SID>exPJ_CreateProject(0)<CR>
     nnoremap <silent> <buffer> <localleader>r    :call <SID>exPJ_RefreshProject(0)<CR>
-    nnoremap <silent> <buffer> <C-Left>   :echo 'project buffer only'<CR>
-    nnoremap <silent> <buffer> <C-Right>  :echo 'project buffer only'<CR>
 
+    " dummy mapping
+    nnoremap <buffer> <silent> <C-Left>   :call exUtility#WarningMsg("only select window")<CR>
+    nnoremap <buffer> <silent> <C-Right>   :call exUtility#WarningMsg("only select window")<CR>
+
+    "
     nnoremap <silent> <buffer> <C-Up> :call exUtility#CursorJump( 'ErrorLog.err', 'up' )<CR>
     nnoremap <silent> <buffer> <C-Down> :call exUtility#CursorJump( 'ErrorLog.err', 'down' )<CR>
 
