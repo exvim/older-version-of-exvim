@@ -418,19 +418,23 @@ function s:exPJ_CreateProject(with_dialog) " <<<
     call s:exPJ_UpdateFilters()
     call exUtility#SetLevelList(-1, 1)
 
+    " get entry dir
+    let entry_dir = getcwd()
+    if exists('g:exES_CWD')
+        let entry_dir = g:exES_CWD
+    endif
+
     " if use dialog
     if a:with_dialog == 1
-        " get entry dir
-        let ex_pwd = getcwd()
-        if exists('g:exES_CWD')
-            let ex_pwd = g:exES_CWD
-        endif
-        let entry_dir = inputdialog( 'Enter the entry directory: ', ex_pwd, 'cancle' )
-        if entry_dir == ''
-            call exUtility#WarningMsg('Entry dir is empty')
-            return
-        elseif entry_dir == 'cancle'
-            return
+        " if the exProject is standalone version, show entry dir dialog
+        if !exists('g:exES_CWD')
+            let entry_dir = inputdialog( 'Enter the entry directory: ', getcwd(), 'cancle' )
+            if entry_dir == ''
+                call exUtility#WarningMsg('Entry dir is empty')
+                return
+            elseif entry_dir == 'cancle'
+                return
+            endif
         endif
 
         " get file filter
@@ -450,8 +454,6 @@ function s:exPJ_CreateProject(with_dialog) " <<<
         else
             silent call exUtility#SetProjectFilter ( "dir_filter", dir_filter )
         endif
-    else
-        let entry_dir = g:exES_CWD
     endif
 
     echon "Creating exProject: " . entry_dir . "\r"
