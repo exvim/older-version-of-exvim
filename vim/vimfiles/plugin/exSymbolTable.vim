@@ -163,8 +163,9 @@ endfunction " >>>
 function s:exSL_ToggleWindow( short_title ) " <<<
     " read the file first, if file name changes, reset title.
     if exists('g:exES_Symbol') 
-        if s:exSL_select_title !=# g:exES_Symbol
-            let s:exSL_select_title = g:exES_Symbol
+        let sel_bufname = fnamemodify(g:exES_Symbol, ':p:.')
+        if s:exSL_select_title !=# sel_bufname
+            let s:exSL_select_title = sel_bufname
         endif
     else
         call exUtility#WarningMsg('not found symbol file')
@@ -216,11 +217,15 @@ function s:exSL_SwitchWindow( short_title ) " <<<
     endif
 
     if bufwinnr(s:exSL_cur_title) == -1
-        " use the width & height of current window
+        " save the old height & width
         let old_height = g:exSL_window_height
-        let g:exSL_window_height = winheight('.')
         let old_width = g:exSL_window_width
-        let g:exSL_window_width = winwidth('.')
+
+        " use the width & height of current window if it is same plugin window.
+        if bufname ('%') ==# s:exSL_select_title || bufname ('%') ==# s:exSL_quick_view_title 
+            let g:exSL_window_height = winheight('.')
+            let g:exSL_window_width = winwidth('.')
+        endif
 
         " switch to the new plugin window
         call s:exSL_ToggleWindow(a:short_title)
@@ -369,18 +374,31 @@ endfunction " >>>
 " ------------------------------------------------------------------ 
 
 function s:exSL_GetAndShowPickedResult() " <<<
+    " DISABLE { 
+    " if we write this, the switch can't keep the window size.
+    " if &filetype == "ex_filetype"
+    "     silent exec "normal \<Esc>"
+    " endif
+    " } DISABLE end 
+
     " get search pattern
     let search_pattern = expand("<cword>")
 
-    "
-    "if &filetype == "ex_filetype"
-    "    silent exec "normal \<Esc>"
-    "endif
+    " check if we have symbol select or quickview window opened
+    let sl_winnr = bufwinnr(s:exSL_select_title)
+    if sl_winnr == -1
+        let sl_winnr = bufwinnr(s:exSL_quick_view_title)
+    endif
 
-    " copy picked result
-    let s:exSL_quick_view_idx = 1
-    call s:exSL_SwitchWindow("Select")
+    " go to the select window first
+    if sl_winnr != -1
+        exe sl_winnr . 'wincmd w'
+    endif
+
+    " call switch function
+    call s:exSL_SwitchWindow('Select')
     call s:exSL_CopyPickedLine( search_pattern, 1, 0 )
+    let s:exSL_quick_view_idx = 1
     call s:exSL_SwitchWindow('QuickView')
     silent exec '1,$d _'
     silent put = s:exSL_picked_search_result

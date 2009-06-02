@@ -216,11 +216,15 @@ endfunction " >>>
 function s:exTS_SwitchWindow( short_title ) " <<<
     let title = '__exTS_' . a:short_title . 'Window__'
     if bufwinnr(title) == -1
-        " use the width & height of current window
+        " save the old height & width
         let old_height = g:exTS_window_height
-        let g:exTS_window_height = winheight('.')
         let old_width = g:exTS_window_width
-        let g:exTS_window_width = winwidth('.')
+
+        " use the width & height of current window if it is same plugin window.
+        if bufname ('%') ==# s:exTS_select_title || bufname ('%') ==# s:exTS_stack_title
+            let g:exTS_window_height = winheight('.')
+            let g:exTS_window_width = winwidth('.')
+        endif
 
         " switch to the new plugin window
         call s:exTS_ToggleWindow(a:short_title)

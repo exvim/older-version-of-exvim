@@ -240,11 +240,15 @@ endfunction " >>>
 function s:exGS_SwitchWindow( short_title ) " <<<
     let title = '__exGS_' . a:short_title . 'Window__'
     if bufwinnr(title) == -1
-        " use the width & height of current window
+        " save the old height & width
         let old_height = g:exGS_window_height
-        let g:exGS_window_height = winheight('.')
         let old_width = g:exGS_window_width
-        let g:exGS_window_width = winwidth('.')
+
+        " use the width & height of current window if it is same plugin window.
+        if bufname ('%') ==# s:exGS_select_title || bufname ('%') ==# s:exGS_quick_view_title || bufname ('%') ==# s:exGS_stack_title
+            let g:exGS_window_height = winheight('.')
+            let g:exGS_window_width = winwidth('.')
+        endif
 
         " switch to the new plugin window
         call s:exGS_ToggleWindow(a:short_title)
