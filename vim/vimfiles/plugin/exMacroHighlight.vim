@@ -410,7 +410,7 @@ function s:exMH_UpdateMacroPattern() " <<<
     " update def macro pattern
     let s:def_macro_pattern = '\%(\%(\%(==\|!=\)\s*\)\@<!\<1\>'
     for def_macro in s:exMH_define_list[1]
-        let s:def_macro_pattern .= '\|\<' . def_macro . '\>'
+        let s:def_macro_pattern .= '\|\<\C' . def_macro . '\>'
     endfor
     let s:def_macro_pattern .= '\)'
 
@@ -418,7 +418,7 @@ function s:exMH_UpdateMacroPattern() " <<<
     " the \(==\|!=\)\$<! pattern will stop parseing the 0 as == 0. this will fix the bug like #if ( EX_NOT_IN_MACRO_FILE == 0 ) become match
     let s:undef_macro_pattern = '\%(\%(\%(==\|!=\)\s*\)\@<!\<0\>'
     for undef_macro in s:exMH_define_list[0]
-        let s:undef_macro_pattern .= '\|\<' . undef_macro . '\>'
+        let s:undef_macro_pattern .= '\|\<\C' . undef_macro . '\>'
     endfor
     let s:undef_macro_pattern .= '\)'
 
