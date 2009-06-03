@@ -561,7 +561,11 @@ function g:exMH_InitSelectWindow() " <<<
     
     " key map
     nnoremap <buffer> <silent> <Space>   :call <SID>exMH_ResizeWindow()<CR>
-    nnoremap <buffer> <silent> <ESC>   :call <SID>exMH_ToggleWindow('Select')<CR>
+    if &term =~ "xterm"
+        nnoremap <buffer> <silent> <leader><ESC>   :call <SID>exMH_ToggleWindow('Select')<CR>
+    else
+        nnoremap <buffer> <silent> <ESC>   :call <SID>exMH_ToggleWindow('Select')<CR>
+    endif
     nnoremap <buffer> <silent> <Return>   :call <SID>exMH_SelectConfirm()<CR>
 
     " dummy mapping

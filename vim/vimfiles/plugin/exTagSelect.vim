@@ -279,7 +279,11 @@ function g:exTS_InitSelectWindow() " <<<
     nnoremap <buffer> <silent> <Return>   \|:call <SID>exTS_GotoTagSelectResult()<CR>
     nnoremap <buffer> <silent> <2-LeftMouse>   \|:call <SID>exTS_GotoTagSelectResult()<CR>
     nnoremap <buffer> <silent> <Space>   :call <SID>exTS_ResizeWindow()<CR>
-    nnoremap <buffer> <silent> <ESC>   :call <SID>exTS_ToggleWindow('Select')<CR>
+    if &term =~ "xterm"
+        nnoremap <buffer> <silent> <leader><ESC>   :call <SID>exTS_ToggleWindow('Select')<CR>
+    else
+        nnoremap <buffer> <silent> <ESC>   :call <SID>exTS_ToggleWindow('Select')<CR>
+    endif
     nnoremap <buffer> <silent> <C-Left>   :call <SID>exTS_SwitchWindow('Select')<CR>
     nnoremap <buffer> <silent> <C-Right>   :call <SID>exTS_SwitchWindow('Stack')<CR>
 
@@ -539,7 +543,11 @@ function g:exTS_InitStackWindow() " <<<
     nnoremap <buffer> <silent> <Return>   \|:call <SID>exTS_Stack_GoDirect()<CR>
     nnoremap <buffer> <silent> <2-LeftMouse>   \|:call <SID>exTS_Stack_GoDirect()<CR>
     nnoremap <buffer> <silent> <Space>   :call <SID>exTS_ResizeWindow()<CR>
-    nnoremap <buffer> <silent> <ESC>   :call <SID>exTS_ToggleWindow('Stack')<CR>
+    if &term =~ "xterm"
+        nnoremap <buffer> <silent> <leader><ESC>   :call <SID>exTS_ToggleWindow('Stack')<CR>
+    else
+        nnoremap <buffer> <silent> <ESC>   :call <SID>exTS_ToggleWindow('Stack')<CR>
+    endif
     nnoremap <buffer> <silent> <C-Left>   :call <SID>exTS_SwitchWindow('Select')<CR>
     nnoremap <buffer> <silent> <C-Right>   :call <SID>exTS_SwitchWindow('Stack')<CR>
 

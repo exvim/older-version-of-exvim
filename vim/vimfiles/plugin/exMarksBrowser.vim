@@ -203,7 +203,11 @@ function g:exMB_InitSelectWindow() " <<<
     nnoremap <buffer> <silent> <Return>   \|:call <SID>exMB_GotoSelectResult()<CR>
     nnoremap <buffer> <silent> <2-LeftMouse>   \|:call <SID>exMB_GotoSelectResult()<CR>
     nnoremap <buffer> <silent> <Space>   :call <SID>exMB_ResizeWindow()<CR>
-    nnoremap <buffer> <silent> <ESC>   :call <SID>exMB_ToggleWindow('Select')<CR>
+    if &term =~ "xterm"
+        nnoremap <buffer> <silent> <leader><ESC>   :call <SID>exMB_ToggleWindow('Select')<CR>
+    else
+        nnoremap <buffer> <silent> <ESC>   :call <SID>exMB_ToggleWindow('Select')<CR>
+    endif
 
     " dummy mapping
     nnoremap <buffer> <silent> <C-Left>   :call exUtility#WarningMsg("only select window")<CR>

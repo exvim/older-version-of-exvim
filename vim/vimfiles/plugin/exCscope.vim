@@ -431,7 +431,11 @@ function g:exCS_InitSelectWindow() " <<<
     " key map
     nnoremap <buffer> <silent> <Return>   \|:call <SID>exCS_GotoInSelectWindow()<CR>
     nnoremap <buffer> <silent> <Space>   :call <SID>exCS_ResizeWindow()<CR>
-    nnoremap <buffer> <silent> <ESC>   :call <SID>exCS_ToggleWindow('Select')<CR>
+    if &term =~ "xterm"
+        nnoremap <buffer> <silent> <leader><ESC>   :call <SID>exCS_ToggleWindow('Select')<CR>
+    else
+        nnoremap <buffer> <silent> <ESC>   :call <SID>exCS_ToggleWindow('Select')<CR>
+    endif
 
     nnoremap <buffer> <silent> <C-Right>   :call <SID>exCS_SwitchWindow('Select')<CR>
     nnoremap <buffer> <silent> <C-Left>   :call <SID>exCS_SwitchWindow('QuickView')<CR>
