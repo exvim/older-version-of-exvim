@@ -560,13 +560,10 @@ function g:exMH_InitSelectWindow() " <<<
     silent! setlocal cursorline
     
     " key map
-    nnoremap <buffer> <silent> <Space>   :call <SID>exMH_ResizeWindow()<CR>
-    if &term =~ "xterm"
-        nnoremap <buffer> <silent> <leader><ESC>   :call <SID>exMH_ToggleWindow('Select')<CR>
-    else
-        nnoremap <buffer> <silent> <ESC>   :call <SID>exMH_ToggleWindow('Select')<CR>
-    endif
-    nnoremap <buffer> <silent> <Return>   :call <SID>exMH_SelectConfirm()<CR>
+    silent exec "nnoremap <buffer> <silent> " . g:ex_keymap_close . " :call <SID>exMH_ToggleWindow('Select')<CR>"
+    silent exec "nnoremap <buffer> <silent> " . g:ex_keymap_resize . " :call <SID>exMH_ResizeWindow()<CR>"
+    silent exec "nnoremap <buffer> <silent> " . g:ex_keymap_confirm . " \\|:call <SID>exMH_SelectConfirm()<CR>"
+    nnoremap <buffer> <silent> <2-LeftMouse>   \|:call <SID>exMH_SelectConfirm()<CR>
 
     " dummy mapping
     nnoremap <buffer> <silent> <C-Left>   :call exUtility#WarningMsg("only select window")<CR>

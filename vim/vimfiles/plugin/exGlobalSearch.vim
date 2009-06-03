@@ -480,14 +480,10 @@ function g:exGS_InitSelectWindow() " <<<
     syntax match ex_SynLineNr '\d\+:'
 
     " key map
-    nnoremap <buffer> <silent> <Return>   \|:call <SID>exGS_GotoInSelectWindow()<CR>
-    nnoremap <silent> <buffer> <2-LeftMouse>   \|:call <SID>exGS_GotoInSelectWindow()<CR>
-    nnoremap <buffer> <silent> <Space>   :call <SID>exGS_ResizeWindow()<CR>
-    if &term =~ "xterm"
-        nnoremap <buffer> <silent> <leader><ESC>   :call <SID>exGS_ToggleWindow('Select')<CR>
-    else
-        nnoremap <buffer> <silent> <ESC>   :call <SID>exGS_ToggleWindow('Select')<CR>
-    endif
+    silent exec "nnoremap <buffer> <silent> " . g:ex_keymap_close . " :call <SID>exGS_ToggleWindow('Select')<CR>"
+    silent exec "nnoremap <buffer> <silent> " . g:ex_keymap_resize . " :call <SID>exGS_ResizeWindow()<CR>"
+    silent exec "nnoremap <buffer> <silent> " . g:ex_keymap_confirm . " \\|:call <SID>exGS_GotoInSelectWindow()<CR>"
+    nnoremap <buffer> <silent> <2-LeftMouse>   \|:call <SID>exGS_GotoInSelectWindow()<CR>
 
     nnoremap <buffer> <silent> <C-Up>   :call <SID>exGS_SwitchWindow('Stack')<CR>
     nnoremap <buffer> <silent> <C-Left>   :call <SID>exGS_SwitchWindow('QuickView')<CR>
@@ -726,14 +722,10 @@ function g:exGS_InitStackWindow() " <<<
     syntax match ex_SynTitle '#.\+PATTERN.\+ENTRY POINT PREVIEW'
 
     " key map
-    nnoremap <buffer> <silent> <Return>   \|:call <SID>exGS_Stack_GoDirect()<CR>
+    silent exec "nnoremap <buffer> <silent> " . g:ex_keymap_close . " :call <SID>exGS_ToggleWindow('Stack')<CR>"
+    silent exec "nnoremap <buffer> <silent> " . g:ex_keymap_resize . " :call <SID>exGS_ResizeWindow()<CR>"
+    silent exec "nnoremap <buffer> <silent> " . g:ex_keymap_confirm . " \\|:call <SID>exGS_Stack_GoDirect()<CR>"
     nnoremap <buffer> <silent> <2-LeftMouse>   \|:call <SID>exGS_Stack_GoDirect()<CR>
-    nnoremap <buffer> <silent> <Space>   :call <SID>exGS_ResizeWindow()<CR>
-    if &term =~ "xterm"
-        nnoremap <buffer> <silent> <leader><ESC>   :call <SID>exGS_ToggleWindow('Stack')<CR>
-    else
-        nnoremap <buffer> <silent> <ESC>   :call <SID>exGS_ToggleWindow('Stack')<CR>
-    endif
 
     nnoremap <buffer> <silent> <C-Up>   :call <SID>exGS_SwitchWindow('Stack')<CR>
     nnoremap <buffer> <silent> <C-Left>   :call <SID>exGS_SwitchWindow('Select')<CR>
@@ -928,14 +920,10 @@ function g:exGS_InitQuickViewWindow() " <<<
     syntax match ex_SynFold '>>>>>>'
 
     " key map
-    nnoremap <buffer> <silent> <Return>   \|:call <SID>exGS_GotoInQuickViewWindow()<CR>
+    silent exec "nnoremap <buffer> <silent> " . g:ex_keymap_close . " :call <SID>exGS_ToggleWindow('QuickView')<CR>"
+    silent exec "nnoremap <buffer> <silent> " . g:ex_keymap_resize . " :call <SID>exGS_ResizeWindow()<CR>"
+    silent exec "nnoremap <buffer> <silent> " . g:ex_keymap_confirm . " \\|:call <SID>exGS_GotoInQuickViewWindow()<CR>"
     nnoremap <buffer> <silent> <2-LeftMouse>   \|:call <SID>exGS_GotoInQuickViewWindow()<CR>
-    nnoremap <buffer> <silent> <Space>   :call <SID>exGS_ResizeWindow()<CR>
-    if &term =~ "xterm"
-        nnoremap <buffer> <silent> <leader><ESC>   :call <SID>exGS_ToggleWindow('QuickView')<CR>
-    else
-        nnoremap <buffer> <silent> <ESC>   :call <SID>exGS_ToggleWindow('QuickView')<CR>
-    endif
 
     nnoremap <buffer> <silent> <C-Up>   :call <SID>exGS_SwitchWindow('Stack')<CR>
     nnoremap <buffer> <silent> <C-Right>   :call <SID>exGS_SwitchWindow('Select')<CR>

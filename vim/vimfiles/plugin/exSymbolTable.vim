@@ -437,15 +437,13 @@ function g:exSL_InitSelectWindow() " <<<
     silent! setlocal buftype=
     
     " key map
-    nnoremap <buffer> <silent> <Return> \|:call <SID>exSL_GotoResult()<CR>
+    silent exec "nnoremap <buffer> <silent> " . g:ex_keymap_close . " :call <SID>exSL_ToggleWindow('Select')<CR>"
+    silent exec "nnoremap <buffer> <silent> " . g:ex_keymap_resize . " :call <SID>exSL_ResizeWindow()<CR>"
+    silent exec "nnoremap <buffer> <silent> " . g:ex_keymap_confirm . " \\|:call <SID>exSL_GotoResult()<CR>"
     nnoremap <buffer> <silent> <2-LeftMouse> \|:call <SID>exSL_GotoResult()<CR>
+
     nnoremap <buffer> <silent> <C-Return>   \|:call <SID>exSL_ShowPickedResult(getline('.'), 0)<CR>
-    nnoremap <buffer> <silent> <Space>   :call <SID>exSL_ResizeWindow()<CR>
-    if &term =~ "xterm"
-        nnoremap <buffer> <silent> <leader><ESC>   :call <SID>exSL_ToggleWindow('Select')<CR>
-    else
-        nnoremap <buffer> <silent> <ESC>   :call <SID>exSL_ToggleWindow('Select')<CR>
-    endif
+
     nnoremap <buffer> <silent> <C-Left>   :call <SID>exSL_SwitchWindow('QuickView')<CR>
     nnoremap <buffer> <silent> <C-Right>   :call <SID>exSL_SwitchWindow('Select')<CR>
 
@@ -479,14 +477,11 @@ function g:exSL_InitQuickViewWindow() " <<<
     silent! setlocal nonumber
     
     " key map
-    nnoremap <buffer> <silent> <Return>   \|:call <SID>exSL_GotoResult()<CR>
+    silent exec "nnoremap <buffer> <silent> " . g:ex_keymap_close . " :call <SID>exSL_ToggleWindow('QuickView')<CR>"
+    silent exec "nnoremap <buffer> <silent> " . g:ex_keymap_resize . " :call <SID>exSL_ResizeWindow()<CR>"
+    silent exec "nnoremap <buffer> <silent> " . g:ex_keymap_confirm . " \\|:call <SID>exSL_GotoResult()<CR>"
     nnoremap <buffer> <silent> <2-LeftMouse> \|:call <SID>exSL_GotoResult()<CR>
-    nnoremap <buffer> <silent> <Space>   :call <SID>exSL_ResizeWindow()<CR>
-    if &term =~ "xterm"
-        nnoremap <buffer> <silent> <leader><ESC>   :call <SID>exSL_ToggleWindow('QuickView')<CR>
-    else
-        nnoremap <buffer> <silent> <ESC>   :call <SID>exSL_ToggleWindow('QuickView')<CR>
-    endif
+
     nnoremap <buffer> <silent> <C-Left>   :call <SID>exSL_SwitchWindow('QuickView')<CR>
     nnoremap <buffer> <silent> <C-Right>   :call <SID>exSL_SwitchWindow('Select')<CR>
 

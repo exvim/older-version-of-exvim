@@ -200,14 +200,10 @@ function g:exMB_InitSelectWindow() " <<<
     syntax match ex_SynTitle '^<<<<<< .* >>>>>>'
 
     " key map
-    nnoremap <buffer> <silent> <Return>   \|:call <SID>exMB_GotoSelectResult()<CR>
+    silent exec "nnoremap <buffer> <silent> " . g:ex_keymap_close . " :call <SID>exMB_ToggleWindow('Select')<CR>"
+    silent exec "nnoremap <buffer> <silent> " . g:ex_keymap_resize . " :call <SID>exMB_ResizeWindow()<CR>"
+    silent exec "nnoremap <buffer> <silent> " . g:ex_keymap_confirm . " \\|:call <SID>exMB_GotoSelectResult()<CR>"
     nnoremap <buffer> <silent> <2-LeftMouse>   \|:call <SID>exMB_GotoSelectResult()<CR>
-    nnoremap <buffer> <silent> <Space>   :call <SID>exMB_ResizeWindow()<CR>
-    if &term =~ "xterm"
-        nnoremap <buffer> <silent> <leader><ESC>   :call <SID>exMB_ToggleWindow('Select')<CR>
-    else
-        nnoremap <buffer> <silent> <ESC>   :call <SID>exMB_ToggleWindow('Select')<CR>
-    endif
 
     " dummy mapping
     nnoremap <buffer> <silent> <C-Left>   :call exUtility#WarningMsg("only select window")<CR>

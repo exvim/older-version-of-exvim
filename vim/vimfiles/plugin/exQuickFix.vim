@@ -277,14 +277,10 @@ function g:exQF_InitSelectWindow() " <<<
     syntax match ex_SynLineNr contained '(\d\+)'
 
     " key map
-    nnoremap <buffer> <silent> <Return>   \|:call <SID>exQF_GotoInSelectWindow()<CR>
+    silent exec "nnoremap <buffer> <silent> " . g:ex_keymap_close . " :call <SID>exQF_ToggleWindow('Select')<CR>"
+    silent exec "nnoremap <buffer> <silent> " . g:ex_keymap_resize . " :call <SID>exQF_ResizeWindow()<CR>"
+    silent exec "nnoremap <buffer> <silent> " . g:ex_keymap_confirm . " \\|:call <SID>exQF_GotoInSelectWindow()<CR>"
     nnoremap <buffer> <silent> <2-LeftMouse>   \|:call <SID>exQF_GotoInSelectWindow()<CR>
-    nnoremap <buffer> <silent> <Space>   :call <SID>exQF_ResizeWindow()<CR>
-    if &term =~ "xterm"
-        nnoremap <buffer> <silent> <leader><ESC>   :call <SID>exQF_ToggleWindow('Select')<CR>
-    else
-        nnoremap <buffer> <silent> <ESC>   :call <SID>exQF_ToggleWindow('Select')<CR>
-    endif
 
     nnoremap <buffer> <silent> <C-Right>   :call <SID>exQF_SwitchWindow('Select')<CR>
     nnoremap <buffer> <silent> <C-Left>   :call <SID>exQF_SwitchWindow('QuickView')<CR>
@@ -477,13 +473,10 @@ function g:exQF_InitQuickViewWindow() " <<<
     syntax match ex_SynLineNr contained '(\d\+)'
 
     " key map
-    nnoremap <buffer> <silent> <Return>   \|:call <SID>exQF_GotoInQuickViewWindow()<CR>
-    nnoremap <buffer> <silent> <Space>   :call <SID>exQF_ResizeWindow()<CR>
-    if &term =~ "xterm"
-        nnoremap <buffer> <silent> <leader><ESC>   :call <SID>exQF_ToggleWindow('QuickView')<CR>
-    else
-        nnoremap <buffer> <silent> <ESC>   :call <SID>exQF_ToggleWindow('QuickView')<CR>
-    endif
+    silent exec "nnoremap <buffer> <silent> " . g:ex_keymap_close . " :call <SID>exQF_ToggleWindow('QuickView')<CR>"
+    silent exec "nnoremap <buffer> <silent> " . g:ex_keymap_resize . " :call <SID>exQF_ResizeWindow()<CR>"
+    silent exec "nnoremap <buffer> <silent> " . g:ex_keymap_confirm . " \\|:call <SID>exQF_GotoInQuickViewWindow()<CR>"
+    nnoremap <buffer> <silent> <2-LeftMouse>   \|:call <SID>exQF_GotoInQuickViewWindow()<CR>
 
     nnoremap <buffer> <silent> <C-Right>   :call <SID>exQF_SwitchWindow('Select')<CR>
     nnoremap <buffer> <silent> <C-Left>   :call <SID>exQF_SwitchWindow('QuickView')<CR>

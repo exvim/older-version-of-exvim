@@ -340,12 +340,14 @@ function g:exPJ_InitSelectWindow() " <<<
     hi def exPJ_SynErrorFile gui=none guifg=Red term=none cterm=none ctermfg=Red
 
     " key map
-    nnoremap <silent> <buffer> <Return>   :call <SID>exPJ_GotoSelectResult('e')<CR>
+    " silent exec "nnoremap <buffer> <silent> " . g:ex_keymap_close . " :call <SID>exPJ_ToggleWindow('Select')<CR>"
+    silent exec "nnoremap <buffer> <silent> " . g:ex_keymap_resize . " :call <SID>exPJ_ResizeWindow()<CR>"
+    silent exec "nnoremap <buffer> <silent> " . g:ex_keymap_confirm . " \\|:call <SID>exPJ_GotoSelectResult('e')<CR>"
+    nnoremap <buffer> <silent> <2-LeftMouse>   \|:call <SID>exPJ_GotoSelectResult('e')<CR>
+
     nnoremap <silent> <buffer> <S-Return> :call <SID>exPJ_GotoSelectResult('bel sp')<CR>
-    nnoremap <silent> <buffer> <2-LeftMouse>   :call <SID>exPJ_GotoSelectResult('e')<CR>
     nnoremap <silent> <buffer> <S-2-LeftMouse> :call <SID>exPJ_GotoSelectResult('bel sp')<CR>
 
-    nnoremap <silent> <buffer> <Space>   :call <SID>exPJ_ResizeWindow()<CR>
     nnoremap <silent> <buffer> <localleader>C    :call <SID>exPJ_CreateProject(1)<CR>
     nnoremap <silent> <buffer> <localleader>cf   :call <SID>exPJ_RefreshProject(1)<CR>
     nnoremap <silent> <buffer> <localleader>R    :call <SID>exPJ_CreateProject(0)<CR>

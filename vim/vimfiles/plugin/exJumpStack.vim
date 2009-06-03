@@ -261,12 +261,12 @@ function g:exJS_InitSelectWindow() " <<<
     " } DELME end 
 
     " key map
-    " KEEPME { 
-    " nnoremap <buffer> <silent> <Return>   \|:call <SID>exJS_GotoSelectResult()<CR>
+    silent exec "nnoremap <buffer> <silent> " . g:ex_keymap_close . " :call <SID>exJS_ToggleWindow('Select')<CR>"
+    silent exec "nnoremap <buffer> <silent> " . g:ex_keymap_resize . " :call <SID>exJS_ResizeWindow()<CR>"
+    " TODO { 
+    " silent exec "nnoremap <buffer> <silent> " . g:ex_keymap_confirm . " \\|:call <SID>exJS_GotoSelectResult()<CR>"
     " nnoremap <buffer> <silent> <2-LeftMouse>   \|:call <SID>exJS_GotoSelectResult()<CR>
-    " } KEEPME end 
-    nnoremap <buffer> <silent> <Space>   :call <SID>exJS_ResizeWindow()<CR>
-    nnoremap <buffer> <silent> <ESC>   :call <SID>exJS_ToggleWindow('Select')<CR>
+    " } TODO end 
 
     " autocmd
     " DELME { 

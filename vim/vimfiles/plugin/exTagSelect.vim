@@ -276,14 +276,11 @@ function g:exTS_InitSelectWindow() " <<<
     syntax match ex_SynLineNr '^        \d\+:'
 
     " key map
-    nnoremap <buffer> <silent> <Return>   \|:call <SID>exTS_GotoTagSelectResult()<CR>
-    nnoremap <buffer> <silent> <2-LeftMouse>   \|:call <SID>exTS_GotoTagSelectResult()<CR>
-    nnoremap <buffer> <silent> <Space>   :call <SID>exTS_ResizeWindow()<CR>
-    if &term =~ "xterm"
-        nnoremap <buffer> <silent> <leader><ESC>   :call <SID>exTS_ToggleWindow('Select')<CR>
-    else
-        nnoremap <buffer> <silent> <ESC>   :call <SID>exTS_ToggleWindow('Select')<CR>
-    endif
+    silent exec "nnoremap <buffer> <silent> " . g:ex_keymap_close . " :call <SID>exTS_ToggleWindow('Select')<CR>"
+    silent exec "nnoremap <buffer> <silent> " . g:ex_keymap_resize . " :call <SID>exTS_ResizeWindow()<CR>"
+    silent exec "nnoremap <buffer> <silent> " . g:ex_keymap_confirm . " \\|:call <SID>exTS_GotoTagSelectResult()<CR>"
+    nnoremap <buffer> <silent> <2-LeftMouse> \|:call <SID>exTS_GotoTagSelectResult()<CR>
+
     nnoremap <buffer> <silent> <C-Left>   :call <SID>exTS_SwitchWindow('Select')<CR>
     nnoremap <buffer> <silent> <C-Right>   :call <SID>exTS_SwitchWindow('Stack')<CR>
 
@@ -540,14 +537,11 @@ function g:exTS_InitStackWindow() " <<<
     syntax match ex_SynTitle '#.\+TAG NAME.\+ENTRY POINT PREVIEW'
 
     " map keys
-    nnoremap <buffer> <silent> <Return>   \|:call <SID>exTS_Stack_GoDirect()<CR>
-    nnoremap <buffer> <silent> <2-LeftMouse>   \|:call <SID>exTS_Stack_GoDirect()<CR>
-    nnoremap <buffer> <silent> <Space>   :call <SID>exTS_ResizeWindow()<CR>
-    if &term =~ "xterm"
-        nnoremap <buffer> <silent> <leader><ESC>   :call <SID>exTS_ToggleWindow('Stack')<CR>
-    else
-        nnoremap <buffer> <silent> <ESC>   :call <SID>exTS_ToggleWindow('Stack')<CR>
-    endif
+    silent exec "nnoremap <buffer> <silent> " . g:ex_keymap_close . " :call <SID>exTS_ToggleWindow('Stack')<CR>"
+    silent exec "nnoremap <buffer> <silent> " . g:ex_keymap_resize . " :call <SID>exTS_ResizeWindow()<CR>"
+    silent exec "nnoremap <buffer> <silent> " . g:ex_keymap_confirm . " \\|:call <SID>exTS_Stack_GoDirect()<CR>"
+    nnoremap <buffer> <silent> <2-LeftMouse> \|:call <SID>exTS_Stack_GoDirect()<CR>
+
     nnoremap <buffer> <silent> <C-Left>   :call <SID>exTS_SwitchWindow('Select')<CR>
     nnoremap <buffer> <silent> <C-Right>   :call <SID>exTS_SwitchWindow('Stack')<CR>
 

@@ -71,6 +71,29 @@ if $EX_DEV ==# ""
     let $EX_DEV='/usr/local/share'
 endif
 
+" ------------------------------------------------------------------ 
+" Desc: general key mappings 
+" ------------------------------------------------------------------ 
+
+" general key mapping: close window
+if !exists ( "g:ex_keymap_close" )
+    if &term =~ "xterm"
+        let g:ex_keymap_close = "<leader><esc>"
+    else
+        let g:ex_keymap_close = "<esc>"
+    endif
+endif
+
+" general key mapping: resize window
+if !exists ( "g:ex_keymap_resize" )
+    let g:ex_keymap_resize = "<space>"
+endif
+
+" general key mapping: select confirm
+if !exists ( "g:ex_keymap_confirm" )
+    let g:ex_keymap_confirm = "<enter>"
+endif
+
 " ======================================================== 
 " local variable initialization
 " ======================================================== 
