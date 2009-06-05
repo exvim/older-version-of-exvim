@@ -140,10 +140,15 @@ let s:elif_and_pattern  = '^\s*\%(%:\|#\)\s*\%(elif\s\+\%(.*&&\s*\)*(*\s*\%(defi
 let s:elifn_or_pattern  = '^\s*\%(%:\|#\)\s*\%(elif\s\+\%(.*||\s*\)*!\s*(*\s*\%(defined\)*\s*(*\s*\|elif\s\+\%(.*||\s*\)*(*\s*\S*\s*!=\s*\)'
 let s:elifn_and_pattern = '^\s*\%(%:\|#\)\s*\%(elif\s\+\%(.*&&\s*\)*!\s*(*\s*\%(defined\)*\s*(*\s*\|elif\s\+\%(.*&&\s*\)*(*\s*\S*\s*!=\s*\)'
 " ---------------------------------
-let s:or_pattern   = '\s\+.*||\s*(*\s*\%(defined\)*\s*(*\s*\%(\s*\S*\s*==\s*\)*'
-let s:and_pattern  = '\s\+.*&&\s*(*\s*\%(defined\)*\s*(*\s*\%(\s*\S*\s*==\s*\)*'
-let s:orn_pattern  = '\s\+.*||\s*\%(!\s*(*\s*\%(defined\)*\s*(*\s*\|(*\s*\S*\s*!=\s*\)'
-let s:andn_pattern = '\s\+.*&&\s*\%(!\s*(*\s*\%(defined\)*\s*(*\s*\|(*\s*\S*\s*!=\s*\)'
+" NOTE: the if here fix the bug:
+" {{{
+"     #if defined (MACRO1) || defined (MACRO1)
+" }}}
+" which means the code #if not start from the beginning of the line, but the or,and pattern will come from the beginning of the line. 
+let s:or_pattern   = 'if\s\+.*||\s*(*\s*\%(defined\)*\s*(*\s*\%(\s*\S*\s*==\s*\)*'
+let s:and_pattern  = 'if\s\+.*&&\s*(*\s*\%(defined\)*\s*(*\s*\%(\s*\S*\s*==\s*\)*'
+let s:orn_pattern  = 'if\s\+.*||\s*\%(!\s*(*\s*\%(defined\)*\s*(*\s*\|(*\s*\S*\s*!=\s*\)'
+let s:andn_pattern = 'if\s\+.*&&\s*\%(!\s*(*\s*\%(defined\)*\s*(*\s*\|(*\s*\S*\s*!=\s*\)'
 " ---------------------------------
 let s:end_pattern = '\s*)*.*$' " end_pattern used in syntax region define start
 let s:end_not_and_pattern = '\s*)*\s*\%(&[^&]\|[^&]\)*$' " the [^&] will stop martch in xxx &, but the &[^&] will let this martch pass until && coming
