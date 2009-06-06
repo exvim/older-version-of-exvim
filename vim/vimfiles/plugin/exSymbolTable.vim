@@ -254,10 +254,6 @@ endfunction " >>>
 " ------------------------------------------------------------------ 
 
 function s:exSL_GetSymbolListResult( symbol ) " <<<
-    "if &filetype == "ex_filetype"
-    "    silent exec "normal \<Esc>"
-    "endif
-
     " open symbol select window
     let sl_winnr = bufwinnr(s:exSL_select_title)
     if sl_winnr == -1
@@ -285,10 +281,6 @@ endfunction " >>>
 " ------------------------------------------------------------------ 
 
 function s:exSL_QuickSearch() " <<<
-    "if &filetype == "ex_filetype"
-    "    silent exec "normal \<Esc>"
-    "endif
-
     " open symbol select window
     let sl_winnr = bufwinnr(s:exSL_select_title)
     if sl_winnr == -1
@@ -374,13 +366,6 @@ endfunction " >>>
 " ------------------------------------------------------------------ 
 
 function s:exSL_GetAndShowPickedResult() " <<<
-    " DISABLE { 
-    " if we write this, the switch can't keep the window size.
-    " if &filetype == "ex_filetype"
-    "     silent exec "normal \<Esc>"
-    " endif
-    " } DISABLE end 
-
     " get search pattern
     let search_pattern = expand("<cword>")
 

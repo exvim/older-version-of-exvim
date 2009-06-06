@@ -1457,7 +1457,7 @@ function! s:Tlist_Window_Init()
     " Set the taglist buffer filetype to taglist
     " jwu MODIFY this to close taglist
     "setlocal filetype=taglist
-    setlocal filetype=ex_filetype
+    setlocal filetype=ex_plugin
 
     " Define taglist window element highlighting
     syntax match TagListComment '^" .*'

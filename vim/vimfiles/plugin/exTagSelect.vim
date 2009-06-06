@@ -343,11 +343,6 @@ endfunction
 " ------------------------------------------------------------------ 
 
 function s:exTS_GetTagSelectResult(tag, direct_jump) " <<<
-    " this will fix the jump error when tagselect in the same window
-    if &filetype == "ex_filetype"
-        silent exec "normal \<Esc>"
-    endif
-
     let in_tag = strpart( a:tag, match(a:tag, '\S') )
     if match(in_tag, '^\(\t\|\s\)') != -1
         return
@@ -509,6 +504,10 @@ function s:exTS_GotoTagSelectResult() " <<<
         let s:exTS_tag_state_tmp.stack_preview = ''
         let s:exTS_tag_state_tmp.tag_idx = tag_idx
         call s:exTS_PushTagStack(s:exTS_tag_state_tmp)
+
+        " ADD { 
+        " TODO: add push stack code here
+        " } ADD end 
     else
         let s:exTS_tag_stack_list[s:exTS_stack_idx].tag_idx = tag_idx
     endif

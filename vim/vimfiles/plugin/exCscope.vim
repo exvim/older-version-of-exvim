@@ -496,11 +496,6 @@ endfunction " >>>
 " ------------------------------------------------------------------ 
 
 function s:exCS_GetSearchResult(search_pattern, search_method) " <<<
-    " this will fix the jump error when tagselect in the same window
-    if &filetype == "ex_filetype"
-        silent exec "normal \<Esc>"
-    endif
-
     " if cscope file not connect, connect it
     if cscope_connection(4, "cscope.out", g:exES_Cscope ) == 0
         call g:exCS_ConnectCscopeFile()

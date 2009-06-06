@@ -412,12 +412,6 @@ function s:exQF_GetQuickFixResult( file_name ) " <<<
         let full_file_name = a:file_name
     endif
     if findfile(full_file_name) != ''
-        " if we have other exUtility window, close it
-        " this code can't be disable, or the window jump will be wrong
-        if &filetype == "ex_filetype"
-            silent exec "normal \<Esc>"
-        endif
-
         " save the file size end file name
         let s:exQF_error_file_size = getfsize(full_file_name)
         let s:exQF_cur_filename = full_file_name

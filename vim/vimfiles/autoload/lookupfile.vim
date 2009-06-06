@@ -18,10 +18,12 @@ let g:lookupfile#recentFiles = []
 
 function! lookupfile#OpenWindow(bang, initPat)
   " JWU ADD { 
+  " DISABLE { 
   " this will fix the jump error when tagselect in the same window
-  if &filetype == "ex_filetype"
-    silent exec "normal \<Esc>"
-  endif
+  " if &filetype == "ex_plugin"
+  "   call exUtility#CloseWindow( bufname('%') )
+  " endif
+  " } DISABLE end 
   call exUtility#GotoEditBuffer()
   " } JWU ADD end 
 

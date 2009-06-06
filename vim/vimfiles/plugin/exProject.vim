@@ -304,7 +304,8 @@ endfunction
 " ------------------------------------------------------------------ 
 
 function g:exPJ_InitSelectWindow() " <<<
-    silent! setlocal filetype=ex_filetype
+    " NOTE: overwrite the filetype from ex_plugin to ex_project, so that the project window will not be close when doing a ex-operation
+    silent! setlocal filetype=ex_project 
     silent! setlocal buftype=
     silent! setlocal cursorline
 
@@ -943,11 +944,6 @@ endfunction " >>>
 " ------------------------------------------------------------------ 
 
 function s:exPJ_GotoCurrentFile( jump_to_project_window ) " <<<
-    " close the ex-plugin window
-    if &filetype == "ex_filetype"
-        silent exec "normal \<Esc>"
-    endif
-
     " first make sure we are in edit buffer.
     call exUtility#GotoEditBuffer()
 

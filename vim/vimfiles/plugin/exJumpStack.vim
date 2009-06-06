@@ -282,7 +282,20 @@ function g:exJS_UpdateSelectWindow() " <<<
     " we alwasy clear confirmed highlight, every time we open the browse window
     call exUtility#ClearConfirmHighlight ()
 
-    " TODO: add update codes 
+    " get stack info
+    let line_list = []
+    for stack_info in s:exJS_stack_list
+        let line = ''
+        if stack_info.jump_direction ==# 'to'
+            let line = '|- '
+        endif
+        let line = line . '[' . stack_info.jump_method . ']: ' . stack_info.preview 
+        silent call add ( line_list, line )
+    endfor
+
+    " clear screen and put the new context
+    silent exec '1,$d _'
+    silent call append( 1, line_list )
 endfunction " >>>
 
 " ------------------------------------------------------------------ 

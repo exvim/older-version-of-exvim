@@ -245,7 +245,7 @@ endfunction " >>>
 " ------------------------------------------------------------------ 
 
 function exUtility#InitWindow(init_func_name) " <<<
-    silent! setlocal filetype=ex_filetype
+    silent! setlocal filetype=ex_plugin
 
     " Folding related settings
     silent! setlocal foldenable
@@ -309,8 +309,8 @@ function exUtility#OpenWindow( buffer_name, window_direction, window_size, use_v
     endfor
 
     " if current editor buf is a plugin file type
-    if &filetype == "ex_filetype"
-        silent exec "normal \<Esc>"
+    if &filetype == "ex_plugin"
+        call exUtility#CloseWindow( bufname('%') )
     endif
 
     " go to edit buffer first, then open the window, this will avoid some bugs
@@ -479,7 +479,8 @@ function exUtility#CloseAllExpluginWindow() " <<<
     let bufnum_list = []
     while i <= winnr("$")
         let bnum = winbufnr(i)
-        if bnum != -1 && getbufvar(bnum, '&filetype') ==# 'ex_filetype'
+        let buf_filetype = getbufvar(bnum, '&filetype') 
+        if bnum != -1 && (buf_filetype ==# 'ex_plugin' || buf_filetype ==# 'ex_project')
             silent call add ( bufnum_list, bnum )
         endif
         let i += 1
