@@ -151,7 +151,7 @@ function s:UpdateSyntaxHighlights() " <<<
     hi default ex_SynJumpMethodG term=none cterm=none ctermfg=Blue gui=none guifg=Blue 
     hi default link ex_SynJumpSymbol Comment
 
-    hi default exCommentLable term=standout ctermfg=DarkYellow ctermbg=Red gui=none guifg=LightYellow guibg=Red
+    hi default exCommentLable term=standout ctermfg=DarkYellow ctermbg=Red gui=none guifg=LightGray guibg=Red
     " hi exCommentLable term=standout ctermfg=DarkYellow ctermbg=Red gui=none guifg=DarkRed guibg=LightMagenta
 
     " ======================================================== 

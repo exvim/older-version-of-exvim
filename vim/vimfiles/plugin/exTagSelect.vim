@@ -85,14 +85,6 @@ if !exists('g:exTS_close_when_selected')
 endif
 
 " ------------------------------------------------------------------ 
-" Desc: go and close exTagStack window
-" ------------------------------------------------------------------ 
-
-if !exists('g:exTS_stack_close_when_selected')
-    let g:exTS_stack_close_when_selected = 0
-endif
-
-" ------------------------------------------------------------------ 
 " Desc: use syntax highlight for search result
 " ------------------------------------------------------------------ 
 
@@ -119,7 +111,6 @@ endif
 " ------------------------------------------------------------------ 
 
 let s:exTS_select_title = "__exTS_SelectWindow__"
-let s:exTS_stack_title = "__exTS_StackWindow__"
 let s:exTS_short_title = 'Select'
 
 " ------------------------------------------------------------------ 
@@ -128,25 +119,22 @@ let s:exTS_short_title = 'Select'
 
 let s:exTS_ignore_case = 0
 let s:exTS_need_parse_again = 0
-let s:exTS_tag_state_tmp = {'tag_name':'', 'tag_idx':-1, 'tag_list':[], 'max_tags':-1, 'output_result':'', 'entry_cursor_pos':[-1,-1,-1,-1], 'entry_file_name':'', 'stack_preview':''}
-let s:exTS_tag_stack_list = [{'tag_name':'exTS_StartPoint', 'tag_idx':-1, 'tag_list':[], 'max_tags':-1, 'output_result':'StartPoint', 'entry_cursor_pos':[-1,-1,-1,-1], 'entry_file_name':'', 'stack_preview':''}]
 
 " ------------------------------------------------------------------ 
 " Desc: select variable
 " ------------------------------------------------------------------ 
 
-let s:exTS_tag_select_idx = 1
 let s:exTS_cursor_idx = 0
 let s:exTS_need_update_select_window = 0
-
-" ------------------------------------------------------------------ 
-" Desc: stack variable
-" ------------------------------------------------------------------ 
-
-let s:exTS_stack_idx = 0
-let s:exTS_need_update_stack_window = 0
 let s:exTS_need_push_tag = 0
-let s:exTS_last_jump_method = "to_tag"
+
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
+let s:exTS_cur_taglist = []
+let s:exTS_cur_tagname = ''
+let s:exTS_cur_tagidx = 0
 
 "/////////////////////////////////////////////////////////////////////////////
 " function defines
@@ -155,6 +143,17 @@ let s:exTS_last_jump_method = "to_tag"
 " ======================================================== 
 " general function defines
 " ======================================================== 
+
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
+function g:exTS_ResetTaglist( new_taglist, tag_name, tag_idx ) " <<<
+    let s:exTS_need_update_select_window = 1
+    let s:exTS_cur_taglist = a:new_taglist
+    let s:exTS_cur_tagname = a:tag_name
+    let s:exTS_cur_tagidx = a:tag_idx
+endfunction " >>>
 
 " ------------------------------------------------------------------ 
 " Desc: Open exTagSelect window 
@@ -221,7 +220,7 @@ function s:exTS_SwitchWindow( short_title ) " <<<
         let old_width = g:exTS_window_width
 
         " use the width & height of current window if it is same plugin window.
-        if bufname ('%') ==# s:exTS_select_title || bufname ('%') ==# s:exTS_stack_title
+        if bufname ('%') ==# s:exTS_select_title 
             let g:exTS_window_height = winheight('.')
             let g:exTS_window_width = winwidth('.')
         endif
@@ -281,8 +280,10 @@ function g:exTS_InitSelectWindow() " <<<
     silent exec "nnoremap <buffer> <silent> " . g:ex_keymap_confirm . " \\|:call <SID>exTS_GotoTagSelectResult()<CR>"
     nnoremap <buffer> <silent> <2-LeftMouse> \|:call <SID>exTS_GotoTagSelectResult()<CR>
 
+    " DUMMY { 
     nnoremap <buffer> <silent> <C-Left>   :call <SID>exTS_SwitchWindow('Select')<CR>
-    nnoremap <buffer> <silent> <C-Right>   :call <SID>exTS_SwitchWindow('Stack')<CR>
+    nnoremap <buffer> <silent> <C-Right>   :call <SID>exTS_SwitchWindow('Select')<CR>
+    " } DUMMY end 
 
     " autocmd
     au CursorMoved <buffer> :call s:exTS_SelectCursorMoved()
@@ -295,16 +296,15 @@ endfunction " >>>
 function g:exTS_UpdateSelectWindow() " <<<
     if s:exTS_need_update_select_window
         let s:exTS_need_update_select_window = 0
-        " clear window
-        silent exec '1,$d _'
-        silent put = s:exTS_tag_stack_list[s:exTS_stack_idx].output_result
-        silent exec 'normal! gg"_dd'
+        call s:exTS_ShowTagList ( s:exTS_cur_taglist )
     endif
 
-    let tag_pattern = '^\s*' .  s:exTS_tag_stack_list[s:exTS_stack_idx].tag_idx . ':'
-    silent call search( tag_pattern, 'w')
-    call exUtility#HighlightConfirmLine()
-    let s:exTS_cursor_idx = line('.')
+    " NOTE: when no confirm operation, the cur_tagidx will be 0
+    let tag_pattern = '^\s*' . s:exTS_cur_tagidx . ':'
+    if search( tag_pattern, 'w') != 0
+        call exUtility#HighlightConfirmLine()
+        let s:exTS_cursor_idx = line('.')
+    endif
 endfunction " >>>
 
 " ------------------------------------------------------------------ 
@@ -348,31 +348,14 @@ function s:exTS_GetTagSelectResult(tag, direct_jump) " <<<
         return
     endif
     " if it is a new tag, push it into the tag stack and parse it.
-    if in_tag !=# s:exTS_tag_stack_list[s:exTS_stack_idx].tag_name && s:exTS_need_parse_again != 1
+    if in_tag !=# s:exTS_cur_tagname && s:exTS_need_parse_again != 1
         let s:exTS_need_push_tag = 1
-        let s:exTS_tag_select_idx = 1
     else
         let s:exTS_need_push_tag = 0
-        let s:exTS_tag_select_idx = 1
         let s:exTS_need_parse_again = 0
     endif
 
-    " use lt to jump to the tag and go back.
-    " this will help us to push tag to the vim_stack automatically
-    let bufnr = bufnr('%')
-    " save the entry point
-    let cursor_pos = getpos(".")
-    let stack_preview = getline(".")
-    let stack_preview = strpart( stack_preview, match(stack_preview, '\S') )
-    if a:direct_jump == 0
-        let stack_preview = '[TS] ' . stack_preview
-    else
-        let stack_preview = '[TG] ' . stack_preview
-    endif
-    let s:exTS_tag_state_tmp.entry_file_name = bufname(bufnr)
-    let s:exTS_tag_state_tmp.entry_cursor_pos = cursor_pos
-    let s:exTS_tag_state_tmp.stack_preview = stack_preview
-
+    " get taglist
     if s:exTS_ignore_case && (match(in_tag, '\u') == -1)
         let in_tag = substitute( in_tag, '\', '\\\', "g" )
         echomsg 'parsing ' . in_tag . '...(ignore case)'
@@ -383,10 +366,31 @@ function s:exTS_GetTagSelectResult(tag, direct_jump) " <<<
         let tag_list = taglist('\V\^\C'.in_tag.'\$')
     endif
 
-    let result = ''
-    if empty(tag_list)
-        let result = 'Error detected while processing'
+    " push entry state if the taglist is not empty
+    if !empty(tag_list)
+        let stack_info = {}
+        let preview = getline(".")
+        let stack_info.preview = strpart( preview, match(preview, '\S') )
+        if &filetype == "ex_plugin"
+            let stack_info.file_name = ''
+        else
+            let stack_info.file_name = bufname('%')
+        endif
+        let cur_pos = getpos(".")
+        let stack_info.cursor_pos = [cur_pos[1],cur_pos[2]] " lnum, col
+        if a:direct_jump == 0
+            let stack_info.jump_method = 'TS'
+        else
+            let stack_info.jump_method = 'TG'
+        endif
+        let stack_info.keyword = in_tag
+        let stack_info.taglist = tag_list
+        let stack_info.tagidx = 1
+        call g:exJS_PushEntryState ( stack_info )
     endif
+
+    " reset tag list
+    call g:exTS_ResetTaglist ( tag_list, in_tag, 0 )
 
     " open window
     let ts_winnr = bufwinnr(s:exTS_select_title)
@@ -394,27 +398,41 @@ function s:exTS_GetTagSelectResult(tag, direct_jump) " <<<
         call s:exTS_ToggleWindow('Select')
     else
         exe ts_winnr . 'wincmd w'
+        call g:exTS_UpdateSelectWindow()
     endif
 
+    " go to first then highlight
+    silent exe 'normal! gg'
+    let tag_pattern = '^\s*1:'
+    call search( tag_pattern, 'w')
+    call exUtility#HighlightSelectLine()
+endfunction " >>>
+
+" ------------------------------------------------------------------ 
+" Desc: ShowTagList 
+" ------------------------------------------------------------------ 
+
+function s:exTS_ShowTagList ( tag_list ) " <<<
     " clear window
     silent exec '1,$d _'
     call exUtility#HighlightConfirmLine()
 
-    if match( result, 'Error detected while processing' ) != -1
-        silent put = 'Error: tag not found ==> ' . in_tag
+    " if empty tag_list, put the error result
+    if empty(a:tag_list)
+        silent put = 'Error: tag not found ==> ' . s:exTS_cur_tagname
         silent put = ''
         return
     endif
 
     " Init variable
     let idx = 1
-    let pre_tag_name = tag_list[0].name
-    let pre_file_name = tag_list[0].filename
+    let pre_tag_name = a:tag_list[0].name
+    let pre_file_name = a:tag_list[0].filename
     " put different file name at first
     silent put = pre_tag_name
     silent put = exUtility#ConvertFileName(pre_file_name)
     " put search result
-    for tag_info in tag_list
+    for tag_info in a:tag_list
         if tag_info.name !=# pre_tag_name
             silent put = ''
             silent put = tag_info.name
@@ -441,26 +459,8 @@ function s:exTS_GetTagSelectResult(tag, direct_jump) " <<<
         let pre_file_name = tag_info.filename
     endfor
 
-    " copy full parsed text to register a
-    let reg_t = @t
-    silent exe 'normal! gg'
-    silent exe 'normal! "tyG'
-
-    " go to first then highlight
-    silent exe 'normal! gg'
-    let tag_pattern = '^\s*1:'
-    call search( tag_pattern, 'w')
-    call exUtility#HighlightSelectLine()
-
-    " after push stack if needed, re-init s:exTS_tag_state_tmp
-    let s:exTS_tag_state_tmp.tag_name = in_tag
-    let s:exTS_tag_state_tmp.tag_idx = 1
-    let s:exTS_tag_state_tmp.output_result = @t
-    let s:exTS_tag_state_tmp.max_tags = len(tag_list)
-    let s:exTS_tag_state_tmp.tag_list = tag_list
-
-    " restore register a
-    let @t = reg_t
+    "
+    let s:exTS_need_update_select_window = 0
 endfunction " >>>
 
 " ------------------------------------------------------------------ 
@@ -477,7 +477,7 @@ function s:exTS_GotoTagSelectResult() " <<<
     let idx = match(cur_line, '\S')
     let cur_line = strpart(cur_line, idx)
     let idx = match(cur_line, ':')
-    let tag_idx = eval(strpart(cur_line, 0, idx))
+    let s:exTS_cur_tagidx = eval(strpart(cur_line, 0, idx))
 
     " jump by command
     call exUtility#GotoEditBuffer()
@@ -489,211 +489,32 @@ function s:exTS_GotoTagSelectResult() " <<<
         let keepjumps_cmd = 'keepjumps'
     endif
 
-    " push tag state to tag stack
+    " process extractly jump
+    call exUtility#GotoExCommand ( 
+                \ fnamemodify(s:exTS_cur_taglist[s:exTS_cur_tagidx-1].filename,":p"),
+                \ s:exTS_cur_taglist[s:exTS_cur_tagidx-1].cmd, 
+                \ keepjumps_cmd ) 
+
+    " push tag to jump stack if needed, otherwise set last jump stack
+    let stack_info = {}
+    let preview = getline(".")
+    let stack_info.preview = strpart( preview, match(preview, '\S') )
+    let stack_info.file_name = bufname('%')
+    let cur_pos = getpos(".")
+    let stack_info.cursor_pos = [cur_pos[1],cur_pos[2]] " lnum, col
+    let stack_info.jump_method = ''
+    let stack_info.keyword = ''
+    let stack_info.taglist = []
+    let stack_info.tagidx = s:exTS_cur_tagidx
     if s:exTS_need_push_tag
         let s:exTS_need_push_tag = 0
-
-        " set last stack_idx states
-        let s:exTS_tag_stack_list[s:exTS_stack_idx].entry_file_name = s:exTS_tag_state_tmp.entry_file_name 
-        let s:exTS_tag_stack_list[s:exTS_stack_idx].entry_cursor_pos = s:exTS_tag_state_tmp.entry_cursor_pos
-        let s:exTS_tag_stack_list[s:exTS_stack_idx].stack_preview = s:exTS_tag_state_tmp.stack_preview
-
-        " push stack
-        let s:exTS_tag_state_tmp.entry_file_name = ''
-        let s:exTS_tag_state_tmp.entry_cursor_pos = [-1,-1,-1,-1]
-        let s:exTS_tag_state_tmp.stack_preview = ''
-        let s:exTS_tag_state_tmp.tag_idx = tag_idx
-        call s:exTS_PushTagStack(s:exTS_tag_state_tmp)
-
-        " ADD { 
-        " TODO: add push stack code here
-        " } ADD end 
+        call g:exJS_PushJumpStack (stack_info)
     else
-        let s:exTS_tag_stack_list[s:exTS_stack_idx].tag_idx = tag_idx
+        call g:exJS_SetLastJumpStack (stack_info)
     endif
-
-    " process extractly jump
-    let s:exTS_tag_select_idx = tag_idx
-    call exUtility#GotoExCommand( fnamemodify(s:exTS_tag_stack_list[s:exTS_stack_idx].tag_list[tag_idx-1].filename,":p"), s:exTS_tag_stack_list[s:exTS_stack_idx].tag_list[tag_idx-1].cmd, keepjumps_cmd )
 
     " go back if needed
     call exUtility#OperateWindow ( s:exTS_select_title, g:exTS_close_when_selected, g:exTS_backto_editbuf, 1 )
-endfunction " >>>
-
-" ======================================================== 
-" tag stack window functions
-" ======================================================== 
-
-" ------------------------------------------------------------------ 
-" Desc: Init exTagSelectStack window
-" ------------------------------------------------------------------ 
-
-function g:exTS_InitStackWindow() " <<<
-    " syntax highlight
-    syntax match ex_SynJumpMethodS '\[TS]'
-    syntax match ex_SynJumpMethodG '\[TG]'
-    syntax match ex_SynJumpSymbol '======>'
-    syntax match ex_SynTitle '#.\+TAG NAME.\+ENTRY POINT PREVIEW'
-
-    " map keys
-    silent exec "nnoremap <buffer> <silent> " . g:ex_keymap_close . " :call <SID>exTS_ToggleWindow('Stack')<CR>"
-    silent exec "nnoremap <buffer> <silent> " . g:ex_keymap_resize . " :call <SID>exTS_ResizeWindow()<CR>"
-    silent exec "nnoremap <buffer> <silent> " . g:ex_keymap_confirm . " \\|:call <SID>exTS_Stack_GoDirect()<CR>"
-    nnoremap <buffer> <silent> <2-LeftMouse> \|:call <SID>exTS_Stack_GoDirect()<CR>
-
-    nnoremap <buffer> <silent> <C-Left>   :call <SID>exTS_SwitchWindow('Select')<CR>
-    nnoremap <buffer> <silent> <C-Right>   :call <SID>exTS_SwitchWindow('Stack')<CR>
-
-    " autocmd
-    au CursorMoved <buffer> :call exUtility#HighlightSelectLine()
-endfunction " >>>
-
-" ------------------------------------------------------------------ 
-" Desc: Update stack window
-" ------------------------------------------------------------------ 
-
-function g:exTS_UpdateStackWindow() " <<<
-    if s:exTS_need_update_stack_window
-        let s:exTS_need_update_stack_window = 0
-        silent exec '1,$d _'
-        call s:exTS_ShowTagStack()
-    endif
-
-    let pattern = s:exTS_stack_idx . ':'
-    if search( pattern, 'w') == 0
-        call exUtility#WarningMsg('Pattern not found')
-        return
-    endif
-    call exUtility#HighlightConfirmLine()
-endfunction " >>>
-
-" ------------------------------------------------------------------ 
-" Desc: Push tags into tag stack
-" ------------------------------------------------------------------ 
-
-function s:exTS_PushTagStack( tag_state ) " <<<
-    let list_len = len(s:exTS_tag_stack_list)
-    if list_len > s:exTS_stack_idx+1
-        call remove(s:exTS_tag_stack_list, s:exTS_stack_idx+1, list_len-1)
-        let s:exTS_stack_idx += 1
-    else
-        let s:exTS_stack_idx += 1
-    endif
-    let tag_state = copy(a:tag_state)
-    call add(s:exTS_tag_stack_list,tag_state)
-
-    let s:exTS_need_update_stack_window = 1
-
-    return s:exTS_stack_idx
-endfunction " >>>
-
-" ------------------------------------------------------------------ 
-" Desc: Show the tag stack list in current window
-" ------------------------------------------------------------------ 
-
-function s:exTS_ShowTagStack() " <<<
-    " put an empty line first
-    silent put = ''
-
-    " put the title
-    let tag_name = 'TAG NAME'
-    let stack_preview = 'ENTRY POINT PREVIEW'
-    let str_line = printf(" #  %-54s%s", tag_name, stack_preview)
-    silent put = str_line
-
-    " put the stack
-    let idx = 0
-    for state in s:exTS_tag_stack_list
-        "silent put = idx . ': ' . s:exTS_tag_state_{idx}.tag_name . '  ====>  ' . s:exTS_tag_state_{idx}.stack_preview
-        let str_line = printf("%2d: %-40s ======> %s", idx, state.tag_name, state.stack_preview)
-        silent put = str_line
-        let idx += 1
-    endfor
-    silent exec 'normal! gg"_dd'
-endfunction " >>>
-
-" ------------------------------------------------------------------ 
-" Desc: Go to idx tags
-" jump_method : 'to_tag', to_entry
-" ------------------------------------------------------------------ 
-
-function s:exTS_Stack_GotoTag( idx, jump_method ) " <<<
-    let jump_method = a:jump_method
-    let list_len = len(s:exTS_tag_stack_list)
-    " if idx < 0, return
-    if a:idx < 0
-        call exUtility#WarningMsg('at the top of exTagStack')
-        let s:exTS_stack_idx = 0
-        return
-    elseif a:idx > list_len-1
-        call exUtility#WarningMsg('at the bottom of exSearchStack')
-        let s:exTS_stack_idx = list_len-1
-        return
-    endif
-
-    let s:exTS_stack_idx = a:idx
-    let need_jump = 1
-    " start point always use to_entry method
-    if s:exTS_stack_idx == 0
-        let jump_method = 'to_entry'
-    endif
-
-    " open and go to stack window first
-    let background_op = 0
-    if bufwinnr(s:exTS_stack_title) == -1
-        call s:exTS_ToggleWindow('Stack')
-        let background_op = 1
-    else
-        call g:exTS_UpdateStackWindow()
-    endif
-
-    " start parsing
-    if need_jump == 1
-        let s:exTS_need_update_select_window = 1
-
-        " go by tag_idx
-        if jump_method == 'to_entry'
-            call exUtility#GotoEditBuffer()
-            silent exec 'e ' . s:exTS_tag_stack_list[s:exTS_stack_idx].entry_file_name
-            call setpos('.', s:exTS_tag_stack_list[s:exTS_stack_idx].entry_cursor_pos)
-        else
-            let tag_idx = s:exTS_tag_stack_list[s:exTS_stack_idx].tag_idx
-            call exUtility#GotoExCommand( fnamemodify(s:exTS_tag_stack_list[s:exTS_stack_idx].tag_list[tag_idx-1].filename,":p"), s:exTS_tag_stack_list[s:exTS_stack_idx].tag_list[tag_idx-1].cmd, "" )
-        endif
-        exe 'normal! zz'
-    endif
-
-    " go back if needed
-    call exUtility#OperateWindow ( s:exTS_stack_title, g:exTS_stack_close_when_selected || background_op, g:exTS_backto_editbuf, 1 )
-endfunction " >>>
-
-" ------------------------------------------------------------------ 
-" Desc: 
-" ------------------------------------------------------------------ 
-
-function s:exTS_Stack_GoDirect() " <<<
-    let cur_line = getline(".")
-    let idx = match(cur_line, '\S')
-    let cur_line = strpart(cur_line, idx)
-    let idx = match(cur_line, ':')
-    if idx == -1
-        call exUtility#WarningMsg("Can't jump in this line")
-        return
-    endif
-
-    let stack_idx = eval(strpart(cur_line, 0, idx))
-    call exUtility#HighlightConfirmLine()
-
-    " if select idx > old idx, jump to tag. else jump to entry
-    if stack_idx > s:exTS_stack_idx
-        call s:exTS_Stack_GotoTag(stack_idx, 'to_tag')
-        let s:exTS_last_jump_method = "to_tag"
-    elseif stack_idx < s:exTS_stack_idx
-        call s:exTS_Stack_GotoTag(stack_idx, 'to_entry')
-        let s:exTS_last_jump_method = "to_entry"
-    else
-        call s:exTS_Stack_GotoTag(stack_idx, s:exTS_last_jump_method)
-    endif
 endfunction " >>>
 
 "/////////////////////////////////////////////////////////////////////////////
@@ -702,11 +523,7 @@ endfunction " >>>
 
 "
 command -nargs=1 -complete=customlist,exUtility#CompleteBySymbolFile TS call s:exTS_GetTagSelectResult('<args>', 0)
-command BackwardTagStack call s:exTS_Stack_GotoTag(s:exTS_stack_idx-1, 'to_entry')
-command ForwardTagStack call s:exTS_Stack_GotoTag(s:exTS_stack_idx+1, 'to_tag')
-command TAGS call s:exTS_SwitchWindow('Stack')
 command ExtsSelectToggle call s:exTS_ToggleWindow('Select')
-command ExtsStackToggle call s:exTS_ToggleWindow('Stack')
 command ExtsToggle call s:exTS_ToggleWindow('')
 command ExtsGoDirectly call s:exTS_GetTagSelectResult(expand("<cword>"), 1)
 

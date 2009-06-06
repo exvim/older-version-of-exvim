@@ -659,16 +659,12 @@ endfunction
 " ------------------------------------------------------------------ 
 
 nnoremap <unique> <silent> <Leader>ts :ExtsSelectToggle<CR>
-nnoremap <unique> <silent> <Leader>tt :ExtsStackToggle<CR>
 nnoremap <unique> <silent> <Leader>tg :ExtsGoDirectly<CR>
 
 nnoremap <unique> <silent> <Leader>] :ExtsGoDirectly<CR>
-nnoremap <unique> <silent> <Leader>tb :BackwardTagStack<CR>
-nnoremap <unique> <silent> <Leader>tf :ForwardTagStack<CR>
 
 let g:exTS_backto_editbuf = 0
 let g:exTS_close_when_selected = 1
-let g:exTS_stack_close_when_selected = 0
 let g:exTS_window_direction = 'bel'
 
 " ------------------------------------------------------------------ 
