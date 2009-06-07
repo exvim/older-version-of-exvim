@@ -1595,8 +1595,10 @@ function! s:Tlist_Window_Init()
 
     " jwu MODIFY&ADD hot-key to space
     " nnoremap <buffer> <silent> x :call <SID>Tlist_Window_Zoom()<CR>
-    nnoremap <buffer> <silent> <Space> :call <SID>Tlist_Window_Zoom()<CR>
-    nnoremap <buffer> <silent> <ESC> :call <SID>Tlist_Window_Close()<CR>
+    silent exec "nnoremap <buffer> <silent> " . g:ex_keymap_resize . " :call <SID>Tlist_Window_Zoom()<CR>"
+    silent exec "nnoremap <buffer> <silent> " . g:ex_keymap_close . " :call <SID>Tlist_Window_Close()<CR>"
+
+
     au CursorMoved <buffer> :call exUtility#HighlightSelectLine()
 
     nnoremap <buffer> <silent> [[ :call <SID>Tlist_Window_Move_To_File(-1)<CR>

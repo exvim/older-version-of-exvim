@@ -78,8 +78,13 @@ let s:vimwiki_defaults.html_header = ''
 let s:vimwiki_defaults.html_footer = ''
 "}}}
 " DEFAULT options {{{
-call s:default('upper', 'A-ZА-Я')
-call s:default('lower', 'a-zа-я')
+if &encoding == 'utf-8'
+  call s:default('upper', 'A-Z\u0410-\u042f')
+  call s:default('lower', 'a-z\u0430-\u044f')
+else
+  call s:default('upper', 'A-Z')
+  call s:default('lower', 'a-z')
+endif
 call s:default('other', '0-9')
 call s:default('stripsym', '_')
 call s:default('auto_listitem', 1)

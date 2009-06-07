@@ -8,6 +8,12 @@
 "                If you want to match a tab, use the '\t' pattern.
 " ======================================================================================
 
+" disable the exSearchComplete in xterm in linux/unix.
+" because of the <ESC> mapping problem in xterm
+if !has("gui_running") && has("unix")
+    let loaded_exsearchcomplete = 1
+endif
+
 " check if plugin loaded
 if exists('loaded_exsearchcomplete') || &cp
     finish
