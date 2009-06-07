@@ -77,10 +77,13 @@ endif
 
 " general key mapping: close window
 if !exists ( "g:ex_keymap_close" )
-    if &term =~ "xterm"
-        let g:ex_keymap_close = "<leader><esc>"
-    else
+    let g:ex_keymap_close = "<esc>"
+    if has("gui_running")
         let g:ex_keymap_close = "<esc>"
+    else " xterm should not map <esc> key
+        if has("unix")
+            let g:ex_keymap_close = "<leader><esc>"
+        endif
     endif
 endif
 
