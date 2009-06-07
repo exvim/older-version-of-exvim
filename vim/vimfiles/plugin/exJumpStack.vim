@@ -517,6 +517,28 @@ endfunction " >>>
 " Desc: 
 " ------------------------------------------------------------------ 
 
+function s:exJS_NavigateStack( direction ) " <<<
+    " get the index first
+    if a:direction == 'backward'
+        let idx = s:exJS_stack_idx - 1
+        while idx >= 0 && s:exJS_stack_list[idx].file_name == ''
+            let idx -= 1
+        endwhile
+    elseif a:direction == 'forward'
+        let idx = s:exJS_stack_idx + 1
+        while idx <= len(s:exJS_stack_list)-1 && s:exJS_stack_list[idx].file_name == ''
+            let idx += 1
+        endwhile
+    endif
+
+    " go to the stack by index
+    call s:exJS_GotoStackByIndex (idx)
+endfunction " >>>
+
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
 function s:exJS_GotoStackByIndex( index ) " <<<
     if a:index < 0 
         call exUtility#WarningMsg ( "at the bottom of the stack" )
@@ -577,8 +599,8 @@ endfunction " >>>
 "/////////////////////////////////////////////////////////////////////////////
 
 command ExjsToggle call s:exJS_ToggleWindow('')
-command BackwardStack call s:exJS_GotoStackByIndex(s:exJS_stack_idx-1)
-command ForwardStack call s:exJS_GotoStackByIndex(s:exJS_stack_idx+1)
+command BackwardStack call s:exJS_NavigateStack('backward')
+command ForwardStack call s:exJS_NavigateStack('forward')
 
 "/////////////////////////////////////////////////////////////////////////////
 " finish
