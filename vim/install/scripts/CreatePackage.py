@@ -18,7 +18,7 @@ import zipfile
 #/////////////////////////////////////////////////////////////////////////////
 
 # general
-version = "7.05"
+version = "8.01a"
 source_path = "d:/exDev/vim"
 dest_root_path = "d:/Project/Dev/exVim_google/release_version" 
 dest_version_path = dest_root_path + "/" + version
@@ -157,6 +157,7 @@ def CreateExPluginsPackage ():
     zipfp.write ( os.path.join( source_path, "vimfiles/plugin/exSymbolTable.vim" ) )
     zipfp.write ( os.path.join( source_path, "vimfiles/plugin/exTagSelect.vim" ) )
     zipfp.write ( os.path.join( source_path, "vimfiles/plugin/exUtility.vim" ) )
+    zipfp.write ( os.path.join( source_path, "vimfiles/plugin/exJumpStack.vim" ) )
 
     # copy _vimrc and rename to _vimrc_ex 
     zipfp.write ( os.path.join( source_path, "_vimrc" ), "_vimrc_ex" )

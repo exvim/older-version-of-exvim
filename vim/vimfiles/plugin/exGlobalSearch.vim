@@ -163,6 +163,15 @@ let s:exGS_quick_view_search_pattern = ''
 " ======================================================== 
 
 " ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
+function s:exGS_ClearEntryToggleWindow( title ) " <<<
+    call g:exJS_ClearEntryStateList ()
+    call s:exGS_ToggleWindow ( a:title )
+endfunction " >>>
+
+" ------------------------------------------------------------------ 
 " Desc: Open exGlobalSearch window 
 " ------------------------------------------------------------------ 
 
@@ -877,9 +886,9 @@ command -nargs=1 -complete=customlist,exUtility#CompleteBySymbolFile GSR call s:
 command -nargs=1 -complete=customlist,exUtility#CompleteByProjectFile GSF call s:exGS_GetFilenameSearchResult('<args>', '-s')
 command -nargs=1 -complete=customlist,exUtility#CompleteByProjectFile GSFW call s:exGS_GetFilenameSearchResult('<args>', '-w')
 
-command ExgsToggle call s:exGS_ToggleWindow('')
-command ExgsSelectToggle call s:exGS_ToggleWindow('Select')
-command ExgsQuickViewToggle call s:exGS_ToggleWindow('QuickView')
+command ExgsToggle call s:exGS_ClearEntryToggleWindow('')
+command ExgsSelectToggle call s:exGS_ClearEntryToggleWindow('Select')
+command ExgsQuickViewToggle call s:exGS_ClearEntryToggleWindow('QuickView')
 command ExgsGoDirectly call s:exGS_GetGlobalSearchResult(expand("<cword>"), '-s', 1)
 
 command ExgsGotoNextResult call s:exGS_GotoResult ( 'next' )

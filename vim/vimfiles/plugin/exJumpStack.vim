@@ -228,20 +228,21 @@ function g:exJS_PushEntryState ( state ) " <<<
         endif
     endif
 
-    " if your current state is already a destination state, which means we are in internal state, and would 
-    " have a cancle operation last time. we need to clear the entry list.
-    if s:exJS_stack_idx != -1 && s:exJS_IsDestinationState (s:exJS_stack_list[s:exJS_stack_idx])
-        " clear entry list
-        if !empty(s:exJS_entry_list)
-            silent call remove ( s:exJS_entry_list, 0, len(s:exJS_entry_list)-1 )
-        endif
-    endif
-
     " push the state to the entry list 
     silent call add ( s:exJS_entry_list, a:state )
 
     " set need update 
     let s:exJS_need_update_select_window = 1
+endfunction " >>>
+
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
+function g:exJS_ClearEntryStateList () " <<<
+    if !empty(s:exJS_entry_list)
+        silent call remove ( s:exJS_entry_list, 0, len(s:exJS_entry_list)-1 )
+    endif
 endfunction " >>>
 
 " ======================================================== 

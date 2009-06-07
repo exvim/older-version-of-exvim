@@ -160,6 +160,15 @@ endfunction " >>>
 " ======================================================== 
 
 " ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
+function s:exTS_ClearEntryToggleWindow( title ) " <<<
+    call g:exJS_ClearEntryStateList ()
+    call s:exTS_ToggleWindow ( a:title )
+endfunction " >>>
+
+" ------------------------------------------------------------------ 
 " Desc: Open exTagSelect window 
 " ------------------------------------------------------------------ 
 
@@ -527,8 +536,8 @@ endfunction " >>>
 
 "
 command -nargs=1 -complete=customlist,exUtility#CompleteBySymbolFile TS call s:exTS_GetTagSelectResult('<args>', 0)
-command ExtsSelectToggle call s:exTS_ToggleWindow('Select')
-command ExtsToggle call s:exTS_ToggleWindow('')
+command ExtsSelectToggle call s:exTS_ClearEntryToggleWindow('Select')
+command ExtsToggle call s:exTS_ClearEntryToggleWindow('')
 command ExtsGoDirectly call s:exTS_GetTagSelectResult(expand("<cword>"), 1)
 
 " Ignore case setting
