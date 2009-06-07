@@ -136,7 +136,7 @@ function s:exSL_PushEntryToggleWindow( title ) " <<<
     let stack_info = {}
     let preview = getline(".")
     let stack_info.preview = strpart( preview, match(preview, '\S') )
-    if &filetype == "ex_plugin"
+    if &filetype == "ex_plugin" || &filetype == "ex_project"
         let stack_info.file_name = ''
     else
         let stack_info.file_name = bufname('%')
@@ -399,7 +399,7 @@ function s:exSL_GetAndShowPickedResult() " <<<
     let stack_info = {}
     let preview = getline(".")
     let stack_info.preview = strpart( preview, match(preview, '\S') )
-    if &filetype == "ex_plugin"
+    if &filetype == "ex_plugin" || &filetype == "ex_project"
         let stack_info.file_name = ''
     else
         let stack_info.file_name = bufname('%')

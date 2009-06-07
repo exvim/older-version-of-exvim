@@ -552,7 +552,7 @@ function s:exGS_GetGlobalSearchResult(search_pattern, search_method, direct_jump
     let stack_info = {}
     let preview = getline(".")
     let stack_info.preview = strpart( preview, match(preview, '\S') )
-    if &filetype == "ex_plugin"
+    if &filetype == "ex_plugin" || &filetype == "ex_project"
         let stack_info.file_name = ''
     else
         let stack_info.file_name = bufname('%')
