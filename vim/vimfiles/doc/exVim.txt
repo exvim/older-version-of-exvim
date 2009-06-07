@@ -123,7 +123,7 @@ What can "exVim" do??~
         
         * plugin\exTagSelect.vim~
             exTagSelect help to browse tags you selected in plugin window. Also
-            can record and shows tag jumps in stack window.
+            can record and shows tag jumps in exJumpStack.
         
         * plugin\exSymbolTable.vim~
             exSymbolTable will list tag names from tags you created in plugin window, 
@@ -321,9 +321,8 @@ How can I install "exVim"~
     
     Most ex-plugins have two to three window, but the main window which list results 
     for selecting always called 'select-window', And the window which list results 
-    from filter process always called 'quickview-window'. Some plugin have a 
-    'stack-window' to shows the jump history.  
-    
+    from filter process always called 'quickview-window'.     
+
     - Concept of the position of ex-plugin window ~
     
     Different ex-plugin windows can be showed at the same time if they don't use 
@@ -1266,8 +1265,8 @@ Default Key:
     If you choose a tag from select-window, it will jump to the position in
     edit-window, and record the jump. 
 
-    You can browse your jump history in exTagSelect stack-window, and if
-    necessary jump back to read that code.
+    You can browse your jump history in exJumpStack, and if necessary jump back 
+    to read that code.
 
     The exTagSelect loads data from tags file created by cTags. You can get
     the tool on http://ctags.sourceforge.net/. The recommend command is:
@@ -1342,14 +1341,6 @@ Default Key:
 >
         let g:exTS_close_when_selected = 0
 <
-
-                                              *exTS_stack_close_when_selected*
-    If the value is 1, after choosing a item from explugin-stack-window, 
-    the script will close the explugin-stack-window immediatelly.
->
-        let g:exTS_close_when_selected = 0
-<
-
                                                               *exTS_edit_mode*
     no use at all
 >
@@ -1380,31 +1371,11 @@ Default Key:
     Search a tag by {tag-name}, list the possible results in select-window.
     You can use <tab> to get matched tags when inputing tag names.
 
-                                                           *:BackwardTagStack*
-:BackwardTagStack
-    Go to the last tag jumped position directly. Recommend mapping:
->
-        nnoremap <unique> <silent> <Leader>tb :BackwardTagStack<CR>
-<
-                                                            *:ForwardTagStack*
-:ForwardTagStack
-    Go to the next tag jumped position directly.
-    NOTE: this works when you already jumped backward several positions.
-    Recommend mapping: 
->
-        nnoremap <unique> <silent> <Leader>tf :ForwardTagStack<CR>
-<
                                                            *:ExtsSelectToggle*
 :ExtsSelectToggle
     Open the exTagSelect select-window. Recommend mapping:
 >
         nnoremap <unique> <silent> <Leader>ts :ExtsSelectToggle<CR>
-<
-                                                            *:ExtsStackToggle*
-:ExtsStackToggle
-    Open the exTagSelect stack-window. Recommend mapping:
->
-        nnoremap <unique> <silent> <Leader>tt :ExtsStackToggle<CR>
 <
                                                                       *:TSigc*
 :TSigc
@@ -1430,12 +1401,6 @@ Default Key:
     Close the exTagSelect plugin window.
 
                                          *exTagSelect-swtich-to-select-window*
-<ctrl-left>                              
-    Switch to select-window when you are in stack-window
-
-                                          *exTagSelect-swtich-to-stack-window*
-<ctrl-right>                              
-    Switch to stack-window when you are in select-window
 
 ------------------------------------------------------------------------------
 3.5. exSymbolTable                                             *exSymbolTable*
@@ -1628,7 +1593,7 @@ Default Key:
     method so that after several filtering processing, you can get a more exact
     result by yourself.
 
-    Also the plugin will record jumps in the stack-window similar like what
+    Also the plugin will record jumps in the exJumpStack similar like what
     exTagSelect do. It help you trace jump history and make you clear what's
     the code flow like.
 
@@ -1697,13 +1662,6 @@ Default Key:
                                                     *exGS_close_when_selected*
     If the value is 1, after choosing a item from explugin-select/quickview-window, 
     the script will close the explugin-select/quickview-window immediatelly.
->
-        let g:exGS_close_when_selected = 0
-<
-
-                                              *exGS_stack_close_when_selected*
-    If the value is 1, after choosing a item from explugin-stack-window, 
-    the script will close the explugin-stack-window immediatelly.
 >
         let g:exGS_close_when_selected = 0
 <
@@ -1782,13 +1740,6 @@ Default Key:
 >
         nnoremap <unique> <silent> <Leader>gq :ExgsQuickViewToggle<CR>
 <
-
-                                                            *:ExgsStackToggle*
-:ExgsStackToggle
-    Open/Close exGlobalSearch stack-window. Recommend mapping:
->
-        nnoremap <unique> <silent> <Leader>gt :ExgsStackToggle<CR>
-<
                                                              *:ExgsGoDirectly*
 :ExgsGoDirectly
     Search word under current cursor ( as known as <cword> ), and list the
@@ -1797,21 +1748,6 @@ Default Key:
     Recommend mapping:
 >
         nnoremap <unique> <silent> <Leader>gg :ExgsGoDirectly<CR>
-<
-                                                        *:BackwardSearchStack*
-:BackwardSearchStack
-    Go to the last exGlobalSearch jumped position directly. Recommend mapping:
->
-        nnoremap <unique> <silent> <Leader>gb :BackwardSearchStack<CR>
-<
-
-                                                         *:ForwardSearchStack*
-:ForwardSearchStack
-    Go to the next exGlobalSearch jumped position directly.
-    NOTE: this works when you already jumped backward several positions.
-    Recommend mapping: 
->
-        nnoremap <unique> <silent> <Leader>gf :ForwardSearchStack<CR>
 <
                                                          *:ExgsGotoNextResult*
 :ExgsGotoNextResult
@@ -1938,10 +1874,6 @@ Default Key:
                                                  *exGlobalSearch-close-window*
 <esc>
     Close the exGlobalSearch plugin window.
-
-                                       *exGlobalSearch-switch-to-stack-window*
-<ctrl-up>
-    Switch to stack-window
 
                                       *exGlobalSearch-switch-to-select-window*
 <ctrl-right>
