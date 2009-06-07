@@ -12,11 +12,6 @@ endif
 let loaded_exjumpstack=1
 
 "/////////////////////////////////////////////////////////////////////////////
-"
-"/////////////////////////////////////////////////////////////////////////////
-
-
-"/////////////////////////////////////////////////////////////////////////////
 " variables
 "/////////////////////////////////////////////////////////////////////////////
 
@@ -140,7 +135,7 @@ let s:exJS_entry_list = []
 " let s:exJS_stack_info.preview = 'current line preview'
 " let s:exJS_stack_info.file_name = '' " current file name
 " let s:exJS_stack_info.cursor_pos = [-1,-1] " lnum, col
-" let s:exJS_stack_info.jump_method = 'GS/TS/GG/TG' SG???
+" let s:exJS_stack_info.jump_method = 'GS/TS/GG/TG/SG/SS'
 " let s:exJS_stack_info.keyword = ''
 " let s:exJS_stack_info.taglist = []
 " let s:exJS_stack_info.tagidx = 1
@@ -161,6 +156,12 @@ let s:exJS_entry_list = []
 function g:exJS_PushJumpStack( state ) " <<<
     " truncate stack first
     call s:exJS_TruncateStack ()
+
+    " if the first item in entry list is a internal state jump, we should connect it with last jump
+    if !empty(s:exJS_entry_list) && s:exJS_IsInternalState( s:exJS_entry_list[0] )
+        call g:exJS_SetLastJumpStack (s:exJS_entry_list[0])
+        call remove ( s:exJS_entry_list, 0 )
+    endif
 
     " push all items in the entry list.
     for item in s:exJS_entry_list
@@ -186,6 +187,18 @@ endfunction " >>>
 " ------------------------------------------------------------------ 
 
 function g:exJS_SetLastJumpStack( state ) " <<<
+    " if the index is invalid, skip it!
+    if s:exJS_stack_idx == -1
+        return
+    endif
+
+    " if we are at the beginning of the entry stack, we can't just truncate
+    " the stack and set last item. Instead we need to move to the next item,
+    " and do the things.   
+    if s:exJS_IsEntryState ( s:exJS_stack_list[s:exJS_stack_idx] )
+        let s:exJS_stack_idx += 1
+    endif
+
     " truncate stack first
     call s:exJS_TruncateStack ()
 
@@ -201,25 +214,31 @@ endfunction " >>>
 " ------------------------------------------------------------------ 
 
 function g:exJS_PushEntryState ( state ) " <<<
+    " DELME: in the push entry, we can't use truncate, cause you may use [TG] and then cancle jumping { 
     " truncate stack first
-    call s:exJS_TruncateStack ()
+    " call s:exJS_TruncateStack ()
+    " } DELME end 
 
     " check if we start a new entry list
     " if the file_name is empty, that means we are in ex_plugin window. ( at least I require programmer to check and set the state ).
-    if a:state.file_name != ''
+    if s:exJS_IsEntryState ( a:state )
         " clear entry list
         if !empty(s:exJS_entry_list)
             silent call remove ( s:exJS_entry_list, 0, len(s:exJS_entry_list)-1 )
         endif
     endif
 
-    " if we use tg, confirm, and ts, in the select window tg again, we don't create new jump entry
-    if a:state.file_name == '' && empty(s:exJS_entry_list)  
-        call g:exJS_SetLastJumpStack (a:state)
-    else
-        " push the state to the entry list 
-        silent call add ( s:exJS_entry_list, a:state )
+    " if your current state is already a destination state, which means we are in internal state, and would 
+    " have a cancle operation last time. we need to clear the entry list.
+    if s:exJS_stack_idx != -1 && s:exJS_IsDestinationState (s:exJS_stack_list[s:exJS_stack_idx])
+        " clear entry list
+        if !empty(s:exJS_entry_list)
+            silent call remove ( s:exJS_entry_list, 0, len(s:exJS_entry_list)-1 )
+        endif
     endif
+
+    " push the state to the entry list 
+    silent call add ( s:exJS_entry_list, a:state )
 
     " set need update 
     let s:exJS_need_update_select_window = 1
@@ -242,16 +261,49 @@ function s:exJS_TruncateStack() " <<<
         let trunctaeIdx = s:exJS_stack_idx 
 
         " if this is 'to' stack
-        if cur_stack_info.jump_method == '' && cur_stack_info.file_name != ''
+        if !s:exJS_IsEntryState ( cur_stack_info )
             let trunctaeIdx += 1
         endif
 
         " clear extra stack infos
-        if trunctaeIdx < list_len-1 
+        if trunctaeIdx <= list_len-1 
             silent call remove(s:exJS_stack_list, trunctaeIdx, list_len-1)
             let s:exJS_stack_idx = len(s:exJS_stack_list)-1
         endif
     endif
+endfunction " >>>
+
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
+function s:exJS_IsEntryState( state ) " <<<
+    if a:state.file_name != '' && a:state.jump_method != ''
+        return 1
+    endif
+    return 0
+endfunction " >>>
+
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
+function s:exJS_IsDestinationState( state ) " <<<
+    if a:state.file_name != '' && a:state.jump_method == ''
+        return 1
+    endif
+    return 0
+endfunction " >>>
+
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
+function s:exJS_IsInternalState( state ) " <<<
+    if a:state.file_name == '' && a:state.jump_method != ''
+        return 1
+    endif
+    return 0
 endfunction " >>>
 
 " ------------------------------------------------------------------ 
@@ -318,18 +370,16 @@ endfunction " >>>
 " ------------------------------------------------------------------ 
 
 function g:exJS_InitSelectWindow() " <<<
-    " TODO { 
     syntax region ex_SynSearchPattern start="^----------" end="----------"
-    syntax region ex_SynJumpMethodS start="\[\C\(GS\|TS\)\]" end=":" keepend contains=ex_SynKeyWord
-    syntax region ex_SynJumpMethodG start="\[\C\(GG\|TG\)\]" end=":" keepend contains=ex_SynKeyWord
-    syntax match ex_SynKeyWord contained '\[\C\(GS\|TS\|GG\|TG\)\]\zs\S\+'
-    syntax match ex_SynJumpSymbol '^ =>'
-    " syntax region ex_SynDisable start='^ |-' end="$" contains=ex_SynJumpMethodS,ex_SynJumpMethodG
-    syntax region ex_SynDisable start='^ |-' end="$"
-    syntax match exPJ_TreeLine '^ |='
-    hi link ex_SynKeyWord Preproc
-    hi ex_SynDisable term=none cterm=none ctermfg=DarkGray gui=none guifg=DarkGray
-    " } TODO end 
+
+    syntax region exJS_SynJumpMethodS start="\[\C\(GS\|TS\|SS\)\]" end=":" keepend contains=exJS_SynKeyWord
+    syntax region exJS_SynJumpMethodG start="\[\C\(GG\|TG\|SG\)\]" end=":" keepend contains=exJS_SynKeyWord
+    syntax match exJS_SynKeyWord contained '\[\C\(GS\|TS\|GG\|TG\|SS\|SG\)\]\zs\S\+'
+
+    syntax region exJS_SynJumpDisable start='^ |-' end="$"
+    " syntax region ex_SynDisable start='^ |-' end="$" contains=exJS_SynJumpMethodS,exJS_SynJumpMethodG
+    syntax match exJS_SynJumpLine '^ =>'
+    syntax match exJS_SynJumpLine '^ |='
 
     " key map
     silent exec "nnoremap <buffer> <silent> " . g:ex_keymap_close . " :call <SID>exJS_ToggleWindow('Select')<CR>"
@@ -350,6 +400,10 @@ function g:exJS_UpdateSelectWindow() " <<<
     if s:exJS_need_update_select_window
         let s:exJS_need_update_select_window = 0
         call s:exJS_ShowStackList()
+
+        " DEBUG { 
+        " call s:exJS_ShowDebugInfo()
+        " } DEBUG end 
     endif
 
     " go to current stack
@@ -394,6 +448,20 @@ function s:exJS_ShowStackList() " <<<
     silent exec '1,$d _'
     silent call append( line('$'), s:exJS_jump_stack_title )
     silent call append( line('$'), line_list )
+endfunction " >>>
+
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
+function s:exJS_ShowDebugInfo() " <<<
+    silent call append( line('$'), '' )
+    silent call append( line('$'), '==== DEBUG ====' )
+    silent call append( line('$'), 'idx: ' . s:exJS_stack_idx )
+    for stack_info in s:exJS_stack_list
+        silent call append( line('$'), stack_info.preview )
+    endfor
+    let s:exJS_need_update_select_window = 1
 endfunction " >>>
 
 " ------------------------------------------------------------------ 
@@ -463,24 +531,30 @@ function s:exJS_GotoStackByIndex( index ) " <<<
         call exUtility#WarningMsg("Can't jump in this line")
         return
     endif
-
-    "
     let s:exJS_stack_idx = a:index
-    call exUtility#HighlightConfirmLine()
+
+    " check if is a background op 
+    let background_op = 0
+    if bufname('%') != s:exJS_select_title || bufwinnr(s:exJS_select_title) == -1  
+        let background_op = 1
+    endif
 
     " open and go to stack window first
-    let background_op = 0
-    if bufwinnr(s:exJS_select_title) == -1
-        call s:exJS_ToggleWindow('Stack')
-        let background_op = 1
+    let window_exists = 0
+    let js_winnr = bufwinnr(s:exJS_select_title) 
+    if js_winnr == -1
+        call s:exJS_ToggleWindow('Select')
     else
+        exe js_winnr . 'wincmd w'
         call g:exJS_UpdateSelectWindow ()
+        let window_exists = 1
     endif
 
     " process the jump
     call exUtility#GotoEditBuffer()
     silent exec 'e ' . s:exJS_stack_list[a:index].file_name
     silent call cursor(s:exJS_stack_list[a:index].cursor_pos)
+    exe 'normal! zz'
 
     " if we have taglist, set it
     let idx = a:index
@@ -495,7 +569,7 @@ function s:exJS_GotoStackByIndex( index ) " <<<
     endif
 
     " general window operation 
-    call exUtility#OperateWindow ( s:exJS_select_title, g:exJS_close_when_selected || background_op, g:exJS_backto_editbuf, 1 )
+    call exUtility#OperateWindow ( s:exJS_select_title, g:exJS_close_when_selected || (background_op && !window_exists), g:exJS_backto_editbuf || background_op, 1 )
 endfunction " >>>
 
 "/////////////////////////////////////////////////////////////////////////////
@@ -506,13 +580,9 @@ command ExjsToggle call s:exJS_ToggleWindow('')
 command BackwardStack call s:exJS_GotoStackByIndex(s:exJS_stack_idx-1)
 command ForwardStack call s:exJS_GotoStackByIndex(s:exJS_stack_idx+1)
 
-nnoremap <unique> <silent> <Leader>tt :ExjsToggle<CR>
-nnoremap <unique> <silent> <Leader>tb :BackwardStack<CR>
-nnoremap <unique> <silent> <Leader>tf :ForwardStack<CR>
-
 "/////////////////////////////////////////////////////////////////////////////
 " finish
 "/////////////////////////////////////////////////////////////////////////////
 
 finish
-" vim: set foldmethod=marker foldmarker=<<<,>>> foldlevel=1:
+" vim: set foldmethod=marker foldmarker=<<<,>>> foldlevel=9999:

@@ -136,12 +136,6 @@ let s:exCS_quick_view_idx = 1
 let s:exCS_picked_search_result = []
 let s:exCS_quick_view_search_pattern = ''
 
-" ======================================================== 
-" syntax highlight
-" ======================================================== 
-
-hi def exCS_SynQfNumber gui=none guifg=Red term=none cterm=none ctermfg=Red
-
 "/////////////////////////////////////////////////////////////////////////////
 " function defines
 "/////////////////////////////////////////////////////////////////////////////
@@ -780,4 +774,4 @@ command CSED call s:exCS_GoDirect('e')
 "/////////////////////////////////////////////////////////////////////////////
 
 finish
-" vim: set foldmethod=marker foldmarker=<<<,>>> foldlevel=1:
+" vim: set foldmethod=marker foldmarker=<<<,>>> foldlevel=9999:

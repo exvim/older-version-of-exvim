@@ -331,15 +331,6 @@ function g:exPJ_InitSelectWindow() " <<<
     syntax match exPJ_SynHeaderFile '\[\(h\|i\)\]'
     syntax match exPJ_SynErrorFile '\[e\]'
 
-    hi def exPJ_TreeLine gui=none guifg=DarkGray term=none cterm=none ctermfg=Gray
-    hi def exPJ_SynDir gui=bold guifg=Brown term=bold cterm=bold ctermfg=DarkRed
-    hi def exPJ_SynFile gui=none guifg=Magenta term=none cterm=none ctermfg=Magenta
-    hi def exPJ_SynFilter gui=none guifg=DarkCyan term=none cterm=none ctermfg=DarkCyan
-
-    hi def exPJ_SynSrcFile gui=none guifg=Blue term=none cterm=none ctermfg=Blue
-    hi def exPJ_SynHeaderFile gui=none guifg=DarkGreen term=none cterm=none ctermfg=DarkGreen
-    hi def exPJ_SynErrorFile gui=none guifg=Red term=none cterm=none ctermfg=Red
-
     " key map
     " silent exec "nnoremap <buffer> <silent> " . g:ex_keymap_close . " :call <SID>exPJ_ToggleWindow('Select')<CR>"
     silent exec "nnoremap <buffer> <silent> " . g:ex_keymap_resize . " :call <SID>exPJ_ResizeWindow()<CR>"
@@ -1014,4 +1005,4 @@ command ExpjUpdateFilters call s:exPJ_UpdateFilters()
 "/////////////////////////////////////////////////////////////////////////////
 
 finish
-" vim: set foldmethod=marker foldmarker=<<<,>>> foldlevel=1:
+" vim: set foldmethod=marker foldmarker=<<<,>>> foldlevel=9999:

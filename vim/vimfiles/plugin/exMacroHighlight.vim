@@ -590,11 +590,6 @@ function g:exMH_InitSelectWindow() " <<<
     syntax match exMH_GroupNameDisable '^.*:\s\+\[x\]'
     syntax match exMH_MacroEnable '^\s\s\s\zs\*\S\+$'
     syntax match exMH_MacroDisable '^\s\s\s\s\zs\S\+$'
-
-    hi def exMH_GroupNameEnable term=bold cterm=bold ctermfg=DarkRed ctermbg=LightGray gui=bold guifg=DarkRed guibg=LightGray
-    hi def exMH_GroupNameDisable term=bold cterm=bold ctermfg=Red ctermbg=DarkGray gui=bold guifg=DarkGray guibg=LightGray
-    hi def link exMH_MacroEnable PreProc
-    hi def link exMH_MacroDisable exMacroDisable
 endfunction " >>>
 
 " ------------------------------------------------------------------ 
@@ -747,4 +742,4 @@ command -narg=? ExmhHL call s:exMH_SyntaxHL('<args>')
 "/////////////////////////////////////////////////////////////////////////////
 
 finish
-" vim: set foldmethod=marker foldmarker=<<<,>>> foldlevel=1:
+" vim: set foldmethod=marker foldmarker=<<<,>>> foldlevel=9999:

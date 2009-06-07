@@ -233,12 +233,6 @@ function g:exES_SetEnvironment( force_reset ) " <<<
 	syn match exES_SynComment	"^-- .\+ --$" 
     " KEEPME: syn region exES_SynDeref start="\${" end="}" contained
 
-	highlight def exES_SynVar gui=none guifg=DarkCyan term=none cterm=none ctermfg=DarkCyan
-	highlight link exES_SynOperator Normal
-	highlight def exES_SynVal gui=none guifg=Brown term=none cterm=none ctermfg=Brown
-	highlight link exES_SynComment Comment
-    " KEEPME highlight link exES_SynDeref Preproc
-
     " record edit buffer
     silent! call exUtility#RecordCurrentBufNum()
 
@@ -440,4 +434,4 @@ au BufWritePost *.vimentry :call g:exES_SetEnvironment(1)
 "/////////////////////////////////////////////////////////////////////////////
 
 finish
-" vim: set foldmethod=marker foldmarker=<<<,>>> foldlevel=1:
+" vim: set foldmethod=marker foldmarker=<<<,>>> foldlevel=9999:

@@ -128,6 +128,32 @@ let s:exSL_quick_view_idx = 1
 " ======================================================== 
 
 " ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
+function s:exSL_PushEntryToggleWindow( title ) " <<<
+    " push entry state after we get the search result
+    let stack_info = {}
+    let preview = getline(".")
+    let stack_info.preview = strpart( preview, match(preview, '\S') )
+    if &filetype == "ex_plugin"
+        let stack_info.file_name = ''
+    else
+        let stack_info.file_name = bufname('%')
+    endif
+    let cur_pos = getpos(".")
+    let stack_info.cursor_pos = [cur_pos[1],cur_pos[2]] " lnum, col
+    let stack_info.jump_method = 'SS'
+    let stack_info.keyword = 'N/A'
+    let stack_info.taglist = []
+    let stack_info.tagidx = -1
+    call g:exJS_PushEntryState ( stack_info )
+
+    "
+    call s:exSL_ToggleWindow(a:title)
+endfunction " >>>
+
+" ------------------------------------------------------------------ 
 " Desc: Open exSymbolSelect window 
 " ------------------------------------------------------------------ 
 
@@ -257,7 +283,7 @@ function s:exSL_GetSymbolListResult( symbol ) " <<<
     " open symbol select window
     let sl_winnr = bufwinnr(s:exSL_select_title)
     if sl_winnr == -1
-        call s:exSL_ToggleWindow('Select')
+        call s:exSL_PushEntryToggleWindow('Select')
     else
         exe sl_winnr . 'wincmd w'
     endif
@@ -284,7 +310,7 @@ function s:exSL_QuickSearch() " <<<
     " open symbol select window
     let sl_winnr = bufwinnr(s:exSL_select_title)
     if sl_winnr == -1
-        call s:exSL_ToggleWindow('Select')
+        call s:exSL_PushEntryToggleWindow('Select')
     else
         exe sl_winnr . 'wincmd w'
     endif
@@ -369,6 +395,23 @@ function s:exSL_GetAndShowPickedResult() " <<<
     " get search pattern
     let search_pattern = expand("<cword>")
 
+    " push entry state after we get the search result
+    let stack_info = {}
+    let preview = getline(".")
+    let stack_info.preview = strpart( preview, match(preview, '\S') )
+    if &filetype == "ex_plugin"
+        let stack_info.file_name = ''
+    else
+        let stack_info.file_name = bufname('%')
+    endif
+    let cur_pos = getpos(".")
+    let stack_info.cursor_pos = [cur_pos[1],cur_pos[2]] " lnum, col
+    let stack_info.jump_method = 'SG'
+    let stack_info.keyword = search_pattern
+    let stack_info.taglist = []
+    let stack_info.tagidx = -1
+    call g:exJS_PushEntryState ( stack_info )
+
     " check if we have symbol select or quickview window opened
     let sl_winnr = bufwinnr(s:exSL_select_title)
     if sl_winnr == -1
@@ -399,8 +442,7 @@ function s:exSL_GotoResult() " <<<
     let s:exSL_select_idx = line('.')
     let symbol_key_word = getline('.')
     if symbol_key_word != ''
-        call s:exSL_ToggleWindow( s:exSL_short_title )
-        exec (g:exSL_SymbolSelectCmd . " " . symbol_key_word)
+        exec g:exSL_SymbolSelectCmd . " " . symbol_key_word
     else
         call exUtility#WarningMsg('Please select a symbol')
     endif
@@ -430,7 +472,7 @@ function g:exSL_InitSelectWindow() " <<<
     nnoremap <buffer> <silent> <C-Return>   \|:call <SID>exSL_ShowPickedResult(getline('.'), 0)<CR>
 
     nnoremap <buffer> <silent> <C-Left>   :call <SID>exSL_SwitchWindow('QuickView')<CR>
-    nnoremap <buffer> <silent> <C-Right>   :call <SID>exSL_SwitchWindow('Select')<CR>
+    nnoremap <buffer> <silent> <C-Right>  :call <SID>exSL_SwitchWindow('Select')<CR>
 
     nnoremap <buffer> <silent> <Leader>r :call <SID>exSL_ShowPickedResult('', 0)<CR>
     nnoremap <buffer> <silent> <Leader>d :call <SID>exSL_ShowPickedResult('', 1)<CR>
@@ -492,10 +534,10 @@ endfunction " >>>
 
 "
 command -nargs=1 -complete=customlist,exUtility#CompleteBySymbolFile SL call s:exSL_GetSymbolListResult('<args>')
-command ExslSelectToggle call s:exSL_ToggleWindow('Select')
-command ExslQuickViewToggle call s:exSL_ToggleWindow('QuickView')
+command ExslSelectToggle call s:exSL_PushEntryToggleWindow('Select')
+command ExslQuickViewToggle call s:exSL_PushEntryToggleWindow('QuickView')
 command ExslQuickSearch call s:exSL_QuickSearch()
-command ExslToggle call s:exSL_ToggleWindow('')
+command ExslToggle call s:exSL_PushEntryToggleWindow('')
 command ExslGoDirectly call s:exSL_GetAndShowPickedResult()
 
 " quick view command
@@ -511,4 +553,4 @@ command SLnoigc call s:exSL_SetIgnoreCase(0)
 "/////////////////////////////////////////////////////////////////////////////
 
 finish
-" vim: set foldmethod=marker foldmarker=<<<,>>> foldlevel=1:
+" vim: set foldmethod=marker foldmarker=<<<,>>> foldlevel=9999:

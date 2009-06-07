@@ -119,6 +119,7 @@ let s:exTS_short_title = 'Select'
 
 let s:exTS_ignore_case = 0
 let s:exTS_need_parse_again = 0
+let s:exTS_need_push_tag = 0
 
 " ------------------------------------------------------------------ 
 " Desc: select variable
@@ -126,7 +127,6 @@ let s:exTS_need_parse_again = 0
 
 let s:exTS_cursor_idx = 0
 let s:exTS_need_update_select_window = 0
-let s:exTS_need_push_tag = 0
 
 " ------------------------------------------------------------------ 
 " Desc: 
@@ -141,7 +141,7 @@ let s:exTS_cur_tagidx = 0
 "/////////////////////////////////////////////////////////////////////////////
 
 " ======================================================== 
-" general function defines
+" global functions
 " ======================================================== 
 
 " ------------------------------------------------------------------ 
@@ -154,6 +154,10 @@ function g:exTS_ResetTaglist( new_taglist, tag_name, tag_idx ) " <<<
     let s:exTS_cur_tagname = a:tag_name
     let s:exTS_cur_tagidx = a:tag_idx
 endfunction " >>>
+
+" ======================================================== 
+" general function defines
+" ======================================================== 
 
 " ------------------------------------------------------------------ 
 " Desc: Open exTagSelect window 
@@ -536,4 +540,4 @@ command TSnoigc call s:exTS_SetIgnoreCase(0)
 "/////////////////////////////////////////////////////////////////////////////
 
 finish
-" vim: set foldmethod=marker foldmarker=<<<,>>> foldlevel=1:
+" vim: set foldmethod=marker foldmarker=<<<,>>> foldlevel=9999:

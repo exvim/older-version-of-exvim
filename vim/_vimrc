@@ -673,18 +673,13 @@ let g:exTS_window_direction = 'bel'
 
 nnoremap <unique> <silent> <Leader>gs :ExgsSelectToggle<CR>
 nnoremap <unique> <silent> <Leader>gq :ExgsQuickViewToggle<CR>
-nnoremap <unique> <silent> <Leader>gt :ExgsStackToggle<CR>
 nnoremap <unique> <silent> <Leader>gg :ExgsGoDirectly<CR>
 nnoremap <unique> <silent> <Leader>n :ExgsGotoNextResult<CR>
 nnoremap <unique> <silent> <Leader>N :ExgsGotoPrevResult<CR>
-
-nnoremap <unique> <silent> <Leader>gb :BackwardSearchStack<CR>
-nnoremap <unique> <silent> <Leader>gf :ForwardSearchStack<CR>
 nnoremap <unique> <Leader><S-f> :GS 
 
 let g:exGS_backto_editbuf = 0
 let g:exGS_close_when_selected = 0
-let g:exGS_stack_close_when_selected = 0
 let g:exGS_window_direction = 'bel'
 let g:exGS_auto_sort = 1
 let g:exGS_lines_for_autosort = 200
@@ -700,6 +695,14 @@ nnoremap <unique> <silent> <Leader>sg :ExslGoDirectly<CR>
 nmap <unique> <A-S-l> :ExslQuickSearch<CR>/
 
 let g:exSL_SymbolSelectCmd = 'TS'
+
+" ------------------------------------------------------------------ 
+" Desc: exJumpStack 
+" ------------------------------------------------------------------ 
+
+nnoremap <unique> <silent> <Leader>tt :ExjsToggle<CR>
+nnoremap <unique> <silent> <Leader>tb :BackwardStack<CR>
+nnoremap <unique> <silent> <Leader>tf :ForwardStack<CR>
 
 " ------------------------------------------------------------------ 
 " Desc: exCscope

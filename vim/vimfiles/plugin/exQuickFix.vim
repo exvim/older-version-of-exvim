@@ -643,4 +643,4 @@ command ExqfQuickViewToggle call s:exQF_ToggleWindow('QuickView')
 "/////////////////////////////////////////////////////////////////////////////
 
 finish
-" vim: set foldmethod=marker foldmarker=<<<,>>> foldlevel=1:
+" vim: set foldmethod=marker foldmarker=<<<,>>> foldlevel=9999:
