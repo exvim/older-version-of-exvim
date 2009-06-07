@@ -6,11 +6,21 @@
 " ======================================================================================
 
 "/////////////////////////////////////////////////////////////////////////////
-" General
+" exVim global settings
+" NOTE: you should change to your own settings.
 "/////////////////////////////////////////////////////////////////////////////
+
+" set EX_DEV variable for linux
+if has ("unix")
+    let $EX_DEV='/usr/local/share'
+endif
 
 " put your own user name here
 let g:ex_usr_name = "Wu Jie"
+
+"/////////////////////////////////////////////////////////////////////////////
+" General
+"/////////////////////////////////////////////////////////////////////////////
 
 set nocompatible " Use Vim settings, rather then Vi settings (much better!). This must be first, because it changes other options as a side effect.
 set langmenu=none " always use English menu
@@ -443,11 +453,6 @@ au FileType vim set comments=sO:\"\ -,mO:\"\ \ ,eO:\"\",f:\"
 " ------------------------------------------------------------------ 
 " Desc: exUtility
 " ------------------------------------------------------------------ 
-
-" set EX_DEV variable for linux
-if has ("unix")
-    let $EX_DEV='/usr/local/share'
-endif
 
 " edit current vimentry
 nnoremap <unique> <leader>ve :call exUtility#EditVimEntry ()<CR>
