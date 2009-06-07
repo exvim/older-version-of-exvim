@@ -53,6 +53,14 @@ function! VimwikiFoldLevel(lnum) "{{{
     return '>' . n
   endif
 
+  if g:vimwiki_fold_empty_lines == 0
+    let nnline = getline(nextnonblank(a:lnum + 1))
+    if nnline =~ g:vimwiki_rxHeader
+      let n = vimwiki#count_first_sym(nnline)
+      return '<' . n
+    endif
+  endif
+
   " List item folding...
   let nnum = a:lnum + 1
 

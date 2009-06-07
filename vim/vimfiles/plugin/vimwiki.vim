@@ -85,7 +85,8 @@ call s:default('stripsym', '_')
 call s:default('auto_listitem', 1)
 call s:default('auto_checkbox', 1)
 call s:default('use_mouse', 0)
-call s:default('menu', 1)
+call s:default('fold_empty_lines', 0)
+call s:default('menu', 'Vimwiki')
 call s:default('current_idx', 0)
 call s:default('list', [s:vimwiki_defaults])
 
@@ -206,10 +207,8 @@ function! s:build_menu(path)
   endwhile
 endfunction
 
-if g:vimwiki_menu == 1
-  call s:build_menu('Vimwiki')
-elseif g:vimwiki_menu == 2
-  call s:build_menu('Plugin.Vimwiki')
+if !empty(g:vimwiki_menu)
+  call s:build_menu(g:vimwiki_menu)
 endif
 " }}}
 

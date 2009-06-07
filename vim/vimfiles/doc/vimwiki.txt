@@ -8,7 +8,7 @@
        \ `\___/ /\_____\\ \_\\ \_\ `\___x___/ /\_____\\ \_\ \_\ /\_____\~
         `\/__/  \/_____/ \/_/ \/_/'\/__//__/  \/_____/ \/_/\/_/ \/_____/~
 
-                               Version: 0.9.2c ~
+                               Version: 0.9.3 ~
 
 ==============================================================================
 CONTENTS                                                    *vimwiki-contents*
@@ -779,14 +779,16 @@ result: >
 
 ------------------------------------------------------------------------------
 *g:vimwiki_menu*
+
 GUI menu of available wikies to select.
 
-Value           Description~
-0               No menu
-1               Top level menu "Vimwiki"
-2               Submenu of top level menu "Plugin"
+Value              Description~
+''                 No menu
+'Vimwiki'          Top level menu "Vimwiki"
+'Plugin.Vimwiki'   "Vimwiki" submenu of top level menu "Plugin"
+etc.
 
-Default: 1
+Default: 'Vimwiki'
 
 ------------------------------------------------------------------------------
 *g:vimwiki_stripsym*
@@ -798,11 +800,22 @@ vimwiki replaces them with neutral symbol (_ is default): >
 ------------------------------------------------------------------------------
 *g:vimwiki_use_mouse*
 
-Use local mouse mappings from|vimwiki-local-mappings|.
+Use local mouse mappings from |vimwiki-local-mappings|.
 
 Value           Description~
 0               Do not use mouse mappings.
 1               Use mouse mappings.
+
+Default: 0
+
+------------------------------------------------------------------------------
+*g:vimwiki_fold_empty_lines*
+
+Fold or not empty lines between folded headers.
+
+Value           Description~
+0               Do not fold in empty lines.
+1               Fold in empty lines.
 
 Default: 0
 
@@ -836,6 +849,14 @@ Vim plugins website: http://www.vim.org/scripts/script.php?script_id=2226
 
 ==============================================================================
 11. Changelog                                              *vimwiki-changelog*
+
+0.9.3
+  * [new] g:vimwiki_menu option is a string which is menu path. So one can use
+    let g:vimwiki_menu = 'Plugin.Vimwiki' to set the menu to the right place.
+  * [new] g:vimwiki_fold_empty_lines -- don't or do fold in empty lines
+    between headers. See |g:vimwiki_fold_empty_lines|
+  * [fix] Encoding error when running vimwiki in Windows XP Japanese.
+    Thanks KarasAya.
 
 0.9.2c
   * [fix] Regression: Export HTML link error with [[Link|Text]].
