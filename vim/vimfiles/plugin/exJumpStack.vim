@@ -373,8 +373,8 @@ endfunction " >>>
 function g:exJS_InitSelectWindow() " <<<
     syntax region ex_SynSearchPattern start="^----------" end="----------"
 
-    syntax region exJS_SynJumpMethodS start="\[\C\(GS\|TS\|SS\)\]" end=":" keepend contains=exJS_SynKeyWord
-    syntax region exJS_SynJumpMethodG start="\[\C\(GG\|TG\|SG\)\]" end=":" keepend contains=exJS_SynKeyWord
+    syntax region exJS_SynJumpMethodS start="\[\C\(GS\|TS\|SS\)\]" skip="::" end=":" keepend contains=exJS_SynKeyWord
+    syntax region exJS_SynJumpMethodG start="\[\C\(GG\|TG\|SG\)\]" skip="::" end=":" keepend contains=exJS_SynKeyWord
     syntax match exJS_SynKeyWord contained '\[\C\(GS\|TS\|GG\|TG\|SS\|SG\)\]\zs\S\+'
 
     syntax region exJS_SynJumpDisable start='^ |-' end="$"
