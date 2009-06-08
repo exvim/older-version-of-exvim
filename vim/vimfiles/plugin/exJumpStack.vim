@@ -132,7 +132,7 @@ let s:exJS_entry_list = []
 " " ------------------------------------------------------------------ 
 
 " let s:exJS_stack_info = {}
-" let s:exJS_stack_info.preview = 'current line preview'
+" let s:exJS_stack_info.pattern = 'current line pattern'
 " let s:exJS_stack_info.file_name = '' " current file name
 " let s:exJS_stack_info.cursor_pos = [-1,-1] " lnum, col
 " let s:exJS_stack_info.jump_method = 'GS/TS/GG/TG/SG/SS'
@@ -375,7 +375,7 @@ function g:exJS_InitSelectWindow() " <<<
 
     syntax region exJS_SynJumpMethodS start="\[\C\(GS\|TS\|SS\)\]" skip="::" end=":" keepend contains=exJS_SynKeyWord
     syntax region exJS_SynJumpMethodG start="\[\C\(GG\|TG\|SG\)\]" skip="::" end=":" keepend contains=exJS_SynKeyWord
-    syntax match exJS_SynKeyWord contained '\[\C\(GS\|TS\|GG\|TG\|SS\|SG\)\]\zs\S\+'
+    syntax match exJS_SynKeyWord contained '\[\C\(GS\|TS\|GG\|TG\|SS\|SG\)\]\zs.\+'
 
     syntax region exJS_SynJumpDisable start='^ |-' end="$"
     " syntax region ex_SynDisable start='^ |-' end="$" contains=exJS_SynJumpMethodS,exJS_SynJumpMethodG
@@ -433,7 +433,7 @@ function s:exJS_ShowStackList() " <<<
         endif
 
         " add preview section
-        let line_list[len(line_list)-1] .= stack_info.preview 
+        let line_list[len(line_list)-1] .= strpart( stack_info.pattern, match(stack_info.pattern, '\S') )
 
         " add jump method line if we have 
         if stack_info.jump_method ==# ''
@@ -460,7 +460,8 @@ function s:exJS_ShowDebugInfo() " <<<
     silent call append( line('$'), '==== DEBUG ====' )
     silent call append( line('$'), 'idx: ' . s:exJS_stack_idx )
     for stack_info in s:exJS_stack_list
-        silent call append( line('$'), stack_info.preview )
+        let preview = strpart( stack_info.pattern, match(stack_info.pattern, '\S') )
+        silent call append( line('$'), preview )
     endfor
     let s:exJS_need_update_select_window = 1
 endfunction " >>>
@@ -575,8 +576,17 @@ function s:exJS_GotoStackByIndex( index ) " <<<
 
     " process the jump
     call exUtility#GotoEditBuffer()
-    silent exec 'e ' . s:exJS_stack_list[a:index].file_name
+
+    if bufnr('%') != bufnr( s:exJS_stack_list[a:index].file_name )
+        exe 'silent e ' . s:exJS_stack_list[a:index].file_name
+    endif
     silent call cursor(s:exJS_stack_list[a:index].cursor_pos)
+
+    " jump to the pattern if the code have been modified
+    let pattern = '\V' . substitute( s:exJS_stack_list[a:index].pattern, '\', '\\\', "g" )
+    if search(pattern, 'w') == 0
+        call exUtility#WarningMsg('search pattern not found: ' . pattern)
+    endif
     exe 'normal! zz'
 
     " if we have taglist, set it

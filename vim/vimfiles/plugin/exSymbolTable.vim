@@ -134,8 +134,7 @@ let s:exSL_quick_view_idx = 1
 function s:exSL_PushEntryToggleWindow( title ) " <<<
     " push entry state after we get the search result
     let stack_info = {}
-    let preview = getline(".")
-    let stack_info.preview = strpart( preview, match(preview, '\S') )
+    let stack_info.pattern = getline(".")
     if &filetype == "ex_plugin" || &filetype == "ex_project"
         let stack_info.file_name = ''
     else
@@ -397,8 +396,7 @@ function s:exSL_GetAndShowPickedResult() " <<<
 
     " push entry state after we get the search result
     let stack_info = {}
-    let preview = getline(".")
-    let stack_info.preview = strpart( preview, match(preview, '\S') )
+    let stack_info.pattern = getline(".")
     if &filetype == "ex_plugin" || &filetype == "ex_project"
         let stack_info.file_name = ''
     else

@@ -294,8 +294,7 @@ function s:exGS_Goto() " <<<
 
     " push tag to jump stack if needed, otherwise set last jump stack
     let stack_info = {}
-    let preview = getline(".")
-    let stack_info.preview = strpart( preview, match(preview, '\S') )
+    let stack_info.pattern = getline(".")
     let stack_info.file_name = bufname('%')
     let cur_pos = getpos(".")
     let stack_info.cursor_pos = [cur_pos[1],cur_pos[2]] " lnum, col
@@ -559,8 +558,7 @@ function s:exGS_GetGlobalSearchResult(search_pattern, search_method, direct_jump
 
     " push entry state after we get the search result
     let stack_info = {}
-    let preview = getline(".")
-    let stack_info.preview = strpart( preview, match(preview, '\S') )
+    let stack_info.pattern = getline(".")
     if &filetype == "ex_plugin" || &filetype == "ex_project"
         let stack_info.file_name = ''
     else
