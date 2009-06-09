@@ -158,9 +158,9 @@ rem ////////////////////////////////////////////////////////////////////////////
 rem echo setting infos
 rem /////////////////////////////////////////////////////////////////////////////
 
-echo '---------------------------------------------'
-echo 'pre-check'
-echo '---------------------------------------------'
+echo ---------------------------------------------
+echo pre-check
+echo ---------------------------------------------
 echo.
 echo language type: %lang_type%
 echo support filenamelist: %support_filenamelist%
@@ -178,9 +178,9 @@ echo cscope file filter: %cscope_file_filter%
 echo dir filter: %dir_filter%
 echo vimfiles path: %vimfiles_path%
 echo.
-echo '---------------------------------------------'
-echo 'process'
-echo '---------------------------------------------'
+echo ---------------------------------------------
+echo process
+echo ---------------------------------------------
 echo.
 goto START
 

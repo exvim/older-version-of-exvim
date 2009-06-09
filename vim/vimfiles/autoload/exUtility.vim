@@ -2186,26 +2186,35 @@ function exUtility#UpdateVimFiles( type ) " <<<
         let suffix = 'sh'
     endif
 
-    " DELME { 
-    " " if not found, we show a list let usr select project type, then copy the script and running it
-    " if script_not_found == 1
-    "     let type_list = ['unknown', 'all', 'general', 'c', 'cpp', 'csharp', 'html', 'javascript', 'lua', 'math', 'python', 'uc', 'vim']
-    "     let idx = inputlist ( ['Select Project Type:', '1. all', '2. general', '3. c', '4. cpp', '5. csharp', '6. html', '7. javascript', '8. lua', '9. math', '10. python', '11. uc', '12. vim'])
-    "     let quick_gen_script = exUtility#CopyQuickGenProject ( type_list[idx] )
-    " endif
-    " } DELME end 
-
+    " ======================================================== 
     " create id-lang map and quick_gen_project script 
+    " ======================================================== 
+
     call exUtility#CreateIDLangMap( s:ex_project_file_filter )
+
+    " ======================================================== 
+    " create quick_gen_project_NAME_autogen.sh/bat
+    " ======================================================== 
+
     let quick_gen_script = exUtility#CreateQuickGenProject()
 
-    " rule: if we have quick_gen_project_custom, use it first, else we use auto-gen one
-    let quick_gen_custom = 'quick_gen_project_custom.' . suffix
-    if findfile( quick_gen_custom, getcwd() ) != ""
+    " ======================================================== 
+    " rule: if we have quick_gen_project_NAME_custom.sh/bat, use it first, else we use auto-gen one
+    " ======================================================== 
+
+    let vimentry_name = ''
+    if exists('g:exES_VimEntryName')
+        let vimentry_name = '_' . g:exES_VimEntryName
+    endif
+    let quick_gen_custom = 'quick_gen_project' . vimentry_name . '_custom.' . suffix
+    if findfile( quick_gen_custom, g:exES_CWD ) != ""
         let quick_gen_script = quick_gen_custom
     endif
 
+    " ======================================================== 
     " check if we have quick_gen_script, if not, return
+    " ======================================================== 
+
     if quick_gen_script != ''
         silent exec "cscope kill " . g:exES_Cscope
         " we use async update
@@ -2215,7 +2224,10 @@ function exUtility#UpdateVimFiles( type ) " <<<
         return
     endif
 
+    " ======================================================== 
     " create update cmd
+    " ======================================================== 
+
     let gen_type = ''
     if a:type == ""
         silent exec "cscope kill " . g:exES_Cscope
@@ -2242,16 +2254,25 @@ function exUtility#UpdateVimFiles( type ) " <<<
         return
     endif
 
-    " now process the quick_gen_project script
+    " ======================================================== 
+    " add quick_gen_project script command
+    " ======================================================== 
+
     let update_cmd = quick_gen_script . gen_type . ' ' . g:exES_vimfiles_dirname
 
-    " now process vimentry references
+    " ======================================================== 
+    " add vimentry references command
+    " ======================================================== 
+
     let refs_update_cmd = exUtility#GetUpdateVimentryRefsCommand (a:type) 
     if refs_update_cmd != ''
         let update_cmd .= refs_update_cmd
     endif
 
-    "
+    " ======================================================== 
+    " prompt terminal, run the shell programme we gen.
+    " ======================================================== 
+
     call exUtility#Terminal ( 'prompt', 'nowait', update_cmd )
 endfunction " >>>
 
@@ -2631,7 +2652,7 @@ function exUtility#CreateQuickGenProject() " <<<
     let ctags_options = exUtility#GetCtagsOptions(lang_type) 
     let file_filter_list = exUtility#GetProjectFileFilterCommand() " NOTE: 0: file_filter, 1: cscope_file_filter
     let file_filter_pattern_list = exUtility#GetProjectFileFilterPattern() " NOTE: 0: file_filter_pattern, 1: cscope_file_filter_pattern
-
+    let script_suffix = ''
 
     " init platform dependence value and write script
     if has ('win32')
@@ -2654,7 +2675,13 @@ function exUtility#CreateQuickGenProject() " <<<
         silent call add( text_list, 'set support_cscope='.support_map['cscope'] )
         silent call add( text_list, 'set support_idutils='.support_map['idutils'] )
         silent call add( text_list, 'set ctags_options='.ctags_options )
+        silent call add( text_list, 'if exist .\%vimfiles_path%\quick_gen_project_pre_custom.bat (' )
+        silent call add( text_list, '    call .\%vimfiles_path%\quick_gen_project_pre_custom.bat' )
+        silent call add( text_list, ')' )
         silent call add( text_list, 'call "%EX_DEV%\vim\toolkit\quickgen\batch\quick_gen_project.bat" %1' )
+        silent call add( text_list, 'if exist .\%vimfiles_path%\quick_gen_project_post_custom.bat (' )
+        silent call add( text_list, '    call .\%vimfiles_path%\quick_gen_project_post_custom.bat' )
+        silent call add( text_list, ')' )
         silent call add( text_list, 'echo on' )
     elseif has ('unix')
         let script_suffix = 'sh'
@@ -2676,16 +2703,32 @@ function exUtility#CreateQuickGenProject() " <<<
         silent call add( text_list, 'export support_cscope='.'"'.support_map['cscope'].'"' )
         silent call add( text_list, 'export support_idutils='.'"'.support_map['idutils'].'"' )
         silent call add( text_list, 'export ctags_options='.'"'.ctags_options.'"' )
+        silent call add( text_list, 'if [ -f "./${vimfiles_path}/quick_gen_project_pre_custom.sh" ]; then' )
+        silent call add( text_list, '    bash ./${vimfiles_path}/quick_gen_project_pre_custom.sh' )
+        silent call add( text_list, 'fi' )
         silent call add( text_list, 'bash ${EX_DEV}/vim/toolkit/quickgen/bash/quick_gen_project.sh $1' )
+        silent call add( text_list, 'if [ -f "./${vimfiles_path}/quick_gen_project_post_custom.sh" ]; then' )
+        silent call add( text_list, '    bash ./${vimfiles_path}/quick_gen_project_post_custom.sh' )
+        silent call add( text_list, 'fi' )
     endif
 
-    "
+    " save to quick_gen_project_NAME_autogen.bat/sh
     let vimentry_name = ''
     if exists('g:exES_VimEntryName')
         let vimentry_name = '_' . g:exES_VimEntryName
     endif
     let file_name = 'quick_gen_project' . vimentry_name . '_autogen.' . script_suffix
     call writefile ( text_list, file_name )
+
+    " write pre and post file
+    let quick_gen_custom_pre = g:exES_vimfiles_dirname . '/quick_gen_project_pre_custom.' . script_suffix
+    let quick_gen_custom_post = g:exES_vimfiles_dirname . '/quick_gen_project_post_custom.' . script_suffix
+    if findfile( quick_gen_custom_pre, g:exES_CWD ) == ""
+        call writefile ( [], quick_gen_custom_pre )
+    endif
+    if findfile( quick_gen_custom_post, g:exES_CWD ) == ""
+        call writefile ( [], quick_gen_custom_post )
+    endif
 
     " 
     return file_name
