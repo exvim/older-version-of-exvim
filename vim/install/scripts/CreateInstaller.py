@@ -18,7 +18,7 @@ import zipfile
 #/////////////////////////////////////////////////////////////////////////////
 
 # general
-version = "8.01a"
+version = "8.01b"
 source_path = "d:/exDev/vim"
 dest_root_path = "d:/Project/Dev/exVim_google/installer" 
 installer_exe_name = "exDev-installer"

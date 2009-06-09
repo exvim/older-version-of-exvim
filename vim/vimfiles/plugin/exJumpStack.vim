@@ -595,12 +595,14 @@ function s:exJS_GotoStackByIndex( index ) " <<<
     exe keepjumps_cmd . ' call cursor(s:exJS_stack_list[a:index].cursor_pos)'
 
     " jump to the pattern if the code have been modified
-    let pattern = '\V' . substitute( s:exJS_stack_list[a:index].pattern, '\', '\\\', "g" )
-    if search(pattern, 'w') == 0
-        call exUtility#WarningMsg('search pattern not found: ' . pattern)
-    else " NOTE: after we do a pattern jump, the cursor_pos should update so that next time, keepjump check can do a right decisition 
-        let cur_pos = getpos(".")
-        s:exJS_stack_list[a:index].cursor_pos = [cur_pos[1],cur_pos[2]] " lnum, col 
+    if s:exJS_stack_list[a:index].pattern != ''
+        let pattern = '\V' . substitute( s:exJS_stack_list[a:index].pattern, '\', '\\\', "g" )
+        if search(pattern, 'w') == 0
+            call exUtility#WarningMsg('search pattern not found: ' . pattern)
+        else " NOTE: after we do a pattern jump, the cursor_pos should update so that next time, keepjump check can do a right decisition 
+            let cur_pos = getpos(".")
+            let s:exJS_stack_list[a:index].cursor_pos = [cur_pos[1],cur_pos[2]] " lnum, col 
+        endif
     endif
     exe 'normal! zz'
 
@@ -609,12 +611,16 @@ function s:exJS_GotoStackByIndex( index ) " <<<
     while empty(s:exJS_stack_list[idx].taglist) && idx > 0
         let idx -= 1
     endwhile
+    let keyword = ''
+    let tagidx = -1
     if !empty(s:exJS_stack_list[idx].taglist)
-        call g:exTS_ResetTaglist ( 
-                    \ s:exJS_stack_list[idx].taglist,
-                    \ s:exJS_stack_list[idx].keyword,
-                    \ s:exJS_stack_list[idx].tagidx )
+        let keyword = s:exJS_stack_list[idx].keyword
+        let tagidx = s:exJS_stack_list[idx].tagidx
     endif
+    call g:exTS_ResetTaglist ( 
+                \ s:exJS_stack_list[idx].taglist,
+                \ keyword,
+                \ tagidx )
 
     " general window operation 
     call exUtility#OperateWindow ( s:exJS_select_title, g:exJS_close_when_selected || (background_op && !window_exists), g:exJS_backto_editbuf || background_op, 1 )

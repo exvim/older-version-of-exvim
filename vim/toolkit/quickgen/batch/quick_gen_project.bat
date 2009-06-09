@@ -229,6 +229,13 @@ if /I "%support_filenamelist%" == "true" (
     sed "s,\(.*\),.\1,g" ".\%vimfiles_path%\filenamelist_cwd" >> ".\%vimfiles_path%\_filenamelist_vimfiles"
     echo    ^|- rename _filenamelist_vimfiles to filenamelist_vimfiles
     move /Y ".\%vimfiles_path%\_filenamelist_vimfiles" ".\%vimfiles_path%\filenamelist_vimfiles" > nul
+    
+    rem create filenametags
+    echo    ^|- generate _filenametags
+    gawk -f "%EX_DEV%\vim\toolkit\gawk\prg_FilenameTagWin.awk" ".\%vimfiles_path%\filenamelist_vimfiles">".\%vimfiles_path%\_filenametags"
+    echo    ^|- rename _filenametags to filenametags
+    move /Y ".\%vimfiles_path%\_filenametags" ".\%vimfiles_path%\filenametags" > nul
+
     echo    ^|- done!
 )
 goto %return%

@@ -206,6 +206,13 @@ gen_filenamelist ()
         sed "s,\(.*\),.\1,g" "./${vimfiles_path}/filenamelist_cwd" >> "./${vimfiles_path}/_filenamelist_vimfiles"
         echo "  |- rename _filenamelist_vimfiles to filenamelist_vimfiles"
         mv -f "./${vimfiles_path}/_filenamelist_vimfiles" "./${vimfiles_path}/filenamelist_vimfiles"
+
+        # create filenametags
+        echo "  |- generate _filenametags"
+        gawk -f "${EX_DEV}/vim/toolkit/gawk/prg_FilenameTagLinux.awk" "./${vimfiles_path}/filenamelist_vimfiles">"./${vimfiles_path}/_filenametags"
+        echo "  |- rename _filenametags to filenametags"
+        mv -f "./${vimfiles_path}/_filenametags" "./${vimfiles_path}/filenametags"
+
         echo "  |- done!"
     fi
 }
