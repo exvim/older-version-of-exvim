@@ -221,20 +221,26 @@ if /I "%support_filenamelist%" == "true" (
     rem NOTE: dir /s /b *.cpp will list xxx.cpp~, too. So use gawk here to filter out thoes things.
     gawk -v filter_pattern=%file_filter_pattern% -f "%EX_DEV%\vim\toolkit\gawk\prg_FileFilter.awk" ".\%vimfiles_path%\_filenamelist_cwd_gawk">".\%vimfiles_path%\_filenamelist_cwd"
     del ".\%vimfiles_path%\_filenamelist_cwd_gawk" > nul
-    echo    ^|- rename _filenamelist_cwd to filenamelist_cwd
-    move /Y ".\%vimfiles_path%\_filenamelist_cwd" ".\%vimfiles_path%\filenamelist_cwd" > nul
+    if exist .\%vimfiles_path%\_filenamelist_cwd (
+        echo    ^|- rename _filenamelist_cwd to filenamelist_cwd
+        move /Y ".\%vimfiles_path%\_filenamelist_cwd" ".\%vimfiles_path%\filenamelist_cwd" > nul
+    )
     
     rem create filenamelist_vimfiles
     echo    ^|- generate _filenamelist_vimfiles
     sed "s,\(.*\),.\1,g" ".\%vimfiles_path%\filenamelist_cwd" >> ".\%vimfiles_path%\_filenamelist_vimfiles"
-    echo    ^|- rename _filenamelist_vimfiles to filenamelist_vimfiles
-    move /Y ".\%vimfiles_path%\_filenamelist_vimfiles" ".\%vimfiles_path%\filenamelist_vimfiles" > nul
+    if exist .\%vimfiles_path%\_filenamelist_vimfiles (
+        echo    ^|- rename _filenamelist_vimfiles to filenamelist_vimfiles
+        move /Y ".\%vimfiles_path%\_filenamelist_vimfiles" ".\%vimfiles_path%\filenamelist_vimfiles" > nul
+    )
     
     rem create filenametags
     echo    ^|- generate _filenametags
     gawk -f "%EX_DEV%\vim\toolkit\gawk\prg_FilenameTagWin.awk" ".\%vimfiles_path%\filenamelist_vimfiles">".\%vimfiles_path%\_filenametags"
-    echo    ^|- rename _filenametags to filenametags
-    move /Y ".\%vimfiles_path%\_filenametags" ".\%vimfiles_path%\filenametags" > nul
+    if exist .\%vimfiles_path%\_filenametags (
+        echo    ^|- rename _filenametags to filenametags
+        move /Y ".\%vimfiles_path%\_filenametags" ".\%vimfiles_path%\filenametags" > nul
+    )
 
     echo    ^|- done!
 )
@@ -265,8 +271,10 @@ if /I "%support_ctags%" == "true" (
     cd "%vimfiles_path%"
     echo    ^|- generate _tags
     ctags -o./_tags %ctags_options% %ctags_path%
-    echo    ^|- rename _tags to tags
-    move /Y "_tags" "tags" > nul
+    if exist _tags (
+        echo    ^|- rename _tags to tags
+        move /Y "_tags" "tags" > nul
+    )
     cd ..
     echo    ^|- done!
 )
@@ -284,8 +292,10 @@ if /I "%support_symbol%" == "true" (
     echo Creating Symbols...
     echo    ^|- generate _symbol
     gawk -f "%EX_DEV%\vim\toolkit\gawk\prg_NoStripSymbol.awk" ".\%vimfiles_path%\tags">".\%vimfiles_path%\_symbol"
-    echo    ^|- rename _symbol to symbol
-    move /Y ".\%vimfiles_path%\_symbol" ".\%vimfiles_path%\symbol" > nul
+    if exist .\%vimfiles_path%\_symbol (
+        echo    ^|- rename _symbol to symbol
+        move /Y ".\%vimfiles_path%\_symbol" ".\%vimfiles_path%\symbol" > nul
+    )
     echo    ^|- done
 )
 goto %return%
@@ -303,8 +313,10 @@ if /I "%support_inherit%" == "true" (
     echo Creating Inherits...
     echo    ^|- generate _inherits
     gawk -f "%EX_DEV%\vim\toolkit\gawk\prg_Inherits.awk" ".\%vimfiles_path%\tags">".\%vimfiles_path%\_inherits"
-    echo    ^|- rename _inherits to inherits
-    move /Y ".\%vimfiles_path%\_inherits" ".\%vimfiles_path%\inherits" > nul
+    if exist .\%vimfiles_path%\_inherits (
+        echo    ^|- rename _inherits to inherits
+        move /Y ".\%vimfiles_path%\_inherits" ".\%vimfiles_path%\inherits" > nul
+    )
     echo    ^|- done
 )
 goto %return%
@@ -328,10 +340,14 @@ if /I "%support_cscope%" == "true" (
     )
     echo    ^|- generate cscope.out
     cscope -b
-    echo    ^|- move cscope.files to .\%vimfiles_path%\cscope.files
-    move /Y cscope.files ".\%vimfiles_path%\cscope.files" > nul
-    echo    ^|- move cscope.out to .\%vimfiles_path%\cscope.out
-    move /Y cscope.out ".\%vimfiles_path%\cscope.out" > nul
+    if exist cscope.files (
+        echo    ^|- move cscope.files to .\%vimfiles_path%\cscope.files
+        move /Y cscope.files ".\%vimfiles_path%\cscope.files" > nul
+    )
+    if exist cscope.out (
+        echo    ^|- move cscope.out to .\%vimfiles_path%\cscope.out
+        move /Y cscope.out ".\%vimfiles_path%\cscope.out" > nul
+    )
     echo    ^|- done
 )
 goto %return%
@@ -345,6 +361,7 @@ rem  #########################
 rem  ######################### 
 
 if /I "%support_idutils%" == "true" (
+    rem mkid --include="C C++"
     rem TODO: mkid --include="text" --lang-map=".\%vimfiles_path%\id-lang.map" "./folder1" "./folder2" ... 
     rem TODO: but how to include files in root directory???
     
@@ -365,9 +382,10 @@ if /I "%support_idutils%" == "true" (
         mkid --include="text" --lang-map="%EX_DEV%\vim\toolkit\idutils\id-lang.map" %dir_filter%
     )
     
-    rem mkid --include="C C++"
-    echo    ^|- move ID to .\%vimfiles_path%\ID
-    move /Y ID ".\%vimfiles_path%\ID" > nul
+    if exist ID (
+        echo    ^|- move ID to .\%vimfiles_path%\ID
+        move /Y ID ".\%vimfiles_path%\ID" > nul
+    )
     echo    ^|- done
 )
 goto %return%

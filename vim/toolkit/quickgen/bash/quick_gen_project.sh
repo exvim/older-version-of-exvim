@@ -198,20 +198,27 @@ gen_filenamelist ()
         if test "${dir_filter}" != ""; then
             find . -maxdepth 1 -regex '.*\.\('"${file_filter}"'\)' >> "./${vimfiles_path}/_filenamelist_cwd"
         fi
-        echo "  |- rename _filenamelist_cwd to filenamelist_cwd"
-        mv -f "./${vimfiles_path}/_filenamelist_cwd" "./${vimfiles_path}/filenamelist_cwd"
+
+        if [ -f "./${vimfiles_path}/_filenamelist_cwd" ]; then
+            echo "  |- rename _filenamelist_cwd to filenamelist_cwd"
+            mv -f "./${vimfiles_path}/_filenamelist_cwd" "./${vimfiles_path}/filenamelist_cwd"
+        fi
 
         # create filenamelist_vimfiles
         echo "  |- generate _filenamelist_vimfiles"
         sed "s,\(.*\),.\1,g" "./${vimfiles_path}/filenamelist_cwd" >> "./${vimfiles_path}/_filenamelist_vimfiles"
-        echo "  |- rename _filenamelist_vimfiles to filenamelist_vimfiles"
-        mv -f "./${vimfiles_path}/_filenamelist_vimfiles" "./${vimfiles_path}/filenamelist_vimfiles"
+        if [ -f "./${vimfiles_path}/_filenamelist_vimfiles" ]; then
+            echo "  |- rename _filenamelist_vimfiles to filenamelist_vimfiles"
+            mv -f "./${vimfiles_path}/_filenamelist_vimfiles" "./${vimfiles_path}/filenamelist_vimfiles"
+        fi
 
         # create filenametags
         echo "  |- generate _filenametags"
         gawk -f "${EX_DEV}/vim/toolkit/gawk/prg_FilenameTagLinux.awk" "./${vimfiles_path}/filenamelist_vimfiles">"./${vimfiles_path}/_filenametags"
-        echo "  |- rename _filenametags to filenametags"
-        mv -f "./${vimfiles_path}/_filenametags" "./${vimfiles_path}/filenametags"
+        if [ -f "./${vimfiles_path}/_filenametags" ]; then
+            echo "  |- rename _filenametags to filenametags"
+            mv -f "./${vimfiles_path}/_filenametags" "./${vimfiles_path}/filenametags"
+        fi
 
         echo "  |- done!"
     fi
@@ -240,8 +247,10 @@ gen_tag ()
         ctags -o./_tags ${ctags_options} ${ctags_path}
 
         # force change _tags to tags
-        echo "  |- rename _tags to tags"
-        mv -f "_tags" "tags"
+        if [ -f "_tags" ]; then
+            echo "  |- rename _tags to tags"
+            mv -f "_tags" "tags"
+        fi
         cd ..
         echo "  |- done!"
     fi
@@ -257,8 +266,10 @@ gen_symbols ()
         echo "Creating Symbols..."
         echo "  |- generate _symbol"
         gawk -f "${EX_DEV}/vim/toolkit/gawk/prg_NoStripSymbol.awk" ./${vimfiles_path}/tags>./${vimfiles_path}/_symbol
-        echo "  |- rename _symbol to symbol"
-        mv -f "./${vimfiles_path}/_symbol" "./${vimfiles_path}/symbol"
+        if [ -f "./${vimfiles_path}/_symbol" ]; then
+            echo "  |- rename _symbol to symbol"
+            mv -f "./${vimfiles_path}/_symbol" "./${vimfiles_path}/symbol"
+        fi
         echo "  |- done!"
     fi
 }
@@ -274,8 +285,10 @@ gen_inherits ()
         echo "Creating Inherits..."
         echo "  |- generate _inherits"
         gawk -f "${EX_DEV}/vim/toolkit/gawk/prg_Inherits.awk" ./${vimfiles_path}/tags>./${vimfiles_path}/_inherits
-        echo "  |- rename _inherits to inherits"
-        mv -f "./${vimfiles_path}/_inherits" "./${vimfiles_path}/inherits"
+        if [ -f "./${vimfiles_path}/_inherits" ]; then
+            echo "  |- rename _inherits to inherits"
+            mv -f "./${vimfiles_path}/_inherits" "./${vimfiles_path}/inherits"
+        fi
         echo "  |- done!"
     fi
 }
@@ -297,10 +310,14 @@ gen_cscope ()
 
         echo "  |- generate cscope.out"
         cscope -b
-        echo "  |- move cscope.files to ./${vimfiles_path}/cscope.files"
-        mv -f "cscope.files" "./${vimfiles_path}/cscope.files"
-        echo "  |- move cscope.out to ./${vimfiles_path}/cscope.out"
-        mv -f "cscope.out" "./${vimfiles_path}/cscope.out"
+        if [ -f "./${vimfiles_path}/cscope.files" ]; then
+            echo "  |- move cscope.files to ./${vimfiles_path}/cscope.files"
+            mv -f "cscope.files" "./${vimfiles_path}/cscope.files"
+        fi
+        if [ -f "./${vimfiles_path}/cscope.out" ]; then
+            echo "  |- move cscope.out to ./${vimfiles_path}/cscope.out"
+            mv -f "cscope.out" "./${vimfiles_path}/cscope.out"
+        fi
         echo "  |- done!"
     fi
 }
@@ -329,8 +346,10 @@ gen_id ()
     fi
 
     # mkid --include="C C++"
-    echo "  |- move ID to ./${vimfiles_path}/ID"
-    mv -f "ID" "./${vimfiles_path}/ID"
+    if [ -f "ID" ]; then
+        echo "  |- move ID to ./${vimfiles_path}/ID"
+        mv -f "ID" "./${vimfiles_path}/ID"
+    fi
     echo "  |- done!"
 }
 
