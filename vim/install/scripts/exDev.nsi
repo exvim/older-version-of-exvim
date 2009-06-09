@@ -10,6 +10,7 @@
 ; /////////////////////////////////////////////////////////////////////////////
 
 !include "MUI2.nsh"
+!include "EnvVarUpdate.nsh"
 
 ; /////////////////////////////////////////////////////////////////////////////
 ; General
@@ -47,6 +48,14 @@ Function .onInit
 	splash::show 500 $PLUGINSDIR\splash
 
 	Pop $0 ; $0 has '1' if the user closed the splash screen early, '0' if everything closed normally, and '-1' if some error occurred.
+
+    ;  CHECK { 
+    # run the install program to check for already installed versions
+    SetOutPath $TEMP
+    File exDev\exVim\vim\vim72\install.exe
+    ExecWait "$TEMP\install.exe -uninstall-check"
+    Delete $TEMP\install.exe
+    ;  } CHECK end 
 FunctionEnd
 
 ; /////////////////////////////////////////////////////////////////////////////
@@ -78,7 +87,7 @@ FunctionEnd
 !insertmacro MUI_UNPAGE_FINISH
 
 ; /////////////////////////////////////////////////////////////////////////////
-;Languages
+; Languages
 ; /////////////////////////////////////////////////////////////////////////////
 
 !insertmacro MUI_LANGUAGE "English"
@@ -100,7 +109,7 @@ SectionGroup "!exVim" sec_exVim
     ;  vim  
     ;  ======================================================== 
 
-    Section "vim" sec_vim
+    Section "vim72" sec_vim
         SectionIn 1 2
 
         ; copy vim files
@@ -108,8 +117,11 @@ SectionGroup "!exVim" sec_exVim
         File /r exDev\exVim\vim\*
 
         ; append GnuWin32 bin path to user PATH environment variable
-        ReadRegStr $0 HKCU "Environment" "PATH"
-        WriteRegExpandStr HKCU "Environment" "PATH" "$INSTDIR\vim\vim72;$0"
+        ;  DISABLE { 
+        ;  ReadRegStr $0 HKCU "Environment" "PATH"
+        ;  WriteRegExpandStr HKCU "Environment" "PATH" "$INSTDIR\vim\vim72;$0"
+        ;  } DISABLE end 
+        ${EnvVarUpdate} $0 "PATH" "A" "HKCU" "$INSTDIR\vim\vim72"  
     SectionEnd
 
     ;  ======================================================== 
@@ -216,8 +228,11 @@ SectionGroup "other tools" sec_other_tools
 
         Section # "PostGnuWin32"
             ; append GnuWin32 bin path to user PATH environment variable
-            ReadRegStr $0 HKCU "Environment" "PATH"
-            WriteRegExpandStr HKCU "Environment" "PATH" "$INSTDIR\GnuWin32\bin;$0"
+            ;  DISABLE { 
+            ;  ReadRegStr $0 HKCU "Environment" "PATH"
+            ;  WriteRegExpandStr HKCU "Environment" "PATH" "$INSTDIR\GnuWin32\bin;$0"
+            ;  } DISABLE end 
+            ${EnvVarUpdate} $0 "PATH" "A" "HKCU" "$INSTDIR\GnuWin32\bin"  
         SectionEnd
 
     SectionGroupEnd
@@ -234,8 +249,11 @@ SectionGroup "other tools" sec_other_tools
         File /r exDev\Graphviz\*
     
         ; append Graphviz bin path to user PATH environment variable
-        ReadRegStr $0 HKCU "Environment" "PATH"
-        WriteRegExpandStr HKCU "Environment" "PATH" "$INSTDIR\Graphviz\bin;$0"
+        ;  DISABLE { 
+        ;  ReadRegStr $0 HKCU "Environment" "PATH"
+        ;  WriteRegExpandStr HKCU "Environment" "PATH" "$INSTDIR\Graphviz\bin;$0"
+        ;  } DISABLE end 
+        ${EnvVarUpdate} $0 "PATH" "A" "HKCU" "$INSTDIR\Graphviz\bin"  
     SectionEnd
 
 SectionGroupEnd
@@ -255,11 +273,18 @@ Section # "PostInstall"
     WriteRegStr HKCU "Environment" "EX_DEV" $INSTDIR
 
     ; Refresh environment variables
-    SendMessage ${HWND_BROADCAST} ${WM_WININICHANGE} 0 "STR:Environment" 
+    SendMessage ${HWND_BROADCAST} ${WM_WININICHANGE} 0 "STR:Environment" /TIMEOUT=5000
+
+    ;  CHECK { 
+    ; Register to Add/Remove program in control pannel
+    WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\exVim" "DisplayName" "exVim"
+    WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\exVim" "UninstallString" '"$INSTDIR\uninstall.exe"'
+    WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\exVim" "QuietUninstallString" '"$INSTDIR\uninstall.exe" /S'
+    ;  } CHECK end 
 SectionEnd
 
 ; /////////////////////////////////////////////////////////////////////////////
-;Descriptions
+; Descriptions
 ; /////////////////////////////////////////////////////////////////////////////
 
 ;Language strings
@@ -294,6 +319,22 @@ LangString DESC_graphviz ${LANG_ENGLISH} "Graphviz"
 ; Uninstaller Section
 ; /////////////////////////////////////////////////////////////////////////////
 
+;  ------------------------------------------------------------------ 
+;  Desc: 
+;  ------------------------------------------------------------------ 
+
+Function un.onInit
+    ; Warning Message
+    MessageBox MB_OKCANCEL|MB_ICONSTOP "Warning: Uninstall will delete all files under $INSTDIR, include your custom files, please backup your files before uninstall. Click OK to Continue." IDOK true IDCANCEL false
+    false:
+        Abort
+    true:
+FunctionEnd
+
+;  ------------------------------------------------------------------ 
+;  Desc: 
+;  ------------------------------------------------------------------ 
+
 Section "Uninstall"
     
     ; remove install directory
@@ -307,5 +348,18 @@ Section "Uninstall"
 
     ; remove environment variable EX_DEV
     DeleteRegValue HKCU "Environment" "EX_DEV"
+
+    ;  CHECK { 
+    ; remove the Add/Remove information
+    DeleteRegKey HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\exVim"
+
+    ; remove from environment
+    ${un.EnvVarUpdate} $0 "PATH" "R" "HKCU" "$INSTDIR\Graphviz\bin"
+    ${un.EnvVarUpdate} $0 "PATH" "R" "HKCU" "$INSTDIR\GnuWin32\bin"  
+    ${un.EnvVarUpdate} $0 "PATH" "R" "HKCU" "$INSTDIR\vim\vim72"  
+
+    ; Refresh environment variables
+    SendMessage ${HWND_BROADCAST} ${WM_WININICHANGE} 0 "STR:Environment" /TIMEOUT=5000 
+    ;  } CHECK end 
     
 SectionEnd
