@@ -555,6 +555,9 @@ function s:exJS_GotoStackByIndex( index ) " <<<
         call exUtility#WarningMsg("Can't jump in this line")
         return
     endif
+
+    " save the last stack index for keepjump checking
+    let last_stack_idx = s:exJS_stack_idx 
     let s:exJS_stack_idx = a:index
 
     " check if is a background op 
@@ -574,18 +577,30 @@ function s:exJS_GotoStackByIndex( index ) " <<<
         let window_exists = 1
     endif
 
-    " process the jump
+    " go to edit buffer
     call exUtility#GotoEditBuffer()
 
-    if bufnr('%') != bufnr( s:exJS_stack_list[a:index].file_name )
-        exe 'silent e ' . s:exJS_stack_list[a:index].file_name
+    " check if the cursor is in the position of current stack  
+    " if not, we should save the jump to the jump history, so that we can use ctrl-o get it back.
+    let keepjumps_cmd = ''
+    let cur_pos = getpos('.')
+    if ( s:exJS_stack_list[last_stack_idx].file_name ==# bufname('%') && cur_pos[1] == s:exJS_stack_list[last_stack_idx].cursor_pos[0] )
+        let keepjumps_cmd = 'keepjumps'
     endif
-    silent call cursor(s:exJS_stack_list[a:index].cursor_pos)
+
+    " jump to the exact buffer and cursor pos
+    if bufnr('%') != bufnr( s:exJS_stack_list[a:index].file_name )
+        exe keepjumps_cmd . ' silent e ' . s:exJS_stack_list[a:index].file_name
+    endif
+    exe keepjumps_cmd . ' call cursor(s:exJS_stack_list[a:index].cursor_pos)'
 
     " jump to the pattern if the code have been modified
     let pattern = '\V' . substitute( s:exJS_stack_list[a:index].pattern, '\', '\\\', "g" )
     if search(pattern, 'w') == 0
         call exUtility#WarningMsg('search pattern not found: ' . pattern)
+    else " NOTE: after we do a pattern jump, the cursor_pos should update so that next time, keepjump check can do a right decisition 
+        let cur_pos = getpos(".")
+        s:exJS_stack_list[a:index].cursor_pos = [cur_pos[1],cur_pos[2]] " lnum, col 
     endif
     exe 'normal! zz'
 
