@@ -67,8 +67,13 @@ endif
 " ------------------------------------------------------------------ 
 
 if $EX_DEV ==# ""
-    call confirm ("exVim error: Please set the EX_DEV in _vimrc, default is let $EX_DEV='/usr/local/share'")
-    let $EX_DEV='/usr/local/share'
+    if has ("unix")
+        call confirm ("exVim error: Please set the EX_DEV in _vimrc, default is let $EX_DEV='/usr/local/share'")
+        let $EX_DEV='/usr/local/share'
+    elseif has("win32")
+        call confirm ("exVim error: Please set the EX_DEV in _vimrc, default is let $EX_DEV='d:\exDev'")
+        let $EX_DEV='d:\exDev'
+    endif
 endif
 
 " ------------------------------------------------------------------ 
