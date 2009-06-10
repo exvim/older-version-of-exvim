@@ -595,9 +595,9 @@ function s:exJS_GotoStackByIndex( index ) " <<<
     exe keepjumps_cmd . ' call cursor(s:exJS_stack_list[a:index].cursor_pos)'
 
     " jump to the pattern if the code have been modified
-    if s:exJS_stack_list[a:index].pattern != ''
+    if s:exJS_stack_list[a:index].pattern !~# '^\(\s\+\|\)$'
         let pattern = '\V' . substitute( s:exJS_stack_list[a:index].pattern, '\', '\\\', "g" )
-        if search(pattern, 'w') == 0
+        if search(pattern, 'cw') == 0
             call exUtility#WarningMsg('search pattern not found: ' . pattern)
         else " NOTE: after we do a pattern jump, the cursor_pos should update so that next time, keepjump check can do a right decisition 
             let cur_pos = getpos(".")
