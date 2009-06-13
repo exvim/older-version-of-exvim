@@ -346,16 +346,20 @@ function s:exCS_ShowQuickFixResult( search_method ) " <<<
     elseif a:search_method ==# 's' " C symbol
         let qf_idx = 0
         for item in result_list
+            let start_idx = stridx( item.text, "<<")+2
             let end_idx = stridx( item.text, ">>")
-            let text_line = printf(" [%03d]%s<%d> %s", qf_idx, bufname(item.bufnr), item.lnum, strpart( item.text, end_idx+3 ) )
+            let len = end_idx - start_idx
+            let text_line = printf(" [%03d]%s<%d> <<%s>> %s", qf_idx, bufname(item.bufnr), item.lnum, strpart( item.text, start_idx, len ), strpart( item.text, end_idx+3 ) )
             silent put = text_line 
             let qf_idx += 1
         endfor
     elseif a:search_method ==# 'g' " definition
         let qf_idx = 0
         for item in result_list
+            let start_idx = stridx( item.text, "<<")+2
             let end_idx = stridx( item.text, ">>")
-            let text_line = printf(" [%03d]%s<%d> %s", qf_idx, bufname(item.bufnr), item.lnum, strpart( item.text, end_idx+3 ) )
+            let len = end_idx - start_idx
+            let text_line = printf(" [%03d]%s<%d> <<%s>> %s", qf_idx, bufname(item.bufnr), item.lnum, strpart( item.text, start_idx, len ), strpart( item.text, end_idx+3 ) )
             silent put = text_line 
             let qf_idx += 1
         endfor
@@ -392,46 +396,13 @@ function s:exCS_ParseFunction() " <<<
     call s:exCS_GetSearchResult(search_text, 'ds')
 endfunction " >>>
 
-" ======================================================== 
-" select window functions
-" ======================================================== 
-
 " ------------------------------------------------------------------ 
-" Desc: Init exGlobalSearch window
+" Desc: 
 " ------------------------------------------------------------------ 
 
-function g:exCS_InitSelectWindow() " <<<
-    silent! setlocal nonumber
-    
-    " if no scope connect yet, connect it
-    if !exists('g:exES_Cscope')
-        let g:exES_Cscope = './'.g:exES_vimfiles_dirname.'/cscope.out'
-    endif
-    if cscope_connection(4, "cscope.out", g:exES_Cscope ) == 0
-        call g:exCS_ConnectCscopeFile()
-    endif
-
-    " syntax highlight
-    if g:exCS_highlight_result
-        " this will load the syntax highlight as cpp for search result
-        silent exec "so $VIM/vimfiles/after/syntax/exUtility.vim"
-    endif
-
-    syntax match ex_SynFileName '^.*\s\+(.*)$'
-    syntax region ex_SynSearchPattern start="^----------" end="----------"
-    syntax match ex_SynLineNr '<\d\+>'
-    syntax match exCS_SynQfNumber '^ \[\d\+\]'
-
-    " key map
-    silent exec "nnoremap <buffer> <silent> " . g:ex_keymap_close . " :call <SID>exCS_ToggleWindow('Select')<CR>"
-    silent exec "nnoremap <buffer> <silent> " . g:ex_keymap_resize . " :call <SID>exCS_ResizeWindow()<CR>"
-    silent exec "nnoremap <buffer> <silent> " . g:ex_keymap_confirm . " \\|:call <SID>exCS_GotoInSelectWindow()<CR>"
-    nnoremap <buffer> <silent> <2-LeftMouse>   \|:call <SID>exCS_GotoInSelectWindow()<CR>
-
+function s:exCS_MapPickupResultKeys() " <<<
     nnoremap <buffer> <silent> <C-Right>   :call <SID>exCS_SwitchWindow('Select')<CR>
     nnoremap <buffer> <silent> <C-Left>   :call <SID>exCS_SwitchWindow('QuickView')<CR>
-
-    " TODO: shrink text for d method
 
     nnoremap <buffer> <silent> <Leader>r :call <SID>exCS_ShowPickedResultNormalMode('', 'replace', 'pattern', 0)<CR>
     nnoremap <buffer> <silent> <Leader>d :call <SID>exCS_ShowPickedResultNormalMode('', 'replace', 'pattern', 1)<CR>
@@ -459,6 +430,51 @@ function g:exCS_InitSelectWindow() " <<<
     vnoremap <buffer> <silent> <Leader>gd <ESC>:call <SID>exCS_ShowPickedResultVisualMode('', 'replace', '', 1)<CR>
     vnoremap <buffer> <silent> <Leader>gar <ESC>:call <SID>exCS_ShowPickedResultVisualMode('', 'append', '', 0)<CR>
     vnoremap <buffer> <silent> <Leader>gad <ESC>:call <SID>exCS_ShowPickedResultVisualMode('', 'append', '', 1)<CR>
+endfunction " >>>
+
+" ======================================================== 
+" select window functions
+" ======================================================== 
+
+" ------------------------------------------------------------------ 
+" Desc: Init exGlobalSearch window
+" ------------------------------------------------------------------ 
+
+function g:exCS_InitSelectWindow() " <<<
+    silent! setlocal nonumber
+    
+    " if no scope connect yet, connect it
+    if !exists('g:exES_Cscope')
+        let g:exES_Cscope = './'.g:exES_vimfiles_dirname.'/cscope.out'
+    endif
+    if cscope_connection(4, "cscope.out", g:exES_Cscope ) == 0
+        call g:exCS_ConnectCscopeFile()
+    endif
+
+    " syntax highlight
+    if g:exCS_highlight_result
+        " this will load the syntax highlight as cpp for search result
+        silent exec "so $VIM/vimfiles/after/syntax/exUtility.vim"
+    endif
+
+    " syntax
+    syntax region ex_Dummy start='^ \[\d\+\]\s' end='<\d\+>' keepend contains=ex_SynLineNr,exCS_SynQfNumber
+    syntax region ex_SynFileName start='^ \[\d\+\]\S' end='<\d\+>' keepend contains=ex_SynLineNr,exCS_SynQfNumber
+    syntax region ex_SynSearchPattern start="^----------" end="----------"
+    syntax match ex_SynLineNr '<\d\+>' contained
+    syntax match exCS_SynQfNumber '^ \[\d\+\]' contained
+
+    " key map
+    silent exec "nnoremap <buffer> <silent> " . g:ex_keymap_close . " :call <SID>exCS_ToggleWindow('Select')<CR>"
+    silent exec "nnoremap <buffer> <silent> " . g:ex_keymap_resize . " :call <SID>exCS_ResizeWindow()<CR>"
+    silent exec "nnoremap <buffer> <silent> " . g:ex_keymap_confirm . " \\|:call <SID>exCS_GotoInSelectWindow()<CR>"
+    nnoremap <buffer> <silent> <2-LeftMouse>   \|:call <SID>exCS_GotoInSelectWindow()<CR>
+
+    "
+    call s:exCS_MapPickupResultKeys()
+
+
+    " TODO: shrink text for d method
 
     " autocmd
     au CursorMoved <buffer> :call exUtility#HighlightSelectLine()
@@ -557,10 +573,14 @@ endfunction " >>>
 function g:exCS_InitQuickViewWindow() " <<<
     silent! setlocal nonumber
     setlocal foldmethod=marker foldmarker=<<<<<<,>>>>>> foldlevel=1
-    " syntax highlight
-    syntax match ex_SynFileName '^[^:]*:'
-    syntax match ex_SynSearchPattern '^----------.\+----------'
-    syntax match ex_SynLineNr '\d\+:'
+
+    " syntax
+    syntax region ex_Dummy start='^ \[\d\+\]\s' end='<\d\+>' keepend contains=ex_SynLineNr,exCS_SynQfNumber
+    syntax region ex_SynFileName start='^ \[\d\+\]\S' end='<\d\+>' keepend contains=ex_SynLineNr,exCS_SynQfNumber
+    syntax region ex_SynSearchPattern start="^----------" end="----------"
+    syntax match ex_SynLineNr '<\d\+>' contained
+    syntax match exCS_SynQfNumber '^ \[\d\+\]' contained
+
     syntax match ex_SynFold '<<<<<<'
     syntax match ex_SynFold '>>>>>>'
 
@@ -570,35 +590,8 @@ function g:exCS_InitQuickViewWindow() " <<<
     silent exec "nnoremap <buffer> <silent> " . g:ex_keymap_confirm . " \\|:call <SID>exCS_GotoInQuickViewWindow()<CR>"
     nnoremap <buffer> <silent> <2-LeftMouse>   \|:call <SID>exCS_GotoInQuickViewWindow()<CR>
 
-    nnoremap <buffer> <silent> <C-Right>   :call <SID>exCS_SwitchWindow('Select')<CR>
-    nnoremap <buffer> <silent> <C-Left>   :call <SID>exCS_SwitchWindow('QuickView')<CR>
-
-    nnoremap <buffer> <silent> <Leader>r :call <SID>exCS_ShowPickedResultNormalMode('', 'replace', 'pattern', 0)<CR>
-    nnoremap <buffer> <silent> <Leader>d :call <SID>exCS_ShowPickedResultNormalMode('', 'replace', 'pattern', 1)<CR>
-    nnoremap <buffer> <silent> <Leader>ar :call <SID>exCS_ShowPickedResultNormalMode('', 'append', 'pattern', 0)<CR>
-    nnoremap <buffer> <silent> <Leader>ad :call <SID>exCS_ShowPickedResultNormalMode('', 'append', 'pattern', 1)<CR>
-    vnoremap <buffer> <silent> <Leader>r <ESC>:call <SID>exCS_ShowPickedResultVisualMode('', 'replace', 'pattern', 0)<CR>
-    vnoremap <buffer> <silent> <Leader>d <ESC>:call <SID>exCS_ShowPickedResultVisualMode('', 'replace', 'pattern', 1)<CR>
-    vnoremap <buffer> <silent> <Leader>ar <ESC>:call <SID>exCS_ShowPickedResultVisualMode('', 'append', 'pattern', 0)<CR>
-    vnoremap <buffer> <silent> <Leader>ad <ESC>:call <SID>exCS_ShowPickedResultVisualMode('', 'append', 'pattern', 1)<CR>
-
-    nnoremap <buffer> <silent> <Leader>fr :call <SID>exCS_ShowPickedResultNormalMode('', 'replace', 'file', 0)<CR>
-    nnoremap <buffer> <silent> <Leader>fd :call <SID>exCS_ShowPickedResultNormalMode('', 'replace', 'file', 1)<CR>
-    nnoremap <buffer> <silent> <Leader>far :call <SID>exCS_ShowPickedResultNormalMode('', 'append', 'file', 0)<CR>
-    nnoremap <buffer> <silent> <Leader>fad :call <SID>exCS_ShowPickedResultNormalMode('', 'append', 'file', 1)<CR>
-    vnoremap <buffer> <silent> <Leader>fr <ESC>:call <SID>exCS_ShowPickedResultVisualMode('', 'replace', 'file', 0)<CR>
-    vnoremap <buffer> <silent> <Leader>fd <ESC>:call <SID>exCS_ShowPickedResultVisualMode('', 'replace', 'file', 1)<CR>
-    vnoremap <buffer> <silent> <Leader>far <ESC>:call <SID>exCS_ShowPickedResultVisualMode('', 'append', 'file', 0)<CR>
-    vnoremap <buffer> <silent> <Leader>fad <ESC>:call <SID>exCS_ShowPickedResultVisualMode('', 'append', 'file', 1)<CR>
-
-    nnoremap <buffer> <silent> <Leader>gr :call <SID>exCS_ShowPickedResultNormalMode('', 'replace', '', 0)<CR>
-    nnoremap <buffer> <silent> <Leader>gd :call <SID>exCS_ShowPickedResultNormalMode('', 'replace', '', 1)<CR>
-    nnoremap <buffer> <silent> <Leader>gar :call <SID>exCS_ShowPickedResultNormalMode('', 'append', '', 0)<CR>
-    nnoremap <buffer> <silent> <Leader>gad :call <SID>exCS_ShowPickedResultNormalMode('', 'append', '', 1)<CR>
-    vnoremap <buffer> <silent> <Leader>gr <ESC>:call <SID>exCS_ShowPickedResultVisualMode('', 'replace', '', 0)<CR>
-    vnoremap <buffer> <silent> <Leader>gd <ESC>:call <SID>exCS_ShowPickedResultVisualMode('', 'replace', '', 1)<CR>
-    vnoremap <buffer> <silent> <Leader>gar <ESC>:call <SID>exCS_ShowPickedResultVisualMode('', 'append', '', 0)<CR>
-    vnoremap <buffer> <silent> <Leader>gad <ESC>:call <SID>exCS_ShowPickedResultVisualMode('', 'append', '', 1)<CR>
+    "
+    call s:exCS_MapPickupResultKeys()
 
     " autocmd
     au CursorMoved <buffer> :call exUtility#HighlightSelectLine()
@@ -641,9 +634,9 @@ function s:exCS_CopyPickedLine( search_pattern, line_start, line_end, search_met
         let s:exCS_quick_view_search_pattern = '----------' . search_pattern . '----------'
         let full_search_pattern = search_pattern
         if a:search_method == 'pattern'
-            let full_search_pattern = '^.\+:\d\+:.*\zs' . search_pattern
+            let full_search_pattern = '^ \[\d\+\]\S\+<\d\+>.*\zs' . search_pattern
         elseif a:search_method == 'file'
-            let full_search_pattern = '\(.\+:\d\+:\)\&' . search_pattern
+            let full_search_pattern = '\(.\+<\d\+>\)\&' . search_pattern
         endif
         " save current cursor position
         let save_cursor = getpos(".")
@@ -667,7 +660,7 @@ function s:exCS_CopyPickedLine( search_pattern, line_start, line_end, search_met
         " if inverse search, we first filter out not pattern line, then
         " then filter pattern
         if a:inverse_search
-            let search_results = '\(.\+:\d\+:\).*'
+            let search_results = '\(.\+<\d\+>\).*'
             silent exec 'v/' . search_results . '/d'
             silent exec 'g/' . full_search_pattern . '/d'
         else
