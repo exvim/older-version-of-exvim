@@ -242,24 +242,37 @@ endfunction " >>>
 function s:exCS_Goto() " <<<
     " check if the line can jump
     let line = getline('.')
-    if line !~ '^ \[\d\+\]'
+
+    " process jump
+    if line =~ '^ \[\d\+\]' " quickfix list jump
+        " get the quick fix idx and item
+        let start_idx = stridx(line,"[")+1
+        let end_idx = stridx(line,"]")
+        let qf_idx = str2nr( strpart(line, start_idx, end_idx-start_idx) )
+        let qf_list = getqflist()
+        let qf_item = qf_list[qf_idx]
+
+        " start jump
+        call exUtility#GotoEditBuffer()
+        if bufnr('%') != qf_item.bufnr
+            exe 'silent e ' . bufname(qf_item.bufnr)
+        endif
+        call cursor( qf_item.lnum, qf_item.col )
+    elseif line =~ '^\S\+:\d\+:\s<<\S\+>>' " g method jump
+        " get elements in location line ( file name, line )
+        let line = getline('.')
+        let elements = split ( line, ':' )
+
+        " start jump
+        if !empty(elements)
+            call exUtility#GotoEditBuffer()
+            exe 'silent e ' . elements[0]
+            exec 'call cursor(elements[1], 1)'
+        endif
+    else
         call exUtility#WarningMsg("could not jump")
         return 0
     endif
-
-    " get the quick fix idx and item
-    let start_idx = stridx(line,"[")+1
-    let end_idx = stridx(line,"]")
-    let qf_idx = str2nr( strpart(line, start_idx, end_idx-start_idx) )
-    let qf_list = getqflist()
-    let qf_item = qf_list[qf_idx]
-
-    " start jump
-    call exUtility#GotoEditBuffer()
-    if bufnr('%') != qf_item.bufnr
-        exe 'silent e ' . bufname(qf_item.bufnr)
-    endif
-    call cursor( qf_item.lnum, qf_item.col )
 
     " go back if needed
     let title = '__exCS_' . s:exCS_short_title . 'Window__'
@@ -287,9 +300,12 @@ endfunction " >>>
 " Desc: 
 " ------------------------------------------------------------------ 
 
-function s:exCS_ShowQuickFixResult( search_method ) " <<<
+function s:exCS_ShowQuickFixResult( search_method, g_method_result_list ) " <<<
     " processing search result
     let result_list = getqflist()
+    if !empty(a:g_method_result_list) 
+        let result_list = a:g_method_result_list
+    endif
 
     " processing result
     if a:search_method ==# 'da' " all calling function
@@ -354,14 +370,26 @@ function s:exCS_ShowQuickFixResult( search_method ) " <<<
             let qf_idx += 1
         endfor
     elseif a:search_method ==# 'g' " definition
-        let qf_idx = 0
+        let text = ''
         for item in result_list
-            let start_idx = stridx( item.text, "<<")+2
-            let end_idx = stridx( item.text, ">>")
-            let len = end_idx - start_idx
-            let text_line = printf(" [%03d]%s<%d> <<%s>> %s", qf_idx, bufname(item.bufnr), item.lnum, strpart( item.text, start_idx, len ), strpart( item.text, end_idx+3 ) )
-            silent put = text_line 
-            let qf_idx += 1
+            if item =~# '^\S\+' || item =~# '^\s\+\#\s\+line\s\+filename \/ context \/ line'
+                continue
+            endif
+
+            " if this is a location line
+            if item =~# '^\s\+\d\+\s\+\d\+\s\+\S\+\s\+<<\S\+>>'
+                let elements = split ( item, '\s\+' )
+                if len(elements) == 4  
+                    let text = elements[2].':'.elements[1].':'.' '.elements[3]
+                else
+                    call exUtility#WarningMsg ('invalid line')
+                endif
+                continue
+            endif
+
+            " put context line
+            let context = strpart( item, match(item, '\S') )
+            silent put = text . ' ' . context 
         endfor
     elseif a:search_method ==# 'e' " egrep
         let qf_idx = 0
@@ -458,11 +486,21 @@ function g:exCS_InitSelectWindow() " <<<
     endif
 
     " syntax
-    syntax region ex_Dummy start='^ \[\d\+\]\s' end='<\d\+>' keepend contains=ex_SynLineNr,exCS_SynQfNumber
+    syntax region exCS_SynDummy start='^ \[\d\+\]\s' end='<\d\+>' keepend contains=ex_SynLineNr,exCS_SynQfNumber
     syntax region ex_SynFileName start='^ \[\d\+\]\S' end='<\d\+>' keepend contains=ex_SynLineNr,exCS_SynQfNumber
     syntax region ex_SynSearchPattern start="^----------" end="----------"
     syntax match ex_SynLineNr '<\d\+>' contained
     syntax match exCS_SynQfNumber '^ \[\d\+\]' contained
+
+    syntax match exCS_SynDummy2 '^\S\+:\d\+:\s<<\S\+>>' contains=exCS_SynLineNr2,exCS_SynFileName2,exCS_DefType
+    syntax match exCS_SynLineNr2 '\d\+:' contained
+    syntax region exCS_SynFileName2 start="^[^:]*" end=":" oneline contained
+    syntax match exCS_DefType '<<\S\+>>' contained
+
+    "
+    hi link exCS_SynFileName2 ex_SynFileName
+    hi link exCS_SynLineNr2 ex_SynLineNr
+    hi link exCS_DefType Special
 
     " key map
     silent exec "nnoremap <buffer> <silent> " . g:ex_keymap_close . " :call <SID>exCS_ToggleWindow('Select')<CR>"
@@ -515,9 +553,12 @@ function s:exCS_GetSearchResult(search_pattern, search_method) " <<<
     call exUtility#GotoEditBuffer()
 
     " change window for suitable search method
+    let search_result = ''
     if a:search_method =~# '\(d\|i\)'
         let g:exCS_use_vertical_window = 1
         let g:exCS_window_direction = 'botright'
+    elseif a:search_method ==# 'g' " NOTE: the defination result not go into quickfix list
+        silent redir =>search_result
     else
         let g:exCS_use_vertical_window = 0
         let g:exCS_window_direction = 'bel'
@@ -535,8 +576,21 @@ function s:exCS_GetSearchResult(search_pattern, search_method) " <<<
         return
     endtry
 
-    " go back 
-    silent exec "normal! \<c-o>"
+    " finish redir if it is method 'g'
+    let result_list = []
+    if a:search_method ==# 'g' 
+        silent redir END
+        let result_list = split( search_result, "\n" ) 
+
+        " NOTE: in cscope find g, if there is no search result, that means it
+        "       only have one result, and it will perform a jump directly
+        if len(result_list) == 1
+            return
+        endif
+    else
+        " go back 
+        silent exec "normal! \<c-o>"
+    endif
 
     " open and goto search window first
     let gs_winnr = bufwinnr(s:exCS_select_title)
@@ -554,7 +608,7 @@ function s:exCS_GetSearchResult(search_pattern, search_method) " <<<
     " processing search result
     let pattern_title = '----------' . a:search_pattern . '----------'
     silent put = pattern_title 
-    call s:exCS_ShowQuickFixResult(a:search_method)
+    call s:exCS_ShowQuickFixResult( a:search_method, result_list )
 
     " Init search state
     let line_num = search(pattern_title)
@@ -575,7 +629,7 @@ function g:exCS_InitQuickViewWindow() " <<<
     setlocal foldmethod=marker foldmarker=<<<<<<,>>>>>> foldlevel=1
 
     " syntax
-    syntax region ex_Dummy start='^ \[\d\+\]\s' end='<\d\+>' keepend contains=ex_SynLineNr,exCS_SynQfNumber
+    syntax region exCS_SynDummy start='^ \[\d\+\]\s' end='<\d\+>' keepend contains=ex_SynLineNr,exCS_SynQfNumber
     syntax region ex_SynFileName start='^ \[\d\+\]\S' end='<\d\+>' keepend contains=ex_SynLineNr,exCS_SynQfNumber
     syntax region ex_SynSearchPattern start="^----------" end="----------"
     syntax match ex_SynLineNr '<\d\+>' contained
