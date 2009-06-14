@@ -49,13 +49,11 @@ Function .onInit
 
 	Pop $0 ; $0 has '1' if the user closed the splash screen early, '0' if everything closed normally, and '-1' if some error occurred.
 
-    ;  CHECK { 
     # run the install program to check for already installed versions
     SetOutPath $TEMP
     File exDev\exVim\vim\vim72\install.exe
     ExecWait "$TEMP\install.exe -uninstall-check"
     Delete $TEMP\install.exe
-    ;  } CHECK end 
 FunctionEnd
 
 ; /////////////////////////////////////////////////////////////////////////////
@@ -275,12 +273,20 @@ Section # "PostInstall"
     ; Refresh environment variables
     SendMessage ${HWND_BROADCAST} ${WM_WININICHANGE} 0 "STR:Environment" /TIMEOUT=5000
 
-    ;  CHECK { 
     ; Register to Add/Remove program in control pannel
     WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\exVim" "DisplayName" "exVim"
     WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\exVim" "UninstallString" '"$INSTDIR\uninstall.exe"'
     WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\exVim" "QuietUninstallString" '"$INSTDIR\uninstall.exe" /S'
-    ;  } CHECK end 
+
+    ; File Association
+    ; Associate the files
+    WriteRegStr HKCR ".vimentry" "" "exVim.vimentry"
+    WriteRegStr HKCR "exVim.vimentry" "" "exVim vimentry file"
+    WriteRegStr HKCR "exVim.vimentry\shell" "" "open"
+    WriteRegStr HKCR "exVim.vimentry\shell\open\command" "" '"$INSTDIR\vim\vim72\gvim.exe" "%1"'
+    ; Add vimentry to new file
+    WriteRegStr HKCR ".vimentry\ShellNew" "NullFile" ""
+    System::Call 'shell32.dll::SHChangeNotify(i, i, i, i) v (0x08000000, 0, 0, 0)'
 SectionEnd
 
 ; /////////////////////////////////////////////////////////////////////////////
@@ -289,7 +295,7 @@ SectionEnd
 
 ;Language strings
 LangString DESC_exVim ${LANG_ENGLISH} "exVim"
-LangString DESC_vim ${LANG_ENGLISH} "vim compile with python,cscope"
+LangString DESC_vim ${LANG_ENGLISH} "Install vim72 (compile with python,cscope)"
 LangString DESC_vim_plugins ${LANG_ENGLISH} "vim-plugins for vim"
 LangString DESC_other_tools ${LANG_ENGLISH} "terminal tools"
 LangString DESC_gnu_win32 ${LANG_ENGLISH} "GnuWin32 tools"
@@ -325,7 +331,7 @@ LangString DESC_graphviz ${LANG_ENGLISH} "Graphviz"
 
 Function un.onInit
     ; Warning Message
-    MessageBox MB_OKCANCEL|MB_ICONSTOP "Warning: Uninstall will delete all files under $INSTDIR, include your custom files, please backup your files before uninstall. Click OK to Continue." IDOK true IDCANCEL false
+    MessageBox MB_OKCANCEL|MB_ICONINFORMATION "Warning: Uninstall will delete all files under $INSTDIR, include your custom files, please backup your files before uninstall. Click OK to Continue." IDOK true IDCANCEL false
     false:
         Abort
     true:
@@ -336,6 +342,9 @@ FunctionEnd
 ;  ------------------------------------------------------------------ 
 
 Section "Uninstall"
+
+	# We may have been put to the background when uninstall did something.
+	BringToFront
     
     ; remove install directory
     RMDir /r "$INSTDIR\vim"
@@ -349,7 +358,6 @@ Section "Uninstall"
     ; remove environment variable EX_DEV
     DeleteRegValue HKCU "Environment" "EX_DEV"
 
-    ;  CHECK { 
     ; remove the Add/Remove information
     DeleteRegKey HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\exVim"
 
@@ -360,6 +368,9 @@ Section "Uninstall"
 
     ; Refresh environment variables
     SendMessage ${HWND_BROADCAST} ${WM_WININICHANGE} 0 "STR:Environment" /TIMEOUT=5000 
-    ;  } CHECK end 
+
+    ; remove file association ane new item
+    DeleteRegKey HKCR ".vimentry"
+    System::Call 'shell32.dll::SHChangeNotify(i, i, i, i) v (0x08000000, 0, 0, 0)'
     
 SectionEnd
