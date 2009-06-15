@@ -62,6 +62,14 @@ if !exists ( "g:ex_default_langs" )
 endif
 
 " ------------------------------------------------------------------ 
+" Desc: cscope supported languages 
+" ------------------------------------------------------------------ 
+
+if !exists ( "g:ex_cscope_langs" )
+    let g:ex_cscope_langs = ['c', 'cpp', 'shader', 'asm' ] 
+endif
+
+" ------------------------------------------------------------------ 
 " Desc: ex_dev environment variable 
 " NOTE: we don't recommend to set the g:ex_dev_path directly in vim/_vimrc
 " ------------------------------------------------------------------ 

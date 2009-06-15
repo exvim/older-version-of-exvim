@@ -1403,9 +1403,29 @@ endfunction " >>>
 " Desc: 
 " ------------------------------------------------------------------ 
 
+function exUtility#GetCscopeFileFilter(filter_list) " <<<
+    let cscope_file_filter_list = []
+    for lang_type in g:ex_cscope_langs 
+        if has_key (s:ex_exvim_lang_map, lang_type)
+            for file_type in s:ex_exvim_lang_map[lang_type] 
+                if index(a:filter_list,file_type) != -1
+                    silent call add(cscope_file_filter_list,file_type)
+                endif
+            endfor
+        endif
+    endfor
+    return cscope_file_filter_list
+endfunction " >>>
+
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
 function exUtility#GetProjectFileFilterCommand() " <<<
     let filter_list = split(s:ex_project_file_filter,',')
     let filter_command = ''
+
+    let cscope_filter_list = exUtility#GetCscopeFileFilter(filter_list)
     let cscope_filter_command = ''
 
     if has ('win32')
@@ -1413,6 +1433,8 @@ function exUtility#GetProjectFileFilterCommand() " <<<
         "       list .h files twice, also *.h will not list .H files. To prevent 
         "       this, we detect the filter_list if same file suffix found, we 
         "       choose upper case. 
+
+        " general filter command
         let filter_list2 = []
         for item1 in filter_list
             let found = 0
@@ -1425,19 +1447,32 @@ function exUtility#GetProjectFileFilterCommand() " <<<
                 silent call add ( filter_list2, toupper(item1) )
             endif
         endfor
-
         for item in filter_list2
             let filter_command .= '*.' . item . ' '
-            if item =~ '^c$\|^cpp$\|^cxx$\|^c++$\|^cc$\|^h$\|^hh$\|^hxx$\|^hpp$\|^inl$\|^hlsl$\|^vsh$\|^psh$\|^fx$\|^fxh$\|^cg$\|^shd$\|^glsl$'
-                let cscope_filter_command .= '*.' . item . ' '
+        endfor
+
+        " cscope filter command
+        let filter_list2 = []
+        for item1 in cscope_filter_list
+            let found = 0
+            for item2 in filter_list2
+                if item1 ==? item2
+                    let found = 1
+                endif
+            endfor
+            if found == 0
+                silent call add ( filter_list2, toupper(item1) )
             endif
+        endfor
+        for item in filter_list2
+            let cscope_filter_command .= '*.' . item . ' '
         endfor
     elseif has ('unix')
         for item in filter_list 
             let filter_command .= item . '\|'
-            if item =~ '^c$\|^cpp$\|^cxx$\|^c++$\|^cc$\|^h$\|^hh$\|^hxx$\|^hpp$\|^inl$\|^hlsl$\|^vsh$\|^psh$\|^fx$\|^fxh$\|^cg$\|^shd$\|^glsl$'
-                let cscope_filter_command .= item . '\|'
-            endif
+        endfor
+        for item in cscope_filter_list 
+            let cscope_filter_command .= item . '\|'
         endfor
         let filter_command = strpart( filter_command, 0, len(filter_command) - 2)
         let cscope_filter_command = strpart( cscope_filter_command, 0, len(cscope_filter_command) - 2)
@@ -1451,16 +1486,24 @@ endfunction " >>>
 " ------------------------------------------------------------------ 
 
 function exUtility#GetProjectFileFilterPattern() " <<<
+    "
     let filter_list = split(s:ex_project_file_filter,',')
     let filter_pattern = ''
     let cscope_filter_pattern = ''
 
+    let cscope_filter_list = exUtility#GetCscopeFileFilter(filter_list)
+    let cscope_filter_pattern = ''
+
+    "
     for item in filter_list
         let filter_pattern .= '\\.' . item . '$|'
-        if item =~ '^c$\|^cpp$\|^cxx$\|^c++$\|^cc$\|^h$\|^hh$\|^hxx$\|^hpp$\|^inl$\|^hlsl$\|^vsh$\|^psh$\|^fx$\|^fxh$\|^cg$\|^shd$\|^glsl$'
-            let cscope_filter_pattern .= '\\.' . item . '$|'
-        endif
     endfor
+
+    for item in cscope_filter_list
+        let cscope_filter_pattern .= '\\.' . item . '$|'
+    endfor
+
+    "
     let filter_pattern = strpart( filter_pattern, 0, len(filter_pattern) - 1)
     let cscope_filter_pattern = strpart( cscope_filter_pattern, 0, len(cscope_filter_pattern) - 1)
     return [filter_pattern,cscope_filter_pattern]
@@ -1723,14 +1766,15 @@ function exUtility#Browse(dir, file_filter, dir_filter, filename_list ) " <<<
         while list_count <= list_last
             if isdirectory(file_list[list_idx]) == 0 " remove not fit file types
                 let suffix = fnamemodify ( file_list[list_idx], ":e" ) 
-                if match ( suffix, a:file_filter ) == -1 " if not found file type in file filter
-                    silent call remove(file_list,list_idx)
-                    let list_idx -= 1
-                else " move the file to the end of the list
+                " move the file to the end of the list
+                if ( match ( suffix, a:file_filter ) != -1 ) ||
+                 \ ( suffix == '' && match ( 'NULL', a:file_filter ) != -1 ) 
                     let file = remove(file_list,list_idx)
                     silent call add(file_list, file)
-                    let list_idx -= 1
+                else " if not found file type in file filter
+                    silent call remove(file_list,list_idx)
                 endif
+                let list_idx -= 1
             elseif a:dir_filter != '' " remove not fit dirs
                 if match( file_list[list_idx], a:dir_filter ) == -1 " if not found dir name in dir filter
                     silent call remove(file_list,list_idx)
