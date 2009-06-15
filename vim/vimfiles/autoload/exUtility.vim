@@ -51,10 +51,14 @@ let s:ex_level_list = []
 
 let s:ex_special_mark_pattern = 'todo\|xxx\|fixme'
 if exists('g:ex_todo_keyword')
-    let s:ex_special_mark_pattern .= '\|' . substitute(tolower(g:ex_todo_keyword), ' ', '\\|', 'g' ) 
+    for item in split(tolower(g:ex_todo_keyword), ' ')
+        let s:ex_special_mark_pattern .= '\|\<' . item . '\>' 
+    endfor
 endif
 if exists('g:ex_comment_lable_keyword')
-    let s:ex_special_mark_pattern .= '\|' . substitute(tolower(g:ex_comment_lable_keyword), ' ', '\\|', 'g' ) 
+    for item in split(tolower(g:ex_comment_lable_keyword), ' ')
+        let s:ex_special_mark_pattern .= '\|\<' . item . '\>' 
+    endfor
 endif
 
 " ------------------------------------------------------------------ 
@@ -742,10 +746,17 @@ function exUtility#MarkText( text, line1, line2 ) " <<<
     let last_line = a:line2
 
     " check if it is special mark, special mark will use uppercase
-    let text = a:text
-    if a:text =~? s:ex_special_mark_pattern
-        let text = toupper(text)
-    endif
+    let text = ''
+    for item in split(a:text, ' ')
+        if item =~? s:ex_special_mark_pattern
+            let text .= toupper(item) . ' ' 
+        else
+            let text .= item . ' ' 
+        endif
+    endfor
+
+    " remove last space
+    let text = strpart ( text, 0, len(text) - 1 )
 
     "
     let lstline = last_line + 1 
@@ -766,8 +777,8 @@ function exUtility#RemoveSpecialMarkText () " <<<
 
     let start_lnum = -1
     let end_lnum = -1
-    let start_pattern = b:ECcommentOpen . ' ' . '\(' . s:ex_special_mark_pattern . '\)' . '.* { ' . b:ECcommentClose
-    let end_pattern = b:ECcommentOpen . ' } ' . '\(' . s:ex_special_mark_pattern . '\)' . '.* end ' . b:ECcommentClose
+    let start_pattern = b:ECcommentOpen . '.*' . '\(' . s:ex_special_mark_pattern . '\)' . '.* { ' . b:ECcommentClose
+    let end_pattern = b:ECcommentOpen . ' }.*' . '\(' . s:ex_special_mark_pattern . '\)' . '.* end ' . b:ECcommentClose
 
     " found '#if 0' first
     while match(cur_line, start_pattern ) == -1
