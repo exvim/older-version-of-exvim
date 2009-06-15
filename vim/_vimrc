@@ -708,6 +708,11 @@ let g:exSL_SymbolSelectCmd = 'TS'
 nnoremap <unique> <silent> <Leader>tt :ExjsToggle<CR>
 nnoremap <unique> <silent> <Leader>tb :BackwardStack<CR>
 nnoremap <unique> <silent> <Leader>tf :ForwardStack<CR>
+nnoremap <unique> <silent> <BS> :BackwardStack<CR>
+if has("gui_running") "  the <alt> key is only available in gui mode.
+    noremap <unique> <A-Left> :BackwardStack<CR>
+    noremap <unique> <A-Right> :ForwardStack<CR>
+endif
 
 " ------------------------------------------------------------------ 
 " Desc: exCscope
