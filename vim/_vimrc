@@ -766,6 +766,7 @@ nnoremap <unique> <leader>fc :ExpjGotoCurrentFile<CR>
 
 let g:exPJ_backto_editbuf = 1
 let g:exPJ_close_when_selected = 0
+let g:exPJ_window_width = 30
 let g:exPJ_window_width_increment = 50
 
 " ------------------------------------------------------------------ 
@@ -1026,6 +1027,12 @@ au FileType vimwiki command! WA call exUtility#SaveAndConvertVimwiki(1)
 
 let g:snips_author = g:ex_usr_name
 let g:snippets_dir = '$VIM/toolkit/snippets/'
+
+" ------------------------------------------------------------------ 
+" Desc: NERD_tree 
+" ------------------------------------------------------------------ 
+
+let g:NERDTreeWinSize = exists('g:exPJ_window_width') ? g:exPJ_window_width : 30 
 
 "/////////////////////////////////////////////////////////////////////////////
 " Other settings
