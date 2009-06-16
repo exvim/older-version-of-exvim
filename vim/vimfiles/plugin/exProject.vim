@@ -144,9 +144,9 @@ function s:exPJ_OpenWindow( short_title ) " <<<
     endif
     " open window
     if g:exPJ_use_vertical_window
-        call exUtility#OpenWindow( title, g:exPJ_window_direction, g:exPJ_window_width, g:exPJ_use_vertical_window, g:exPJ_edit_mode, 1, 'g:exPJ_Init'.s:exPJ_short_title.'Window', 'g:exPJ_Update'.s:exPJ_short_title.'Window' )
+        call exUtility#OpenWindow( title, g:exPJ_window_direction, g:exPJ_window_width, g:exPJ_use_vertical_window, 'none', 1, 'g:exPJ_Init'.s:exPJ_short_title.'Window', 'g:exPJ_Update'.s:exPJ_short_title.'Window' )
     else
-        call exUtility#OpenWindow( title, g:exPJ_window_direction, g:exPJ_window_height, g:exPJ_use_vertical_window, g:exPJ_edit_mode, 1, 'g:exPJ_Init'.s:exPJ_short_title.'Window', 'g:exPJ_Update'.s:exPJ_short_title.'Window' )
+        call exUtility#OpenWindow( title, g:exPJ_window_direction, g:exPJ_window_height, g:exPJ_use_vertical_window, 'none', 1, 'g:exPJ_Init'.s:exPJ_short_title.'Window', 'g:exPJ_Update'.s:exPJ_short_title.'Window' )
     endif
 endfunction " >>>
 
@@ -395,13 +395,14 @@ function s:exPJ_OpenProject(project_name) " <<<
         let s:exPJ_select_title = s:exPJ_cur_filename
     endif
 
-    " open project select window
-    let old_edit_mode = g:exPJ_edit_mode
-    let g:exPJ_edit_mode = 'none'
-
-    call s:exPJ_OpenWindow('Select')
-
-    let g:exPJ_edit_mode = old_edit_mode
+    " open and goto the window
+    let pj_winnr = bufwinnr(s:exPJ_select_title)
+    if pj_winnr == -1
+        " open window
+        call s:exPJ_ToggleWindow('Select')
+    else
+        exe pj_winnr . 'wincmd w'
+    endif
 endfunction " >>>
 
 " ------------------------------------------------------------------ 
