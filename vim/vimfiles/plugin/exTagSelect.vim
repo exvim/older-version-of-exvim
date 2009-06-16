@@ -383,7 +383,7 @@ function s:exTS_GetTagSelectResult(tag, direct_jump) " <<<
     if !empty(tag_list)
         let stack_info = {}
         let stack_info.pattern = getline(".")
-        if &filetype == "ex_plugin" || &filetype == "ex_project"
+        if exUtility#IsRegisteredPluginBuffer ('')
             let stack_info.file_name = ''
         else
             let stack_info.file_name = bufname('%')

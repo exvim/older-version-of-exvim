@@ -1275,6 +1275,25 @@ endfunction
 " Create a new taglist window. If it is already open, jump to it
 function! s:Tlist_Window_Create()
     call s:Tlist_Log_Msg('Tlist_Window_Create()')
+
+    " jwu ADD { 
+    " get window_direction and use_vertical.
+    if g:Tlist_Use_Horiz_Window
+        let window_direction = 'botright'
+        let use_vertical = 0
+    else
+        let use_vertical = 1
+        if g:Tlist_Use_Right_Window
+            let window_direction = 'botright'
+        else
+            let window_direction = 'topleft'
+        endif
+    endif
+
+    " close ex_plugin window in same position
+    call exUtility#ClosePluginWindowInSamePosition ( use_vertical, window_direction )
+    " } jwu ADD end 
+
     " If the window is open, jump to it
     let winnum = bufwinnr(g:TagList_title)
     if winnum != -1
@@ -1455,9 +1474,24 @@ function! s:Tlist_Window_Init()
     setlocal noreadonly
 
     " Set the taglist buffer filetype to taglist
-    " jwu MODIFY this to close taglist
+    " jwu MODIFY: change filetype to ex_plugin { 
     "setlocal filetype=taglist
     setlocal filetype=ex_plugin
+    " } jwu MODIFY end 
+
+    " jwu ADD { 
+    if g:Tlist_Use_Horiz_Window
+        let w:window_direction = 'botright'
+        let w:use_vertical = 0
+    else
+        let w:use_vertical = 1
+        if g:Tlist_Use_Right_Window
+            let w:window_direction = 'botright'
+        else
+            let w:window_direction = 'topleft'
+        endif
+    endif
+    " } jwu ADD end 
 
     " Define taglist window element highlighting
     syntax match TagListComment '^" .*'

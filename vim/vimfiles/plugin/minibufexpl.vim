@@ -874,6 +874,10 @@ function! <SID>FindCreateWindow(bufName, forceEdge, isExplorer, doDebug)
       setlocal noswapfile
       setlocal buftype=nofile
       setlocal bufhidden=delete
+      " jwu ADD: this will let minibuffer not go with CTRL-W = { 
+      setlocal winfixheight
+      setlocal winfixwidth
+      " } jwu ADD end 
       if g:miniBufExplVSplit == 0
         " jwu MODIFY
         setlocal nowrap

@@ -236,9 +236,16 @@ function exUtility#CreateWindow( buffer_name, window_direction, window_size, use
         silent exec '1,$d _'
     endif
 
-    " after create the window, record the bufname into the plugin list
-    if index( g:ex_plugin_list, fnamemodify(a:buffer_name,":p:t") ) == -1
-        silent call add(g:ex_plugin_list, fnamemodify(a:buffer_name,":p:t"))
+    " after create the window, record the bufname into the plugin buffer name list
+    let short_bufname = fnamemodify(a:buffer_name,":p:t")
+    if index( g:ex_plugin_registered_bufnames, short_bufname ) == -1
+        silent call add( g:ex_plugin_registered_bufnames, short_bufname )
+    endif
+
+    " record the filetype into the plugin filetype list
+    let buf_filetype = getbufvar(a:buffer_name,'&filetype')
+    if index( g:ex_plugin_registered_filetypes, buf_filetype ) == -1
+        silent call add( g:ex_plugin_registered_filetypes, buf_filetype )
     endif
 
 endfunction " >>>
@@ -304,18 +311,8 @@ endfunction " >>>
 " ------------------------------------------------------------------ 
 
 function exUtility#OpenWindow( buffer_name, window_direction, window_size, use_vertical, edit_mode, backto_editbuf, init_func_name, call_func_name ) " <<<
-    " check if a ex window exists on the target position 
-    for nr_win in range(1,winnr("$"))
-        if getwinvar(nr_win, "use_vertical") == a:use_vertical && getwinvar(nr_win, "window_direction") == a:window_direction 
-            " get the ex window, change window to the target window
-            silent exe nr_win . 'wincmd w'
-        endif
-    endfor
-
-    " if current editor buf is a plugin file type
-    if &filetype == "ex_plugin"
-        call exUtility#CloseWindow( bufname('%') )
-    endif
+    " close ex_plugin window in same position
+    call exUtility#ClosePluginWindowInSamePosition ( a:use_vertical, a:window_direction )
 
     " go to edit buffer first, then open the window, this will avoid some bugs
     call exUtility#RecordCurrentBufNum()
@@ -472,6 +469,36 @@ function exUtility#OperateWindow( title, close_when_selected, backto_edibut, hl_
         endif
     endif
 endfunction " >>>
+
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
+function exUtility#ClosePluginWindowInSamePosition ( use_vertical, window_direction ) " <<<
+    " NOTE: the CloseWindow should be called in each situation. 
+    " Since you can: in a exProject/Minibuffer window try to open another plugin window. 
+    "                or just open a plugin window that already have another plugin window take the position.
+
+    " check if a ex window exists on the target position, if yes, close it. 
+    for nr_win in range(1,winnr("$"))
+        if getwinvar(nr_win, "use_vertical") == a:use_vertical && getwinvar(nr_win, "window_direction") == a:window_direction 
+            " get the ex window, change window to the target window
+            silent exe nr_win . 'wincmd w'
+            call exUtility#CloseWindow( bufname('%') )
+            return
+        endif
+    endfor
+
+    " check if current window is a plugin window ( except minibuf, exProject), if yes close it
+    if exUtility#IsRegisteredPluginBuffer ( bufname('%') ) && 
+                \ fnamemodify(bufname('%'),":p:t") !=# "-MiniBufExplorer-" &&
+                \ &filetype != 'ex_project' &&
+                \ &filetype != 'nerdtree'
+        call exUtility#CloseWindow( bufname('%') )
+        return
+    endif
+endfunction " >>>
+
 
 " ------------------------------------------------------------------ 
 " Desc: 
@@ -947,6 +974,25 @@ endfunction " >>>
 "/////////////////////////////////////////////////////////////////////////////
 
 " ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
+function exUtility#IsRegisteredPluginBuffer ( buffer_name ) " <<<
+    " check if the buffer filetype is register in the plugin filetype list 
+    if index( g:ex_plugin_registered_filetypes, getbufvar( a:buffer_name, '&filetype' ), 0, 1 ) >= 0
+        return 1
+    endif
+
+    " check if the buffer name is register in the plugin buffername list 
+    if index( g:ex_plugin_registered_bufnames, fnamemodify( a:buffer_name, ":p:t" ), 0, 1 ) >= 0
+        return 1
+    endif
+
+    return 0
+endfunction " >>>
+
+
+" ------------------------------------------------------------------ 
 " Desc: Record current buf num when leave
 " FIXME: when you split window/open the same file in two window, you can only get the original bufwinnr() by the bufnr().
 " FIXME: :sp will trigger the WinEnter, find a way to use it.
@@ -954,7 +1000,7 @@ endfunction " >>>
 
 function exUtility#RecordCurrentBufNum() " <<<
     let short_bufname = fnamemodify(bufname('%'),":p:t")
-    if index( g:ex_plugin_list, short_bufname, 0, 1 ) == -1 " compare ignore case
+    if !exUtility#IsRegisteredPluginBuffer(bufname('%'))
         let s:ex_editbuf_num = bufnr('%')
     elseif short_bufname !=# "-MiniBufExplorer-"
         let s:ex_pluginbuf_num = bufnr('%')
@@ -968,7 +1014,7 @@ endfunction " >>>
 function exUtility#RecordSwapBufInfo() " <<<
     let bufnr = bufnr('%')
     let short_bufname = fnamemodify(bufname(bufnr),":p:t")
-    if buflisted(bufnr) && bufloaded(bufnr) && bufexists(bufnr) && index( g:ex_plugin_list, short_bufname, 0, 1 ) == -1
+    if buflisted(bufnr) && bufloaded(bufnr) && bufexists(bufnr) && !exUtility#IsRegisteredPluginBuffer(bufname('%'))
         let s:ex_swap_buf_num = bufnr
         let s:ex_swap_buf_pos = getpos('.')
     endif
@@ -983,7 +1029,7 @@ function exUtility#SwapToLastEditBuffer() " <<<
     let cur_bufnr = bufnr('%')
     let cru_short_bufname = fnamemodify(bufname('%'),":p:t")
 
-    if index( g:ex_plugin_list, cru_short_bufname, 0, 1 ) != -1 " check it is plugin window or not
+    if exUtility#IsRegisteredPluginBuffer ( bufname('%') ) " check it is plugin window or not
         call exUtility#WarningMsg("Buffer: " .bufname(cur_bufnr).  " can't be switch.")
         return
     endif
@@ -991,7 +1037,7 @@ function exUtility#SwapToLastEditBuffer() " <<<
     " check if last buffer existed and listed, swap if accessable
     let last_bufnr = bufnr("#")
     let last_short_bufname = fnamemodify(bufname(last_bufnr),":p:t")
-    if buflisted(last_bufnr) && bufloaded(last_bufnr) && bufexists(last_bufnr) && index( g:ex_plugin_list, last_short_bufname, 0, 1 ) == -1
+    if buflisted(last_bufnr) && bufloaded(last_bufnr) && bufexists(last_bufnr) && !exUtility#IsRegisteredPluginBuffer(bufname('%'))
         let tmp_swap_buf_pos = deepcopy(s:ex_swap_buf_pos)
         let tmp_swap_buf_nr = s:ex_swap_buf_num
         let s:ex_swap_buf_pos = getpos('.')
@@ -1123,7 +1169,7 @@ function exUtility#Kwbd(kwbdStage) " <<<
         " check it is plugin window, if yes, close it directly to prevent use \bd
         " close, reopen will loose plugin ability problem
         let cru_short_bufname = fnamemodify(bufname('%'),":p:t")
-        if index( g:ex_plugin_list, cru_short_bufname, 0, 1 ) != -1 
+        if exUtility#IsRegisteredPluginBuffer(bufname('%')) 
             silent exec 'close'
             call exUtility#GotoEditBuffer()
             return
@@ -3528,7 +3574,7 @@ endfunction " >>>
 function exUtility#DisplayHelp() " <<<
     " If it's not funtional window, do not display help
 
-    if exUtility#IsFunctionalbuf("")
+    if exUtility#IsRegisteredPluginBuffer(bufname('%'))
         return
     endif
 
@@ -3647,16 +3693,6 @@ function exUtility#GetHelpTextLength() " <<<
         let linenum+=1
     endwhile
     return linenum-1
-endfunction " >>>
-
-" ------------------------------------------------------------------ 
-" Desc: 
-" ------------------------------------------------------------------ 
-
-" --ex_IsFunctionalbuf--
-" return true if the buf is a functional buf
-function exUtility#IsFunctionalbuf(Buf_Name) " <<<
-    return index( g:ex_plugin_list, fnamemodify(a:Buf_Name,":p:t") ) >=0
 endfunction " >>>
 
 "/////////////////////////////////////////////////////////////////////////////

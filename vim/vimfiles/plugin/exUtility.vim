@@ -20,11 +20,19 @@ let loaded_exutility=1
 " ======================================================== 
 
 " ------------------------------------------------------------------ 
-" Desc: store the plugins buffer name, so we can ensure not recore name as edit-buffer
+" Desc: register plugin buffer filetypes, so we can recognize the window as plugin window
 " ------------------------------------------------------------------ 
 
-if !exists('g:ex_plugin_list')
-    let g:ex_plugin_list = ["-MiniBufExplorer-","__Tag_List__","\[Lookup File\]"] 
+if !exists('g:ex_plugin_registered_filetypes')
+    let g:ex_plugin_registered_filetypes = ["ex_plugin","ex_project","taglist","nerdtree"] 
+endif
+
+" ------------------------------------------------------------------ 
+" Desc: register plugin buffer names, so we can recognize the window as plugin window
+" ------------------------------------------------------------------ 
+
+if !exists('g:ex_plugin_registered_bufnames')
+    let g:ex_plugin_registered_bufnames = ["-MiniBufExplorer-","__Tag_List__","\[Lookup File\]"] 
 endif
 
 " ------------------------------------------------------------------ 

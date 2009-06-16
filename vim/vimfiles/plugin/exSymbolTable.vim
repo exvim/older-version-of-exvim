@@ -135,7 +135,7 @@ function s:exSL_PushEntryToggleWindow( title ) " <<<
     " push entry state after we get the search result
     let stack_info = {}
     let stack_info.pattern = getline(".")
-    if &filetype == "ex_plugin" || &filetype == "ex_project"
+    if exUtility#IsRegisteredPluginBuffer (bufname('%'))
         let stack_info.file_name = ''
     else
         let stack_info.file_name = bufname('%')
@@ -397,7 +397,7 @@ function s:exSL_GetAndShowPickedResult() " <<<
     " push entry state after we get the search result
     let stack_info = {}
     let stack_info.pattern = getline(".")
-    if &filetype == "ex_plugin" || &filetype == "ex_project"
+    if exUtility#IsRegisteredPluginBuffer (bufname('%'))
         let stack_info.file_name = ''
     else
         let stack_info.file_name = bufname('%')

@@ -2356,6 +2356,12 @@ function! s:createTreeWin()
     let splitLocation = g:NERDTreeWinPos ==# "left" ? "topleft " : "botright "
     let splitSize = g:NERDTreeWinSize
 
+    " jwu ADD { 
+    " close ex_plugin window in same position
+    let win_dir = strpart( splitLocation, 0, len(splitLocation)-1 )
+    call exUtility#ClosePluginWindowInSamePosition ( 1, win_dir )
+    " } jwu ADD end 
+
     if !exists('t:NERDTreeBufName')
         let t:NERDTreeBufName = s:nextBufferName()
         silent! exec splitLocation . 'vertical ' . splitSize . ' new'
@@ -2364,6 +2370,11 @@ function! s:createTreeWin()
         silent! exec splitLocation . 'vertical ' . splitSize . ' split'
         silent! exec "buffer " . t:NERDTreeBufName
     endif
+
+    " jwu ADD { 
+    let w:use_vertical = 1
+    let w:window_direction = win_dir
+    " } jwu ADD end 
 
     setlocal winfixwidth
 

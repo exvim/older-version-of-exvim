@@ -58,7 +58,9 @@ snippet def
 snippet guard
 	#ifndef ${1:`toupper( fnamemodify(bufname('%'), ':t:r') .'_'. fnamemodify(bufname('%'), ':e') .'_'. localtime() )`}
 	#define $1
-	${2}
+
+	${2:/* TODO: code */}
+
 	#endif // END $1
 
 # ------------------------------------------------------------------ 
@@ -149,7 +151,7 @@ snippet forc
 # ------------------------------------------------------------------ 
 
 snippet fn
-	${1:void} ${2:function_name} ( ${3} )
+	${1:void} ${2:function_name} (${3})
 	{
 		${4:/* TODO: code */}
 	}

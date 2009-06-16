@@ -578,8 +578,11 @@ let g:ex_comment_lable_keyword .= 'HACK OPTME HARDCODE REFACTORING DUPLICATE RED
 vnoremap <unique> <Leader>mk :MK 
 nnoremap <unique> <Leader>mk :call exUtility#RemoveSpecialMarkText() <CR>
 
-" add plugin we use to prevent them record as edit-buffer
-let g:ex_plugin_list = ["-MiniBufExplorer-","__Tag_List__","\[Lookup File\]"] 
+" register buffer names of plugins.
+let g:ex_plugin_registered_bufnames = ["-MiniBufExplorer-","__Tag_List__","\[Lookup File\]"] 
+
+" register filetypes of plugins.
+let g:ex_plugin_registered_filetypes = ["ex_plugin","ex_project","taglist","nerdtree"] 
 
 " default languages
 let g:ex_default_langs = ['c', 'cpp', 'c#', 'java', 'shader', 'python', 'vim', 'uc', 'math', 'wiki', 'ini', 'make', 'sh', 'batch', 'debug' ] 
@@ -966,6 +969,9 @@ function EnhCommentifyCallback(ft)
     " add hlsl
     if a:ft == 'hlsl'
         let b:ECcommentOpen = '//'
+        let b:ECcommentClose = ''
+    elseif a:ft == 'snippet'
+        let b:ECcommentOpen = '#'
         let b:ECcommentClose = ''
     endif
 endfunction
