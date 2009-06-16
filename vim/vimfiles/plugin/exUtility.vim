@@ -114,12 +114,6 @@ endif
 " local variable initialization
 " ======================================================== 
 
-" ------------------------------------------------------------------ 
-" Desc:  
-" ------------------------------------------------------------------ 
-
-let s:ex_HighlightsInited = 0 
-
 " ======================================================== 
 " function settings
 " ======================================================== 
@@ -136,8 +130,6 @@ silent call exUtility#SetProjectFilter ( "dir_filter", "" ) " null-string means 
 " ------------------------------------------------------------------ 
 
 function s:UpdateSyntaxHighlights() " <<<
-
-    let s:ex_HighlightsInited = 1 
 
     " ======================================================== 
     " exUtility
@@ -246,12 +238,7 @@ endfunction " >>>
 " update buffer ( right now only minibuffer highlight )
 au BufWritePost * call exUtility#UpdateCurrentBuffer() 
 au ColorScheme * call s:UpdateSyntaxHighlights()
-
-" if you don't use color scheme, you may properly not run the code above, so
-" run it manually here
-if s:ex_HighlightsInited == 0
-    call s:UpdateSyntaxHighlights()
-endif
+au VimEnter * call s:UpdateSyntaxHighlights()
 
 "/////////////////////////////////////////////////////////////////////////////
 " commands

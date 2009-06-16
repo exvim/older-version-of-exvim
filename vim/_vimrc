@@ -645,14 +645,14 @@ function g:ex_CustomHighlight()
     " special color settings 
     " ======================================================== 
 
-    if g:colors_name == 'ex_lightgray'
+    if exists('g:colors_name') && g:colors_name == 'ex_lightgray'
         " ex plugins
         hi ex_SynSearchPattern gui=bold guifg=DarkRed guibg=Gray term=bold cterm=bold ctermfg=DarkRed ctermbg=Gray
         hi exMH_GroupNameEnable term=bold cterm=bold ctermfg=DarkRed ctermbg=Gray gui=bold guifg=DarkRed guibg=Gray
         hi exMH_GroupNameDisable term=bold cterm=bold ctermfg=Red ctermbg=DarkGray gui=bold guifg=DarkGray guibg=Gray
 
         " other plugins
-    hi MBEVisibleNormal term=bold cterm=bold ctermbg=DarkGray ctermfg=Black gui=bold guibg=DarkGray guifg=Black
+        hi MBEVisibleNormal term=bold cterm=bold ctermbg=DarkGray ctermfg=Black gui=bold guibg=DarkGray guifg=Black
         hi MBENormal ctermbg=Gray ctermfg=DarkGray guibg=Gray guifg=DarkGray
         hi MyTagListTitle term=bold cterm=bold ctermfg=DarkRed ctermbg=Gray gui=bold guifg=DarkRed guibg=Gray 
     endif
