@@ -134,7 +134,8 @@ if !hasmapto( '<Plug>ShowmarksPlaceMark'       ) | map <silent> <unique> <leader
 " JWU MODIFY { 
 noremap <unique> <script> \sm m
 " noremap <silent> m :exe 'norm \sm'.nr2char(getchar())<bar>call <sid>ShowMarks()<CR>
-noremap <unique> <silent> m :call <sid>ShowMarksPlaceMark( nr2char(getchar()) )<CR>
+" NOTE: use nnoremap to fix conlict with snipMate. when use snipMate, when you input m, it will be ma. 
+nnoremap <unique> <silent> m :call <sid>ShowMarksPlaceMark( nr2char(getchar()) )<CR>
 " } JWU MODIFY end 
 
 " JWU DISABLE { 
