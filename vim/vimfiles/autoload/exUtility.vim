@@ -2308,7 +2308,7 @@ function exUtility#UpdateVimFiles( type ) " <<<
         let vimentry_name = '_' . g:exES_VimEntryName
     endif
     let quick_gen_custom = 'quick_gen_project' . vimentry_name . '_custom.' . suffix
-    if findfile( quick_gen_custom, g:exES_CWD ) != ""
+    if findfile( quick_gen_custom, escape(g:exES_CWD,' \') ) != ""
         let quick_gen_script = quick_gen_custom
     endif
 
@@ -2824,10 +2824,10 @@ function exUtility#CreateQuickGenProject() " <<<
     " write pre and post file
     let quick_gen_custom_pre = g:exES_vimfiles_dirname . '/quick_gen_project_pre_custom.' . script_suffix
     let quick_gen_custom_post = g:exES_vimfiles_dirname . '/quick_gen_project_post_custom.' . script_suffix
-    if findfile( quick_gen_custom_pre, g:exES_CWD ) == ""
+    if findfile( quick_gen_custom_pre, escape(g:exES_CWD,' \') ) == ""
         call writefile ( [], quick_gen_custom_pre )
     endif
-    if findfile( quick_gen_custom_post, g:exES_CWD ) == ""
+    if findfile( quick_gen_custom_post, escape(g:exES_CWD,' \') ) == ""
         call writefile ( [], quick_gen_custom_post )
     endif
 
@@ -3220,7 +3220,7 @@ endfunction " >>>
 " ------------------------------------------------------------------ 
 
 function exUtility#EditVimEntry() " <<<
-    if exists( 'g:exES_VimEntryName' ) && exists( 'g:exES_CWD' ) && findfile ( g:exES_VimEntryName.'.vimentry', g:exES_CWD ) != ""
+    if exists( 'g:exES_VimEntryName' ) && exists( 'g:exES_CWD' ) && findfile ( g:exES_VimEntryName.'.vimentry', escape(g:exES_CWD,' \') ) != ""
         let vimentry_file = g:exES_VimEntryName . '.vimentry'
         echon 'edit vimentry file: ' . vimentry_file . "\r"
         call exUtility#GotoEditBuffer ()
