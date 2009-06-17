@@ -453,6 +453,7 @@ function s:exPJ_CreateProject(with_dialog) " <<<
 
     echon "Creating exProject: " . entry_dir . "\r"
     call s:exPJ_OpenProject('')
+    silent exec '1,$d _'
 
     " create filname list and filanmetag list
     " KEEPME: let filename_list = [[],[],[]] " NOTE: 0 is the filenametag, 1 is the filenamelist_cwd, 2 is the filenamelist_vimfiles
