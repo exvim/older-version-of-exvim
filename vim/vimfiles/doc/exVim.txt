@@ -2443,7 +2443,7 @@ Default Key:
     Close the exMarksBrowser plugin window.
 
 ------------------------------------------------------------------------------
-3.11. exMarksBrowser                                          *exMarksBrowser*
+3.11. exJumpStack                                                *exJumpStack*
 
     exJumpStack records your jump history when you use exVim jumping to the 
     search results. It also records the operations you used for jumping. By 
