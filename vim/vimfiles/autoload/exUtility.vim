@@ -2603,8 +2603,19 @@ function exUtility#GetQuickGenSupportMap( lang_type ) " <<<
     " check language level support
 
     " check ctags support
+    let found_lang = 0
     if support_map['ctags'] == 'true'
-        if a:lang_type !~# '\<c\>\|\<cpp\>\|\<c\>#\|\<shader\>\|\<python\>\|\<vim\>\|\<javascript\>\|\<java\>\|\<html\>\|\<lua\>\|\<uc\>\|\<math\>'
+        " search a:lang_type in ctags_lang_map
+        let lang_list = split( a:lang_type, ' ' )
+        for item in lang_list
+            if has_key( s:ex_ctags_lang_map, item )
+                let found_lang = 1
+                break
+            endif
+        endfor
+
+        " if we don't found the language, set it to false
+        if found_lang == 0
             let support_map['ctags'] = 'false'
         endif
     endif
