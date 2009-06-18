@@ -3129,6 +3129,10 @@ function! s:bindMappings()
     command! -buffer -nargs=0 ClearAllBookmarks call s:Bookmark.ClearAll() <bar> call <SID>renderView()
     command! -buffer -nargs=0 ReadBookmarks call s:Bookmark.CacheBookmarks(0) <bar> call <SID>renderView()
     command! -buffer -nargs=0 WriteBookmarks call s:Bookmark.Write()
+    
+    " jwu ADD { 
+    nnoremap <silent> <buffer> <c-right> :EXProject<CR>
+    " } jwu ADD end 
 endfunction
 
 " FUNCTION: s:bookmarkNode(name) {{{2

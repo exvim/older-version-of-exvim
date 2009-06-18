@@ -345,16 +345,22 @@ function g:exPJ_InitSelectWindow() " <<<
     nnoremap <silent> <buffer> <localleader>R    :call <SID>exPJ_CreateProject(0)<CR>
     nnoremap <silent> <buffer> <localleader>r    :call <SID>exPJ_RefreshProject(0)<CR>
 
+    " map to NERDTree if exists
+    if exists (':NERDTree')
+        nnoremap <buffer> <silent> <c-left>   :NERDTree<CR>
+    else " dummy mapping
+        nnoremap <buffer> <silent> <c-left>   :call exUtility#WarningMsg("only select window")<CR>
+    endif
+
     " dummy mapping
-    nnoremap <buffer> <silent> <C-Left>   :call exUtility#WarningMsg("only select window")<CR>
-    nnoremap <buffer> <silent> <C-Right>   :call exUtility#WarningMsg("only select window")<CR>
+    nnoremap <buffer> <silent> <c-right>   :call exUtility#WarningMsg("only select window")<CR>
 
     "
-    nnoremap <silent> <buffer> <C-Up> :call exUtility#CursorJump( 'ErrorLog.err', 'up' )<CR>
-    nnoremap <silent> <buffer> <C-Down> :call exUtility#CursorJump( 'ErrorLog.err', 'down' )<CR>
+    nnoremap <silent> <buffer> <c-up> :call exUtility#CursorJump( 'ErrorLog.err', 'up' )<CR>
+    nnoremap <silent> <buffer> <c-down> :call exUtility#CursorJump( 'ErrorLog.err', 'down' )<CR>
 
-    nnoremap <silent> <buffer> <C-k> :call exUtility#CursorJump( '\[\CF\]', 'up' )<CR>
-    nnoremap <silent> <buffer> <C-j> :call exUtility#CursorJump( '\[\CF\]', 'down' )<CR>
+    nnoremap <silent> <buffer> <c-k> :call exUtility#CursorJump( '\[\CF\]', 'up' )<CR>
+    nnoremap <silent> <buffer> <c-j> :call exUtility#CursorJump( '\[\CF\]', 'down' )<CR>
 
     "
     nnoremap <silent> <buffer> o  :call <SID>exPJ_CreateNewFile()<CR>
