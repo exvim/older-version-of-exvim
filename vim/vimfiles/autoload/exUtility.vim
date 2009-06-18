@@ -2581,6 +2581,7 @@ endfunction " >>>
 
 function exUtility#GetQuickGenSupportMap( lang_type ) " <<<
     let support_map = {'ctags':'false', 'symbol':'false', 'inherit':'false', 'cscope':'false', 'idutils':'false', 'filenamelist':'false'}
+    let lang_list = split( a:lang_type, ' ' )
 
     " check plugin level support
     if exists('g:loaded_extagselect') && g:loaded_extagselect 
@@ -2606,7 +2607,6 @@ function exUtility#GetQuickGenSupportMap( lang_type ) " <<<
     let found_lang = 0
     if support_map['ctags'] == 'true'
         " search a:lang_type in ctags_lang_map
-        let lang_list = split( a:lang_type, ' ' )
         for item in lang_list
             if has_key( s:ex_ctags_lang_map, item )
                 let found_lang = 1
@@ -2635,15 +2635,29 @@ function exUtility#GetQuickGenSupportMap( lang_type ) " <<<
     endif
 
     " check cscope support
+    let found_lang = 0
     if support_map['cscope'] == 'true'
-        if a:lang_type !~# '\<c\>\|\<cpp\>'
+        " search a:lang_type in ctags_lang_map
+        for item in lang_list
+            if index ( g:ex_cscope_langs, item ) >= 0
+                let found_lang = 1
+                break
+            endif
+        endfor
+
+        " if we don't found the language, set it to false
+        if found_lang == 0
             let support_map['cscope'] = 'false'
         endif
     endif
 
     " check filenamelist support
-    if support_map['ctags'] == 'false' && support_map['cscope'] == 'false'
-        let support_map['filenamelist'] = 'false'
+    if exists( 'g:exES_LookupFileTag' )
+        let support_map['filenamelist'] = 'true'
+    else
+        if support_map['ctags'] == 'false' && support_map['cscope'] == 'false'
+            let support_map['filenamelist'] = 'false'
+        endif
     endif
 
     " check global support
