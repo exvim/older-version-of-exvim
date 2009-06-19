@@ -352,8 +352,12 @@ function g:exPJ_InitSelectWindow() " <<<
         nnoremap <buffer> <silent> <c-left>   :call exUtility#WarningMsg("only select window")<CR>
     endif
 
-    " dummy mapping
-    nnoremap <buffer> <silent> <c-right>   :call exUtility#WarningMsg("only select window")<CR>
+    " map to BufExplorer if exists
+    if exists (':BufExplorer')
+        nnoremap <buffer> <silent> <c-right>   :BufExplorer<CR>
+    else " dummy mapping
+        nnoremap <buffer> <silent> <c-right>   :call exUtility#WarningMsg("only select window")<CR>
+    endif
 
     "
     nnoremap <silent> <buffer> <c-up> :call exUtility#CursorJump( 'ErrorLog.err', 'up' )<CR>

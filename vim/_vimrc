@@ -579,7 +579,7 @@ vnoremap <unique> <Leader>mk :MK
 nnoremap <unique> <Leader>mk :call exUtility#RemoveSpecialMarkText() <CR>
 
 " register buffer names of plugins.
-let g:ex_plugin_registered_bufnames = ["-MiniBufExplorer-","__Tag_List__","\[Lookup File\]"] 
+let g:ex_plugin_registered_bufnames = ["-MiniBufExplorer-","__Tag_List__","\[Lookup File\]", "\[BufExplorer\]"] 
 
 " register filetypes of plugins.
 let g:ex_plugin_registered_filetypes = ["ex_plugin","ex_project","taglist","nerdtree"] 
@@ -1033,6 +1033,13 @@ let g:snippets_dir = '$VIM/toolkit/snippets/'
 " ------------------------------------------------------------------ 
 
 let g:NERDTreeWinSize = exists('g:exPJ_window_width') ? g:exPJ_window_width : 30 
+
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
+let g:bufExplorerShowRelativePath=1  " Show relative paths.
+let g:bufExplorerSortBy='number'     " Sort by the buffer's number.
 
 "/////////////////////////////////////////////////////////////////////////////
 " Other settings

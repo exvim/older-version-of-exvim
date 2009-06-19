@@ -276,8 +276,10 @@ function exUtility#InitWindow(init_func_name) " <<<
     " exTagSelect window. So forcefully disable 'number' option for the exTagSelect
     " window
     silent! setlocal nonumber
-    set winfixheight
-    set winfixwidth
+
+    " the winfix height width will let plugin-window not join into the <c-w>= operations
+    silent! setlocal winfixheight
+    silent! setlocal winfixwidth
 
     " Define hightlighting
     syntax match ex_SynError '^Error:.*'

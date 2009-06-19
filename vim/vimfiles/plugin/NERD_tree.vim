@@ -3132,6 +3132,21 @@ function! s:bindMappings()
     
     " jwu ADD { 
     nnoremap <silent> <buffer> <c-right> :EXProject<CR>
+    nnoremap <silent> <buffer> <c-left> :BufExplorer<CR>
+
+    " map to BufExplorer if exists
+    if exists (':BufExplorer')
+        nnoremap <buffer> <silent> <c-left>   :BufExplorer<CR>
+    else " dummy mapping
+        nnoremap <buffer> <silent> <c-left>   :echon "dummy operation\r"<CR>
+    endif
+
+    " map to EXProject if exists
+    if exists (':EXProject')
+        nnoremap <buffer> <silent> <c-right>   :EXProject<CR>
+    else " dummy mapping
+        nnoremap <buffer> <silent> <c-right>   :echon "dummy operation\r"<CR>
+    endif
     " } jwu ADD end 
 endfunction
 
