@@ -213,7 +213,7 @@ endfunction " >>>
 " Desc: 
 " ------------------------------------------------------------------ 
 
-function s:exPJ_GetName( line_num )
+function s:exPJ_GetName( line_num ) " <<<
     let line = getline(a:line_num)
     let line = substitute(line,'.\{-}\[.\{-}\]\(.\{-}\)','\1','')
     let idx_end_1 = stridx(line,' {')
@@ -224,26 +224,26 @@ function s:exPJ_GetName( line_num )
         let line = strpart(line,0,idx_end_2)
     endif
     return line
-endfunction
+endfunction " >>>
 
 " ------------------------------------------------------------------ 
 " Desc: used by exPJ_GetPath, by YJR
 " ------------------------------------------------------------------ 
 
-function s:exPJ_SearchForPattern(line_num,pattern)
+function s:exPJ_SearchForPattern(line_num,pattern) " <<<
     for linenum in range(a:line_num , 1 , -1)
         if match( getline(linenum) , a:pattern ) != -1
             return linenum
         endif
     endfor
     return 0
-endfunction
+endfunction " >>>
 
 " ------------------------------------------------------------------ 
 " Desc: Get the full path of the line, by YJR
 " ------------------------------------------------------------------ 
 
-function s:exPJ_GetPath( line_num )
+function s:exPJ_GetPath( line_num ) " <<<
     let fold_level = exUtility#GetFoldLevel(a:line_num)
 
     " recursively make full path
@@ -268,22 +268,22 @@ function s:exPJ_GetPath( line_num )
     endwhile
 
     return full_path
-endfunction
+endfunction " >>>
 
 " ------------------------------------------------------------------ 
 " Desc: 
 " ------------------------------------------------------------------ 
 
-function s:exPJ_RefreshWindow()
+function s:exPJ_RefreshWindow() " <<<
     " silent! wincmd H
     silent exe 'vertical resize ' . g:exPJ_window_width
-endfunction
+endfunction " >>>
 
 " ------------------------------------------------------------------ 
 " Desc: 
 " ------------------------------------------------------------------ 
 
-function s:exPJ_UpdateFilters()
+function s:exPJ_UpdateFilters() " <<<
     let file_filter_txt = getline( search('^file filter =', 'nw') )
     if file_filter_txt != ''
         silent call exUtility#SetProjectFilter ( "file_filter", strpart( file_filter_txt, stridx(file_filter_txt, "=")+2 ) )

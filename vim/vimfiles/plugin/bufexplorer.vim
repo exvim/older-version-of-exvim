@@ -147,6 +147,16 @@ function s:exBE_ToggleWindow( title ) " <<<
     call exUtility#ToggleWindow( a:title, g:bufExplorerWinDir, g:bufExplorerWinHeight, g:bufExplorerUseVertical, 'none', 0, 'none', 'none' )
   endif
 endfunction " >>>
+
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
+function s:exBE_RefreshWindow() " <<<
+    " silent! wincmd H
+    silent exe 'vertical resize ' . g:bufExplorerWinWidth
+endfunction " >>>
+
 " } jwu ADD end 
 
 " Setup {{{1
@@ -161,6 +171,10 @@ function s:Setup()
 
   autocmd BufWinEnter \[BufExplorer\] call s:Initialize()
   autocmd BufWinLeave \[BufExplorer\] call s:Cleanup()
+
+  " jwu ADD { 
+  autocmd WinLeave \[BufExplorer\] :call s:exBE_RefreshWindow()
+  " } jwu ADD end 
 endfunction
 
 " ActivateBuffer {{{1
