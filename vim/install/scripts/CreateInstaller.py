@@ -12,14 +12,13 @@
 import os.path
 import shutil
 import zipfile
+import Settings
 
 #/////////////////////////////////////////////////////////////////////////////
 # global variables
 #/////////////////////////////////////////////////////////////////////////////
 
 # general
-version = "8.01b"
-source_path = "d:/exDev/vim"
 dest_root_path = "d:/Project/Dev/exVim_google/installer" 
 installer_exe_name = "exDev-installer"
 
@@ -38,11 +37,11 @@ def PreCheck ():
     print "#########################" 
     print ""
 
-    print "version = %s" % version
+    print "version = %s" % Settings.version
 
     # check source path, if not found, return false
-    print "source_path = %s" % os.path.abspath(source_path)
-    if os.path.isdir( os.path.abspath(source_path) ) == False :
+    print "source_path = %s" % os.path.abspath(Settings.source_path)
+    if os.path.isdir( os.path.abspath(Settings.source_path) ) == False :
         print "source path not found"
         return False
 
@@ -176,8 +175,8 @@ def CreateInstaller ():
     vimplugins_path = os.path.join(dest_root_path,"exDev/exVim/vim-plugins")  
     if os.path.isdir(vimplugins_path) == True :
         shutil.rmtree ( vimplugins_path )
-    CopyDir ( os.path.join(source_path, "toolkit"), os.path.join(vimplugins_path,"toolkit") )
-    CopyDir ( os.path.join(source_path, "vimfiles"), os.path.join(vimplugins_path,"vimfiles") )
+    CopyDir ( os.path.join(Settings.source_path, "toolkit"), os.path.join(vimplugins_path,"toolkit") )
+    CopyDir ( os.path.join(Settings.source_path, "vimfiles"), os.path.join(vimplugins_path,"vimfiles") )
 
     # update _vimrc
     print "Update _vimrc..."
@@ -185,11 +184,11 @@ def CreateInstaller ():
     if os.path.isdir(rawvim_path) == False :
         print "%s not found! can't copy _vimrc to it." % rawvim_path
     else :
-        shutil.copy ( os.path.join(source_path, "_vimrc"), rawvim_path )
+        shutil.copy ( os.path.join(Settings.source_path, "_vimrc"), rawvim_path )
 
     # update exDev.nsi
     print "Update exDev.nsi..."
-    shutil.copy ( os.path.join(source_path, "install/scripts/exDev.nsi"), dest_root_path )
+    shutil.copy ( os.path.join(Settings.source_path, "install/scripts/exDev.nsi"), dest_root_path )
 
 # ------------------------------------------------------------------ 
 # Desc: CompileInstaller 
@@ -198,11 +197,11 @@ def CreateInstaller ():
 def CompileInstaller ():
     # 
     installer_exe_path = os.path.join(dest_root_path, installer_exe_name + ".exe")
-    installer_exe_ver_path = os.path.join(dest_root_path, installer_exe_name + "-" + version + ".exe")
+    installer_exe_ver_path = os.path.join(dest_root_path, installer_exe_name + "-" + Settings.version + ".exe")
 
     # compile installer by exDev.nsi
     if os.path.isfile (installer_exe_ver_path) == True:
-        print "%s already exists, if you want to re-generate one, remove it manually." % (installer_exe_name + "-" + version)
+        print "%s already exists, if you want to re-generate one, remove it manually." % (installer_exe_name + "-" + Settings.version)
         return
 
     cwd = os.getcwd()
