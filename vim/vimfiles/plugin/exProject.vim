@@ -1029,7 +1029,7 @@ function g:exPJ_InitQuickViewWindow () " <<<
     silent! setlocal cursorline
     silent! setlocal nomodifiable
 
-    syntax match ex_SynSearchPattern '-- Buffer Explorer --'
+    syntax match ex_SynSearchPattern '^-- \S\+ --'
     syntax match ex_SynLineNr '^ \d\+:'
     syntax region ex_SynFileName start="(" end=")" oneline
 
@@ -1067,18 +1067,27 @@ endfunction " >>>
 " ------------------------------------------------------------------ 
 
 function s:exPJ_GotoInQuickViewWindow() " <<<
+    let line = getline('.')
+    if line =~ '^-- \S\+ --' || line == ''
+        call exUtility#WarningMsg("can't jump in this line")
+        return
+    endif
+
     let bufnum = str2nr( getline('.') )
     if bufnum == 0
-        call exUtility#WarningMsg("can't jump in this line")
+        let start_idx = stridx(line,'(') + 1
+        let end_idx = stridx(line,')')
+        let bufname = strpart( line, start_idx, end_idx - start_idx ) 
     else
         let bufname = expand("#".bufnum.":p")
+    endif
 
-        " silent wincmd p
-        call exUtility#GotoEditBuffer()
-        " do not open again if the current buf is the file to be opened
-        if fnamemodify(expand("%"),":p") != bufname
-            silent exec 'e ' . bufname
-        endif
+    " silent wincmd p
+    call exUtility#GotoEditBuffer()
+
+    " do not open again if the current buf is the file to be opened
+    if fnamemodify(expand("%"),":p") != bufname
+        silent exec 'e ' . bufname
     endif
 endfunction " >>>
 
@@ -1133,7 +1142,8 @@ endfunction " >>>
 " ------------------------------------------------------------------ 
 
 function s:exPJ_ShowEditBuffers () " <<<
-    let buf_explorer_title = '-- Buffer Explorer --' 
+    let buf_explorer_title = '-- Buffers --' 
+    let book_mark_title = '-- Bookmarks --' 
 
     " walk through all window in exVim
     let bnum = 1
@@ -1152,6 +1162,15 @@ function s:exPJ_ShowEditBuffers () " <<<
     silent exec '1,$d _'
     silent call append( line('$'), buf_explorer_title )
     silent call append( line('$'), line_list )
+
+    " save book marks
+    if exists ( 'g:exES_Bookmarks' )
+        if filereadable(g:exES_Bookmarks) == 1
+            silent call append( line('$'), [''] )
+            silent call append( line('$'), book_mark_title )
+            silent call append( line('$'), readfile( g:exES_Bookmarks ) )
+        endif
+    endif
     silent! setlocal nomodifiable
 
     "
@@ -1159,6 +1178,59 @@ function s:exPJ_ShowEditBuffers () " <<<
     silent call search( '^ '.edit_bufnum.':', 'w' )
 endfunction " >>>
 
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
+function g:exPJ_AddBookmark ( filename ) " <<<
+    if exists ( 'g:exES_Bookmarks' )
+        " show input dialog
+        let bookmark_name = inputdialog( 'Bookmark Alias: ', fnamemodify(a:filename,':t'), 'cancle' )
+        if bookmark_name == ''
+            call exUtility#WarningMsg('Error: bookmark name is empty.')
+            return
+        elseif bookmark_name == 'cancle'
+            return
+        endif
+
+        " read book mark file
+        let lines = []
+        if filereadable(g:exES_Bookmarks) == 1
+            let lines = readfile( g:exES_Bookmarks )
+        endif
+
+        let relative_filename = fnamemodify(a:filename,':p:.')
+        let bookmark_info = ' ' . bookmark_name . ' (' . relative_filename . ')'
+
+        " check if we already have the file
+        let found = 0
+        let idx = 0
+        for line in lines
+            if match( line, escape(relative_filename,'\') ) != -1
+                call confirm('NOTE: The bookmark you add already exists, use the new alias.')
+                let lines[idx] = bookmark_info
+                let found = 1
+                break
+            endif
+            let idx += 1
+        endfor
+
+        " if not, append it
+        if found != 1
+            silent call add( lines, bookmark_info )
+        endif
+        let lines = sort( lines, 's:exPJ_BookmarkCompare' )
+        silent call writefile( lines, g:exES_Bookmarks )
+    endif
+endfunction " >>>
+
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
+function s:exPJ_BookmarkCompare ( i1, i2 ) " <<<
+    return a:i1 ==? a:i2 ? 0 : a:i1 > a:i2 ? 1 : -1
+endfunction " >>>
 
 "/////////////////////////////////////////////////////////////////////////////
 " Commands

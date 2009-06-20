@@ -764,6 +764,7 @@ nmap <unique> <A-S-b> :EXBufExplorer<CR>:redraw<CR>/
 nnoremap <unique> <leader>ff :EXProject<CR>:redraw<CR>/\[[^\CF]*\]\c.*
 nnoremap <unique> <leader>fd :EXProject<CR>:redraw<CR>/\[\CF\]\c.*
 nnoremap <unique> <leader>fc :ExpjGotoCurrentFile<CR>
+nnoremap <unique> <leader>bk :call g:exPJ_AddBookmark( fnamemodify( bufname('%'), ':p' ) )<CR>
 
 let g:exPJ_backto_editbuf = 1
 let g:exPJ_close_when_selected = 0

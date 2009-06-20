@@ -76,7 +76,7 @@ let s:exES_setted = 0
 " Desc: current version. increase this will cause template re-write 
 " ------------------------------------------------------------------ 
 
-let s:exES_CurrentVersion = 21
+let s:exES_CurrentVersion = 22
 
 "/////////////////////////////////////////////////////////////////////////////
 " function defines
@@ -113,6 +113,7 @@ function s:exES_WriteDefaultTemplate() " <<<
     silent call add(_list, 'Macro=./'._dir_name.'/macro')
     silent call add(_list, 'Cscope=./'._dir_name.'/cscope.out')
     silent call add(_list, 'Inherits=./'._dir_name.'/inherits')
+    silent call add(_list, 'Bookmarks=./'._dir_name.'/bookmarks')
     silent call add(_list, '')
     silent call add(_list, 'vimentryRefs+=')
     silent call add(_list, '')
