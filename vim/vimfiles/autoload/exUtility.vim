@@ -513,7 +513,7 @@ function exUtility#CloseAllExpluginWindow() " <<<
     while i <= winnr("$")
         let bnum = winbufnr(i)
         let buf_filetype = getbufvar(bnum, '&filetype') 
-        if bnum != -1 && (buf_filetype ==# 'ex_plugin' || buf_filetype ==# 'ex_project')
+        if bnum != -1 && exUtility#IsRegisteredPluginBuffer ( bufname('%') )
             silent call add ( bufnum_list, bnum )
         endif
         let i += 1
@@ -1288,6 +1288,9 @@ function exUtility#RestoreLastEditBuffers() " <<<
 
         " go to last edit buffer
         call exUtility#GotoEditBuffer()
+        if exists( ':UMiniBufExplorer' )
+            silent exec 'UMiniBufExplorer'
+        endif
     endif
 endfunction  " >>>
 
@@ -1825,6 +1828,11 @@ function exUtility#Browse(dir, file_filter, dir_filter, filename_list ) " <<<
                 let list_idx -= 1
             elseif a:dir_filter != '' " remove not fit dirs
                 if match( file_list[list_idx], a:dir_filter ) == -1 " if not found dir name in dir filter
+                    silent call remove(file_list,list_idx)
+                    let list_idx -= 1
+                endif
+            elseif len (s:ex_level_list) == 0 " in first level directory, if we _vimfiles* folders, remove them
+                if match( file_list[list_idx], '\<_vimfiles.*' ) != -1
                     silent call remove(file_list,list_idx)
                     let list_idx -= 1
                 endif

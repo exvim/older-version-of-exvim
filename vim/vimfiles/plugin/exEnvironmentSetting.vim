@@ -407,7 +407,8 @@ function g:exES_UpdateEnvironment() " <<<
                 let choice = confirm("Restore last edit buffers?", "&Yes\n&No", 1)
             endif
             if choice == 1 " if ask for restoration
-                call exUtility#RestoreLastEditBuffers ()
+                " DISABLE: call exUtility#RestoreLastEditBuffers ()
+                autocmd VimEnter * call exUtility#RestoreLastEditBuffers ()
             endif
         endif
     endif
