@@ -114,6 +114,12 @@ let s:exPJ_cursor_line = 0
 let s:exPJ_cursor_col = 0
 let s:exPJ_need_update_select_window = 0
 
+" ------------------------------------------------------------------ 
+" Desc: quick-view variable 
+" ------------------------------------------------------------------ 
+
+let s:exPJ_quickview_line = ''
+
 "/////////////////////////////////////////////////////////////////////////////
 " function defines
 "/////////////////////////////////////////////////////////////////////////////
@@ -1081,6 +1087,7 @@ function s:exPJ_GotoInQuickViewWindow() " <<<
     else
         let bufname = expand("#".bufnum.":p")
     endif
+    let s:exPJ_quickview_line = line
 
     " silent wincmd p
     call exUtility#GotoEditBuffer()
@@ -1173,9 +1180,11 @@ function s:exPJ_ShowEditBuffers () " <<<
     endif
     silent! setlocal nomodifiable
 
-    "
-    let edit_bufnum = exUtility#GetEditBufferNum ()
-    silent call search( '^ '.edit_bufnum.':', 'w' )
+    " first we use the line we locate before last jump, then we use the line of current edit buffer
+    if s:exPJ_quickview_line == '' || search( escape(s:exPJ_quickview_line,'\'), 'w' ) == 0
+        let edit_bufnum = exUtility#GetEditBufferNum ()
+        silent call search( '^ '.edit_bufnum.':', 'w' )
+    endif
 endfunction " >>>
 
 " ------------------------------------------------------------------ 
