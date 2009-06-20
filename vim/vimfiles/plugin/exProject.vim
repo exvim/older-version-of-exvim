@@ -211,7 +211,7 @@ function s:exPJ_SwitchWindow( short_title ) " <<<
         let old_width = g:exPJ_window_width
 
         " use the width & height of current window if it is same plugin window.
-        if bufname ('%') ==# s:exPJ_select_title || bufname ('%') ==# s:exPJ_quick_view_title
+        if fnamemodify(bufname ('%'),':p:.') ==# fnamemodify(s:exPJ_cur_filename,':p:.') || bufname ('%') ==# s:exPJ_quick_view_title
             let g:exPJ_window_height = winheight('.')
             let g:exPJ_window_width = winwidth('.')
         endif
