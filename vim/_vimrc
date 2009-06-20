@@ -757,9 +757,10 @@ nnoremap <unique> <silent> <Leader>ad :ExmhHL 0 <CR>
 " Desc: exProject
 " ------------------------------------------------------------------ 
 
+nnoremap <unique> <silent> <A-S-p> :EXProject<CR>
 " NOTE: the / can be mapped to other script ( for example exSearchComplete ), so here use nmap instead of nnoremap 
-nmap <unique> <A-S-p> :EXProject<CR>:redraw<CR>/
-nmap <unique> <A-S-o> :EXBufExplorer<CR>:redraw<CR>/
+nmap <unique> <A-S-o> :EXProject<CR>:redraw<CR>/
+nmap <unique> <A-S-b> :EXBufExplorer<CR>:redraw<CR>/
 nnoremap <unique> <leader>ff :EXProject<CR>:redraw<CR>/\[[^\CF]*\]\c.*
 nnoremap <unique> <leader>fd :EXProject<CR>:redraw<CR>/\[\CF\]\c.*
 nnoremap <unique> <leader>fc :ExpjGotoCurrentFile<CR>
