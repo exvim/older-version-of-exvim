@@ -304,23 +304,23 @@ How can I install "exVim"~
     
         1. ex-plugin window
             the window will keep a buffer create by ex plugins/scripts,
-            also it will register the buffer name into g:ex_plugin_list
+            also it will register the buffer name into g:ex_plugin_registered_bufnames
             automatically, so that system can know this is a window/buffer 
             for plugin.
         
         2. register-plugin window
             the window is create by other plugin, but you know the buffer it
-            created, and manually register the buffer name into g:ex_plugin_list. 
+            created, and manually register the buffer name into g:ex_plugin_registered_bufnames. 
             At this point the system also know is the window a plugin window.
             It is useful for plugin like MiniBufExplorer or Taglist, they have
             a fixed buffer in a window it created. Here is some of my register
             value: 
 >
-            let g:ex_plugin_list = ["-MiniBufExplorer-","__Tag_List__","\[Lookup File\]"] 
+	    let g:ex_plugin_registered_bufnames = ["-MiniBufExplorer-","__Tag_List__","\[Lookup File\]", "\[BufExplorer\]"] 
 <
         
         3. edit window
-            Those window not in the g:ex_plugin_list will treat as edit
+            Those window not in the g:ex_plugin_registered_bufnames will treat as edit
             window. And the last edit window will be record, so that you can
             jump or open new buffer in that window while you are operate in
             ex-plugin/register-plugin window  
@@ -547,14 +547,32 @@ How can I install "exVim"~
 ------------------------------------------------------------------------------
 3.1.1. Variables                                         *exUtility-varaibles*
 
-							      *ex_plugin_list*                                                       
-    ex_plugin_list is a variable let user input its plugin window buffer name 
-    into it, so that the window will be recognized as a register-plugin-window, 
-    so that the edit file will not opened in that window to prevent unexpect 
-    error. 
+					       *ex_plugin_registered_bufnames*                                                       
+    ex_plugin_registered_bufnames is a variable let user input its plugin window 
+    buffer name into it, so that the window will be recognized as a 
+    register-plugin-window, and the edit file will not opened in that window 
+    to prevent unexpect error. 
 >
-    	let g:ex_plugin_list = ["-MiniBufExplorer-","__Tag_List__","\[Lookup File\]"] 
+    	let g:ex_plugin_registered_bufnames = ["-MiniBufExplorer-","__Tag_List__","\[Lookup File\]"] 
 <
+
+					       *ex_plugin_registered_filetypes*                                                       
+    ex_plugin_registered_filetypes is a variable let user input its plugin 
+    window filetype into it, so that the window will be recognized as a 
+    register-plugin-window, and the edit file will not opened in that window 
+    to prevent unexpect error. 
+>
+	let g:ex_plugin_registered_filetypes = ["ex_plugin","ex_project","taglist","nerdtree"] 
+<
+
+							      *ex_cscope_langs*                                                       
+
+    ex_cscope_langs let user setup the language so that cscope will parse them 
+    by their file types.
+>
+	let g:ex_cscope_langs = ['c', 'cpp', 'shader', 'asm' ] 
+<
+
                                                                  *ex_usr_name*                                                       
     ex_usr_name will used the name you give as the author name, and fill it in
     the author column when you use exUtility#PutHeader() function to put 
