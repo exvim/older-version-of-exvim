@@ -3131,19 +3131,13 @@ function! s:bindMappings()
     command! -buffer -nargs=0 WriteBookmarks call s:Bookmark.Write()
     
     " jwu ADD { 
-    " map to BufExplorer if exists
-    if exists (':EXBufExplorer')
-        nnoremap <buffer> <silent> <c-right>   :EXBufExplorer<CR>
-    else " dummy mapping
-        nnoremap <buffer> <silent> <c-right>   :echon "dummy operation\r"<CR>
-    endif
-
     " map to EXProject if exists
     if exists (':EXProject')
         nnoremap <buffer> <silent> <c-left>   :EXProject<CR>
     else " dummy mapping
         nnoremap <buffer> <silent> <c-left>   :echon "dummy operation\r"<CR>
     endif
+    nnoremap <buffer> <silent> <c-right>   :echon "dummy operation\r"<CR>
     " } jwu ADD end 
 endfunction
 
