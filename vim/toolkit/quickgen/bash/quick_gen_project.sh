@@ -1,3 +1,5 @@
+#!/bin/sh
+
 # ======================================================================================
 # File         : quick_gen_project.sh
 # Author       : Wu Jie 
@@ -142,6 +144,14 @@ if test "${support_idutils}" == ""; then
 fi
 
 # ------------------------------------------------------------------ 
+# Desc: ctags_cmd 
+# ------------------------------------------------------------------ 
+
+if test "${ctags_cmd}" == ""; then
+    ctags_cmd="ctags"
+fi
+
+# ------------------------------------------------------------------ 
 # Desc: ctags_options 
 # ------------------------------------------------------------------ 
 
@@ -244,7 +254,7 @@ gen_tag ()
         # process tags by langugage
         cd ${vimfiles_path}
         echo "  |- generate _tags"
-        ctags -o./_tags ${ctags_options} ${ctags_path}
+        ${ctags_cmd} -o./_tags ${ctags_options} ${ctags_path}
 
         # force change _tags to tags
         if [ -f "_tags" ]; then

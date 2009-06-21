@@ -253,19 +253,15 @@ function s:exBE_DeleteSelectBuffer () " <<<
             return
         endif
 
-        let edit_bufnum = exUtility#GetEditBufferNum ()
         " goto edit buffer run \bd to delete the specific buffer
-        if bufnum == edit_bufnum
-            call exUtility#GotoEditBuffer()
-            call exUtility#Kwbd(1)
-            call s:exBE_GotoSelectWindow()
-        else
-            call exUtility#GotoEditBuffer()
-            silent exec 'b' . bufnum
-            call exUtility#Kwbd(1)
-            silent exec 'b' . edit_bufnum
-            call s:exBE_GotoSelectWindow()
-        endif
+        call exUtility#GotoEditBuffer()
+        silent exec 'b' . bufnum
+        call exUtility#Kwbd(1)
+        call s:exBE_GotoSelectWindow()
+        let edit_bufnum = exUtility#GetEditBufferNum ()
+
+        " then we locate the edit_buf if we found it. 
+        silent call search( '^ '.edit_bufnum.':', 'w' )
     endif
 endfunction " >>>
 

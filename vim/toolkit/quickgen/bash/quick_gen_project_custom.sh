@@ -1,3 +1,5 @@
+#!/bin/sh
+
 # ======================================================================================
 # File         : quick_gen_project_custom.sh
 # Author       : Wu Jie 
@@ -38,5 +40,5 @@ export ctags_options=" --c-kinds=+p --c++-kinds=+p --fields=+iaS --extra=+q --la
 # main
 #/////////////////////////////////////////////////////////////////////////////
 
-bash ${EX_DEV}/vim/toolkit/quickgen/bash/quick_gen_project.sh $1
+sh ${EX_DEV}/vim/toolkit/quickgen/bash/quick_gen_project.sh $1
 

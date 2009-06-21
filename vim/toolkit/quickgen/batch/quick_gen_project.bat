@@ -141,6 +141,14 @@ if /I "%support_idutils%" == "" (
     )
 
 rem  ------------------------------------------------------------------ 
+rem  Desc: ctags_cmd 
+rem  ------------------------------------------------------------------ 
+
+if /I "%ctags_cmd%" == "" (
+    set ctags_cmd=ctags
+    )
+
+rem  ------------------------------------------------------------------ 
 rem  Desc: ctags_options 
 rem  ------------------------------------------------------------------ 
 
@@ -270,7 +278,7 @@ if /I "%support_ctags%" == "true" (
     rem process tags by langugage
     cd "%vimfiles_path%"
     echo    ^|- generate _tags
-    ctags -o./_tags %ctags_options% %ctags_path%
+    %ctags_cmd% -o./_tags %ctags_options% %ctags_path%
     if exist _tags (
         echo    ^|- rename _tags to tags
         move /Y "_tags" "tags" > nul

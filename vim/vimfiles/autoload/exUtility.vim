@@ -1185,7 +1185,7 @@ function exUtility#Kwbd(kwbdStage) " <<<
         let g:kwbdBufNum = bufnr("%") 
         let g:kwbdWinNum = winnr() 
         windo call exUtility#Kwbd(2) 
-        execute "normal " . g:kwbdWinNum . "" 
+        exe g:kwbdWinNum . 'wincmd w'
         let g:buflistedLeft = 0 
         let g:bufFinalJump = 0 
         let l:nBufs = bufnr("$") 
@@ -1210,7 +1210,7 @@ function exUtility#Kwbd(kwbdStage) " <<<
                 let l:newBuf = bufnr("%") 
                 windo if(buflisted(winbufnr(0))) | execute "b! " . l:newBuf | endif 
             endif 
-            execute "normal " . g:kwbdWinNum . "" 
+            exe g:kwbdWinNum . 'wincmd w'
         endif 
         if(buflisted(g:kwbdBufNum) || g:kwbdBufNum == bufnr("%")) 
             execute "bd! " . g:kwbdBufNum 
@@ -2594,7 +2594,7 @@ function exUtility#GetQuickGenSupportMap( lang_type ) " <<<
     let lang_list = split( a:lang_type, ' ' )
 
     " check plugin level support
-    if exists('g:loaded_extagselect') && g:loaded_extagselect 
+    if exists('g:loaded_extagselect') && g:loaded_extagselect && g:ex_ctags_cmd != ''
         let support_map['ctags'] = 'true'
     endif
     if exists('g:loaded_exsymboltable') && g:loaded_exsymboltable 
@@ -2810,6 +2810,7 @@ function exUtility#CreateQuickGenProject() " <<<
         silent call add( text_list, 'set support_inherit='.support_map['inherit'] )
         silent call add( text_list, 'set support_cscope='.support_map['cscope'] )
         silent call add( text_list, 'set support_idutils='.support_map['idutils'] )
+        silent call add( text_list, 'set ctags_cmd='.g:ex_ctags_cmd )
         silent call add( text_list, 'set ctags_options='.ctags_options )
         silent call add( text_list, 'if exist .\%vimfiles_path%\quick_gen_project_pre_custom.bat (' )
         silent call add( text_list, '    call .\%vimfiles_path%\quick_gen_project_pre_custom.bat' )
@@ -2822,6 +2823,7 @@ function exUtility#CreateQuickGenProject() " <<<
     elseif has ('unix')
         let script_suffix = 'sh'
 
+        silent call add( text_list, '#!/bin/sh' )
         silent call add( text_list, 'export script_type="autogen"' )
         silent call add( text_list, 'export EX_DEV='.'"'.$EX_DEV.'"' )
         silent call add( text_list, 'export cwd=${PWD}' ) " 
@@ -2838,13 +2840,14 @@ function exUtility#CreateQuickGenProject() " <<<
         silent call add( text_list, 'export support_inherit='.'"'.support_map['inherit'].'"' )
         silent call add( text_list, 'export support_cscope='.'"'.support_map['cscope'].'"' )
         silent call add( text_list, 'export support_idutils='.'"'.support_map['idutils'].'"' )
+        silent call add( text_list, 'export ctags_cmd='.'"'.g:ex_ctags_cmd.'"' )
         silent call add( text_list, 'export ctags_options='.'"'.ctags_options.'"' )
         silent call add( text_list, 'if [ -f "./${vimfiles_path}/quick_gen_project_pre_custom.sh" ]; then' )
-        silent call add( text_list, '    bash ./${vimfiles_path}/quick_gen_project_pre_custom.sh' )
+        silent call add( text_list, '    sh ./${vimfiles_path}/quick_gen_project_pre_custom.sh' )
         silent call add( text_list, 'fi' )
-        silent call add( text_list, 'bash ${EX_DEV}/vim/toolkit/quickgen/bash/quick_gen_project.sh $1' )
+        silent call add( text_list, 'sh ${EX_DEV}/vim/toolkit/quickgen/bash/quick_gen_project.sh $1' )
         silent call add( text_list, 'if [ -f "./${vimfiles_path}/quick_gen_project_post_custom.sh" ]; then' )
-        silent call add( text_list, '    bash ./${vimfiles_path}/quick_gen_project_post_custom.sh' )
+        silent call add( text_list, '    sh ./${vimfiles_path}/quick_gen_project_post_custom.sh' )
         silent call add( text_list, 'fi' )
     endif
 
