@@ -316,6 +316,30 @@ function s:exPJ_UpdateFilters() " <<<
     endif
 endfunction
 
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
+function s:exPJ_EchoPath () " <<<
+    " get line text and line number
+    let line_text = getline('.')
+    let line_nr = line('.')
+
+    " get full path name.
+    let full_path_name = ''
+    if match(line_text, '\C\[[^F]*\]') == -1
+        let full_path_name = s:exPJ_GetPath(line_nr)
+    else
+        let full_path_name = s:exPJ_GetPath(line_nr) . s:exPJ_GetName(line_nr)
+    endif
+
+    " echo the path name
+    echohl Statement
+    echo full_path_name
+    echohl None
+endfunction " >>>
+
+
 " ======================================================== 
 "  select window functons
 " ======================================================== 
@@ -365,6 +389,7 @@ function g:exPJ_InitSelectWindow() " <<<
     nnoremap <silent> <buffer> <localleader>cf   :call <SID>exPJ_RefreshProject(1)<CR>
     nnoremap <silent> <buffer> <localleader>R    :call <SID>exPJ_CreateProject(0)<CR>
     nnoremap <silent> <buffer> <localleader>r    :call <SID>exPJ_RefreshProject(0)<CR>
+    nnoremap <silent> <buffer> <localleader>e    :call <SID>exPJ_EchoPath()<CR>
 
     " map to NERDTree if exists
     if exists (':NERDTree')
@@ -389,6 +414,7 @@ function g:exPJ_InitSelectWindow() " <<<
     au WinLeave <buffer> :call s:exPJ_RefreshWindow()
     au BufWritePost <buffer> :call s:exPJ_UpdateFilters()
     " au CursorMoved <buffer> :call exUtility#HighlightSelectLine()
+    au CursorHold <buffer> :call s:exPJ_EchoPath()
 
     " init filter variables
     call s:exPJ_UpdateFilters ()
