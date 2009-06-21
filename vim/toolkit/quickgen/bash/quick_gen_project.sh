@@ -33,7 +33,7 @@ fi
 # Desc: cwd 
 # ------------------------------------------------------------------ 
 
-if test "${cwd}" == ""; then
+if test "${cwd}" = ""; then
     echo error: variable: cwd not set
     errstatus=1
     exit $errstatus
@@ -43,7 +43,7 @@ fi
 # Desc: lang_type 
 # ------------------------------------------------------------------ 
 
-if test "${lang_type}" == ""; then
+if test "${lang_type}" = ""; then
     lang_type="auto"
 fi
 
@@ -51,7 +51,7 @@ fi
 # Desc: vimfiles_path 
 # ------------------------------------------------------------------ 
 
-if test "${vimfiles_path}" == ""; then
+if test "${vimfiles_path}" = ""; then
     vimfiles_path="_vimfiles"
 fi
 
@@ -59,7 +59,7 @@ fi
 # Desc: file_filter
 # ------------------------------------------------------------------ 
 
-if test "${file_filter}" == ""; then
+if test "${file_filter}" = ""; then
     file_filter="c\|cpp\|cxx\|c++\|C\|cc\|h\|H\|hh\|hxx\|hpp\|inl\|cs\|uc\|hlsl\|vsh\|psh\|fx\|fxh\|cg\|shd\|glsl\|py\|pyw\|vim\|awk\|m\|dox\|doxygen\|ini\|cfg\|wiki\|mk\|err\|exe\|bat\|sh"
 fi
 
@@ -67,7 +67,7 @@ fi
 # Desc: file_filter_pattern 
 # ------------------------------------------------------------------ 
 
-if test "${file_filter_pattern}" == ""; then
+if test "${file_filter_pattern}" = ""; then
     file_filter_pattern="\\.c$|\\.C$|\\.cpp$|\\.cxx$|\\.c++$|\\.cc$|\\.h$|\\.H$|\\.hh$|\\.hxx$|\\.hpp$|\\.inl$|\\.cs$|\\.uc$|\\.hlsl$|\\.vsh$|\\.psh$|\\.fx$|\\.fxh$|\\.cg$|\\.shd$|\\.glsl$|\\.py$|\\.pyw$|\\.vim$|\\.awk$|\\.m$|\\.dox$|\\.doxygen$|\\.ini$|\\.cfg$|\\.wiki$|\\.mk$|\\.err$|\\.exe$|\\.bat$|\\.sh$|\\.txt$"
 fi
 
@@ -75,7 +75,7 @@ fi
 # Desc: cscope_file_filter 
 # ------------------------------------------------------------------ 
 
-if test "${cscope_file_filter}" == ""; then
+if test "${cscope_file_filter}" = ""; then
     cscope_file_filter="c\|cpp\|cxx\|c++\|C\|cc\|h\|H\|hh\|hxx\|hpp\|inl\|hlsl\|vsh\|psh\|fx\|fxh\|cg\|shd\|glsl"
 fi
 
@@ -83,7 +83,7 @@ fi
 # Desc: cscope_file_filter_pattern 
 # ------------------------------------------------------------------ 
 
-if test "${cscope_file_filter_pattern}" == ""; then
+if test "${cscope_file_filter_pattern}" = ""; then
     cscope_file_filter_pattern="\\.c$|\\.C$\\.cpp$|\\.cxx$|\\.c++$|\\.cc$|\\.h$|\\.H$|\\.hh$|\\.hxx$|\\.hpp$|\\.inl$|\\.hlsl$|\\.vsh$|\\.psh$|\\.fx$|\\.fxh$|\\.cg$|\\.shd$|\\.glsl$"
 fi
 
@@ -91,7 +91,7 @@ fi
 # Desc: dir_filter 
 # ------------------------------------------------------------------ 
 
-if test "${dir_filter}" == ""; then
+if test "${dir_filter}" = ""; then
     dir_filter=""
 fi
 
@@ -99,7 +99,7 @@ fi
 # Desc: support_filenamelist 
 # ------------------------------------------------------------------ 
 
-if test "${support_filenamelist}" == ""; then
+if test "${support_filenamelist}" = ""; then
     support_filenamelist="true"
 fi
 
@@ -107,7 +107,7 @@ fi
 # Desc: support_ctags 
 # ------------------------------------------------------------------ 
 
-if test "${support_ctags}" == ""; then
+if test "${support_ctags}" = ""; then
     support_ctags="true"
 fi
 
@@ -115,7 +115,7 @@ fi
 # Desc: support_symbol 
 # ------------------------------------------------------------------ 
 
-if test "${support_symbol}" == ""; then
+if test "${support_symbol}" = ""; then
     support_symbol="true"
 fi
 
@@ -123,7 +123,7 @@ fi
 # Desc: support_inherit 
 # ------------------------------------------------------------------ 
 
-if test "${support_inherit}" == ""; then
+if test "${support_inherit}" = ""; then
     support_inherit="true"
 fi
 
@@ -131,7 +131,7 @@ fi
 # Desc: support_cscope 
 # ------------------------------------------------------------------ 
 
-if test "${support_cscope}" == ""; then
+if test "${support_cscope}" = ""; then
     support_cscope="true"
 fi
 
@@ -139,7 +139,7 @@ fi
 # Desc: support_idutils 
 # ------------------------------------------------------------------ 
 
-if test "${support_idutils}" == ""; then
+if test "${support_idutils}" = ""; then
     support_idutils="true"
 fi
 
@@ -147,7 +147,7 @@ fi
 # Desc: ctags_cmd 
 # ------------------------------------------------------------------ 
 
-if test "${ctags_cmd}" == ""; then
+if test "${ctags_cmd}" = ""; then
     ctags_cmd="ctags"
 fi
 
@@ -155,7 +155,7 @@ fi
 # Desc: ctags_options 
 # ------------------------------------------------------------------ 
 
-if test "${ctags_options}" == ""; then
+if test "${ctags_options}" = ""; then
     ctags_options="--c++-kinds=+p --fields=+iaS --extra=+q --languages=c,c++,c#,python,vim,html,lua,javascript,java,uc,math --langmap=c++:+.inl,c:+.fx,c:+.fxh,c:+.hlsl,c:+.vsh,c:+.psh,c:+.cg,c:+.shd,javascript:+.as"
 fi
 
