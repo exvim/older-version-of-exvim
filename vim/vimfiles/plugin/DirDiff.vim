@@ -281,11 +281,30 @@ if !exists("g:DirDiffTextOnlyIn")
     let g:DirDiffTextOnlyIn = "Only in "
 endif
 
+" jwu ADD { 
+let s:DirDiffTitle = '__DirDiff__'
+" } jwu ADD end 
+
 " Set some script specific variables:
 "
 let s:DirDiffFirstDiffLine = 6
 let s:DirDiffALine = 1
 let s:DirDiffBLine = 2
+
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
+function s:DirDiffOpenWindow ( diff_title ) " <<<
+    " open and goto search window first
+    let df_winnr = bufwinnr(a:diff_title)
+    if df_winnr == -1 " open window
+        call exUtility#OpenWindow ( a:diff_title, 'belowright', '30', 0, 'none', 0, 'none', 'none' )
+    else
+        exe df_winnr . 'wincmd w'
+    endif
+endfunction " >>>
+
 
 " -- Variables used in various utilities
 if has("unix")
@@ -350,7 +369,11 @@ function! <SID>DirDiff(srcA, srcB)
     let DirDiffAbsSrcA = substitute(DirDiffAbsSrcA, '\\$\|/$', '', '')
     let DirDiffAbsSrcB = substitute(DirDiffAbsSrcB, '\\$\|/$', '', '')
 
-    let DiffBuffer = tempname()
+    " jwu MODIFY { 
+    " let DiffBuffer = tempname()
+    let DiffBuffer = s:DirDiffTitle
+    " } jwu MODIFY end 
+
     " We first write to that file
     " Constructs the command line
     let cmd = "!diff"
@@ -381,7 +404,13 @@ function! <SID>DirDiff(srcA, srcB)
         echo "There is no diff here."
         return
     endif
-    silent exe "edit ".DiffBuffer
+
+    " jwu MODIFY { 
+    " silent exe "edit ".DiffBuffer
+    " call exUtility#OpenWindow ( DiffBuffer, 'belowright', '30', 0, 'none', 0, 'none', 'none' )
+    call s:DirDiffOpenWindow ( DiffBuffer )
+    " } jwu MODIFY end 
+
     echo "Defining [A] and [B] ... "
     " We then do a substitution on the directory path
     " We need to do substitution of the the LONGER string first, otherwise
@@ -479,7 +508,10 @@ function! <SID>DirDiffQuit()
     let in = confirm ("Are you sure you want to quit DirDiff?", "&Yes\n&No", 2)
     if (in == 1)
         call <SID>CloseDiffWindows()
-        bd!
+        " jwu DISABLE { 
+        " bd!
+        " } jwu DISABLE end 
+        call exUtility#CloseWindow (s:DirDiffTitle)
     endif
 endfun
 
@@ -492,15 +524,23 @@ endfunction
 " Close the opened diff comparison windows if they exist
 function! <SID>CloseDiffWindows()
     if (<SID>AreDiffWinsOpened())
-        wincmd k
+        " jwu MODIFY { 
+        " wincmd k
+        call exUtility#GotoEditBuffer()
+        " } jwu MODIFY end 
+
         " Ask the user to save if buffer is modified
         call <SID>AskIfModified()
         bd!
+
         " User may just have one window opened, we may not need to close
         " the second diff window
         if (&diff)
             call <SID>AskIfModified()
-            bd!
+            " jwu MODIFY { 
+            " bd!
+            call exUtility#Kwbd(1)
+            " } jwu MODIFY end 
         endif
     endif
 endfunction
@@ -519,6 +559,9 @@ function! <SID>DirDiffOpen()
     let dirB = <SID>GetBaseDir("B")
 
     call <SID>CloseDiffWindows()
+    " jwu ADD { 
+    call s:DirDiffOpenWindow (s:DirDiffTitle)
+    " } jwu ADD end 
 
     let line = getline(".")
     " Parse the line and see whether it's a "Only in" or "Files Differ"
@@ -533,23 +576,41 @@ function! <SID>DirDiffOpen()
         elseif (fileSrc == "B")
             let fileToOpen = fileB
         endif
-        split
-        wincmd k
+        " MODIFY { 
+        " split
+        " wincmd k
+        call exUtility#GotoEditBuffer()
+        " } MODIFY end 
+
         silent exec "edit ".fnameescape(fileToOpen)
         " Fool the window saying that this is diff
         diffthis
-        wincmd j
+
+        " jwu MODIFY { 
+        " wincmd j
+        call s:DirDiffOpenWindow( s:DirDiffTitle )
+        " } jwu MODIFY end 
+
         " Resize the window
         exe("resize " . g:DirDiffWindowSize)
         exe (b:currentDiff)
     elseif <SID>IsDiffer(line)
         "Open the diff windows
-        split
-        wincmd k
+        " MODIFY { 
+        " split
+        " wincmd k
+        call exUtility#GotoEditBuffer()
+        " } MODIFY end 
+
         silent exec "edit ".fnameescape(fileB)
         silent exec "vert diffsplit ".fnameescape(fileA)
+
+        " jwu MODIFY { 
         " Go back to the diff window
-        wincmd j
+        " wincmd j
+        call s:DirDiffOpenWindow( s:DirDiffTitle )
+        " } jwu MODIFY end 
+
         " Resize the window
         exe("resize " . g:DirDiffWindowSize)
         exe (b:currentDiff)
@@ -615,10 +676,14 @@ function! <SID>GetBaseDir(diffName)
 endfunction
 
 function! <SID>DirDiffNext()
-    " If the current window is a diff, go down one
-    if (&diff == 1)
-        wincmd j
-    endif
+    " jwu MODIFY { 
+    " " If the current window is a diff, go down one
+    " if (&diff == 1)
+    "     wincmd j
+    " endif
+    call s:DirDiffOpenWindow ( s:DirDiffTitle )
+    " } jwu MODIFY end 
+
     " if the current line is <= 6, (within the header range), we go to the
     " first diff line open it
     if (line(".") < s:DirDiffFirstDiffLine)
@@ -630,10 +695,14 @@ function! <SID>DirDiffNext()
 endfunction
 
 function! <SID>DirDiffPrev()
-    " If the current window is a diff, go down one
-    if (&diff == 1)
-        wincmd j
-    endif
+    " jwu MODIFY { 
+    " " If the current window is a diff, go down one
+    " if (&diff == 1)
+    "     wincmd j
+    " endif
+    call s:DirDiffOpenWindow ( s:DirDiffTitle )
+    " } jwu MODIFY end 
+
     silent! exe (b:currentDiff - 1)
     call <SID>DirDiffOpen()
 endfunction
@@ -887,7 +956,11 @@ endfunction
 function! <SID>AreDiffWinsOpened()
     let currBuff = expand("%:p")
     let currLine = line(".")
-    wincmd k
+    " MODIFY { 
+    " wincmd k
+    call exUtility#GotoEditBuffer()
+    " } MODIFY end 
+
     let abovedBuff = expand("%:p")
     if (&diff)
         let abovedIsDiff = 1
@@ -896,7 +969,12 @@ function! <SID>AreDiffWinsOpened()
     endif
     " Go Back if the aboved buffer is not the same
     if (currBuff != abovedBuff)
-        wincmd j
+        " jwu MODIFY { 
+        " Go back to the diff window
+        " wincmd j
+        call s:DirDiffOpenWindow( s:DirDiffTitle )
+        " } jwu MODIFY end 
+
         " Go back to the same line
         exe (currLine)
         if (abovedIsDiff == 1)
