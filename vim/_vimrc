@@ -817,6 +817,11 @@ function g:exES_PostUpdate()
     " set lookup file plugin variables
 	if exists( 'g:exES_LookupFileTag' )
         let g:LookupFile_TagExpr='"'.g:exES_LookupFileTag.'"'
+        if exists(':LUCurFile')
+            " NOTE: the second <CR>, if only one file, will jump to it directly.
+            unmap gf
+            nnoremap <unique> <silent> gf :LUCurFile<CR>
+        endif
     endif
 
 	" set visual_studio plugin variables
@@ -1010,7 +1015,8 @@ let showmarks_hlline_upper = 0
 nnoremap <unique> <A-S-i> :LUTags<CR>
 nnoremap <unique> <leader>lf :LUTags<CR>
 nnoremap <unique> <leader>lb :LUBufs<CR>
-nnoremap <unique> <silent> <Leader>lg :LUCurWord<CR>
+nnoremap <unique> <silent> <Leader>ll :LUCurWord<CR>
+
 let g:LookupFile_TagExpr = ''
 let g:LookupFile_MinPatLength = 3
 let g:LookupFile_PreservePatternHistory = 0

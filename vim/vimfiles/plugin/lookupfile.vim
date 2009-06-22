@@ -166,6 +166,15 @@ command! -nargs=? -bang -complete=dir LUWalk :call
 " JWU ADD { 
 command! -nargs=? -bang -complete=tag LUCurWord :call
       \ <SID>LookupUsing('Tags', "<bang>", expand("<cword>"), 0)
+
+" in win32, the filename is case insensitive, other system is case sensitive
+if has("win32")
+  let case_option = '\c'
+else
+  let case_option = '\C'
+endif
+command! -nargs=? -bang -complete=tag LUCurFile :call
+      \ <SID>LookupUsing('Tags', "<bang>", case_option.'\<'.fnamemodify(expand("<cfile>"),":t").'\>', 0)
 " } JWU ADD end 
 
 function! s:RemapLookupFile(cmd)
