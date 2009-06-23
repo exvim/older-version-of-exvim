@@ -1067,6 +1067,11 @@ function exUtility#GotoBuffer(cmd) " <<<
         let gui_win_pos_y = getwinposy()
     endif
 
+    " if this is a registered plugin buffer, then go to the edit buffer first 
+    if exUtility#IsRegisteredPluginBuffer(bufname('%')) 
+        call exUtility#GotoEditBuffer()
+    endif
+
     " jump buffer
     if a:cmd ==# 'next'
         silent exec "bn!"

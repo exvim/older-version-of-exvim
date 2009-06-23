@@ -368,9 +368,9 @@ function g:exPJ_InitSelectWindow() " <<<
     " +++++++++++++++++++++++++++++++
 
     " syntax highlight
-    syntax match exPJ_SynDir '\[\CF\]'
+    syntax match exPJ_SynDir '\C\[F\]'
     syntax match exPJ_TreeLine '\( |\)\+-*\ze'
-    syntax match exPJ_SynFile '\[[^\CF]*\]'
+    syntax match exPJ_SynFile '\C\[[^F]*\]'
     syntax match exPJ_SynFilter '^.* filter = .*$'
     syntax match exPJ_SynSrcFile '\[c\]'
     syntax match exPJ_SynHeaderFile '\[\(h\|i\)\]'
@@ -403,8 +403,8 @@ function g:exPJ_InitSelectWindow() " <<<
     nnoremap <silent> <buffer> <c-up> :call exUtility#CursorJump( 'ErrorLog.err', 'up' )<CR>
     nnoremap <silent> <buffer> <c-down> :call exUtility#CursorJump( 'ErrorLog.err', 'down' )<CR>
 
-    nnoremap <silent> <buffer> <c-k> :call exUtility#CursorJump( '\[\CF\]', 'up' )<CR>
-    nnoremap <silent> <buffer> <c-j> :call exUtility#CursorJump( '\[\CF\]', 'down' )<CR>
+    nnoremap <silent> <buffer> <c-k> :call exUtility#CursorJump( '\C\[F\]', 'up' )<CR>
+    nnoremap <silent> <buffer> <c-j> :call exUtility#CursorJump( '\C\[F\]', 'down' )<CR>
 
     "
     nnoremap <silent> <buffer> o  :call <SID>exPJ_CreateNewFile()<CR>

@@ -760,8 +760,8 @@ nnoremap <unique> <silent> <Leader>ad :ExmhHL 0 <CR>
 " NOTE: the / can be mapped to other script ( for example exSearchComplete ), so here use nmap instead of nnoremap 
 nmap <unique> <A-S-o> :EXProject<CR>:redraw<CR>/
 nnoremap <unique> <silent> <A-S-p> :EXProject<CR>
-nnoremap <unique> <leader>ff :EXProject<CR>:redraw<CR>/\[[^\CF]*\]\c.*
-nnoremap <unique> <leader>fd :EXProject<CR>:redraw<CR>/\[\CF\]\c.*
+nnoremap <unique> <leader>ff :EXProject<CR>:redraw<CR>/\[\l*\]\zs
+nnoremap <unique> <leader>fd :EXProject<CR>:redraw<CR>/\[\u\]\zs
 nnoremap <unique> <leader>fc :ExpjGotoCurrentFile<CR>
 
 let g:exPJ_backto_editbuf = 1
