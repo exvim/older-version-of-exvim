@@ -85,14 +85,6 @@ if !exists('g:exBE_close_when_selected')
 endif
 
 " ------------------------------------------------------------------ 
-" Desc: use syntax highlight for search result
-" ------------------------------------------------------------------ 
-
-if !exists('g:exBE_highlight_result')
-    let g:exBE_highlight_result = 0
-endif
-
-" ------------------------------------------------------------------ 
 " Desc: set edit mode
 " 'none', 'append', 'replace'
 " ------------------------------------------------------------------ 
@@ -327,7 +319,7 @@ endfunction " >>>
 " Desc: 
 " ------------------------------------------------------------------ 
 
-function g:exBE_AddBookmark ( filename ) " <<<
+function s:exBE_AddBookmark ( filename ) " <<<
     if exists ( 'g:exES_Bookmarks' )
         " show input dialog
         let bookmark_name = inputdialog( 'Bookmark Alias: ', fnamemodify(a:filename,':t'), 'cancle' )
@@ -382,6 +374,7 @@ endfunction " >>>
 "/////////////////////////////////////////////////////////////////////////////
 
 command EXBufExplorer call s:exBE_GotoSelectWindow()
+command EXAddBookmarkDirectly call s:exBE_AddBookmark( fnamemodify( bufname('%'), ':p' ) )
 
 "/////////////////////////////////////////////////////////////////////////////
 " finish

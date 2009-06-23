@@ -390,9 +390,9 @@ endfunction " >>>
 " Desc: show the picked result in the quick view window
 " ------------------------------------------------------------------ 
 
-function s:exSL_GetAndShowPickedResult() " <<<
+function s:exSL_GetAndShowPickedResult( pattern, by_word ) " <<<
     " get search pattern
-    let search_pattern = expand("<cword>")
+    let search_pattern = a:pattern
 
     " push entry state after we get the search result
     let stack_info = {}
@@ -423,7 +423,7 @@ function s:exSL_GetAndShowPickedResult() " <<<
 
     " call switch function
     call s:exSL_SwitchWindow('Select')
-    call s:exSL_CopyPickedLine( search_pattern, 1, 0 )
+    call s:exSL_CopyPickedLine( search_pattern, a:by_word, 0 )
     let s:exSL_quick_view_idx = 1
     call s:exSL_SwitchWindow('QuickView')
     silent exec '1,$d _'
@@ -531,16 +531,13 @@ endfunction " >>>
 "/////////////////////////////////////////////////////////////////////////////
 
 "
+command -nargs=1 -complete=customlist,exUtility#CompleteBySymbolFile SS call s:exSL_GetAndShowPickedResult( '<args>', 0 )
 command -nargs=1 -complete=customlist,exUtility#CompleteBySymbolFile SL call s:exSL_GetSymbolListResult('<args>')
 command ExslSelectToggle call s:exSL_PushEntryToggleWindow('Select')
 command ExslQuickViewToggle call s:exSL_PushEntryToggleWindow('QuickView')
 command ExslQuickSearch call s:exSL_QuickSearch()
 command ExslToggle call s:exSL_PushEntryToggleWindow('')
-command ExslGoDirectly call s:exSL_GetAndShowPickedResult()
-
-" quick view command
-command -nargs=1 -complete=customlist,exUtility#CompleteBySymbolFile SLPR call s:exSL_ShowPickedResult('<args>',0)
-command -nargs=1 -complete=customlist,exUtility#CompleteBySymbolFile SLPD call s:exSL_ShowPickedResult('<args>',1)
+command ExslGoDirectly call s:exSL_GetAndShowPickedResult( expand("<cword>"), 1 )
 
 " Ignore case setting
 command SLigc call s:exSL_SetIgnoreCase(1)
