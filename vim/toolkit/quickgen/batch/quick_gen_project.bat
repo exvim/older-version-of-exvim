@@ -35,6 +35,14 @@ if /I "%cwd%" == "" (
     )
 
 rem  ------------------------------------------------------------------ 
+rem  Desc: toolkit_path 
+rem  ------------------------------------------------------------------ 
+
+if /I "%toolkit_path%" == "" (
+    set toolkit_path=%EX_DEV%\vim\toolkit
+    )
+
+rem  ------------------------------------------------------------------ 
 rem  Desc: lang_type
 rem  ------------------------------------------------------------------ 
 
@@ -227,7 +235,7 @@ if /I "%support_filenamelist%" == "true" (
         )
     echo    ^|- process _filenamelist_cwd_gawk to _filenamelist_cwd
     rem NOTE: dir /s /b *.cpp will list xxx.cpp~, too. So use gawk here to filter out thoes things.
-    gawk -v filter_pattern=%file_filter_pattern% -f "%EX_DEV%\vim\toolkit\gawk\prg_FileFilter.awk" ".\%vimfiles_path%\_filenamelist_cwd_gawk">".\%vimfiles_path%\_filenamelist_cwd"
+    gawk -v filter_pattern=%file_filter_pattern% -f "%toolkit_path%\gawk\prg_FileFilter.awk" ".\%vimfiles_path%\_filenamelist_cwd_gawk">".\%vimfiles_path%\_filenamelist_cwd"
     del ".\%vimfiles_path%\_filenamelist_cwd_gawk" > nul
     if exist .\%vimfiles_path%\_filenamelist_cwd (
         echo    ^|- rename _filenamelist_cwd to filenamelist_cwd
@@ -244,7 +252,7 @@ if /I "%support_filenamelist%" == "true" (
     
     rem create filenametags
     echo    ^|- generate _filenametags
-    gawk -f "%EX_DEV%\vim\toolkit\gawk\prg_FilenameTagWin.awk" ".\%vimfiles_path%\filenamelist_vimfiles">".\%vimfiles_path%\_filenametags"
+    gawk -f "%toolkit_path%\gawk\prg_FilenameTagWin.awk" ".\%vimfiles_path%\filenamelist_vimfiles">".\%vimfiles_path%\_filenametags"
     if exist .\%vimfiles_path%\_filenametags (
         echo    ^|- rename _filenametags to filenametags
         move /Y ".\%vimfiles_path%\_filenametags" ".\%vimfiles_path%\filenametags" > nul
@@ -299,7 +307,7 @@ rem  #########################
 if /I "%support_symbol%" == "true" (
     echo Creating Symbols...
     echo    ^|- generate _symbol
-    gawk -f "%EX_DEV%\vim\toolkit\gawk\prg_NoStripSymbol.awk" ".\%vimfiles_path%\tags">".\%vimfiles_path%\_symbol"
+    gawk -f "%toolkit_path%\gawk\prg_NoStripSymbol.awk" ".\%vimfiles_path%\tags">".\%vimfiles_path%\_symbol"
     if exist .\%vimfiles_path%\_symbol (
         echo    ^|- rename _symbol to symbol
         move /Y ".\%vimfiles_path%\_symbol" ".\%vimfiles_path%\symbol" > nul
@@ -320,7 +328,7 @@ rem  #########################
 if /I "%support_inherit%" == "true" (
     echo Creating Inherits...
     echo    ^|- generate _inherits
-    gawk -f "%EX_DEV%\vim\toolkit\gawk\prg_Inherits.awk" ".\%vimfiles_path%\tags">".\%vimfiles_path%\_inherits"
+    gawk -f "%toolkit_path%\gawk\prg_Inherits.awk" ".\%vimfiles_path%\tags">".\%vimfiles_path%\_inherits"
     if exist .\%vimfiles_path%\_inherits (
         echo    ^|- rename _inherits to inherits
         move /Y ".\%vimfiles_path%\_inherits" ".\%vimfiles_path%\inherits" > nul
@@ -342,7 +350,7 @@ if /I "%support_cscope%" == "true" (
     echo Creating cscope data...
     echo    ^|- generate cscope.files
     if exist .\%vimfiles_path%\filenamelist_cwd (
-        gawk -v filter_pattern=%cscope_file_filter_pattern% -f "%EX_DEV%\vim\toolkit\gawk\prg_FileFilterWithQuotes.awk" ".\%vimfiles_path%\filenamelist_cwd" > cscope.files
+        gawk -v filter_pattern=%cscope_file_filter_pattern% -f "%toolkit_path%\gawk\prg_FileFilterWithQuotes.awk" ".\%vimfiles_path%\filenamelist_cwd" > cscope.files
     ) else (
         dir /s /b %cscope_file_filter%|sed "s,\(.*\),\"\1\",g" > cscope.files
     )
@@ -387,7 +395,7 @@ if /I "%support_idutils%" == "true" (
     rem if both file not exists, we use default one in toolkit directory
     ) else (
         echo    ^|- generate ID by default language map 
-        mkid --include="text" --lang-map="%EX_DEV%\vim\toolkit\idutils\id-lang.map" %dir_filter%
+        mkid --include="text" --lang-map="%toolkit_path%\idutils\id-lang.map" %dir_filter%
     )
     
     if exist ID (

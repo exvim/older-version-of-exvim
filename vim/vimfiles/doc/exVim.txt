@@ -626,6 +626,15 @@ How can I install "exVim"~
         let g:ex_comment_lable_keyword .= 'HACK OPTME HARDCODE REFACTORING DUPLICATE REDUNDANCY '
 <
 
+                                                             *ex_toolkit_path*
+    By default, exVim install the toolkit folder in the path $EX_DEV/vim/toolkit. 
+    But you can change this path to your own place. To change the path, you need to 
+    set ex_toolkit_path variable in `_vimrc`, and copy the toolkit folder to that 
+    path.
+>
+	let g:ex_toolkit_path = $EX_DEV.'/vim/toolkit'
+<
+
 ------------------------------------------------------------------------------
 3.1.2. Recommend Commands                                 *exUtility-commands*
 

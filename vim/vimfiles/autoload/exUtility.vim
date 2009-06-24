@@ -2505,12 +2505,8 @@ function exUtility#CopyQuickGenProject() " <<<
     let quick_gen_script = 'quick_gen_project_custom.' . script_suffix
 
     " get quick gen script from repository
-    let full_quick_gen_script = ''
-    if has("win32")
-        let full_quick_gen_script = fnamemodify( $EX_DEV . "\\vim\\toolkit\\quickgen\\" . folder_name . "\\" . quick_gen_script, ":p")
-    elseif has("unix")
-        let full_quick_gen_script = fnamemodify( $EX_DEV . '/vim/toolkit/quickgen/' . folder_name . '/' . quick_gen_script, ":p" )
-    endif
+    let full_quick_gen_script = fnamemodify( g:ex_toolkit_path . '/' . folder_name . '/' . quick_gen_script, ":p" )
+
     if findfile( full_quick_gen_script ) == ""
         call exUtility#WarningMsg('Error: file ' . full_quick_gen_script . ' not found')
     else
@@ -2798,10 +2794,12 @@ function exUtility#CreateQuickGenProject() " <<<
     " init platform dependence value and write script
     if has ('win32')
         let script_suffix = 'bat'
+        let fmt_toolkit_path = exUtility#Pathfmt( g:ex_toolkit_path, 'windows')
 
         silent call add( text_list, '@echo off' )
         silent call add( text_list, 'set script_type=autogen' )
         silent call add( text_list, 'set cwd=%~pd0' )
+        silent call add( text_list, 'set toolkit_path='.fmt_toolkit_path )
         silent call add( text_list, 'set lang_type='.lang_type ) " 
         silent call add( text_list, 'set vimfiles_path='.g:exES_vimfiles_dirname )
         silent call add( text_list, 'set file_filter='.file_filter_list[0] )
@@ -2820,18 +2818,20 @@ function exUtility#CreateQuickGenProject() " <<<
         silent call add( text_list, 'if exist .\%vimfiles_path%\quick_gen_project_pre_custom.bat (' )
         silent call add( text_list, '    call .\%vimfiles_path%\quick_gen_project_pre_custom.bat' )
         silent call add( text_list, ')' )
-        silent call add( text_list, 'call "%EX_DEV%\vim\toolkit\quickgen\batch\quick_gen_project.bat" %1' )
+        silent call add( text_list, 'call "%toolkit_path%\quickgen\batch\quick_gen_project.bat" %1' )
         silent call add( text_list, 'if exist .\%vimfiles_path%\quick_gen_project_post_custom.bat (' )
         silent call add( text_list, '    call .\%vimfiles_path%\quick_gen_project_post_custom.bat' )
         silent call add( text_list, ')' )
         silent call add( text_list, 'echo on' )
     elseif has ('unix')
         let script_suffix = 'sh'
+        let fmt_toolkit_path = exUtility#Pathfmt( g:ex_toolkit_path, 'unix')
 
         silent call add( text_list, '#!/bin/sh' )
         silent call add( text_list, 'export script_type="autogen"' )
         silent call add( text_list, 'export EX_DEV='.'"'.$EX_DEV.'"' )
         silent call add( text_list, 'export cwd=${PWD}' ) " 
+        silent call add( text_list, 'export toolkit_path='.fmt_toolkit_path )
         silent call add( text_list, 'export lang_type='.'"'.lang_type.'"' ) " 
         silent call add( text_list, 'export vimfiles_path='.'"'.g:exES_vimfiles_dirname.'"' )
         silent call add( text_list, 'export file_filter='.'"'.file_filter_list[0].'"' )
@@ -2850,7 +2850,7 @@ function exUtility#CreateQuickGenProject() " <<<
         silent call add( text_list, 'if [ -f "./${vimfiles_path}/quick_gen_project_pre_custom.sh" ]; then' )
         silent call add( text_list, '    sh ./${vimfiles_path}/quick_gen_project_pre_custom.sh' )
         silent call add( text_list, 'fi' )
-        silent call add( text_list, 'sh ${EX_DEV}/vim/toolkit/quickgen/bash/quick_gen_project.sh $1' )
+        silent call add( text_list, 'sh ${toolkit_path}/quickgen/bash/quick_gen_project.sh $1' )
         silent call add( text_list, 'if [ -f "./${vimfiles_path}/quick_gen_project_post_custom.sh" ]; then' )
         silent call add( text_list, '    sh ./${vimfiles_path}/quick_gen_project_post_custom.sh' )
         silent call add( text_list, 'fi' )
@@ -3549,7 +3549,8 @@ function exUtility#CopySyntaxHighlighterFiles( dest_path ) " <<<
         let src = '' 
         let cmd = ''
         if has("win32")
-            let src = fnamemodify( $EX_DEV . "\\vim\\toolkit\\SyntaxHighlighter", ":p")
+            let src = fnamemodify( g:ex_toolkit_path . "\\SyntaxHighlighter", ":p")
+            let src = exUtility#Pathfmt( src, 'windows')
 
             " remove last \ if found in src path
             if ( src[strlen(src)-1] == '\' )
@@ -3563,7 +3564,8 @@ function exUtility#CopySyntaxHighlighterFiles( dest_path ) " <<<
 
             let cmd = copy_cmd . ' ' . src . ' ' . dest 
         elseif has("unix")
-            let src = fnamemodify( $EX_DEV . '/vim/toolkit/SyntaxHighlighter/', ":p" )
+            let src = fnamemodify( g:ex_toolkit_path . '/SyntaxHighlighter/', ":p")
+            let src = exUtility#Pathfmt( src, 'unix')
 
             " remove last \ if found in dest path
             if ( dest[strlen(dest)-1] == '/' )

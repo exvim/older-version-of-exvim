@@ -40,6 +40,14 @@ if test "${cwd}" = ""; then
 fi
 
 # ------------------------------------------------------------------ 
+# Desc: toolkit_path 
+# ------------------------------------------------------------------ 
+
+if test "${toolkit_path}" = ""; then
+    toolkit_path="${EX_DEV}/vim/toolkit"
+fi
+
+# ------------------------------------------------------------------ 
 # Desc: lang_type 
 # ------------------------------------------------------------------ 
 
@@ -224,7 +232,7 @@ gen_filenamelist ()
 
         # create filenametags
         echo "  |- generate _filenametags"
-        gawk -f "${EX_DEV}/vim/toolkit/gawk/prg_FilenameTagLinux.awk" "./${vimfiles_path}/filenamelist_vimfiles">"./${vimfiles_path}/_filenametags"
+        gawk -f "${toolkit_path}/gawk/prg_FilenameTagLinux.awk" "./${vimfiles_path}/filenamelist_vimfiles">"./${vimfiles_path}/_filenametags"
         if [ -f "./${vimfiles_path}/_filenametags" ]; then
             echo "  |- rename _filenametags to filenametags"
             mv -f "./${vimfiles_path}/_filenametags" "./${vimfiles_path}/filenametags"
@@ -275,7 +283,7 @@ gen_symbols ()
     if test "$support_symbol" = "true"; then
         echo "Creating Symbols..."
         echo "  |- generate _symbol"
-        gawk -f "${EX_DEV}/vim/toolkit/gawk/prg_NoStripSymbol.awk" ./${vimfiles_path}/tags>./${vimfiles_path}/_symbol
+        gawk -f "${toolkit_path}/gawk/prg_NoStripSymbol.awk" ./${vimfiles_path}/tags>./${vimfiles_path}/_symbol
         if [ -f "./${vimfiles_path}/_symbol" ]; then
             echo "  |- rename _symbol to symbol"
             mv -f "./${vimfiles_path}/_symbol" "./${vimfiles_path}/symbol"
@@ -294,7 +302,7 @@ gen_inherits ()
     if test "$support_inherit" = "true"; then
         echo "Creating Inherits..."
         echo "  |- generate _inherits"
-        gawk -f "${EX_DEV}/vim/toolkit/gawk/prg_Inherits.awk" ./${vimfiles_path}/tags>./${vimfiles_path}/_inherits
+        gawk -f "${toolkit_path}/gawk/prg_Inherits.awk" ./${vimfiles_path}/tags>./${vimfiles_path}/_inherits
         if [ -f "./${vimfiles_path}/_inherits" ]; then
             echo "  |- rename _inherits to inherits"
             mv -f "./${vimfiles_path}/_inherits" "./${vimfiles_path}/inherits"
@@ -313,7 +321,7 @@ gen_cscope ()
         echo "Creating cscope data..."
         echo "  |- generate cscope.files"
         if [ -f "./${vimfiles_path}/filenamelist_cwd" ]; then
-            gawk -v filter_pattern=${cscope_file_filter_pattern} -f "${EX_DEV}/vim/toolkit/gawk/prg_FileFilterWithQuotes.awk" "./${vimfiles_path}/filenamelist_cwd" > cscope.files
+            gawk -v filter_pattern=${cscope_file_filter_pattern} -f "${toolkit_path}/gawk/prg_FileFilterWithQuotes.awk" "./${vimfiles_path}/filenamelist_cwd" > cscope.files
         else
             find . -regex '.*\.\('"${cscope_file_filter}"'\)' > cscope.files
         fi
@@ -352,7 +360,7 @@ gen_id ()
         # if both file not exists, we use default one in toolkit directory
     else
         echo "  |- generate ID by default language map"
-        mkid --include="text" --lang-map="${EX_DEV}/vim/toolkit/idutils/id-lang.map" ${dir_filter}
+        mkid --include="text" --lang-map="${toolkit_path}/idutils/id-lang.map" ${dir_filter}
     fi
 
     # mkid --include="C C++"
