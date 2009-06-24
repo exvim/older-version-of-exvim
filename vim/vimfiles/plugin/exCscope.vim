@@ -499,8 +499,8 @@ function g:exCS_InitSelectWindow() " <<<
     syntax match exCS_SynDummy '^\S\+:\d\+:\s<<\S\+>>' contains=exCS_SynLineNr2,ex_SynFileName,exCS_DefType
     syntax match exCS_SynDummy '^ \[\d\+\]\s\S\+:\d\+:\(\s<<\S\+>>\)*' contains=exCS_SynQfNumber,exCS_SynLineNr2,exCS_SynFileName2,exCS_DefType
     syntax match exCS_SynLineNr2 '\d\+:' contained
-    syntax region ex_SynFileName start="^[^:]*" end=":" oneline contained
-    syntax region exCS_SynFileName2 start=" [^:]*" end=":" oneline contained contains=exCS_SynQfNumber
+    syntax region ex_SynFileName start="^[^:]*" end=":" keepend oneline contained
+    syntax region exCS_SynFileName2 start="^ \[\d\+\]\s[^:]*" end=":" keepend oneline contained contains=exCS_SynQfNumber
     syntax match exCS_DefType '<<\S\+>>' contained
 
     "
