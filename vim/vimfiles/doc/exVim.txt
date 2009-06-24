@@ -2347,6 +2347,31 @@ Default Key:
 ------------------------------------------------------------------------------
 3.9.2. Commands                                            *exCscope-commands*
 
+								        *:CSI*
+:CSI {file-name} 
+    will find files #including {file-name}, and list the result in 
+    exCscope select window.
+
+									*:CSD*
+:CSD {name} 
+    will find functions called by function in {name}. 
+
+									*:CSC*
+:CSC {name} 
+    will find functions calling function in {name}. 
+
+									*:CSS*
+:CSS {name} 
+    will find C symbol in {name}.
+
+									*:CSG*
+:CSG {name} 
+    will find definition in {name}.
+
+									*:CSE*
+:CSE {name} 
+    will egrep pattern in {name}.
+
 								       *:CSIC*
 :CSIC
     will find files #including current edit file (aka <cfile>), and list the 
@@ -2354,12 +2379,47 @@ Default Key:
 >
 	nnoremap <unique> <silent> <F2> :CSIC<CR>
 <
-								        *:CSI*
-:CSI {file-name} 
-    will find files #including {file-name}, and list the result in 
-    exCscope select window.
-
-	*Todo	the other commands....
+								       *:CSID*
+:CSID
+    will find files #including current file under cursor (aka `<cfile>`), and 
+    list the result in exCscope select window. Recommanded mapping:
+>
+	nnoremap <unique> <silent> <Leader>ci :CSID<CR>
+<
+								       *:CSDD*
+:CSDD
+    will find functions called by current function under cursor, and list the 
+    result in exCscope select window. Recommanded mapping:
+>
+	nnoremap <unique> <silent> <Leader>cd :CSDD<CR>
+<
+								       *:CSDC*
+:CSDC
+    will find functions calling the function under cursor, and list the result in 
+    exCscope select window. Recommanded mapping:
+>
+	nnoremap <unique> <silent> <Leader>cc :CSDC<CR>
+<
+							  *:ExcsParseFunction*
+:ExcsParseFunction
+    List functions called by the function the cursor in, and list the result in 
+    exCscope select window.  Unlike :CSDD, this command will use the function current 
+    cursor in. Recommanded mapping:
+>
+	nnoremap <unique> <silent> <F3> :ExcsParseFunction<CR>
+<
+							   *:ExcsSelectToggle*
+:ExcsSelectToggle
+    Open/Close exCscope select-window. Recommend mapping: 
+>
+	nnoremap <unique> <silent> <Leader>cs :ExcsSelectToggle<CR>
+<
+							*:ExcsQuickViewToggle*
+:ExcsQuickViewToggle
+    Open/Close exCscope quickview-window. Recommend mapping:
+>
+	nnoremap <unique> <silent> <Leader>cq :ExcsQuickViewToggle<CR>
+<
 
 ------------------------------------------------------------------------------
 3.9.3. Key Mappings                                        *exCscope-mappings*
