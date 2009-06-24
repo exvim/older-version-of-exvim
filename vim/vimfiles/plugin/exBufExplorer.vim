@@ -182,7 +182,7 @@ function g:exBE_InitSelectWindow () " <<<
     silent exec "nnoremap <buffer> <silent> " . g:ex_keymap_confirm . " \\|:call <SID>exBE_GotoInSelectWindow()<CR>"
     nnoremap <buffer> <silent> <2-LeftMouse>   \|:call <SID>exBE_GotoInSelectWindow()<CR>
 
-    nnoremap <buffer> <silent> dd   :call <SID>exBE_DeleteSelectBuffer()<CR>
+    nnoremap <buffer> <silent> dd   :call <SID>exBE_DeleteSelectLine()<CR>
 
     " Autocommands to keep the window the specified size
     au WinEnter <buffer> :call g:exBE_UpdateSelectWindow()
@@ -234,6 +234,20 @@ endfunction " >>>
 " Desc: 
 " ------------------------------------------------------------------ 
 
+function s:exBE_DeleteSelectLine () " <<<
+    let line_nr = line('.')
+    let bookmark_nr = search ('-- Bookmarks --', 'n')
+    if line_nr > bookmark_nr
+        call s:exBE_DeleteSelectBookmark ()
+    else
+        call s:exBE_DeleteSelectBuffer ()
+    endif
+endfunction " >>>
+
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
 function s:exBE_DeleteSelectBuffer () " <<<
     let bufnum = str2nr( getline('.') )
     if bufnum == 0
@@ -254,6 +268,22 @@ function s:exBE_DeleteSelectBuffer () " <<<
 
         " then we locate the edit_buf if we found it. 
         silent call search( '^ '.edit_bufnum.':', 'w' )
+    endif
+endfunction " >>>
+
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
+function s:exBE_DeleteSelectBookmark () " <<<
+    if exists ( 'g:exES_Bookmarks' )
+        silent! setlocal modifiable
+        silent normal! "_dd
+        silent! setlocal nomodifiable
+
+        let bookmark_nr = search ('-- Bookmarks --', 'n')
+        let lines = getline( bookmark_nr+1, '$' )
+        silent call writefile( lines, g:exES_Bookmarks )
     endif
 endfunction " >>>
 
