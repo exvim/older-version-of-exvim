@@ -1263,13 +1263,8 @@ function exUtility#SaveRestoreInfo() " <<<
         if getbufvar( last_buf_nr, '&buflisted') == 1
             " load last edit buffer
             silent call add ( cmdlist, "edit " . bufname(last_buf_nr) )
-            silent call add ( cmdlist, "setlocal filetype=" . getbufvar(last_buf_nr,'&filetype') )
             let save_cursor = getpos(".")
             silent call add ( cmdlist, "call cursor(" . save_cursor[1] . "," . save_cursor[2] . ")" )
-
-            " redraw screen
-            silent call add ( cmdlist, "redraw!" )
-            silent call add ( cmdlist, "redrawstatus!" )
         endif
 
         "
@@ -1293,9 +1288,7 @@ function exUtility#RestoreLastEditBuffers() " <<<
 
         " go to last edit buffer
         call exUtility#GotoEditBuffer()
-        if exists( ':UMiniBufExplorer' )
-            silent exec 'UMiniBufExplorer'
-        endif
+        doautocmd BufNewFile,BufRead,BufEnter,BufWinEnter
     endif
 endfunction  " >>>
 
