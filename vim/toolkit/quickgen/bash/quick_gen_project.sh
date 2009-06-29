@@ -328,11 +328,11 @@ gen_cscope ()
 
         echo "  |- generate cscope.out"
         cscope -b
-        if [ -f "./${vimfiles_path}/cscope.files" ]; then
+        if [ -f "./cscope.files" ]; then
             echo "  |- move cscope.files to ./${vimfiles_path}/cscope.files"
             mv -f "cscope.files" "./${vimfiles_path}/cscope.files"
         fi
-        if [ -f "./${vimfiles_path}/cscope.out" ]; then
+        if [ -f "./cscope.out" ]; then
             echo "  |- move cscope.out to ./${vimfiles_path}/cscope.out"
             mv -f "cscope.out" "./${vimfiles_path}/cscope.out"
         fi
