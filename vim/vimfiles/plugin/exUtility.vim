@@ -48,7 +48,7 @@ endif
 " ------------------------------------------------------------------ 
 
 if !exists('g:ex_auto_hl_cursor_word')
-    let g:ex_auto_hl_cursor_word = 1
+    let g:ex_auto_hl_cursor_word = 0
 endif
 
 " ------------------------------------------------------------------ 
