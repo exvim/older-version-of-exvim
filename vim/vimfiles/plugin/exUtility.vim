@@ -44,6 +44,14 @@ if !exists('g:ex_help_text_on')
 endif
 
 " ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
+if !exists('g:ex_auto_hl_cursor_word')
+    let g:ex_auto_hl_cursor_word = 1
+endif
+
+" ------------------------------------------------------------------ 
 " Desc: add todo syntax keyword 
 " ------------------------------------------------------------------ 
 
@@ -178,6 +186,7 @@ function s:UpdateSyntaxHighlights() " <<<
     hi default ex_SynHL2 gui=none guibg=LightMagenta term=none cterm=none ctermbg=LightMagenta
     hi default ex_SynHL3 gui=none guibg=LightRed term=none cterm=none ctermbg=LightRed
     hi default ex_SynHL4 gui=none guibg=LightGreen term=none cterm=none ctermbg=LightGreen
+    hi default ex_SynHLTemp gui=none guibg=White term=none cterm=none ctermbg=White 
 
     " hi default ex_SynSelectLine gui=none guibg=#bfffff term=none cterm=none ctermbg=LightCyan
     hi default link ex_SynSelectLine CursorLine  
@@ -257,6 +266,7 @@ function s:UpdateSyntaxHighlights() " <<<
         hi ex_SynHL2 gui=none guibg=DarkMagenta term=none cterm=none ctermbg=DarkMagenta
         hi ex_SynHL3 gui=none guibg=DarkRed term=none cterm=none ctermbg=DarkRed
         hi ex_SynHL4 gui=none guibg=DarkGreen term=none cterm=none ctermbg=DarkGreen
+        hi ex_SynHLTemp gui=none guibg=DarkGray term=none cterm=none ctermbg=DarkGray
 
         hi ex_SynConfirmLine gui=none guibg=DarkRed term=none cterm=none ctermbg=DarkRed
         hi ex_SynObjectLine gui=none guibg=DarkRed term=none cterm=none ctermbg=DarkRed
@@ -278,6 +288,11 @@ endfunction " >>>
 au BufWritePost * call exUtility#UpdateCurrentBuffer() 
 au ColorScheme * call s:UpdateSyntaxHighlights()
 au VimEnter * call s:UpdateSyntaxHighlights()
+
+if g:ex_auto_hl_cursor_word
+    au CursorHold * :call exUtility#Highlight_Temp()
+    au CursorMoved * :call exUtility#Highlight_TempCursorMoved()
+endif
 
 "/////////////////////////////////////////////////////////////////////////////
 " commands

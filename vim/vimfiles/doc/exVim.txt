@@ -634,6 +634,13 @@ How can I install "exVim"~
 >
 	let g:ex_toolkit_path = $EX_DEV.'/vim/toolkit'
 <
+                                                      *ex_auto_hl_cursor_word*
+    if ex_auto_hl_cursor_word set to 1, exVim will use exSynHLTemp syntax
+    highlight color to highlight the word under current cursor when cursor
+    holds.
+>
+	let g:ex_auto_hl_cursor_word = 1
+<
 
 ------------------------------------------------------------------------------
 3.1.2. Recommend Commands                                 *exUtility-commands*
