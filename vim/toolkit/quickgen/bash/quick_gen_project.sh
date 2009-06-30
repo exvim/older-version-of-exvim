@@ -30,6 +30,19 @@ fi
 # /////////////////////////////////////////////////////////////////////////////
 
 # ------------------------------------------------------------------ 
+# Desc: test and set regex type for find-utils
+# ------------------------------------------------------------------ 
+
+find . -maxdepth 1 -regextype posix-extended -regex 'test' > /dev/null 2>&1
+if test "$?" = "0"; then
+    force_posix_regex_1=""
+    force_posix_regex_2="-regextype posix-extended"
+else
+    force_posix_regex_1="-E"
+    force_posix_regex_2=""
+fi
+
+# ------------------------------------------------------------------ 
 # Desc: cwd 
 # ------------------------------------------------------------------ 
 
@@ -211,10 +224,12 @@ gen_filenamelist ()
 
         # create filenamelist_cwd
         echo "  |- generate _filenamelist_cwd"
-        find ${dir_filter} -regex '.*\.\('"${file_filter}"'\)' >> "./${vimfiles_path}/_filenamelist_cwd"
-        # NOTE: if we have dir filter, we still need get files in root directory 
         if test "${dir_filter}" != ""; then
-            find . -maxdepth 1 -regex '.*\.\('"${file_filter}"'\)' >> "./${vimfiles_path}/_filenamelist_cwd"
+            # NOTE: if we have dir filter, we still need get files in root directory 
+            find ${force_posix_regex_1} . -maxdepth 1 ${force_posix_regex_2} -regex ".*\.('"${file_filter}"')" > "./${vimfiles_path}/_filenamelist_cwd"
+            find ${force_posix_regex_1} ${dir_filter} ${force_posix_regex_2} -regex ".*\.('"${file_filter}"')" >> "./${vimfiles_path}/_filenamelist_cwd"
+        else
+            find ${force_posix_regex_1} . ${force_posix_regex_2} -regex ".*\.('"${file_filter}"')" > "./${vimfiles_path}/_filenamelist_cwd"
         fi
 
         if [ -f "./${vimfiles_path}/_filenamelist_cwd" ]; then
@@ -323,7 +338,7 @@ gen_cscope ()
         if [ -f "./${vimfiles_path}/filenamelist_cwd" ]; then
             gawk -v filter_pattern=${cscope_file_filter_pattern} -f "${toolkit_path}/gawk/prg_FileFilterWithQuotes.awk" "./${vimfiles_path}/filenamelist_cwd" > cscope.files
         else
-            find . -regex '.*\.\('"${cscope_file_filter}"'\)' > cscope.files
+            find ${force_posix_regex_1} . ${force_posix_regex_2} -regex '.*\.\('"${cscope_file_filter}"'\)' > cscope.files
         fi
 
         echo "  |- generate cscope.out"

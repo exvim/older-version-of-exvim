@@ -1518,7 +1518,7 @@ function exUtility#GetProjectFileFilterCommand() " <<<
         endfor
     elseif has ('unix')
         for item in filter_list 
-            let filter_command .= item . '\|'
+            let filter_command .= substitute(item, "\+", "\\\\+", "g") . '|'
         endfor
         for item in cscope_filter_list 
             let cscope_filter_command .= item . '\|'
