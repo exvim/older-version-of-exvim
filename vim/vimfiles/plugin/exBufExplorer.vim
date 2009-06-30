@@ -330,9 +330,9 @@ function s:exBE_ShowEditBuffers () " <<<
 
     " save book marks
     if exists ( 'g:exES_Bookmarks' )
+        silent call append( line('$'), [''] )
+        silent call append( line('$'), book_mark_title )
         if filereadable(g:exES_Bookmarks) == 1
-            silent call append( line('$'), [''] )
-            silent call append( line('$'), book_mark_title )
             silent call append( line('$'), readfile( g:exES_Bookmarks ) )
         endif
     endif
