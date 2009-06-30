@@ -3061,11 +3061,13 @@ function exUtility#DefineMatchVariables() " <<<
     if !exists('w:ex_HighLightText')
         let w:ex_HighLightText = ["","","","",""]
     endif
-    if !exists('w:ex_hlMatchIDTemp')
-        let w:ex_hlMatchIDTemp = 0
-    endif
-    if !exists('w:ex_HighLightTextTemp')
-        let w:ex_HighLightTextTemp = ""
+    if g:ex_auto_hl_cursor_word
+        if !exists('w:ex_hlMatchIDTemp')
+            let w:ex_hlMatchIDTemp = 0
+        endif
+        if !exists('w:ex_HighLightTextTemp')
+            let w:ex_HighLightTextTemp = ""
+        endif
     endif
 endfunction " >>>
 
