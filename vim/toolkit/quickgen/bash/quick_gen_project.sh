@@ -81,7 +81,7 @@ fi
 # ------------------------------------------------------------------ 
 
 if test "${file_filter}" = ""; then
-    file_filter="c\|cpp\|cxx\|c++\|C\|cc\|h\|H\|hh\|hxx\|hpp\|inl\|cs\|uc\|hlsl\|vsh\|psh\|fx\|fxh\|cg\|shd\|glsl\|py\|pyw\|vim\|awk\|m\|dox\|doxygen\|ini\|cfg\|wiki\|mk\|err\|exe\|bat\|sh"
+    file_filter="c|cpp|cxx|c\+\+|C|cc|h|H|hh|hxx|hpp|inl|cs|uc|hlsl|vsh|psh|fx|fxh|cg|shd|glsl|py|pyw|vim|awk|m|dox|doxygen|ini|cfg|wiki|mk|err|exe|bat|sh"
 fi
 
 # ------------------------------------------------------------------ 
@@ -97,7 +97,7 @@ fi
 # ------------------------------------------------------------------ 
 
 if test "${cscope_file_filter}" = ""; then
-    cscope_file_filter="c\|cpp\|cxx\|c++\|C\|cc\|h\|H\|hh\|hxx\|hpp\|inl\|hlsl\|vsh\|psh\|fx\|fxh\|cg\|shd\|glsl"
+    cscope_file_filter="c|cpp|cxx|c\+\+|C|cc|h|H|hh|hxx|hpp|inl|hlsl|vsh|psh|fx|fxh|cg|shd|glsl"
 fi
 
 # ------------------------------------------------------------------ 
@@ -338,7 +338,7 @@ gen_cscope ()
         if [ -f "./${vimfiles_path}/filenamelist_cwd" ]; then
             gawk -v filter_pattern=${cscope_file_filter_pattern} -f "${toolkit_path}/gawk/prg_FileFilterWithQuotes.awk" "./${vimfiles_path}/filenamelist_cwd" > cscope.files
         else
-            find ${force_posix_regex_1} . ${force_posix_regex_2} -regex '.*\.\('"${cscope_file_filter}"'\)' > cscope.files
+            find ${force_posix_regex_1} . ${force_posix_regex_2} -regex ".*\.('"${cscope_file_filter}"')" > cscope.files
         fi
 
         echo "  |- generate cscope.out"

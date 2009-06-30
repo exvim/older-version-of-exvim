@@ -1521,10 +1521,10 @@ function exUtility#GetProjectFileFilterCommand() " <<<
             let filter_command .= substitute(item, "\+", "\\\\+", "g") . '|'
         endfor
         for item in cscope_filter_list 
-            let cscope_filter_command .= item . '\|'
+            let cscope_filter_command .= substitute(item, "\+", "\\\\+", "g") . '|'
         endfor
-        let filter_command = strpart( filter_command, 0, len(filter_command) - 2)
-        let cscope_filter_command = strpart( cscope_filter_command, 0, len(cscope_filter_command) - 2)
+        let filter_command = strpart( filter_command, 0, len(filter_command) - 1)
+        let cscope_filter_command = strpart( cscope_filter_command, 0, len(cscope_filter_command) - 1)
     endif
 
     return [filter_command,cscope_filter_command]
