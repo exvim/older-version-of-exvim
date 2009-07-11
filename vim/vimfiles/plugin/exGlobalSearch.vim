@@ -535,7 +535,11 @@ endfunction ">>>
 
 function s:exGS_GetGlobalSearchResult(search_pattern, search_method, direct_jump) " <<<
     " if the search pattern is same as the last one, open the window
-    if a:search_pattern !=# s:exGS_cur_search_pattern && s:exGS_need_search_again != 1
+    " NOTE: for exJumpStack, it may first parse tag, then global search, when
+    " you parse tag again, you may parse the same tag, and if you skip push it
+    " into stack, it will become a wrong jump
+    " DISABLE: if a:search_pattern !=# s:exGS_cur_search_pattern && s:exGS_need_search_again != 1
+    if s:exGS_need_search_again != 1
         let s:exGS_need_push_search_result = 1
         let s:exGS_select_idx = 1
     else

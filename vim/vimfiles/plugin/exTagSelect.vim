@@ -361,7 +361,11 @@ function s:exTS_GetTagSelectResult(tag, direct_jump) " <<<
         return
     endif
     " if it is a new tag, push it into the tag stack and parse it.
-    if in_tag !=# s:exTS_cur_tagname && s:exTS_need_parse_again != 1
+    " NOTE: for exJumpStack, it may first parse tag, then global search, when
+    " you parse tag again, you may parse the same tag, and if you skip push it
+    " into stack, it will become a wrong jump
+    " DISABLE: if in_tag !=# s:exTS_cur_tagname && s:exTS_need_parse_again != 1
+    if s:exTS_need_parse_again != 1
         let s:exTS_need_push_tag = 1
     else
         let s:exTS_need_push_tag = 0

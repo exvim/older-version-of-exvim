@@ -3212,7 +3212,7 @@ function exUtility#GenInheritsDot( pattern, gen_method ) " <<<
     " write file
     call writefile(inherits_list, inherits_dot_file, "b")
     let image_file_name = inherit_directory_path . pattern_fname . ".png"
-    let dot_cmd = "!dot " . inherits_dot_file . " -Tpng -o" . image_file_name
+    let dot_cmd = "!dot " . '"'.inherits_dot_file.'"' . " -Tpng -o" . '"'.image_file_name.'"'
     silent exec dot_cmd
     if has("win32")
         return exUtility#Pathfmt( fnamemodify( image_file_name, ":p" ), 'windows' )

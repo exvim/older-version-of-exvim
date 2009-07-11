@@ -324,6 +324,10 @@ function g:exES_UpdateEnvironment() " <<<
         silent exec 'cd ' . g:exES_CWD
     endif
 
+    if exists('g:exES_VimEntryName')
+        au VimEnter,BufNewFile,BufEnter * let &titlestring = g:exES_VimEntryName . ' : %t %M%r (' . expand("%:p:h") . ')' . ' %h%w%y'
+    endif
+
     " create _vimfiles directories
     if exists ('g:exES_VimfilesDirName')
         let g:exES_vimfiles_dirname = g:exES_VimfilesDirName
