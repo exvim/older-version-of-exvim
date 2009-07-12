@@ -104,7 +104,7 @@ endif
 let s:exQF_select_title = '__exQF_SelectWindow__'
 let s:exQF_quick_view_title = '__exQF_QuickViewWindow__'
 let s:exQF_short_title = 'Select'
-let s:exQF_cur_filename = '__exQF_SelectWindow__'
+let s:exQF_cur_filename = ''
 
 " ------------------------------------------------------------------ 
 " Desc: general
@@ -315,6 +315,9 @@ endfunction " >>>
 function g:exQF_UpdateSelectWindow() " <<<
     silent call cursor(s:exQF_select_idx, 1)
     call exUtility#HighlightConfirmLine()
+    if s:exQF_cur_filename != ''
+        silent exec 'QF ' . s:exQF_cur_filename
+    endif
 endfunction " >>>
 
 " ------------------------------------------------------------------ 
