@@ -149,5 +149,5 @@ $(Prj_Cmd_Clean_Deps):
 	$(ECHO) Project: $(dir $@)
 	$(ECHO) Command: $(notdir $@)
 	$(ECHO) ==========================================================
-	$(ECHO) $(USE_MARK)|
+	$(ECHO) $(VERTICAL_BAR)
 	$(SMAKE) -C$(dir $@) -f$(patsubst %/,%,$(dir $@)).mk $(notdir $@)
