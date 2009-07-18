@@ -7,13 +7,68 @@ if exists("g:loaded_vimwiki_auto") || &cp
 endif
 let g:loaded_vimwiki_auto = 1
 
-let s:wiki_badsymbols = '[<>|?*/\:"]'
+if has("win32")
+  let s:os_sep = '\\'
+else
+  let s:os_sep = '/'
+endif
 
+let s:wiki_badsymbols = '[<>|?*:"]'
 " MISC helper functions {{{
+function! vimwiki#mkdir(path) "{{{
+  " TODO: add exception handling...
+  let path = simplify( fnamemodify (a:path, ':p') )
+  if !isdirectory(path) && exists("*mkdir")
+    " NOTE: the path here can't be end with '/' or '\', e.g. the d:\Test\
+    " will be failed in mkdir function. 
+    if path[-1:] == '/' || path[-1:] == '\'
+      let path = path[:-2]
+    endif
+
+    try
+        call mkdir(path, "p")
+    catch /^Vim\%((\a\+)\)\=:E739/
+        echohl WarningMsg
+        echomsg 'vimwiki: can not create directory - ' . path 
+        echohl None
+    endtry
+  endif
+endfunction
+" }}}
+function! vimwiki#safe_link(string) "{{{
+  return substitute(a:string, s:wiki_badsymbols, g:vimwiki_stripsym, 'g')
+endfunction
+"}}}
+function! vimwiki#unsafe_link(string) "{{{
+  return substitute(a:string, g:vimwiki_stripsym, s:wiki_badsymbols, 'g')
+endfunction
+"}}}
+function! vimwiki#subdir(path, filename)"{{{
+  let path = expand(a:path)
+  let filename = expand(a:filename)
+  let idx = 0
+  while path[idx] == filename[idx]
+    let idx = idx + 1
+  endwhile
+
+  let p = split(strpart(filename, idx), '[/\\]')
+  let res = join(p[:-2], s:os_sep)
+  if len(res) > 0
+    let res = res.s:os_sep
+  endif
+  return res
+endfunction"}}}
 function! s:msg(message) "{{{
   echohl WarningMsg
   echomsg 'vimwiki: '.a:message
   echohl None
+endfunction
+" }}}
+function! s:is_wiki_word(str) "{{{
+  if a:str =~ g:vimwiki_word1 && stridx(a:str, ' ') == -1
+    return 1
+  endif
+  return 0
 endfunction
 " }}}
 function! s:get_file_name_only(filename) "{{{
@@ -24,6 +79,7 @@ endfunction
 " }}}
 function! s:edit_file(command, filename) "{{{
   let fname = escape(a:filename, '% ')
+  call vimwiki#mkdir(fnamemodify(a:filename, ":p:h"))
   execute a:command.' '.fname
 endfunction
 " }}}
@@ -55,18 +111,14 @@ function! s:get_word_at_cursor(wikiRX) "{{{
     return ""
   endif
 endf "}}}
-function! s:strip_word(word, sym) "{{{
-  function! s:strip_word_helper(word, sym)
-    return substitute(a:word, s:wiki_badsymbols, a:sym, 'g')
-  endfunction
-
+function! s:strip_word(word) "{{{
   let result = a:word
   if strpart(a:word, 0, 2) == "[["
     " get rid of [[ and ]]
     let w = strpart(a:word, 2, strlen(a:word)-4)
     " we want "link" from [[link|link desc]]
     let w = split(w, "|")[0]
-    let result = s:strip_word_helper(w, a:sym)
+    let result = vimwiki#safe_link(w)
   endif
   return result
 endfunction
@@ -102,17 +154,6 @@ function! s:wiki_select(wnum)"{{{
   endif
   let b:vimwiki_idx = g:vimwiki_current_idx
   let g:vimwiki_current_idx = a:wnum - 1
-endfunction
-" }}}
-function! vimwiki#mkdir(path) "{{{
-  " TODO: add exception handling...
-  let path = expand(a:path)
-  if !isdirectory(path) && exists("*mkdir")
-    if path[-1:] == '/' || path[-1:] == '\'
-      let path = path[:-2]
-    endif
-    call mkdir(path, "p")
-  endif
 endfunction
 " }}}
 function! s:update_wiki_link(fname, old, new) " {{{
@@ -166,21 +207,33 @@ endfunction
 " }}}
 " SYNTAX highlight {{{
 function! vimwiki#WikiHighlightWords() "{{{
-  let wikies = glob(VimwikiGet('path').'*'.VimwikiGet('ext'))
-  "" remove .wiki extensions
+  " search all wiki files in 'path' and its subdirs.
+  let subdir = vimwiki#subdir(VimwikiGet('path'), expand('%:p'))
+  let wikies = glob(VimwikiGet('path').subdir.'**/*'.VimwikiGet('ext'))
+
+  " remove .wiki extensions
   let wikies = substitute(wikies, '\'.VimwikiGet('ext'), "", "g")
   let g:vimwiki_wikiwords = split(wikies, '\n')
-  "" remove paths
-  call map(g:vimwiki_wikiwords, 'substitute(v:val, ''.*[/\\]'', "", "g")')
-  "" remove backup files (.wiki~)
+
+  " remove backup files (.wiki~)
   call filter(g:vimwiki_wikiwords, 'v:val !~ ''.*\~$''')
+
+  " remove paths
+  let rem_path = escape(expand(VimwikiGet('path')).subdir, '\')
+  call map(g:vimwiki_wikiwords, 'substitute(v:val, rem_path, "", "g")')
+
+  " Links with subdirs should be highlighted for linux and windows separators
+  " Change \ or / to [/\\]
+  let os_p = '[/\\]'
+  let os_p2 = escape(os_p, '\')
+  call map(g:vimwiki_wikiwords, 'substitute(v:val, os_p, os_p2, "g")')
 
   for word in g:vimwiki_wikiwords
     if word =~ g:vimwiki_word1 && !s:is_link_to_non_wiki_file(word)
       execute 'syntax match wikiWord /\%(^\|[^!]\)\zs\<'.word.'\>/'
     endif
     execute 'syntax match wikiWord /\[\[\<'.
-          \ substitute(word, g:vimwiki_stripsym, s:wiki_badsymbols, "g").
+          \ vimwiki#unsafe_link(word).
           \ '\>\%(|\+.*\)*\]\]/'
   endfor
   execute 'syntax match wikiWord /\[\[.\+\.\%(jpg\|png\|gif\)\%(|\+.*\)*\]\]/'
@@ -215,8 +268,7 @@ function! vimwiki#WikiFollowWord(split) "{{{
   else
     let cmd = ":e "
   endif
-  let word = s:strip_word(s:get_word_at_cursor(g:vimwiki_rxWikiWord),
-        \                                      g:vimwiki_stripsym)
+  let word = s:strip_word(s:get_word_at_cursor(g:vimwiki_rxWikiWord))
   " insert doesn't work properly inside :if. Check :help :if.
   if word == ""
     execute "normal! \n"
@@ -226,7 +278,8 @@ function! vimwiki#WikiFollowWord(split) "{{{
     call s:edit_file(cmd, word)
   else
     let vimwiki_prev_word = [expand('%:p'), getpos('.')]
-    call s:edit_file(cmd, VimwikiGet('path').word.VimwikiGet('ext'))
+    let subdir = vimwiki#subdir(VimwikiGet('path'), expand('%:p'))
+    call s:edit_file(cmd, VimwikiGet('path').subdir.word.VimwikiGet('ext'))
     let b:vimwiki_prev_word = vimwiki_prev_word
   endif
 endfunction
@@ -285,9 +338,8 @@ function! vimwiki#WikiRenameWord() "{{{
   "" Rename WikiWord, update all links to renamed WikiWord
   let wwtorename = expand('%:t:r')
   let isOldWordComplex = 0
-  if wwtorename !~ g:vimwiki_word1
-    let wwtorename = substitute(wwtorename, g:vimwiki_stripsym,
-          \ s:wiki_badsymbols, "g")
+  if !s:is_wiki_word(wwtorename)
+    let wwtorename = vimwiki#unsafe_link(wwtorename)
     let isOldWordComplex = 1
   endif
 
@@ -313,11 +365,11 @@ function! vimwiki#WikiRenameWord() "{{{
     return
   endif
 
-  if newWord !~ g:vimwiki_word1
+  if !s:is_wiki_word(newWord)
     " if newWord is 'complex wiki word' then add [[]]
     let newWord = '[['.newWord.']]'
   endif
-  let newFileName = s:strip_word(newWord, g:vimwiki_stripsym).VimwikiGet('ext')
+  let newFileName = s:strip_word(newWord).VimwikiGet('ext')
 
   " do not rename if word with such name exists
   let fname = glob(VimwikiGet('path').newFileName)

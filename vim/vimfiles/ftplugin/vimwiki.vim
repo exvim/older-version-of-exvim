@@ -15,16 +15,20 @@ let b:undo_ftplugin = "setlocal wrap< linebreak< ".
       \ "formatoptions< foldtext< ".
       \ "foldmethod< foldexpr< commentstring< "
 " UNDO }}}
+
 " MISC STUFF {{{
+
 setlocal wrap
 setlocal linebreak
 setlocal autowriteall
 setlocal commentstring=<!--%s-->
 " MISC }}}
+
 " GOTO FILE: gf {{{
 execute 'setlocal suffixesadd='.VimwikiGet('ext')
 setlocal isfname-=[,]
 " gf}}}
+
 " COMMENTS: autocreate list items {{{
 " for list items, and list items with checkboxes
 if VimwikiGet('syntax') == 'default'
@@ -38,6 +42,7 @@ else
 endif
 setlocal formatoptions=ctnqro
 " COMMENTS }}}
+
 " FOLDING for headers and list items using expr fold method. {{{
 if VimwikiGet('folding')
   setlocal fdm=expr
@@ -115,6 +120,7 @@ function! VimwikiFoldText() "{{{
 endfunction "}}}
 
 " FOLDING }}}
+
 " COMMANDS {{{
 command! -buffer Vimwiki2HTML
       \ call vimwiki_html#Wiki2HTML(expand(VimwikiGet('path_html')),
@@ -133,6 +139,7 @@ command! -buffer VimwikiVSplitWord call vimwiki#WikiFollowWord('vsplit')
 
 command! -buffer VimwikiToggleListItem call vimwiki_lst#ToggleListItem()
 " COMMANDS }}}
+
 " KEYBINDINGS {{{
 if g:vimwiki_use_mouse
   nmap <buffer> <S-LeftMouse> <NOP>

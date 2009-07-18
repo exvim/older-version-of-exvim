@@ -37,8 +37,14 @@ function GetVimwikiIndent(lnum)
       return &sw
     endif
 
-    let mul = round(lst_indent*1.0/&sw)
-    let ind = float2nr(mul * &sw)
+    if has("float")
+      let mul = round(lst_indent * 1.0 / &sw)
+      let ind = float2nr(mul * &sw)
+    else
+      let mul = lst_indent / &sw
+      let ind = mul * &sw
+    endif
+
     return ind
   endif
 

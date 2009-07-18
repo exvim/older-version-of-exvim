@@ -9,6 +9,7 @@ if exists("g:loaded_vimwiki_html_auto") || &cp
 endif
 let g:loaded_vimwiki_html_auto = 1
 "}}}
+
 " Warn if html header or html footer do not exist only once. {{{
 let s:warn_html_header = 0
 let s:warn_html_footer = 0
@@ -582,7 +583,8 @@ function! s:make_internal_link(entag) "{{{
       if s:is_non_wiki_link(link_parts[0])
         let line = '<a href="'.link_parts[0].'">'.link_parts[1].'</a>'
       else
-        let line = '<a href="'.link_parts[0].'.html">'.link_parts[1].'</a>'
+        let line = '<a href="'.vimwiki#safe_link(link_parts[0]).
+              \ '.html">'.link_parts[1].'</a>'
       endif
     elseif s:is_img_link(link_parts[0])
       let line = '<img src="'.link_parts[0].'" alt="'.
@@ -594,7 +596,8 @@ function! s:make_internal_link(entag) "{{{
     elseif s:is_non_wiki_link(link_parts[0])
       let line = '<a href="'.a:entag.'">'.a:entag.'</a>'
     else
-      let line = '<a href="'.a:entag.'.html">'.a:entag.'</a>'
+      let line = '<a href="'.vimwiki#safe_link(a:entag).
+            \ '.html">'.a:entag.'</a>'
     endif
   endif
 
@@ -819,11 +822,14 @@ function! vimwiki_html#Wiki2HTML(path, wikifile) "{{{
     return
   endif
 
-  let path = expand(a:path)
+  let wikifile = fnamemodify(a:wikifile, ":p")
+  let subdir = vimwiki#subdir(VimwikiGet('path'), wikifile)
+
+  let path = expand(a:path).subdir
   call vimwiki#mkdir(path)
 
-  let lsource = s:remove_comments(readfile(a:wikifile))
-  let ldest = s:get_html_header(s:get_file_name_only(a:wikifile),
+  let lsource = s:remove_comments(readfile(wikifile))
+  let ldest = s:get_html_header(s:get_file_name_only(wikifile),
         \ &fileencoding)
 
 
@@ -866,7 +872,7 @@ function! vimwiki_html#Wiki2HTML(path, wikifile) "{{{
   call extend(ldest, s:get_html_footer())
 
   "" make html file.
-  let wwFileNameOnly = s:get_file_name_only(a:wikifile)
+  let wwFileNameOnly = s:get_file_name_only(wikifile)
   call writefile(ldest, path.wwFileNameOnly.'.html')
 endfunction "}}}
 
@@ -882,7 +888,7 @@ function! vimwiki_html#WikiAll2HTML(path) "{{{
   let setting_more = &more
   setlocal nomore
 
-  let wikifiles = split(glob(VimwikiGet('path').'*'.VimwikiGet('ext')), '\n')
+  let wikifiles = split(glob(VimwikiGet('path').'**/*'.VimwikiGet('ext')), '\n')
   for wikifile in wikifiles
     echomsg 'Processing '.wikifile
     call vimwiki_html#Wiki2HTML(path, wikifile)

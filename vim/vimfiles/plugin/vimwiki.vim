@@ -17,11 +17,28 @@ function! s:default(varname, value) "{{{
   endif
 endfunction "}}}
 
+function! Str_common_part(str1, str2)"{{{
+  let idx = 0
+  let minlen = min([len(a:str1), len(a:str2)])
+  while (idx < minlen) && (a:str1[idx] == a:str2[idx])
+    let idx = idx + 1
+  endwhile
+
+  return strpart(a:str1, 0, idx)
+endfunction"}}}
+
+function! s:chomp_slash(str)"{{{
+  if a:str =~ '[/\\]$'
+    return strpart(a:str, 0, len(a:str) - 1)
+  endif
+  return a:str
+endfunction"}}}
+
 function! s:find_wiki(path) "{{{
   let idx = 0
   while idx < len(g:vimwiki_list)
-    let path = expand(VimwikiGet('path', idx))
-    if path[:-2] == a:path
+    let path = s:chomp_slash(expand(VimwikiGet('path', idx)))
+    if Str_common_part(path, a:path) == path
       return idx
     endif
     let idx += 1
@@ -63,6 +80,7 @@ function! s:setup_buffer_enter() "{{{
   endif
 endfunction "}}}
 " }}}
+
 " DEFAULT wiki {{{
 let s:vimwiki_defaults = {}
 let s:vimwiki_defaults.path = '~/vimwiki/'
@@ -77,6 +95,7 @@ let s:vimwiki_defaults.gohome = 'split'
 let s:vimwiki_defaults.html_header = ''
 let s:vimwiki_defaults.html_footer = ''
 "}}}
+
 " DEFAULT options {{{
 if &encoding == 'utf-8'
   call s:default('upper', 'A-Z\u0410-\u042f')
@@ -107,6 +126,7 @@ let g:vimwiki_word1 = '\C\<['.upp.']['.nlo.']*['.
 let g:vimwiki_word2 = '\[\[[^\]]\+\]\]'
 let g:vimwiki_rxWikiWord = g:vimwiki_word1.'\|'.g:vimwiki_word2
 "}}}
+
 " OPTION get/set functions {{{
 " return value of option for current wiki or if second parameter exists for
 " wiki with a given index.
@@ -150,6 +170,7 @@ function! VimwikiSet(option, value, ...) "{{{
   let g:vimwiki_list[idx][a:option] = a:value
 endfunction "}}}
 " }}}
+
 " FILETYPE setup for all known wiki extensions {{{
 " Getting all extensions that different wikies could have
 let extensions = {}
@@ -178,6 +199,7 @@ augroup vimwiki
   endfor
 augroup END
 "}}}
+
 " COMMANDS {{{
 command! VimwikiUISelect call vimwiki#WikiUISelect()
 command! -count VimwikiGoHome
@@ -185,6 +207,7 @@ command! -count VimwikiGoHome
 command! -count VimwikiTabGoHome tabedit <bar>
       \ call vimwiki#WikiGoHome(v:count1)
 "}}}
+
 " MAPPINGS {{{
 if !hasmapto('<Plug>VimwikiGoHome')
   map <silent><unique> <Leader>ww <Plug>VimwikiGoHome
@@ -202,6 +225,7 @@ endif
 noremap <unique><script> <Plug>VimwikiUISelect :VimwikiUISelect<CR>
 
 "}}}
+
 " MENU {{{
 function! s:build_menu(path)
   let idx = 0
