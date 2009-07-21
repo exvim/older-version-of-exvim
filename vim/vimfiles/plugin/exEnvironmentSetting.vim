@@ -76,7 +76,7 @@ let s:exES_setted = 0
 " Desc: current version. increase this will cause template re-write 
 " ------------------------------------------------------------------ 
 
-let s:exES_CurrentVersion = 22
+let s:exES_CurrentVersion = 23
 
 "/////////////////////////////////////////////////////////////////////////////
 " function defines
