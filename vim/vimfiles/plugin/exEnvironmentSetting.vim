@@ -155,8 +155,8 @@ function s:exES_WriteDefaultTemplate() " <<<
     silent call add(_list, '-- vimwiki Settings --')
     silent call add(_list, '')
 
-    silent call add(_list, 'wikiHome=./_doc/')
-    silent call add(_list, 'wikiHomeHtml=./wiki_html/')
+    silent call add(_list, 'wikiHome=./_doc')
+    silent call add(_list, 'wikiHomeHtml=./wiki_html')
     silent call add(_list, 'wikiHtmlHeader=./_doc/template/header.tpl')
 
     " put the settings into vimentry file

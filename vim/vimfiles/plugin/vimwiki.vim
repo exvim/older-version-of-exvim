@@ -28,10 +28,7 @@ function! Str_common_part(str1, str2)"{{{
 endfunction"}}}
 
 function! s:chomp_slash(str)"{{{
-  if a:str =~ '[/\\]$'
-    return strpart(a:str, 0, len(a:str) - 1)
-  endif
-  return a:str
+  return substitute(a:str, '[/\\]\+$', '', '')
 endfunction"}}}
 
 function! s:find_wiki(path) "{{{

@@ -851,6 +851,7 @@ Vim plugins website: http://www.vim.org/scripts/script.php?script_id=2226
 11. Changelog                                              *vimwiki-changelog*
 
 0.9.4
+  * [new] Links with directories: [[dir_name/Link|Text]].
   * [fix] Indent incorrect for vim without "float" compile option. Thanks
     Julian Kooij
   * [fix] Convert to html doesn't work right with links like [[foo::bar]].

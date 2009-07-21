@@ -8,30 +8,25 @@ endif
 let g:loaded_vimwiki_auto = 1
 
 if has("win32")
-  let s:os_sep = '\\'
+  let s:os_sep = '\'
 else
   let s:os_sep = '/'
 endif
 
 let s:wiki_badsymbols = '[<>|?*:"]'
 " MISC helper functions {{{
-function! vimwiki#mkdir(path) "{{{
-  " TODO: add exception handling...
-  let path = simplify( fnamemodify (a:path, ':p') )
-  if !isdirectory(path) && exists("*mkdir")
-    " NOTE: the path here can't be end with '/' or '\', e.g. the d:\Test\
-    " will be failed in mkdir function. 
-    if path[-1:] == '/' || path[-1:] == '\'
-      let path = path[:-2]
-    endif
 
-    try
-        call mkdir(path, "p")
-    catch /^Vim\%((\a\+)\)\=:E739/
-        echohl WarningMsg
-        echomsg 'vimwiki: can not create directory - ' . path 
-        echohl None
-    endtry
+" This function is double defined.
+" TODO: refactor common functions into new module.
+function! s:chomp_slash(str)"{{{
+  return substitute(a:str, '[/\\]\+$', '', '')
+endfunction"}}}
+
+function! vimwiki#mkdir(path) "{{{
+  let path = expand(a:path)
+  if !isdirectory(path) && exists("*mkdir")
+    let path = s:chomp_slash(path)
+    call mkdir(path, "p")
   endif
 endfunction
 " }}}
