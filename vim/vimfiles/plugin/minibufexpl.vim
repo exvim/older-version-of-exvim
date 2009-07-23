@@ -1369,23 +1369,29 @@ function! <SID>MBESelectBuffer()
     " Switch to the previous window
     wincmd p
 
-    " If we are in the buffer explorer or in a nonmodifiable buffer with
-    " g:miniBufExplModSelTarget set then try another window (a few times)
-    if bufname('%') == '-MiniBufExplorer-' || (g:miniBufExplModSelTarget == 1 && getbufvar(bufnr('%'), '&modifiable') == 0)
-      wincmd w
-      if bufname('%') == '-MiniBufExplorer-' || (g:miniBufExplModSelTarget == 1 && getbufvar(bufnr('%'), '&modifiable') == 0)
-        wincmd w
-        if bufname('%') == '-MiniBufExplorer-' || (g:miniBufExplModSelTarget == 1 && getbufvar(bufnr('%'), '&modifiable') == 0)
-          wincmd w
-          " The following handles the case where -MiniBufExplorer-
-          " is the only window left. We need to resize so we don't
-          " end up with a 1 or two line buffer.
-          if bufname('%') == '-MiniBufExplorer-'
-            let l:resize = 1
-          endif
-        endif
-      endif
+    " jwu MODIFY { 
+    " " If we are in the buffer explorer or in a nonmodifiable buffer with
+    " " g:miniBufExplModSelTarget set then try another window (a few times)
+    " if bufname('%') == '-MiniBufExplorer-' || (g:miniBufExplModSelTarget == 1 && getbufvar(bufnr('%'), '&modifiable') == 0)
+    "   wincmd w
+    "   if bufname('%') == '-MiniBufExplorer-' || (g:miniBufExplModSelTarget == 1 && getbufvar(bufnr('%'), '&modifiable') == 0)
+    "     wincmd w
+    "     if bufname('%') == '-MiniBufExplorer-' || (g:miniBufExplModSelTarget == 1 && getbufvar(bufnr('%'), '&modifiable') == 0)
+    "       wincmd w
+    "       " The following handles the case where -MiniBufExplorer-
+    "       " is the only window left. We need to resize so we don't
+    "       " end up with a 1 or two line buffer.
+    "       if bufname('%') == '-MiniBufExplorer-'
+    "         let l:resize = 1
+    "       endif
+    "     endif
+    "   endif
+    " endif
+    call exUtility#GotoEditBuffer ()
+    if bufname('%') == '-MiniBufExplorer-'
+        let l:resize = 1
     endif
+    " } jwu MODIFY end 
 
     exec('b! '.l:bufnr)
     if (l:resize)

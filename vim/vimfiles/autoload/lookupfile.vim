@@ -329,7 +329,10 @@ function! s:OpenCurFile(splitWin)
     endif
     " First try opening as a buffer, if it fails, we will open as a file.
     try
-      if bufnr == -1
+      " jwu MODIFY: if the buffer not listed, re-open it will not show in mini-buf { 
+      " if bufnr == -1
+      if bufnr == -1 || buflisted (bufnr) == 0
+      " } jwu MODIFY end 
         throw ''
       endif
       exec (splitOpen?'s':'').'buffer' bufnr
