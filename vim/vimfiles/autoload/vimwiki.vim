@@ -53,6 +53,9 @@ function! vimwiki#subdir(path, filename)"{{{
   endif
   return res
 endfunction"}}}
+function! vimwiki#current_subdir()"{{{
+  return vimwiki#subdir(VimwikiGet('path'), expand('%:p'))
+endfunction"}}}
 function! s:msg(message) "{{{
   echohl WarningMsg
   echomsg 'vimwiki: '.a:message
@@ -60,16 +63,10 @@ function! s:msg(message) "{{{
 endfunction
 " }}}
 function! s:is_wiki_word(str) "{{{
-  if a:str =~ g:vimwiki_word1 && stridx(a:str, ' ') == -1
+  if a:str =~ g:vimwiki_word1 && a:str !~ '[[:space:]\\/]'
     return 1
   endif
   return 0
-endfunction
-" }}}
-function! s:get_file_name_only(filename) "{{{
-  let word = substitute(a:filename, '\'.VimwikiGet('ext'), "", "g")
-  let word = substitute(word, '.*[/\\]', "", "g")
-  return word
 endfunction
 " }}}
 function! s:edit_file(command, filename) "{{{
@@ -169,11 +166,53 @@ function! s:update_wiki_link(fname, old, new) " {{{
   endif
 endfunction
 " }}}
-function! s:update_wiki_links(old, new) " {{{
-  let files = split(glob(VimwikiGet('path').'*'.VimwikiGet('ext')), '\n')
+function! s:update_wiki_links_dir(dir, old_fname, new_fname) " {{{
+  let old_fname = substitute(a:old_fname, '[/\\]', '[/\\\\]', 'g')
+  let new_fname = a:new_fname
+  if !s:is_wiki_word(new_fname)
+    let new_fname = '[['.new_fname.']]'
+  endif
+  if !s:is_wiki_word(old_fname)
+    let old_fname = '\[\['.vimwiki#unsafe_link(old_fname).'\]\]'
+  else
+    let old_fname = '\<'.old_fname.'\>'
+  endif
+  let files = split(glob(VimwikiGet('path').a:dir.'*'.VimwikiGet('ext')), '\n')
   for fname in files
-    call s:update_wiki_link(fname, a:old, a:new)
+    call s:update_wiki_link(fname, old_fname, new_fname)
   endfor
+endfunction
+" }}}
+function! s:update_wiki_links(old_fname, new_fname) " {{{
+  let old_fname = fnamemodify(a:old_fname, ":t:r")
+  let new_fname = fnamemodify(a:new_fname, ":t:r")
+
+  let subdirs = split(a:old_fname, '[/\\]')[: -2]
+
+  " TODO: Use Dictionary here...
+  let dirs_keys = ['']
+  let dirs_vals = ['']
+  if len(subdirs) > 0
+    let dirs_keys = ['']
+    let dirs_vals = [join(subdirs, '/').'/']
+    let idx = 0
+    while idx < len(subdirs) - 1
+      call add(dirs_keys, join(subdirs[: idx], '/').'/')
+      call add(dirs_vals, join(subdirs[idx+1 :], '/').'/')
+      let idx = idx + 1
+    endwhile
+    call add(dirs_keys,join(subdirs, '/').'/')
+    call add(dirs_vals, '')
+  endif
+
+  let idx = 0
+  while idx < len(dirs_keys)
+    let dir = dirs_keys[idx]
+    let new_dir = dirs_vals[idx]
+    call s:update_wiki_links_dir(dir, 
+          \ new_dir.old_fname, new_dir.new_fname)
+    let idx = idx + 1
+  endwhile
 endfunction
 " }}}
 function! s:get_wiki_buffers() "{{{
@@ -203,7 +242,7 @@ endfunction
 " SYNTAX highlight {{{
 function! vimwiki#WikiHighlightWords() "{{{
   " search all wiki files in 'path' and its subdirs.
-  let subdir = vimwiki#subdir(VimwikiGet('path'), expand('%:p'))
+  let subdir = vimwiki#current_subdir()
   let wikies = glob(VimwikiGet('path').subdir.'**/*'.VimwikiGet('ext'))
 
   " remove .wiki extensions
@@ -273,7 +312,7 @@ function! vimwiki#WikiFollowWord(split) "{{{
     call s:edit_file(cmd, word)
   else
     let vimwiki_prev_word = [expand('%:p'), getpos('.')]
-    let subdir = vimwiki#subdir(VimwikiGet('path'), expand('%:p'))
+    let subdir = vimwiki#current_subdir()
     call s:edit_file(cmd, VimwikiGet('path').subdir.word.VimwikiGet('ext'))
     let b:vimwiki_prev_word = vimwiki_prev_word
   endif
@@ -331,12 +370,8 @@ endfunction
 "}}}
 function! vimwiki#WikiRenameWord() "{{{
   "" Rename WikiWord, update all links to renamed WikiWord
-  let wwtorename = expand('%:t:r')
-  let isOldWordComplex = 0
-  if !s:is_wiki_word(wwtorename)
-    let wwtorename = vimwiki#unsafe_link(wwtorename)
-    let isOldWordComplex = 1
-  endif
+  let subdir = vimwiki#current_subdir()
+  let old_fname = subdir.expand('%:t')
 
   " there is no file (new one maybe)
   if glob(expand('%:p')) == ''
@@ -349,39 +384,41 @@ function! vimwiki#WikiRenameWord() "{{{
   if val!='y'
     return
   endif
-  let newWord = input('Enter new name: ', "")
-  " check newWord - it should be 'good', not empty
-  if substitute(newWord, '\s', '', 'g') == ''
+  let new_fname = input('Enter new name: ', "")
+  let new_fname = subdir.new_fname
+  " check new_fname - it should be 'good', not empty
+  if substitute(new_fname, '\s', '', 'g') == ''
     call s:msg('Cannot rename to an empty filename!')
     return
   endif
-  if s:is_link_to_non_wiki_file(newWord)
+  if s:is_link_to_non_wiki_file(new_fname)
     call s:msg('Cannot rename to a filename with extension (ie .txt .html)!')
     return
   endif
-
-  if !s:is_wiki_word(newWord)
-    " if newWord is 'complex wiki word' then add [[]]
-    let newWord = '[['.newWord.']]'
+  if new_fname =~ '[/\\]'
+    " It is actually doable but I do not have free time to do it.
+    call s:msg('Cannot rename to a filename with path!')
+    return
   endif
-  let newFileName = s:strip_word(newWord).VimwikiGet('ext')
+
+  let new_fname = s:strip_word(new_fname).VimwikiGet('ext')
 
   " do not rename if word with such name exists
-  let fname = glob(VimwikiGet('path').newFileName)
+  let fname = glob(VimwikiGet('path').new_fname)
   if fname != ''
-    call s:msg('Cannot rename to "'.newFileName.
+    call s:msg('Cannot rename to "'.new_fname.
           \ '". File with that name exist!')
     return
   endif
   " rename WikiWord file
   try
-    echomsg "Renaming ".expand('%:t:r')." to ".newFileName
-    let res = rename(expand('%:p'), expand(VimwikiGet('path').newFileName))
+    echomsg "Renaming ".expand('%:t:r')." to ".new_fname
+    let res = rename(expand('%:p'), expand(VimwikiGet('path').new_fname))
     if res != 0
       throw "Cannot rename!"
     end
   catch /.*/
-    call s:msg('Cannot rename "'.expand('%:t:r').'" to "'.newFileName.'"')
+    call s:msg('Cannot rename "'.expand('%:t:r').'" to "'.new_fname.'"')
     return
   endtry
 
@@ -409,11 +446,7 @@ function! vimwiki#WikiRenameWord() "{{{
   setlocal nomore
 
   " update links
-  if isOldWordComplex
-    call s:update_wiki_links('\[\['.wwtorename.'\]\]', newWord)
-  else
-    call s:update_wiki_links('\<'.wwtorename.'\>', newWord)
-  endif
+  call s:update_wiki_links(old_fname, new_fname)
 
   " restore wiki buffers
   for bitem in blist
@@ -422,10 +455,10 @@ function! vimwiki#WikiRenameWord() "{{{
     endif
   endfor
 
-  call s:open_wiki_buffer([VimwikiGet('path').newFileName, cur_buffer[1]])
+  call s:open_wiki_buffer([VimwikiGet('path').new_fname, cur_buffer[1]])
   " execute 'bwipeout '.escape(cur_buffer[0], ' ')
 
-  echomsg wwtorename." is renamed to ".newWord
+  echomsg old_fname." is renamed to ".new_fname
 
   let &more = setting_more
 endfunction

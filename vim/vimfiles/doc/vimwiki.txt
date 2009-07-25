@@ -811,7 +811,7 @@ Default: 0
 ------------------------------------------------------------------------------
 *g:vimwiki_fold_empty_lines*
 
-Fold or not empty lines between folded headers.
+Fold or do not fold empty lines between folded headers.
 
 Value           Description~
 0               Do not fold in empty lines.
@@ -853,10 +853,12 @@ Vim plugins website: http://www.vim.org/scripts/script.php?script_id=2226
 0.9.4
   * [new] Links with directories: [[dir_name/Link|Text]].
   * [fix] Indent incorrect for vim without "float" compile option. Thanks
-    Julian Kooij
+    Julian Kooij.
   * [fix] Convert to html doesn't work right with links like [[foo::bar]].
   * [fix] Rename wikiword doesn't work right when rename WikiWord to
     [[WikiWord blablabla]].
+  * [not fixed] Renaming of links with description doesn't work.
+  * [fix] Weblinks with commas are not highlighted.
 
 0.9.3
   * [new] g:vimwiki_menu option is a string which is menu path. So one can use

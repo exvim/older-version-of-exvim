@@ -15,17 +15,10 @@ let s:warn_html_header = 0
 let s:warn_html_footer = 0
 "}}}
 " TODO: move the next 2 functions into vimwiki#msg and
-" vimwiki#get_file_name_only.
 function! s:msg(message) "{{{
   echohl WarningMsg
   echomsg 'vimwiki: '.a:message
   echohl None
-endfunction "}}}
-
-function! s:get_file_name_only(filename) "{{{
-  let word = substitute(a:filename, '\'.VimwikiGet('ext'), "", "g")
-  let word = substitute(word, '.*[/\\]', "", "g")
-  return word
 endfunction "}}}
 
 function! s:syntax_supported() " {{{
@@ -94,13 +87,22 @@ function! s:is_non_wiki_link(lnk) "{{{
   return 0
 endfunction "}}}
 
-function! s:get_html_header(title, charset) "{{{
+function! s:has_abs_path(fname) "{{{
+  if a:fname =~ '\(^.:\)\|\(^/\)'
+    return 1
+  endif
+  return 0
+endfunction "}}}
+
+function! s:get_html_header(wikifile, subdir, charset) "{{{
   let lines=[]
+
+  let title = fnamemodify(a:wikifile, ":t:r")
 
   if VimwikiGet('html_header') != "" && !s:warn_html_header
     try
       let lines = readfile(expand(VimwikiGet('html_header')))
-      call map(lines, 'substitute(v:val, "%title%", "'. a:title .'", "g")')
+      call map(lines, 'substitute(v:val, "%title%", "'. title .'", "g")')
       return lines
     catch /E484/
       let s:warn_html_header = 1
@@ -109,13 +111,20 @@ function! s:get_html_header(title, charset) "{{{
     endtry
   endif
 
+  let css_name = expand(VimwikiGet('css_name'))
+  if !s:has_abs_path(css_name)
+    " Relative css file for deep links: [[dir1/dir2/dir3/filename]]
+    let updirs = expand(repeat('../', len(split(a:subdir, '[/\\]'))))
+    let css_name = updirs.css_name
+  endif
+
   " if no VimwikiGet('html_header') set up or error while reading template
   " file -- use default header.
   call add(lines, '<html>')
   call add(lines, '<head>')
   call add(lines, '<link rel="Stylesheet" type="text/css" href="'.
-        \ VimwikiGet('css_name').'" />')
-  call add(lines, '<title>'.a:title.'</title>')
+        \ css_name.'" />')
+  call add(lines, '<title>'.title.'</title>')
   call add(lines, '<meta http-equiv="Content-Type" content="text/html;'.
         \ ' charset='.a:charset.'" />')
   call add(lines, '</head>')
@@ -829,8 +838,7 @@ function! vimwiki_html#Wiki2HTML(path, wikifile) "{{{
   call vimwiki#mkdir(path)
 
   let lsource = s:remove_comments(readfile(wikifile))
-  let ldest = s:get_html_header(s:get_file_name_only(wikifile),
-        \ &fileencoding)
+  let ldest = s:get_html_header(wikifile, subdir, &fileencoding)
 
 
   let para = 0
@@ -872,7 +880,7 @@ function! vimwiki_html#Wiki2HTML(path, wikifile) "{{{
   call extend(ldest, s:get_html_footer())
 
   "" make html file.
-  let wwFileNameOnly = s:get_file_name_only(wikifile)
+  let wwFileNameOnly = fnamemodify(wikifile, ":t:r")
   call writefile(ldest, path.wwFileNameOnly.'.html')
 endfunction "}}}
 
