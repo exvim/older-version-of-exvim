@@ -89,6 +89,7 @@ let s:ex_exvim_lang_map['uc'] = [ 'uc' ]
 let s:ex_exvim_lang_map['vim'] = [ 'vim' ]
 let s:ex_exvim_lang_map['wiki'] = [ 'wiki' ]
 let s:ex_exvim_lang_map['xml'] = [ 'xml' ]
+let s:ex_exvim_lang_map['qt'] = [ 'qrc', 'pro', 'pri' ]
 
 " ------------------------------------------------------------------ 
 " Desc: ctags language file maps 
@@ -945,7 +946,7 @@ function exUtility#InsertRemoveExtend() range " <<<
     if (strpart(line,strlen(line)-1,1) == "\\")
         exec ":" . a:firstline . "," . a:lastline . "s/\\\\$//"
     else
-        exec ":" . a:firstline . "," . a:lastline . "s/$/\\\\/"
+        exec ":" . a:firstline . "," . a:lastline . "s/$/ \\\\/"
     endif
 endfunction " >>>
 

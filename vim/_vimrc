@@ -585,7 +585,7 @@ let g:ex_plugin_registered_bufnames = ["-MiniBufExplorer-","__Tag_List__","\[Loo
 let g:ex_plugin_registered_filetypes = ["ex_plugin","ex_project","taglist","nerdtree"] 
 
 " default languages
-let g:ex_default_langs = ['c', 'cpp', 'c#', 'java', 'shader', 'python', 'vim', 'uc', 'math', 'wiki', 'ini', 'make', 'sh', 'batch', 'debug' ] 
+let g:ex_default_langs = ['c', 'cpp', 'c#', 'java', 'shader', 'python', 'vim', 'uc', 'math', 'wiki', 'ini', 'make', 'sh', 'batch', 'debug', 'qt' ] 
 
 " set exvim language map
 call exUtility#AddLangMap ( 'exvim', 'javascript', ['as'] )
