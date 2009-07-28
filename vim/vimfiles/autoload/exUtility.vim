@@ -3488,7 +3488,7 @@ function exUtility#CreateVimwikiFiles() " <<<
                 " add title and charset
                 silent call add ( text_list, "<html>" )
                 silent call add ( text_list, "<head>" )
-                silent call add ( text_list, "\t<link rel=\"Stylesheet\" type=\"text/css\" href=\"style.css\" />" )
+                silent call add ( text_list, "\t<link rel=\"Stylesheet\" type=\"text/css\" href=\"%root_path%style.css\" />" )
                 silent call add ( text_list, "\t<title>%title%</title>" )
                 silent call add ( text_list, "\t<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />" )
 

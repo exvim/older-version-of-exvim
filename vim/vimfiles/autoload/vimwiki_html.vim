@@ -21,6 +21,10 @@ function! s:msg(message) "{{{
   echohl None
 endfunction "}}}
 
+function! s:root_path(subdir) "{{{
+  return repeat('../', len(split(a:subdir, '[/\\]')))
+endfunction "}}}
+
 function! s:syntax_supported() " {{{
   return VimwikiGet('syntax') == "default"
 endfunction " }}}
@@ -32,14 +36,14 @@ function! s:create_default_CSS(path) " {{{
     call vimwiki#mkdir(fnamemodify(css_full_name, ':p:h'))
     let lines = []
 
-    call add(lines, 'body {margin: 1em 2em 1em 2em; font-size: 100%; line-height: 130%;}')
-    call add(lines, 'h1, h2, h3, h4, h5, h6 {margin-top: 1.5em; margin-bottom: 0.5em;}')
+    call add(lines, 'body {font-family: Arial, sans-serif; margin: 1em 2em 1em 2em; font-size: 100%; line-height: 130%;}')
+    call add(lines, 'h1, h2, h3, h4, h5, h6 {font-family: Trebuchet MS, serif; margin-top: 1.5em; margin-bottom: 0.5em;}')
     call add(lines, 'h1 {font-size: 2.0em; color: #3366aa;}')
     call add(lines, 'h2 {font-size: 1.6em; color: #335588;}')
     call add(lines, 'h3 {font-size: 1.2em; color: #224466;}')
-    call add(lines, 'h4 {font-size: 1.2em; color: #113344;}')
-    call add(lines, 'h5 {font-size: 1.1em; color: #112233;}')
-    call add(lines, 'h6 {font-size: 1.1em; color: #111111;}')
+    call add(lines, 'h4 {font-size: 1.1em; color: #113344;}')
+    call add(lines, 'h5 {font-size: 1.0em; color: #112233;}')
+    call add(lines, 'h6 {font-size: 1.0em; color: #111111;}')
     call add(lines, 'p, pre, table, ul, ol, dl {margin-top: 1em; margin-bottom: 1em;}')
     call add(lines, 'ul ul, ul ol, ol ol, ol ul {margin-top: 0.5em; margin-bottom: 0.5em;}')
     call add(lines, 'li {margin: 0.3em auto;}')
@@ -103,6 +107,8 @@ function! s:get_html_header(wikifile, subdir, charset) "{{{
     try
       let lines = readfile(expand(VimwikiGet('html_header')))
       call map(lines, 'substitute(v:val, "%title%", "'. title .'", "g")')
+      call map(lines, 'substitute(v:val, "%root_path%", "'.
+            \ s:root_path(a:subdir) .'", "g")')
       return lines
     catch /E484/
       let s:warn_html_header = 1
@@ -112,10 +118,10 @@ function! s:get_html_header(wikifile, subdir, charset) "{{{
   endif
 
   let css_name = expand(VimwikiGet('css_name'))
+  let css_name = substitute(css_name, '\', '/', 'g')
   if !s:has_abs_path(css_name)
     " Relative css file for deep links: [[dir1/dir2/dir3/filename]]
-    let updirs = expand(repeat('../', len(split(a:subdir, '[/\\]'))))
-    let css_name = updirs.css_name
+    let css_name = s:root_path(a:subdir).css_name
   endif
 
   " if no VimwikiGet('html_header') set up or error while reading template

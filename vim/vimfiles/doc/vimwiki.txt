@@ -688,14 +688,18 @@ Set up file name for html header template: >
 This header.tpl could look like: >
     <html>
     <head>
-        <link rel="Stylesheet" type="text/css" href="style.css" />
+        <link rel="Stylesheet" type="text/css" href="%root_path%style.css" />
         <title>%title%</title>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     </head>
     <body>
         <div class="contents">
 
-where %title% is replaced by a wiki page name.
+where 
+  %title% is replaced by a wiki page name
+  %root_path% is replaced by a count of ../ for pages buried in subdirs:
+    if you have wikilink [[dir1/dir2/dir3/my page in a subdir]] then
+    %root_path% is replaced by '../../../'.
 
 
 *vimwiki-option-html_footer*
@@ -852,13 +856,16 @@ Vim plugins website: http://www.vim.org/scripts/script.php?script_id=2226
 
 0.9.4
   * [new] Links with directories: [[dir_name/Link|Text]].
+  * [new] Added %root_path% template variable to get relative root dir of
+    path_html. See |vimwiki-option-html_header|.
   * [fix] Indent incorrect for vim without "float" compile option. Thanks
     Julian Kooij.
   * [fix] Convert to html doesn't work right with links like [[foo::bar]].
   * [fix] Rename wikiword doesn't work right when rename WikiWord to
     [[WikiWord blablabla]].
-  * [not fixed] Renaming of links with description doesn't work.
+  * [fix] Renaming of links with description doesn't work.
   * [fix] Weblinks with commas are not highlighted.
+  * [misc] Some changes in default css file.
 
 0.9.3
   * [new] g:vimwiki_menu option is a string which is menu path. So one can use

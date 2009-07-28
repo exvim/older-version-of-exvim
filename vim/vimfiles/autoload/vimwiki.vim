@@ -62,6 +62,10 @@ function! s:msg(message) "{{{
   echohl None
 endfunction
 " }}}
+function! s:filename(link) "{{{
+  return split(a:link, '|')[0]
+endfunction
+" }}}
 function! s:is_wiki_word(str) "{{{
   if a:str =~ g:vimwiki_word1 && a:str !~ '[[:space:]\\/]'
     return 1
@@ -169,11 +173,12 @@ endfunction
 function! s:update_wiki_links_dir(dir, old_fname, new_fname) " {{{
   let old_fname = substitute(a:old_fname, '[/\\]', '[/\\\\]', 'g')
   let new_fname = a:new_fname
+
   if !s:is_wiki_word(new_fname)
     let new_fname = '[['.new_fname.']]'
   endif
   if !s:is_wiki_word(old_fname)
-    let old_fname = '\[\['.vimwiki#unsafe_link(old_fname).'\]\]'
+    let old_fname = '\[\['.vimwiki#unsafe_link(old_fname).'\%(|.*\)\?\]\]'
   else
     let old_fname = '\<'.old_fname.'\>'
   endif
@@ -384,27 +389,32 @@ function! vimwiki#WikiRenameWord() "{{{
   if val!='y'
     return
   endif
-  let new_fname = input('Enter new name: ', "")
-  let new_fname = subdir.new_fname
-  " check new_fname - it should be 'good', not empty
-  if substitute(new_fname, '\s', '', 'g') == ''
-    call s:msg('Cannot rename to an empty filename!')
-    return
-  endif
-  if s:is_link_to_non_wiki_file(new_fname)
-    call s:msg('Cannot rename to a filename with extension (ie .txt .html)!')
-    return
-  endif
-  if new_fname =~ '[/\\]'
+
+  let new_link = input('Enter new name: ', "")
+
+  if new_link =~ '[/\\]'
     " It is actually doable but I do not have free time to do it.
     call s:msg('Cannot rename to a filename with path!')
     return
   endif
 
-  let new_fname = s:strip_word(new_fname).VimwikiGet('ext')
+  let new_link = subdir.new_link
+
+  " check new_fname - it should be 'good', not empty
+  if substitute(new_link, '\s', '', 'g') == ''
+    call s:msg('Cannot rename to an empty filename!')
+    return
+  endif
+  if s:is_link_to_non_wiki_file(new_link)
+    call s:msg('Cannot rename to a filename with extension (ie .txt .html)!')
+    return
+  endif
+
+  let new_link = s:strip_word(new_link)
+  let new_fname = VimwikiGet('path').s:filename(new_link).VimwikiGet('ext')
 
   " do not rename if word with such name exists
-  let fname = glob(VimwikiGet('path').new_fname)
+  let fname = glob(new_fname)
   if fname != ''
     call s:msg('Cannot rename to "'.new_fname.
           \ '". File with that name exist!')
@@ -412,8 +422,8 @@ function! vimwiki#WikiRenameWord() "{{{
   endif
   " rename WikiWord file
   try
-    echomsg "Renaming ".expand('%:t:r')." to ".new_fname
-    let res = rename(expand('%:p'), expand(VimwikiGet('path').new_fname))
+    echomsg "Renaming ".VimwikiGet('path').old_fname." to ".new_fname
+    let res = rename(expand('%:p'), expand(new_fname))
     if res != 0
       throw "Cannot rename!"
     end
@@ -446,7 +456,8 @@ function! vimwiki#WikiRenameWord() "{{{
   setlocal nomore
 
   " update links
-  call s:update_wiki_links(old_fname, new_fname)
+  " XXX: doesn't work for [[link|desc link]]
+  call s:update_wiki_links(old_fname, new_link)
 
   " restore wiki buffers
   for bitem in blist
@@ -455,7 +466,8 @@ function! vimwiki#WikiRenameWord() "{{{
     endif
   endfor
 
-  call s:open_wiki_buffer([VimwikiGet('path').new_fname, cur_buffer[1]])
+  call s:open_wiki_buffer([new_fname,
+        \ cur_buffer[1]])
   " execute 'bwipeout '.escape(cur_buffer[0], ' ')
 
   echomsg old_fname." is renamed to ".new_fname
