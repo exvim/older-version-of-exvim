@@ -855,7 +855,7 @@ Vim plugins website: http://www.vim.org/scripts/script.php?script_id=2226
 11. Changelog                                              *vimwiki-changelog*
 
 0.9.4
-  * [new] Links with directories: [[dir_name/Link|Text]].
+  * [new] Links with directories: [[dir_name/Link|Text]]. Thanks Jie Wu.
   * [new] Added %root_path% template variable to get relative root dir of
     path_html. See |vimwiki-option-html_header|.
   * [fix] Indent incorrect for vim without "float" compile option. Thanks
