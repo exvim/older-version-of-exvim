@@ -485,7 +485,7 @@ function s:exPJ_CreateProject(with_dialog) " <<<
 
         " get file filter
         let project_file_filter = exUtility#GetProjectFilter ( "file_filter" )
-        let file_filter = inputdialog( 'Enter the file filters: sample(cpp c inl): ', project_file_filter, 'cancle')
+        let file_filter = inputdialog( 'Enter the file filters: sample(cpp,c,inl): ', project_file_filter, 'cancle')
         if file_filter == 'cancle'
             return
         else
@@ -494,7 +494,7 @@ function s:exPJ_CreateProject(with_dialog) " <<<
 
         " add dir filter
         let project_dir_filter = exUtility#GetProjectFilter ( "dir_filter" )
-        let dir_filter = inputdialog( 'Enter the dir filters: sample(folder1 folder2): ', project_dir_filter, 'cancle')
+        let dir_filter = inputdialog( 'Enter the dir filters: sample(folder1,folder2): ', project_dir_filter, 'cancle')
         if dir_filter == 'cancle'
             return
         else
