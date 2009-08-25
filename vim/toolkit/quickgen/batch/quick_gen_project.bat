@@ -216,7 +216,8 @@ echo Creating Filename List...
 
 rem create cwd pattern for sed
 set cwd_pattern=%cwd%
-for /f "delims=" %%a in ('echo %cwd%^|sed "s,\\,\\\\,g"') do (
+echo %cwd%>.\%vimfiles_path%\_cwd_
+for /f "delims=" %%a in ('type .\%vimfiles_path%\_cwd_^|sed "s,\\,\\\\,g"') do (
     set cwd_pattern=%%a
     )
 
