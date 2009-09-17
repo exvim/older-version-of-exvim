@@ -589,12 +589,14 @@ let g:ex_default_langs = ['c', 'cpp', 'c#', 'java', 'shader', 'python', 'vim', '
 
 " set exvim language map
 call exUtility#AddLangMap ( 'exvim', 'javascript', ['as'] )
+call exUtility#AddLangMap ( 'exvim', 'maxscript', ['ms'] )
 
 " To let the extension language works correctly, you need to put toolkit/ctags/.ctags into your $HOME directory
 " set ctags language map
 " call exUtility#AddLangMap ( 'ctags', 'ini', ['ini'] )
 " call exUtility#AddLangMap ( 'ctags', 'uc', ['uc'] )
 " call exUtility#AddLangMap ( 'ctags', 'math', ['m'] )
+call exUtility#AddLangMap ( 'ctags', 'maxscript', ['ms'] )
 
 " update custom highlights
 function g:ex_CustomHighlight()
@@ -990,6 +992,9 @@ function EnhCommentifyCallback(ft)
         let b:ECcommentClose = ''
     elseif a:ft == 'snippet'
         let b:ECcommentOpen = '#'
+        let b:ECcommentClose = ''
+    elseif a:ft == 'maxscript'
+        let b:ECcommentOpen = '--'
         let b:ECcommentClose = ''
     endif
 endfunction

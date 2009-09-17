@@ -15,3 +15,14 @@
 --langdef=math
 --langmap=math:.m
 --regex-math=/^[ \t]*function([] A-Za-z0-9,_[]+=[ ]?|[ ]+)([^.(]+).*$/\2/f,function/
+--langdef=maxscript
+--langmap=maxscript:.ms
+--regex-maxscript=/^[ \t]*fn[ \t]+([a-zA-Z0-9_]+)/\1/f,function/
+--regex-maxscript=/^[ \t]*structure[ \t]+([a-zA-Z0-9_]+)/\1/c,class/
+--regex-maxscript=/^[ \t]*rollout[ \t]+([a-zA-Z0-9_]+)/\1/c,class/
+--regex-maxscript=/^[ \t]*checkbox[ \t]+([a-zA-Z0-9_]+)/\1/c,class/
+--regex-maxscript=/^[ \t]*button[ \t]+([a-zA-Z0-9_]+)/\1/c,class/
+--regex-maxscript=/^[ \t]*label[ \t]+([a-zA-Z0-9_]+)/\1/c,class/
+--regex-maxscript=/^[ \t]*global[ \t]+([a-zA-Z0-9_]+)/\1/c,class/
+--regex-maxscript=/^[ \t]*utility[ \t]+([a-zA-Z0-9_]+)/\1/c,class/
+--regex-maxscript=/^[ \t]*group[ \t]+([a-zA-Z0-9_]+)/\1/c,class/
