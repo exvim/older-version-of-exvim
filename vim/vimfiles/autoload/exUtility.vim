@@ -80,7 +80,7 @@ let s:ex_exvim_lang_map['java'] = [ 'java' ]
 let s:ex_exvim_lang_map['javascript'] = [ 'js' ]
 let s:ex_exvim_lang_map['lua'] = [ 'lua' ]
 let s:ex_exvim_lang_map['make'] = [ 'mak', 'mk', 'Makefile', 'makefile' ]
-let s:ex_exvim_lang_map['math'] = [ 'm' ]
+let s:ex_exvim_lang_map['matlab'] = [ 'm' ]
 let s:ex_exvim_lang_map['python'] = [ 'py', 'pyw', 'pyx', 'pxd' ]
 let s:ex_exvim_lang_map['ruby'] = [ 'rb', 'ruby' ]
 let s:ex_exvim_lang_map['sh'] = [ 'sh', 'SH', 'bsh', 'bash', 'ksh', 'zsh' ]
@@ -130,6 +130,7 @@ let s:ex_ctags_lang_map['vera'] = ['vr', 'vri', 'vrh' ]
 let s:ex_ctags_lang_map['verilog'] = [ 'v' ]
 let s:ex_ctags_lang_map['vim'] = [ 'vim' ]
 let s:ex_ctags_lang_map['yacc'] = [ 'y' ]
+let s:ex_ctags_lang_map['matlab'] = [ 'm' ]
 
 " ------------------------------------------------------------------ 
 " Desc: project file filter 

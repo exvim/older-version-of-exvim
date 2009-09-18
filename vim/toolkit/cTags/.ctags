@@ -1,7 +1,7 @@
 --langdef=ini
 --langmap=ini:.ini
 --regex-ini=/^[ \t]*\[(.*)\]/\1/b,block/
---regex-ini=/^[ \t]*([^\[=]+)=(.*)/\1/k,key/
+--regex-ini=/^[ \t]*([=]+)=(.*)/\1/k,key/
 --langdef=uc
 --langmap=uc:.uc
 --regex-uc=/^[ \t]*[cC]lass[ \t]+([a-zA-Z0-9_]+)/\1/c,class/
@@ -12,9 +12,6 @@
 --regex-uc=/^[ \t]*[eE]xec[ \t]*(.*)[ \t]+([a-zA-Z0-9_]+)\(/\2/x,exec/
 --regex-uc=/^[ \t]*[sS]truct[ \t]*(.*)[ \t]+([a-zA-Z0-9_]+)/\2/t,struct/
 --regex-uc=/^[ \t]*[eE]num[ \t]*(.*)[ \t]+([a-zA-Z0-9_]+)/\2/m,enum/
---langdef=math
---langmap=math:.m
---regex-math=/^[ \t]*function([] A-Za-z0-9,_[]+=[ ]?|[ ]+)([^.(]+).*$/\2/f,function/
 --langdef=maxscript
 --langmap=maxscript:.ms
 --regex-maxscript=/^[ \t]*fn[ \t]+([a-zA-Z0-9_]+)/\1/f,function/
