@@ -38,11 +38,13 @@ FullPath_Gchs := $(addsuffix _$(Platform)_$(Configuration).h.gch,$(addprefix $(G
 
 FullPath_Srcs := $(wildcard $(addsuffix /*.c,$(SrcDirs))) $(wildcard $(addsuffix /*.cpp,$(SrcDirs))) 
 
+#  DISABLE { 
 #  ======================================================== 
 #  Source Files
 #  ======================================================== 
 
-Srcs := $(notdir $(FullPath_Srcs))
+#  Srcs := $(notdir $(FullPath_Srcs))
+#  } DISABLE end 
 
 #  ------------------------------------------------------------------ 
 #  Desc: Object
@@ -58,7 +60,7 @@ ObjDir := $(OutDir)/$(Configuration)/objs/$(Project)
 #  Object File Output Names
 #  ======================================================== 
 
-Objs := $(patsubst %.c,%.o,$(patsubst %.cpp,%.o,$(Srcs)))
+Objs := $(patsubst %.c,%.o,$(patsubst %.cpp,%.o,$(FullPath_Srcs)))
 
 #  ======================================================== 
 #  Object File With Full Path
@@ -444,6 +446,7 @@ clean-%.d:
 $(DepDir)/%.d: %.cpp
 	$(ECHO) creating $@...
 	$(MKDIR) $(DepDir)
+	$(MKDIR) $(dir $@)
 	$(RM) $@
 ifeq ($(CompileMode),Fast)
 	$(CC) -M $(CFlags) $< -o $@.tmp
@@ -462,6 +465,7 @@ endif
 $(DepDir)/%.d: %.c
 	$(ECHO) creating $@...
 	$(MKDIR) $(DepDir)
+	$(MKDIR) $(dir $@)
 	$(RM) $@
 ifeq ($(CompileMode),Fast)
 	$(CC) -M $(CFlags) $< -o $@.tmp
@@ -480,6 +484,7 @@ endif
 $(DepDir)/%.h.d: %.h
 	$(ECHO) creating $@...
 	$(MKDIR) $(DepDir)
+	$(MKDIR) $(dir $@)
 	$(RM) $@
 ifeq ($(CompileMode),Fast)
 	$(CC) -M $(CFlags) $< -o $@.tmp
@@ -523,6 +528,7 @@ endif
 $(FullPath_Gchs):
 	$(MKDIR) $(ErrDir)
 	$(MKDIR) $(GchDir)
+	$(MKDIR) $(dir $@)
 	$(ECHO) compiling $(basename $@)...
 	$(ECHO_EMPTY_LINE) > $(ErrDir)/$(ErrLogName)
 	$(ECHO) $(OPEN_MARK) $(patsubst %/,%,$(notdir $@)): $(PROJECT_MARK) >> $(ErrDir)/$(ErrLogName)
@@ -575,6 +581,7 @@ clean-%.o:
 $(ObjDir)/%.o: %.cpp $(FullPath_Gchs)
 	$(MKDIR) $(ObjDir)
 	$(MKDIR) $(ErrDir)
+	$(MKDIR) $(dir $@)
 	$(ECHO) compiling $<...
 	$(ECHO_EMPTY_LINE) > $(ErrDir)/$(ErrLogName)
 	$(ECHO) $(OPEN_MARK) $*.cpp: $(PROJECT_MARK) >> $(ErrDir)/$(ErrLogName)
@@ -589,6 +596,7 @@ $(ObjDir)/%.o: %.cpp $(FullPath_Gchs)
 $(ObjDir)/%.o: %.c $(FullPath_Gchs)
 	$(MKDIR) $(ObjDir)
 	$(MKDIR) $(ErrDir)
+	$(MKDIR) $(dir $@)
 	$(ECHO) compiling $<...
 	$(ECHO_EMPTY_LINE) > $(ErrDir)/$(ErrLogName)
 	$(ECHO) $(OPEN_MARK) $*.c: $(PROJECT_MARK) >> $(ErrDir)/$(ErrLogName)
