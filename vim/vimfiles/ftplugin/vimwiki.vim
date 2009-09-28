@@ -200,6 +200,9 @@ noremap <silent><script><buffer>
 
 if !hasmapto('<Plug>VimwikiToggleListItem')
   nmap <silent><buffer> <C-Space> <Plug>VimwikiToggleListItem
+  if has("unix")
+    nmap <silent><buffer> <C-@> <Plug>VimwikiToggleListItem
+  endif
 endif
 noremap <silent><script><buffer>
       \ <Plug>VimwikiToggleListItem :VimwikiToggleListItem<CR>

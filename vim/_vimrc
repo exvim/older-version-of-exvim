@@ -1043,6 +1043,9 @@ map <silent><unique> <Leader>ww <Plug>VimwikiGoHome
 au FileType vimwiki command! W call exUtility#SaveAndConvertVimwiki(0)
 au FileType vimwiki command! WA call exUtility#SaveAndConvertVimwiki(1)
 
+let g:vimwiki_camel_case = 0
+let g:vimwiki_hl_headers = 1
+
 " ------------------------------------------------------------------ 
 " Desc: snipMate
 " ------------------------------------------------------------------ 

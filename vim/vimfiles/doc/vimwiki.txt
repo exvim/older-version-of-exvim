@@ -8,7 +8,7 @@
        \ `\___/ /\_____\\ \_\\ \_\ `\___x___/ /\_____\\ \_\ \_\ /\_____\~
         `\/__/  \/_____/ \/_/ \/_/'\/__//__/  \/_____/ \/_/\/_/ \/_____/~
 
-                               Version: 0.9.4 ~
+                               Version: 0.9.5 ~
 
 ==============================================================================
 CONTENTS                                                    *vimwiki-contents*
@@ -296,10 +296,14 @@ You can limit linking of WikiWords by adding an exclamation mark in front of
 it: >
   !CapitalizedWordsConnected
 
+Or disable it completely with |g:vimwiki_camel_case|.
+
 Link with spaces in it: >
   [[This is a link]]
 or: >
   [[This is a link source|Description of the link]]
+or: >
+  [[This is a link source][Description of the link]]
 
 
 External links~
@@ -751,6 +755,46 @@ it set maxhi to 0: >
 
 This disables filesystem checks for WikiWords.
 
+------------------------------------------------------------------------------
+*g:vimwiki_hl_headers*
+
+Highlight headers with =Reddish=, ==Greenish==, ===Blueish=== colors.
+
+Value           Description~
+1               Use predefined colors to highlight different header levels.
+0               Use |hl-Title| or  wikiHeader1-wikiHeader6 (if defined in a
+                colorscheme)
+
+Default: 0
+
+
+------------------------------------------------------------------------------
+*g:vimwiki_hl_cb_checked*
+
+Checked list items could be highlighted with a color:
+
+  * [x] the whole line could be highlighted with the option set to 1.
+  * [ ] I wish vim could use strikethru.
+
+Value           Description~
+1               Highlight checked [x] check box with |group-name| "Comment".
+0               Don't.
+
+Default: 0
+
+
+------------------------------------------------------------------------------
+*g:vimwiki_global_ext* *vimwiki-temporary-wiki*
+
+If a file with a registered wiki extension is opened in a dir that is not
+listed in |g:vimwiki_list| then:
+
+Value           Description~
+1               make a temporary wiki in that dir.
+0               don't make temporary wiki it that dir.
+
+Default: 1
+
 
 ------------------------------------------------------------------------------
 *g:vimwiki_upper* *g:vimwiki_lower*
@@ -823,6 +867,18 @@ Value           Description~
 
 Default: 0
 
+------------------------------------------------------------------------------
+*g:vimwiki_camel_case*
+
+If you do not want WikiWord to be a link this setting is just for you.
+
+Value           Description~
+0               Do not make links from CamelCased words.
+1               Make links from CamelCased words.
+
+Default: 1
+
+
 ==============================================================================
 9. Help                                                         *vimwiki-help*
 
@@ -854,11 +910,31 @@ Vim plugins website: http://www.vim.org/scripts/script.php?script_id=2226
 ==============================================================================
 11. Changelog                                              *vimwiki-changelog*
 
+0.9.5
+  * [new] Added |g:vimwiki_global_ext| to control creation of temporary wikies
+    in a dirs that are not listed in |g:vimwiki_list|.
+  * [new] Added |g:vimwiki_hl_headers| to highlight headers with different
+    predefined colors.
+  * [new] Checked [x] items are not highlighted with Comment syntax group by
+    default. Use |g:vimwiki_hl_cb_checked| to turn it on.
+  * [new] Added new syntax for links: [[link address][link description]].
+  * [new] Added <C-@> allias of <C-Space> mapping for *nix systems.
+  * [new] Added |g:vimwiki_camel_case|. Set it to 0 if you do not want
+    CamelCased WikiWords to be linkified.
+  * [fix] Links with g:vimwiki_stripsym (default '_') [[My_Link|Text]]
+    are not highlighted when created.
+  * [fix] indent/vimwiki.vim is obsolete. If you upgrade from previous
+    versions remove it. It causes wrong list indentation if noexpandtab is
+    set.
+  * [fix] If tabs and spaces are used to indent list items html export gives
+    error. Thanks Klaus Ethgen for report.
+  * [fix] Some html export fixes.
+
 0.9.4
-  * [new] Links with directories: [[dir_name/Link|Text]]. Thanks Jie Wu.
+  * [new] Links with directories: [[dir1/dir2/Link|Text]]. Thanks Jie Wu.
   * [new] Added %root_path% template variable to get relative root dir of
     path_html. See |vimwiki-option-html_header|.
-  * [fix] Indent incorrect for vim without "float" compile option. Thanks
+  * [fix] Indent is incorrect for vim without "float" compile option. Thanks
     Julian Kooij.
   * [fix] Convert to html doesn't work right with links like [[foo::bar]].
   * [fix] Rename wikiword doesn't work right when rename WikiWord to
@@ -1104,11 +1180,29 @@ Vim plugins website: http://www.vim.org/scripts/script.php?script_id=2226
 ==============================================================================
 12. License                                                   *vimwiki-license*
 
-GNU General Public License v2
-http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
+The MIT Licence
+http://www.opensource.org/licenses/mit-license.php
 
-To be frank I didn't read it myself. It is not that easy reading. But I hope
-it's free enough to suit your needs.
+Copyright (c) 2009 Maxim Kim
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+
 
 
  vim:tw=78:ts=8:ft=help

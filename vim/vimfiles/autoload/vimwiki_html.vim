@@ -256,6 +256,32 @@ function! s:process_tag_pre(line, pre) "{{{
 endfunction "}}}
 
 function! s:process_tag_list(line, lists) "{{{
+  function! s:add_strike(line, st_tag, en_tag)
+    let st_tag = a:st_tag
+    let en_tag = a:en_tag
+    " apply strikethrough for checked list items
+    if a:line =~ '^\s\+\%(\*\|#\)\s*\[x]'
+      let st_tag = a:st_tag.'<span class="strike">'
+      let en_tag = '</span>'.a:en_tag
+    endif
+    return [st_tag, en_tag]
+  endfunction 
+
+  function! s:add_checkbox(line, rx_list, st_tag, en_tag)
+    let st_tag = a:st_tag
+    let en_tag = a:en_tag
+
+    let chk = matchlist(a:line, a:rx_list)
+    if len(chk) > 0
+      if chk[1] == 'x'
+        let st_tag .= '<input type="checkbox" checked />'
+      else
+        let st_tag .= '<input type="checkbox" />'
+      endif
+    endif
+    return [st_tag, en_tag]
+  endfunction
+
   let lines = []
   let lstSym = ''
   let lstTagOpen = ''
@@ -275,34 +301,26 @@ function! s:process_tag_list(line, lists) "{{{
     let lstRegExp = '^\s\+#'
     let processed = 1
   endif
+
+  let cnt = len(a:lists)
   if lstSym != ''
-    let indent = stridx(a:line, lstSym)
-    let cnt = len(a:lists)
+    " To get proper indent level 'retab' the line -- change all tabs
+    " to spaces*tabstop 
+    let line = substitute(a:line, '\t', repeat(' ', &tabstop), 'g')
+    let indent = stridx(line, lstSym)
+
     if !cnt || (cnt && indent > a:lists[-1][1])
       call add(a:lists, [lstTagClose, indent])
       call add(lines, lstTagOpen)
     elseif (cnt && indent < a:lists[-1][1])
-      while indent < a:lists[-1][1]
+      while len(a:lists) && indent < a:lists[-1][1]
         let item = remove(a:lists, -1)
         call add(lines, item[0])
       endwhile
     endif
-    let st_tag = '<li>'
-    let en_tag = '</li>'
     let checkbox = '\s*\[\(.\?\)]'
-    " apply strikethrough for checked list items
-    if a:line =~ '^\s\+\%(\*\|#\)\s*\[x]'
-      let st_tag .= '<span class="strike">'
-      let en_tag = '</span>'.en_tag
-    endif
-    let chk = matchlist(a:line, lstRegExp.checkbox)
-    if len(chk) > 0
-      if chk[1] == 'x'
-        let st_tag .= '<input type="checkbox" checked />'
-      else
-        let st_tag .= '<input type="checkbox" />'
-      endif
-    endif
+    let [st_tag, en_tag] = s:add_strike(a:line, '<li>', '</li>')
+    let [st_tag, en_tag] = s:add_checkbox(a:line, lstRegExp.checkbox, st_tag, en_tag)
     call add(lines, st_tag.
           \ substitute(a:line, lstRegExp.'\%('.checkbox.'\)\?', '', '').
           \ en_tag)
@@ -578,11 +596,17 @@ function! s:make_internal_link(entag) "{{{
   " from [[This is a link]]
   " Make <a href="link">This is a link</a>
   " from [[link|This is a link]]
+  " Make <a href="link">This is a link</a>
+  " from [[link][This is a link]]
   " TODO: rename function -- it makes not only internal links.
   " TODO: refactor it.
 
   let line = ''
-  let link_parts = split(a:entag, "|", 1)
+  if a:entag =~ '|'
+    let link_parts = split(a:entag, "|", 1)
+  else
+    let link_parts = split(a:entag, "][", 1)
+  endif
 
   if len(link_parts) > 1
     if len(link_parts) < 3
@@ -677,28 +701,6 @@ function! s:get_html_from_wiki_line(line, para, pre, code,
     call extend(res_lines, lines)
   endif
 
-  "" Pre
-  if !processed
-    let [processed, lines, pre] = s:process_tag_pre(line, pre)
-    if processed && len(lists)
-      call s:close_tag_list(lists, lines)
-    endif
-    if processed && deflist
-      let deflist = s:close_tag_def_list(deflist, lines)
-    endif
-    if processed && table
-      let table = s:close_tag_table(table, lines)
-    endif
-    if processed && code
-      let code = s:close_tag_code(code, lines)
-    endif
-    if processed && para
-      let para = s:close_tag_para(para, lines)
-    endif
-
-    call extend(res_lines, lines)
-  endif
-
   "" list
   if !processed
     let [processed, lines] = s:process_tag_list(line, lists)
@@ -719,6 +721,28 @@ function! s:get_html_from_wiki_line(line, para, pre, code,
     endif
 
     call map(lines, 's:process_tags(v:val)')
+
+    call extend(res_lines, lines)
+  endif
+
+  "" Pre
+  if !processed
+    let [processed, lines, pre] = s:process_tag_pre(line, pre)
+    if processed && len(lists)
+      call s:close_tag_list(lists, lines)
+    endif
+    if processed && deflist
+      let deflist = s:close_tag_def_list(deflist, lines)
+    endif
+    if processed && table
+      let table = s:close_tag_table(table, lines)
+    endif
+    if processed && code
+      let code = s:close_tag_code(code, lines)
+    endif
+    if processed && para
+      let para = s:close_tag_para(para, lines)
+    endif
 
     call extend(res_lines, lines)
   endif
