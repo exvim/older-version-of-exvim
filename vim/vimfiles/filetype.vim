@@ -29,3 +29,6 @@ au BufNewFile,BufRead *.as                  setf javascript
 
 " nsis
 au BufNewFile,BufRead *.nsh                 setf nsis
+
+" txtfmt
+au BufNewFile,BufRead *.txtfmt              setf txtfmt
