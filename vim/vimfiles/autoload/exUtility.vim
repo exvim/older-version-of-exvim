@@ -698,6 +698,9 @@ endfunction " >>>
 " ------------------------------------------------------------------ 
 
 function exUtility#PutHeader() " <<<
+    let old_lan = v:lang
+    silent exec 'language C'
+
     if getline(1) =~# b:ECcommentOpen . " ======================================================================================" . b:ECcommentClose
         if getline(2) =~# b:ECcommentOpen . " File         : .*" . b:ECcommentClose
             if getline(3) =~# b:ECcommentOpen . " Author       : .*" . b:ECcommentClose
@@ -722,6 +725,10 @@ function exUtility#PutHeader() " <<<
     silent call append ( 5, b:ECcommentOpen . " ======================================================================================" . b:ECcommentClose )
     silent call append ( 6, "" )
     silent call cursor ( 7, 0 )
+
+    " FIXME: cannot reset { 
+    " silent exec 'language ' . old_lan
+    " } FIXME end 
 endfunction " >>>
 
 " ------------------------------------------------------------------ 

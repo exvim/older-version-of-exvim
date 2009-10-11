@@ -393,6 +393,10 @@ function s:exQF_ChooseCompiler() " <<<
         silent set errorformat+=%X%\\d%\\+\>%.%#%\\d%\\+\ error(s)%.%#%\\d%\\+\ warning(s)
         silent set errorformat+=%\\d%\\+\>%f(%l)\ :\ %t%*\\D%n:\ %m
         silent set errorformat+=%\\d%\\+\>\ %#%f(%l)\ :\ %m
+        silent set errorformat=%D------\ %.%#Project:\ %f%.%#%\\,%.%#
+        silent set errorformat+=%X%%.%#%\\d%\\+\ error(s)%.%#%\\d%\\+\ warning(s)
+        silent set errorformat+=%f(%l)\ :\ %t%*\\D%n:\ %m
+        silent set errorformat+=\ %#%f(%l)\ :\ %m
     elseif s:exQF_compiler == 'gcc'
         " this is for exGlobaSearch result, some one may copy the global search result to exQuickFix
         silent set errorformat+=%f:%l:%m
