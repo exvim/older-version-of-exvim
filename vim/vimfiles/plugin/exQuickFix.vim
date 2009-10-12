@@ -358,6 +358,7 @@ endfunction " >>>
 function s:exQF_ChooseCompiler() " <<<
     " choose compiler
     let s:exQF_compiler = 'gcc'
+    let multi_core = 0
     for line in getline( 1, 4 ) " actual we just need to check line 1-2, but give a protected buffer check to 4 in case. 
         " process gcc error log formation
         if match(line, '^<<<<<< \S\+: ' . "'" . '\a\+\' . "'" ) != -1
@@ -367,6 +368,9 @@ function s:exQF_ChooseCompiler() " <<<
             let s:exQF_compiler = 'msvc2005'
         elseif match(line, '^.*------ Build started.*------') != -1
             let s:exQF_compiler = 'msvc2005'
+            if match(line, '^\d\+>') != -1
+                let multi_core = 1
+            endif
         endif
     endfor
 
@@ -389,14 +393,17 @@ function s:exQF_ChooseCompiler() " <<<
         silent set errorformat+=%D\<\<\<\<\<\<\ %\\S%\\+:\ '%f'%.%#
         silent set errorformat+=%X\>\>\>\>\>\>\ %\\S%\\+:\ '%f'%.%#
     elseif s:exQF_compiler == 'msvc2005'
-        silent set errorformat=%D%\\d%\\+\>------\ %.%#Project:\ %f%.%#%\\,%.%#
-        silent set errorformat+=%X%\\d%\\+\>%.%#%\\d%\\+\ error(s)%.%#%\\d%\\+\ warning(s)
-        silent set errorformat+=%\\d%\\+\>%f(%l)\ :\ %t%*\\D%n:\ %m
-        silent set errorformat+=%\\d%\\+\>\ %#%f(%l)\ :\ %m
-        silent set errorformat=%D------\ %.%#Project:\ %f%.%#%\\,%.%#
-        silent set errorformat+=%X%%.%#%\\d%\\+\ error(s)%.%#%\\d%\\+\ warning(s)
-        silent set errorformat+=%f(%l)\ :\ %t%*\\D%n:\ %m
-        silent set errorformat+=\ %#%f(%l)\ :\ %m
+        if multi_core
+            silent set errorformat=%D%\\d%\\+\>------\ %.%#Project:\ %f%.%#%\\,%.%#
+            silent set errorformat+=%X%\\d%\\+\>%.%#%\\d%\\+\ error(s)%.%#%\\d%\\+\ warning(s)
+            silent set errorformat+=%\\d%\\+\>%f(%l)\ :\ %t%*\\D%n:\ %m
+            silent set errorformat+=%\\d%\\+\>\ %#%f(%l)\ :\ %m
+        else
+            silent set errorformat=%D------\ %.%#Project:\ %f%.%#%\\,%.%#
+            silent set errorformat+=%X%%.%#%\\d%\\+\ error(s)%.%#%\\d%\\+\ warning(s)
+            silent set errorformat+=%f(%l)\ :\ %t%*\\D%n:\ %m
+            silent set errorformat+=\ %#%f(%l)\ :\ %m
+        endif
     elseif s:exQF_compiler == 'gcc'
         " this is for exGlobaSearch result, some one may copy the global search result to exQuickFix
         silent set errorformat+=%f:%l:%m
