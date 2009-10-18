@@ -51,8 +51,8 @@ endif
 if finddir(swap_dir) == ''
     silent call mkdir(swap_dir)
 endif
-set backupdir=$HOME/data/backup " where to put backup file 
-set directory=$HOME/data/swap " where to put swap file 
+set backupdir=$HOME/.data/backup " where to put backup file 
+set directory=$HOME/.data/swap " where to put swap file 
 unlet data_dir
 unlet backup_dir
 unlet swap_dir
