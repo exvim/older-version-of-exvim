@@ -12,7 +12,10 @@
 
 " set EX_DEV variable for linux
 if has ("unix")
-    let $EX_DEV='/usr/local/share'
+    let $EX_DEV=$HOME
+    let g:ex_toolkit_path = $HOME.'/.toolkit'
+else
+    let g:ex_toolkit_path = $EX_DEV.'/vim/toolkit'
 endif
 
 " put your own user name here
@@ -34,8 +37,25 @@ behave xterm  " set mouse behavior as xterm
 set backup " make backup file and leave it around 
 "set backupdir=%tmp%
 "set directory=.,%tmp%
-set backupdir=$VIM/data/backup " where to put backup file 
-set directory=$VIM/data/swap " where to put swap file 
+
+" setup back and swap directory
+let data_dir = $HOME.'/.data/'
+let backup_dir = data_dir . 'backup' 
+let swap_dir = data_dir . 'swap' 
+if finddir(data_dir) == ''
+    silent call mkdir(data_dir)
+endif
+if finddir(backup_dir) == ''
+    silent call mkdir(backup_dir)
+endif
+if finddir(swap_dir) == ''
+    silent call mkdir(swap_dir)
+endif
+set backupdir=$HOME/data/backup " where to put backup file 
+set directory=$HOME/data/swap " where to put swap file 
+unlet data_dir
+unlet backup_dir
+unlet swap_dir
 
 " programming related 
 set tags+=./tags,./../tags,./**/tags,tags " which tags files CTRL-] will find 
@@ -1051,7 +1071,7 @@ let g:vimwiki_hl_headers = 1
 " ------------------------------------------------------------------ 
 
 let g:snips_author = g:ex_usr_name
-let g:snippets_dir = '$VIM/toolkit/snippets/'
+let g:snippets_dir = g:ex_toolkit_path . '/snippets/'
 
 " ------------------------------------------------------------------ 
 " Desc: NERD_tree 
