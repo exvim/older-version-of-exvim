@@ -13,7 +13,7 @@
 au BufNewFile,BufRead *.ipp       setf cpp
 
 " High Level Shader Language
-au BufNewFile,BufRead *.hlsl,*.fx,*.fxh,*.cg,*.vsh,*.psh,*.shd,*.glsl       setf hlsl
+au BufNewFile,BufRead *.hlsl,*.fx,*.fxh,*.cg,*.vsh,*.psh,*.shd,*.glsl,*.shader       setf hlsl
 
 " Max Script
 au BufNewFile,BufRead *.ms,*.mse,*.mcr,*.mzp,*.ds  setf maxscript
