@@ -226,10 +226,10 @@ gen_filenamelist ()
         echo "  |- generate _filenamelist_cwd"
         if test "${dir_filter}" != ""; then
             # NOTE: if we have dir filter, we still need get files in root directory 
-            find ${force_posix_regex_1} . -maxdepth 1 ${force_posix_regex_2} -regex ".*\.('"${file_filter}"')" > "./${vimfiles_path}/_filenamelist_cwd"
-            find ${force_posix_regex_1} ${dir_filter} ${force_posix_regex_2} -regex ".*\.('"${file_filter}"')" >> "./${vimfiles_path}/_filenamelist_cwd"
+            find ${force_posix_regex_1} . -maxdepth 1 ${force_posix_regex_2} -regex ".*\.("${file_filter}")" > "./${vimfiles_path}/_filenamelist_cwd"
+            find ${force_posix_regex_1} ${dir_filter} ${force_posix_regex_2} -regex ".*\.("${file_filter}")" >> "./${vimfiles_path}/_filenamelist_cwd"
         else
-            find ${force_posix_regex_1} . ${force_posix_regex_2} -regex ".*\.('"${file_filter}"')" > "./${vimfiles_path}/_filenamelist_cwd"
+            find ${force_posix_regex_1} . ${force_posix_regex_2} -regex ".*\.("${file_filter}")" > "./${vimfiles_path}/_filenamelist_cwd"
         fi
 
         if [ -f "./${vimfiles_path}/_filenamelist_cwd" ]; then
