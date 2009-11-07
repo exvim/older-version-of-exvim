@@ -125,7 +125,7 @@ if has("gui_running")
         " Also for GTK 1
         set guifont=*-lucidatypewriter-medium-r-normal-*-*-180-*-*-m-*-*
     elseif has("gui_win32")
-        set guifont=Lucida_Console:h9
+        set guifont=Lucida_Console:h10
     endif
 endif
 

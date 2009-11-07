@@ -165,7 +165,7 @@ if !exists('loaded_taglist')
     " JWU ADD { 
     " Window increase size
     if !exists('Tlist_WinIncreament')
-        let Tlist_WinIncreament = 100
+        let Tlist_WinIncreament = 50
     endif
 
     " Back to edit buffer

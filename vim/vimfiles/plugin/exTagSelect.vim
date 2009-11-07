@@ -48,7 +48,7 @@ endif
 " ------------------------------------------------------------------ 
 
 if !exists('g:exTS_window_width_increment')
-    let g:exTS_window_width_increment = 100
+    let g:exTS_window_width_increment = 50
 endif
 
 " ------------------------------------------------------------------ 
