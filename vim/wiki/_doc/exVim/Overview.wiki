@@ -1,0 +1,148 @@
+<!-- ======================================================================================-->
+<!-- File         : Overview.wiki-->
+<!-- Author       : Wu Jie -->
+<!-- Last Change  : 04/26/2009 | 14:35:04 PM | Sunday,April-->
+<!-- Description  : -->
+<!-- ======================================================================================-->
+
+= Overview =
+
+== What is "exVim"?? ==
+--------------------------------------------------------------------------------------
+
+exVim is the core part of exDev, which is a develop package help you develop project as 
+a IDE like environment but all in vim. 
+
+The exVim consists of several vim scripts and external tools. The goal is let the vim be
+the base platform, and use the vim script doing those IDE like operations just in vim as
+possible as it can. But if a task is too difficult to write in vim script, it still have 
+chance to invoke external tools and bring the result back to vim.
+
+The ex-plugins is designed to achieve these tasks, it manages the layout of the windows 
+in vim, controls the external tools, save settings in different project and so on. Also
+exVim introduce several great plugins in vim-scripts website, and do some small changes
+to let them work together without conflicts.
+
+== What can "exVim" do?? ==
+--------------------------------------------------------------------------------------
+
+With exVim you can:
+ * use one file ".vimentry" access your project. 
+ * update all files need for your project in one command. 
+ * browse specific files in project window.
+ * search files, tags, symbols and text in a faster way.
+ * trace your code by jump stack.
+ * reading code faster by word highlight and macro highlight.
+ * view classes hierarchy pictures.
+ * compile project in vc/gcc and get error result from them directly through vim.
+ * and so on...
+    
+Here list some main features in exVim: 
+
+=== running your project in one file ===
+
+exVim provide a way to orginze things together --- ".vimentry" file. You may working in 
+different project at the same time, and you probably like to use different settings for   
+them. 
+
+For example you have stl-3.3 source files, and you can create a .vimentry file named 
+"stl-3.3.vimentry" as showed below  
+
+[[res/create.vimentry.file.png]]
+
+when you open it up, you will see the pciture below:
+
+[[res/first.time.run.vimentry.png]]
+
+That is the default layout of exVim. You can see the settings automatically fill up in the 
+.vimentry files. And you can change them to fit your own project. The settings will be loaded
+as variables and applied to vim in the way you define.
+
+=== browse project files ===
+
+You can browse files under your project. If you wish, you are able to use file type filter and
+directory name filter to get thoes files you care. The picture below shows what it looks like
+in project window:
+
+[[res/project.window.png]]
+
+and it is easy to folding directory, searching file, edit file in this window.
+
+=== tag select ===
+
+You can search tags, and select matched results from plugin window. When selected, the plugin 
+will jump to definition you choose.
+
+When you move your cursor to a word in the code as below:
+
+[[res/start.tag.search.png]]
+
+Then do a tag search command, it will show the tag select window list the matched tag 
+defines in it:
+
+[[res/tag.select.window.png]]
+
+Then you can choose the definition you want, and jump to it.    
+
+=== symbol list ===
+
+exVim provide a symbol list extract from tag file, help you search tags in a faster way. 
+Suppose you want to search if the project have a tag named "Assert", you can open the 
+symbol list window and search "assert", you probably see the result below:
+
+[[res/symbol.table.window.png]]
+
+After that, you can use built-in filter operation `\r` pickup matched result, and list them
+in the symbol table's quick-view window. Like the picture shows below:
+
+[[res/symbol.quick.view.window.png]]
+
+=== global search ===
+
+The global search is the most important feature in exVim. It use the id-utils as the 
+search engine which is faster than grep, also it use the iterative search method, which can
+search new pattern/word based on last search results.
+
+when you search a word, the global search plugin will list the search result in the plugin
+window and you can jump to the select line as show as below:
+
+[[res/global.search.window.png]]
+
+Also when you apply filter method, you will locate what you want quickly. The picture below shows
+the result when use `/spFile->write/` as filter pattern:
+
+[[res/global.search.quickview.window.png]]
+
+=== jump stack ===
+
+When you use exVim to jump to the search result, it will records your jump history in the
+stack, so that you can trace back to the previous result. Unlike jumplist in vim, the exVim 
+jump stack also provide the operation you used so that you can know how you jump to current position,
+and where you come from.
+
+[[res/exJumpStack.overview.png]]
+
+=== quick fix ===
+
+Like quickfix in vim, but use a more friend way to load, list and operate quick fix in plugin window.
+
+[[res/quickfix.window.png]]
+
+=== macro highlight ===
+
+Macro higlight is a plugin to help user distinguish the block of defined/undefined code controlled 
+by macros. Similar like the gray color macro-highlight in visual studio.  
+
+Instead of parse the whole project to get the macro defines, the plugin uses a simple syntax let user 
+define his macros, and process those macros to get the highlight result. The syntax and the result is
+show in the picture below:
+
+[[res/macro.highlight.overview.png]]
+
+=== view class hierarchy ===
+
+exVim provides a inherits list extract from tag file, help to create class inherits picture by graphviz. 
+You can move your cursor to a class name, and do the generate class hierarchy command to get the class
+hierarchy picture like below:
+
+[[res/gv.command.png]]

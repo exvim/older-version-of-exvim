@@ -1,0 +1,213 @@
+<!-- ======================================================================================-->
+<!-- File         : ChangeLog.wiki-->
+<!-- Author       : Wu Jie -->
+<!-- Last Change  : 05/18/2009 | 22:40:28 PM | Monday,May-->
+<!-- Description  : -->
+<!-- ======================================================================================-->
+
+= Change Log =
+--------------------------------------------------------------------------------------
+
+== 8.03a ==
+ * New features
+    * let make syntax support external comments.
+ * Changes
+    * update cTags to 5.8
+    * update vimwiki to 0.9.5
+    * support matlab/octave language
+    * support maxscript language
+    * move data/backup and data/swap directory to $HOME/.data/backup $HOME/.data/swap
+    * change default toolkit_path to $HOME/.toolkit/ for unix
+    * enlarge the font size, readjust default windows width increment
+ * Bug fix
+    * fix the filter format shows wrong syntax in dialog
+    * fix bracket "()" in directory name does not work.
+    * fix gcc_rule can't compile source file have same name but in different directory.
+    * fix PutHeader will show time in local encoding. Force to set it in English.
+    * fix exQuickFix can't jump msvc error message when use single core cpu. ( those message don't have "1>" at the beginning )
+    * fix exQuickfix can't select multi-core and single-core jump in msvc2005
+    * fix quick_gen_project.sh file_filter syntax error in unix/linux.
+
+== 8.02 ==
+ * New features
+ * Changes
+    * let title show vimentry name first, so that you can select project with a clear name in task bar.
+    * update snipMate to 0.83
+    * update vimwiki to 0.9.4
+    * add qt language map ( qt: qrc, pro, pri )
+ * Bug fix
+    * fix exJumpStack jump error when we do tg word1, gg word2 then tg word1 again.
+    * fix inherit image can't show when path have white-space.
+    * fix exQuickFix loose fix when we load another quickfix list, and try to use the exQuickFix again.
+    * fix multiple gcc project makefile clean-deps error.
+    * fix lookupfile re-open deleted buffer will not show in the minibufexpl. (thanks vxzhong)
+    * fix minibufexpl mouse click open will not open in edit-buffer. (thanks ozgezer)
+
+== 8.02c ==
+ * New features
+    * Temp highlight words under current cursor when cursor holds.
+ * Changes
+    * let exQuickFix can jump template sub-errors in msvc.
+ * Bug fix
+    * fix quick gen project can't generate cscope database. (thanks ozgezer)
+    * fix exBufExplorer save list buffers in bookmarks if we don't have a bookmarks file.
+    * fix quick_gen_project.sh filenamelist generation errors in unix like system. (thanks ozgezer)
+
+== 8.02b ==
+ * New features
+    * add exBufExplorer.
+    * add bookmarks in exBufExplorer.
+    * When cursor hold in exProject window, it will echo the full path in the cursor line.
+    * add ex_toolkit_path so user can install toolkit folder in a specific path.
+    * user delete bookmark directly in exBufExplorer.
+ * Changes
+    * change gf function to use lookupfile plugin.
+    * add SS command for filtering symbol table search result
+ * Bug fix
+    * fix quickgen bash script if statement syntax error.
+    * fix fail to run quick_gen_project script in csh shell.
+    * fix !FreeBSD ctags can't be detected correctly.
+    * fix buffer delete mess the window layout when there have several window opened.
+    * fix \ff,\fd search error, new method can even use smart case for search.
+    * fix ctrl-left/right will go to the next buffer in plugin window, mess-up the window layout.
+    * fix exCscope syntax file name syntax highlight beyond the range.
+    * fix restore buffer never execute auto-command in last edit-buffer.
+    * only do search jump when current line not matched with the pattern in exJumpStack
+
+== 8.02a ==
+ * New features
+    * let exProject support file with no-suffix (NULL filetype).
+    * let cscope can parse by specific language type.
+    * add !DirDiff and snipMate plugin. 
+    * add pythoncomplete plugin.
+    * add exBufExplorer (exProject quick-view window) for exploring and editing opened buffers.
+ * Changes
+    * add backspace navigate and alt+left/right navigate for exJumpStack.
+    * let !EnhComment support snippet file.
+    * change ex_plugin_list to ex_plugin_registered_bufnames,ex_plugin_registered_filetypes to enhance the register-plugin.
+    * let exProject and NERDtree can switch.
+    * remove `_vimfiles*` folders when list project tree in exProject window. 
+ * Bug fix
+    * fix Mark Text can't be lower case.
+    * fix lots of exCscope problem.
+    * fix cscope syntax highlight.
+    * fix showmarks conflict with snipMate plugin,
+    * fix color scheme will be dark when there is no colorscheme set in _vimrc.
+    * fix taglist,NERD_tree,minibufexpl opens window not take the position when there already have ex-plugin window.
+    * let exJumpStack can recognize all registered plugin window.
+    * fix findfile in g:exES_CWD reports wrong result when directory name have space
+    * remove hard code in detecting ctags and cscope support.
+    * fix cursor can't move to the edit-buffer when use restore buffer.
+
+== 8.01b ==
+ * New features
+    * let quick_gen_project can update filenametags
+    * let exCscope support find g method
+ * Changes
+    * make exSearchComplete disable in unix/linux terminal.
+    * let lookupfile, taglist use the same key map settings as ex-plugins have.
+    * use pattern instead of preview for exJumpStack, the preview will be generate dynamically.
+    * use pattern locate the jump result, so that even you changes some of the line between the jump result, it still have chance to locate to the exact position.
+    * add quick_gen_project_pre_custom and quick_gen_project_post_custom when update project. 
+    * when doing stack jump, use keepjumps.
+    * Add protect codes for moving project files.
+    * add cscope file name highlight
+ * Bug fix
+    * fix the EX_DEV been overwritten in linux.
+    * fix highlight error of key word "class::define" in exJumpStack.
+    * fix exJumpStack when poping up stack, reset wrong tag index.
+    * fix EX_DEV setting error in windows, when there is no EX_DEV environment variable.
+    * fix cscope filter search error.  
+    * fix EX_DEV setting error in windows, when there is no EX_DEV environment variable.
+    * fix exJumpStack can't locate empty line or line with only space, tab problem 
+
+== 8.01a ==
+ * New features
+    * add ex_lightgray color scheme.
+    * Support search result sorting for exGlobalSearch.
+        * add g:exGS_auto_sort, g:exGS_lines_for_autosort settings
+        * add \sr operations for force sort search result.
+    * Support general key map settings for ex-plugin.
+    * add exJumpStack
+ * Changes
+    * add errorformat support for exGlobalSearch result. (People may copy the exGlobaSearch result from global search window to quickfix window)
+    * in old version, exQF_PasteQuickFixResult can only use \p. now you can use p or \p to accomplish the task.
+    * add warnning when use visual p,\p to paste a result to quickfix window, it will switch to normal p,\p operation.
+    * add EX_DEV environment support in unix/linux.
+    * let taglist support hlsl language.
+    * let root directory dialog only show up in exProject standalone version. 
+    * add compile error support for hlsl in exQuickFix.
+    * remove tag stack in exTagSelect, use exJumpStack instead.
+ * Bug fix
+    * fix cscope can't parse file name with space. 
+    * fix switch window can't keep the same window size problem.
+    * fix macro highlight ignore case for macro 
+    * fix arrow key can't be used in terminal version of unix/linux 
+    * fix macro highlight highlight error when the macro #if is not at the beginning of the line.
+
+== 7.05 ==
+ * New features
+    * add \ve to quick edit current vimentry file.
+    * add vimentry name check when open vimentry file. if vimentry name is not the same with the value !VimEntryName in vimentry file, it will lead to a vimentry re-write.
+    * add paste quickfix result from register '*'.
+    * add `exUtility#CloseAllExpluginWindow()` function
+    * add s:ex_lang_map for exVim. you can use `exUtility#RestLangMap` and `exUtility#AddLangMap` function to create your own language maps.
+        * remove g:exPJ_default_filter variable. use g:ex_default_langs instead.
+        * add `ExpjUpdateFilters` command
+        * add g:exES_LangType set project filter process in exEnvironment
+        * let `exUtility#GetLangType` and `exUtility#GetCtagsOption` support s:ex_lang_map
+    * add darkscheme support
+ * Changes
+    * change the id language custom map from id-lang.map to id-lang-custom.map.
+    * disable move/del command shows information in quick_gen_project.bat by add `> nul`
+    * change g:exES_vimfile_dir to g:exES_vimfiles_dirname.
+    * change exProject filetype from ft_exproject to ex_filetype
+    * change g:exUT_plugin_list to g:ex_plugin_list
+ * Bug fix
+    * fix \fc can't work outside edit window.
+    * fix "<args>" can't accept win32 path problem. by replace all "<args>" to '<args>'
+    * use :e xxx.vimentry when you already in another vimentry, the project settings will not be switch.
+        * fix :EXProject `<filename>` will not close old project file when the `<filename>` is not the same.
+        * fix exSymbolTable and exMacroHighlight can't load new file when they already load one.
+    * fix \cf error.
+    * fix toggle window can't let the cursor focus on it.
+
+== 7.05b ==
+ * New features
+    * Support more than one ".vimentry" in same directory. 
+    * add "!VimEntryName" and "!VimfilesDirName" in `.vimentry` file.
+ * Changes
+    * add "autogen settings (DO NOT MODIFY)" comments in the vimentry file.
+    * `.vimentry` version number update to 21. ( you will loose your old .vimentry file settings when open an old project ) 
+    * change g:exPJ_defualt_filter to g:exPJ_default_filter.
+    * remove g:exES_default_vimfiles, now the vimfiles dirname will be generate automatically by the vimentry name.
+ * Bug fix
+    * fix exEnvironment use getcwd as g:exES_CWD bug. Instead, we use the folder path of `.vimentry` file 
+    * fix exGlobalSearch <c-left>, <c-right> will go to edit buffer 
+    * fix visual studio.py can't load unicode solution name
+    * fix open `.vimentry` failed from vim in different path than the path of `.vimentry`
+
+== 7.05a ==
+ * New features
+    * Restore last edit buffer.
+    * Update project depends on project files ( file_filter and dir_filter ).
+        * add filenamelist generate script in quick_gen_project.bat/sh.
+        * update ctags use option -L filenamelist instead of -R.
+        * update cscope use filenamelist instead of dir /s /b whole directory.
+        * add trace log for quick_gen_project script.
+    * Support multi-language type for project. 
+    * Support choose language type automatically. (depends on your file_filter input)
+ * Changes
+    * change exProject file filter and dir filter syntax
+        * file filter = type1,type2,type3,...,
+        * dir filter = dir1,dir2,dir3,...,
+        * NOTE: you need to remove the original `*.exproject` files for this change, or you will meet unwanted errors during refresh project and update project.
+    * Automatically generate quick_gen_project-auto.bat/sh instead of copying one from toolkit/quickgen.
+    * Remove quick_gen_project_xxx_only.bat/sh scripts. (since we use quick_gen_project-auto and -custom)
+    * .vimentry version number update to 17. ( you will loose your old .vimentry file settings when open an old project ) 
+ * Bug fix
+    * Fix exMacroHighlight syntax highlight disappear when no any c-like file loaded.
+
+== 7.04a ==
+ * First public version
+

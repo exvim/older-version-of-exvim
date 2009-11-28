@@ -1,0 +1,109 @@
+<!-- ======================================================================================-->
+<!-- File         : Tools.wiki-->
+<!-- Author       : Wu Jie -->
+<!-- Last Change  : 05/09/2009 | 12:55:25 PM | Saturday,May-->
+<!-- Description  : -->
+<!-- ======================================================================================-->
+
+= Tools =
+
+== Intro ==
+--------------------------------------------------------------------------------------
+
+This section will list tools used in exDev
+
+== List ==
+--------------------------------------------------------------------------------------
+
+ * Tools
+    * 7zip 
+        * ([http://www.7-zip.org/])
+    * blender
+        * ([http://www.blender.org])
+    * cscope 
+        * ([http://cscope.sourceforge.net/])
+        * ([http://sourceforge.net/project/showfiles.php?group_id=196604])
+    * cTags
+        * ([http://ctags.sourceforge.net/])
+    * Dia
+        * ([http://dia-installer.de/index_en.html])
+    * doxygen
+        * ([http://www.stack.nl/~dimitri/doxygen/])
+    * !GnuWin32
+        * ([http://gnuwin32.sourceforge.net/])
+    * graphviz 
+        * ([http://www.graphviz.org])
+    * irfanview
+        * ([http://www.irfanview.com/])
+    * !KeePass
+        * ([http://keepass.info/])
+    * Launchy
+        * ([http://www.launchy.net/])
+    * Lingoes
+        * ([http://www.lingoes.cn])
+    * maxima
+        * ([http://maxima.sourceforge.net/])
+    * !MinGW
+        * ([http://www.mingw.org/])
+        * ([http://sourceforge.net/projects/mingw])
+    * NSIS
+        * ([http://nsis.sourceforge.net/Download])
+    * octave
+        * ([http://www.gnu.org/software/octave])
+        * ([http://octave.sourceforge.net/])
+    * pexport
+        * ([http://www.emmestech.com/software/soft.html])
+    * python
+        * ([http://www.python.org])
+        * ([http://www.py2exe.org])
+        * ([http://sourceforge.net/projects/pywin32/])
+    * Subversion
+        * ([http://subversion.tigris.org])
+        * ([http://tortoisesvn.tigris.org])
+    * !SyntaxHighlighter
+        * ([http://alexgorbatchev.com/wiki/SyntaxHighlighter])
+    * !TaskSwitchXP
+        * ([http://www.ntwind.com/software/taskswitchxp/])
+    * !TodoList
+        * ([http://www.codeproject.com/KB/applications/todolist2.aspx])
+    * Totalcmd
+        * ([http://www.ghisler.com/])
+        * ([http://www.totalcmd.net/])
+    * vim
+        * ([http://www.vim.org/])
+        * ([http://vim.sourceforge.net/])
+    * !WinHex
+        * ([http://www.x-ways.net/winhex/])
+ * Libs
+    * boost
+        * ([http://www.boost.org/])
+    * cppunit
+        * ([http://cppunit.sourceforge.net])
+        * ([http://c2.com/cgi/wiki?CppUnitLite])
+    * loki
+        * ([http://loki-lib.sourceforge.net/])
+    * pthreds-win32
+        * ([http://sourceware.org/pthreads-win32/])
+    * stl
+        * ([http://www.sgi.com/tech/stl])
+        * ([http://www.sgi.com/tech/stl/standard_library.html])
+    * syntax_highlight
+        * ([http://www.codeplex.com/Highlight4Writer])
+        * ([http://www.wilcob.com/Wilco/Toolbox/SyntaxHighlighter.aspx])
+    * ogre
+        * ([http://www.ogre3d.org/])
+    * !OpenGL
+        * ([http://www.opengl.org/])
+    * !OpenAL
+        * ([http://connect.creativelabs.com/openal/default.aspx])
+    * SDL
+        * ([http://www.libsdl.org/])
+    * QT
+        * ([http://trolltech.com/])
+    * Bullet
+        * ([http://code.google.com/p/bullet/])
+    * Havok
+        * ([http://www.havok.com/])
+    * expat
+        * ([http://expat.sourceforge.net/])
+
