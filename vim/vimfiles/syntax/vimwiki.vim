@@ -66,18 +66,6 @@ execute 'syntax match wikiList /'.g:vimwiki_rxListBullet.'/'
 execute 'syntax match wikiList /'.g:vimwiki_rxListNumber.'/'
 execute 'syntax match wikiList /'.g:vimwiki_rxListDefine.'/'
 
-" XXX: Think of removing this highlighting.
-"============================================================================== 
-"
-" Treat all other lines that start with spaces as PRE-formatted text.
-execute 'syntax match wikiPre /'.g:vimwiki_rxPre1.'/ contains=wikiComment'
-" syntax region wikiPre start=/\%(^\s\+[*#].*$\)\@<!\s\+[^[:blank:]*#].*$/
-      " \ end=/^\%([^[:blank:]]\|\s*[*#]\)\@=/ contains=wikiComment
-
-" syntax region wikiPre start=/^\s\+[^[:blank:]*#].*$/
-      " \ end=/^\%([^[:blank:]]\|\s*[*#]\)\@=/ contains=wikiComment
-"============================================================================== 
-
 execute 'syntax region wikiPre start=/'.g:vimwiki_rxPreStart.
       \ '/ end=/'.g:vimwiki_rxPreEnd.'/ contains=wikiComment'
 

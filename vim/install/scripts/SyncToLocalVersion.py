@@ -18,7 +18,7 @@ import string
 #/////////////////////////////////////////////////////////////////////////////
 
 # general
-local_version_path = "d:/exDev/vim"
+local_version_path = "d:/exDev/exVim"
 google_version_path = "."
 
 #/////////////////////////////////////////////////////////////////////////////
@@ -90,7 +90,7 @@ def SyncFiles ():
     SyncDir ( os.path.join(local_version_path, "install") )
     SyncDir ( os.path.join(local_version_path, "toolkit") )
     SyncDir ( os.path.join(local_version_path, "vimfiles") )
-    shutil.copy ( os.path.join(local_version_path, "_vimrc"), "./" )
+    shutil.copy ( os.path.join(local_version_path, ".vimrc"), "./" )
 
     #
     print "file sync done!"

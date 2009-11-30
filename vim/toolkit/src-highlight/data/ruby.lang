@@ -1,0 +1,23 @@
+preproc = "require"
+
+comment start "#"
+
+include "number.lang"
+
+string delim "\"" "\"" escape "\\"
+string delim "'" "'"  escape "\\"
+string delim "<" ">"
+string = '[[:word:]]*/[^\n]*/[[:word:]]*'
+
+keyword = "alias|begin|BEGIN|break|case|defined|do|else|elsif|end|END|ensure|for|if|in|include|loop|next|raise|redo|rescue|retry|return|super|then|undef|unless|until|when|while|yield|false|nil|self|true|__FILE__|__LINE__|and|not|or|def|class|module|catch|fail|load|throw"
+
+comment delim '(^\=begin)' '^(\=end)' multiline
+
+type = '(\$[#]?|@@|@)([[:word:]]+|\'|\"|/)'
+
+include "symbols.lang"
+
+cbracket = "{|}"
+
+include "function.lang"
+

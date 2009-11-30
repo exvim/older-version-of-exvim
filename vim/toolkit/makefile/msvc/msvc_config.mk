@@ -80,7 +80,7 @@ SMAKE := $(SILENT_CMD)$(MAKE) $(SILENT_MK)
 #  Desc: Command Path Choose
 #  ------------------------------------------------------------------ 
 
-CMD_PATH_WINDOWS := $(EX_DEV)/msys/1.0/bin/
+CMD_PATH_WINDOWS := $(EX_DEV)/tools/msys/1.0/bin/
 VC_PATH_WINDOWS := d:/Program Files/Microsoft Visual Studio 8/Common7/IDE/
 
 #  ------------------------------------------------------------------ 

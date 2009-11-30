@@ -1,10 +1,9 @@
 /* ======================================================================================*/
-/* File         : shThemeDefault.css*/
+/* File         : shThemeEX.css*/
 /* Author       : Wu Jie */
-/* Last Change  : 04/25/2009 | 15:24:48 PM | Saturday,April*/
+/* Last Change  : 11/30/2009 | 18:49:40 PM | Monday,November*/
 /* Description  : */
 /* ======================================================================================*/
-
 
 .syntaxhighlighter
 {
@@ -19,8 +18,8 @@
 }
 
 /* Highlighed line */
-.syntaxhighlighter .line.highlighted.alt1 .content,
-.syntaxhighlighter .line.highlighted.alt2 .content
+.syntaxhighlighter .line.highlighted.alt1,
+.syntaxhighlighter .line.highlighted.alt2
 {
 	background-color: #6CE26C !important;
 }
@@ -44,32 +43,15 @@
 }
 
 /* First line */
-.syntaxhighlighter .line.alt1 .content
+.syntaxhighlighter .line.alt1
 {
-	background-color: #fff !important;
+	background-color: #E7E5DC !important;
 }
 
 /* Second line */
-.syntaxhighlighter .line.alt2 .content
+.syntaxhighlighter .line.alt2
 {
-	background-color: #fff !important;
-}
-
-.syntaxhighlighter .line .content .block
-{
-	background: url(wrapping.png) 0 1.1em no-repeat !important;
-}
-
-.syntaxhighlighter .ruler
-{
-	color: silver !important;
-	background-color: #F8F8F8 !important;
-	border-left: 3px solid #6CE26C !important;
-}
-
-.syntaxhighlighter.nogutter .ruler
-{
-	border: 0 !important;
+	background-color: #E7E5DC !important;
 }
 
 .syntaxhighlighter .toolbar

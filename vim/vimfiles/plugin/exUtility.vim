@@ -92,8 +92,8 @@ endif
 
 if $EX_DEV ==# ""
     if has ("unix")
-        call confirm ("exVim error: Please set the EX_DEV in _vimrc, default is let $EX_DEV='/usr/local/share'")
-        let $EX_DEV='/usr/local/share'
+        call confirm ("exVim error: Please set the EX_DEV in _vimrc, default is let $EX_DEV='~/exDev'")
+        let $EX_DEV='~/exDev'
     elseif has("win32")
         call confirm ("exVim error: Please set the EX_DEV in _vimrc, default is let $EX_DEV='d:\exDev'")
         let $EX_DEV='d:\exDev'
@@ -105,7 +105,7 @@ endif
 " ------------------------------------------------------------------ 
 
 if !exists ( "g:ex_toolkit_path" )
-    let g:ex_toolkit_path = $EX_DEV.'/vim/toolkit'
+    let g:ex_toolkit_path = $EX_DEV.'/exVim/toolkit'
 endif
 
 " ------------------------------------------------------------------ 

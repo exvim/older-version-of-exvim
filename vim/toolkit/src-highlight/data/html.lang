@@ -1,0 +1,15 @@
+state preproc delim "<!DOCTYPE" ">" multiline begin
+  string delim "\"" "\"" escape "\\" multiline
+end
+
+comment delim "<!--" "-->" multiline nested
+
+keyword = '<(/)?[[:alpha:]]+(/)?>'
+
+state keyword delim '<(/)?[[:alpha:]]+' '(/)?>' multiline begin
+  type = '[^="[:blank:]]+'
+  symbol = "="
+  string delim "\"" "\"" escape "\\" multiline
+end
+
+preproc = '&([[:alnum:]]+);'

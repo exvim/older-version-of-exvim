@@ -1,0 +1,13 @@
+comment start "//"
+
+# comments with documentation tags
+environment comment delim "/**" "*/" multiline nested begin
+  include "url.lang"
+  include "html.lang"
+  type = '@[[:alpha:]]+'
+end
+
+# standard comments
+environment comment delim "/*" "*/" multiline nested begin
+      include "url.lang"
+end

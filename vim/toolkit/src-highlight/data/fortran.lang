@@ -1,0 +1,24 @@
+keyword = "ACCESS|ASSIGN|BACKSPACE|BLANK|BLOCK|CALL",
+      "CLOSE|COMMON|COMPLEX|CONTINUE|DATA|DIMENSION|DIRECT|DO",
+      "ELSE|END|ENTRY|EOF|EQUIVALENCE|ERR|EXIST|EXTERNAL|FILE|FMT|FORM",
+      "FORMAT|FORMATTED|FUNCTION|GO|TO|IF|IMPLICIT|INQUIRE",
+      "INTRINSIC|IOSTAT|LOGICAL|NAMED|NEXTREC|NUMBER|OPEN|OPENED",
+      "PARAMETER|PAUSE|PRECISION|PRINT|PROGRAM|READ|REC|RECL",
+      "RETURN|REWIND|SEQUENTIAL|STATUS|STOP|SUBROUTINE|THEN|TYPE",
+      "UNFORMATTED|UNIT|WRITE|SAVE"
+        nonsensitive
+
+comment start "*"
+comment start '^C'
+comment start '^c'
+
+include "number.lang"
+
+string delim "\"" "\"" escape "\\"
+string delim "'" "'"  escape "\\"
+
+type = "CHARACTER|DOUBLE|INTEGER|REAL" nonsensitive
+
+include "symbols.lang"
+
+include "function.lang"

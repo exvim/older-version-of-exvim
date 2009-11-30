@@ -1,0 +1,21 @@
+extension "texinfo"
+
+doctemplate
+"@c Generator: GNU source-highlight, by Lorenzo Bettini, http://www.gnu.org/software/src-highlite
+@example
+"
+"
+@end example"
+end
+
+bold "@b{$text}"
+italics "@i{$text}"
+fixed "@t{$text}"
+notfixed "@r{$text}"
+
+translations
+"{" "@{"
+"}" "@}"
+"@" "@@"
+"\t" "       "
+end

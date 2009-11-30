@@ -1,0 +1,12 @@
+keyword black b ;
+type black b ;
+string black f ;
+comment black nf, i ;
+preproc black b ;
+
+// line numbers
+linenum black f;
+
+// Internet related
+url black f;
+

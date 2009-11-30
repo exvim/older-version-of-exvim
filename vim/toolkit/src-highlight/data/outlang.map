@@ -1,0 +1,15 @@
+html = html.outlang
+html-doc = htmldoc.outlang
+html-css = css_common.outlang
+html-css-doc = cssdoc.outlang
+xhtml = xhtml.outlang
+xhtml-doc = xhtmldoc.outlang
+xhtml-css-doc = xhtmldoc.outlang
+xhtml-css = xhtmlcss.outlang
+esc = esc.outlang
+esc-doc = esc.outlang
+latex = latex.outlang
+latex-doc = latexdoc.outlang
+latexcolor = latexcolor.outlang
+latexcolor-doc = latexcolordoc.outlang
+texinfo = texinfo.outlang

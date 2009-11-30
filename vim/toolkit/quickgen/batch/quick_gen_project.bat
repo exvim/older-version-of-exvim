@@ -39,7 +39,7 @@ rem  Desc: toolkit_path
 rem  ------------------------------------------------------------------ 
 
 if /I "%toolkit_path%" == "" (
-    set toolkit_path=%EX_DEV%\vim\toolkit
+    set toolkit_path=%EX_DEV%\exVim\toolkit
     )
 
 rem  ------------------------------------------------------------------ 

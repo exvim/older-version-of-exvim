@@ -161,7 +161,6 @@ let s:vimwiki_defaults.path_html = '~/vimwiki_html/'
 let s:vimwiki_defaults.css_name = 'style.css'
 let s:vimwiki_defaults.index = 'index'
 let s:vimwiki_defaults.ext = '.wiki'
-let s:vimwiki_defaults.folding = 1
 let s:vimwiki_defaults.maxhi = 1
 let s:vimwiki_defaults.syntax = 'default'
 let s:vimwiki_defaults.gohome = 'split'
@@ -179,10 +178,12 @@ else
 endif
 call s:default('other', '0-9')
 call s:default('stripsym', '_')
-call s:default('auto_listitem', 1)
+call s:default('badsyms', '')
 call s:default('auto_checkbox', 1)
 call s:default('use_mouse', 0)
+call s:default('folding', 1)
 call s:default('fold_empty_lines', 0)
+call s:default('fold_lists', 1)
 call s:default('menu', 'Vimwiki')
 call s:default('current_idx', 0)
 call s:default('list', [s:vimwiki_defaults])
@@ -190,6 +191,7 @@ call s:default('global_ext', 1)
 call s:default('hl_headers', 0)
 call s:default('hl_cb_checked', 0)
 call s:default('camel_case', 1)
+call s:default('list_ignore_newline', 1)
 
 let upp = g:vimwiki_upper
 let low = g:vimwiki_lower

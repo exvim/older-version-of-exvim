@@ -1,0 +1,319 @@
+<!-- ======================================================================================-->
+<!-- File         : Install.wiki-->
+<!-- Author       : Wu Jie -->
+<!-- Last Change  : 04/26/2009 | 14:36:46 PM | Sunday,April-->
+<!-- Description  : -->
+<!-- ======================================================================================-->
+
+=Install=
+
+== choose packages ==
+--------------------------------------------------------------------------------------
+
+There are three main packages plus one installer in Downloads page, people always ask me 
+which one should I choose. This section will explain the contents in each package, and 
+guide you choosing the right package to install.
+
+=== exVim-installer ===
+
+This is the most recommended package for those who want to have a try exVim quickly without 
+the painful configuration during install.
+
+Since a lot of user complain to me, said it is really complex to install exVim. Also it 
+take too much time in reading the install document. As the reason I decide to make this installer. 
+
+=== full-packages ===
+
+The full packages provides all files used in exVim. It includes toolkit, third-part plugins,
+patched third-part plugins and exVim plugins. Check the  "Install List" section in [[Misc]]
+for detail.
+
+=== ex-plugin-packages ===
+
+ex-plugin packages contains toolkit and a series of "ex" vim scripts for basic uses of exVim. 
+User who already have his own third-part plugins, can choose this pure version for install.
+
+=== third-part plugin patches ===
+
+The third-part plugin patches contains all patched version plugins. User who want to compare
+the difference between the original plugin and patched version, can download this package.
+
+=== Which one should I choose? ===
+
+For lazy vim user `;p`, who want to have a try exVim quickly, could download exVim-installer. 
+The installer is only for windows. (for unix/linux, em... I doubt there is no chance for you 
+to get lazy on it, because you are busy in getting smart on unix/linux... ).  By the way, I'm
+lazy, either `:D`.
+
+For normal vim user, who first time use exVim, and don't have too much custom on vim, can use
+the full-packages. The package coverd almost everything you need to turn vim to a powerful
+IDE like editor.
+
+For advance vim user, who have his own plugins and customization, could download ex-plugin-packages
+to install, and download third-part plugin patches as an option. Also can download the full-packages
+to pick up useful plugin or _vimrc scripts.
+
+NOTE: you can skip the sections below if you choose installer.
+
+== install exVim in windows ==
+--------------------------------------------------------------------------------------
+
+=== install/compile vim ===
+
+Please go to the download page in [http://www.vim.org] get proper package first.
+
+Some user probably like to compile vim by himself. I recommend compile the vim with python.
+Since a great third-part plugin "visual-studio" that run by python, helping people use vim with
+visual studio. Acutally, this plugin not require a vim must compiled with python, but that 
+will slow down the performance, so why not use a high speed version?
+Here is my compile options:
+
+{{{
+nmake -f Make_mvc.mak GUI=yes PYTHON=d:\exDev\Python25 DYNAMIC_PYTHON=YES PYTHON_VER=25
+}}}
+
+=== install exVim packages ===
+
+After you install vim, extract your chosen package of exVim in your vim directory. For example 
+you install vim in d:\exDev\vim, then after you extract the package, you will have files in 
+    * d:\exDev\vim\toolkit
+    * d:\exDev\vim\vmifiles
+
+=== install third part tools ===
+
+After you install exVim packages, you need to install several tools so that exVim can work.
+There two main list, the first one are thoes tools you must have, second one are optional tools.
+
+(1) tools you must have:
+
+    * cTags: [http://ctags.sourceforge.net/]
+    * gnuwin32: [http://gnuwin32.sourceforge.net/]
+        * [http://gnuwin32.sourceforge.net/packages/gawk.htm gawk]
+        * [http://gnuwin32.sourceforge.net/packages/id-utils.htm id-utils]
+            * [http://gnuwin32.sourceforge.net/packages/libiconv.htm libiconv]
+            * [http://gnuwin32.sourceforge.net/packages/libintl.htm libintl]
+        * [http://gnuwin32.sourceforge.net/packages/sed.htm sed]
+            * [http://gnuwin32.sourceforge.net/packages/regex.htm regex]
+
+(2) optional tools:
+
+if you want to work with visual studio by the vim plugin [http://www.vim.org/scripts/script.php?script_id=864 visual_studio] 
+you need to install python and python win32:
+
+    * python: [http://www.python.org]
+        * pywin32: [http://sourceforge.net/projects/pywin32/]
+
+if you want to use the makefiles in exMake, provided in toolkit/makefile/gcc/ you need to install
+MinGW/gcc and make: 
+
+    * MinGW [http://www.mingw.org/]
+    * make [http://gnuwin32.sourceforge.net/packages/make.htm]
+
+if you want to use the exCscope plugin which helping you work with cscope, you need to install cscope:
+
+    * cscope: [http://cscope.sourceforge.net/]
+
+if you want to use :GV command drawing class hierarchies for those project support 
+object-oriented language, you need to install graphviz:  
+
+    * graphviz: [http://www.graphviz.org]
+
+if you want to use the exVim command :SHL to copy current source with highlights 
+in html format, you need to install src-highlite:
+
+    * src-highlite: [http://gnuwin32.sourceforge.net/packages/src-highlite.htm]
+
+=== setup environment variables ===
+
+Create a environment variable named EX_DEV in "System Properties" -> "Advanced" -> "Environment Variables"
+The value must be the *_parent_* driectory you install vim. For example, if you install vim in "d:\exDev\vim", 
+the value is 
+
+{{{
+EX_DEV = d:\exDev
+}}}
+
+Also you need to set the path of other tools you installed into environment variables, so
+that each tool can be called directly without specifying the path. Here are some settings in my 
+computer:
+
+{{{
+EX_DEV = d:\exDev
+PATH += %EX_DEV%\vim\vim72
+PATH += %EX_DEV%\MinGW\bin
+PATH += %EX_DEV%\GnuWin32\bin
+PATH += %EX_DEV%\Graphviz\bin
+}}}
+
+=== setup toolkit path ===
+
+By default, exVim install the toolkit folder in the path $EX_DEV/vim/toolkit. But you can change this
+path to your own place. To change the path, you need to set ex_toolkit_path variable in `_vimrc`, and
+copy the toolkit folder to that path. For example:
+
+{{{
+let g:ex_toolkit_path = 'd:\exDev\toolkit'
+}}}
+
+=== setup _vimrc ===
+
+Finally, you need to setup your _vimrc so that you can use ex-plugins. Check the *setup _vimrc*
+section below for detail.
+
+== install exVim in unix/linux ==
+--------------------------------------------------------------------------------------
+
+=== install/compile vim ===
+
+you can get a vim by apt-get or if you want to have python, cscope integrate in vim, you would 
+probably like me, compile vim by yourself.
+
+Before you compile vim in linux/unix, you need to install several develop libraries. I choose gtk-2.0
+as my gui library for vim, and here is my install commands
+
+{{{
+sudo apt-get install ncurses-dev
+sudo apt-get install libqt4-dev
+sudo apt-get install libgtk2.0-dev
+}}}
+
+Once you done, you need to config "Makefile" of vim, and here is my configuration:
+    
+{{{
+CONF_OPT_PYTHON = --enable-pythoninterp
+CONF_OPT_CSCOPE = --enable-cscope
+CONF_OPT_GUI = --enable-gui=gtk
+CONF_OPT_GUI = --enable-gui=gtk2
+}}}
+
+Then you can compile vim use the commands:
+
+{{{
+sudo make distclean
+sudo make config
+sudo make
+sudo make install
+}}}
+
+=== install exVim packages ===
+
+After you install vim, extract your chosen package of exVim in your vim share directory. For example 
+your vim share directory is /usr/local/share/vim, then after you extract the package, you will have files in 
+
+    * cp exDev/vim/toolkit ~/toolkit
+    * cp exDev/vim/vimfiles ~/.vim
+    * cp exDev/vim/doc ~/.vim/doc (not necessary)
+
+=== install third part tools ===
+
+After you install exVim packages, you need to install several tools so that exVim can work.
+
+(1) tools you must have:
+
+{{{
+sudo apt-get install exuberant-ctags
+sudo apt-get install id-utils
+sudo apt-get install gawk
+sudo apt-get install sed
+sudo apt-get install findutils
+}}}
+
+(2) optional tools:
+
+{{{
+sudo apt-get install cscope
+sudo apt-get install graphviz
+sudo apt-get install src-highlite
+sudo apt-get install python
+}}}
+
+=== setup environment variables ===
+
+Set your environment variable in `_vimrc`. The value must be the *_parent_* driectory you install vim. 
+For example, if you install vim in HOME directory ("~"), 
+the script in `_vimrc` should be:
+
+{{{
+let $EX_DEV = '~'
+}}}
+
+=== setup toolkit path ===
+
+By default, exVim install the toolkit folder in the path $EX_DEV/vim/toolkit. But you can change this
+path to your own place. To change the path, you need to set ex_toolkit_path variable in `_vimrc`, and
+copy the toolkit folder to that path. For example:
+
+{{{
+let g:ex_toolkit_path = '~/toolkit'
+}}}
+
+=== setup _vimrc ===
+
+Finally, you need to setup your _vimrc so that you can use ex-plugins. Check the *setup _vimrc*
+section below for detail.
+
+== install part of exVim ==
+--------------------------------------------------------------------------------------
+
+You can install part of exVim though it is not recommended. Check the "install part of
+exVim" in [[Misc]] for detail.
+
+== setup vimrc ==
+--------------------------------------------------------------------------------------
+
+=== set from _vimrc_ex ===
+
+You have two way to setup your _vimrc:
+ # source the `_vimrc_ex` directly.  
+ # merge the `_vimrc_ex` to your `_vimrc`.
+
+By sourcing the `_vimrc_ex`, you can write code below at the end of you _vimrc:
+
+{{{
+source $VIM\_vimrc_ex
+}}}
+
+By merging, here is my suggestion. go to the section mark:
+
+{{{
+"/////////////////////////////////////////////////////////////////////////////
+" Plugin Configurations
+"/////////////////////////////////////////////////////////////////////////////
+}}} 
+
+And check the script below it. The settings of each plugin are separate by the mark:
+
+{{{
+" ------------------------------------------------------------------ 
+" Desc: plugin-name
+" ------------------------------------------------------------------ 
+}}}
+
+I recommend merge and custom all the "ex" plugin scripts.
+
+=== must have _vimrc settings ===
+
+exVim provides lots of variable for customization. (like those key-mappings and variable 
+settings in `_vimrc_ex`). You can get all settings in [[DetailsOfExPlugins|Details of ex-plugins]]. 
+Most of them are optional. But there are settings you must have.
+
+To let the tags jump correctly in exVim, you need to have:
+
+{{{
+au BufNewFile,BufEnter * set cpoptions+=d
+}}}
+
+This setting will let tag file jump relate to current the directory. Since we will put tags
+file in _vimfiles, it is important to have it for every buffer we used.
+
+To prevent buffer close problem, you need to have:
+
+{{{
+nnoremap <unique> <Leader>bd :call exUtility#Kwbd(1)<CR>
+}}}
+
+And you need to use \bd close buffer instead of :q directly. Actually it is a problem been 
+discussed in vim tips wiki, the 
+[http://takewii.com/index.php?hl=f5&q=uggc%3A%2F%2Fivz.jvxvn.pbz%2Fjvxv%2FQryrgvat_n_ohssre_jvgubhg_pybfvat_gur_jvaqbj tip 165].
+The detail explanation is in [[KnownIssues|Known Issues]].
+

@@ -1,0 +1,17 @@
+extension "html"
+
+translations
+"&" "&amp;"
+"<" "&lt;"
+">" "&gt;"
+end
+
+doctemplate
+"<!-- Generator: $additional -->
+<pre><tt>"
+"</tt></pre>
+"
+end
+
+onestyle "<span class=\"$style\">$text</span>"
+

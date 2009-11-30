@@ -57,7 +57,7 @@ fi
 # ------------------------------------------------------------------ 
 
 if test "${toolkit_path}" = ""; then
-    toolkit_path="${EX_DEV}/vim/toolkit"
+    toolkit_path="${EX_DEV}/exVim/toolkit"
 fi
 
 # ------------------------------------------------------------------ 

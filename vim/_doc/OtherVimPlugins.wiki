@@ -1,0 +1,26 @@
+<!-- ======================================================================================-->
+<!-- File         : OtherVimPlugins.wiki-->
+<!-- Author       : Wu Jie -->
+<!-- Last Change  : 05/29/2009 | 17:13:58 PM | Friday,May-->
+<!-- Description  : -->
+<!-- ======================================================================================-->
+
+= Other vim plugins =
+
+== Intro ==
+--------------------------------------------------------------------------------------
+
+Besides the patched plugin I introduced last chatper, there still have lots of good vim
+plugins in the internet, and I recommend some of the plugins I'm using right now:
+
+    * [[vimwiki]]
+    * [[surround]]
+    * [[EnhancedCommentify]]
+    * [[cmdline-complete]]
+    * [[visincr]]
+    * [[OmniCppComplete]]
+    * CRefVim: [http://www.vim.org/scripts/script.php?script_id=614] 
+    * AlternateFiles: [http://www.vim.org/scripts/script.php?script_id=31]
+    * DirDiff: [http://www.vim.org/scripts/script.php?script_id=102]
+    * snipMate: [http://www.vim.org/scripts/script.php?script_id=2540]
+    * pythoncomplete: [http://www.vim.org/scripts/script.php?script_id=1542]

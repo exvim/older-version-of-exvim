@@ -1,0 +1,16 @@
+state date start '[[:digit:]]{2,4}-?[[:digit:]]{2}-?[[:digit:]]{2}' begin
+  string = '<(?:[[:word:]]*|\.)+@(?:[[:word:]]*|\.)+>'
+  name = '(?:[[:word:]]|[[:punct:]])+'
+end
+  
+state symbol start '^(?:[\t]+|[[:space:]]+)\*[[:space:]]+' begin
+  state file start '[^:]+\:' begin
+    normal start '.'
+  end
+end
+
+state normal start '^(?:[\t]+|[[:space:]]+)' begin
+  state file start '[^:]+\:' begin
+    normal start '.'
+  end
+end

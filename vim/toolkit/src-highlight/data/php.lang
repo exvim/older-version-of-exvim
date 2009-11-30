@@ -1,0 +1,23 @@
+preproc = "include|include_once|require|require_once"
+
+comment start "//"
+comment start "#"
+
+include "number.lang"
+
+string delim "\"" "\"" escape "\\" multiline
+string delim "'" "'"  escape "\\" multiline
+
+keyword = "and|or|xor|__FILE__|exception|php_user_filter|__LINE__|array|as|break|case|cfunction|class|const|continue|declare|default|die|do|each|echo|else|elseif|empty|enddeclare|endfor|endforeach|endif|endswitch|endwhile|eval|exit|extends|for|foreach|function|global|if|isset|list|new|old_function|print|return|static|switch|unset|use|var|while|__FUNCTION__|__CLASS__|__METHOD__"
+
+comment delim "/*" "*/" multiline nested 
+
+type = '(?:\$[#]?|@|%)[[:word:]]+'
+
+include "symbols.lang"
+
+cbracket = "{|}"
+
+include "function.lang"
+
+variable = '[[:upper:]][[:word:]]*|_'

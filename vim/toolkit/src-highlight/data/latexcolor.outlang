@@ -1,0 +1,25 @@
+include "latex.outlang"
+
+color "\textcolor{$style}{$text}"
+
+colormap
+"green" "Green"
+"red" "Red"
+"darkred" "BrickRed"
+"blue" "Blue"
+"brown" "Brown"
+"pink" "Pink"
+"yellow" "Yellow"
+"cyan" "Cyan"
+"purple" "Purple"
+"orange" "Orange"
+"brightorange" "YellowOrange"
+"brightgreen" "YellowGreen"
+"darkgreen" "ForestGreen"
+"black" "Black"
+"teal" "TealBlue"
+"gray" "Gray"
+"darkblue" "RoyalBlue"
+default "Black"
+end
+

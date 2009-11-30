@@ -186,7 +186,7 @@ CMD_PATH_LINUX :=
 ECHO_EMPTY_LINE := $(ECHO)
 VERTICAL_BAR := "|"
 else
-CMD_PATH_LINUX := $(EX_DEV)/msys/1.0/bin/
+CMD_PATH_LINUX := $(EX_DEV)/tools/msys/1.0/bin/
 ECHO_EMPTY_LINE := $(ECHO).
 VERTICAL_BAR := ^|
 endif

@@ -6,7 +6,7 @@
  * http://alexgorbatchev.com/wiki/SyntaxHighlighter:Donate
  *
  * @version
- * 2.0.296 (March 01 2009)
+ * 2.1.364 (October 15 2009)
  * 
  * @copyright
  * Copyright (C) 2004-2009 Alex Gorbatchev.
@@ -15,7 +15,7 @@
  * This file is part of SyntaxHighlighter.
  * 
  * SyntaxHighlighter is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
+ * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
@@ -25,7 +25,7 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with SyntaxHighlighter.  If not, see <http://www.gnu.org/licenses/>.
+ * along with SyntaxHighlighter.  If not, see <http://www.gnu.org/copyleft/lesser.html>.
  */
 /**
  * Fade to Grey SyntaxHighlighter theme based on theme by Brasten Sager
@@ -60,19 +60,14 @@
 }
 
 /* First line */
-.syntaxhighlighter .line.alt1 .content
+.syntaxhighlighter .line.alt1
 {
 }
 
 /* Second line */
-.syntaxhighlighter .line.alt2 .content
+.syntaxhighlighter .line.alt2
 {
 	background-color: #000000 !important;
-}
-
-.syntaxhighlighter .line .content .block
-{
-	background: url(wrapping.png) 0 1.1em no-repeat !important;
 }
 
 /* Highlighed line number */
@@ -83,21 +78,10 @@
 }
 
 /* Highlighed line */
-.syntaxhighlighter .line.highlighted.alt1 .content,
-.syntaxhighlighter .line.highlighted.alt2 .content
+.syntaxhighlighter .line.highlighted.alt1,
+.syntaxhighlighter .line.highlighted.alt2
 {
 	background-color: #3A3A00 !important;
-}
-
-.syntaxhighlighter .ruler
-{
-	color: silver !important;
-	border-left: 3px solid #3185B9 !important;
-}
-
-.syntaxhighlighter.nogutter .ruler
-{
-	border: 0 !important;
 }
 
 .syntaxhighlighter .toolbar

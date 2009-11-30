@@ -41,7 +41,7 @@ endif
 if !exists('g:exES_WebBrowser')
     if has("gui_running")
         if has("win32")
-            let g:exES_WebBrowser = 'c:\Program Files\Mozilla Firefox\firefox.exe'
+            let g:exES_WebBrowser = 'c:\Users\Johnny\AppData\Local\Google\Chrome\Application\chrome.exe'
         elseif has("unix")
             let g:exES_WebBrowser = 'firefox'
         endif
@@ -55,7 +55,7 @@ endif
 if !exists('g:exES_ImageViewer')
     if has("gui_running")
         if has("win32")
-            let g:exES_ImageViewer = 'd:\exDev\IrfanView\i_view32.exe'
+            let g:exES_ImageViewer = $EX_DEV.'\tools\IrfanView\i_view32.exe'
         elseif has("unix")
             " TODO
         endif

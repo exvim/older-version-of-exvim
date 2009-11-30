@@ -1,0 +1,32 @@
+include "c_comment.lang"
+
+state preproc start '^[[:blank:]]*#(?:[[:blank:]]*include)' begin
+        string delim "<" ">" 
+        string delim "\"" "\"" escape "\\"
+        include "c_comment.lang"
+end
+
+preproc = '^[[:blank:]]*#([[:blank:]]*[[:word:]]*)'
+
+include "number.lang"
+
+string delim "\"" "\"" escape "\\"
+string delim "'" "'"  escape "\\"
+
+keyword = "__asm|__cdecl|__declspec|__export|__far16|__fastcall|__fortran|__import",
+      "__pascal|__rtti|__stdcall|_asm|_cdecl|__except|_export|_far16|_fastcall",
+      "__finally|_fortran|_import|_pascal|_stdcall|__thread|__try|asm|auto",
+      "break|case|catch|cdecl|class|const|const_cast|continue|default|delete",
+      "do|dynamic_cast|else|enum|explicit|extern|false|for|friend|goto",
+      "if|inline|mutable|namespace|new|operator|pascal|private|protected",
+      "public|register|reinterpret_cast|return|sizeof|static|static_cast",
+      "struct|switch|template|this|throw|true|try|typedef|typeid|typename|union",
+      "using|virtual|volatile|while"
+
+type = "bool|char|double|float|int|long|short|signed|unsigned|void|wchar_t"
+
+include "symbols.lang"
+
+cbracket = "{|}"
+
+include "function.lang"

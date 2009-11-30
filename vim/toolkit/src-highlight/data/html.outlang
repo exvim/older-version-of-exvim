@@ -1,0 +1,9 @@
+include "html_common.outlang"
+
+doctemplate
+"<!-- Generator: $additional -->
+<pre><tt>"
+"</tt></pre>
+"
+end
+

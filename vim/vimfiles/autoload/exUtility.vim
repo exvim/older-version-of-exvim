@@ -1,7 +1,7 @@
 " ======================================================================================
 " File         : exUtility.vim
 " Author       : Wu Jie 
-" Last Change  : 10/18/2008 | 18:57:33 PM | Saturday,October
+" Last Change  : 11/30/2009 | 18:49:57 PM | Monday,November
 " Description  : 
 " ======================================================================================
 
@@ -2762,7 +2762,7 @@ function exUtility#CreateIDLangMap( file_filter ) " <<<
         silent call add ( text_list, '*/.svn/*              IGNORE')
         silent call add ( text_list, '*.svn-base            IGNORE')
         silent call add ( text_list, '_vimfiles*/*          IGNORE')
-        silent call add ( text_list, 'quick_gen_project*.*  IGNORE')
+        silent call add ( text_list, 'quick_gen_project_*.* IGNORE')
         silent call add ( text_list, '*.err                 IGNORE') " never bring error file into global search
         silent call add ( text_list, '*.exe                 IGNORE') " never bring exe file into global search
         silent call add ( text_list, '*.lnk                 IGNORE') " never bring lnk file into global search
@@ -3125,19 +3125,21 @@ function exUtility#SrcHighlight( line1, line2 ) " <<<
 
     " browse use browser browse file
     "KEEPME once we have css version (src 2.6): let shl_cmd = 'source-highlight -f html -s ex_cpp -n --data-dir=%EX_DEV%\GnuWin32\share\source-highlight -css="ex.css"' . ' -i ' . temp_file . ' -o ' . temp_file_html
-    let share_path = ''
-    if has ('win32')
-        let share_path = '%EX_DEV%\GnuWin32\share'
-    elseif has ('unix')
-        let share_path = '${EX_DEV}\local\share'
-    endif
-    let shl_cmd = 'source-highlight -f html -s ex_cpp -n --data-dir='.share_path.'\source-highlight' . ' -i ' . temp_file . ' -o ' . temp_file_html
+    let share_path = g:ex_toolkit_path . '\src-highlight\data'
+    let shl_cmd = 'source-highlight -f html -s ex_cpp -n --data-dir='.share_path . ' -i ' . temp_file . ' -o ' . temp_file_html
 
     let shl_result = system(shl_cmd)
 
     " TODO: use if win32, if linux
     let win_file = exUtility#Pathfmt( temp_file_html, 'windows')
-    silent exec '!start ' . g:exES_WebBrowser . ' ' . win_file
+
+    " try to open the file by web browser
+    if findfile ( g:exES_WebBrowser ) != ''
+        silent exec '!start ' . g:exES_WebBrowser . ' ' . win_file
+    else
+        call exUtility#WarningMsg ("Can't not find web-browser: ".g:exES_WebBrowser . " defined by g:exES_WebBrowser")
+        return
+    endif
 
     " go back to start line
     silent exec ":" . first_line
@@ -3244,7 +3246,14 @@ function exUtility#ViewInheritsImage() " <<<
         return
     endif
 
-    silent exec '!start ' . g:exES_ImageViewer ' ' . file_name
+    " try to open the file by image viewer
+    if findfile ( g:exES_ImageViewer ) != ''
+        silent exec '!start ' . g:exES_ImageViewer ' ' . file_name
+    else
+        call exUtility#WarningMsg ("Can't not find image viewer: ".g:exES_ImageViewer . " defined by g:exES_ImageViewer")
+        return
+    endif
+
 endfunction " >>>
 
 " ------------------------------------------------------------------ 
@@ -3502,17 +3511,22 @@ function exUtility#CreateVimwikiFiles() " <<<
 
                 " add syntax highlighter js
 	            silent call add ( text_list, "\t<script type=\"text/javascript\" src=\"syntax_highlighter/scripts/shCore.js\"></script>" )
+	            silent call add ( text_list, "\t<script type=\"text/javascript\" src=\"syntax_highlighter/scripts/shBrushAS3.js\"></script>" )
 	            silent call add ( text_list, "\t<script type=\"text/javascript\" src=\"syntax_highlighter/scripts/shBrushBash.js\"></script>" )
+	            silent call add ( text_list, "\t<script type=\"text/javascript\" src=\"syntax_highlighter/scripts/shBrushColdFusion.js\"></script>" )
 	            silent call add ( text_list, "\t<script type=\"text/javascript\" src=\"syntax_highlighter/scripts/shBrushCpp.js\"></script>" )
 	            silent call add ( text_list, "\t<script type=\"text/javascript\" src=\"syntax_highlighter/scripts/shBrushCSharp.js\"></script>" )
 	            silent call add ( text_list, "\t<script type=\"text/javascript\" src=\"syntax_highlighter/scripts/shBrushCss.js\"></script>" )
 	            silent call add ( text_list, "\t<script type=\"text/javascript\" src=\"syntax_highlighter/scripts/shBrushDelphi.js\"></script>" )
 	            silent call add ( text_list, "\t<script type=\"text/javascript\" src=\"syntax_highlighter/scripts/shBrushDiff.js\"></script>" )
+	            silent call add ( text_list, "\t<script type=\"text/javascript\" src=\"syntax_highlighter/scripts/shBrushErlang.js\"></script>" )
 	            silent call add ( text_list, "\t<script type=\"text/javascript\" src=\"syntax_highlighter/scripts/shBrushGroovy.js\"></script>" )
 	            silent call add ( text_list, "\t<script type=\"text/javascript\" src=\"syntax_highlighter/scripts/shBrushJava.js\"></script>" )
+	            silent call add ( text_list, "\t<script type=\"text/javascript\" src=\"syntax_highlighter/scripts/shBrushJavaFX.js\"></script>" )
 	            silent call add ( text_list, "\t<script type=\"text/javascript\" src=\"syntax_highlighter/scripts/shBrushJScript.js\"></script>" )
 	            silent call add ( text_list, "\t<script type=\"text/javascript\" src=\"syntax_highlighter/scripts/shBrushPhp.js\"></script>" )
 	            silent call add ( text_list, "\t<script type=\"text/javascript\" src=\"syntax_highlighter/scripts/shBrushPlain.js\"></script>" )
+	            silent call add ( text_list, "\t<script type=\"text/javascript\" src=\"syntax_highlighter/scripts/shBrushPowerShell.js\"></script>" )
 	            silent call add ( text_list, "\t<script type=\"text/javascript\" src=\"syntax_highlighter/scripts/shBrushPython.js\"></script>" )
 	            silent call add ( text_list, "\t<script type=\"text/javascript\" src=\"syntax_highlighter/scripts/shBrushRuby.js\"></script>" )
 	            silent call add ( text_list, "\t<script type=\"text/javascript\" src=\"syntax_highlighter/scripts/shBrushScala.js\"></script>" )
