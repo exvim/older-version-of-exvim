@@ -13,7 +13,7 @@
 " set EX_DEV variable for linux
 if has ("unix")
     let $EX_DEV='~/exDev'
-    let g:ex_toolkit_path = '~/.toolkit'
+    let g:ex_toolkit_path = $HOME.'/.toolkit'
 else
     let g:ex_toolkit_path = $EX_DEV.'/exVim/toolkit'
 endif
@@ -39,7 +39,7 @@ set backup " make backup file and leave it around
 "set directory=.,%tmp%
 
 " setup back and swap directory
-let data_dir = '~/.data/'
+let data_dir = $HOME.'/.data/'
 let backup_dir = data_dir . 'backup' 
 let swap_dir = data_dir . 'swap' 
 if finddir(data_dir) == ''
@@ -51,8 +51,8 @@ endif
 if finddir(swap_dir) == ''
     silent call mkdir(swap_dir)
 endif
-set backupdir=~/.data/backup " where to put backup file 
-set directory=~/.data/swap " where to put swap file 
+set backupdir=$HOME/.data/backup " where to put backup file 
+set directory=$HOME/.data/swap " where to put swap file 
 unlet data_dir
 unlet backup_dir
 unlet swap_dir

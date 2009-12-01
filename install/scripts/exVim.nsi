@@ -1,7 +1,7 @@
 ;  ======================================================================================
-;  File         : exDev.nsi
+;  File         : exVim.nsi
 ;  Author       : Wu Jie 
-;  Last Change  : 05/09/2009 | 15:32:39 PM | Saturday,May
+;  Last Change  : 12/01/2009 | 16:43:24 PM | Tuesday,December
 ;  Description  : 
 ;  ======================================================================================
 
@@ -17,10 +17,10 @@
 ; /////////////////////////////////////////////////////////////////////////////
 
 ; Name and File
-Name "exDev Installer" 
-Caption "exDev Installer"
+Name "exVim Installer" 
+Caption "exVim Installer"
 Icon "resource\exVim_icon.ico"
-OutFile "exDev-Installer.exe"
+OutFile "exVim-Installer.exe"
 
 ; Default installation
 ; DISABLE: InstallDir "$PROGRAMFILES\exDev"
@@ -51,7 +51,7 @@ Function .onInit
 
     # run the install program to check for already installed versions
     SetOutPath $TEMP
-    File exDev\exVim\vim\vim72\install.exe
+    File rawdata\exVim\vim\vim72\install.exe
     ExecWait "$TEMP\install.exe -uninstall-check"
     Delete $TEMP\install.exe
 FunctionEnd
@@ -111,15 +111,15 @@ SectionGroup "!exVim" sec_exVim
         SectionIn 1 2
 
         ; copy vim files
-        SetOutPath $INSTDIR\vim
-        File /r exDev\exVim\vim\*
+        SetOutPath $INSTDIR\exVim
+        File /r rawdata\exVim\vim\*
 
         ; append GnuWin32 bin path to user PATH environment variable
         ;  DISABLE { 
         ;  ReadRegStr $0 HKCU "Environment" "PATH"
-        ;  WriteRegExpandStr HKCU "Environment" "PATH" "$INSTDIR\vim\vim72;$0"
+        ;  WriteRegExpandStr HKCU "Environment" "PATH" "$INSTDIR\exVim\vim72;$0"
         ;  } DISABLE end 
-        ${EnvVarUpdate} $0 "PATH" "A" "HKCU" "$INSTDIR\vim\vim72"  
+        ${EnvVarUpdate} $0 "PATH" "A" "HKCU" "$INSTDIR\exVim\vim72"  
     SectionEnd
 
     ;  ======================================================== 
@@ -130,8 +130,8 @@ SectionGroup "!exVim" sec_exVim
         SectionIn 1 2
 
         ; copy vim-plugin files
-        SetOutPath $INSTDIR\vim
-        File /r exDev\exVim\vim-plugins\*
+        SetOutPath $INSTDIR\exVim
+        File /r rawdata\exVim\vim-plugins\*
     SectionEnd
 
 SectionGroupEnd
@@ -156,8 +156,8 @@ SectionGroup "other tools" sec_other_tools
             SectionIn 1
 
             ; copy gawk files
-            SetOutPath $INSTDIR\GnuWin32
-            File /r exDev\GnuWin32\gawk\*
+            SetOutPath $INSTDIR\tools\GnuWin32
+            File /r rawdata\GnuWin32\gawk\*
         SectionEnd
 
         ;  ======================================================== 
@@ -168,8 +168,8 @@ SectionGroup "other tools" sec_other_tools
             SectionIn 1
 
             ; copy diff files
-            SetOutPath $INSTDIR\GnuWin32
-            File /r exDev\GnuWin32\diffutils\*
+            SetOutPath $INSTDIR\tools\GnuWin32
+            File /r rawdata\GnuWin32\diffutils\*
         SectionEnd
 
         ;  ======================================================== 
@@ -180,16 +180,16 @@ SectionGroup "other tools" sec_other_tools
             SectionIn 1
 
             ; copy libintl files
-            SetOutPath $INSTDIR\GnuWin32
-            File /r exDev\GnuWin32\libintl\*
+            SetOutPath $INSTDIR\tools\GnuWin32
+            File /r rawdata\GnuWin32\libintl\*
 
             ; copy libiconv files
-            SetOutPath $INSTDIR\GnuWin32
-            File /r exDev\GnuWin32\libiconv\*
+            SetOutPath $INSTDIR\tools\GnuWin32
+            File /r rawdata\GnuWin32\libiconv\*
 
             ; copy id-utils files
-            SetOutPath $INSTDIR\GnuWin32
-            File /r exDev\GnuWin32\id-utils\*
+            SetOutPath $INSTDIR\tools\GnuWin32
+            File /r rawdata\GnuWin32\id-utils\*
         SectionEnd
 
         ;  ======================================================== 
@@ -200,12 +200,12 @@ SectionGroup "other tools" sec_other_tools
             SectionIn 1
 
             ; copy sed files
-            SetOutPath $INSTDIR\GnuWin32
-            File /r exDev\GnuWin32\regex\*
+            SetOutPath $INSTDIR\tools\GnuWin32
+            File /r rawdata\GnuWin32\regex\*
 
             ; copy sed files
-            SetOutPath $INSTDIR\GnuWin32
-            File /r exDev\GnuWin32\sed\*
+            SetOutPath $INSTDIR\tools\GnuWin32
+            File /r rawdata\GnuWin32\sed\*
         SectionEnd
 
         ;  ======================================================== 
@@ -216,8 +216,8 @@ SectionGroup "other tools" sec_other_tools
             SectionIn 1
 
             ; copy src-highlite files
-            SetOutPath $INSTDIR\GnuWin32
-            File /r exDev\GnuWin32\src-highlite\*
+            SetOutPath $INSTDIR\tools\GnuWin32
+            File /r rawdata\GnuWin32\src-highlite\*
         SectionEnd
 
         ;  ======================================================== 
@@ -230,7 +230,7 @@ SectionGroup "other tools" sec_other_tools
             ;  ReadRegStr $0 HKCU "Environment" "PATH"
             ;  WriteRegExpandStr HKCU "Environment" "PATH" "$INSTDIR\GnuWin32\bin;$0"
             ;  } DISABLE end 
-            ${EnvVarUpdate} $0 "PATH" "A" "HKCU" "$INSTDIR\GnuWin32\bin"  
+            ${EnvVarUpdate} $0 "PATH" "A" "HKCU" "$INSTDIR\tools\GnuWin32\bin"  
         SectionEnd
 
     SectionGroupEnd
@@ -243,15 +243,15 @@ SectionGroup "other tools" sec_other_tools
         SectionIn 1
 
         ; copy grpahviz files
-        SetOutPath $INSTDIR\Graphviz
-        File /r exDev\Graphviz\*
+        SetOutPath $INSTDIR\tools\Graphviz
+        File /r rawdata\Graphviz\*
     
         ; append Graphviz bin path to user PATH environment variable
         ;  DISABLE { 
         ;  ReadRegStr $0 HKCU "Environment" "PATH"
         ;  WriteRegExpandStr HKCU "Environment" "PATH" "$INSTDIR\Graphviz\bin;$0"
         ;  } DISABLE end 
-        ${EnvVarUpdate} $0 "PATH" "A" "HKCU" "$INSTDIR\Graphviz\bin"  
+        ${EnvVarUpdate} $0 "PATH" "A" "HKCU" "$INSTDIR\tools\Graphviz\bin"  
     SectionEnd
 
 SectionGroupEnd
@@ -283,7 +283,7 @@ Section # "PostInstall"
     WriteRegStr HKCR ".vimentry" "" "exVim.vimentry"
     WriteRegStr HKCR "exVim.vimentry" "" "exVim vimentry file"
     WriteRegStr HKCR "exVim.vimentry\shell" "" "open"
-    WriteRegStr HKCR "exVim.vimentry\shell\open\command" "" '"$INSTDIR\vim\vim72\gvim.exe" "%1"'
+    WriteRegStr HKCR "exVim.vimentry\shell\open\command" "" '"$INSTDIR\exVim\vim72\gvim.exe" "%1"'
     ; Add vimentry to new file
     WriteRegStr HKCR ".vimentry\ShellNew" "NullFile" ""
     System::Call 'shell32.dll::SHChangeNotify(i, i, i, i) v (0x08000000, 0, 0, 0)'
@@ -347,9 +347,9 @@ Section "Uninstall"
 	BringToFront
     
     ; remove install directory
-    RMDir /r "$INSTDIR\vim"
-    RMDir /r "$INSTDIR\GnuWin32"
-    RMDir /r "$INSTDIR\Graphviz"
+    RMDir /r "$INSTDIR\exVim"
+    RMDir /r "$INSTDIR\tools\GnuWin32"
+    RMDir /r "$INSTDIR\tools\Graphviz"
     Delete $INSTDIR\uninstall.exe
     
     ; remove registry value
@@ -362,9 +362,9 @@ Section "Uninstall"
     DeleteRegKey HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\exVim"
 
     ; remove from environment
-    ${un.EnvVarUpdate} $0 "PATH" "R" "HKCU" "$INSTDIR\Graphviz\bin"
-    ${un.EnvVarUpdate} $0 "PATH" "R" "HKCU" "$INSTDIR\GnuWin32\bin"  
-    ${un.EnvVarUpdate} $0 "PATH" "R" "HKCU" "$INSTDIR\vim\vim72"  
+    ${un.EnvVarUpdate} $0 "PATH" "R" "HKCU" "$INSTDIR\tools\Graphviz\bin"
+    ${un.EnvVarUpdate} $0 "PATH" "R" "HKCU" "$INSTDIR\tools\GnuWin32\bin"  
+    ${un.EnvVarUpdate} $0 "PATH" "R" "HKCU" "$INSTDIR\exVim\vim72"  
 
     ; Refresh environment variables
     SendMessage ${HWND_BROADCAST} ${WM_WININICHANGE} 0 "STR:Environment" /TIMEOUT=5000 

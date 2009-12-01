@@ -10,6 +10,7 @@
 #/////////////////////////////////////////////////////////////////////////////
 
 # general
-version = "8.02"
-source_path = "d:/exDev/vim"
+version = "8.03"
+patched_plugins_version = "2.1"
+source_path = "d:/exDev/exVim"
 

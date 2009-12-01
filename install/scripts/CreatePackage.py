@@ -19,13 +19,13 @@ import Settings
 #/////////////////////////////////////////////////////////////////////////////
 
 # general
-dest_root_path = "d:/Project/Dev/exVim_google/release_version" 
+dest_root_path = "e:/Dev/exVim.GoogleCode/release_version" 
 dest_version_path = dest_root_path + "/" + Settings.version
 
 #
 full_package_name = "full-package"
 ex_package_name = "ex-plugins-package"
-patched_package_name = "patched-plugins-package"
+patched_package_name = "patched-plugins-package" + "-" + Settings.patched_plugins_version
 
 #/////////////////////////////////////////////////////////////////////////////
 # functions
@@ -103,7 +103,7 @@ def CreateFullPackage ():
     # copy vimfiles
     AddDirToZip ( zipfp, os.path.join( Settings.source_path, "vimfiles" ) )
     # copy _vimrc and rename to _vimrc_ex 
-    zipfp.write ( os.path.join( Settings.source_path, "_vimrc" ), "_vimrc_ex" )
+    zipfp.write ( os.path.join( Settings.source_path, ".vimrc" ), ".vimrc_ex" )
     
     # close zip file
     zipfp.close()
@@ -129,25 +129,43 @@ def CreateExPluginsPackage ():
     # copy toolkit folder
     AddDirToZip ( zipfp, os.path.join( Settings.source_path, "toolkit" ) )
 
-    # copy ex-plugins in vimfiles
+    # copy ex-plugins in vimfiles { 
+
+    # filetype
     zipfp.write ( os.path.join( Settings.source_path, "vimfiles/filetype.vim" ) )
+
+    # after-compiler
     zipfp.write ( os.path.join( Settings.source_path, "vimfiles/after/compiler/exgcc.vim" ) )
     zipfp.write ( os.path.join( Settings.source_path, "vimfiles/after/compiler/hlsl.vim" ) )
     zipfp.write ( os.path.join( Settings.source_path, "vimfiles/after/compiler/msvc2005.vim" ) )
+
+    # after-syntax
     zipfp.write ( os.path.join( Settings.source_path, "vimfiles/after/syntax/c.vim" ) )
     zipfp.write ( os.path.join( Settings.source_path, "vimfiles/after/syntax/cpp.vim" ) )
     zipfp.write ( os.path.join( Settings.source_path, "vimfiles/after/syntax/exUtility.vim" ) )
     zipfp.write ( os.path.join( Settings.source_path, "vimfiles/after/syntax/hlsl.vim" ) )
+    zipfp.write ( os.path.join( Settings.source_path, "vimfiles/after/syntax/make.vim" ) )
     zipfp.write ( os.path.join( Settings.source_path, "vimfiles/after/syntax/maxscript.vim" ) )
     zipfp.write ( os.path.join( Settings.source_path, "vimfiles/after/syntax/python.vim" ) )
     zipfp.write ( os.path.join( Settings.source_path, "vimfiles/after/syntax/syncolor.vim" ) )
     zipfp.write ( os.path.join( Settings.source_path, "vimfiles/after/syntax/vim.vim" ) )
+
+    # autoload
     zipfp.write ( os.path.join( Settings.source_path, "vimfiles/autoload/exUtility.vim" ) )
+
+    # colors
     zipfp.write ( os.path.join( Settings.source_path, "vimfiles/colors/ex.vim" ) )
+    zipfp.write ( os.path.join( Settings.source_path, "vimfiles/colors/ex_lightgray.vim" ) )
+
+    # doc
     zipfp.write ( os.path.join( Settings.source_path, "vimfiles/doc/exVim.txt" ) )
+
+    # plugin
+    zipfp.write ( os.path.join( Settings.source_path, "vimfiles/plugin/exBufExplorer.vim" ) )
     zipfp.write ( os.path.join( Settings.source_path, "vimfiles/plugin/exCscope.vim" ) )
     zipfp.write ( os.path.join( Settings.source_path, "vimfiles/plugin/exEnvironmentSetting.vim" ) )
     zipfp.write ( os.path.join( Settings.source_path, "vimfiles/plugin/exGlobalSearch.vim" ) )
+    zipfp.write ( os.path.join( Settings.source_path, "vimfiles/plugin/exJumpStack.vim" ) )
     zipfp.write ( os.path.join( Settings.source_path, "vimfiles/plugin/exMacroHighlight.vim" ) )
     zipfp.write ( os.path.join( Settings.source_path, "vimfiles/plugin/exMarksBrowser.vim" ) )
     zipfp.write ( os.path.join( Settings.source_path, "vimfiles/plugin/exProject.vim" ) )
@@ -156,10 +174,11 @@ def CreateExPluginsPackage ():
     zipfp.write ( os.path.join( Settings.source_path, "vimfiles/plugin/exSymbolTable.vim" ) )
     zipfp.write ( os.path.join( Settings.source_path, "vimfiles/plugin/exTagSelect.vim" ) )
     zipfp.write ( os.path.join( Settings.source_path, "vimfiles/plugin/exUtility.vim" ) )
-    zipfp.write ( os.path.join( Settings.source_path, "vimfiles/plugin/exJumpStack.vim" ) )
+
+    # } end 
 
     # copy _vimrc and rename to _vimrc_ex 
-    zipfp.write ( os.path.join( Settings.source_path, "_vimrc" ), "_vimrc_ex" )
+    zipfp.write ( os.path.join( Settings.source_path, ".vimrc" ), ".vimrc_ex" )
     
     # close zip file
     zipfp.close()
