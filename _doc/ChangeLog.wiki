@@ -20,7 +20,7 @@
     * update cTags to 5.8
     * update SyntaxHighliter to 2.1.364
     * update vimwiki to 0.9.6
-    * update NERD_tree to 4.0.0
+    * update NERD_tree to 4.1.0
     * update genutils to 2.5
  * Bug fix
     * fix the filter format shows wrong syntax in dialog
