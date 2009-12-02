@@ -171,7 +171,7 @@ let g:ex_toolkit_path = 'd:\exDev\exVim\toolkit'
 Finally, you need to setup your .vimrc so that you can use ex-plugins. Check the *setup .vimrc*
 section below for detail.
 
-== install exVim in unix/linux ==
+== install exVim in unix/linux/Mac ==
 --------------------------------------------------------------------------------------
 
 === install/compile vim ===
@@ -205,6 +205,10 @@ sudo make config
 sudo make
 sudo make install
 }}}
+
+for mac user, please install vim by MacVim project:
+http://code.google.com/p/macvim/
+
 
 === install exVim packages ===
 

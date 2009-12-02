@@ -26,11 +26,13 @@ sudo make
 sudo make install
 
 # set global environment
-export EX_DEV="/usr/local/share"
+export EX_DEV="~/exDev"
 
 # copy files
 # source control: sudo svn checkout svn://10.0.0.3/gVim/vim ${EX_DEV}/vim
 # NOTE: ${package} is your download package
-sudo cp ${package}/vim ${EX_DEV}/vim
-sudo cp ${EX_DEV}/vim/_vimrc ~/_vimrc
+sudo cp ${package}/exVim ${EX_DEV}/exVim
+sudo cp ${EX_DEV}/exVim/.vimrc ~/.vimrc
+sudo cp ${EX_DEV}/exVim/toolkit ~/.toolkit
+sudo cp ${EX_DEV}/exVim/vimfiles ~/.vim
 

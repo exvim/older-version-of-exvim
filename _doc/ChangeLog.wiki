@@ -11,6 +11,8 @@
 == 8.03 ==
  * New features
     * let make syntax support external comments.
+    * refine install method for unix/linux.
+    * support Mac OS X.
  * Changes
     * support matlab/octave language
     * support maxscript language

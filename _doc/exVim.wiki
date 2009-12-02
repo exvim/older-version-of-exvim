@@ -89,6 +89,14 @@ With exVim you can:
 == Links ==
 --------------------------------------------------------------------------------------
 
+ * vim
+    * vim official site [http://www.vim.org/]
+ * exVim
+    * exVim Official site [http://code.google.com/p/exvim/]
+    * exVim Easy Edition [http://code.google.com/p/exvimeasy/]
+    * exVim Discuss Group [https://groups.google.com/group/exVim/]
+ * MacVim
+    * MacVim official site [http://code.google.com/p/macvim/]
  * tools
     * cTags: [http://ctags.sourceforge.net/]
     * cscope: [http://cscope.sourceforge.net/]

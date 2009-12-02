@@ -178,8 +178,14 @@ How can I install "exVim"~
 ------------------------------------------------------------------------------
 2.1. Install                                                         *Install*
 
-    Copy toolkit to $VIM\toolkit
-    Copy vimfiles to $VIM\vimfiles
+    In Win32:
+    	Copy toolkit to $VIM\toolkit
+    	Copy vimfiles to $VIM\vimfiles
+
+    In Unix/Linux/Mac:
+        Copy toolkit to ~\.toolkit
+        Copy vimfiles to ~\.vim
+
     exVim needs you to have tools below:
         * ctags
         * gawk
@@ -197,7 +203,7 @@ How can I install "exVim"~
     type the short name in command window. Also you need to add a global
     variable in Environment Settings, named EX_DEV, the value should be your
     upper directory of vim install path, for example if your vim install in
-    d:\exDev\vim, then the EX_DEV=d:\exDev
+    d:\exDev\exVim, then the EX_DEV=d:\exDev
     
     You can check the wiki page for details:
     	http://code.google.com/p/exvim/wiki/Install
@@ -593,7 +599,7 @@ How can I install "exVim"~
     You can check all the file type mappings in autoload/exUtility.vim, at 
     the define s:ex_exvim_lang_map.  If you want to add your own mappings, you 
     need to call the function exUtility#AddLangMap and exUtility#ResetLangMap 
-    in your _vimrc. 
+    in your .vimrc. 
 >
 	let g:ex_default_langs = ['c', 'cpp', 'c#', 'java', 'shader', 'python', 'vim', 'uc', 'math', 'wiki', 'ini', 'make', 'sh', 'batch', 'debug' ] 
 <
@@ -629,10 +635,10 @@ How can I install "exVim"~
                                                              *ex_toolkit_path*
     By default, exVim install the toolkit folder in the path $EX_DEV/vim/toolkit. 
     But you can change this path to your own place. To change the path, you need to 
-    set ex_toolkit_path variable in `_vimrc`, and copy the toolkit folder to that 
+    set ex_toolkit_path variable in .vimrc, and copy the toolkit folder to that 
     path.
 >
-	let g:ex_toolkit_path = $EX_DEV.'/vim/toolkit'
+	let g:ex_toolkit_path = $EX_DEV.'/exVim/toolkit'
 <
                                                       *ex_auto_hl_cursor_word*
     if ex_auto_hl_cursor_word set to 1, exVim will use exSynHLTemp syntax
@@ -954,7 +960,7 @@ How can I install "exVim"~
             2. you need to create inherits file in _vimfiles directory first ( by using
                :Up[date] command you will create one )
             3. you need to define g:exES_ImageViewer, for example:
-                let g:exES_ImageViewer = 'd:\exDev\IrfanView\i_view32.exe'
+                let g:exES_ImageViewer = 'd:\exDev\tools\IrfanView\i_view32.exe'
 >
         nnoremap <unique> <silent> <Leader>gv :call exUtility#ViewInheritsImage()<CR>
 <
@@ -977,7 +983,7 @@ How can I install "exVim"~
 3.1.4 Custom Highlights					*exUtility-highlights*
 
     Some times you need to custom highlight by your self, you have to write a
-    function in _vimrc named g:ex_CustomHighlight and define highlights of
+    function in .vimrc named g:ex_CustomHighlight and define highlights of
     exUtilities there. Here is a sample of highlights:
 >
 	function g:ex_CustomHighlight() " <<<
@@ -1109,7 +1115,7 @@ How can I install "exVim"~
     The exES_ImageViewer will store the picture viewer tool you specified 
     for browsing pciture files in vim. By default it use IrfanView in win32.
 >
-        let g:exES_ImageViewer = 'd:\exDev\IrfanView\i_view32.exe'
+        let g:exES_ImageViewer = 'd:\exDev\tools\IrfanView\i_view32.exe'
 <
 
                                                              *exES_WebBrowser*
@@ -1125,7 +1131,7 @@ How can I install "exVim"~
                                                       *exES_UpdateEnvironment*
     If you want to do something after exEnvironment parsing the vimentry file,
     you need to define a function named g:exES_PostUpdate() and add scripts in 
-    it in _vimrc. You can use the script "if exists()" to detect if a variable 
+    it in .vimrc. You can use the script "if exists()" to detect if a variable 
     been parse from vimentry, for example, you have write a "CWD=..." line 
     in the vimentry file. For example
 >
