@@ -12,5 +12,4 @@
 == Contents ==
 
  # [[exVim]]
- # [[Tools]]
  # [[DevLog]]
