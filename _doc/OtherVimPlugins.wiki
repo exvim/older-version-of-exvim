@@ -16,7 +16,7 @@ plugins in the internet, and I recommend some of the plugins I'm using right now
     * [[vimwiki]]
     * [[surround]]
     * [[EnhancedCommentify]]
-    * [[cmdline-complete]]
+    * [[CmdlineComplete]]
     * [[visincr]]
     * [[OmniCppComplete]]
     * CRefVim: [http://www.vim.org/scripts/script.php?script_id=614] 

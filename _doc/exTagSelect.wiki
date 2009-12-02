@@ -16,8 +16,8 @@ them in select-window.
 If you choose a tag from select-window, it will jump to the position in edit-window, 
 and record the jump. 
 
-You can browse your jump history in exJumpStack, and if necessary you can 
-jump back to read that code.
+You can browse your jump history in exJumpStack, and if necessary you can jump 
+back to read that code.
 
 The exTagSelect loads data from tags file created by [http://ctags.sourceforge.net/ cTags]. 
 The recommend command is:

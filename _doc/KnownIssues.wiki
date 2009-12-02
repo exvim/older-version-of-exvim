@@ -34,7 +34,7 @@ nnoremap <unique> <Leader>bd :call exUtility#Kwbd(1)<CR>
 The solution is come from the `VimTip 1119: Use Vim like an IDE`. But I changes some of the
 code so that it works correctly with other plugin window.
 
-== #2: I run the :Up[date] command, but nothing happend ==
+==#2: I run the `:Up[date]` command, but nothing happend==
 --------------------------------------------------------------------------------------
 
 *# Issue:*
@@ -71,7 +71,7 @@ If some one know this problem, and have a better solution, please tell me.
 
 *# Issue:*
 
-I successfully create the tag file in _vimfiles by :Up[date] or running quick_gen_project,
+I successfully create the tag file in _vimfiles by `:Up[date]` or running quick_gen_project,
 but when I running the project, and use exTagSelect plugin search a tag, it shows the message:
 "Error: tag not found ===> xxx".
 
@@ -118,8 +118,8 @@ When I use :SHL command to convert a source file into html, I got a blank page.
 
 *# Solution:*
 
-Copy `%EX_DEV%\vim\toolkit\src-highlight\ex\*.*` to your src-highlite share directory. 
-in win32 it could be: `%EX_DEV%\GnuWin32\share\source-highlight\`. 
+Copy `%EX_DEV%\exVim\toolkit\src-highlight\ex\*.*` to your src-highlite share directory. 
+in win32 it could be: `%EX_DEV%\tools\GnuWin32\share\source-highlight\`. 
 
 == #7: I can't used \ws,\wd,\we.... ==
 --------------------------------------------------------------------------------------

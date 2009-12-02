@@ -37,7 +37,6 @@ Here is what I get when I use `\sg` in a class named `TList`
 
 [[res/exSymbolTable.TList.png]]
 
-
 == #3: use \sg to check a member in different classes ==
 --------------------------------------------------------------------------------------
 
@@ -86,7 +85,7 @@ The picture below shows how this works:
 
 [[res/use.gd.filter.words.png]]
 
-== #6: get prev/next search results in global search by <u> or <c-r> ==
+== #6: get prev/next search results in global search by "u" or "ctrl-r" ==
 --------------------------------------------------------------------------------------
 Some times, after several global search, you probably need the search results list before, 
 use the `<u>` and `<ctrl-r>` to undo and redo the search result which will shows you the 

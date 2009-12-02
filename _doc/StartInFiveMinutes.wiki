@@ -45,7 +45,6 @@ files for the project. If success, you will see:
 [[res/running.quick.gen.project.png]]
 
 (6): Now you can use:
-
 ||*Operation/Command* ||*Explanation* ||
 ||\gg ||global search the word under cursor ||
 ||\] ||get the define/declaration of the word under cursor ||

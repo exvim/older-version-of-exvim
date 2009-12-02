@@ -27,7 +27,7 @@ following sections.
     * [[ShowMarks]]
     * [[TagList]]
     * [[LookupFile]]
-    * [[visual-studio]]
+    * [[VisualStudio]]
     * [[EchoFunc]]
 
 == Download ==

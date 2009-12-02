@@ -16,4 +16,3 @@ A nice plugin to help you input command line.
 --------------------------------------------------------------------------------------
 
     * cmdline-complete on [http://www.vim.org/scripts/script.php?script_id=2222 vim scripts]
-

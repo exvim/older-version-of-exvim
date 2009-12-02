@@ -96,7 +96,7 @@
     * fix lots of exCscope problem.
     * fix cscope syntax highlight.
     * fix showmarks conflict with snipMate plugin,
-    * fix color scheme will be dark when there is no colorscheme set in _vimrc.
+    * fix color scheme will be dark when there is no colorscheme set in `_vimrc`.
     * fix taglist,NERD_tree,minibufexpl opens window not take the position when there already have ex-plugin window.
     * let exJumpStack can recognize all registered plugin window.
     * fix findfile in g:exES_CWD reports wrong result when directory name have space
@@ -152,8 +152,8 @@
 == 7.05 ==
  * New features
     * add \ve to quick edit current vimentry file.
-    * add vimentry name check when open vimentry file. if vimentry name is not the same with the value VimEntryName in vimentry file, it will lead to a vimentry re-write.
-    * add paste quickfix result from register '*'.
+    * add vimentry name check when open vimentry file. if vimentry name is not the same with the value !VimEntryName in vimentry file, it will lead to a vimentry re-write.
+    * add paste quickfix result from register `'*'`.
     * add `exUtility#CloseAllExpluginWindow()` function
     * add s:ex_lang_map for exVim. you can use `exUtility#RestLangMap` and `exUtility#AddLangMap` function to create your own language maps.
         * remove g:exPJ_default_filter variable. use g:ex_default_langs instead.
@@ -169,7 +169,7 @@
     * change g:exUT_plugin_list to g:ex_plugin_list
  * Bug fix
     * fix \fc can't work outside edit window.
-    * fix "<args>" can't accept win32 path problem. by replace all "<args>" to '<args>'
+    * fix `"<args>"` can't accept win32 path problem. by replace all `"<args>"` to `'<args>'`
     * use :e xxx.vimentry when you already in another vimentry, the project settings will not be switch.
         * fix :EXProject `<filename>` will not close old project file when the `<filename>` is not the same.
         * fix exSymbolTable and exMacroHighlight can't load new file when they already load one.
@@ -187,7 +187,7 @@
     * remove g:exES_default_vimfiles, now the vimfiles dirname will be generate automatically by the vimentry name.
  * Bug fix
     * fix exEnvironment use getcwd as g:exES_CWD bug. Instead, we use the folder path of `.vimentry` file 
-    * fix exGlobalSearch <c-left>, <c-right> will go to edit buffer 
+    * fix exGlobalSearch `<c-left>`, `<c-right>` will go to edit buffer 
     * fix visual studio.py can't load unicode solution name
     * fix open `.vimentry` failed from vim in different path than the path of `.vimentry`
 
@@ -214,4 +214,3 @@
 
 == 7.04a ==
  * First public version
-

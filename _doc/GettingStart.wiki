@@ -53,7 +53,7 @@ files by press `<Enter>` on the files in project-window.
 === Generate tags,ID... ===
 
 After you generate files in project window and save it, you will see MyProject.exproject, 
-id-lang-autogen.map and filenametags in _vimfiles directory. Now we will generate the 
+id-lang-autogen.map and filenametags in `_vimfiles` directory. Now we will generate the 
 rest of files for project. Type `:Up[date]` in the vim we opened above, the command will 
 create a quick_gen_project_auto.(bat\|sh) in our project root directory and running it to 
 generate files used by exVim plugins, whiches are tags, ID, symbol, cscope-files, inherits 
@@ -64,10 +64,10 @@ you should saw a scene similar like the picture:
 
 === Update Project ===
 
-Most of the files in _vimfiles directory used by exVim plugins don't have incremental 
+Most of the files in `_vimfiles` directory used by exVim plugins don't have incremental 
 update method, so once you modified your codes in the project, you want the modification 
 added into tags, ID and so on, you need to update the file manually, and it will update 
-the whole file. Type `:Up[date]` will update all project files in _vimfiles directory. 
+the whole file. Type `:Up[date]` will update all project files in `_vimfiles` directory. 
 
 Also you can update specific file by giving an argument in `:Up[date]` command. The options are: 
 ID, symbol, inherit, tag and cscope. 
@@ -212,12 +212,11 @@ Check section [[exUtility]] for detail.
 *NOTE:* 
 When you use :q to unload a buffer, it will close the window for that buffer,too. That 
 will lead to orderless windows at the end. `\bd` is designed to solve the problem.  
-Check issue #1 in [[KnownIssues|Known Issues]] for more detail.
+Check `issue #1` in [[KnownIssues|Known Issues]] for more detail.
 
 *NOTE:*
-The image viewer used in `\gv` can be defined by set g:exES_ImageViewer in _vimrc. The default value is:
+The image viewer used in `\gv` can be defined by set `g:exES_ImageViewer` in `.vimrc`. The default value is:
 
 {{{
 let g:exES_ImageViewer = 'd:\exDev\IrfanView\i_view32.exe'
 }}}
-

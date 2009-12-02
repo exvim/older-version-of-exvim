@@ -1,7 +1,7 @@
 " ======================================================================================
-" File         : _vimrc
+" File         : .vimrc
 " Author       : Wu Jie 
-" Last Change  : 10/19/2008 | 15:33:27 PM | Sunday,October
+" Last Change  : 12/02/2009 | 12:02:28 PM | Wednesday,December
 " Description  : 
 " ======================================================================================
 
@@ -14,7 +14,12 @@
 if has ("unix")
     let $EX_DEV='~/exDev'
     let g:ex_toolkit_path = $HOME.'/.toolkit'
-else
+
+    " NOTE: mac is unix like system, but to use gawk,id-utils correctly, we need to manually set the export path.  
+    if has ("mac")
+        let $PATH='/usr/local/bin/:'.$PATH
+    endif
+else " else if win32 or other system, just set the toolkit path.
     let g:ex_toolkit_path = $EX_DEV.'/exVim/toolkit'
 endif
 

@@ -284,4 +284,3 @@ additional language in exVim, you need to add new language type in list g:ex_csc
 {{{
 let g:ex_cscope_langs = ['c', 'cpp', 'shader', 'asm' ] 
 }}}
-

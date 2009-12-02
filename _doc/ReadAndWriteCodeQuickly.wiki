@@ -29,7 +29,7 @@ clear the highlight, like a switch.
 
 === Highlight Clear ===
 
-The alt + 0 will clear all highlighted words. Also you can use <leader>1/2/3/4 to erase 
+The alt + 0 will clear all highlighted words. Also you can use `<leader>1/2/3/4` to erase 
 a specific highlight. When you highlight a word, and use another number to hgihlight the
 same word, The color of the larger number highlight will overwrite the smaller one. 
 
@@ -47,7 +47,7 @@ simple word.
 
 === Auto Highlight ===
 
-When set g:ex_auto_hl_cursor_word to 1 in _vimrc, exVim will use exSynHLTemp syntax highlight 
+When set g:ex_auto_hl_cursor_word to 1 in `.vimrc`, exVim will use exSynHLTemp syntax highlight 
 color to highlight the word under current cursor when cursor holds.
 
 === Tips ===

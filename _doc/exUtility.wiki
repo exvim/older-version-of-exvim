@@ -117,12 +117,12 @@ Here are a example of ex_todo_keyword and ex_comment_lable_keyword in the code:
 --------------------------------------------------------------------------------------
 `ex_toolkit_path`
 
-By default, exVim install the toolkit folder in the path $EX_DEV/vim/toolkit. But you 
+By default, exVim install the toolkit folder in the path $EX_DEV/exVim/toolkit. But you 
 can change this path to your own place. To change the path, you need to set ex_toolkit_path 
 variable in `_vimrc`, and copy the toolkit folder to that path.
 
 {{{
-let g:ex_toolkit_path = $EX_DEV.'/vim/toolkit'
+let g:ex_toolkit_path = $EX_DEV.'/exVim/toolkit'
 }}}
 
 --------------------------------------------------------------------------------------
@@ -198,8 +198,8 @@ the command will use the browser you defined to open the html automatically.
 
 *NOTE:* if you got blank page in web-browser after execute the command, that means you failed. 
 It is probably you didn't copy the language setup files into the src-highlite share directory. 
-So copy `%EX_DEV%\vim\toolkit\src-highlight\ex\*.*` to your src-highlite share directory. 
-in win32 it could be: `%EX_DEV%\GnuWin32\share\source-highlight\`. 
+So copy `%EX_DEV%\exVim\toolkit\src-highlight\ex\*.*` to your src-highlite share directory. 
+in win32 it could be: `%EX_DEV%\tools\GnuWin32\share\source-highlight\`. 
 
 --------------------------------------------------------------------------------------
 `:[range]MK {args}`

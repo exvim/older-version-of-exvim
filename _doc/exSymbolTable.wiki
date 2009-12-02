@@ -70,7 +70,6 @@ let g:exSL_window_width_increment = 100
 
 ------------------------------------------------------------------------------
 `exSL_window_direction`
-
  * topleft
  * botright
  * belowright

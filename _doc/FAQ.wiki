@@ -219,7 +219,7 @@ A21.
 --------------------------------------------------------------------------------------
 Q22. How to quick add surround symbol for something I select
 
-A22. In visual mode, type s, then type the surround symbol you want, for example "`{,(,[`", 
+A22. In visual mode, type s, then type the surround symbol you want, for example `"{,(,["`, 
 note: space need type twice, the direction of the surround represent to different result, 
 `{,(,[` will not add space when surround, otherwise `},),]` will.
 
@@ -241,5 +241,5 @@ Q25. How to copy source code with format information?
 
 A25. :SHL or :range SHL The command will convert your source code with highlight information 
 into html file, and open it by a specific web-browser. You need to copy settings from 
-`%EX_DEV%\vim\toolkit\src-highlight\ex\*.*` to `%EX_DEV%\GnuWin32\share\source-highlight\` 
+`%EX_DEV%\exVim\toolkit\src-highlight\ex\*.*` to `%EX_DEV%\tools\GnuWin32\share\source-highlight\` 
 if you get a blank page. 

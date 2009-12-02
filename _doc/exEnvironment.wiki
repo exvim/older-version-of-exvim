@@ -51,7 +51,7 @@ create the variables in script.
 `exES_vimfile_dir`                                                       
 
 `exES_vimfile_dir` will set the directory name which stores exVim project files. Default 
-is "_vimfiles". This value also affect the default template value writing in ".vimentry".
+is `"_vimfiles"`. This value also affect the default template value writing in ".vimentry".
 
 {{{
 let g:exES_vimfile_dir = "_vimfiles"
@@ -92,7 +92,7 @@ let g:exES_WebBrowser = 'c:\Program Files\Mozilla Firefox\firefox.exe'
 --------------------------------------------------------------------------------------
 
 If you want to do something after exEnvironment parsing the vimentry file, you need to 
-define a function named g:exES_PostUpdate() and write scripts in it in _vimrc. You can use 
+define a function named g:exES_PostUpdate() and write scripts in it in `.vimrc`. You can use 
 the script "if exists()" to detect if a variable been parsed from vimentry, for example, 
 you have write a "CWD=..." line in the vimentry file, and you want it be your current working
 directory every time you open that entry file, you write:
@@ -105,7 +105,7 @@ function g:exES_PostUpdate()
 endfunction
 }}}
 
-And here is example shows what I do in my _vimrc:
+And here is example shows what I do in my `.vimrc`:
 
 {{{
 function g:exES_PostUpdate()

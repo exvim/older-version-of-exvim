@@ -20,7 +20,6 @@ including the lower and upper case mark. And if your current edit file changes, 
 lowercase mark changes, so it is said in exMarkBrowser when you jump from a uppercase 
 mark, it will refresh marks in exMarkBrowser.  
 
-
 == Variables ==
 --------------------------------------------------------------------------------------
 

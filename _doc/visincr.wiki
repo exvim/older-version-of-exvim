@@ -26,4 +26,3 @@ and type :I, you will smile like me.
 --------------------------------------------------------------------------------------
 
     * visincr on [http://www.vim.org/scripts/script.php?script_id=670 vim scripts]
-
