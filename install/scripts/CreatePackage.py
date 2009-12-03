@@ -19,7 +19,7 @@ import Settings
 #/////////////////////////////////////////////////////////////////////////////
 
 # general
-dest_root_path = "e:/Dev/exVim.GoogleCode/release_version" 
+dest_root_path = "e:/Project/Dev/exVim.GoogleCode/release_version" 
 dest_version_path = dest_root_path + "/" + Settings.version
 
 #
