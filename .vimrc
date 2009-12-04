@@ -284,18 +284,18 @@ nnoremap <unique> <F8> :let @/=""<CR>
 " fast encoding change. 
 if has("gui_running") "  the <alt> key is only available in gui mode.
     " A-F1:  Switch to English Mode (Both Enconding and uiFont)
-    nnoremap <unique> <A-F1> :set guifont=Lucida_Console:h9<CR>:set encoding=latin1<CR>
+    nnoremap <unique> <A-F1> :set guifont=Lucida_Console:h10<CR>:set encoding=latin1<CR>
     " A-F2:  Switch to Chinese Mode (Both Enconding and uiFont)
-    nnoremap <unique> <A-F2> :set guifont=NSimSun:cGB2312:h9<CR>:set encoding=cp936<CR>
+    nnoremap <unique> <A-F2> :set guifont=NSimSun:cGB2312:h10<CR>:set encoding=cp936<CR>
     " A-F3:  Switch to Japanese Mode 
-    nnoremap <unique> <A-F3> :set guifont=MS_Gothic:cSHIFTJIS:h9<CR>:set encoding=cp932<CR>
+    nnoremap <unique> <A-F3> :set guifont=MS_Gothic:cSHIFTJIS:h10<CR>:set encoding=cp932<CR>
 else
     " <leader>F1:  Switch to English Mode (Both Enconding and uiFont)
-    nnoremap <unique> <leader><F1> :set guifont=Lucida_Console:h9<CR>:set encoding=latin1<CR>
+    nnoremap <unique> <leader><F1> :set guifont=Lucida_Console:h10<CR>:set encoding=latin1<CR>
     " <leader>F2:  Switch to Chinese Mode (Both Enconding and uiFont)
-    nnoremap <unique> <leader><F2> :set guifont=NSimSun:cGB2312:h9<CR>:set encoding=cp936<CR>
+    nnoremap <unique> <leader><F2> :set guifont=NSimSun:cGB2312:h10<CR>:set encoding=cp936<CR>
     " <leader>F3:  Switch to Japanese Mode 
-    nnoremap <unique> <leader><F3> :set guifont=MS_Gothic:cSHIFTJIS:h9<CR>:set encoding=cp932<CR>
+    nnoremap <unique> <leader><F3> :set guifont=MS_Gothic:cSHIFTJIS:h10<CR>:set encoding=cp932<CR>
 endif
 
 " map Ctrl-Tab to switch window

@@ -43,6 +43,7 @@ With exVim you can:
  # [[StartInFiveMinutes|Start In 5 Minutes]]
  # [[Install]]
  # [[GettingStart|Getting Start]]
+ # [[DefaultMappingsAndCommands|Default Mappings and Commands]]
  # [[SetupVimentry|Setup vimentry]]
  # [[UsingProjectWindow|Using Project Window]]
  # [[SearchTagsAndSymbols|Search Tags & Symbols]]
