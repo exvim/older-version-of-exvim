@@ -1,0 +1,45 @@
+-- auto-gen settings (DO NOT MODIFY) --
+
+CWD=D:/exDev/exVim
+Version=23
+VimEntryName=exVim
+VimfilesDirName=_vimfiles_exVim
+
+-- ex-plugins File Settings --
+
+LangType=auto
+Project=./_vimfiles_exVim/project_tree.exproject
+FilenameList=./_vimfiles_exVim/filenamelist
+Tag=./_vimfiles_exVim/tags
+ID=./_vimfiles_exVim/ID
+Symbol=./_vimfiles_exVim/symbol
+Macro=./_vimfiles_exVim/macro
+Cscope=./_vimfiles_exVim/cscope.out
+Inherits=./_vimfiles_exVim/inherits
+Bookmarks=./_vimfiles_exVim/bookmarks
+
+vimentryRefs+=
+
+-- ex-plugins Behavior Settings --
+
+RestoreBuffers=false
+AskForRestoration=true
+RestoreInfo=./_vimfiles_exVim/restore_info
+
+-- LookupFile Settings --
+
+LookupFileTag=./_vimfiles_exVim/filenametags
+
+-- Visual Studio Settings --
+
+vsTaskList=./_vimfiles_exVim/vs_task_list
+vsOutput=./_vimfiles_exVim/vs_output
+vsFindResult1=./_vimfiles_exVim/vs_find_results_1
+vsFindResult2=./_vimfiles_exVim/vs_find_results_2
+
+-- vimwiki Settings --
+
+wikiHome=./_doc
+wikiHomeHtml=./wiki_html
+wikiHtmlHeader=./_doc/template/header.tpl
+
