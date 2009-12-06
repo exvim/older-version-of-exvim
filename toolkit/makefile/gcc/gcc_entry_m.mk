@@ -71,7 +71,7 @@ Prj_Cmd_Clean_Deps := $(Batched_Prj_Cmd_Clean_Deps) $(StandAlone_Prj_Cmd_Clean_D
 # 	make -f gcc_entry_m.mk all/clean-all/clean-deps/rebuild
 #  ------------------------------------------------------------------ 
 
-.PHONY: all clean-all rebuild clean-deps
+.PHONY: all clean-all clean-deps rebuild
 all: |$(Batched_Prj_Cmd_All)
 clean-all: |$(Batched_Prj_Cmd_Clean)
 clean-deps: |$(Batched_Prj_Cmd_Clean_Deps)

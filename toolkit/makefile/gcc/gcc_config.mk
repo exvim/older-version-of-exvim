@@ -61,7 +61,7 @@ CompileMode = Fast
 # 			  cl 			( msvc )
 #  ------------------------------------------------------------------ 
 
-CPP_COMPILER_WIN32=g++-sjlj
+CPP_COMPILER_WIN32=g++
 CPP_COMPILER_LINUX=g++
 CPP_COMPILER_PS3=ppu-lv2-g++
 

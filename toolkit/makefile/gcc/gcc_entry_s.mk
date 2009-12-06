@@ -74,14 +74,22 @@ CFlag_Spec += # TODO: (sample: -I"C:/Program Files/Microsoft DirectX SDK/Include
 LFlag_Spec += # TODO: (sample: -L"C:/Program Files/Microsoft DirectX SDK/Lib/x86")
 
 # /////////////////////////////////////////////////////////////////////////////
-#  Addvance User Define
+#  Advanced User Define
+#  NOTE: in this section, you can define advanced macros by uncomment them
 # /////////////////////////////////////////////////////////////////////////////
 
 #  ------------------------------------------------------------------ 
-#  Desc: Parent Working Directory
+#  Desc: Target output directory 
 #  ------------------------------------------------------------------ 
 
-CWD ?= .
+#  OutDir := $(EX_SDK)/_build/gcc/$(Platform)/$(Configuration)
+#  ErrDir := $(CWD)/_logs/errors
+
+#  ------------------------------------------------------------------ 
+#  Desc: Pre defines
+#  ------------------------------------------------------------------ 
+
+# PreDefs +=
 
 # /////////////////////////////////////////////////////////////////////////////
 #  Post Build Even
