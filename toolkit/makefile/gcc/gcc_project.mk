@@ -104,11 +104,11 @@ endef
 # /////////////////////////////////////////////////////////////////////////////
 
 ifeq ($(Platform),Win32) # win32
-include $(EX_DEV)/exVim/toolkit/makefile/gcc/gcc_rule.mk
+include $(EX_DEV)/exVim/toolkit/makefile/gcc/gcc_rule_s.mk
 else
 ifeq ($(Platform),Linux) # unix/linux
-include ~/.toolkit/makefile/gcc/gcc_rule.mk
+include ~/.toolkit/makefile/gcc/gcc_rule_s.mk
 else # other system
-include ~/.toolkit/makefile/gcc/gcc_rule.mk
+include ~/.toolkit/makefile/gcc/gcc_rule_s.mk
 endif
 endif
