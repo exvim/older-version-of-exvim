@@ -11,7 +11,9 @@
 == 8.04 ==
  * New features
  * Changes
-    * update cscope to 15.7a
+    * update cscope to 15.7a.
+    * add swig syntax highlight.
+    * refine gcc makefiles.
  * Bug fix
 
 == 8.03 ==
