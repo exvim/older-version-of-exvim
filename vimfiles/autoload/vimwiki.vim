@@ -14,6 +14,7 @@ else
 endif
 
 let s:badsymbols = '['.g:vimwiki_badsyms.g:vimwiki_stripsym.'<>|?*:"]'
+
 " MISC helper functions {{{
 
 " This function is double defined.
@@ -61,7 +62,7 @@ function! vimwiki#current_subdir()"{{{
   return vimwiki#subdir(VimwikiGet('path'), expand('%:p'))
 endfunction"}}}
 
-function! s:msg(message) "{{{
+function! vimwiki#msg(message) "{{{
   echohl WarningMsg
   echomsg 'vimwiki: '.a:message
   echohl None
@@ -97,7 +98,7 @@ endfunction
 function! s:search_word(wikiRx, cmd) "{{{
   let match_line = search(a:wikiRx, 's'.a:cmd)
   if match_line == 0
-    call s:msg('WikiWord not found')
+    call vimwiki#msg('WikiWord not found')
   endif
 endfunction
 " }}}
@@ -219,12 +220,12 @@ function! s:update_wiki_links_dir(dir, old_fname, new_fname) " {{{
 endfunction
 " }}}
 
-function! s:tail_name(fname)
+function! s:tail_name(fname) "{{{
   let result = substitute(a:fname, ":", "__colon__", "g")
   let result = fnamemodify(result, ":t:r")
   let result = substitute(result, "__colon__", ":", "g")
   return result
-endfunction
+endfunction "}}}
 
 function! s:update_wiki_links(old_fname, new_fname) " {{{
   let old_fname = s:tail_name(a:old_fname)
@@ -252,7 +253,7 @@ function! s:update_wiki_links(old_fname, new_fname) " {{{
   while idx < len(dirs_keys)
     let dir = dirs_keys[idx]
     let new_dir = dirs_vals[idx]
-    call s:update_wiki_links_dir(dir, 
+    call s:update_wiki_links_dir(dir,
           \ new_dir.old_fname, new_dir.new_fname)
     let idx = idx + 1
   endwhile
@@ -285,6 +286,7 @@ endfunction
 " }}}
 
 " }}}
+
 " SYNTAX highlight {{{
 function! vimwiki#WikiHighlightWords() "{{{
   " search all wiki files in 'path' and its subdirs.
@@ -309,19 +311,19 @@ function! vimwiki#WikiHighlightWords() "{{{
   call map(g:vimwiki_wikiwords, 'substitute(v:val, os_p, os_p2, "g")')
 
   for word in g:vimwiki_wikiwords
-    if g:vimwiki_camel_case && 
+    if g:vimwiki_camel_case &&
           \ word =~ g:vimwiki_word1 && !s:is_link_to_non_wiki_file(word)
-      execute 'syntax match wikiWord /\%(^\|[^!]\)\zs\<'.word.'\>/'
+      execute 'syntax match VimwikiWord /\%(^\|[^!]\)\zs\<'.word.'\>/'
     endif
-    execute 'syntax match wikiWord /\[\[\<'.
+    execute 'syntax match VimwikiWord /\[\[\<'.
           \ vimwiki#unsafe_link(word).
           \ '\>\%(|\+.*\)*\]\]/'
-    execute 'syntax match wikiWord /\[\[\<'.
+    execute 'syntax match VimwikiWord /\[\[\<'.
           \ vimwiki#unsafe_link(word).
           \ '\>\]\[.\+\]\]/'
   endfor
-  execute 'syntax match wikiWord /\[\[.\+\.\%(jpg\|png\|gif\)\%(|\+.*\)*\]\]/'
-  execute 'syntax match wikiWord /\[\[.\+\.\%(jpg\|png\|gif\)\]\[.\+\]\]/'
+  execute 'syntax match VimwikiWord /\[\[.\+\.\%(jpg\|png\|gif\)\%(|\+.*\)*\]\]/'
+  execute 'syntax match VimwikiWord /\[\[.\+\.\%(jpg\|png\|gif\)\]\[.\+\]\]/'
 endfunction
 " }}}
 
@@ -336,15 +338,51 @@ function! vimwiki#hl_exists(hl)"{{{
 endfunction
 "}}}
 
+function! vimwiki#nested_syntax(filetype, start, end, textSnipHl) abort "{{{
+" From http://vim.wikia.com/wiki/VimTip857
+  let ft=toupper(a:filetype)
+  let group='textGroup'.ft
+  if exists('b:current_syntax')
+    let s:current_syntax=b:current_syntax
+    " Remove current syntax definition, as some syntax files (e.g. cpp.vim)
+    " do nothing if b:current_syntax is defined.
+    unlet b:current_syntax
+  endif
+
+  " Some syntax files set up iskeyword which might scratch vimwiki a bit.
+  " Let us save and restore it later.
+  " let b:skip_set_iskeyword = 1
+  let is_keyword = &iskeyword
+
+  execute 'syntax include @'.group.' syntax/'.a:filetype.'.vim'
+  try
+    execute 'syntax include @'.group.' after/syntax/'.a:filetype.'.vim'
+  catch
+  endtry
+
+  let &iskeyword = is_keyword
+
+  if exists('s:current_syntax')
+    let b:current_syntax=s:current_syntax
+  else
+    unlet b:current_syntax
+  endif
+  execute 'syntax region textSnip'.ft.'
+        \ matchgroup='.a:textSnipHl.'
+        \ start="'.a:start.'" end="'.a:end.'"
+        \ contains=@'.group
+endfunction "}}}
+
 "}}}
+
 " WIKI functions {{{
 function! vimwiki#WikiNextWord() "{{{
-  call s:search_word(g:vimwiki_rxWikiWord, '')
+  call s:search_word(g:vimwiki_rxWikiWord.'\|'.g:vimwiki_rxWeblink, '')
 endfunction
 " }}}
 
 function! vimwiki#WikiPrevWord() "{{{
-  call s:search_word(g:vimwiki_rxWikiWord, 'b')
+  call s:search_word(g:vimwiki_rxWikiWord.'\|'.g:vimwiki_rxWeblink, 'b')
 endfunction
 " }}}
 
@@ -356,17 +394,23 @@ function! vimwiki#WikiFollowWord(split) "{{{
   else
     let cmd = ":e "
   endif
+
   let word = s:strip_word(s:get_word_at_cursor(g:vimwiki_rxWikiWord))
   if word == ""
-    execute "normal! \n"
+    let weblink = s:strip_word(s:get_word_at_cursor(g:vimwiki_rxWeblink))
+    if weblink != ""
+      call VimwikiWeblinkHandler(weblink)
+    else
+      execute "normal! \n"
+    endif
     return
   endif
+
   if s:is_link_to_non_wiki_file(word)
     call s:edit_file(cmd, word)
   else
     let vimwiki_prev_word = [expand('%:p'), getpos('.')]
     let subdir = vimwiki#current_subdir()
-    echomsg VimwikiGet('path').subdir.word.VimwikiGet('ext')
     call s:edit_file(cmd, VimwikiGet('path').subdir.word.VimwikiGet('ext'))
     let b:vimwiki_prev_word = vimwiki_prev_word
   endif
@@ -414,7 +458,7 @@ function! vimwiki#WikiDeleteWord() "{{{
   try
     call delete(fname)
   catch /.*/
-    call s:msg('Cannot delete "'.expand('%:t:r').'"!')
+    call vimwiki#msg('Cannot delete "'.expand('%:t:r').'"!')
     return
   endtry
   execute "bdelete! ".escape(fname, " ")
@@ -433,7 +477,7 @@ function! vimwiki#WikiRenameWord() "{{{
 
   " there is no file (new one maybe)
   if glob(expand('%:p')) == ''
-    call s:msg('Cannot rename "'.expand('%:p').
+    call vimwiki#msg('Cannot rename "'.expand('%:p').
           \ '". It does not exist! (New file? Save it before renaming.)')
     return
   endif
@@ -447,7 +491,7 @@ function! vimwiki#WikiRenameWord() "{{{
 
   if new_link =~ '[/\\]'
     " It is actually doable but I do not have free time to do it.
-    call s:msg('Cannot rename to a filename with path!')
+    call vimwiki#msg('Cannot rename to a filename with path!')
     return
   endif
 
@@ -455,11 +499,11 @@ function! vimwiki#WikiRenameWord() "{{{
 
   " check new_fname - it should be 'good', not empty
   if substitute(new_link, '\s', '', 'g') == ''
-    call s:msg('Cannot rename to an empty filename!')
+    call vimwiki#msg('Cannot rename to an empty filename!')
     return
   endif
   if s:is_link_to_non_wiki_file(new_link)
-    call s:msg('Cannot rename to a filename with extension (ie .txt .html)!')
+    call vimwiki#msg('Cannot rename to a filename with extension (ie .txt .html)!')
     return
   endif
 
@@ -469,7 +513,7 @@ function! vimwiki#WikiRenameWord() "{{{
   " do not rename if word with such name exists
   let fname = glob(new_fname)
   if fname != ''
-    call s:msg('Cannot rename to "'.new_fname.
+    call vimwiki#msg('Cannot rename to "'.new_fname.
           \ '". File with that name exist!')
     return
   endif
@@ -481,7 +525,7 @@ function! vimwiki#WikiRenameWord() "{{{
       throw "Cannot rename!"
     end
   catch /.*/
-    call s:msg('Cannot rename "'.expand('%:t:r').'" to "'.new_fname.'"')
+    call vimwiki#msg('Cannot rename "'.expand('%:t:r').'" to "'.new_fname.'"')
     return
   endtry
 
@@ -539,19 +583,45 @@ endfunction
 "}}}
 
 " }}}
+
 " TEXT OBJECTS functions {{{
 
-function! vimwiki#TO_header(inner) "{{{
+function! vimwiki#TO_header(inner, visual) "{{{
   if !search('^\(=\+\)[^=]\+\1\s*$', 'bcW')
     return
   endif
-  let level = vimwiki#count_first_sym(getline(line('.')))
-  normal V
+
+  let sel_start = line("'<")
+  let sel_end = line("'>")
+  let block_start = line(".")
+  let advance = 0
+
+  let level = vimwiki#count_first_sym(getline('.'))
+
+  let is_header_selected = sel_start == block_start
+        \ && sel_start != sel_end
+
+  if a:visual && is_header_selected
+    if level > 1
+      let level -= 1
+      call search('^\(=\{'.level.'\}\)[^=]\+\1\s*$', 'bcW')
+    else
+      let advance = 1
+    endif
+  endif
+
+  normal! V
+
+  if a:visual && is_header_selected
+    call cursor(sel_end + advance, 0)
+  endif
+
   if search('^\(=\{1,'.level.'}\)[^=]\+\1\s*$', 'W')
     call cursor(line('.') - 1, 0)
   else
     call cursor(line('$'), 0)
   endif
+
   if a:inner && getline(line('.')) =~ '^\s*$'
     let lnum = prevnonblank(line('.') - 1)
     call cursor(lnum, 0)

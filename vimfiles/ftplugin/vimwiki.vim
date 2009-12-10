@@ -32,13 +32,17 @@ setlocal isfname-=[,]
 " COMMENTS: autocreate list items {{{
 " for list items, and list items with checkboxes
 if VimwikiGet('syntax') == 'default'
-  setl comments=b:\ *\ [\ ],b:\ *[\ ],b:\ *\ [],b:\ *[],b:\ *\ [x],b:\ *[x]
-  setl comments+=b:\ #\ [\ ],b:\ #[\ ],b:\ #\ [],b:\ #[],b:\ #\ [x],b:\ #[x]
+  exe 'setl comments=b:\ *\ ['.escape(g:vimwiki_listsyms[0], ' ').
+        \ '],b:\ *\ ['.g:vimwiki_listsyms[4].']'
+  exe 'setl comments+=b:\ #\ ['.escape(g:vimwiki_listsyms[0], ' ').
+        \ '],b:\ #\ ['.g:vimwiki_listsyms[4].']'
   setl comments+=b:\ *,b:\ #
   setl formatlistpat=^\\s\\+[*#]\\s*
 else
-  setl comments=n:*\ [\ ],n:*[\ ],n:*\ [],n:*[],n:*\ [x],n:*[x]
-  setl comments+=n:#\ [\ ],n:#[\ ],n:#\ [],n:#[],n:#\ [x],n:#[x]
+  exe 'setl comments=n:*\ ['.escape(g:vimwiki_listsyms[0], ' ').
+        \ '],n:*\ ['.g:vimwiki_listsyms[4].']'
+  exe 'setl comments+=n:#\ ['.escape(g:vimwiki_listsyms[0], ' ').
+        \ '],n:#\ ['.g:vimwiki_listsyms[4].']'
   setl comments+=n:*,n:#
 endif
 setlocal formatoptions=tnro
@@ -47,8 +51,9 @@ setlocal formatoptions=tnro
 " FOLDING for headers and list items using expr fold method. {{{
 if g:vimwiki_folding == 1
   setlocal fdm=expr
+  setlocal foldexpr=VimwikiFoldLevel(v:lnum)
+  setlocal foldtext=VimwikiFoldText()
 endif
-setlocal foldexpr=VimwikiFoldLevel(v:lnum)
 
 function! VimwikiFoldLevel(lnum) "{{{
   let line = getline(a:lnum)
@@ -78,7 +83,7 @@ function! VimwikiFoldLevel(lnum) "{{{
       if nline =~ rx_list_item
         let level = s:get_li_level(a:lnum, nnum)
         if !(level < 0 && (nnum - a:lnum) > 1)
-          return s:fold_marker(level) 
+          return s:fold_marker(level)
         endif
       elseif nnum - a:lnum == 1
         " last single-lined list item in a list
@@ -91,7 +96,7 @@ function! VimwikiFoldLevel(lnum) "{{{
         if getline(a:lnum + 1) =~ rx_list_item
           let level = s:get_li_level(pnum, a:lnum + 1)
           if level < 0
-            return s:fold_marker(level) 
+            return s:fold_marker(level)
           endif
         endif
 
@@ -167,7 +172,6 @@ function! s:get_li_level_last(lnum) "{{{
   endif
 endfunction "}}}
 
-setlocal foldtext=VimwikiFoldText()
 function! VimwikiFoldText() "{{{
   let line = getline(v:foldstart)
   return line.' ['.(v:foldend - v:foldstart).'] '
@@ -191,7 +195,11 @@ command! -buffer VimwikiGoBackWord call vimwiki#WikiGoBackWord()
 command! -buffer VimwikiSplitWord call vimwiki#WikiFollowWord('split')
 command! -buffer VimwikiVSplitWord call vimwiki#WikiFollowWord('vsplit')
 
-command! -buffer VimwikiToggleListItem call vimwiki_lst#ToggleListItem()
+command! -buffer -range VimwikiToggleListItem call vimwiki_lst#ToggleListItem(<line1>, <line2>)
+
+exe 'command! -buffer -nargs=* Search vimgrep <args> '.
+      \ VimwikiGet('path').'**/*'.VimwikiGet('ext')
+
 " COMMANDS }}}
 
 " KEYBINDINGS {{{
@@ -254,6 +262,7 @@ noremap <silent><script><buffer>
 
 if !hasmapto('<Plug>VimwikiToggleListItem')
   nmap <silent><buffer> <C-Space> <Plug>VimwikiToggleListItem
+  vmap <silent><buffer> <C-Space> <Plug>VimwikiToggleListItem
   if has("unix")
     nmap <silent><buffer> <C-@> <Plug>VimwikiToggleListItem
   endif
@@ -263,11 +272,11 @@ noremap <silent><script><buffer>
 
 
 " Text objects {{{
-omap <silent><buffer> ah :<C-U>call vimwiki#TO_header(0)<CR>
-vmap <silent><buffer> ah :<C-U>call vimwiki#TO_header(0)<CR>
+omap <silent><buffer> ah :<C-U>call vimwiki#TO_header(0, 0)<CR>
+vmap <silent><buffer> ah :<C-U>call vimwiki#TO_header(0, 1)<CR>
 
-omap <silent><buffer> ih :<C-U>call vimwiki#TO_header(1)<CR>
-vmap <silent><buffer> ih :<C-U>call vimwiki#TO_header(1)<CR>
+omap <silent><buffer> ih :<C-U>call vimwiki#TO_header(1, 0)<CR>
+vmap <silent><buffer> ih :<C-U>call vimwiki#TO_header(1, 1)<CR>
 
 nmap <silent><buffer> = :call vimwiki#AddHeaderLevel()<CR>
 nmap <silent><buffer> - :call vimwiki#RemoveHeaderLevel()<CR>

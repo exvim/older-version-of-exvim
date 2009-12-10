@@ -10,15 +10,27 @@ let g:loaded_vimwiki_lst_auto = 1
 
 " Script variables {{{
 let s:rx_li_box = '\[.\?\]'
-" for substitutions
-let s:rx_li_100 = '\[x\]'
-let s:rx_li_0 = '\[ \]'
-let s:rx_li_67_99 = '\[o\]'
-let s:rx_li_34_66 = '\[:\]'
-let s:rx_li_1_33 = '\[\.\]'
 " }}}
 
 " Script functions {{{
+
+" Get checkbox regexp
+function! s:rx_li_symbol(rate) "{{{
+  let result = ''
+  if a:rate == 100
+    let result = g:vimwiki_listsyms[4]
+  elseif a:rate == 0
+    let result = g:vimwiki_listsyms[0]
+  elseif a:rate >= 67
+    let result = g:vimwiki_listsyms[3]
+  elseif a:rate >= 34
+    let result = g:vimwiki_listsyms[2]
+  else
+    let result = g:vimwiki_listsyms[1]
+  endif
+
+  return '\['.result.'\]'
+endfunction "}}}
 
 " Get regexp of the list item.
 function! s:rx_list_item() "{{{
@@ -57,7 +69,7 @@ function! s:prev_list_item(lnum) "{{{
   return 0
 endfunction "}}}
 
-" Get next list item.
+" Get next list item in the list.
 " Returns: line number or 0.
 function! s:next_list_item(lnum) "{{{
   let c_lnum = a:lnum + 1
@@ -74,20 +86,24 @@ function! s:next_list_item(lnum) "{{{
   return 0
 endfunction "}}}
 
+" Find next list item in the buffer.
+" Returns: line number or 0.
+function! s:find_next_list_item(lnum) "{{{
+  let c_lnum = a:lnum + 1
+  while c_lnum <= line('$')
+    let line = getline(c_lnum)
+    if line =~ s:rx_list_item()
+      return c_lnum
+    endif
+    let c_lnum += 1
+  endwhile
+  return 0
+endfunction "}}}
+
 " Set state of the list item on line number "lnum" to [ ] or [x]
 function! s:set_state(lnum, rate) "{{{
   let line = getline(a:lnum)
-  if a:rate == 100
-    let state = s:rx_li_100
-  elseif a:rate == 0
-    let state = s:rx_li_0
-  elseif a:rate >= 67
-    let state = s:rx_li_67_99
-  elseif a:rate >= 34
-    let state = s:rx_li_34_66
-  else
-    let state = s:rx_li_1_33
-  endif
+  let state = s:rx_li_symbol(a:rate)
   let line = substitute(line, s:rx_li_box, state, '')
   call setline(a:lnum, line)
 endfunction "}}}
@@ -97,15 +113,15 @@ function! s:get_state(lnum) "{{{
   let state = 0
   let line = getline(a:lnum)
   let opt = matchstr(line, s:rx_cb_list_item())
-  if opt =~ s:rx_li_100
+  if opt =~ s:rx_li_symbol(100)
     let state = 100
-  elseif opt =~ s:rx_li_0
+  elseif opt =~ s:rx_li_symbol(0)
     let state = 0
-  elseif opt =~ s:rx_li_1_33
+  elseif opt =~ s:rx_li_symbol(25)
     let state = 25
-  elseif opt =~ s:rx_li_34_66
-    let state = 50 
-  elseif opt =~ s:rx_li_67_99
+  elseif opt =~ s:rx_li_symbol(50)
+    let state = 50
+  elseif opt =~ s:rx_li_symbol(75)
     let state = 75
   endif
   return state
@@ -154,7 +170,7 @@ function! s:get_child_items(lnum) "{{{
     call add(result, lnum)
     let lnum = s:next_list_item(lnum)
   endwhile
-  
+
   return result
 endfunction "}}}
 
@@ -182,7 +198,7 @@ function! s:get_sibling_items(lnum) "{{{
     endif
     let lnum = s:prev_list_item(lnum)
   endwhile
-  
+
   return result
 endfunction "}}}
 
@@ -263,18 +279,42 @@ function! s:TLI_switch_parent_state(lnum) "{{{
   endwhile
 endfunction "}}}
 
+function! s:TLI_toggle(lnum) "{{{
+  if !s:TLI_create_checkbox(a:lnum)
+    call s:TLI_switch_child_state(a:lnum)
+  endif
+  call s:TLI_switch_parent_state(a:lnum)
+endfunction "}}}
+
 " Script functions }}}
 
 " Toggle list item between [ ] and [x]
-function! vimwiki_lst#ToggleListItem() "{{{
-  let current_lnum = line('.')
-  let li_lnum = s:is_list_item(current_lnum)
+function! vimwiki_lst#ToggleListItem(line1, line2) "{{{
+  let line1 = a:line1
+  let line2 = a:line2
 
-  if !s:TLI_create_checkbox(li_lnum)
-    call s:TLI_switch_child_state(li_lnum)
+  if line1 != line2 && !s:is_list_item(line1)
+    let line1 = s:find_next_list_item(line1)
   endif
 
-  call s:TLI_switch_parent_state(li_lnum)
+  let c_lnum = line1
+  while c_lnum != 0 && c_lnum <= line2
+    let li_lnum = s:is_list_item(c_lnum)
+
+    if li_lnum
+      let li_level = s:get_level(li_lnum)
+      if c_lnum == line1
+        let start_li_level = li_level
+      endif
+
+      if li_level <= start_li_level
+        call s:TLI_toggle(li_lnum)
+        let start_li_level = li_level
+      endif
+    endif
+
+    let c_lnum = s:find_next_list_item(c_lnum)
+  endwhile
 
 endfunction "}}}
 

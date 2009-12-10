@@ -11,6 +11,7 @@
 == 8.04 ==
  * New features
  * Changes
+    * update vimwiki to 0.9.7.
     * update cscope to 15.7a.
     * add swig syntax highlight.
     * refine gcc makefiles.

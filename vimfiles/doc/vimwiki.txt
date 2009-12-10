@@ -8,7 +8,7 @@
        \ `\___/ /\_____\\ \_\\ \_\ `\___x___/ /\_____\\ \_\ \_\ /\_____\~
         `\/__/  \/_____/ \/_/ \/_/'\/__//__/  \/_____/ \/_/\/_/ \/_____/~
 
-                               Version: 0.9.6 ~
+                               Version: 0.9.7 ~
 
 ==============================================================================
 CONTENTS                                                    *vimwiki-contents*
@@ -255,6 +255,8 @@ You can 'vah' to select a header with its contents or 'dah' to delete it or
     Toggle list item on/off (checked/unchecked)
     See |vimwiki-todo-lists|.
 
+*:Search* /pattern/
+    Search for /pattern/ in current wiki.
 
 
 ==============================================================================
@@ -373,12 +375,12 @@ By default all headers are highlighted using |hl-Title| highlight group.
 
 == Header level 2 ==~
 You can set up different colors for each header level: >
-  :hi wikiHeader1 guifg=#FF0000
-  :hi wikiHeader2 guifg=#00FF00
-  :hi wikiHeader3 guifg=#0000FF
-  :hi wikiHeader4 guifg=#FF00FF
-  :hi wikiHeader5 guifg=#00FFFF
-  :hi wikiHeader6 guifg=#FFFF00
+  :hi VimwikiHeader1 guifg=#FF0000
+  :hi VimwikiHeader2 guifg=#00FF00
+  :hi VimwikiHeader3 guifg=#0000FF
+  :hi VimwikiHeader4 guifg=#FF00FF
+  :hi VimwikiHeader5 guifg=#00FFFF
+  :hi VimwikiHeader6 guifg=#FFFF00
 Set up colors for all 6 header levels or none at all.
 
 === Header level 3 ===~
@@ -524,6 +526,9 @@ Result of HTML export: >
 This might be useful for coloring some programming code with external js tools
 like google syntax highlighter.
 
+You can setup vimwiki to highlight code snippets in preformatted text.
+See |vimwiki-option-nested_syntaxes|
+
 ------------------------------------------------------------------------------
 5.8. Blockquotes                                  *vimwiki-syntax-blockquotes*
 
@@ -579,7 +584,7 @@ NOTE: Whether you use default syntax, folding on list items should work
 properly only if all of them are indented using current |shiftwidth|.
 For MediaWiki * or # should be in the first column.
 
-To turn folding on/off check |g:vimwiki-folding|.
+To turn folding on/off check |g:vimwiki_folding|.
 
 ==============================================================================
 7. Todo lists                                             *vimwiki-todo-lists*
@@ -588,34 +593,34 @@ You can have todo lists -- lists of items you can check/uncheck.
 
 Consider the following example:
 = Toggleable list of todo items =
-  * [x] Toggle list item on/off.
-    * [x] Simple toggling between [ ] and [x].
-    * [x] All list's subitems should be toggled on/off appropriately.
-    * [x] Toggle child subitems only if current line is list item
-    * [x] Parent list item should be toggled depending on it's child items.
-  * [x] Make numbered list items toggleable too
-  * [x] Add highlighting to list item boxes
-  * [x] Add [ ] to the next created with o, O and <CR> list item.
+  * [X] Toggle list item on/off.
+    * [X] Simple toggling between [ ] and [X].
+    * [X] All list's subitems should be toggled on/off appropriately.
+    * [X] Toggle child subitems only if current line is list item
+    * [X] Parent list item should be toggled depending on it's child items.
+  * [X] Make numbered list items toggleable too
+  * [X] Add highlighting to list item boxes
+  * [X] Add [ ] to the next created with o, O and <CR> list item.
 
 
 Pressing <C-Space> on the first list item will toggle it and all of it's child
 items:
 = Toggleable list of todo items =
   * [ ] Toggle list item on/off.
-    * [ ] Simple toggling between [ ] and [x].
+    * [ ] Simple toggling between [ ] and [X].
     * [ ] All list's subitems should be toggled on/off appropriately.
     * [ ] Toggle child subitems only if current line is list item
     * [ ] Parent list item should be toggled depending on it's child items.
-  * [x] Make numbered list items toggleable too
-  * [x] Add highlighting to list item boxes
-  * [x] Add [ ] to the next created with o, O and <CR> list item.
+  * [X] Make numbered list items toggleable too
+  * [X] Add highlighting to list item boxes
+  * [X] Add [ ] to the next created with o, O and <CR> list item.
 
 Pressing <C-Space> on the third list item will toggle it and all of it's
 parent items:
 = Toggleable list of todo items =
   * [.] Toggle list item on/off.
-    * [ ] Simple toggling between [ ] and [x].
-    * [x] All list's subitems should be toggled on/off appropriately.
+    * [ ] Simple toggling between [ ] and [X].
+    * [X] All list's subitems should be toggled on/off appropriately.
     * [ ] Toggle child subitems only if current line is list item
     * [ ] Parent list item should be toggled depending on it's child items.
   * [ ] Make numbered list items toggleable too
@@ -623,13 +628,14 @@ parent items:
   * [ ] Add [ ] to the next created with o, O and <CR> list item.
 
 Parent items could be toggled by its child items. Symbol inside [ ] depends on
-percentage of toggled child items: >
+percentage of toggled child items(see also |g:vimwiki_listsyms|): >
     [ ] -- 0%
     [.] -- 1-33%
-    [:] -- 34-66%
-    [o] -- 67-99%
-    [x] -- 100%
+    [o] -- 34-66%
+    [O] -- 67-99%
+    [X] -- 100%
 
+It is possible to toggle several list items using visual mode.
 
 ==============================================================================
 8. Options                                                   *vimwiki-options*
@@ -658,17 +664,23 @@ Empty |Dictionary| in the g:vimwiki_list is the wiki with default options: >
             \ {'path': '~/my_docs/', 'ext': '.mdox'}]
 
 <
+Per wiki options
+
 *vimwiki-option-path*
+---------------------
 Key             Default value~
 path            ~/vimwiki/
+
 Description~
 Wiki files location: >
   let g:vimwiki_list = [{'path': '~/my_site/'}]
 <
 
 *vimwiki-option-path_html*
+--------------------------
 Key             Default value~
 path_html       ~/vimwiki_html/
+
 Description~
 HTML files converted from wiki files location: >
   let g:vimwiki_list = [{'path': '~/my_site/',
@@ -681,8 +693,10 @@ ie, path_html = '~/okidoki_html/'
 
 
 *vimwiki-option-index*
+----------------------
 Key             Default value~
 index           index
+
 Description~
 Name of wiki index file: >
   let g:vimwiki_list = [{'path': '~/my_site/', 'index': 'main'}]
@@ -691,8 +705,10 @@ NOTE: Do not add extension.
 
 
 *vimwiki-option-ext*
+--------------------
 Key             Default value~
 ext             .wiki
+
 Description~
 Extension of wiki files: >
   let g:vimwiki_list = [{'path': '~/my_site/',
@@ -700,8 +716,10 @@ Extension of wiki files: >
 
 <
 *vimwiki-option-syntax*
+-----------------------
 Key             Default value     Values~
 syntax          default           default, media
+
 Description~
 Wiki syntax.
 You can use different markup languages (currently default vimwiki and
@@ -712,8 +730,10 @@ To use MediaWiki's wiki markup: >
 <
 
 *vimwiki-option-html_header*
+----------------------------
 Key             Default value~
 html_header
+
 Description~
 Set up file name for html header template: >
   let g:vimwiki_list = [{'path': '~/my_site/',
@@ -729,7 +749,7 @@ This header.tpl could look like: >
     <body>
         <div class="contents">
 
-where 
+where
   %title% is replaced by a wiki page name
   %root_path% is replaced by a count of ../ for pages buried in subdirs:
     if you have wikilink [[dir1/dir2/dir3/my page in a subdir]] then
@@ -737,8 +757,10 @@ where
 
 
 *vimwiki-option-html_footer*
+----------------------------
 Key             Default value~
 html_footer
+
 Description~
 Set up file name for html footer template: >
   let g:vimwiki_list = [{'path': '~/my_site/',
@@ -751,8 +773,10 @@ This footer.tpl could look like: >
 <
 
 *vimwiki-option-css_name*
+-------------------------
 Key             Default value~
 css_name        style.css
+
 Description~
 Set up css file name: >
   let g:vimwiki_list = [{'path': '~/my_pages/',
@@ -764,8 +788,10 @@ or even >
 <
 
 *vimwiki-option-gohome*
+-----------------------
 Key             Default value     Values~
 gohome          split             split, vsplit, tabe
+
 Description~
 This option controls the way |:VimwikiGoHome| command works.
 For instance you have 'No write since last change' buffer. After <Leader>ww
@@ -776,8 +802,10 @@ Ex: >
 <
 
 *vimwiki-option-maxhi*
+----------------------
 Key             Default value     Values~
 maxhi           1                 0, 1
+
 Description~
 Non-existent WikiWord highlighting could be quite slow and if you don't want
 it set maxhi to 0: >
@@ -785,6 +813,52 @@ it set maxhi to 0: >
 
 This disables filesystem checks for WikiWords.
 
+
+*vimwiki-option-nested_syntaxes*
+--------------------------------
+Key             Default value     Values~
+nested_syntaxes {}                pairs of highlight keyword and vim filetype
+
+Description~
+You can make preformatted text to be highlighted with a different syntaxes
+available for vim.
+For example the following setup: >
+  let wiki = {}
+  let wiki.path = '~/my_site/'
+  let wiki.nested_syntaxes = {'python': 'python', 'c++': 'cpp'}
+  let vimwiki_list = [wiki]
+
+would give you python and c++ highlighting in: >
+ {{{class="brush: python"
+ for i in range(1, 5):
+     print(i)
+ }}}
+
+ {{{class="brush: c++"
+ #include "helloworld.h"
+ int helloworld()
+ {
+    printf("hello world");
+ }
+ }}}
+
+or in: >
+ {{{c++
+ #include "helloworld.h"
+ int helloworld()
+ {
+    printf("hello world");
+ }
+ }}}
+
+ {{{python
+ for i in range(1, 5):
+     print(i)
+ }}}
+
+
+
+Global options
 ------------------------------------------------------------------------------
 *g:vimwiki_hl_headers*
 
@@ -792,8 +866,8 @@ Highlight headers with =Reddish=, ==Greenish==, ===Blueish=== colors.
 
 Value           Description~
 1               Use predefined colors to highlight different header levels.
-0               Use |hl-Title| or  wikiHeader1-wikiHeader6 (if defined in a
-                colorscheme)
+0               Use |hl-Title| or  VimwikiHeader1-VimwikiHeader6 (if defined
+                in a colorscheme)
 
 Default: 0
 
@@ -803,11 +877,11 @@ Default: 0
 
 Checked list items could be highlighted with a color:
 
-  * [x] the whole line could be highlighted with the option set to 1.
+  * [X] the whole line could be highlighted with the option set to 1.
   * [ ] I wish vim could use strikethru.
 
 Value           Description~
-1               Highlight checked [x] check box with |group-name| "Comment".
+1               Highlight checked [X] check box with |group-name| "Comment".
 0               Don't.
 
 Default: 0
@@ -881,15 +955,24 @@ You can change it to a <space> for example: >
 ------------------------------------------------------------------------------
 *g:vimwiki_badsyms*
 
-Consider you do not like spaces or in filenames (as some vimwiki users do).
+Consider you do not like spaces in filenames (as some vimwiki users do).
 In that case you can set up bad symbols that would be converted to
 |g:vimwiki_stripsym|: >
     let g:vimwiki_badsyms = ' '
-    
+
 Now files for all [[links with spaces]] would be created like
 'links_with_spaces'.
 
 This option is a complement one to |g:vimwiki_stripsym|.
+
+------------------------------------------------------------------------------
+*g:vimwiki_listsyms*
+
+String of 5 symbols for list items with checkboxes.
+Default value is ' .oOX'.
+
+g:vimwiki_listsyms[0] is for 0% done items.
+g:vimwiki_listsyms[4] is for 100% done items.
 
 ------------------------------------------------------------------------------
 *g:vimwiki_use_mouse*
@@ -959,6 +1042,26 @@ Value           Description~
 
 Default: 1
 
+------------------------------------------------------------------------------
+*g:vimwiki_browsers* *VimwikiWeblinkHandler*
+
+You can open external weblinks in a webbrowser. Webbrowsers are listed in
+|g:vimwiki_browsers|.
+
+For win32 it is: chrome, opera, firefox and explorer.
+For other OSes it is: opera, firefox and konqueror.
+
+The first available browser from the list is used to open weblink.
+If you have opera and firefox and want weblinks to be opened in the latter
+just: >
+ let g:vimwiki_browsers=['C:\Program Files\Firefox\firefox.exe']
+
+or redefine VimwikiWeblinkHandler function: >
+  function! VimwikiWeblinkHandler(weblink)
+    let browser = 'C:\Program Files\Firefox\firefox.exe'
+    execute '!start "'.browser.'" ' . a:weblink
+  endfunction
+
 
 ==============================================================================
 9. Help                                                         *vimwiki-help*
@@ -976,7 +1079,7 @@ I live in Moscow and you may believe me -- there are no polar bears (no brown
 too) here in the streets.
 
 I do not do programming for a living. So don't blame me for an ugly
-ineffective code.
+ineffective code. Improvements are welcome.
 
 Many thanks to all of you for voting vimwiki up on www.vim.org. I do vimwiki
 in my spare time I could use to dance argentine tango with beautiful women.
@@ -990,6 +1093,29 @@ Vim plugins website: http://www.vim.org/scripts/script.php?script_id=2226
 
 ==============================================================================
 11. Changelog                                              *vimwiki-changelog*
+
+0.9.7
+    * NEW: Default checkbox symbols are changed to [ ], [.], [o], [O], [X].
+      You can change them using |g:vimwiki-listsyms| variable.
+    * NEW: Color group names are renamed from wikiBold, wikiItalic, etc to
+      VimwikiBold, VimwikiItalic, etc.
+    * NEW: Open external links in a browser. There are default browsers
+      defined in |g:vimwiki_browsers| list. You can also redefine
+      |VimwikiWeblinkHandler| function to open weblinks in other programs.
+    * NEW: Issue 25: Toggle the states of multiple TODO list items at a time
+      (in VISUAL and in VISUAL LINE modes)
+    * NEW: Issue 26: Highlight code snippets in vimwiki's pre. See
+      |vimwiki-option-nested_syntaxes|. Thanks kriomant.
+    * NEW: Issue 27: Automatic garbage deletion from html directory.
+    * NEW: Save all open vimwiki buffers before export to html.
+    * NEW: Issue 29: Custom :Search command.
+    * NEW: Header text objects are now expandable in VISUAL mode. Tap 'vah' to
+      select a header. Tap again 'ah' to expand selection further. Thanks
+      Andy Wokula.
+    * FIX: Folding settings are reset to vim defaults in a new tab (think of
+      \wt) so you cannot hide things in folds.
+    * FIX: https links in form of [https://hello.world.com] are not exported
+      into html. Thanks Saurabh Sarpal for the patch.
 
 0.9.6
     * NEW: You can have multiline list items. See |vimwiki-syntax-lists|.
@@ -1020,7 +1146,7 @@ Vim plugins website: http://www.vim.org/scripts/script.php?script_id=2226
       wikies in dirs that are not listed in |g:vimwiki_list|.
     * NEW: Added |g:vimwiki_hl_headers| to highlight headers with different
       predefined colors.
-    * NEW: Checked [x] items are not highlighted with Comment syntax group by
+    * NEW: Checked [X] items are not highlighted with Comment syntax group by
       default. Use |g:vimwiki_hl_cb_checked| to turn it on.
     * NEW: Added new syntax for links: [[link address][link description]].
     * NEW: Added <C-@> allias of <C-Space> mapping for *nix systems.
