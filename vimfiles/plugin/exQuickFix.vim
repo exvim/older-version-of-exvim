@@ -245,6 +245,13 @@ function s:exQF_Goto(idx) " <<<
         silent exec "cr".idx
     catch /^Vim\%((\a\+)\)\=:E42/
         call exUtility#WarningMsg('No Errors')
+    catch /^Vim\%((\a\+)\)\=:E325/ " this would happen when editting the same file with another programme.
+        call exUtility#WarningMsg('Another programme is edit the same file.')
+        try " now we try this again.
+            silent exec "cr".idx
+        catch /^Vim\%((\a\+)\)\=:E42/
+            call exUtility#WarningMsg('No Errors')
+        endtry
     endtry
 
     " go back if needed
@@ -371,6 +378,8 @@ function s:exQF_ChooseCompiler() " <<<
             if match(line, '^\d\+>') != -1
                 let multi_core = 1
             endif
+        elseif match(line, '^<<<<<< SWIG: ' ) != -1
+            let s:exQF_compiler = 'swig'
         endif
     endfor
 
@@ -404,6 +413,9 @@ function s:exQF_ChooseCompiler() " <<<
             silent set errorformat+=%f(%l)\ :\ %t%*\\D%n:\ %m
             silent set errorformat+=\ %#%f(%l)\ :\ %m
         endif
+    elseif s:exQF_compiler == 'swig'
+        silent set errorformat+=%f(%l):\ Warning(%n):\ %m
+        silent set errorformat+=%f(%l):\ Error(%n):\ %m
     elseif s:exQF_compiler == 'gcc'
         " this is for exGlobaSearch result, some one may copy the global search result to exQuickFix
         silent set errorformat+=%f:%l:%m

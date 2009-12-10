@@ -1020,6 +1020,9 @@ function EnhCommentifyCallback(ft)
     elseif a:ft == 'maxscript'
         let b:ECcommentOpen = '--'
         let b:ECcommentClose = ''
+    elseif a:ft == 'swig'
+        let b:ECcommentOpen = '//'
+        let b:ECcommentClose = ''
     endif
 endfunction
 let g:EnhCommentifyCallbackExists = 'Yes'
