@@ -8,7 +8,7 @@
        \ `\___/ /\_____\\ \_\\ \_\ `\___x___/ /\_____\\ \_\ \_\ /\_____\~
         `\/__/  \/_____/ \/_/ \/_/'\/__//__/  \/_____/ \/_/\/_/ \/_____/~
 
-                               Version: 0.9.7 ~
+                               Version: 0.9.701 ~
 
 ==============================================================================
 CONTENTS                                                    *vimwiki-contents*
@@ -1094,9 +1094,12 @@ Vim plugins website: http://www.vim.org/scripts/script.php?script_id=2226
 ==============================================================================
 11. Changelog                                              *vimwiki-changelog*
 
+0.9.701
+    * FIX: Issue 30: Highlighting doesn't work for checked list item.
+
 0.9.7
     * NEW: Default checkbox symbols are changed to [ ], [.], [o], [O], [X].
-      You can change them using |g:vimwiki-listsyms| variable.
+      You can change them using |g:vimwiki_listsyms| variable.
     * NEW: Color group names are renamed from wikiBold, wikiItalic, etc to
       VimwikiBold, VimwikiItalic, etc.
     * NEW: Open external links in a browser. There are default browsers

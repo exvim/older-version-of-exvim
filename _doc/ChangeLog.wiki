@@ -11,11 +11,12 @@
 == 8.04 ==
  * New features
     * support swig error format.
- * Changes
-    * update vimwiki to 0.9.7.
-    * update cscope to 15.7a.
     * add swig syntax highlight.
+ * Changes
+    * update vimwiki to 0.9.701.
+    * update cscope to 15.7a.
     * refine gcc makefiles.
+    * let EnhancedCommentify support swig.
  * Bug fix
     * fix exQuickFix open a file another programme already editing issue.
 

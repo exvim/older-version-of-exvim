@@ -72,8 +72,10 @@ execute 'syntax region VimwikiPre start=/'.g:vimwiki_rxPreStart.
 " List item checkbox
 syntax match VimwikiCheckBox /\[.\?\]/
 if g:vimwiki_hl_cb_checked
-  execute 'syntax match VimwikiCheckBoxDone /'.g:vimwiki_rxListBullet.'\s*\[x\].*$/'
-  execute 'syntax match VimwikiCheckBoxDone /'.g:vimwiki_rxListNumber.'\s*\[x\].*$/'
+  execute 'syntax match VimwikiCheckBoxDone /'.
+        \ g:vimwiki_rxListBullet.'\s*\['.g:vimwiki_listsyms[4].'\].*$/'
+  execute 'syntax match VimwikiCheckBoxDone /'.
+        \ g:vimwiki_rxListNumber.'\s*\['.g:vimwiki_listsyms[4].'\].*$/'
 endif
 
 syntax region VimwikiComment start='<!--' end='-->'
