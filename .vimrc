@@ -467,8 +467,9 @@ endif
 " Desc: file types 
 " ------------------------------------------------------------------ 
 
-" Disable auto-comment for c/cpp and vim-script
+" Disable auto-comment for c/cpp, c# and vim-script
 au FileType c,cpp set comments=sO:*\ -,mO:*\ \ ,exO:*/,s1:/*,mb:*,ex:*/,f:// 
+au FileType cs set comments=sO:*\ -,mO:*\ \ ,exO:*/,s1:/*,mb:*,ex:*/,f:///,f:// 
 au FileType vim set comments=sO:\"\ -,mO:\"\ \ ,eO:\"\",f:\"
 
 "/////////////////////////////////////////////////////////////////////////////

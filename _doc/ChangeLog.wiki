@@ -18,6 +18,7 @@
     * update cscope to 15.7a.
     * refine gcc makefiles.
     * let EnhancedCommentify support swig.
+    * disable auto-comment for c# language.
  * Bug fix
     * fix exQuickFix open a file another programme already editing issue.
 
