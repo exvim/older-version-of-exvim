@@ -33,7 +33,7 @@ let g:ex_usr_name = "Wu Jie"
 set nocompatible " Use Vim settings, rather then Vi settings (much better!). This must be first, because it changes other options as a side effect.
 set langmenu=none " always use English menu
 
-au FileType c,cpp,i,cs set nomodeline " this will avoid bug in my project with namespace ex, the vim will tree ex:: as modeline.
+au FileType c,cpp,cs,swig set nomodeline " this will avoid bug in my project with namespace ex, the vim will tree ex:: as modeline.
 
 " source $VIMRUNTIME/vimrc_example.vim
 behave xterm  " set mouse behavior as xterm
