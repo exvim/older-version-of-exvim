@@ -206,6 +206,24 @@ function s:UpdateSyntaxHighlights() " <<<
     hi default exCommentLable term=standout ctermfg=DarkYellow ctermbg=Red gui=none guifg=LightGray guibg=Red
     " hi exCommentLable term=standout ctermfg=DarkYellow ctermbg=Red gui=none guifg=DarkRed guibg=LightMagenta
 
+    " DISABLE: status-line { 
+    " hi default ex_SynSLBufNr     cterm=none    ctermfg=black  ctermbg=cyan    gui=none guibg=#840c0c guifg=#ffffff
+    " hi default ex_SynSLFlag      cterm=none    ctermfg=black  ctermbg=cyan    gui=none guibg=#bc5b4c guifg=#ffffff
+    " hi default ex_SynSLPath      cterm=none    ctermfg=white  ctermbg=green   gui=none guibg=#8d6c47 guifg=black
+    " hi default ex_SynSLFileName  cterm=none    ctermfg=white  ctermbg=blue    gui=none guibg=#d59159 guifg=black
+    " hi default ex_SynSLFileEnc   cterm=none    ctermfg=white  ctermbg=yellow  gui=none guibg=#ffff77 guifg=black
+    " hi default ex_SynSLFileType  cterm=bold    ctermbg=white  ctermfg=black   gui=none guibg=#acff84 guifg=black
+    " hi default ex_SynSLTermEnc   cterm=none    ctermbg=white  ctermfg=yellow  gui=none guibg=#77cf77 guifg=black
+    " hi default ex_SynSLChar      cterm=none    ctermbg=white  ctermfg=yellow  gui=none guibg=#66b06f guifg=black
+    " hi default ex_SynSLSyn       cterm=none    ctermbg=white  ctermfg=yellow  gui=none guibg=#60af9f guifg=black
+    " hi default ex_SynSLRealSyn   cterm=none    ctermbg=white  ctermfg=yellow  gui=none guibg=#5881b7 guifg=black
+    " hi default ex_SynSLTime      cterm=none    ctermfg=black  ctermbg=cyan    gui=none guibg=#3a406e guifg=#000000
+    " hi default ex_SynSLSomething cterm=reverse ctermfg=white  ctermbg=darkred gui=none guibg=#c0c0f0 guifg=black
+
+    " hi StatusLine          cterm=none    ctermbg=white  ctermfg=yellow  gui=none guibg=#3f4d77 guifg=#729eb0 
+    " hi StatusLineNC                                                     gui=none guifg=#70a0a0 guibg=#304050  
+    " } DISABLE: status-line end 
+
     " ======================================================== 
     " exEnvironment
     " ======================================================== 
@@ -279,6 +297,46 @@ function s:UpdateSyntaxHighlights() " <<<
 
 endfunction " >>>
 
+" DISABLE: status-line { 
+" " ------------------------------------------------------------------ 
+" " Desc: 
+" " ------------------------------------------------------------------ 
+
+" function s:SetSimpleStatusline() " <<<
+"   setlocal statusline=
+"   setlocal statusline+=%t
+" endfunction " >>>
+
+" " ------------------------------------------------------------------ 
+" " Desc: 
+" " ------------------------------------------------------------------ 
+
+" function s:SetFullStatusline() " <<<
+"     if exUtility#IsRegisteredPluginBuffer(bufname('%')) 
+"         call s:SetSimpleStatusline() 
+"     else
+"         setlocal statusline=
+"         setlocal statusline+=%#ex_SynSLBufNr#%-1.2n\                           " buffer number
+"         setlocal statusline+=%#ex_SynSLFlag#%h%m%r%w                           " flags
+"         " setlocal statusline+=%#ex_SynSLPath#\ %-0.20{StatusLineGetPath()}%0*   " path
+"         setlocal statusline+=%#ex_SynSLPath#\ %f*                              " path
+"         setlocal statusline+=%#ex_SynSLFileName#\/%t\                          " file name
+
+"         setlocal statusline+=%#ex_SynSLFileEnc#\ %{&fileencoding}\             " file encoding
+"         setlocal statusline+=%#ex_SynSLFileType#\ %{strlen(&ft)?&ft:'**'}\ .   " filetype
+"         setlocal statusline+=%#ex_SynSLFileType#%{&fileformat}\                " file format
+"         setlocal statusline+=%#ex_SynSLTermEnc#\ %{&termencoding}\             " encoding
+"         setlocal statusline+=%#ex_SynSLChar#\ %-2B\ %0*                        " current char
+"         " setlocal statusline+=%#ex_SynSLSyn#\ %{synIDattr(synID(line('.'),col('.'),1),'name')}\ %0* "syntax name
+"         " setlocal statusline+=%#ex_SynSLRealSyn#\ %{StatusLineRealSyn()}\ %0*                       "real syntax name
+"         setlocal statusline+=%=
+
+"         setlocal statusline+=\ %-10.(%l,%c-%v%)             "position
+"         setlocal statusline+=%P                             "position percentage
+"         setlocal statusline+=\ %#ex_SynSLTime#%{strftime(\"%m-%d\ %H:%M\")} " current time
+"     endif
+" endfunction " >>>
+" } DISABLE: status-line end 
 
 "/////////////////////////////////////////////////////////////////////////////
 " auto-commands
@@ -289,6 +347,13 @@ au BufWritePost * call exUtility#UpdateCurrentBuffer()
 au ColorScheme * call s:UpdateSyntaxHighlights()
 au VimEnter * call s:UpdateSyntaxHighlights()
 
+" DISABLE: status-line { 
+" update status line when cursor move in/out
+" au BufEnter * call s:SetFullStatusline()
+" au BufLeave,BufNew,BufRead,BufNewFile * call s:SetSimpleStatusline()
+" } DISABLE: status-line end 
+
+" 
 if g:ex_auto_hl_cursor_word
     au CursorHold * :call exUtility#Highlight_Temp()
     au CursorMoved * :call exUtility#Highlight_TempCursorMoved()

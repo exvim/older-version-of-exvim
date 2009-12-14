@@ -19,6 +19,7 @@
     * refine gcc makefiles.
     * let EnhancedCommentify support swig.
     * disable auto-comment for c# language.
+    * always show status-line.
  * Bug fix
     * fix exQuickFix open a file another programme already editing issue.
 

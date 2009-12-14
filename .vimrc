@@ -33,15 +33,15 @@ let g:ex_usr_name = "Wu Jie"
 set nocompatible " Use Vim settings, rather then Vi settings (much better!). This must be first, because it changes other options as a side effect.
 set langmenu=none " always use English menu
 
-au FileType c,cpp set nomodeline " this will avoid bug in my project with namespace ex, the vim will tree ex:: as modeline.
+au FileType c,cpp,i,cs set nomodeline " this will avoid bug in my project with namespace ex, the vim will tree ex:: as modeline.
 
 " source $VIMRUNTIME/vimrc_example.vim
 behave xterm  " set mouse behavior as xterm
 
 "set path=.,/usr/include/*,, " where gf, ^Wf, :find will search 
 set backup " make backup file and leave it around 
-"set backupdir=%tmp%
-"set directory=.,%tmp%
+"UNUSED: set backupdir=%tmp%
+"UNUSED: set directory=.,%tmp%
 
 " setup back and swap directory
 let data_dir = $HOME.'/.data/'
@@ -154,6 +154,8 @@ set hid " allow to change buffer without saving
 set shortmess=atI " shortens messages to avoid 'press a key' prompt 
 set lazyredraw " do not redraw while executing macros (much faster) 
 set display+=lastline " for easy browse last line with wrap text
+set laststatus=2 " always have status-line
+" TODO: set statusline=    " statusline with different color 'User1-9'
 
 " Set window's width to 130 columns and height to 40 rows
 " (if it's GUI)
