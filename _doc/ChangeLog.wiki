@@ -20,6 +20,7 @@
     * let EnhancedCommentify support swig.
     * disable auto-comment for c# language.
     * always show status-line.
+    * change comment mathod for c in EnhancedCommentify, instead of using `/**/` we use `//` like cpp. 
  * Bug fix
     * fix exQuickFix open a file another programme already editing issue.
 

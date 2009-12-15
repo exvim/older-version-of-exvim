@@ -1013,18 +1013,15 @@ imap <unique> <C-F11> <ESC><Plug>DeComment
 " ======================================================== 
 
 function EnhCommentifyCallback(ft)
-    " add hlsl
-    if a:ft == 'hlsl'
+    " for hlsl, swig, c
+    if a:ft =~ '^\(hlsl\|swig\|c\)$' " NOTE: we have to rewrite the c comment behavior. 
         let b:ECcommentOpen = '//'
         let b:ECcommentClose = ''
-    elseif a:ft == 'snippet'
+    elseif a:ft == 'snippet' " for snippet
         let b:ECcommentOpen = '#'
         let b:ECcommentClose = ''
-    elseif a:ft == 'maxscript'
+    elseif a:ft == 'maxscript' " for maxscript
         let b:ECcommentOpen = '--'
-        let b:ECcommentClose = ''
-    elseif a:ft == 'swig'
-        let b:ECcommentOpen = '//'
         let b:ECcommentClose = ''
     endif
 endfunction
