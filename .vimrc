@@ -122,17 +122,34 @@ set nu " Show LineNumber
 set scrolloff=0 " minimal number of screen lines to keep above and below the cursor 
 set nowrap " I don't like wrap, cause in split window mode, it feel strange
 
-"set default guifont
+" set default guifont
 if has("gui_running")
+    " check and determine the gui font after GUIEnter. 
+    " NOTE: getfontname function only works after GUIEnter.  
+    au GUIEnter * call s:SetGuiFont() 
+endif
+" set guifont
+function s:SetGuiFont()
     if has("gui_gtk2")
         set guifont=Luxi\ Mono\ 10
     elseif has("x11")
         " Also for GTK 1
         set guifont=*-lucidatypewriter-medium-r-normal-*-*-180-*-*-m-*-*
     elseif has("gui_win32")
-        set guifont=Lucida_Console:h10
+        let font_name = ""
+        if getfontname( "Bitstream_Vera_Sans_Mono" ) != ""
+            set guifont=Bitstream_Vera_Sans_Mono:h10:cANSI
+            let font_name = "Bitstream_Vera_Sans_Mono" 
+        elseif getfontname( "Consolas" ) != ""
+            set guifont=Consolas:h11:cANSI " this is the default visual studio font
+            let font_name = "Consolas" 
+        else
+            set guifont=Lucida_Console:h10:cANSI
+            let font_name = "Lucida_Console" 
+        endif
+        silent exec "nnoremap <unique> <A-F1> :set guifont=".font_name.":h11:cANSI<CR>"
     endif
-endif
+endfunction
 
 " color scheme define
 if has("gui_running")
@@ -285,19 +302,27 @@ nnoremap <unique> <F8> :let @/=""<CR>
 
 " fast encoding change. 
 if has("gui_running") "  the <alt> key is only available in gui mode.
+    " DISABLE: done in s:SetGuiFont() function { 
     " A-F1:  Switch to English Mode (Both Enconding and uiFont)
-    nnoremap <unique> <A-F1> :set guifont=Lucida_Console:h10<CR>:set encoding=latin1<CR>
+    " nnoremap <unique> <A-F1> :set guifont=Bitstream_Vera_Sans_Mono:h10:cANSI<CR>
+    " nnoremap <unique> <A-F1> :set guifont=Consolas:h11:cANSI<CR>
+    " } DISABLE end 
+
     " A-F2:  Switch to Chinese Mode (Both Enconding and uiFont)
-    nnoremap <unique> <A-F2> :set guifont=NSimSun:cGB2312:h10<CR>:set encoding=cp936<CR>
+    nnoremap <unique> <A-F2> :set guifont=NSimSun:h10:cGB2312<CR>
+
     " A-F3:  Switch to Japanese Mode 
-    nnoremap <unique> <A-F3> :set guifont=MS_Gothic:cSHIFTJIS:h10<CR>:set encoding=cp932<CR>
+    nnoremap <unique> <A-F3> :set guifont=MS_Gothic:h10:cSHIFTJIS<CR>
 else
     " <leader>F1:  Switch to English Mode (Both Enconding and uiFont)
-    nnoremap <unique> <leader><F1> :set guifont=Lucida_Console:h10<CR>:set encoding=latin1<CR>
+    " nnoremap <unique> <A-F1> :set guifont=Bitstream_Vera_Sans_Mono:h10:cANSI<CR>
+    nnoremap <unique> <A-F1> :set guifont=Consolas:h11:cANSI<CR>
+
     " <leader>F2:  Switch to Chinese Mode (Both Enconding and uiFont)
-    nnoremap <unique> <leader><F2> :set guifont=NSimSun:cGB2312:h10<CR>:set encoding=cp936<CR>
+    nnoremap <unique> <A-F2> :set guifont=NSimSun:h10:cGB2312<CR>
+
     " <leader>F3:  Switch to Japanese Mode 
-    nnoremap <unique> <leader><F3> :set guifont=MS_Gothic:cSHIFTJIS:h10<CR>:set encoding=cp932<CR>
+    nnoremap <unique> <A-F3> :set guifont=MS_Gothic:h10:cSHIFTJIS<CR>
 endif
 
 " map Ctrl-Tab to switch window
@@ -407,8 +432,8 @@ au BufNewFile,BufEnter * set cpoptions+=d " NOTE: ctags find the tags file from 
 au BufEnter * :syntax sync fromstart " ensure every file does syntax highlighting (full) 
 au BufNewFile,BufRead *.avs set syntax=avs " for avs syntax file.
 
-au FileType python call CheckIfExpandTab() " if edit python scripts, check if have \t. ( python said: the programme can only use \t or not, but can't use them together )
-function CheckIfExpandTab()
+au FileType python call s:CheckIfExpandTab() " if edit python scripts, check if have \t. ( python said: the programme can only use \t or not, but can't use them together )
+function s:CheckIfExpandTab()
     let has_noexpandtab = search('^\t','wn')
     let has_expandtab = search('^    ','wn')
 
