@@ -92,6 +92,7 @@ set autoread " auto read same-file change ( better for vc/vim change )
 " enlarge maxmempattern from 1000 to ... (2000000 will give it without limit)
 set maxmempattern=1000
 
+" DISABLE: done in exQuickFix { 
 " set quick fix error format
 " default errorformat = %f(%l) : %t%*\D%n: %m,%*[^"]"%f"%*\D%l: %m,%f(%l) : %m,%*[^ ] %f %l: %m,%f:%l:%c:%m,%f(%l):%m,%f:%l:%m,%f|%l| %m
 "set errorformat+=%D%\\d%\\+\>------\ %.%#Project:\ %f%\\,%.%# " msvc 2005 error-entering
@@ -99,6 +100,7 @@ set maxmempattern=1000
 "set errorformat+=%X%\\d%\\+\>%.%#%\\d%\\+\ error(s)%.%#%\\d%\\+\ warning(s) " msvc 2005 error-leaving
 "set errorformat+=%\\d%\\+\>%f(%l)\ :\ %t%*\\D%n:\ %m " msvc 2005 error-format
 "set errorformat+=%f(%l\\,%c):\ %m " fxc shader error-format
+" } DISABLE end 
 
 "/////////////////////////////////////////////////////////////////////////////
 " xterm settings
@@ -381,6 +383,7 @@ nnoremap <unique> <silent><leader>sw "_yiw:s/\(\%#\w\+\)\(\W\+\)\(\w\+\)/\3\2\1/
 "/////////////////////////////////////////////////////////////////////////////
 
 " perforce key mapping
+" TODO: should go to exSourceControl someday. { 
 " let g:proj_run1='!p4 edit %f'
 " nmap <Leader>po :silent !p4 edit %<CR>
 " nmap <Leader>pr :silent !p4 revert %<CR>
@@ -390,6 +393,7 @@ command Add silent exec '!p4 add ' . fnamemodify( bufname('%'), ':p' )
 command Delete silent exec '!p4 delete ' . fnamemodify( bufname('%'), ':p' )
 command Changelist :silent !p4 change
 command ShowChangelist :!p4 changes -s pending -u jwu
+" } TODO end 
 
 "/////////////////////////////////////////////////////////////////////////////
 " Auto Command
@@ -640,6 +644,9 @@ let g:ex_plugin_registered_filetypes = ["ex_plugin","ex_project","taglist","nerd
 " default languages
 let g:ex_default_langs = ['c', 'cpp', 'c#', 'java', 'shader', 'python', 'vim', 'uc', 'matlab', 'wiki', 'ini', 'make', 'sh', 'batch', 'debug', 'qt' ] 
 
+" DISABLE: auto highlight cursor word
+" let g:ex_auto_hl_cursor_word = 1
+
 " set exvim language map
 call exUtility#AddLangMap ( 'exvim', 'javascript', ['as'] )
 call exUtility#AddLangMap ( 'exvim', 'maxscript', ['ms'] )
@@ -722,7 +729,6 @@ endfunction
 
 nnoremap <unique> <silent> <Leader>ts :ExtsSelectToggle<CR>
 nnoremap <unique> <silent> <Leader>tg :ExtsGoDirectly<CR>
-
 nnoremap <unique> <silent> <Leader>] :ExtsGoDirectly<CR>
 
 let g:exTS_backto_editbuf = 0

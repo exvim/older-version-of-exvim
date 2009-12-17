@@ -21,7 +21,8 @@
     * disable auto-comment for c# language.
     * always show status-line.
     * change comment mathod for c in EnhancedCommentify, instead of using `/**/` we use `//` like cpp. 
-    * change guifont in win32 to Bitstream_Vera_Sans_Mono:h10
+    * change guifont in win32 to Bitstream_Vera_Sans_Mono:h10.
+    * Not allow exGlobalSearch running in stand-alone mode, this prevent exGlobalSearch show error message.
  * Bug fix
     * fix exQuickFix open a file another programme already editing issue.
 

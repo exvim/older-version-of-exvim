@@ -534,6 +534,12 @@ endfunction ">>>
 " ------------------------------------------------------------------ 
 
 function s:exGS_GetGlobalSearchResult(search_pattern, search_method, direct_jump) " <<<
+    " if you don't have g:exES_ID, stop search process
+	if !exists( 'g:exES_ID' )
+        call exUtility#WarningMsg('the g:exES_ID not found, pls set it in your .vimentry file.')
+        return
+    endif
+
     " if the search pattern is same as the last one, open the window
     " NOTE: for exJumpStack, it may first parse tag, then global search, when
     " you parse tag again, you may parse the same tag, and if you skip push it
