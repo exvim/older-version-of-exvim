@@ -415,8 +415,7 @@ function s:exQF_ChooseCompiler() " <<<
         endif
         silent set errorformat+=%f(%l\\,%c):\ %m " csharp error-format
     elseif s:exQF_compiler == 'swig'
-        silent set errorformat+=%f(%l):\ Warning(%n):\ %m
-        silent set errorformat+=%f(%l):\ Error(%n):\ %m
+        silent set errorformat+=%f(%l):\ %m
     elseif s:exQF_compiler == 'gcc'
         " this is for exGlobaSearch result, some one may copy the global search result to exQuickFix
         silent set errorformat+=%f:%l:%m
