@@ -372,9 +372,9 @@ function s:exQF_ChooseCompiler() " <<<
             let s:exQF_compiler = 'exgcc'
         elseif match(line, '^<<<<<< \S\+ error log >>>>>>') != -1
             " TODO: use the text choose compiler
-            let s:exQF_compiler = 'msvc2005'
+            let s:exQF_compiler = 'exmsvc'
         elseif match(line, '^.*------ Build started.*------') != -1
-            let s:exQF_compiler = 'msvc2005'
+            let s:exQF_compiler = 'exmsvc'
             if match(line, '^\d\+>') != -1
                 let multi_core = 1
             endif
@@ -401,7 +401,7 @@ function s:exQF_ChooseCompiler() " <<<
         silent set errorformat+=%XLeaving\ directory\ '%f'%.%#
         silent set errorformat+=%D\<\<\<\<\<\<\ %\\S%\\+:\ '%f'%.%#
         silent set errorformat+=%X\>\>\>\>\>\>\ %\\S%\\+:\ '%f'%.%#
-    elseif s:exQF_compiler == 'msvc2005'
+    elseif s:exQF_compiler == 'exmsvc'
         if multi_core
             silent set errorformat=%D%\\d%\\+\>------\ %.%#Project:\ %f%.%#%\\,%.%#
             silent set errorformat+=%X%\\d%\\+\>%.%#%\\d%\\+\ error(s)%.%#%\\d%\\+\ warning(s)
@@ -413,6 +413,7 @@ function s:exQF_ChooseCompiler() " <<<
             silent set errorformat+=%f(%l)\ :\ %t%*\\D%n:\ %m
             silent set errorformat+=\ %#%f(%l)\ :\ %m
         endif
+        silent set errorformat+=%f(%l\\,%c):\ %m " csharp error-format
     elseif s:exQF_compiler == 'swig'
         silent set errorformat+=%f(%l):\ Warning(%n):\ %m
         silent set errorformat+=%f(%l):\ Error(%n):\ %m
@@ -537,6 +538,11 @@ function s:exQF_GotoInQuickViewWindow() " <<<
     let s:exQF_quick_view_idx = line(".")
     call exUtility#HighlightConfirmLine()
     let cur_line = getline('.')
+    " if this is empty line, skip check
+    if cur_line == ""
+        call exUtility#WarningMsg('pls select a quickfix result')
+        return
+    endif
     let idx_start = match(cur_line, '\d\+' )
     let idx_end = matchend(cur_line, '\d\+' )
     let idx = eval(strpart(getline('.'),idx_start,idx_end))

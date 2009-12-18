@@ -1,14 +1,14 @@
 " ======================================================================================
-" File         : msvc2005.vim
+" File         : exmsvc.vim
 " Author       : Wu Jie 
-" Last Change  : 05/10/2009 | 00:45:19 AM | Sunday,May
+" Last Change  : 12/18/2009 | 11:19:59 AM | Friday,December
 " Description  : 
 " ======================================================================================
 
 if exists("current_compiler")
   finish
 endif
-let current_compiler = "msvc2005"
+let current_compiler = "exmsvc"
 
 " An example vc error format log
 " 1>------ Build started: Project: exCore, Configuration: Debug Win32 ------
