@@ -90,6 +90,7 @@ let s:ex_exvim_lang_map['vim'] = [ 'vim' ]
 let s:ex_exvim_lang_map['wiki'] = [ 'wiki' ]
 let s:ex_exvim_lang_map['xml'] = [ 'xml' ]
 let s:ex_exvim_lang_map['qt'] = [ 'qrc', 'pro', 'pri' ]
+let s:ex_exvim_lang_map['swig'] = [ 'i', 'swg' ]
 
 " ------------------------------------------------------------------ 
 " Desc: ctags language file maps 

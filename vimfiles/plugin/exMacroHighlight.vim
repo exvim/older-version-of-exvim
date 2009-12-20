@@ -335,6 +335,8 @@ function g:exMH_InitMacroList(macrofile_name) " <<<
 
     " define autocmd for update syntax
     autocmd BufEnter *.c,*.C,*.c++,*.cc,*.cp,*.cpp,*.cxx,*.h,*.H,*.h++,*.hh,*.hp,*.hpp,*.hxx,*.inl,*.ipp call s:exMH_UpdateSyntax()
+    autocmd BufEnter *.i,*.swg call s:exMH_UpdateSyntax()
+    " DISABLE: autocmd BufEnter *.cs call s:exMH_UpdateSyntax()
     " TODO: the shader still have problem
     autocmd BufEnter *.hlsl,*.fx,*.fxh,*.cg,*.vsh,*.psh,*.shd,*.glsl call s:exMH_UpdateSyntax()
 
