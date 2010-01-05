@@ -8,7 +8,7 @@
 [WebSite]
 
     Project Host: http://code.google.com/p/exvim/
-    GitHub Host: http://code.google.com/p/exvim/
+    GitHub Host: http://github.com/jwu/exVim
 
 [Intro]
 
