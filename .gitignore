@@ -1,0 +1,4 @@
+_doc/template/
+_vimfiles_*/
+*.vimentry
+quick_gen_project_*_autogen.bat
