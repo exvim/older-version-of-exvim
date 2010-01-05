@@ -39,6 +39,19 @@ Then run
     git merge origin/dev
 }}}
 
+Another way is put tag in dev branch in the version you want start a merge in master, like
+
+{{{
+    git tag TO_MASTER_1
+}}}
+
+Then go to another repo, pull everything, then use chery-pick to get the changes
+
+{{{
+    git pull --all
+    git chery-pick -x change_list
+}}}
+
 == 2009-06-06 ==
 --------------------------------------------------------------------------------------
 
