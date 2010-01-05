@@ -1,11 +1,36 @@
 <!-- ======================================================================================-->
 <!-- File         : DevLog.wiki-->
 <!-- Author       : Wu Jie -->
-<!-- Last Change  : 06/06/2009 | 09:51:09 AM | Saturday,June-->
+<!-- Last Change  : 01/05/2010 | 17:07:35 PM | Tuesday,January-->
 <!-- Description  : -->
 <!-- ======================================================================================-->
 
 = Dev Log =
+
+== 2010-01-05 ==
+--------------------------------------------------------------------------------------
+
+How to merge:
+For developing, you need to  get exVim source directly into install vim path (d:/exDev/exVim) 
+for example. To achieve this, just use 
+
+{{{
+    git clone --no-checkout git@github.com:jwu/exVim.git
+    git checkout --track origin/dev
+}}}
+
+after several commits, you push the code to github by
+
+{{{
+    git push 
+}}}
+
+Then go to another directory like e:/Project/Dev, then clone a version for master as
+
+{{{
+    git clone --no-checkout git@github.com:jwu/exVim.git
+    git checkout --track origin/master
+}}}
 
 == 2009-06-06 ==
 --------------------------------------------------------------------------------------
