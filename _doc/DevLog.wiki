@@ -32,6 +32,12 @@ Then go to another directory like e:/Project/Dev, then clone a version for maste
     git checkout --track origin/master
 }}}
 
+Then run
+
+{{{
+    git merge origin/dev
+}}}
+
 == 2009-06-06 ==
 --------------------------------------------------------------------------------------
 

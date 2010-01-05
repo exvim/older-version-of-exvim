@@ -1,4 +1,6 @@
 _doc/template/
+wiki_html/*.*
+wiki_html/syntax_highlighter/
 _vimfiles_*/
 *.vimentry
 quick_gen_project_*_autogen.bat
