@@ -1,5 +1,16 @@
+# ======================================================================================
+# File         : html.snippets
+# Author       : Wu Jie 
+# Last Change  : 01/06/2010 | 01:13:44 AM | Wednesday,January
+# Description  : 
+# ======================================================================================
+
+# ------------------------------------------------------------------ 
+# Desc: 
 # Some useful Unicode entities
 # Non-Breaking Space
+# ------------------------------------------------------------------ 
+
 snippet nbs
 	&nbsp;
 # ←
@@ -47,7 +58,11 @@ snippet backspace
 # ⎋
 snippet escape
 	&#x238B;
-# Generic Doctype
+
+# ------------------------------------------------------------------ 
+# Desc: Generic Doctype
+# ------------------------------------------------------------------ 
+
 snippet doctype HTML 4.01 Strict
 	<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN""
 	"http://www.w3.org/TR/html4/strict.dtd">
@@ -68,30 +83,58 @@ snippet doctype XHTML 1.0 Transitional
 snippet doctype XHTML 1.1
 	<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
 	"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
-# HTML Doctype 4.01 Strict
+
+# ------------------------------------------------------------------ 
+# Desc: HTML Doctype 4.01 Strict
+# ------------------------------------------------------------------ 
+
 snippet docts
 	<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN""
 	"http://www.w3.org/TR/html4/strict.dtd">
-# HTML Doctype 4.01 Transitional
+
+# ------------------------------------------------------------------ 
+# Desc: HTML Doctype 4.01 Transitional
+# ------------------------------------------------------------------ 
+
 snippet doct
 	<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN""
 	"http://www.w3.org/TR/html4/loose.dtd">
-# HTML Doctype 5
+
+# ------------------------------------------------------------------ 
+# Desc: HTML Doctype 5
+# ------------------------------------------------------------------ 
+
 snippet doct5
 	<!DOCTYPE HTML>
-# XHTML Doctype 1.0 Frameset
+
+# ------------------------------------------------------------------ 
+# Desc: XHTML Doctype 1.0 Frameset
+# ------------------------------------------------------------------ 
+
 snippet docxf
 	<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN"
 	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">
-# XHTML Doctype 1.0 Strict
+
+# ------------------------------------------------------------------ 
+# Desc: XHTML Doctype 1.0 Strict
+# ------------------------------------------------------------------ 
+
 snippet docxs
 	<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-# XHTML Doctype 1.0 Transitional
+
+# ------------------------------------------------------------------ 
+# Desc: XHTML Doctype 1.0 Transitional
+# ------------------------------------------------------------------ 
+
 snippet docxt
 	<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-# XHTML Doctype 1.1
+
+# ------------------------------------------------------------------ 
+# Desc: XHTML Doctype 1.1
+# ------------------------------------------------------------------ 
+
 snippet docx
 	<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
 	"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
@@ -134,7 +177,11 @@ snippet div
 	<div id="${1:name}">
 		${2}
 	</div>
-# Embed QT Movie
+
+# ------------------------------------------------------------------ 
+# Desc: Embed QT Movie
+# ------------------------------------------------------------------ 
+
 snippet movie
 	<object width="$2" height="$3" classid="clsid:02BF25D5-8C17-4B23-BC80-D3488ABDDC6B"
 	 codebase="http://www.apple.com/qtactivex/qtplugin.cab">
@@ -148,12 +195,22 @@ snippet movie
 			pluginspage="http://www.apple.com/quicktime/download/"
 		`Close()[1:]`>
 	</object>${6}
+
+# ------------------------------------------------------------------ 
+# Desc: 
+# ------------------------------------------------------------------ 
+
 snippet fieldset
 	<fieldset id="$1">
 		<legend>${1:name}</legend>
 
 		${3}
 	</fieldset>
+
+# ------------------------------------------------------------------ 
+# Desc: 
+# ------------------------------------------------------------------ 
+
 snippet form
 	<form action="${1:`Filename('$1_submit')`}" method="${2:get}" accept-charset="utf-8">
 		${3}
@@ -161,6 +218,11 @@ snippet form
 
 	<p><input type="submit" value="Continue &rarr;"`Close()`></p>
 	</form>
+
+# ------------------------------------------------------------------ 
+# Desc: 
+# ------------------------------------------------------------------ 
+
 snippet h1
 	<h1 id="${1:heading}">${2:$1}</h1>
 snippet h2
