@@ -1,6 +1,6 @@
-_doc/*
-vim72/*
-wiki_html/*
+_doc/
+vim72/
+wiki_html/
 _vimfiles_*/
 *.vimentry
 quick_gen_project_*_autogen.bat
