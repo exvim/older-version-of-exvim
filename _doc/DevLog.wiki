@@ -35,6 +35,7 @@ Then go to another directory like e:/Project/Dev, then clone a version for maste
 Then run
 
 {{{
+    git pull
     git merge origin/dev
 }}}
 
