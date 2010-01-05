@@ -1,19 +1,10 @@
-http://vim.sourceforge.net/
----------------------------------
-plugin version
-AlternateFiles-2.14
-CRefVim-1.0.4
-doxygen-1.15
-MiniBufExpl-6.3.2
-OmniCppComplete-0.4
-Project-1.4.1
-SearchComplete-1.1
-ShowMarks-2.2
-TagList-4.4
-Visincr-1.3
-code_complete-2.7
-surround-1.27
-exUtility-6.0.0
+ ======================================================================================
+ File         : readme.txt
+ Author       : Wu Jie 
+ Last Change  : 01/05/2010 | 16:36:05 PM | Tuesday,January
+ Description  : 
+ ======================================================================================
+
 [WebSite]
 
     Project Host: http://code.google.com/p/exvim/
