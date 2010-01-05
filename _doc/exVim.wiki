@@ -96,6 +96,7 @@ With exVim you can:
     * exVim Official site [http://code.google.com/p/exvim/]
     * exVim Easy Edition [http://code.google.com/p/exvimeasy/]
     * exVim Discuss Group [https://groups.google.com/group/exVim/]
+    * github [http://github.com/jwu/exVim/]
  * MacVim
     * MacVim official site [http://code.google.com/p/macvim/]
  * tools
