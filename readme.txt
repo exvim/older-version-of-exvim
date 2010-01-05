@@ -1,3 +1,10 @@
+ ======================================================================================
+ File         : readme.txt
+ Author       : Wu Jie 
+ Last Change  : 01/05/2010 | 16:36:05 PM | Tuesday,January
+ Description  : 
+ ======================================================================================
+
 [WebSite]
 
     Project Host: http://code.google.com/p/exvim/
