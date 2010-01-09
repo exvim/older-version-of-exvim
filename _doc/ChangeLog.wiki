@@ -13,6 +13,7 @@
     * support swig error format.
     * add swig syntax highlight.
     * add csharp syntax highlight for special mark labels.
+    * add vcscommand 1.99.32 to support git.
  * Changes
     * update vimwiki to 0.9.701.
     * update cscope to 15.7a.
