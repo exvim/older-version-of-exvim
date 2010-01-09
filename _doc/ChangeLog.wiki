@@ -27,6 +27,7 @@
     * let exQuickFix support cs error format. 
  * Bug fix
     * fix exQuickFix open a file another programme already editing issue.
+    * fix exTagSelect show tags error when read preview from a file that already not exists.
 
 == 8.03 ==
  * New features
