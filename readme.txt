@@ -12,12 +12,16 @@
 
 [Intro]
 
-    exVim is the core part of exDev, which is a develop package help you develop project as a IDE like environment but all in vim.
-    The exVim consists of several vim scripts and external tools. The goal is let the vim be the base platform, and use the vim 
-    script doing those IDE like operations just in vim as possible as it can. But if a task is too difficult to write in vim script, 
-    it still have chance to invoke external tools and bring the result back to vim.  The ex-plugins is designed to achieve these tasks, 
-    it manages the layout of the windows in vim, controls the external tools, save settings in different project and so on. Also exVim 
-    introduce several great plugins in vim-scripts website, and do some small changes to let them work together without conflicts.
+    exVim is the core part of exDev, which is a develop package help you develop project 
+    as a IDE like environment but all in vim.  The exVim consists of several vim scripts 
+    and external tools. The goal is let the vim be the base platform, and use the vim 
+    script doing those IDE like operations just in vim as possible as it can. But if 
+    a task is too difficult to write in vim script, it still have chance to invoke external 
+    tools and bring the result back to vim.  The ex-plugins is designed to achieve these 
+    tasks, it manages the layout of the windows in vim, controls the external tools, 
+    save settings in different project and so on. Also exVim introduce several great 
+    plugins in vim-scripts website, and do some small changes to let them work together 
+    without conflicts.  
 
     With exVim you can:
     
@@ -30,3 +34,5 @@
         * view classes hierarchy pictures.
         * compile project in vc/gcc and get error result from them directly through vim.
         * and so on...
+
+# vim: ft=txt:norl:ts=8:tw=78:noexpandtab
