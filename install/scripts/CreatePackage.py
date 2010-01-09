@@ -106,7 +106,7 @@ def CreateFullPackage ():
     AddDirToZip ( zipfp, os.path.join( Settings.source_path, "toolkit" ), Settings.source_path )
     # copy vimfiles
     AddDirToZip ( zipfp, os.path.join( Settings.source_path, "vimfiles" ), Settings.source_path )
-    # copy _vimrc and rename to _vimrc_ex 
+    # copy .vimrc and rename to .vimrc_ex 
     zipfp.write ( os.path.join( Settings.source_path, ".vimrc" ), ".vimrc_ex" )
     
     # close zip file
@@ -181,7 +181,7 @@ def CreateExPluginsPackage ():
 
     # } end 
 
-    # copy _vimrc and rename to _vimrc_ex 
+    # copy .vimrc and rename to .vimrc_ex 
     zipfp.write ( os.path.join( Settings.source_path, ".vimrc" ), ".vimrc_ex" )
     
     # close zip file

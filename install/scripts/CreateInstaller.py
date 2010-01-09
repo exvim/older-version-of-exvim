@@ -182,7 +182,7 @@ def CreateInstaller ():
     print "Update .vimrc..."
     rawvim_path = os.path.join(dest_root_path,"rawdata/exVim/vim")
     if os.path.isdir(rawvim_path) == False :
-        print "%s not found! can't copy _vimrc to it." % rawvim_path
+        print "%s not found! can't copy .vimrc to it." % rawvim_path
     else :
         shutil.copy ( os.path.join(Settings.source_path, ".vimrc"), rawvim_path )
 
