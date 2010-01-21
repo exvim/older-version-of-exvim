@@ -1,6 +1,7 @@
 " Vimwiki plugin file
 " Author: Maxim Kim <habamax@gmail.com>
 " Home: http://code.google.com/p/vimwiki/
+" GetLatestVimScripts: 2226 1 :AutoInstall: vimwiki
 
 if exists("loaded_vimwiki") || &cp
   finish
@@ -102,7 +103,7 @@ function! s:setup_colors()"{{{
   endif
 
   if &background == 'light'
-    hi def VimwikiHeader1 guibg=bg guifg=#c05050 gui=bold ctermfg=DarkRed
+    hi def VimwikiHeader1 guibg=bg guifg=#aa5858 gui=bold ctermfg=DarkRed
     hi def VimwikiHeader2 guibg=bg guifg=#309010 gui=bold ctermfg=DarkGreen
     hi def VimwikiHeader3 guibg=bg guifg=#1030a0 gui=bold ctermfg=DarkBlue
     hi def VimwikiHeader4 guibg=bg guifg=#103040 gui=bold ctermfg=Black
@@ -142,9 +143,10 @@ function! VimwikiGet(option, ...) "{{{
   " then add it
   if a:option == 'path' || a:option == 'path_html'
     let p = g:vimwiki_list[idx][a:option]
-    if p !~ '[\/]$'
-      let g:vimwiki_list[idx][a:option] = p.'/'
-    endif
+    " resolve doesn't work quite right with symlinks ended with / or \
+    let p = substitute(p, '[/\\]\+$', '', '')
+    let p = resolve(expand(p))
+    let g:vimwiki_list[idx][a:option] = p.'/'
   endif
 
   return g:vimwiki_list[idx][a:option]
@@ -211,9 +213,9 @@ call s:default('stripsym', '_')
 call s:default('badsyms', '')
 call s:default('auto_checkbox', 1)
 call s:default('use_mouse', 0)
-call s:default('folding', 1)
-call s:default('fold_empty_lines', 0)
-call s:default('fold_lists', 1)
+call s:default('folding', 0)
+call s:default('fold_trailing_empty_lines', 0)
+call s:default('fold_lists', 0)
 call s:default('menu', 'Vimwiki')
 call s:default('global_ext', 1)
 call s:default('hl_headers', 0)

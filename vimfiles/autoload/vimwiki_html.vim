@@ -69,12 +69,12 @@ function! s:create_default_CSS(path) " {{{
 
     call add(lines, 'body {font-family: Arial, sans-serif; margin: 1em 2em 1em 2em; font-size: 100%; line-height: 130%;}')
     call add(lines, 'h1, h2, h3, h4, h5, h6 {font-family: Trebuchet MS, serif; margin-top: 1.5em; margin-bottom: 0.5em;}')
-    call add(lines, 'h1 {font-size: 2.0em; color: #3366aa;}')
-    call add(lines, 'h2 {font-size: 1.6em; color: #335588;}')
-    call add(lines, 'h3 {font-size: 1.2em; color: #224466;}')
-    call add(lines, 'h4 {font-size: 1.1em; color: #113344;}')
-    call add(lines, 'h5 {font-size: 1.0em; color: #112233;}')
-    call add(lines, 'h6 {font-size: 1.0em; color: #111111;}')
+    call add(lines, 'h1 {font-size: 2.0em; color: #a77070;}')
+    call add(lines, 'h2 {font-size: 1.6em; color: #779977;}')
+    call add(lines, 'h3 {font-size: 1.3em; color: #555577;}')
+    call add(lines, 'h4 {font-size: 1.2em; color: #222244;}')
+    call add(lines, 'h5 {font-size: 1.1em; color: #222244;}')
+    call add(lines, 'h6 {font-size: 1.0em; color: #222244;}')
     call add(lines, 'p, pre, blockquote, table, ul, ol, dl {margin-top: 1em; margin-bottom: 1em;}')
     call add(lines, 'ul ul, ul ol, ol ol, ol ul {margin-top: 0.5em; margin-bottom: 0.5em;}')
     call add(lines, 'li {margin: 0.3em auto;}')
@@ -85,8 +85,9 @@ function! s:create_default_CSS(path) " {{{
     call add(lines, 'blockquote {padding: 0.4em; background-color: #f6f5eb;}')
     call add(lines, 'td {border: 1px solid #ccc; padding: 0.3em;}')
     call add(lines, 'hr {border: none; border-top: 1px solid #ccc; width: 100%;}')
+    call add(lines, 'del {text-decoration: line-through; color: #777777;}')
+    call add(lines, '.toc li {list-style-type: none;}')
     call add(lines, '.todo {font-weight: bold; background-color: #f0ece8; color: #a03020;}')
-    call add(lines, '.strike {text-decoration: line-through; color: #777777;}')
     call add(lines, '.justleft {text-align: left;}')
     call add(lines, '.justright {text-align: right;}')
     call add(lines, '.justcenter {text-align: center;}')
@@ -110,8 +111,8 @@ function! s:get_html_header(wikifile, subdir, charset) "{{{
       return lines
     catch /E484/
       let s:warn_html_header = 1
-      call vimwiki#msg("Header template ".VimwikiGet('html_header').
-            \ " does not exist!")
+      echomsg 'vimwiki: Header template '.VimwikiGet('html_header').
+            \ ' does not exist!'
     endtry
   endif
 
@@ -146,8 +147,8 @@ function! s:get_html_footer() "{{{
       return lines
     catch /E484/
       let s:warn_html_footer = 1
-      call vimwiki#msg("Footer template ".VimwikiGet('html_footer').
-            \ " does not exist!")
+      echomsg 'vimwiki: Footer template '.VimwikiGet('html_footer').
+            \ ' does not exist!'
     endtry
   endif
 
@@ -175,7 +176,7 @@ function! s:delete_html_files(path) "{{{
     try
       call delete(fname)
     catch
-      vimwiki#msg('Can not delete '.fname)
+      echomsg 'vimwiki: Cannot delete '.fname
     endtry
   endfor
 endfunction "}}}
@@ -247,6 +248,56 @@ function! s:save_vimwiki_buffer() "{{{
   endif
 endfunction "}}}
 
+function! s:trim(string) "{{{
+  let res = substitute(a:string, '^\s\+', '', '')
+  let res = substitute(res, '\s\+$', '', '')
+  return res
+endfunction "}}}
+
+" toc_list is list of [level, header_text, header_id]
+" ex: [[1, "Header", "toc1"], [2, "Header2", "toc2"], ...]
+function! s:get_html_toc(toc_list) "{{{
+  if empty(a:toc_list)
+    return []
+  endif
+
+  let toc = ['<div class="toc">']
+  let level = 0
+  let plevel = 0
+  for [level, text, id] in a:toc_list
+    if level > plevel
+      call add(toc, '<ul>')
+    elseif level < plevel
+      call add(toc, '</ul>')
+    endif
+    call add(toc, '<li><a href="#'.id.'">'.text.'</a></li>')
+    let plevel = level
+  endfor
+  while level > 0
+    call add(toc, '</ul>')
+    let level -= 1
+  endwhile
+  call add(toc, '</div>')
+  return toc
+endfunction "}}}
+
+" insert placeholder's contents into dest.
+function! s:process_placeholders(dest, placeholders, type, ins_content) "{{{
+  if !empty(a:placeholders)
+    for [placeholder, row, idx] in a:placeholders
+      let [type, param] = placeholder
+      if type == a:type
+        let ins_content = a:ins_content[:]
+        if !empty(param)
+          call insert(ins_content, '<h1>'.param.'</h1>')
+        endif
+        let shift = idx * len(ins_content)
+        call extend(a:dest, ins_content, row + shift)
+      endif
+    endfor
+  endif
+endfunction "}}}
+
 "}}}
 
 " INLINE TAGS "{{{
@@ -263,7 +314,7 @@ function! s:tag_todo(value) "{{{
 endfunction "}}}
 
 function! s:tag_strike(value) "{{{
-  return '<span class="strike">'.s:mid(a:value, 2).'</span>'
+  return '<del>'.s:mid(a:value, 2).'</del>'
 endfunction "}}}
 
 function! s:tag_super(value) "{{{
@@ -515,7 +566,8 @@ function! s:process_tag_quote(line, quote) "{{{
   let lines = []
   let quote = a:quote
   let processed = 0
-  if a:line =~ '^\s\{4,}[^[:blank:]*#]'
+  " if a:line =~ '^\s\{4,}[^[:blank:]*#]'
+  if a:line =~ '^\s\{4,}\S'
     if !quote
       call add(lines, "<blockquote>")
       let quote = 1
@@ -534,17 +586,6 @@ endfunction "}}}
 
 function! s:process_tag_list(line, lists) "{{{
 
-  function! s:add_strike(line, st_tag, en_tag) "{{{
-    let st_tag = a:st_tag
-    let en_tag = a:en_tag
-    " apply strikethrough for checked list items
-    if a:line =~ '^\s\+\%(\*\|#\)\s*\['.g:vimwiki_listsyms[4].']'
-      let st_tag = a:st_tag.'<span class="strike">'
-      let en_tag = '</span>'.a:en_tag
-    endif
-    return [st_tag, en_tag]
-  endfunction "}}}
-
   function! s:add_checkbox(line, rx_list, st_tag, en_tag) "{{{
     let st_tag = a:st_tag
     let en_tag = a:en_tag
@@ -552,7 +593,8 @@ function! s:process_tag_list(line, lists) "{{{
     let chk = matchlist(a:line, a:rx_list)
     if len(chk) > 0
       if chk[1] == g:vimwiki_listsyms[4]
-        let st_tag .= '<input type="checkbox" checked />'
+        let st_tag .= '<del><input type="checkbox" checked />'
+        let en_tag = '</del>'.a:en_tag
       else
         let st_tag .= '<input type="checkbox" />'
       endif
@@ -560,19 +602,25 @@ function! s:process_tag_list(line, lists) "{{{
     return [st_tag, en_tag]
   endfunction "}}}
 
+  " Do not process line that starts from *bold* text as list item.
+  let pos = match(a:line, g:vimwiki_rxBold)
+  if pos != -1 && strpart(a:line, 0, pos) =~ '^\s*$'
+    return [0, []]
+  endif
+
   let lines = []
   let processed = 0
 
-  if a:line =~ '^\s\+\*'
-    let lstSym = '*'
+  if a:line =~ g:vimwiki_rxListBullet
+    let lstSym = matchstr(a:line, '[*-]')
     let lstTagOpen = '<ul>'
     let lstTagClose = '</ul>'
-    let lstRegExp = '^\s\+\*\s*'
-  elseif a:line =~ '^\s\+#'
+    let lstRegExp = g:vimwiki_rxListBullet
+  elseif a:line =~ g:vimwiki_rxListNumber
     let lstSym = '#'
     let lstTagOpen = '<ol>'
     let lstTagClose = '</ol>'
-    let lstRegExp = '^\s\+#\s*'
+    let lstRegExp = g:vimwiki_rxListNumber
   else
     let lstSym = ''
     let lstTagOpen = ''
@@ -587,10 +635,9 @@ function! s:process_tag_list(line, lists) "{{{
     let line = substitute(a:line, '\t', repeat(' ', &tabstop), 'g')
     let indent = stridx(line, lstSym)
 
-    let checkbox = '\s*\[\(.\?\)]\s*'
-    let [st_tag, en_tag] = s:add_strike(line, '<li>', '</li>')
+    let checkbox = '\s*\[\(.\?\)\]\s*'
     let [st_tag, en_tag] = s:add_checkbox(line,
-          \ lstRegExp.checkbox, st_tag, en_tag)
+          \ lstRegExp.checkbox, '<li>', '</li>')
 
     if !in_list
       call add(a:lists, [lstTagClose, indent])
@@ -660,7 +707,7 @@ function! s:process_tag_para(line, para) "{{{
   let lines = []
   let para = a:para
   let processed = 0
-  if a:line =~ '^\S'
+  if a:line =~ '^\s\{,3}\S'
     if !para
       call add(lines, "<p>")
       let para = 1
@@ -674,10 +721,12 @@ function! s:process_tag_para(line, para) "{{{
   return [processed, lines, para]
 endfunction "}}}
 
-function! s:process_tag_h(line) "{{{
+function! s:process_tag_h(line, id) "{{{
   let line = a:line
   let processed = 0
   let h_level = 0
+  let h_text = ''
+  let h_id = ''
   if a:line =~ g:vimwiki_rxH6
     let h_level = 6
   elseif a:line =~ g:vimwiki_rxH5
@@ -692,14 +741,26 @@ function! s:process_tag_h(line) "{{{
     let h_level = 1
   endif
   if h_level > 0
-    " rtrim
-    let line = substitute(a:line, '\s\+$', '', 'g')
-    let line = '<h'.h_level.'>'.
-          \ strpart(line, h_level, len(line) - h_level * 2).
-          \'</h'.h_level.'>'
+    let centered = 0
+    if a:line =~ '^\s\+'
+      let centered = 1
+    endif
+
+    let line = s:trim(line)
+
+    let h_text = s:trim(strpart(line, h_level, len(line) - h_level * 2))
+    let h_id = 'toc'.a:id
+    let h_part = '<h'.h_level.' id="'.h_id.'"'
+
+    if centered
+      let h_part .= ' class="justcenter">'
+    else
+      let h_part .= '>'
+    endif
+    let line = h_part.h_text.'</h'.h_level.'>'
     let processed = 1
   endif
-  return [processed, line]
+  return [processed, line, h_level, h_text, h_id]
 endfunction "}}}
 
 function! s:process_tag_hr(line) "{{{
@@ -767,13 +828,26 @@ function! s:wiki2html(line, state) " {{{
   let state.table = a:state.table
   let state.lists = a:state.lists[:]
   let state.deflist = a:state.deflist
+  let state.placeholder = a:state.placeholder
+  let state.toc = a:state.toc
+  let state.toc_id = a:state.toc_id
 
   let res_lines = []
 
   let line = s:safe_html(a:line)
 
   let processed = 0
-  "" pre
+
+  " toc -- placeholder
+  if !processed
+    if line =~ '^\s*%toc'
+      let processed = 1
+      let param = matchstr(line, '^\s*%toc\s\zs.*')
+      let state.placeholder = ['toc', param]
+    endif
+  endif
+
+  " pres
   if !processed
     let [processed, lines, state.pre] = s:process_tag_pre(line, state.pre)
     if processed && len(state.lists)
@@ -794,7 +868,7 @@ function! s:wiki2html(line, state) " {{{
     call extend(res_lines, lines)
   endif
 
-  "" list
+  " lists
   if !processed
     let [processed, lines] = s:process_tag_list(line, state.lists)
     if processed && state.quote
@@ -818,7 +892,23 @@ function! s:wiki2html(line, state) " {{{
     call extend(res_lines, lines)
   endif
 
-  "" quote
+  " headers
+  if !processed
+    let [processed, line, h_level, h_text, h_id] = s:process_tag_h(line, state.toc_id)
+    if processed
+      call s:close_tag_list(state.lists, res_lines)
+      let state.table = s:close_tag_table(state.table, res_lines)
+      let state.pre = s:close_tag_pre(state.pre, res_lines)
+      let state.quote = s:close_tag_quote(state.quote, res_lines)
+      call add(res_lines, line)
+
+      " gather information for table of contents
+      call add(state.toc, [h_level, h_text, h_id])
+      let state.toc_id += 1
+    endif
+  endif
+
+  " quotes
   if !processed
     let [processed, lines, state.quote] = s:process_tag_quote(line, state.quote)
     if processed && len(state.lists)
@@ -837,10 +927,12 @@ function! s:wiki2html(line, state) " {{{
       let state.para = s:close_tag_para(state.para, lines)
     endif
 
+    call map(lines, 's:process_inline_tags(v:val)')
+
     call extend(res_lines, lines)
   endif
 
-  "" definition lists
+  " definition lists
   if !processed
     let [processed, lines, state.deflist] = s:process_tag_def_list(line, state.deflist)
 
@@ -849,7 +941,7 @@ function! s:wiki2html(line, state) " {{{
     call extend(res_lines, lines)
   endif
 
-  "" table
+  " tables
   if !processed
     let [processed, lines, state.table] = s:process_tag_table(line, state.table)
 
@@ -858,16 +950,7 @@ function! s:wiki2html(line, state) " {{{
     call extend(res_lines, lines)
   endif
 
-  if !processed
-    let [processed, line] = s:process_tag_h(line)
-    if processed
-      call s:close_tag_list(state.lists, res_lines)
-      let state.table = s:close_tag_table(state.table, res_lines)
-      let state.pre = s:close_tag_pre(state.pre, res_lines)
-      call add(res_lines, line)
-    endif
-  endif
-
+  " horizontal lines
   if !processed
     let [processed, line] = s:process_tag_hr(line)
     if processed
@@ -911,7 +994,7 @@ endfunction " }}}
 function! vimwiki_html#Wiki2HTML(path, wikifile) "{{{
 
   if !s:syntax_supported()
-    call vimwiki#msg('Only vimwiki_default syntax supported!!!')
+    echomsg 'vimwiki: Only vimwiki_default syntax supported!!!'
     return
   endif
 
@@ -924,7 +1007,10 @@ function! vimwiki_html#Wiki2HTML(path, wikifile) "{{{
   let lsource = s:remove_comments(readfile(wikifile))
   let ldest = s:get_html_header(wikifile, subdir, &fileencoding)
 
+  " for table of contents placeholders.
+  let placeholders = []
 
+  " current state of converter
   let state = {}
   let state.para = 0
   let state.quote = 0
@@ -932,6 +1018,9 @@ function! vimwiki_html#Wiki2HTML(path, wikifile) "{{{
   let state.table = 0
   let state.deflist = 0
   let state.lists = []
+  let state.placeholder = []
+  let state.toc = []
+  let state.toc_id = 1
 
   for line in lsource
     let oldquote = state.quote
@@ -944,8 +1033,17 @@ function! vimwiki_html#Wiki2HTML(path, wikifile) "{{{
       call s:remove_blank_lines(ldest)
     endif
 
+    if !empty(state.placeholder)
+      call add(placeholders, [state.placeholder, len(ldest), len(placeholders)])
+      let state.placeholder = []
+    endif
+
     call extend(ldest, lines)
   endfor
+
+
+  let toc = s:get_html_toc(state.toc)
+  call s:process_placeholders(ldest, placeholders, 'toc', toc)
 
   call s:remove_blank_lines(ldest)
 
@@ -969,7 +1067,7 @@ endfunction "}}}
 
 function! vimwiki_html#WikiAll2HTML(path) "{{{
   if !s:syntax_supported()
-    call vimwiki#msg('Only vimwiki_default syntax supported!!!')
+    echomsg 'vimwiki: Only vimwiki_default syntax supported!!!'
     return
   endif
 

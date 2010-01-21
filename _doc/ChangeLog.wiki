@@ -14,7 +14,7 @@
     * add swig syntax highlight.
     * add csharp syntax highlight for special mark labels.
  * Changes
-    * update vimwiki to 0.9.701.
+    * update vimwiki to 0.9.8.
     * update cscope to 15.7a.
     * refine gcc makefiles.
     * let EnhancedCommentify support swig.
