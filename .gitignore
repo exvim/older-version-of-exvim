@@ -18,7 +18,7 @@ wiki_html/syntax_highlighter/
 # gen by exVim
 #/////////////////////////////////////////////////////////////////////////////
 
-_vimfiles_*/
+.vimfiles.*/
 *.vimentry
 quick_gen_project_*_autogen.*
 
