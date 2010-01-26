@@ -87,15 +87,15 @@ endif
 
 " ------------------------------------------------------------------ 
 " Desc: ex_dev environment variable 
-" NOTE: we don't recommend to set the g:ex_dev_path directly in vim/_vimrc
+" NOTE: we don't recommend to set the g:ex_dev_path directly in vim/.vimrc
 " ------------------------------------------------------------------ 
 
 if $EX_DEV ==# ""
     if has ("unix")
-        call confirm ("exVim error: Please set the EX_DEV in _vimrc, default is let $EX_DEV='~/exDev'")
+        call confirm ("exVim error: Please set the EX_DEV in .vimrc, default is let $EX_DEV='~/exDev'")
         let $EX_DEV='~/exDev'
     elseif has("win32")
-        call confirm ("exVim error: Please set the EX_DEV in _vimrc, default is let $EX_DEV='d:\exDev'")
+        call confirm ("exVim error: Please set the EX_DEV in .vimrc, default is let $EX_DEV='d:\exDev'")
         let $EX_DEV='d:\exDev'
     endif
 endif

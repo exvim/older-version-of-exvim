@@ -19,9 +19,9 @@ let s:badsymbols = '['.g:vimwiki_badsyms.g:vimwiki_stripsym.'<>|?*:"]'
 
 " This function is double defined.
 " TODO: refactor common functions into new module.
-function! s:chomp_slash(str)"{{{
+function! s:chomp_slash(str) "{{{
   return substitute(a:str, '[/\\]\+$', '', '')
-endfunction"}}}
+endfunction "}}}
 
 function! vimwiki#mkdir(path) "{{{
   let path = expand(a:path)
@@ -62,13 +62,6 @@ function! vimwiki#current_subdir()"{{{
   return vimwiki#subdir(VimwikiGet('path'), expand('%:p'))
 endfunction"}}}
 
-function! vimwiki#msg(message) "{{{
-  echohl WarningMsg
-  echomsg 'vimwiki: '.a:message
-  echohl None
-endfunction
-" }}}
-
 function! s:filename(link) "{{{
   let result = vimwiki#safe_link(a:link)
   if a:link =~ '|'
@@ -98,7 +91,7 @@ endfunction
 function! s:search_word(wikiRx, cmd) "{{{
   let match_line = search(a:wikiRx, 's'.a:cmd)
   if match_line == 0
-    call vimwiki#msg('WikiWord not found')
+    echomsg "vimwiki: Wiki link not found."
   endif
 endfunction
 " }}}
@@ -160,7 +153,7 @@ function! s:print_wiki_list() "{{{
   while idx < len(g:vimwiki_list)
     if idx == g:vimwiki_current_idx
       let sep = ' * '
-      echohl TablineSel
+      echohl PmenuSel
     else
       let sep = '   '
       echohl None
@@ -313,7 +306,7 @@ function! vimwiki#WikiHighlightWords() "{{{
   for word in g:vimwiki_wikiwords
     if g:vimwiki_camel_case &&
           \ word =~ g:vimwiki_word1 && !s:is_link_to_non_wiki_file(word)
-      execute 'syntax match VimwikiWord /\%(^\|[^!]\)\zs\<'.word.'\>/'
+      execute 'syntax match VimwikiWord /\%(^\|[^!]\)\@<=\<'.word.'\>/'
     endif
     execute 'syntax match VimwikiWord /\[\[\<'.
           \ vimwiki#unsafe_link(word).
@@ -432,17 +425,15 @@ function! vimwiki#WikiGoHome(index) "{{{
   call vimwiki#mkdir(VimwikiGet('path'))
 
   try
-    execute ':e '.VimwikiGet('path').VimwikiGet('index').VimwikiGet('ext')
+    execute ':e '.fnameescape(
+          \ VimwikiGet('path').VimwikiGet('index').VimwikiGet('ext'))
   catch /E37/ " catch 'No write since last change' error
     " this is really unsecure!!!
     execute ':'.VimwikiGet('gohome').' '.
           \ VimwikiGet('path').
           \ VimwikiGet('index').
           \ VimwikiGet('ext')
-  catch /E325/ " catch 'ATTENTION' error
-    " TODO: Hmmm, if open already opened index.wiki there is an error...
-    " Find out what is the reason and how to avoid it. Is it dangerous?
-    echomsg "Unknown error!"
+  catch /E325/ " catch 'ATTENTION' error (:h E325)
   endtry
 endfunction
 "}}}
@@ -458,7 +449,7 @@ function! vimwiki#WikiDeleteWord() "{{{
   try
     call delete(fname)
   catch /.*/
-    call vimwiki#msg('Cannot delete "'.expand('%:t:r').'"!')
+    echomsg 'vimwiki: Cannot delete "'.expand('%:t:r').'"!'
     return
   endtry
   execute "bdelete! ".escape(fname, " ")
@@ -477,8 +468,8 @@ function! vimwiki#WikiRenameWord() "{{{
 
   " there is no file (new one maybe)
   if glob(expand('%:p')) == ''
-    call vimwiki#msg('Cannot rename "'.expand('%:p').
-          \ '". It does not exist! (New file? Save it before renaming.)')
+    echomsg 'vimwiki: Cannot rename "'.expand('%:p').
+          \'". It does not exist! (New file? Save it before renaming.)'
     return
   endif
 
@@ -491,7 +482,7 @@ function! vimwiki#WikiRenameWord() "{{{
 
   if new_link =~ '[/\\]'
     " It is actually doable but I do not have free time to do it.
-    call vimwiki#msg('Cannot rename to a filename with path!')
+    echomsg 'vimwiki: Cannot rename to a filename with path!'
     return
   endif
 
@@ -499,11 +490,11 @@ function! vimwiki#WikiRenameWord() "{{{
 
   " check new_fname - it should be 'good', not empty
   if substitute(new_link, '\s', '', 'g') == ''
-    call vimwiki#msg('Cannot rename to an empty filename!')
+    echomsg 'vimwiki: Cannot rename to an empty filename!'
     return
   endif
   if s:is_link_to_non_wiki_file(new_link)
-    call vimwiki#msg('Cannot rename to a filename with extension (ie .txt .html)!')
+    echomsg 'vimwiki: Cannot rename to a filename with extension (ie .txt .html)!'
     return
   endif
 
@@ -513,8 +504,8 @@ function! vimwiki#WikiRenameWord() "{{{
   " do not rename if word with such name exists
   let fname = glob(new_fname)
   if fname != ''
-    call vimwiki#msg('Cannot rename to "'.new_fname.
-          \ '". File with that name exist!')
+    echomsg 'vimwiki: Cannot rename to "'.new_fname.
+          \ '". File with that name exist!'
     return
   endif
   " rename WikiWord file
@@ -525,7 +516,7 @@ function! vimwiki#WikiRenameWord() "{{{
       throw "Cannot rename!"
     end
   catch /.*/
-    call vimwiki#msg('Cannot rename "'.expand('%:t:r').'" to "'.new_fname.'"')
+    echomsg 'vimwiki: Cannot rename "'.expand('%:t:r').'" to "'.new_fname.'"'
     return
   endtry
 
@@ -630,11 +621,8 @@ endfunction
 "}}}
 
 function! vimwiki#count_first_sym(line) "{{{
-  let idx = 0
-  while a:line[idx] == a:line[0] && idx < len(a:line)
-    let idx += 1
-  endwhile
-  return idx
+  let first_sym = matchstr(a:line, '\S')
+  return len(matchstr(a:line, first_sym.'\+'))
 endfunction "}}}
 
 function! vimwiki#AddHeaderLevel() "{{{
@@ -645,13 +633,16 @@ function! vimwiki#AddHeaderLevel() "{{{
     return
   endif
 
-  if line !~ '^\(=\+\).\+\1\s*$'
-    let line = substitute(line, '^\s*', ' ', '')
-    let line = substitute(line, '\s*$', ' ', '')
-  endif
-  let level = vimwiki#count_first_sym(line)
-  if level < 6
-    call setline(lnum, '='.line.'=')
+  if line =~ '^\s*\(=\+\).\+\1\s*$'
+    let level = vimwiki#count_first_sym(line)
+    if level < 6
+      let line = substitute(line, '\(=\+\).\+\1', '=&=', '')
+      call setline(lnum, line)
+    endif
+  else
+      let line = substitute(line, '^\s*', '&= ', '')
+      let line = substitute(line, '\s*$', ' =&', '')
+      call setline(lnum, line)
   endif
 endfunction
 "}}}
@@ -664,13 +655,18 @@ function! vimwiki#RemoveHeaderLevel() "{{{
     return
   endif
 
-  if line =~ '^\(=\+\).\+\1\s*$'
-    let line = strpart(line, 1, len(line) - 2)
-    if line =~ '^\s'
-      let line = strpart(line, 1, len(line))
-    endif
-    if line =~ '\s$'
-      let line = strpart(line, 0, len(line) - 1)
+  if line =~ '^\s*\(=\+\).\+\1\s*$'
+    let level = vimwiki#count_first_sym(line)
+    let old = repeat('=', level)
+    let new = repeat('=', level - 1)
+
+    let chomp = line =~ '=\s'
+
+    let line = substitute(line, old, new, 'g')
+
+    if level == 1 && chomp
+      let line = substitute(line, '^\s', '', 'g')
+      let line = substitute(line, '\s$', '', 'g')
     endif
     call setline(lnum, line)
   endif

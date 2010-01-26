@@ -24,7 +24,7 @@ let loaded_ex_environment_setting=1
 " NOTE: this value will be set automatically
 " ------------------------------------------------------------------ 
 
-let g:exES_vimfiles_dirname = "_vimfiles"
+let g:exES_vimfiles_dirname = ".vimfiles"
 
 " ------------------------------------------------------------------ 
 " Desc: set project command
@@ -76,7 +76,7 @@ let s:exES_setted = 0
 " Desc: current version. increase this will cause template re-write 
 " ------------------------------------------------------------------ 
 
-let s:exES_CurrentVersion = 23
+let s:exES_CurrentVersion = 24
 
 "/////////////////////////////////////////////////////////////////////////////
 " function defines
@@ -90,7 +90,7 @@ function s:exES_WriteDefaultTemplate() " <<<
     " NOTE: we use the dir path of .vimentry instead of getcwd().  
     let _cwd = exUtility#Pathfmt( fnamemodify( expand('%'), ':p:h' ), 'unix' )
     let _vimentry_name = fnamemodify( expand('%'), ":t:r" )  
-    let _dir_name = '_vimfiles_'._vimentry_name
+    let _dir_name = '.vimfiles.'._vimentry_name
     let _list = []
 
     silent call add(_list, '-- auto-gen settings (DO NOT MODIFY) --')
@@ -155,9 +155,9 @@ function s:exES_WriteDefaultTemplate() " <<<
     silent call add(_list, '-- vimwiki Settings --')
     silent call add(_list, '')
 
-    silent call add(_list, 'wikiHome=./_doc')
+    silent call add(_list, 'wikiHome=./wiki_src')
     silent call add(_list, 'wikiHomeHtml=./wiki_html')
-    silent call add(_list, 'wikiHtmlHeader=./_doc/template/header.tpl')
+    silent call add(_list, 'wikiHtmlHeader=./wiki_src/template/header.tpl')
 
     " put the settings into vimentry file
     silent put! = _list
@@ -332,19 +332,19 @@ function g:exES_UpdateEnvironment() " <<<
     if exists ('g:exES_VimfilesDirName')
         let g:exES_vimfiles_dirname = g:exES_VimfilesDirName
 
-        " create _vimfiles directory
+        " create .vimfiles directory
         if finddir(g:exES_CWD.'/'.g:exES_vimfiles_dirname) == ''
             silent call mkdir(g:exES_CWD.'/'.g:exES_vimfiles_dirname)
         endif
 
-        " create _inherits directory
-        let inherit_directory_path = g:exES_CWD.'/'.g:exES_vimfiles_dirname.'/_hierarchies' 
+        " create .hierarchies directory
+        let inherit_directory_path = g:exES_CWD.'/'.g:exES_vimfiles_dirname.'/.hierarchies' 
         if finddir(inherit_directory_path) == ''
             silent call mkdir(inherit_directory_path)
         endif
 
-        " create _temp directory
-        let temp_directory_path = g:exES_CWD.'/'.g:exES_vimfiles_dirname.'/_temp' 
+        " create .temp directory
+        let temp_directory_path = g:exES_CWD.'/'.g:exES_vimfiles_dirname.'/.temp' 
         if finddir(temp_directory_path) == ''
             silent call mkdir(temp_directory_path)
         endif
@@ -390,7 +390,7 @@ function g:exES_UpdateEnvironment() " <<<
     if exists ('g:exES_vimentryRefs')
         for vimentry in g:exES_vimentryRefs
             let ref_entry_dir = fnamemodify( vimentry, ':p:h')
-            let ref_vimfiles_dirname = '_vimfiles_' . fnamemodify( vimentry, ":t:r" )
+            let ref_vimfiles_dirname = '.vimfiles.' . fnamemodify( vimentry, ":t:r" )
             let fullpath_tagfile = exUtility#GetVimFile ( ref_entry_dir, ref_vimfiles_dirname, 'tag')
             if has ('win32')
                 let fullpath_tagfile = exUtility#Pathfmt( fullpath_tagfile, 'windows' )

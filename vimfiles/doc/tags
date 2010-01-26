@@ -151,7 +151,6 @@
 :SS	exVim.txt	/*:SS*
 :STRUCT	exVim.txt	/*:STRUCT*
 :SUB	exVim.txt	/*:SUB*
-:Search	vimwiki.txt	/*:Search*
 :TS	exVim.txt	/*:TS*
 :TSigc	exVim.txt	/*:TSigc*
 :TSnoigc	exVim.txt	/*:TSnoigc*
@@ -172,6 +171,7 @@
 :TlistUnlock	taglist.txt	/*:TlistUnlock*
 :TlistUpdate	taglist.txt	/*:TlistUpdate*
 :Update	exVim.txt	/*:Update*
+:VWS	vimwiki.txt	/*:VWS*
 :Vimwiki2HTML	vimwiki.txt	/*:Vimwiki2HTML*
 :VimwikiAll2HTML	vimwiki.txt	/*:VimwikiAll2HTML*
 :VimwikiDeleteWord	vimwiki.txt	/*:VimwikiDeleteWord*
@@ -181,6 +181,7 @@
 :VimwikiNextWord	vimwiki.txt	/*:VimwikiNextWord*
 :VimwikiPrevWord	vimwiki.txt	/*:VimwikiPrevWord*
 :VimwikiRenameWord	vimwiki.txt	/*:VimwikiRenameWord*
+:VimwikiSearch	vimwiki.txt	/*:VimwikiSearch*
 :VimwikiSplitWord	vimwiki.txt	/*:VimwikiSplitWord*
 :VimwikiTabGoHome	vimwiki.txt	/*:VimwikiTabGoHome*
 :VimwikiToggleListItem	vimwiki.txt	/*:VimwikiToggleListItem*
@@ -1783,8 +1784,8 @@ g:vimwiki_auto_checkbox	vimwiki.txt	/*g:vimwiki_auto_checkbox*
 g:vimwiki_badsyms	vimwiki.txt	/*g:vimwiki_badsyms*
 g:vimwiki_browsers	vimwiki.txt	/*g:vimwiki_browsers*
 g:vimwiki_camel_case	vimwiki.txt	/*g:vimwiki_camel_case*
-g:vimwiki_fold_empty_lines	vimwiki.txt	/*g:vimwiki_fold_empty_lines*
 g:vimwiki_fold_lists	vimwiki.txt	/*g:vimwiki_fold_lists*
+g:vimwiki_fold_trailing_empty_lines	vimwiki.txt	/*g:vimwiki_fold_trailing_empty_lines*
 g:vimwiki_folding	vimwiki.txt	/*g:vimwiki_folding*
 g:vimwiki_global_ext	vimwiki.txt	/*g:vimwiki_global_ext*
 g:vimwiki_hl_cb_checked	vimwiki.txt	/*g:vimwiki_hl_cb_checked*
@@ -1942,8 +1943,11 @@ vimwiki-syntax-paragraphs	vimwiki.txt	/*vimwiki-syntax-paragraphs*
 vimwiki-syntax-preformatted	vimwiki.txt	/*vimwiki-syntax-preformatted*
 vimwiki-syntax-tables	vimwiki.txt	/*vimwiki-syntax-tables*
 vimwiki-syntax-typefaces	vimwiki.txt	/*vimwiki-syntax-typefaces*
+vimwiki-table-of-contents	vimwiki.txt	/*vimwiki-table-of-contents*
 vimwiki-temporary-wiki	vimwiki.txt	/*vimwiki-temporary-wiki*
 vimwiki-text-objects	vimwiki.txt	/*vimwiki-text-objects*
+vimwiki-toc	vimwiki.txt	/*vimwiki-toc*
+vimwiki-todo-lists	vimwiki.txt	/*vimwiki-todo-lists*
 vimwiki-todo-lists	vimwiki.txt	/*vimwiki-todo-lists*
 vimwiki.txt	vimwiki.txt	/*vimwiki.txt*
 vimwiki_-	vimwiki.txt	/*vimwiki_-*

@@ -462,10 +462,14 @@ function s:exTS_ShowTagList ( tag_list ) " <<<
             let quick_view = strpart( tag_info.cmd, 2, strlen(tag_info.cmd)-4 )
             let quick_view = strpart( quick_view, match(quick_view, '\S') )
         elseif tag_info.cmd =~# '^\d\+'
-            let file_list = readfile( fnamemodify(tag_info.filename,":p") )
-            let line_num = eval(tag_info.cmd) - 1 
-            let quick_view = file_list[line_num]
-            let quick_view = strpart( quick_view, match(quick_view, '\S') )
+            try
+                let file_list = readfile( fnamemodify(tag_info.filename,":p") )
+                let line_num = eval(tag_info.cmd) - 1 
+                let quick_view = file_list[line_num]
+                let quick_view = strpart( quick_view, match(quick_view, '\S') )
+            catch /^Vim\%((\a\+)\)\=:E/
+                let quick_view = "ERROR: can't get the preview from file!"
+            endtry
         endif
         " this will change the \/\/ to //
         let quick_view = substitute( quick_view, '\\/', '/', "g" )
