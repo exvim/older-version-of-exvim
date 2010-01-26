@@ -1815,7 +1815,7 @@ function exUtility#Browse(dir, file_filter, dir_filter, filename_list ) " <<<
     " if directory
     if isdirectory(a:dir) == 1
         " split the first level to file_list
-        let file_list = split(globpath(a:dir,'*'),'\n')
+        let file_list = split(globpath(a:dir,'*'),'\n') " NOTE, globpath('.','.*') will show hidden folder
         silent call sort( file_list, "exUtility#FileNameSort" )
 
         " sort and filter the list as we want (file|dir )
@@ -1839,11 +1839,13 @@ function exUtility#Browse(dir, file_filter, dir_filter, filename_list ) " <<<
                     silent call remove(file_list,list_idx)
                     let list_idx -= 1
                 endif
-            elseif len (s:ex_level_list) == 0 " in first level directory, if we .vimfiles* folders, remove them
-                if match( file_list[list_idx], '\<.vimfiles.*' ) != -1
-                    silent call remove(file_list,list_idx)
-                    let list_idx -= 1
-                endif
+            " DISABLE: in our case, globpath never search hidden folder. { 
+            " elseif len (s:ex_level_list) == 0 " in first level directory, if we .vimfiles* folders, remove them
+            "     if match( file_list[list_idx], '\<.vimfiles.*' ) != -1
+            "         silent call remove(file_list,list_idx)
+            "         let list_idx -= 1
+            "     endif
+            " } DISABLE end 
             endif
 
             "
