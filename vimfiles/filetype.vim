@@ -33,5 +33,8 @@ au BufNewFile,BufRead *.nsh setf nsis
 " swig
 au BufNewFile,BufRead *.i,*.swg setf swig 
 
+" cs
+au BufNewFile,BufRead *.tt setf cs 
+
 " treat gitignore file as config file
 au BufNewFile,BufRead *.gitignore setf cfg 
