@@ -9,7 +9,7 @@
 # gen by vimwiki
 #/////////////////////////////////////////////////////////////////////////////
 
-_doc/template/
+wiki_src/template/
 wiki_html/*.html
 wiki_html/*.css
 wiki_html/syntax_highlighter/

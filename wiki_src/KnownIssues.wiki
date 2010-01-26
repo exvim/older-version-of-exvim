@@ -40,7 +40,7 @@ code so that it works correctly with other plugin window.
 *# Issue:*
 
 I install the exVim in MS-Windows When I run the `:Up[date]` command, a command line window 
-flash out then disappeared like nothing happend. And I check the `_vimfiles` folder in 
+flash out then disappeared like nothing happend. And I check the `.vimfiles` folder in 
 my project, no file generated. 
 
 *# Solution:*
@@ -71,7 +71,7 @@ If some one know this problem, and have a better solution, please tell me.
 
 *# Issue:*
 
-I successfully create the tag file in _vimfiles by `:Up[date]` or running quick_gen_project,
+I successfully create the tag file in `.vimfiles` by `:Up[date]` or running quick_gen_project,
 but when I running the project, and use exTagSelect plugin search a tag, it shows the message:
 "Error: tag not found ===> xxx".
 

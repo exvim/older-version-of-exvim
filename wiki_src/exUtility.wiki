@@ -166,7 +166,7 @@ to the project working directory.  Use `<TAB>` to check possible arguments.
 `:GV {class-name}`
 
 Draw the class hierarchy graphic by the name user gives and save the picture in 
-`_vimfiles\_hierarchies\SymbolName.png`. 
+`.vimfiles\.hierarchies\SymbolName.png`. 
 
 *NOTE:* you need to install tool Graphviz(http://www.graphviz.org/) 
 
@@ -189,7 +189,7 @@ Here is a example of drawing hierarchy by :GV in qt-4.5.0 project.
 `:[range]SHL`
 
 convert the highlight of the source code in visual block into html. If no range gvien, 
-it will convert the whole file. The converted html file will saved in `_vimfiles\_temp\_src_highlight.txt.html`.
+it will convert the whole file. The converted html file will saved in `.vimfiles\.temp\_src_highlight.txt.html`.
 
 *NOTE:*  you need to install src-highlite(http://gnuwin32.sourceforge.net/packages/src-highlite.htm) .
 
@@ -543,12 +543,12 @@ nnoremap <unique> <silent> <Leader>gv :call exUtility#ViewInheritsImage()<CR>
 }}}
 
 The map below will use current word as a class name, process and draw a class hierarchy 
-picture saved in  `_vimfiles\_hierarchies\SymbolName.png`, then open it by a predefined 
+picture saved in  `.vimfiles\.hierarchies\SymbolName.png`, then open it by a predefined 
 picture viewer tool.
 
 *NOTE:* you need to install tool Graphviz(http://www.graphviz.org/) 
 
-*NOTE:* you need to create inherits file in _vimfiles directory first. This will be done 
+*NOTE:* you need to create inherits file in .vimfiles directory first. This will be done 
 during project update by using :Up[date] command 
 
 *NOTE:* you need to define g:exES_ImageViewer, for example: 

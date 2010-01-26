@@ -51,10 +51,10 @@ create the variables in script.
 `exES_vimfile_dir`                                                       
 
 `exES_vimfile_dir` will set the directory name which stores exVim project files. Default 
-is `"_vimfiles"`. This value also affect the default template value writing in ".vimentry".
+is `".vimfiles"`. This value also affect the default template value writing in ".vimentry".
 
 {{{
-let g:exES_vimfile_dir = "_vimfiles"
+let g:exES_vimfile_dir = ".vimfiles"
 }}}
 
 --------------------------------------------------------------------------------------

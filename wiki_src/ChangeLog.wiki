@@ -24,6 +24,10 @@
     * change guifont in win32 to Bitstream_Vera_Sans_Mono:h10.
     * Not allow exGlobalSearch running in stand-alone mode, this prevent exGlobalSearch show error message.
     * let exQuickFix support cs error format. 
+    * change `_vimfiles` folder to .vimfiles
+    * change `_vimfiles/_hierarchies` folder to .vimfiles/.hierarchies
+    * change `_vimfiles/_temp` folder to .vimfiles/.temp
+    * change vimwiki _doc folder to wiki_src
  * Bug fix
     * fix exQuickFix open a file another programme already editing issue.
     * fix exTagSelect show tags error when read preview from a file that already not exists.

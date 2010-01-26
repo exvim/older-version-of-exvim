@@ -42,7 +42,7 @@ For efficiency, we use tag in lookup file, this can be done by specify tag file 
 `g:LookupFile_TagExpr`, and I add it to default exEnvironment template.
 
 Also we create special tag file which only contained file name. This will be done after
-createing or refreshing project file in exProject. You would find "filenametags" in `_vimfiles`
+createing or refreshing project file in exProject. You would find "filenametags" in `.vimfiles`
 if success. 
 
 == My settings in vimrc ==

@@ -317,7 +317,7 @@ au BufNewFile,BufEnter * set cpoptions+=d
 }}}
 
 This setting will let tag file jump relate to current the directory. Since we will put tags
-file in _vimfiles, it is important to have it for every buffer we used.
+file in .vimfiles, it is important to have it for every buffer we used.
 
 To prevent buffer close problem, you need to have:
 

@@ -55,7 +55,7 @@ rem  Desc: vimfiles_path
 rem  ------------------------------------------------------------------ 
 
 if /I "%vimfiles_path%" == "" (
-    set vimfiles_path=_vimfiles
+    set vimfiles_path=.vimfiles
     )
 
 rem  ------------------------------------------------------------------ 

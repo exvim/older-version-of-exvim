@@ -140,10 +140,10 @@
 ||*Command* ||*Explanation* ||
 ||`:HL{1-4} [{pattern}]` ||Highlight a {pattern} with 1/2/3/4 color. If the {pattern} is empty, it will remove the last highlight. ||
 ||`:Up[date] [{args}]` ||Update exVim project files. ||
-||`:GV {class-name}` ||Draw the class hierarchy graphic by the name user gives and save the picture in `_vimfiles\_hierarchies\SymbolName.png`. ||
+||`:GV {class-name}` ||Draw the class hierarchy graphic by the name user gives and save the picture in `.vimfiles\.hierarchies\SymbolName.png`. ||
 ||`:GVP {class-name}` ||Similar like :GV command, but draw only hierarchy of the parent classes for {class-name} you give. ||
 ||`:GVC {class-name}` ||Similar like :GV command, but draw only hierarchy of the children classes for {class-name} you give. ||
-||`:[range]SHL` ||convert the highlight of the source code in visual block into html. If no range gvien, it will convert the whole file. The converted html file will saved in `_vimfiles\_temp\_src_highlight.txt.html`. ||
+||`:[range]SHL` ||convert the highlight of the source code in visual block into html. If no range gvien, it will convert the whole file. The converted html file will saved in `.vimfiles\_temp\_src_highlight.txt.html`. ||
 ||`:[range]MK {args}` ||Mark a visual block of code with the {args} you give. ||
 ||`:LINE` ||The command will put a 86 words long line in the line current cursor in. ||
 ||`:[range]NS {args}` ||Put a namespace pair between a visual block. ||

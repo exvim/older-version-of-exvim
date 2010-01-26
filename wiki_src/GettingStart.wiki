@@ -53,7 +53,7 @@ files by press `<Enter>` on the files in project-window.
 === Generate tags,ID... ===
 
 After you generate files in project window and save it, you will see MyProject.exproject, 
-id-lang-autogen.map and filenametags in `_vimfiles` directory. Now we will generate the 
+id-lang-autogen.map and filenametags in `.vimfiles` directory. Now we will generate the 
 rest of files for project. Type `:Up[date]` in the vim we opened above, the command will 
 create a quick_gen_project_auto.(bat\|sh) in our project root directory and running it to 
 generate files used by exVim plugins, whiches are tags, ID, symbol, cscope-files, inherits 
@@ -64,10 +64,10 @@ you should saw a scene similar like the picture:
 
 === Update Project ===
 
-Most of the files in `_vimfiles` directory used by exVim plugins don't have incremental 
+Most of the files in `.vimfiles` directory used by exVim plugins don't have incremental 
 update method, so once you modified your codes in the project, you want the modification 
 added into tags, ID and so on, you need to update the file manually, and it will update 
-the whole file. Type `:Up[date]` will update all project files in `_vimfiles` directory. 
+the whole file. Type `:Up[date]` will update all project files in `.vimfiles` directory. 
 
 Also you can update specific file by giving an argument in `:Up[date]` command. The options are: 
 ID, symbol, inherit, tag and cscope. 
@@ -205,7 +205,7 @@ Check section [[exMarksBrowser]] for detail.
 ||`<alt-1>`, `<alt-2>`, `<alt-3>`, `<alt-4>` ||Hilight words or visual blocks with highlight color 1,2,3,4. ||
 ||`<alt-0>` ||Cancle all 1,2,3,4 highlights ||
 ||`F12`,`{visual}F12` ||Insert '#if 0' and '#endif' between visual selected block in visual mode. Remove '#if 0' and '#endif' between it in normal mode. ||
-||`\gv` ||Use current word as class name, draw the class inherits graphic and open it by image viewer application you give.  The picture will be saved in `_vimfiles\_hierarchies\current_word.png`. ||
+||`\gv` ||Use current word as class name, draw the class inherits graphic and open it by image viewer application you give.  The picture will be saved in `.vimfiles\.hierarchies\current_word.png`. ||
 
 Check section [[exUtility]] for detail.
 

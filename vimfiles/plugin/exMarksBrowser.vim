@@ -319,8 +319,8 @@ function s:exMB_FetchMarks() " <<<
     "  1   1648    1 D:\Project\Engine\nomad\main\code\Core\purs\Examples\LZOCompression\LZO_UnComp\MiniLZO\minilzo.c
     "  2     18    0 D:\Project\Dev\exUtility\src\exLibs\exLibs.vimentry
     "  3    369    4 D:\Project\Dev\exUtility\src\exLibs\exLibs\Container\BitArray.h
-    "  4     24    0 D:\Project\Dev\exUtility\src\exLibs\_vimfiles\symbol
-    "  5      1    0 D:\Project\Dev\exUtility\src\exLibs\_vimfiles\exLibs.exproject
+    "  4     24    0 D:\Project\Dev\exUtility\src\exLibs\.vimfiles\symbol
+    "  5      1    0 D:\Project\Dev\exUtility\src\exLibs\.vimfiles\exLibs.exproject
     "  6    156    4 D:\Project\Dev\exUtility\src\exLibs\exLibs\Container\HashMapPool.h
     "  7     17    0 D:\Project\Dev\exUtility\src\exLibs\exLibs.vimentry
     "  8     15    0 D:\Project\Dev\exUtility\src\exLibs\exLibs.vimentry

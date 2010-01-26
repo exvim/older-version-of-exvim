@@ -181,8 +181,8 @@ Q17. How to create a inherited class diagram?
 
 A17. 
  # `\gv` to draw all inherited class diagram of current class
- # `:GVC` "class_name" to get derived class diagram (put in _vimfiles\inherits\class_name.png)
- # `:GVP` "class_name" to get base class diagram (put in _vimfiles\inherits\class_name.png)
+ # `:GVC` "class_name" to get derived class diagram (put in .vimfiles\.hierarchies\class_name.png)
+ # `:GVP` "class_name" to get base class diagram (put in .vimfiles\.hierarchies\class_name.png)
 
 --------------------------------------------------------------------------------------
 Q18. How to quick locate file in project.
