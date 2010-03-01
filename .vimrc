@@ -629,7 +629,7 @@ nnoremap <unique> <silent> <Leader>gv :call exUtility#ViewInheritsImage()<CR>
 " mark (special) text
 let g:ex_todo_keyword = 'NOTE REF EXAMPLE SAMPLE CHECK'
 let g:ex_comment_lable_keyword = 'DELME TEMP MODIFY ADD KEEPME DISABLE ' " for editing
-let g:ex_comment_lable_keyword .= 'DEBUG CRASH DUMMY UNUSED TESTME ' " for testing 
+let g:ex_comment_lable_keyword .= 'ERROR DEBUG CRASH DUMMY UNUSED TESTME ' " for testing 
 let g:ex_comment_lable_keyword .= 'HACK OPTME HARDCODE REFACTORING DUPLICATE REDUNDANCY ' " for refactoring
 
 vnoremap <unique> <Leader>mk :MK 
