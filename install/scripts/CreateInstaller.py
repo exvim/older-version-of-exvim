@@ -127,10 +127,10 @@ def PreCheck ():
 
 
 # ------------------------------------------------------------------ 
-# Desc: CopyDir 
+# Desc: CopyDirs 
 # ------------------------------------------------------------------ 
 
-def CopyDir ( _src, _dest ):
+def CopyDirs ( _src, _dest ):
     # walk through the path
     for root, dirs, files in os.walk( _src, topdown=True ):
         # don't visit .svn directories
@@ -164,7 +164,7 @@ def CreateInstaller ():
 
     print "Creating installer"
     # KEEPME: no need { 
-    # CopyDir ( os.path.join(source_path, "vim72"), os.path.join(dest_root_path,"rawdata/exVim/vim") )
+    # CopyDirs ( os.path.join(source_path, "vim72"), os.path.join(dest_root_path,"rawdata/exVim/vim") )
     # os.makedirs( os.path.join(dest_root_path, "rawdata/exVim/vim/data/backup") )
     # os.makedirs( os.path.join(dest_root_path, "rawdata/exVim/vim/data/swap") )
     # } KEEPME end 
@@ -175,8 +175,8 @@ def CreateInstaller ():
     vimplugins_path = os.path.join(dest_root_path,"rawdata/exVim/vim-plugins")  
     if os.path.isdir(vimplugins_path) == True :
         shutil.rmtree ( vimplugins_path )
-    CopyDir ( os.path.join(Settings.source_path, "toolkit"), os.path.join(vimplugins_path,"toolkit") )
-    CopyDir ( os.path.join(Settings.source_path, "vimfiles"), os.path.join(vimplugins_path,"vimfiles") )
+    CopyDirs ( os.path.join(Settings.source_path, "toolkit"), os.path.join(vimplugins_path,"toolkit") )
+    CopyDirs ( os.path.join(Settings.source_path, "vimfiles"), os.path.join(vimplugins_path,"vimfiles") )
 
     # update .vimrc
     print "Update .vimrc..."

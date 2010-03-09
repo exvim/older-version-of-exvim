@@ -38,3 +38,39 @@ au BufNewFile,BufRead *.tt setf cs
 
 " treat gitignore file as config file
 au BufNewFile,BufRead *.gitignore setf cfg 
+
+" Matlab or Objective C
+au BufNewFile,BufRead *.m call s:ex_FTm()
+
+"/////////////////////////////////////////////////////////////////////////////
+" ex_FTm
+"/////////////////////////////////////////////////////////////////////////////
+
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
+func! s:ex_FTm()
+    let n = 1
+    while n < 10
+        let line = getline(n)
+        if line =~ '^\s*\(#\s*\(include\|import\)\>\|\/\*\|^\/\/\)'
+            setf objc
+            return
+        endif
+        if line =~ '^\s*%'
+            setf matlab
+            return
+        endif
+        if line =~ '^\s*(\*'
+            setf mma
+            return
+        endif
+        let n = n + 1
+    endwhile
+    if exists("g:filetype_m")
+        exe "setf " . g:filetype_m
+    else
+        setf matlab
+    endif
+endfunc

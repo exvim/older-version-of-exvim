@@ -28,6 +28,10 @@
     * change `_vimfiles/_hierarchies` folder to .vimfiles/.hierarchies
     * change `_vimfiles/_temp` folder to .vimfiles/.temp
     * change vimwiki _doc folder to wiki_src
+    * let exProject ignore checking .vimfiles folders when browsing.
+    * generate header.tpl use dest file's encoding.
+    * update gvim.exe link with python26.dll in windows.
+    * add ex_try, ex_catch syntax highlight.
  * Bug fix
     * fix exQuickFix open a file another programme already editing issue.
     * fix exTagSelect show tags error when read preview from a file that already not exists.
