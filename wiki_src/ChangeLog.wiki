@@ -31,7 +31,7 @@
     * let exProject ignore checking .vimfiles folders when browsing.
     * generate header.tpl use dest file's encoding.
     * update gvim.exe link with python26.dll in windows.
-    * add ex_try, ex_catch syntax highlight.
+    * add ex_try, ex_catch, ex_catch_exp, ex_throw syntax highlight.
     * add my method to judge if it is objc or mathlab files.
  * Bug fix
     * fix exQuickFix open a file another programme already editing issue.
