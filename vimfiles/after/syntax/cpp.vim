@@ -32,6 +32,12 @@ syn keyword cStatement         ex_delete_array ex_delete_array_use ex_delete_arr
 syn keyword cStatement         ex_try ex_catch ex_catch_exp ex_throw
 
 " ======================================================== 
+" QT extentions
+" ======================================================== 
+
+syn keyword cStatement         slots signal emit
+
+" ======================================================== 
 " exMacroHighlight Predeined Syntax
 " ======================================================== 
 

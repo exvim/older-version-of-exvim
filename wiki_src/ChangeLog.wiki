@@ -35,6 +35,7 @@
     * add my method to judge if it is objc or mathlab files.
     * add key-world TEST, PATCH
     * add `<leader>sub` for quick substitue word_highlight_1 to word_highlight_2
+    * add signal, slots, emit qt keywords for highlighting
  * Bug fix
     * fix exQuickFix open a file another programme already editing issue.
     * fix exTagSelect show tags error when read preview from a file that already not exists.
