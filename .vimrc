@@ -511,6 +511,10 @@ au FileType vim set comments=sO:\"\ -,mO:\"\ \ ,eO:\"\",f:\"
 " Desc: exUtility
 " ------------------------------------------------------------------ 
 
+" quick substitue h1 -> h2
+nnoremap <unique> <silent><leader>sub :%s/<c-r>q/<c-r>w/g<CR><c-o>
+vnoremap <unique> <silent><leader>sub  :s/<c-r>q/<c-r>w/g<CR><c-o>
+
 " edit current vimentry
 nnoremap <unique> <leader>ve :call exUtility#EditVimEntry ()<CR>
 
@@ -628,9 +632,9 @@ nnoremap <unique> <silent> <Leader>gv :call exUtility#ViewInheritsImage()<CR>
 
 " mark (special) text
 let g:ex_todo_keyword = 'NOTE REF EXAMPLE SAMPLE CHECK'
-let g:ex_comment_lable_keyword = 'DELME TEMP MODIFY ADD KEEPME DISABLE ' " for editing
+let g:ex_comment_lable_keyword = 'DELME TEMP MODIFY ADD KEEPME DISABLE TEST ' " for editing
 let g:ex_comment_lable_keyword .= 'ERROR DEBUG CRASH DUMMY UNUSED TESTME ' " for testing 
-let g:ex_comment_lable_keyword .= 'HACK OPTME HARDCODE REFACTORING DUPLICATE REDUNDANCY ' " for refactoring
+let g:ex_comment_lable_keyword .= 'HACK OPTME HARDCODE REFACTORING DUPLICATE REDUNDANCY PATCH ' " for refactoring
 
 vnoremap <unique> <Leader>mk :MK 
 nnoremap <unique> <Leader>mk :call exUtility#RemoveSpecialMarkText() <CR>
