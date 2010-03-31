@@ -33,7 +33,7 @@
     * update gvim.exe link with python26.dll in windows.
     * add ex_try, ex_catch, ex_catch_exp, ex_throw syntax highlight.
     * add my method to judge if it is objc or mathlab files.
-    * add key-world TEST, PATCH
+    * add key-world TEST, PATCH, FIXME, BUG, TIPS, HINT
     * add `<leader>sub` for quick substitue word_highlight_1 to word_highlight_2
     * add signal, slots, emit qt keywords for highlighting
  * Bug fix
