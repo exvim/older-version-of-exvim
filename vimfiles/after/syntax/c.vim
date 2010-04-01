@@ -26,6 +26,7 @@ syn keyword cType              BOOL UBOOL
 syn keyword cStatement         ex_malloc ex_malloc_use ex_malloc_nomanage ex_malloc_tag ex_malloc_tag_use
 syn keyword cStatement         ex_realloc ex_realloc_use ex_realloc_nomanage ex_realloc_tag ex_realloc_tag_use
 syn keyword cStatement         ex_free ex_free_use ex_free_nomanage
+syn keyword cStatement         ex_safe_free ex_safe_free_use ex_safe_free_nomanage
 syn keyword cStatement         ex_stack_malloc
 syn keyword cConstant	       TRUE FALSE
 
