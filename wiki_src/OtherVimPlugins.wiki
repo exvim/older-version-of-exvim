@@ -24,3 +24,4 @@ plugins in the internet, and I recommend some of the plugins I'm using right now
     * DirDiff: [http://www.vim.org/scripts/script.php?script_id=102]
     * snipMate: [http://www.vim.org/scripts/script.php?script_id=2540]
     * pythoncomplete: [http://www.vim.org/scripts/script.php?script_id=1542]
+    * css-color-preview: [http://www.vim.org/scripts/script.php?script_id=2150]

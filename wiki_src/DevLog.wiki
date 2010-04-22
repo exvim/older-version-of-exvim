@@ -7,10 +7,9 @@
 
 = Dev Log =
 
-== 2010-01-05 ==
+== How to merge ==
 --------------------------------------------------------------------------------------
 
-How to merge:
 For developing, you need to  get exVim source directly into install vim path (d:/exDev/exVim) 
 for example. To achieve this, just use 
 
@@ -52,33 +51,28 @@ Then go to another repo, pull everything, then use chery-pick to get the changes
     git chery-pick -x change_list
 }}}
 
-== 2009-06-06 ==
+== vim plugin version ==
 --------------------------------------------------------------------------------------
 
-I try to move the tag-stack and global search-stack from exTagSelect,exGlobalSearch to 
-exJumpStack.
-
-First I evaluate exTagSelect. The tag jump always trigger by exTS_GetTagSelectResult 
-function. Here you can know [TS]/[TG], also you can detect the edit-buffer filetype 
-(ex_plugin or other) to get the preview. When you confirm, the exTS_GotoTagSelectResult 
-will be invoked.
-
-The stack should like:
-{{{
-[TG]name1: preview_from
- |-[TG]name2: preview_from // gray color express disable
- |-[TS]name3: preview_from // gray color express disable
- |-[TS]name4: preview_from // gray color express disable
- |-[GG]name5: preview_from // gray color express disable
- |-preview_to
-
-preview_from
- |-[TG]name1: preview_to_from // gray color express disable
- |-[TS]name2: preview_to_from // gray color express disable
- |-[TS]name3: preview_to_from // gray color express disable
- |-[GG]name4: preview_to
-
-preview_from
- |-[TG]name1:
-
-}}}
+* vim - 7.2 http://www.vim.org
+ * AlternateFiles - 2.18       http://www.vim.org/scripts/script.php?script_id=31
+ * cmdline-complete - 1.1.3    http://www.vim.org/scripts/script.php?script_id=2222
+ * css-color-preview - 0.7     http://www.vim.org/scripts/script.php?script_id=2150
+ * echofunc - 1.19             http://www.vim.org/scripts/script.php?script_id=1735
+ * EnhancedCommentify - 2.3    http://www.vim.org/scripts/script.php?script_id=23
+ * CRefVim - 1.0.4             http://www.vim.org/scripts/script.php?script_id=614
+ * MiniBufExpl - 6.3.2         http://www.vim.org/scripts/script.php?script_id=159
+ * NERD_tree - 4.1.0           http://www.vim.org/scripts/script.php?script_id=1658
+ * OmniCppComplete - 0.41      http://www.vim.org/scripts/script.php?script_id=1520
+ * lookupfile - 1.8            http://www.vim.org/scripts/script.php?script_id=1581
+    * genutils - 2.5           http://www.vim.org/scripts/script.php?script_id=197
+ * ShowMarks - 2.2             http://www.vim.org/scripts/script.php?script_id=152
+ * surround - 1.34             http://www.vim.org/scripts/script.php?script_id=1697
+ * TagList - 4.5               http://www.vim.org/scripts/script.php?script_id=273
+ * vcscommand - 1.99.32        http://www.vim.org/scripts/script.php?script_id=90
+ * Visincr - 19                http://www.vim.org/scripts/script.php?script_id=670
+ * visual_studio - 1.2         http://www.vim.org/scripts/script.php?script_id=864
+ * vimwiki - 0.9.8             http://www.vim.org/scripts/script.php?script_id=2226
+ * pythoncomplete - 0.9        http://www.vim.org/scripts/script.php?script_id=1542
+ * DirDiff - 1.1.2             http://www.vim.org/scripts/script.php?script_id=102
+ * snipMate - 0.83             http://www.vim.org/scripts/script.php?script_id=2540

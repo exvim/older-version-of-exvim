@@ -6,13 +6,14 @@
 <!-- ======================================================================================-->
 
 = Change Log =
---------------------------------------------------------------------------------------
 
 == 8.04 ==
+--------------------------------------------------------------------------------------
  * New features
     * support swig error format.
     * add swig syntax highlight.
     * add csharp syntax highlight for special mark labels.
+    * add CSS color preview plugin.
  * Changes
     * update vimwiki to 0.9.8.
     * update cscope to 15.7a.
@@ -41,6 +42,7 @@
     * fix exTagSelect show tags error when read preview from a file that already not exists.
 
 == 8.03 ==
+--------------------------------------------------------------------------------------
  * New features
     * let make syntax support external comments.
     * refine install method for unix/linux.
@@ -67,6 +69,7 @@
     * add protection for ImageViewer and WebBrowser
 
 == 8.02 ==
+--------------------------------------------------------------------------------------
  * New features
  * Changes
     * let title show vimentry name first, so that you can select project with a clear name in task bar.
@@ -82,6 +85,7 @@
     * fix minibufexpl mouse click open will not open in edit-buffer. (thanks ozgezer)
 
 == 8.02c ==
+--------------------------------------------------------------------------------------
  * New features
     * Temp highlight words under current cursor when cursor holds.
  * Changes
@@ -92,6 +96,7 @@
     * fix quick_gen_project.sh filenamelist generation errors in unix like system. (thanks ozgezer)
 
 == 8.02b ==
+--------------------------------------------------------------------------------------
  * New features
     * add exBufExplorer.
     * add bookmarks in exBufExplorer.
@@ -113,6 +118,7 @@
     * only do search jump when current line not matched with the pattern in exJumpStack
 
 == 8.02a ==
+--------------------------------------------------------------------------------------
  * New features
     * let exProject support file with no-suffix (NULL filetype).
     * let cscope can parse by specific language type.
@@ -138,6 +144,7 @@
     * fix cursor can't move to the edit-buffer when use restore buffer.
 
 == 8.01b ==
+--------------------------------------------------------------------------------------
  * New features
     * let quick_gen_project can update filenametags
     * let exCscope support find g method
@@ -160,6 +167,7 @@
     * fix exJumpStack can't locate empty line or line with only space, tab problem 
 
 == 8.01a ==
+--------------------------------------------------------------------------------------
  * New features
     * add ex_lightgray color scheme.
     * Support search result sorting for exGlobalSearch.
@@ -184,6 +192,7 @@
     * fix macro highlight highlight error when the macro #if is not at the beginning of the line.
 
 == 7.05 ==
+--------------------------------------------------------------------------------------
  * New features
     * add \ve to quick edit current vimentry file.
     * add vimentry name check when open vimentry file. if vimentry name is not the same with the value !VimEntryName in vimentry file, it will lead to a vimentry re-write.
@@ -211,6 +220,7 @@
     * fix toggle window can't let the cursor focus on it.
 
 == 7.05b ==
+--------------------------------------------------------------------------------------
  * New features
     * Support more than one ".vimentry" in same directory. 
     * add "VimEntryName" and "VimfilesDirName" in `.vimentry` file.
@@ -226,6 +236,7 @@
     * fix open `.vimentry` failed from vim in different path than the path of `.vimentry`
 
 == 7.05a ==
+--------------------------------------------------------------------------------------
  * New features
     * Restore last edit buffer.
     * Update project depends on project files ( file_filter and dir_filter ).
@@ -247,4 +258,5 @@
     * Fix exMacroHighlight syntax highlight disappear when no any c-like file loaded.
 
 == 7.04a ==
+--------------------------------------------------------------------------------------
  * First public version

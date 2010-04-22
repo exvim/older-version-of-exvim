@@ -24,7 +24,6 @@ compile a project.
 --------------------------------------------------------------------------------------
 
 === Create a single gcc project ===
---------------------------------------------------------------------------------------
 
 A single gcc project is a project that its source code only generate a library or an executable
 program. To create a single gcc project, copy the makefile below into your project root
@@ -40,7 +39,6 @@ learn it.
 Once you finish setting up the values, use command :GM[ake] to compile the whole project.
 
 === Create multiple gcc project ===
---------------------------------------------------------------------------------------
 
 A multiple gcc project is a project consists of several libraries, exeutable files. We
 can think the source code to generate one library or executable programme as one project,
@@ -64,59 +62,59 @@ order of the value you set, will be the order of the project compiled).
 
 Setup the variable in the makefile in each sub-project follow the section "Setup values" below. 
 
-=== Setup values ===
+== Setup values ==
 --------------------------------------------------------------------------------------
 
-==== Project ====
+=== Project ===
 
 The Project is the name of the project, it should be the same as the root directory name. 
 
-==== ProjectType ====
+=== ProjectType ===
 
 The ProjectType is a variable to specific what kind of the project you generate. The option
 is lib, dll or exe. The value here doesn't relate with the suffix of the final file you generate,
 for example, you choose lib, in windows, it will compile the project and generate a static library 
 named `MyProject.lib`, but in unix/linux it will be `libMyProject.a`.
 
-==== IncDirs ====
+=== IncDirs ===
 
 The IncDirs is a variable contains one or more directory path you set. The value specific
 the path of files you include when you use `#include` in the code. It will search these
 paths if the file not found, compile error.
 
-==== FullPath_GchSrcs ====
+=== FullPath_GchSrcs ===
 
 THe FullPath_GchSrcs sets the path of the full path of the header file we want to compile
 as gch ( aka. precomipled header file ).
 
-==== SrcDirs ====
+=== SrcDirs ===
 
 The SrcDirs specific the source directories, then the programme will search recursively 
 and get those .c,.cpp file into the compile list.
 
-==== LibDirs ====
+=== LibDirs ===
 
 The LibDirs includes the path of the third party libraries so that during link, those library
 can be found.
 
-==== PrjLibs ====
+=== PrjLibs ===
 
 The PrjLibs is the name of the library you want to link, but the library generate by you.
 This option only work in multiple gcc project. 
 
-==== ExtLibs ====
+=== ExtLibs ===
 
 The ExtLibs is the name of the library you want to link, but the library belongs to third party.
 
-==== CFlag_Spec ====
+=== CFlag_Spec ===
 
 The CFlag_Spec is the value to let you set additional option flag in compiling.
 
-==== LFlag_Spec ====
+=== LFlag_Spec ===
 
 The LFlag_Spec is the value to let you set additional option flag in linking.
 
-=== Option of GMake command ===
+== Option of GMake command ==
 --------------------------------------------------------------------------------------
 
 The command :GM[ake] can follow options to achieve different task.
