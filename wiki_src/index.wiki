@@ -136,3 +136,5 @@ With exVim you can:
     * pythoncomplete: [http://www.vim.org/scripts/script.php?script_id=1542]
     * DirDiff: [http://www.vim.org/scripts/script.php?script_id=102]
     * snipMate: [http://www.vim.org/scripts/script.php?script_id=2540]
+    * zencoding: [http://www.vim.org/scripts/script.php?script_id=2981]
+    * matchit: [http://www.vim.org/scripts/script.php?script_id=39]

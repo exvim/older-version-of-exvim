@@ -76,3 +76,5 @@ Then go to another repo, pull everything, then use chery-pick to get the changes
  * pythoncomplete - 0.9        http://www.vim.org/scripts/script.php?script_id=1542
  * DirDiff - 1.1.2             http://www.vim.org/scripts/script.php?script_id=102
  * snipMate - 0.83             http://www.vim.org/scripts/script.php?script_id=2540
+ * zencoding - 2010/4/27       http://www.vim.org/scripts/script.php?script_id=2981
+ * matchit - 1.13.2            http://www.vim.org/scripts/script.php?script_id=39

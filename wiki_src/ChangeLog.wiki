@@ -14,6 +14,8 @@
     * add swig syntax highlight.
     * add csharp syntax highlight for special mark labels.
     * add CSS color preview plugin.
+    * add zencoding plugin.
+    * add matchit plugin.
  * Changes
     * update vimwiki to 0.9.8.
     * update cscope to 15.7a.
