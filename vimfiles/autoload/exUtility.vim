@@ -3510,7 +3510,7 @@ function exUtility#CreateVimwikiFiles() " <<<
                 silent call add ( text_list, "<head>" )
                 silent call add ( text_list, "\t<link rel=\"Stylesheet\" type=\"text/css\" href=\"%root_path%style.css\" />" )
                 silent call add ( text_list, "\t<title>%title%</title>" )
-                silent call add ( text_list, "\t<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />" )
+                silent call add ( text_list, "\t<meta http-equiv=\"Content-Type\" content=\"text/html; charset=".&encoding."\" />" )
 
                 " add syntax highlighter js
 	            silent call add ( text_list, "\t<script type=\"text/javascript\" src=\"syntax_highlighter/scripts/shCore.js\"></script>" )
