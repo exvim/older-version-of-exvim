@@ -1123,6 +1123,12 @@ let g:snippets_dir = g:ex_toolkit_path . '/snippets/'
 let g:NERDTreeWinSize = exists('g:exPJ_window_width') ? g:exPJ_window_width : 30 
 
 " ------------------------------------------------------------------ 
+" Desc: zencoding 
+" ------------------------------------------------------------------ 
+
+let g:user_zen_leader_key = '<c-j>'
+
+" ------------------------------------------------------------------ 
 " Desc: surround 
 " 'sb' for block
 " 'si' for an if statement
