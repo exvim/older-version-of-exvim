@@ -16,6 +16,7 @@
     * add CSS color preview plugin.
     * add zencoding plugin.
     * add matchit plugin.
+    * add django syntax highlight.
  * Changes
     * update vimwiki to 0.9.8.
     * update cscope to 15.7a.

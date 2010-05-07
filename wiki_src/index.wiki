@@ -138,3 +138,4 @@ With exVim you can:
     * snipMate: [http://www.vim.org/scripts/script.php?script_id=2540]
     * zencoding: [http://www.vim.org/scripts/script.php?script_id=2981]
     * matchit: [http://www.vim.org/scripts/script.php?script_id=39]
+    * django: [http://www.vim.org/scripts/script.php?script_id=1487]

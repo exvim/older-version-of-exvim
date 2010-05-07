@@ -1122,6 +1122,23 @@ let g:snippets_dir = g:ex_toolkit_path . '/snippets/'
 
 let g:NERDTreeWinSize = exists('g:exPJ_window_width') ? g:exPJ_window_width : 30 
 
+" ------------------------------------------------------------------ 
+" Desc: surround 
+" 'sb' for block
+" 'si' for an if statement
+" 'sw' for a with statement
+" 'sc' for a comment
+" 'sf' for a for statement
+" ------------------------------------------------------------------ 
+
+" DISABLE { 
+" let g:surround_{char2nr("b")} = "{% block\1 \r..*\r &\1%}\r{% endblock %}"
+" let g:surround_{char2nr("i")} = "{% if\1 \r..*\r &\1%}\r{% endif %}"
+" let g:surround_{char2nr("w")} = "{% with\1 \r..*\r &\1%}\r{% endwith %}"
+" let g:surround_{char2nr("c")} = "{% comment\1 \r..*\r &\1%}\r{% endcomment %}"
+" let g:surround_{char2nr("f")} = "{% for\1 \r..*\r &\1%}\r{% endfor %}"
+" } DISABLE end 
+
 "/////////////////////////////////////////////////////////////////////////////
 " Other settings
 "/////////////////////////////////////////////////////////////////////////////
