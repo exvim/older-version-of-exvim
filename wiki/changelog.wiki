@@ -13,12 +13,11 @@
     * support swig error format.
     * add swig syntax highlight.
     * add csharp syntax highlight for special mark labels.
-    * add CSS color preview plugin.
     * add zencoding plugin.
     * add matchit plugin.
     * add django syntax highlight.
  * Changes
-    * update vimwiki to 0.9.8.
+    * update vimwiki to 1.0.0.
     * update cscope to 15.7a.
     * refine gcc makefiles.
     * let EnhancedCommentify support swig.
