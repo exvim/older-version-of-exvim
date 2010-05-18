@@ -2285,6 +2285,31 @@ endfunction " >>>
 " Desc: 
 " ------------------------------------------------------------------ 
 
+function exUtility#SphinxMake(args) " <<<
+    " save all file for compile first
+    silent exec "wa!"
+    let make_file = glob('make.bat')
+    if has ("unix")
+        let make_file = glob('Makefile')
+    endif
+    if make_file == ''
+        call exUtility#WarningMsg("make.bat not found")
+        return
+    endif
+
+    let error_file = '.build/error.err'
+    if has ("win32")
+        call exUtility#Terminal ( 'silent', 'wait', 'make ' . a:args . ' 2>' . error_file )
+        silent exec 'QF '. error_file
+    elseif has("unix")
+        exec "!make -f" . make_file . ' ' . a:args
+    endif
+endfunction " >>>
+
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
 function exUtility#Debug( exe_name ) " <<<
     if glob(a:exe_name) == ''
         call exUtility#WarningMsg('file: ' . a:exe_name . ' not found')

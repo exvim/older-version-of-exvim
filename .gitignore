@@ -9,10 +9,10 @@
 # gen by vimwiki
 #/////////////////////////////////////////////////////////////////////////////
 
-wiki_src/template/
-wiki_html/*.html
-wiki_html/*.css
-wiki_html/syntax_highlighter/
+wiki/template/
+wiki/html/*.html
+wiki/html/*.css
+wiki/html/syntax_highlighter/
 
 #/////////////////////////////////////////////////////////////////////////////
 # gen by exVim

@@ -488,7 +488,14 @@ endfunction
 
 if has("gui_running")
     if has("win32")
-        au GUIEnter * simalt ~x " Maximize window when enter vim
+        " au GUIEnter * simalt ~x " Maximize window when enter vim
+        " set a fixed size of vim
+        if exists("+lines")
+            set lines=55
+        endif
+        if exists("+columns")
+            set columns=125
+        endif
     elseif has("unix")
         " TODO: no way right now
     endif
@@ -1105,6 +1112,7 @@ map <silent><unique> <Leader>ww <Plug>VimwikiGoHome
 " vimwiki file process
 au FileType vimwiki command! W call exUtility#SaveAndConvertVimwiki(0)
 au FileType vimwiki command! WA call exUtility#SaveAndConvertVimwiki(1)
+au FileType rst command! W call exUtility#SphinxMake('html')
 
 let g:vimwiki_camel_case = 0
 let g:vimwiki_hl_headers = 1

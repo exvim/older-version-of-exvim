@@ -16,6 +16,7 @@
     * add zencoding plugin.
     * add matchit plugin.
     * add django syntax highlight.
+    * add sphinx document compile support.
  * Changes
     * update vimwiki to 1.0.0.
     * update cscope to 15.7a.
@@ -39,6 +40,7 @@
     * add key-world TEST, PATCH, FIXME, BUG, TIPS, HINT
     * add `<leader>sub` for quick substitue word_highlight_1 to word_highlight_2
     * add signal, slots, emit qt keywords for highlighting
+    * disable maximize window when openning vim.
  * Bug fix
     * fix exQuickFix open a file another programme already editing issue.
     * fix exTagSelect show tags error when read preview from a file that already not exists.
