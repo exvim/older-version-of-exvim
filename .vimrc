@@ -771,7 +771,7 @@ nnoremap <unique> <silent> <Leader>ss :ExslSelectToggle<CR>
 nnoremap <unique> <silent> <Leader>sq :ExslQuickViewToggle<CR>
 nnoremap <unique> <silent> <Leader>sg :ExslGoDirectly<CR>
 " NOTE: the / can be mapped to other script ( for example exSearchComplete ), so here use nmap instead of nnoremap 
-nmap <unique> <A-S-l> :ExslQuickSearch<CR>/
+nmap <unique> <M-L> :ExslQuickSearch<CR>/
 
 let g:exSL_SymbolSelectCmd = 'TS'
 
@@ -829,8 +829,9 @@ nnoremap <unique> <silent> <Leader>ad :ExmhHL 0 <CR>
 " ------------------------------------------------------------------ 
 
 " NOTE: the / can be mapped to other script ( for example exSearchComplete ), so here use nmap instead of nnoremap 
-nmap <unique> <A-S-o> :EXProject<CR>:redraw<CR>/
-nnoremap <unique> <silent> <A-S-p> :EXProject<CR>
+" NOTE: M-O equal to A-S-o, the S-o equal to O
+nmap <unique> <M-O> :EXProject<CR>:redraw<CR>/
+nnoremap <unique> <silent> <M-P> :EXProject<CR>
 nnoremap <unique> <leader>ff :EXProject<CR>:redraw<CR>/\[\l*\]\zs.*
 nnoremap <unique> <leader>fd :EXProject<CR>:redraw<CR>/\[\u\]\zs.*
 nnoremap <unique> <leader>fc :ExpjGotoCurrentFile<CR>
@@ -845,7 +846,7 @@ let g:exPJ_window_width_increment = 50
 " ------------------------------------------------------------------ 
 
 " NOTE: the / can be mapped to other script ( for example exSearchComplete ), so here use nmap instead of nnoremap 
-nmap <unique> <A-S-b> :EXBufExplorer<CR>:redraw<CR>/
+nmap <unique> <M-B> :EXBufExplorer<CR>:redraw<CR>/
 nnoremap <unique> <silent> <leader>bs :EXBufExplorer<CR>
 nnoremap <unique> <leader>bk :EXAddBookmarkDirectly<CR>
 
@@ -1088,7 +1089,7 @@ let showmarks_hlline_upper = 0
 " Desc: LookupFile 
 " ------------------------------------------------------------------ 
 
-nnoremap <unique> <A-S-i> :LUTags<CR>
+nnoremap <unique> <M-I> :LUTags<CR>
 nnoremap <unique> <leader>lf :LUTags<CR>
 nnoremap <unique> <leader>lb :LUBufs<CR>
 nnoremap <unique> <silent> <Leader>ll :LUCurWord<CR>
