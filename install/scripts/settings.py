@@ -1,7 +1,7 @@
 # ======================================================================================
-# File         : Settings.py
+# File         : settings.py
 # Author       : Wu Jie 
-# Last Change  : 06/20/2009 | 15:32:12 PM | Saturday,June
+# Last Change  : 05/26/2010 | 14:50:18 PM | Wednesday,May
 # Description  : 
 # ======================================================================================
 
@@ -9,8 +9,8 @@
 # global variables
 #/////////////////////////////////////////////////////////////////////////////
 
-# general
-version = "8.03"
+version = "8.04"
 patched_plugins_version = "2.1"
-source_path = "d:/exDev/exVim"
-
+exVim_path = "d:/exDev/exVim"
+exDoc_path = "e:/project/dev/exDoc"
+release_path = "e:/project/release/exVim"

@@ -254,6 +254,23 @@ SectionGroup "other tools" sec_other_tools
         ${EnvVarUpdate} $0 "PATH" "A" "HKCU" "$INSTDIR\tools\Graphviz\bin"  
     SectionEnd
 
+
+    ;  ======================================================== 
+    ;  fonts  
+    ;  ======================================================== 
+
+    Section "fonts" sec_fonts
+        SectionIn 1
+
+        File /oname=$FONTS\VeraMono.ttf rawdata\fonts\VeraMono.ttf
+        Push "$FONTS\VeraMono.ttf"
+        System::Call "Gdi32::AddFontResource(t s) i .s"
+        Pop $0
+        IntCmp $0 0 0 +2 +2
+        MessageBox MB_OK "Failed To Register Fonts VeraMono"
+        SendMessage ${HWND_BROADcast} ${WM_FONTCHANGE} 0 0
+    SectionEnd
+
 SectionGroupEnd
 
 ;  ------------------------------------------------------------------ 
@@ -305,6 +322,7 @@ LangString DESC_idutils ${LANG_ENGLISH} "id-utils"
 LangString DESC_sed ${LANG_ENGLISH} "sed"
 LangString DESC_src_highlite ${LANG_ENGLISH} "src-highlite"
 LangString DESC_graphviz ${LANG_ENGLISH} "Graphviz"
+LangString DESC_fonts ${LANG_ENGLISH} "Fonts"
 
 ;Assign language strings to sections
 !insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
@@ -319,6 +337,7 @@ LangString DESC_graphviz ${LANG_ENGLISH} "Graphviz"
     !insertmacro MUI_DESCRIPTION_TEXT ${sec_sed} $(DESC_sed)
     !insertmacro MUI_DESCRIPTION_TEXT ${sec_src_highlite} $(DESC_src_highlite)
     !insertmacro MUI_DESCRIPTION_TEXT ${sec_graphviz} $(DESC_graphviz)
+    !insertmacro MUI_DESCRIPTION_TEXT ${sec_fonts} $(DESC_fonts)
 !insertmacro MUI_FUNCTION_DESCRIPTION_END
 
 ; /////////////////////////////////////////////////////////////////////////////
@@ -372,5 +391,15 @@ Section "Uninstall"
     ; remove file association ane new item
     DeleteRegKey HKCR ".vimentry"
     System::Call 'shell32.dll::SHChangeNotify(i, i, i, i) v (0x08000000, 0, 0, 0)'
-    
+
+    ; remove fonts
+    Push "$FONTS\VeraMono.TTF"
+    System::Call "Gdi32::RemoveFontResource(t s) i .s"
+    Pop $0
+    IntCmp $0 0 0 +2 +2
+    DetailPrint "failed to remove Vera Mono"
+    SendMessage ${HWND_BROADcast} ${WM_FONTCHANGE} 0 0
+
+    Delete "$FONTS\VeraMono.ttf"
+    Delete "$INSTDIR\tools\fonts\VeraMono.ttf"
 SectionEnd
