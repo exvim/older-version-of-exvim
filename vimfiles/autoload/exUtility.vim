@@ -2285,6 +2285,31 @@ endfunction " >>>
 " Desc: 
 " ------------------------------------------------------------------ 
 
+function exUtility#SphinxMake(args) " <<<
+    " save all file for compile first
+    silent exec "wa!"
+    let make_file = glob('make.bat')
+    if has ("unix")
+        let make_file = glob('Makefile')
+    endif
+    if make_file == ''
+        call exUtility#WarningMsg("make.bat not found")
+        return
+    endif
+
+    let error_file = '.build/error.err'
+    if has ("win32")
+        call exUtility#Terminal ( 'silent', 'wait', 'make ' . a:args . ' 2>' . error_file )
+        silent exec 'QF '. error_file
+    elseif has("unix")
+        exec "!make -f" . make_file . ' ' . a:args
+    endif
+endfunction " >>>
+
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
 function exUtility#Debug( exe_name ) " <<<
     if glob(a:exe_name) == ''
         call exUtility#WarningMsg('file: ' . a:exe_name . ' not found')
@@ -3513,33 +3538,33 @@ function exUtility#CreateVimwikiFiles() " <<<
                 silent call add ( text_list, "\t<meta http-equiv=\"Content-Type\" content=\"text/html; charset=".&encoding."\" />" )
 
                 " add syntax highlighter js
-	            silent call add ( text_list, "\t<script type=\"text/javascript\" src=\"syntax_highlighter/scripts/shCore.js\"></script>" )
-	            silent call add ( text_list, "\t<script type=\"text/javascript\" src=\"syntax_highlighter/scripts/shBrushAS3.js\"></script>" )
-	            silent call add ( text_list, "\t<script type=\"text/javascript\" src=\"syntax_highlighter/scripts/shBrushBash.js\"></script>" )
-	            silent call add ( text_list, "\t<script type=\"text/javascript\" src=\"syntax_highlighter/scripts/shBrushColdFusion.js\"></script>" )
-	            silent call add ( text_list, "\t<script type=\"text/javascript\" src=\"syntax_highlighter/scripts/shBrushCpp.js\"></script>" )
-	            silent call add ( text_list, "\t<script type=\"text/javascript\" src=\"syntax_highlighter/scripts/shBrushCSharp.js\"></script>" )
-	            silent call add ( text_list, "\t<script type=\"text/javascript\" src=\"syntax_highlighter/scripts/shBrushCss.js\"></script>" )
-	            silent call add ( text_list, "\t<script type=\"text/javascript\" src=\"syntax_highlighter/scripts/shBrushDelphi.js\"></script>" )
-	            silent call add ( text_list, "\t<script type=\"text/javascript\" src=\"syntax_highlighter/scripts/shBrushDiff.js\"></script>" )
-	            silent call add ( text_list, "\t<script type=\"text/javascript\" src=\"syntax_highlighter/scripts/shBrushErlang.js\"></script>" )
-	            silent call add ( text_list, "\t<script type=\"text/javascript\" src=\"syntax_highlighter/scripts/shBrushGroovy.js\"></script>" )
-	            silent call add ( text_list, "\t<script type=\"text/javascript\" src=\"syntax_highlighter/scripts/shBrushJava.js\"></script>" )
-	            silent call add ( text_list, "\t<script type=\"text/javascript\" src=\"syntax_highlighter/scripts/shBrushJavaFX.js\"></script>" )
-	            silent call add ( text_list, "\t<script type=\"text/javascript\" src=\"syntax_highlighter/scripts/shBrushJScript.js\"></script>" )
-	            silent call add ( text_list, "\t<script type=\"text/javascript\" src=\"syntax_highlighter/scripts/shBrushPhp.js\"></script>" )
-	            silent call add ( text_list, "\t<script type=\"text/javascript\" src=\"syntax_highlighter/scripts/shBrushPlain.js\"></script>" )
-	            silent call add ( text_list, "\t<script type=\"text/javascript\" src=\"syntax_highlighter/scripts/shBrushPowerShell.js\"></script>" )
-	            silent call add ( text_list, "\t<script type=\"text/javascript\" src=\"syntax_highlighter/scripts/shBrushPython.js\"></script>" )
-	            silent call add ( text_list, "\t<script type=\"text/javascript\" src=\"syntax_highlighter/scripts/shBrushRuby.js\"></script>" )
-	            silent call add ( text_list, "\t<script type=\"text/javascript\" src=\"syntax_highlighter/scripts/shBrushScala.js\"></script>" )
-	            silent call add ( text_list, "\t<script type=\"text/javascript\" src=\"syntax_highlighter/scripts/shBrushSql.js\"></script>" )
-	            silent call add ( text_list, "\t<script type=\"text/javascript\" src=\"syntax_highlighter/scripts/shBrushVb.js\"></script>" )
-	            silent call add ( text_list, "\t<script type=\"text/javascript\" src=\"syntax_highlighter/scripts/shBrushXml.js\"></script>" )
-	            silent call add ( text_list, "\t<link type=\"text/css\" rel=\"stylesheet\" href=\"syntax_highlighter/styles/shCore.css\"/>" )
-	            silent call add ( text_list, "\t<link type=\"text/css\" rel=\"stylesheet\" href=\"syntax_highlighter/styles/shThemeEX.css\"/>" )
+	            silent call add ( text_list, "\t<script type=\"text/javascript\" src=\"%root_path%/syntax_highlighter/scripts/shCore.js\"></script>" )
+	            silent call add ( text_list, "\t<script type=\"text/javascript\" src=\"%root_path%/syntax_highlighter/scripts/shBrushAS3.js\"></script>" )
+	            silent call add ( text_list, "\t<script type=\"text/javascript\" src=\"%root_path%/syntax_highlighter/scripts/shBrushBash.js\"></script>" )
+	            silent call add ( text_list, "\t<script type=\"text/javascript\" src=\"%root_path%/syntax_highlighter/scripts/shBrushColdFusion.js\"></script>" )
+	            silent call add ( text_list, "\t<script type=\"text/javascript\" src=\"%root_path%/syntax_highlighter/scripts/shBrushCpp.js\"></script>" )
+	            silent call add ( text_list, "\t<script type=\"text/javascript\" src=\"%root_path%/syntax_highlighter/scripts/shBrushCSharp.js\"></script>" )
+	            silent call add ( text_list, "\t<script type=\"text/javascript\" src=\"%root_path%/syntax_highlighter/scripts/shBrushCss.js\"></script>" )
+	            silent call add ( text_list, "\t<script type=\"text/javascript\" src=\"%root_path%/syntax_highlighter/scripts/shBrushDelphi.js\"></script>" )
+	            silent call add ( text_list, "\t<script type=\"text/javascript\" src=\"%root_path%/syntax_highlighter/scripts/shBrushDiff.js\"></script>" )
+	            silent call add ( text_list, "\t<script type=\"text/javascript\" src=\"%root_path%/syntax_highlighter/scripts/shBrushErlang.js\"></script>" )
+	            silent call add ( text_list, "\t<script type=\"text/javascript\" src=\"%root_path%/syntax_highlighter/scripts/shBrushGroovy.js\"></script>" )
+	            silent call add ( text_list, "\t<script type=\"text/javascript\" src=\"%root_path%/syntax_highlighter/scripts/shBrushJava.js\"></script>" )
+	            silent call add ( text_list, "\t<script type=\"text/javascript\" src=\"%root_path%/syntax_highlighter/scripts/shBrushJavaFX.js\"></script>" )
+	            silent call add ( text_list, "\t<script type=\"text/javascript\" src=\"%root_path%/syntax_highlighter/scripts/shBrushJScript.js\"></script>" )
+	            silent call add ( text_list, "\t<script type=\"text/javascript\" src=\"%root_path%/syntax_highlighter/scripts/shBrushPhp.js\"></script>" )
+	            silent call add ( text_list, "\t<script type=\"text/javascript\" src=\"%root_path%/syntax_highlighter/scripts/shBrushPlain.js\"></script>" )
+	            silent call add ( text_list, "\t<script type=\"text/javascript\" src=\"%root_path%/syntax_highlighter/scripts/shBrushPowerShell.js\"></script>" )
+	            silent call add ( text_list, "\t<script type=\"text/javascript\" src=\"%root_path%/syntax_highlighter/scripts/shBrushPython.js\"></script>" )
+	            silent call add ( text_list, "\t<script type=\"text/javascript\" src=\"%root_path%/syntax_highlighter/scripts/shBrushRuby.js\"></script>" )
+	            silent call add ( text_list, "\t<script type=\"text/javascript\" src=\"%root_path%/syntax_highlighter/scripts/shBrushScala.js\"></script>" )
+	            silent call add ( text_list, "\t<script type=\"text/javascript\" src=\"%root_path%/syntax_highlighter/scripts/shBrushSql.js\"></script>" )
+	            silent call add ( text_list, "\t<script type=\"text/javascript\" src=\"%root_path%/syntax_highlighter/scripts/shBrushVb.js\"></script>" )
+	            silent call add ( text_list, "\t<script type=\"text/javascript\" src=\"%root_path%/syntax_highlighter/scripts/shBrushXml.js\"></script>" )
+	            silent call add ( text_list, "\t<link type=\"text/css\" rel=\"stylesheet\" href=\"%root_path%/syntax_highlighter/styles/shCore.css\"/>" )
+	            silent call add ( text_list, "\t<link type=\"text/css\" rel=\"stylesheet\" href=\"%root_path%/syntax_highlighter/styles/shThemeEX.css\"/>" )
 	            silent call add ( text_list, "\t<script type=\"text/javascript\">" )
-	            silent call add ( text_list, "\t\tSyntaxHighlighter.config.clipboardSwf = \"syntax_highlighter/scripts/clipboard.swf\";" )
+	            silent call add ( text_list, "\t\tSyntaxHighlighter.config.clipboardSwf = \"%root_path%/syntax_highlighter/scripts/clipboard.swf\";" )
 	            silent call add ( text_list, "\t\tSyntaxHighlighter.all();" )
 	            silent call add ( text_list, "\t</script>" )
 

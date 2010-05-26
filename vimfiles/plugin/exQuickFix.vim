@@ -420,6 +420,7 @@ function s:exQF_ChooseCompiler() " <<<
         " this is for exGlobaSearch result, some one may copy the global search result to exQuickFix
         silent set errorformat+=%f:%l:%m
         silent set errorformat+=%f(%l\\,%c):\ %m " fxc shader error-format
+        silent set errorformat+=%f:%l:\ %t:\ %m
     endif
 
     "

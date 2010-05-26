@@ -488,7 +488,14 @@ endfunction
 
 if has("gui_running")
     if has("win32")
-        au GUIEnter * simalt ~x " Maximize window when enter vim
+        " au GUIEnter * simalt ~x " Maximize window when enter vim
+        " set a fixed size of vim
+        if exists("+lines")
+            set lines=55
+        endif
+        if exists("+columns")
+            set columns=125
+        endif
     elseif has("unix")
         " TODO: no way right now
     endif
@@ -764,7 +771,7 @@ nnoremap <unique> <silent> <Leader>ss :ExslSelectToggle<CR>
 nnoremap <unique> <silent> <Leader>sq :ExslQuickViewToggle<CR>
 nnoremap <unique> <silent> <Leader>sg :ExslGoDirectly<CR>
 " NOTE: the / can be mapped to other script ( for example exSearchComplete ), so here use nmap instead of nnoremap 
-nmap <unique> <A-S-l> :ExslQuickSearch<CR>/
+nmap <unique> <M-L> :ExslQuickSearch<CR>/
 
 let g:exSL_SymbolSelectCmd = 'TS'
 
@@ -822,8 +829,9 @@ nnoremap <unique> <silent> <Leader>ad :ExmhHL 0 <CR>
 " ------------------------------------------------------------------ 
 
 " NOTE: the / can be mapped to other script ( for example exSearchComplete ), so here use nmap instead of nnoremap 
-nmap <unique> <A-S-o> :EXProject<CR>:redraw<CR>/
-nnoremap <unique> <silent> <A-S-p> :EXProject<CR>
+" NOTE: M-O equal to A-S-o, the S-o equal to O
+nmap <unique> <M-O> :EXProject<CR>:redraw<CR>/
+nnoremap <unique> <silent> <M-P> :EXProject<CR>
 nnoremap <unique> <leader>ff :EXProject<CR>:redraw<CR>/\[\l*\]\zs.*
 nnoremap <unique> <leader>fd :EXProject<CR>:redraw<CR>/\[\u\]\zs.*
 nnoremap <unique> <leader>fc :ExpjGotoCurrentFile<CR>
@@ -838,7 +846,7 @@ let g:exPJ_window_width_increment = 50
 " ------------------------------------------------------------------ 
 
 " NOTE: the / can be mapped to other script ( for example exSearchComplete ), so here use nmap instead of nnoremap 
-nmap <unique> <A-S-b> :EXBufExplorer<CR>:redraw<CR>/
+nmap <unique> <M-B> :EXBufExplorer<CR>:redraw<CR>/
 nnoremap <unique> <silent> <leader>bs :EXBufExplorer<CR>
 nnoremap <unique> <leader>bk :EXAddBookmarkDirectly<CR>
 
@@ -1081,7 +1089,7 @@ let showmarks_hlline_upper = 0
 " Desc: LookupFile 
 " ------------------------------------------------------------------ 
 
-nnoremap <unique> <A-S-i> :LUTags<CR>
+nnoremap <unique> <M-I> :LUTags<CR>
 nnoremap <unique> <leader>lf :LUTags<CR>
 nnoremap <unique> <leader>lb :LUBufs<CR>
 nnoremap <unique> <silent> <Leader>ll :LUCurWord<CR>
@@ -1105,6 +1113,7 @@ map <silent><unique> <Leader>ww <Plug>VimwikiGoHome
 " vimwiki file process
 au FileType vimwiki command! W call exUtility#SaveAndConvertVimwiki(0)
 au FileType vimwiki command! WA call exUtility#SaveAndConvertVimwiki(1)
+au FileType rst command! W call exUtility#SphinxMake('html')
 
 let g:vimwiki_camel_case = 0
 let g:vimwiki_hl_headers = 1
@@ -1121,6 +1130,29 @@ let g:snippets_dir = g:ex_toolkit_path . '/snippets/'
 " ------------------------------------------------------------------ 
 
 let g:NERDTreeWinSize = exists('g:exPJ_window_width') ? g:exPJ_window_width : 30 
+
+" ------------------------------------------------------------------ 
+" Desc: zencoding 
+" ------------------------------------------------------------------ 
+
+let g:user_zen_leader_key = '<c-j>'
+
+" ------------------------------------------------------------------ 
+" Desc: surround 
+" 'sb' for block
+" 'si' for an if statement
+" 'sw' for a with statement
+" 'sc' for a comment
+" 'sf' for a for statement
+" ------------------------------------------------------------------ 
+
+" DISABLE { 
+" let g:surround_{char2nr("b")} = "{% block\1 \r..*\r &\1%}\r{% endblock %}"
+" let g:surround_{char2nr("i")} = "{% if\1 \r..*\r &\1%}\r{% endif %}"
+" let g:surround_{char2nr("w")} = "{% with\1 \r..*\r &\1%}\r{% endwith %}"
+" let g:surround_{char2nr("c")} = "{% comment\1 \r..*\r &\1%}\r{% endcomment %}"
+" let g:surround_{char2nr("f")} = "{% for\1 \r..*\r &\1%}\r{% endfor %}"
+" } DISABLE end 
 
 "/////////////////////////////////////////////////////////////////////////////
 " Other settings

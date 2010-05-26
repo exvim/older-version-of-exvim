@@ -1,0 +1,3 @@
+#!/bin/sh
+
+gvim -n -u vimrc

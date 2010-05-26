@@ -1,0 +1,1 @@
+vim -n -u vimrc
