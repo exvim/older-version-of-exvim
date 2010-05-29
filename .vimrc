@@ -505,8 +505,8 @@ endif
 " Desc: file types 
 " ------------------------------------------------------------------ 
 
-" Disable auto-comment for c/cpp, c# and vim-script
-au FileType c,cpp set comments=sO:*\ -,mO:*\ \ ,exO:*/,s1:/*,mb:*,ex:*/,f:// 
+" Disable auto-comment for c/cpp, javascript, c# and vim-script
+au FileType c,cpp,javascript set comments=sO:*\ -,mO:*\ \ ,exO:*/,s1:/*,mb:*,ex:*/,f:// 
 au FileType cs set comments=sO:*\ -,mO:*\ \ ,exO:*/,s1:/*,mb:*,ex:*/,f:///,f:// 
 au FileType vim set comments=sO:\"\ -,mO:\"\ \ ,eO:\"\",f:\"
 
@@ -653,7 +653,7 @@ let g:ex_plugin_registered_bufnames = ["-MiniBufExplorer-","__Tag_List__","\[Loo
 let g:ex_plugin_registered_filetypes = ["ex_plugin","ex_project","taglist","nerdtree"] 
 
 " default languages
-let g:ex_default_langs = ['c', 'cpp', 'c#', 'java', 'shader', 'python', 'vim', 'uc', 'matlab', 'wiki', 'ini', 'make', 'sh', 'batch', 'debug', 'qt', 'swig' ] 
+let g:ex_default_langs = ['c', 'cpp', 'c#', 'javascript', 'java', 'shader', 'python', 'vim', 'uc', 'matlab', 'wiki', 'ini', 'make', 'sh', 'batch', 'debug', 'qt', 'swig' ] 
 
 " DISABLE: auto highlight cursor word
 " let g:ex_auto_hl_cursor_word = 1
