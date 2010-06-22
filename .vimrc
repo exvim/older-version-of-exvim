@@ -149,7 +149,7 @@ function s:SetGuiFont()
             set guifont=Lucida_Console:h10:cANSI
             let font_name = "Lucida_Console" 
         endif
-        silent exec "nnoremap <unique> <A-F1> :set guifont=".font_name.":h11:cANSI<CR>"
+        silent exec "nnoremap <unique> <M-F1> :set guifont=".font_name.":h11:cANSI<CR>"
     endif
 endfunction
 
@@ -158,7 +158,9 @@ if has("gui_running")
     " silent exec "colorscheme ex"
     silent exec "colorscheme ex_lightgray"
 else " if we are in terminal mode
-    silent exec "colorscheme darkblue"
+    " NOTE: you cannot use if has('mac') to detect platform in terminal mode.
+    silent exec "colorscheme default"
+    " silent exec "colorscheme darkblue"
 endif
 
 " ------------------------------------------------------------------ 
@@ -305,26 +307,26 @@ nnoremap <unique> <F8> :let @/=""<CR>
 " fast encoding change. 
 if has("gui_running") "  the <alt> key is only available in gui mode.
     " DISABLE: done in s:SetGuiFont() function { 
-    " A-F1:  Switch to English Mode (Both Enconding and uiFont)
-    " nnoremap <unique> <A-F1> :set guifont=Bitstream_Vera_Sans_Mono:h10:cANSI<CR>
-    " nnoremap <unique> <A-F1> :set guifont=Consolas:h11:cANSI<CR>
+    " M-F1:  Switch to English Mode (Both Enconding and uiFont)
+    " nnoremap <unique> <M-F1> :set guifont=Bitstream_Vera_Sans_Mono:h10:cANSI<CR>
+    " nnoremap <unique> <M-F1> :set guifont=Consolas:h11:cANSI<CR>
     " } DISABLE end 
 
-    " A-F2:  Switch to Chinese Mode (Both Enconding and uiFont)
-    nnoremap <unique> <A-F2> :set guifont=NSimSun:h10:cGB2312<CR>
+    " M-F2:  Switch to Chinese Mode (Both Enconding and uiFont)
+    nnoremap <unique> <M-F2> :set guifont=NSimSun:h10:cGB2312<CR>
 
-    " A-F3:  Switch to Japanese Mode 
-    nnoremap <unique> <A-F3> :set guifont=MS_Gothic:h10:cSHIFTJIS<CR>
+    " M-F3:  Switch to Japanese Mode 
+    nnoremap <unique> <M-F3> :set guifont=MS_Gothic:h10:cSHIFTJIS<CR>
 else
     " <leader>F1:  Switch to English Mode (Both Enconding and uiFont)
-    " nnoremap <unique> <A-F1> :set guifont=Bitstream_Vera_Sans_Mono:h10:cANSI<CR>
-    nnoremap <unique> <A-F1> :set guifont=Consolas:h11:cANSI<CR>
+    " nnoremap <unique> <M-F1> :set guifont=Bitstream_Vera_Sans_Mono:h10:cANSI<CR>
+    nnoremap <unique> <M-F1> :set guifont=Consolas:h11:cANSI<CR>
 
     " <leader>F2:  Switch to Chinese Mode (Both Enconding and uiFont)
-    nnoremap <unique> <A-F2> :set guifont=NSimSun:h10:cGB2312<CR>
+    nnoremap <unique> <M-F2> :set guifont=NSimSun:h10:cGB2312<CR>
 
     " <leader>F3:  Switch to Japanese Mode 
-    nnoremap <unique> <A-F3> :set guifont=MS_Gothic:h10:cSHIFTJIS<CR>
+    nnoremap <unique> <M-F3> :set guifont=MS_Gothic:h10:cSHIFTJIS<CR>
 endif
 
 " map Ctrl-Tab to switch window
@@ -337,8 +339,8 @@ nnoremap <unique> <S-Right> <C-W><Right>
 noremap <unique> z<Up> zk
 noremap <unique> z<Down> zj
 if has("gui_running") "  the <alt> key is only available in gui mode.
-    noremap <unique> <A-Up> zk
-    noremap <unique> <A-Down> zj
+    noremap <unique> <M-Up> zk
+    noremap <unique> <M-Down> zj
 endif
 
 " Easy Diff goto
@@ -564,17 +566,31 @@ nnoremap <unique> <C-F4> :call exUtility#Kwbd(1)<CR>
 " quick highlight
 " NOTE: only gui mode can have alt, in terminal we have to use other mapping
 if has("gui_running") " gui mode
-    nnoremap <unique> <silent> <a-1> :call exUtility#Highlight_Normal(1)<CR>
-    nnoremap <unique> <silent> <a-2> :call exUtility#Highlight_Normal(2)<CR>
-    nnoremap <unique> <silent> <a-3> :call exUtility#Highlight_Normal(3)<CR>
-    nnoremap <unique> <silent> <a-4> :call exUtility#Highlight_Normal(4)<CR>
+    if has ("mac")
+        nnoremap <unique> <silent> ¡ :call exUtility#Highlight_Normal(1)<CR>
+        nnoremap <unique> <silent> ™ :call exUtility#Highlight_Normal(2)<CR>
+        nnoremap <unique> <silent> £ :call exUtility#Highlight_Normal(3)<CR>
+        nnoremap <unique> <silent> ¢ :call exUtility#Highlight_Normal(4)<CR>
 
-    vnoremap <unique> <silent> <a-1> :call exUtility#Highlight_Visual(1)<CR>
-    vnoremap <unique> <silent> <a-2> :call exUtility#Highlight_Visual(2)<CR>
-    vnoremap <unique> <silent> <a-3> :call exUtility#Highlight_Visual(3)<CR>
-    vnoremap <unique> <silent> <a-4> :call exUtility#Highlight_Visual(4)<CR>
+        vnoremap <unique> <silent> ¡ :call exUtility#Highlight_Visual(1)<CR>
+        vnoremap <unique> <silent> ™ :call exUtility#Highlight_Visual(2)<CR>
+        vnoremap <unique> <silent> £ :call exUtility#Highlight_Visual(3)<CR>
+        vnoremap <unique> <silent> ¢ :call exUtility#Highlight_Visual(4)<CR>
 
-    nnoremap <unique> <silent> <a-0> :call exUtility#HighlightCancle(0)<CR>
+        nnoremap <unique> <silent> º :call exUtility#HighlightCancle(0)<CR>
+    else
+        nnoremap <unique> <silent> <M-1> :call exUtility#Highlight_Normal(1)<CR>
+        nnoremap <unique> <silent> <M-2> :call exUtility#Highlight_Normal(2)<CR>
+        nnoremap <unique> <silent> <M-3> :call exUtility#Highlight_Normal(3)<CR>
+        nnoremap <unique> <silent> <M-4> :call exUtility#Highlight_Normal(4)<CR>
+
+        vnoremap <unique> <silent> <M-1> :call exUtility#Highlight_Visual(1)<CR>
+        vnoremap <unique> <silent> <M-2> :call exUtility#Highlight_Visual(2)<CR>
+        vnoremap <unique> <silent> <M-3> :call exUtility#Highlight_Visual(3)<CR>
+        vnoremap <unique> <silent> <M-4> :call exUtility#Highlight_Visual(4)<CR>
+
+        nnoremap <unique> <silent> <M-0> :call exUtility#HighlightCancle(0)<CR>
+    endif
 else " terminal mode
     nnoremap <unique> <silent> <leader>h1 :call exUtility#Highlight_Normal(1)<CR>
     nnoremap <unique> <silent> <leader>h2 :call exUtility#Highlight_Normal(2)<CR>
@@ -624,13 +640,13 @@ if has("gui_running")
 
         " explore the vimfile directory
         nnoremap <unique> <silent> <C-F5> :call exUtility#Yank( getcwd() . '\' . g:exES_VimfilesDirName )<CR>
-        nnoremap <unique> <silent> <A-F5> :call exUtility#Explore( getcwd() . '\' . g:exES_VimfilesDirName )<CR>
+        nnoremap <unique> <silent> <M-F5> :call exUtility#Explore( getcwd() . '\' . g:exES_VimfilesDirName )<CR>
         " explore the cwd directory
         nnoremap <unique> <silent> <C-F6> :call exUtility#Yank(getcwd())<CR>
-        nnoremap <unique> <silent> <A-F6> :call exUtility#Explore(getcwd())<CR>
+        nnoremap <unique> <silent> <M-F6> :call exUtility#Explore(getcwd())<CR>
         " explore the diretory current file in
         nnoremap <unique> <silent> <C-F7> :call exUtility#Yank(expand("%:p:h"))<CR>
-        nnoremap <unique> <silent> <A-F7> :call exUtility#Explore(expand("%:p:h"))<CR>
+        nnoremap <unique> <silent> <M-F7> :call exUtility#Explore(expand("%:p:h"))<CR>
     endif
 endif
 
@@ -771,7 +787,14 @@ nnoremap <unique> <silent> <Leader>ss :ExslSelectToggle<CR>
 nnoremap <unique> <silent> <Leader>sq :ExslQuickViewToggle<CR>
 nnoremap <unique> <silent> <Leader>sg :ExslGoDirectly<CR>
 " NOTE: the / can be mapped to other script ( for example exSearchComplete ), so here use nmap instead of nnoremap 
-nmap <unique> <M-L> :ExslQuickSearch<CR>/
+
+if has("gui_running") "  the <alt> key is only available in gui mode.
+    if has ("mac")
+        nmap <unique> Ò :ExslQuickSearch<CR>/
+    else
+        nmap <unique> <M-L> :ExslQuickSearch<CR>/
+    endif
+endif
 
 let g:exSL_SymbolSelectCmd = 'TS'
 
@@ -783,9 +806,10 @@ nnoremap <unique> <silent> <Leader>tt :ExjsToggle<CR>
 nnoremap <unique> <silent> <Leader>tb :BackwardStack<CR>
 nnoremap <unique> <silent> <Leader>tf :ForwardStack<CR>
 nnoremap <unique> <silent> <BS> :BackwardStack<CR>
+
 if has("gui_running") "  the <alt> key is only available in gui mode.
-    noremap <unique> <A-Left> :BackwardStack<CR>
-    noremap <unique> <A-Right> :ForwardStack<CR>
+    noremap <unique> <M-Left> :BackwardStack<CR>
+    noremap <unique> <M-Right> :ForwardStack<CR>
 endif
 
 " ------------------------------------------------------------------ 
@@ -830,8 +854,15 @@ nnoremap <unique> <silent> <Leader>ad :ExmhHL 0 <CR>
 
 " NOTE: the / can be mapped to other script ( for example exSearchComplete ), so here use nmap instead of nnoremap 
 " NOTE: M-O equal to A-S-o, the S-o equal to O
-nmap <unique> <M-O> :EXProject<CR>:redraw<CR>/
-nnoremap <unique> <silent> <M-P> :EXProject<CR>
+if has("gui_running") "  the <alt> key is only available in gui mode.
+    if has ("mac")
+        nmap <unique> Ø :EXProject<CR>:redraw<CR>/
+        nnoremap <unique> <silent> ∏ :EXProject<CR>
+    else
+        nmap <unique> <M-O> :EXProject<CR>:redraw<CR>/
+        nnoremap <unique> <silent> <M-P> :EXProject<CR>
+    endif
+endif
 nnoremap <unique> <leader>ff :EXProject<CR>:redraw<CR>/\[\l*\]\zs.*
 nnoremap <unique> <leader>fd :EXProject<CR>:redraw<CR>/\[\u\]\zs.*
 nnoremap <unique> <leader>fc :ExpjGotoCurrentFile<CR>
@@ -846,7 +877,13 @@ let g:exPJ_window_width_increment = 50
 " ------------------------------------------------------------------ 
 
 " NOTE: the / can be mapped to other script ( for example exSearchComplete ), so here use nmap instead of nnoremap 
-nmap <unique> <M-B> :EXBufExplorer<CR>:redraw<CR>/
+if has("gui_running") "  the <alt> key is only available in gui mode.
+    if has ("mac")
+        nmap <unique> ı :EXBufExplorer<CR>:redraw<CR>/
+    else
+        nmap <unique> <M-B> :EXBufExplorer<CR>:redraw<CR>/
+    endif
+endif
 nnoremap <unique> <silent> <leader>bs :EXBufExplorer<CR>
 nnoremap <unique> <leader>bk :EXAddBookmarkDirectly<CR>
 
@@ -1089,7 +1126,13 @@ let showmarks_hlline_upper = 0
 " Desc: LookupFile 
 " ------------------------------------------------------------------ 
 
-nnoremap <unique> <M-I> :LUTags<CR>
+if has("gui_running") "  the <alt> key is only available in gui mode.
+    if has ("mac")
+        nnoremap <unique> ˆ :LUTags<CR>
+    else
+        nnoremap <unique> <M-I> :LUTags<CR>
+    endif
+endif
 nnoremap <unique> <leader>lf :LUTags<CR>
 nnoremap <unique> <leader>lb :LUBufs<CR>
 nnoremap <unique> <silent> <Leader>ll :LUCurWord<CR>

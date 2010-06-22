@@ -207,7 +207,7 @@ def CreatePatchedPluginsPackage ():
     zipfp.write ( os.path.join( settings.exVim_path, "vimfiles/doc/showmarks.txt" ), "vimfiles/doc/showmarks.txt" )
     zipfp.write ( os.path.join( settings.exVim_path, "vimfiles/doc/surround.txt" ), "vimfiles/doc/surround.txt" )
     zipfp.write ( os.path.join( settings.exVim_path, "vimfiles/doc/taglist.txt" ), "vimfiles/doc/taglist.txt" )
-    zipfp.write ( os.path.join( settings.exVim_path, "vimfiles/doc/vimwiki.txt" ), "vimfiles/doc/vimwiki.txt" )
+    # zipfp.write ( os.path.join( settings.exVim_path, "vimfiles/doc/vimwiki.txt" ), "vimfiles/doc/vimwiki.txt" )
     zipfp.write ( os.path.join( settings.exVim_path, "vimfiles/doc/visincr.txt" ), "vimfiles/doc/visincr.txt" )
 
     # close zip file
