@@ -92,9 +92,13 @@ let loaded_showmarks = 1
 
 " Bail if Vim isn't compiled with signs support.
 if has( "signs" ) == 0
-	echohl ErrorMsg
-	echo "ShowMarks requires Vim to have +signs support."
-	echohl None
+    " jwu ADD: only show the error in gui version { 
+	if has("gui_running")
+		echohl ErrorMsg
+		echo "ShowMarks requires Vim to have +signs support."
+		echohl None
+	endif
+    " } jwu ADD end 
 	finish
 endif
 

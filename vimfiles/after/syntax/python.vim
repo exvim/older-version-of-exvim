@@ -19,7 +19,6 @@ silent exec ':syn keyword pythonTodo contained ' . g:ex_todo_keyword
 silent exec ':syn keyword exCommentLable contained ' . g:ex_comment_lable_keyword
 syn match   pythonComment	"#.*$" contains=pythonTodo,exCommentLable,@Spell
 
-
 "/////////////////////////////////////////////////////////////////////////////
 " finish
 "/////////////////////////////////////////////////////////////////////////////
