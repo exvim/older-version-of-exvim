@@ -8,6 +8,11 @@ mgraz.vim@plan10.com
 
 import os, re, sys, time, pywintypes, win32com.client
 
+# jwu ADD: fix UnicodeEncodingError problem { 
+reload(sys)
+sys.setdefaultencoding('utf-8')
+# } jwu ADD end 
+
 import logging
 _logging_enabled = False
 if _logging_enabled:

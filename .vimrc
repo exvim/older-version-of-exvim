@@ -199,6 +199,10 @@ set guioptions-=T
 
 "set grepprg=grep\ -n
 
+" set default encoding to utf-8
+set encoding=utf-8
+set termencoding=utf-8
+
 " ------------------------------------------------------------------ 
 " Desc: Text edit
 " ------------------------------------------------------------------ 
