@@ -2302,7 +2302,8 @@ function exUtility#SphinxMake(args) " <<<
         call exUtility#Terminal ( 'silent', 'wait', 'make ' . a:args . ' 2>' . error_file )
         silent exec 'QF '. error_file
     elseif has("unix")
-        exec "!make -f" . make_file . ' ' . a:args
+        exec "!make -f" . make_file . ' ' . a:args . ' 2>' . error_file
+        silent exec 'QF '. error_file
     endif
 endfunction " >>>
 
