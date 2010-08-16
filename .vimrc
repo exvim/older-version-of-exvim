@@ -137,6 +137,12 @@ function s:SetGuiFont()
     elseif has("x11")
         " Also for GTK 1
         set guifont=*-lucidatypewriter-medium-r-normal-*-*-180-*-*-m-*-*
+    elseif has("mac")
+        if getfontname( "Bitstream Vera Sans Mono" ) != ""
+            set guifont=Bitstream\ Vera\ Sans\ Mono:h13
+        elseif getfontname( "DejaVu Sans Mono" ) != ""
+            set guifont=DejaVu\ Sans\ Mono:h13
+        endif
     elseif has("gui_win32")
         let font_name = ""
         if getfontname( "Bitstream_Vera_Sans_Mono" ) != ""
