@@ -628,6 +628,47 @@ endfunction " >>>
 " Desc: 
 " ------------------------------------------------------------------ 
 
+function exUtility#PutExternC( line1, line2 ) " <<<
+    " 
+    let first_line = a:line1
+    let last_line = a:line2
+
+    " put namespace end first
+    silent call cursor( last_line, 1 )
+    silent put = ''
+    silent call append  ( '.', b:ECcommentOpen . " ######################### " . b:ECcommentClose )
+    silent normal! j
+    silent call append  ( '.', "#ifdef __cplusplus" )
+    silent normal! j
+    silent call append  ( '.', "} // end extern C " )
+    silent normal! j
+    silent call append  ( '.', "#endif" )
+    silent normal! j
+    silent call append  ( '.', b:ECcommentOpen . " ######################### " . b:ECcommentClose )
+    silent normal! j
+    silent call append  ( '.', "" )
+    silent normal! j
+
+    " then go back to first line and put namespace start
+    silent call cursor( first_line - 1, 1 )
+    silent call append  ( '.', b:ECcommentOpen . " ######################### " . b:ECcommentClose )
+    silent normal! j
+    silent call append  ( '.', "#ifdef __cplusplus" )
+    silent normal! j
+    silent call append  ( '.', 'extern "C" { ' )
+    silent normal! j
+    silent call append  ( '.', "#endif" )
+    silent normal! j
+    silent call append  ( '.', b:ECcommentOpen . " ######################### " . b:ECcommentClose )
+    silent normal! j
+    silent call append  ( '.', "" )
+    silent normal! j
+endfunction " >>>
+
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
 function exUtility#PutSeparate() " <<<
     silent normal! o''
     let space = printf('%*s',indent('.'),'')
