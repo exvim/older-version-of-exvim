@@ -32,6 +32,8 @@ let g:ex_usr_name = "Wu Jie"
 
 set nocompatible " Use Vim settings, rather then Vi settings (much better!). This must be first, because it changes other options as a side effect.
 set langmenu=none " always use English menu
+" always use english for anaything in vim-editor. 
+silent exec "language english" 
 
 au FileType c,cpp,cs,swig set nomodeline " this will avoid bug in my project with namespace ex, the vim will tree ex:: as modeline.
 
@@ -137,12 +139,6 @@ function s:SetGuiFont()
     elseif has("x11")
         " Also for GTK 1
         set guifont=*-lucidatypewriter-medium-r-normal-*-*-180-*-*-m-*-*
-    elseif has("mac")
-        if getfontname( "Bitstream Vera Sans Mono" ) != ""
-            set guifont=Bitstream\ Vera\ Sans\ Mono:h13
-        elseif getfontname( "DejaVu Sans Mono" ) != ""
-            set guifont=DejaVu\ Sans\ Mono:h13
-        endif
     elseif has("gui_win32")
         let font_name = ""
         if getfontname( "Bitstream_Vera_Sans_Mono" ) != ""
@@ -924,8 +920,8 @@ let g:exES_project_cmd = 'EXProject'
 "       web browser option: 'c:\Program Files\Mozilla Firefox\firefox.exe'
 if has("gui_running")
     if has("win32")
-        let g:exES_WebBrowser = 'c:\Users\Johnny\AppData\Local\Google\Chrome\Application\chrome.exe'
-        let g:exES_ImageViewer = $EX_DEV.'\tools\IrfanView\i_view32.exe'
+        let g:exES_WebBrowser = 'c:\Documents and Settings\jie_wu\Local Settings\Application Data\Google\Chrome\Application\chrome.exe'
+        let g:exES_ImageViewer = 'd:\app\IrfanView\i_view32.exe'
     elseif has("unix")
         let g:exES_WebBrowser = 'firefox'
     endif
