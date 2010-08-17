@@ -32,8 +32,13 @@ let g:ex_usr_name = "Wu Jie"
 
 set nocompatible " Use Vim settings, rather then Vi settings (much better!). This must be first, because it changes other options as a side effect.
 set langmenu=none " always use English menu
+
 " always use english for anaything in vim-editor. 
-silent exec "language english" 
+if has ("win32")
+    silent exec "language english" 
+else
+    silent exec "language en_US" 
+endif
 
 au FileType c,cpp,cs,swig set nomodeline " this will avoid bug in my project with namespace ex, the vim will tree ex:: as modeline.
 
@@ -139,6 +144,12 @@ function s:SetGuiFont()
     elseif has("x11")
         " Also for GTK 1
         set guifont=*-lucidatypewriter-medium-r-normal-*-*-180-*-*-m-*-*
+    elseif has("mac")
+        if getfontname( "Bitstream_Vera_Sans_Mono" ) != ""
+            set guifont=Bitstream\ Vera\ Sans\ Mono:h13
+        elseif getfontname( "DejaVu\ Sans\ Mono" ) != ""
+            set guifont=DejaVu\ Sans\ Mono:h13
+        endif
     elseif has("gui_win32")
         let font_name = ""
         if getfontname( "Bitstream_Vera_Sans_Mono" ) != ""
