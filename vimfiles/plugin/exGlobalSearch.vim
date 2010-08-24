@@ -264,7 +264,7 @@ function s:exGS_Goto() " <<<
     " NOTE: GSF,GSFW only provide filepath information, so we don't need special process.
     let bNeedSplit = idx > 0
     if bNeedSplit 
-        let file_name = strpart(line, 0, idx) " escape(strpart(line, 0, idx), ' ') 
+        let file_name = strpart(line, 0, idx) "DISABLE: escape(strpart(line, 0, idx), ' ') 
     endif 
     if findfile(file_name) == '' 
         call exUtility#WarningMsg( file_name . ' not found' ) 
@@ -282,7 +282,7 @@ function s:exGS_Goto() " <<<
 
     " 
     if bufnr('%') != bufnr(file_name) 
-        exe keepjumps_cmd . ' silent e ' . file_name 
+        exe keepjumps_cmd . ' silent e ' . escape(file_name,' ') 
     endif 
     if bNeedSplit 
         let line = strpart(line, idx+1) 
