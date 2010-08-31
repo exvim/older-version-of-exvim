@@ -524,10 +524,11 @@ endif
 " Desc: file types 
 " ------------------------------------------------------------------ 
 
-" Disable auto-comment for c/cpp, javascript, c# and vim-script
+" Disable auto-comment for c/cpp, lua, javascript, c# and vim-script
 au FileType c,cpp,javascript set comments=sO:*\ -,mO:*\ \ ,exO:*/,s1:/*,mb:*,ex:*/,f:// 
 au FileType cs set comments=sO:*\ -,mO:*\ \ ,exO:*/,s1:/*,mb:*,ex:*/,f:///,f:// 
 au FileType vim set comments=sO:\"\ -,mO:\"\ \ ,eO:\"\",f:\"
+au FileType lua set comments=f:--
 
 "/////////////////////////////////////////////////////////////////////////////
 " Plugin Configurations
@@ -686,7 +687,7 @@ let g:ex_plugin_registered_bufnames = ["-MiniBufExplorer-","__Tag_List__","\[Loo
 let g:ex_plugin_registered_filetypes = ["ex_plugin","ex_project","taglist","nerdtree"] 
 
 " default languages
-let g:ex_default_langs = ['c', 'cpp', 'c#', 'javascript', 'java', 'shader', 'python', 'vim', 'uc', 'matlab', 'wiki', 'ini', 'make', 'sh', 'batch', 'debug', 'qt', 'swig' ] 
+let g:ex_default_langs = ['c', 'cpp', 'c#', 'javascript', 'java', 'shader', 'python', 'lua', 'vim', 'uc', 'matlab', 'wiki', 'ini', 'make', 'sh', 'batch', 'debug', 'qt', 'swig' ] 
 
 " DISABLE: auto highlight cursor word
 " let g:ex_auto_hl_cursor_word = 1
@@ -1166,9 +1167,9 @@ let g:LookupFile_EscCancelsPopup = 1
 " Desc: VimWiki 
 " ------------------------------------------------------------------ 
 
-map <silent><unique> <Leader>wt <Plug>VimwikiTabGoHome
-map <silent><unique> <Leader>wq <Plug>VimwikiUISelect
-map <silent><unique> <Leader>ww <Plug>VimwikiGoHome
+" map <silent><unique> <Leader>wt <Plug>VimwikiTabGoHome
+" map <silent><unique> <Leader>wq <Plug>VimwikiUISelect
+" map <silent><unique> <Leader>ww <Plug>VimwikiGoHome
 
 " vimwiki file process
 au FileType vimwiki command! W call exUtility#SaveAndConvertVimwiki(0)
