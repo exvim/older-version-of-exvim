@@ -323,7 +323,7 @@ endfunction " >>>
 function g:exES_UpdateEnvironment() " <<<
     " set parent working directory
     if exists( 'g:exES_CWD' )
-        silent exec 'cd ' . g:exES_CWD
+        silent exec 'cd ' . escape(g:exES_CWD, " ")
     endif
 
     if exists('g:exES_VimEntryName')

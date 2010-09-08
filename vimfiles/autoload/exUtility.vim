@@ -295,7 +295,7 @@ function exUtility#InitWindow(init_func_name) " <<<
 
     " avoid cwd change problem
     if exists( 'g:exES_CWD' )
-        au BufEnter * silent exec 'lcd ' . g:exES_CWD
+        au BufEnter * silent exec 'lcd ' . escape(g:exES_CWD, " ")
     endif
 
     if a:init_func_name != 'none'
