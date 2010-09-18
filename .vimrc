@@ -695,6 +695,7 @@ let g:ex_default_langs = ['c', 'cpp', 'c#', 'javascript', 'java', 'shader', 'pyt
 " set exvim language map
 call exUtility#AddLangMap ( 'exvim', 'javascript', ['as'] )
 call exUtility#AddLangMap ( 'exvim', 'maxscript', ['ms'] )
+call exUtility#AddLangMap ( 'exvim', 'lua', ['wlua'] )
 
 " To let the extension language works correctly, you need to put toolkit/ctags/.ctags into your $HOME directory
 " set ctags language map
