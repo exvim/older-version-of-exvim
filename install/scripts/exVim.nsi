@@ -1,7 +1,7 @@
 ;  ======================================================================================
-;  File         : exVim.nsi
+;  File         : exvim.nsi
 ;  Author       : Wu Jie 
-;  Last Change  : 12/01/2009 | 16:43:24 PM | Tuesday,December
+;  Last Change  : 10/09/2010 | 17:41:01 PM | Saturday,October
 ;  Description  : 
 ;  ======================================================================================
 
@@ -17,17 +17,17 @@
 ; /////////////////////////////////////////////////////////////////////////////
 
 ; Name and File
-Name "exVim Installer" 
-Caption "exVim Installer"
-Icon "resource\exVim_icon.ico"
-OutFile "exVim-Installer.exe"
+Name "exvim Installer" 
+Caption "exvim Installer"
+Icon "resource\exvim_icon.ico"
+OutFile "exvim-Installer.exe"
 
 ; Default installation
-; DISABLE: InstallDir "$PROGRAMFILES\exDev"
-InstallDir "c:\exDev"
+; DISABLE: InstallDir "$PROGRAMFILES\exdev"
+InstallDir "c:\exdev"
 
 ;Get installation folder from registry if available
-InstallDirRegKey HKCU "Software\exDev" ""
+InstallDirRegKey HKCU "Software\exdev" ""
 
 ;Request application privileges for Windows Vista
 RequestExecutionLevel user
@@ -41,7 +41,7 @@ XPStyle on
 Function .onInit
 	# the plugins dir is automatically deleted when the installer exits
 	InitPluginsDir
-	File /oname=$PLUGINSDIR\splash.bmp "resource\exVim_splash.bmp"
+	File /oname=$PLUGINSDIR\splash.bmp "resource\exvim_splash.bmp"
 	#optional
 	#File /oname=$PLUGINSDIR\splash.wav "C:\myprog\sound.wav"
 
@@ -51,7 +51,7 @@ Function .onInit
 
     # run the install program to check for already installed versions
     SetOutPath $TEMP
-    File rawdata\exVim\vim\vim72\install.exe
+    File rawdata\exvim\vim\vim72\install.exe
     ExecWait "$TEMP\install.exe -uninstall-check"
     Delete $TEMP\install.exe
 FunctionEnd
@@ -64,7 +64,7 @@ FunctionEnd
 !define MUI_UNICON "resource\modern-uninstall-full.ico"
 
 !define MUI_HEADERIMAGE
-!define MUI_HEADERIMAGE_BITMAP "resource\exVim_header.bmp" ; optional
+!define MUI_HEADERIMAGE_BITMAP "resource\exvim_header.bmp" ; optional
 !define MUI_BGCOLOR F0F0F0
 !define MUI_ABORTWARNING
 
@@ -98,10 +98,10 @@ InstType "full"
 InstType "minimal"
 
 ;  ------------------------------------------------------------------ 
-;  Desc: exVim
+;  Desc: exvim
 ;  ------------------------------------------------------------------ 
 
-SectionGroup "!exVim" sec_exVim
+SectionGroup "!exvim" sec_exvim
 
     ;  ======================================================== 
     ;  vim  
@@ -111,15 +111,15 @@ SectionGroup "!exVim" sec_exVim
         SectionIn 1 2
 
         ; copy vim files
-        SetOutPath $INSTDIR\exVim
-        File /r rawdata\exVim\vim\*
+        SetOutPath $INSTDIR\exvim
+        File /r rawdata\exvim\vim\*
 
         ; append GnuWin32 bin path to user PATH environment variable
         ;  DISABLE { 
         ;  ReadRegStr $0 HKCU "Environment" "PATH"
-        ;  WriteRegExpandStr HKCU "Environment" "PATH" "$INSTDIR\exVim\vim72;$0"
+        ;  WriteRegExpandStr HKCU "Environment" "PATH" "$INSTDIR\exvim\vim72;$0"
         ;  } DISABLE end 
-        ${EnvVarUpdate} $0 "PATH" "A" "HKCU" "$INSTDIR\exVim\vim72"  
+        ${EnvVarUpdate} $0 "PATH" "A" "HKCU" "$INSTDIR\exvim\vim72"  
     SectionEnd
 
     ;  ======================================================== 
@@ -130,8 +130,8 @@ SectionGroup "!exVim" sec_exVim
         SectionIn 1 2
 
         ; copy vim-plugin files
-        SetOutPath $INSTDIR\exVim
-        File /r rawdata\exVim\vim-plugins\*
+        SetOutPath $INSTDIR\exvim
+        File /r rawdata\exvim\vim-plugins\*
     SectionEnd
 
 SectionGroupEnd
@@ -279,7 +279,7 @@ SectionGroupEnd
 
 Section # "PostInstall"
     ; Store installation folder
-    WriteRegStr HKCU "Software\exDev" "" $INSTDIR
+    WriteRegStr HKCU "Software\exdev" "" $INSTDIR
 
     ; Create uninstaller
     WriteUninstaller "$INSTDIR\Uninstall.exe"
@@ -291,16 +291,16 @@ Section # "PostInstall"
     SendMessage ${HWND_BROADCAST} ${WM_WININICHANGE} 0 "STR:Environment" /TIMEOUT=5000
 
     ; Register to Add/Remove program in control pannel
-    WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\exVim" "DisplayName" "exVim"
-    WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\exVim" "UninstallString" '"$INSTDIR\uninstall.exe"'
-    WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\exVim" "QuietUninstallString" '"$INSTDIR\uninstall.exe" /S'
+    WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\exvim" "DisplayName" "exvim"
+    WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\exvim" "UninstallString" '"$INSTDIR\uninstall.exe"'
+    WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\exvim" "QuietUninstallString" '"$INSTDIR\uninstall.exe" /S'
 
     ; File Association
     ; Associate the files
-    WriteRegStr HKCR ".vimentry" "" "exVim.vimentry"
-    WriteRegStr HKCR "exVim.vimentry" "" "exVim vimentry file"
-    WriteRegStr HKCR "exVim.vimentry\shell" "" "open"
-    WriteRegStr HKCR "exVim.vimentry\shell\open\command" "" '"$INSTDIR\exVim\vim72\gvim.exe" "%1"'
+    WriteRegStr HKCR ".vimentry" "" "exvim.vimentry"
+    WriteRegStr HKCR "exvim.vimentry" "" "exvim vimentry file"
+    WriteRegStr HKCR "exvim.vimentry\shell" "" "open"
+    WriteRegStr HKCR "exvim.vimentry\shell\open\command" "" '"$INSTDIR\exvim\vim72\gvim.exe" "%1"'
     ; Add vimentry to new file
     WriteRegStr HKCR ".vimentry\ShellNew" "NullFile" ""
     System::Call 'shell32.dll::SHChangeNotify(i, i, i, i) v (0x08000000, 0, 0, 0)'
@@ -311,7 +311,7 @@ SectionEnd
 ; /////////////////////////////////////////////////////////////////////////////
 
 ;Language strings
-LangString DESC_exVim ${LANG_ENGLISH} "exVim"
+LangString DESC_exvim ${LANG_ENGLISH} "exvim"
 LangString DESC_vim ${LANG_ENGLISH} "Install vim72 (compile with python,cscope)"
 LangString DESC_vim_plugins ${LANG_ENGLISH} "vim-plugins for vim"
 LangString DESC_other_tools ${LANG_ENGLISH} "terminal tools"
@@ -326,7 +326,7 @@ LangString DESC_fonts ${LANG_ENGLISH} "Fonts"
 
 ;Assign language strings to sections
 !insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
-    !insertmacro MUI_DESCRIPTION_TEXT ${sec_exVim} $(DESC_exVim)
+    !insertmacro MUI_DESCRIPTION_TEXT ${sec_exvim} $(DESC_exvim)
     !insertmacro MUI_DESCRIPTION_TEXT ${sec_vim} $(DESC_vim)
     !insertmacro MUI_DESCRIPTION_TEXT ${sec_vim_plugins} $(DESC_vim_plugins)
     !insertmacro MUI_DESCRIPTION_TEXT ${sec_other_tools} $(DESC_other_tools)
@@ -366,24 +366,24 @@ Section "Uninstall"
 	BringToFront
     
     ; remove install directory
-    RMDir /r "$INSTDIR\exVim"
+    RMDir /r "$INSTDIR\exvim"
     RMDir /r "$INSTDIR\tools\GnuWin32"
     RMDir /r "$INSTDIR\tools\Graphviz"
     Delete $INSTDIR\uninstall.exe
     
     ; remove registry value
-    DeleteRegKey /ifempty HKCU "Software\exDev"
+    DeleteRegKey /ifempty HKCU "Software\exdev"
 
     ; remove environment variable EX_DEV
     DeleteRegValue HKCU "Environment" "EX_DEV"
 
     ; remove the Add/Remove information
-    DeleteRegKey HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\exVim"
+    DeleteRegKey HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\exvim"
 
     ; remove from environment
     ${un.EnvVarUpdate} $0 "PATH" "R" "HKCU" "$INSTDIR\tools\Graphviz\bin"
     ${un.EnvVarUpdate} $0 "PATH" "R" "HKCU" "$INSTDIR\tools\GnuWin32\bin"  
-    ${un.EnvVarUpdate} $0 "PATH" "R" "HKCU" "$INSTDIR\exVim\vim72"  
+    ${un.EnvVarUpdate} $0 "PATH" "R" "HKCU" "$INSTDIR\exvim\vim72"  
 
     ; Refresh environment variables
     SendMessage ${HWND_BROADCAST} ${WM_WININICHANGE} 0 "STR:Environment" /TIMEOUT=5000 
