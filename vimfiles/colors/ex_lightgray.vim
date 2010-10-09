@@ -28,7 +28,7 @@ let colors_name = "ex_lightgray"
 "  Color Define 
 " /////////////////////////////////////////////////////////////////////////////
 
-hi Normal       font=Lucida_Console:h9:cANSI guibg=LightGray
+hi Normal       guibg=LightGray
 
 hi SpecialKey   term=bold ctermfg=1 guifg=Blue
 hi NonText      term=bold ctermfg=9 gui=bold guifg=Blue

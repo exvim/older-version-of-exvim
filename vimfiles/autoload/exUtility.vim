@@ -295,7 +295,7 @@ function exUtility#InitWindow(init_func_name) " <<<
 
     " avoid cwd change problem
     if exists( 'g:exES_CWD' )
-        au BufEnter * silent exec 'lcd ' . g:exES_CWD
+        au BufEnter * silent exec 'lcd ' . escape(g:exES_CWD, " ")
     endif
 
     if a:init_func_name != 'none'
@@ -622,6 +622,47 @@ function exUtility#PutNamespace( space_name, line1, line2 ) " <<<
     " then go back to first line and put namespace start
     silent call cursor( first_line - 1, 1 )
     call exUtility#PutNamespaceStart(a:space_name)
+endfunction " >>>
+
+" ------------------------------------------------------------------ 
+" Desc: 
+" ------------------------------------------------------------------ 
+
+function exUtility#PutExternC( line1, line2 ) " <<<
+    " 
+    let first_line = a:line1
+    let last_line = a:line2
+
+    " put namespace end first
+    silent call cursor( last_line, 1 )
+    silent put = ''
+    silent call append  ( '.', b:ECcommentOpen . " ######################### " . b:ECcommentClose )
+    silent normal! j
+    silent call append  ( '.', "#ifdef __cplusplus" )
+    silent normal! j
+    silent call append  ( '.', "} // end extern C " )
+    silent normal! j
+    silent call append  ( '.', "#endif" )
+    silent normal! j
+    silent call append  ( '.', b:ECcommentOpen . " ######################### " . b:ECcommentClose )
+    silent normal! j
+    silent call append  ( '.', "" )
+    silent normal! j
+
+    " then go back to first line and put namespace start
+    silent call cursor( first_line - 1, 1 )
+    silent call append  ( '.', b:ECcommentOpen . " ######################### " . b:ECcommentClose )
+    silent normal! j
+    silent call append  ( '.', "#ifdef __cplusplus" )
+    silent normal! j
+    silent call append  ( '.', 'extern "C" { ' )
+    silent normal! j
+    silent call append  ( '.', "#endif" )
+    silent normal! j
+    silent call append  ( '.', b:ECcommentOpen . " ######################### " . b:ECcommentClose )
+    silent normal! j
+    silent call append  ( '.', "" )
+    silent normal! j
 endfunction " >>>
 
 " ------------------------------------------------------------------ 
@@ -2302,7 +2343,8 @@ function exUtility#SphinxMake(args) " <<<
         call exUtility#Terminal ( 'silent', 'wait', 'make ' . a:args . ' 2>' . error_file )
         silent exec 'QF '. error_file
     elseif has("unix")
-        exec "!make -f" . make_file . ' ' . a:args
+        exec "!make -f" . make_file . ' ' . a:args . ' 2>' . error_file
+        silent exec 'QF '. error_file
     endif
 endfunction " >>>
 

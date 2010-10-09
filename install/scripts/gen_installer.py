@@ -12,14 +12,16 @@
 import os.path
 import shutil
 import zipfile
-import Settings
+import settings
+import misc
 
 #/////////////////////////////////////////////////////////////////////////////
 # global variables
 #/////////////////////////////////////////////////////////////////////////////
 
 # general
-dest_root_path = "e:/Project/Dev/exVim.GoogleCode/installer" 
+dest_root_path = settings.release_path
+dest_version_path = os.path.join ( settings.release_path, settings.version )
 installer_exe_name = "exVim-installer"
 
 #/////////////////////////////////////////////////////////////////////////////
@@ -37,11 +39,11 @@ def PreCheck ():
     print "#########################" 
     print ""
 
-    print "version = %s" % Settings.version
+    print "version = %s" % settings.version
 
     # check source path, if not found, return false
-    print "source_path = %s" % os.path.abspath(Settings.source_path)
-    if os.path.isdir( os.path.abspath(Settings.source_path) ) == False :
+    print "exVim_path = %s" % os.path.abspath(settings.exVim_path)
+    if os.path.isdir( os.path.abspath(settings.exVim_path) ) == False :
         print "source path not found"
         return False
 
@@ -125,32 +127,6 @@ def PreCheck ():
     print "Pre-Check done!"
     return True
 
-
-# ------------------------------------------------------------------ 
-# Desc: CopyDirs 
-# ------------------------------------------------------------------ 
-
-def CopyDirs ( _src, _dest ):
-    # walk through the path
-    for root, dirs, files in os.walk( _src, topdown=True ):
-        # don't visit .svn directories
-        if '.svn' in dirs:
-            dirs.remove('.svn') 
-
-        # copy files
-        for name in files:
-            file_full_path = os.path.join( root, name ) 
-            # get relative path
-            relative_path = "." + file_full_path[len(_src):]
-            dest_path = os.path.abspath( os.path.join( _dest, relative_path ) )
-
-            # if relative path not exist, create it
-            if os.path.isdir( os.path.dirname(dest_path) ) == False :
-                os.makedirs( os.path.dirname(dest_path) )
-            # copy file from local project to google project
-            # DISABLE: print "coping file: %s" % file_full_path
-            shutil.copy ( file_full_path, dest_path )
-
 # ------------------------------------------------------------------ 
 # Desc: CreateInstaller 
 # ------------------------------------------------------------------ 
@@ -164,7 +140,7 @@ def CreateInstaller ():
 
     print "Creating installer"
     # KEEPME: no need { 
-    # CopyDirs ( os.path.join(source_path, "vim72"), os.path.join(dest_root_path,"rawdata/exVim/vim") )
+    # SafeCopyDirs ( os.path.join(exVim_path, "vim72"), os.path.join(dest_root_path,"rawdata/exVim/vim") )
     # os.makedirs( os.path.join(dest_root_path, "rawdata/exVim/vim/data/backup") )
     # os.makedirs( os.path.join(dest_root_path, "rawdata/exVim/vim/data/swap") )
     # } KEEPME end 
@@ -175,8 +151,8 @@ def CreateInstaller ():
     vimplugins_path = os.path.join(dest_root_path,"rawdata/exVim/vim-plugins")  
     if os.path.isdir(vimplugins_path) == True :
         shutil.rmtree ( vimplugins_path )
-    CopyDirs ( os.path.join(Settings.source_path, "toolkit"), os.path.join(vimplugins_path,"toolkit") )
-    CopyDirs ( os.path.join(Settings.source_path, "vimfiles"), os.path.join(vimplugins_path,"vimfiles") )
+    misc.SafeCopyDirs ( os.path.join(settings.exVim_path, "toolkit"), os.path.join(vimplugins_path,"toolkit") )
+    misc.SafeCopyDirs ( os.path.join(settings.exVim_path, "vimfiles"), os.path.join(vimplugins_path,"vimfiles") )
 
     # update .vimrc
     print "Update .vimrc..."
@@ -184,15 +160,19 @@ def CreateInstaller ():
     if os.path.isdir(rawvim_path) == False :
         print "%s not found! can't copy .vimrc to it." % rawvim_path
     else :
-        shutil.copy ( os.path.join(Settings.source_path, ".vimrc"), rawvim_path )
+        shutil.copy ( os.path.join(settings.exVim_path, ".vimrc"), rawvim_path )
 
     # update gvim.exe, ctags.exe 
-    shutil.copy ( os.path.join(Settings.source_path, "vim72/gvim.exe"), os.path.join(rawvim_path,"vim72/gvim.exe") )
-    shutil.copy ( os.path.join(Settings.source_path, "vim72/ctags.exe"), os.path.join(rawvim_path,"vim72/ctags.exe") )
+    shutil.copy ( os.path.join(settings.exVim_path, "vim72/gvim_nopython.exe"), os.path.join(rawvim_path,"vim72/gvim.exe") )
+    shutil.copy ( os.path.join(settings.exVim_path, "vim72/ctags.exe"), os.path.join(rawvim_path,"vim72/ctags.exe") )
+
+    # update EnvVarUpdate.nsh
+    print "Update EnvVarUpdate.nsh..."
+    shutil.copy ( os.path.join(settings.exVim_path, "install/scripts/EnvVarUpdate.nsh"), dest_root_path )
 
     # update exVim.nsi
     print "Update exVim.nsi..."
-    shutil.copy ( os.path.join(Settings.source_path, "install/scripts/exVim.nsi"), dest_root_path )
+    shutil.copy ( os.path.join(settings.exVim_path, "install/scripts/exVim.nsi"), dest_root_path )
 
 # ------------------------------------------------------------------ 
 # Desc: CompileInstaller 
@@ -201,11 +181,11 @@ def CreateInstaller ():
 def CompileInstaller ():
     # 
     installer_exe_path = os.path.join(dest_root_path, installer_exe_name + ".exe")
-    installer_exe_ver_path = os.path.join(dest_root_path, installer_exe_name + "-" + Settings.version + ".exe")
+    installer_exe_ver_path = os.path.join(dest_version_path, installer_exe_name + "-" + settings.version + ".exe")
 
     # compile installer by exVim.nsi
     if os.path.isfile (installer_exe_ver_path) == True:
-        print "%s already exists, if you want to re-generate one, remove it manually." % (installer_exe_name + "-" + Settings.version)
+        print "%s already exists, if you want to re-generate one, remove it manually." % (installer_exe_name + "-" + settings.version)
         return
 
     cwd = os.getcwd()

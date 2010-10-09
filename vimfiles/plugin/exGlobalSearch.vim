@@ -255,65 +255,73 @@ endfunction " >>>
 " ------------------------------------------------------------------ 
 
 function s:exGS_Goto() " <<<
-    let line = getline('.')
-    " get file name
-    let idx = stridx(line, ":")
-    let file_name = strpart(line, 0, idx) " escape(strpart(line, 0, idx), ' ')
-    if findfile(file_name) == ''
-        call exUtility#WarningMsg( file_name . ' not found' )
-        return 0
-    endif
-    let line = strpart(line, idx+1)
+    let line = getline('.') 
+    " initial file name 
+    let file_name = line 
+    " get file name 
+    let idx = stridx(line, ":") 
 
-    " get line number
-    let idx = stridx(line, ":")
-    let line_num  = eval(strpart(line, 0, idx))
-
-    " start jump
-    call exUtility#GotoEditBuffer()
+    " NOTE: GSF,GSFW only provide filepath information, so we don't need special process.
+    let bNeedSplit = idx > 0
+    if bNeedSplit 
+        let file_name = strpart(line, 0, idx) "DISABLE: escape(strpart(line, 0, idx), ' ') 
+    endif 
+    if findfile(file_name) == '' 
+        call exUtility#WarningMsg( file_name . ' not found' ) 
+        return 0 
+    endif 
+    " start jump 
+    call exUtility#GotoEditBuffer() 
 
     " if we don't start a new stack, we pop the old jump, so that the new one
     " will only take the old stack position while we are selecting our result. 
-    let keepjumps_cmd = ''
-    if !s:exGS_need_push_search_result
-        let keepjumps_cmd = 'keepjumps'
-    endif
+    let keepjumps_cmd = '' 
+    if !s:exGS_need_push_search_result 
+        let keepjumps_cmd = 'keepjumps' 
+    endif 
 
-    "
-    if bufnr('%') != bufnr(file_name)
-        exe keepjumps_cmd . ' silent e ' . file_name
-    endif
-    exec keepjumps_cmd . ' call cursor(line_num, 1)'
+    " 
+    if bufnr('%') != bufnr(file_name) 
+        exe keepjumps_cmd . ' silent e ' . escape(file_name,' ') 
+    endif 
+    if bNeedSplit 
+        let line = strpart(line, idx+1) 
+        " get line number 
+        let idx = stridx(line, ":") 
+        let line_num  = eval(strpart(line, 0, idx)) 
+        exec keepjumps_cmd . ' call cursor(line_num, 1)' 
 
-    " jump to the pattern if the code have been modified
-    let pattern = strpart(line, idx+2)
-    let pattern = '\V' . substitute( pattern, '\', '\\\', "g" )
-    if search(pattern, 'cw') == 0
-        call exUtility#WarningMsg('search pattern not found: ' . pattern)
-    endif
+        " jump to the pattern if the code have been modified 
+        let pattern = strpart(line, idx+2) 
+        let pattern = '\V' . substitute( pattern, '\', '\\\', "g" ) 
+        if search(pattern, 'cw') == 0 
+            call exUtility#WarningMsg('search pattern not found: ' . pattern)
+        endif 
+    endif 
 
-    " push tag to jump stack if needed, otherwise set last jump stack
-    let stack_info = {}
-    let stack_info.pattern = getline(".")
-    let stack_info.file_name = bufname('%')
-    let cur_pos = getpos(".")
-    let stack_info.cursor_pos = [cur_pos[1],cur_pos[2]] " lnum, col
-    let stack_info.jump_method = ''
-    let stack_info.keyword = ''
-    let stack_info.taglist = []
-    let stack_info.tagidx = -1
-    if s:exGS_need_push_search_result
-        let s:exGS_need_push_search_result = 0
-        call g:exJS_PushJumpStack (stack_info)
-    else
-        call g:exJS_SetLastJumpStack (stack_info)
-    endif
+    " push tag to jump stack if needed, otherwise set last jump stack 
+    let stack_info = {} 
+    let stack_info.pattern = getline(".") 
+    let stack_info.file_name = bufname('%') 
+    let cur_pos = getpos(".") 
+    let stack_info.cursor_pos = [cur_pos[1],cur_pos[2]] " lnum, col 
+    let stack_info.jump_method = '' 
+    let stack_info.keyword = '' 
+    let stack_info.taglist = [] 
+    let stack_info.tagidx = -1 
+    if s:exGS_need_push_search_result 
+        let s:exGS_need_push_search_result = 0 
+        call g:exJS_PushJumpStack (stack_info) 
+    else 
+        call g:exJS_SetLastJumpStack (stack_info) 
+    endif 
 
-    " go back if needed
-    let title = '__exGS_' . s:exGS_short_title . 'Window__'
+    " go back if needed 
+    let title = '__exGS_' . s:exGS_short_title . 'Window__' 
     call exUtility#OperateWindow ( title, g:exGS_close_when_selected, g:exGS_backto_editbuf, 1 )
 
-    return 1
+    return 1 
+
 endfunction " >>>
 
 " ------------------------------------------------------------------ 

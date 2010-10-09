@@ -17,10 +17,10 @@ syn keyword cType       UINT INT UINT8 INT8 UINT16 INT16 UINT32 INT32 UINT64 INT
 syn keyword cType       uint uint8 int8 uint16 int16 uint32 int32 uint64 int64 wchar tchar f32 f64 vec_f32_t
 syn keyword cType       TEXT INLINE NOINLINE
 syn keyword cConstant   TRUE FALSE
-syn keyword cStatement  ex_malloc ex_malloc_use ex_malloc_nomanage ex_malloc_tag ex_malloc_tag_use
-syn keyword cStatement  ex_realloc ex_realloc_use ex_realloc_nomanage ex_realloc_tag ex_realloc_tag_use
-syn keyword cStatement  ex_free ex_free_use ex_free_nomanage
-syn keyword cStatement  ex_safe_free ex_safe_free_use ex_safe_free_nomanage
+syn keyword cStatement  ex_malloc ex_malloc_use ex_malloc_nomng ex_malloc_tag ex_malloc_tag_use
+syn keyword cStatement  ex_realloc ex_realloc_use ex_realloc_nomng ex_realloc_tag ex_realloc_tag_use
+syn keyword cStatement  ex_free ex_free_use ex_free_nomng
+syn keyword cStatement  ex_safe_free ex_safe_free_use ex_safe_free_nomng
 syn keyword cStatement  ex_stack_malloc
 syn keyword cStatement  ex_log ex_error ex_warning ex_log_func ex_assert ex_assert_slow ex_assert_return ex_assert_exec ex_check ex_check_return ex_check_exec ex_static_assert ex_compile_time_assert
 

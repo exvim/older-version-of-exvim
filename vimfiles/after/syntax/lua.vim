@@ -1,7 +1,7 @@
 " ======================================================================================
-" File         : python.vim
+" File         : lua.vim
 " Author       : Wu Jie 
-" Last Change  : 10/21/2008 | 22:41:48 PM | Tuesday,October
+" Last Change  : 08/31/2010 | 20:33:32 PM | Tuesday,August
 " Description  : 
 " ======================================================================================
 
@@ -15,14 +15,15 @@ endif
 if !exists('g:ex_comment_lable_keyword')
     let g:ex_comment_lable_keyword = 'TEMP CRASH MODIFY DEBUG DUMMY DELME TESTME OPTME REFACTORING DUPLICATE REDUNDANCY'
 endif
-silent exec ':syn keyword pythonTodo contained ' . g:ex_todo_keyword
+silent exec ':syn keyword luaTodo contained ' . g:ex_todo_keyword
 silent exec ':syn keyword exCommentLable contained ' . g:ex_comment_lable_keyword
-syn match   pythonComment	"#.*$" contains=pythonTodo,exCommentLable,@Spell
+syn match luaComment "--.*$" contains=@Spell,luaTodo,exCommentLable
 
 "/////////////////////////////////////////////////////////////////////////////
 " finish
 "/////////////////////////////////////////////////////////////////////////////
 
-let b:current_syntax = "python"
+let b:current_syntax = "lua"
 
 " vim: ts=8
+

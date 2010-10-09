@@ -76,7 +76,7 @@ let s:exES_setted = 0
 " Desc: current version. increase this will cause template re-write 
 " ------------------------------------------------------------------ 
 
-let s:exES_CurrentVersion = 24
+let s:exES_CurrentVersion = 25
 
 "/////////////////////////////////////////////////////////////////////////////
 " function defines
@@ -150,14 +150,16 @@ function s:exES_WriteDefaultTemplate() " <<<
         endfor
     endif
 
+    " DISABLE: now I use sphinxdoc, so vimwiki will go as option { 
     " Init the vimwiki plugin file path
-    silent call add(_list, '')
-    silent call add(_list, '-- vimwiki Settings --')
-    silent call add(_list, '')
+    " silent call add(_list, '')
+    " silent call add(_list, '-- vimwiki Settings --')
+    " silent call add(_list, '')
 
-    silent call add(_list, 'wikiHome=./wiki')
-    silent call add(_list, 'wikiHomeHtml=./wiki/html')
-    silent call add(_list, 'wikiHtmlHeader=./wiki/template/header.tpl')
+    " silent call add(_list, 'wikiHome=./wiki')
+    " silent call add(_list, 'wikiHomeHtml=./wiki/html')
+    " silent call add(_list, 'wikiHtmlHeader=./wiki/template/header.tpl')
+    " } DISABLE end 
 
     " put the settings into vimentry file
     silent put! = _list
@@ -321,7 +323,7 @@ endfunction " >>>
 function g:exES_UpdateEnvironment() " <<<
     " set parent working directory
     if exists( 'g:exES_CWD' )
-        silent exec 'cd ' . g:exES_CWD
+        silent exec 'cd ' . escape(g:exES_CWD, " ")
     endif
 
     if exists('g:exES_VimEntryName')
