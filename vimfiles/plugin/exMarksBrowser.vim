@@ -315,7 +315,7 @@ function s:exMB_FetchMarks() " <<<
     " mark line  col file/text
     "  '    432    0 -invalid-
     "  a    297   46 elseif did_buf_marks_sep == 0 && item[2] =~# '[a-z]'  
-    "  0    124   15 D:\exDev\vim\vimfiles\plugin\marksbrowser.vim
+    "  0    124   15 D:\exdev\vim\vimfiles\plugin\marksbrowser.vim
     "  1   1648    1 D:\Project\Engine\nomad\main\code\Core\purs\Examples\LZOCompression\LZO_UnComp\MiniLZO\minilzo.c
     "  2     18    0 D:\Project\Dev\exUtility\src\exLibs\exLibs.vimentry
     "  3    369    4 D:\Project\Dev\exUtility\src\exLibs\exLibs\Container\BitArray.h

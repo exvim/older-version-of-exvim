@@ -2,7 +2,7 @@
 " File         : ex_lightgray.vim
 " Author       : Wu Jie 
 " Last Change  : 05/30/2009 | 19:28:39 PM | Saturday,May
-" Description  : exDev gray color scheme 
+" Description  : exdev gray color scheme 
 " ======================================================================================
 
 " /////////////////////////////////////////////////////////////////////////////

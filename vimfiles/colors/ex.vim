@@ -2,7 +2,7 @@
 " File         : ex.vim
 " Author       : Wu Jie 
 " Last Change  : 05/30/2009 | 19:26:16 PM | Saturday,May
-" Description  : exDev default color scheme 
+" Description  : exdev default color scheme 
 " ======================================================================================
 
 " /////////////////////////////////////////////////////////////////////////////

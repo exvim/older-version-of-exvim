@@ -510,7 +510,7 @@ endfunction " >>>
 " ------------------------------------------------------------------ 
 
 function exUtility#CloseAllExpluginWindow() " <<<
-    " walk through all window in exVim
+    " walk through all window in exvim
     let i = 1
     let bufnum_list = []
     while i <= winnr("$")

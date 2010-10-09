@@ -310,7 +310,7 @@ function s:exBE_ShowEditBuffers () " <<<
     let buf_explorer_title = '-- Buffers --' 
     let book_mark_title = '-- Bookmarks --' 
 
-    " walk through all window in exVim
+    " walk through all window in exvim
     let bnum = 1
     let line_list = []
     while bnum <= bufnr("$")

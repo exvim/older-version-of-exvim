@@ -32,7 +32,7 @@ StandAlone_Prjs += # TODO: The Sub-Dir name
 # /////////////////////////////////////////////////////////////////////////////
 
 ifeq ($(Platform),Win32) # win32
-include $(EX_DEV)/exVim/toolkit/makefile/gcc/gcc_rule_m.mk
+include $(EX_DEV)/exvim/toolkit/makefile/gcc/gcc_rule_m.mk
 else
 ifeq ($(Platform),Linux) # unix/linux
 include ~/.toolkit/makefile/gcc/gcc_rule_m.mk

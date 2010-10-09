@@ -92,11 +92,11 @@ endif
 
 if $EX_DEV ==# ""
     if has ("unix")
-        call confirm ("exVim error: Please set the EX_DEV in .vimrc, default is let $EX_DEV='~/exDev'")
-        let $EX_DEV='~/exDev'
+        call confirm ("exvim error: Please set the EX_DEV in .vimrc, default is let $EX_DEV='~/exdev'")
+        let $EX_DEV='~/exdev'
     elseif has("win32")
-        call confirm ("exVim error: Please set the EX_DEV in .vimrc, default is let $EX_DEV='d:\exDev'")
-        let $EX_DEV='d:\exDev'
+        call confirm ("exvim error: Please set the EX_DEV in .vimrc, default is let $EX_DEV='d:\exdev'")
+        let $EX_DEV='d:\exdev'
     endif
 endif
 
@@ -105,7 +105,7 @@ endif
 " ------------------------------------------------------------------ 
 
 if !exists ( "g:ex_toolkit_path" )
-    let g:ex_toolkit_path = $EX_DEV.'/exVim/toolkit'
+    let g:ex_toolkit_path = $EX_DEV.'/exvim/toolkit'
 endif
 
 " ------------------------------------------------------------------ 
@@ -173,7 +173,7 @@ silent call exUtility#SetProjectFilter ( "dir_filter", "" ) " null-string means 
 "/////////////////////////////////////////////////////////////////////////////
 
 " ------------------------------------------------------------------ 
-" Desc: update the syntax highlight in exVim  
+" Desc: update the syntax highlight in exvim  
 " ------------------------------------------------------------------ 
 
 function s:UpdateSyntaxHighlights() " <<<

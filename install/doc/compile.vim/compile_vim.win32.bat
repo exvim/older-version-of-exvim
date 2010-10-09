@@ -20,5 +20,5 @@ rem ////////////////////////////////////////////////////////////////////////////
 
 @echo compile vim ... 
 nmake -f Make_mvc.mak clean
-nmake -f Make_mvc.mak GUI=yes PYTHON=d:\exDev\Python25 DYNAMIC_PYTHON=YES PYTHON_VER=25
-rem  nmake -f Make_mvc.mak GUI=yes PYTHON=d:\exDev\Python26 DYNAMIC_PYTHON=YES PYTHON_VER=26
+nmake -f Make_mvc.mak GUI=yes PYTHON=d:\exdev\Python25 DYNAMIC_PYTHON=YES PYTHON_VER=25
+rem  nmake -f Make_mvc.mak GUI=yes PYTHON=d:\exdev\Python26 DYNAMIC_PYTHON=YES PYTHON_VER=26

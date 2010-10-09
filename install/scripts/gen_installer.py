@@ -22,7 +22,7 @@ import misc
 # general
 dest_root_path = settings.release_path
 dest_version_path = os.path.join ( settings.release_path, settings.version )
-installer_exe_name = "exVim-installer"
+installer_exe_name = "exvim-installer"
 
 #/////////////////////////////////////////////////////////////////////////////
 # functions
@@ -55,15 +55,15 @@ def PreCheck ():
         print "dest path %s created!" % dest_root_path
 
     # check dest package, if not found, show warnning message
-    exvim_path = os.path.join(dest_root_path,"rawdata/exVim")
+    exvim_path = os.path.join(dest_root_path,"rawdata/exvim")
     if os.path.isdir(exvim_path) == False :
-        print "exVim path not found!"
+        print "exvim path not found!"
         os.makedirs (exvim_path)
-        print "exVim path %s created!" % exvim_path
+        print "exvim path %s created!" % exvim_path
 
     # check third part packages path, if not found, show warnning message
 
-    rawvim_path = os.path.join(dest_root_path,"rawdata/exVim/vim")
+    rawvim_path = os.path.join(dest_root_path,"rawdata/exvim/vim")
     if os.path.isdir(rawvim_path) == False :
         print "Warnning: raw-vim not found! (%s)" % rawvim_path
     else :
@@ -140,15 +140,15 @@ def CreateInstaller ():
 
     print "Creating installer"
     # KEEPME: no need { 
-    # SafeCopyDirs ( os.path.join(exVim_path, "vim72"), os.path.join(dest_root_path,"rawdata/exVim/vim") )
-    # os.makedirs( os.path.join(dest_root_path, "rawdata/exVim/vim/data/backup") )
-    # os.makedirs( os.path.join(dest_root_path, "rawdata/exVim/vim/data/swap") )
+    # SafeCopyDirs ( os.path.join(exVim_path, "vim72"), os.path.join(dest_root_path,"rawdata/exvim/vim") )
+    # os.makedirs( os.path.join(dest_root_path, "rawdata/exvim/vim/data/backup") )
+    # os.makedirs( os.path.join(dest_root_path, "rawdata/exvim/vim/data/swap") )
     # } KEEPME end 
 
     # update vim-plugins
     print "Update vim-plugins..."
 
-    vimplugins_path = os.path.join(dest_root_path,"rawdata/exVim/vim-plugins")  
+    vimplugins_path = os.path.join(dest_root_path,"rawdata/exvim/vim-plugins")  
     if os.path.isdir(vimplugins_path) == True :
         shutil.rmtree ( vimplugins_path )
     misc.SafeCopyDirs ( os.path.join(settings.exVim_path, "toolkit"), os.path.join(vimplugins_path,"toolkit") )
@@ -156,7 +156,7 @@ def CreateInstaller ():
 
     # update .vimrc
     print "Update .vimrc..."
-    rawvim_path = os.path.join(dest_root_path,"rawdata/exVim/vim")
+    rawvim_path = os.path.join(dest_root_path,"rawdata/exvim/vim")
     if os.path.isdir(rawvim_path) == False :
         print "%s not found! can't copy .vimrc to it." % rawvim_path
     else :
@@ -170,9 +170,9 @@ def CreateInstaller ():
     print "Update EnvVarUpdate.nsh..."
     shutil.copy ( os.path.join(settings.exVim_path, "install/scripts/EnvVarUpdate.nsh"), dest_root_path )
 
-    # update exVim.nsi
-    print "Update exVim.nsi..."
-    shutil.copy ( os.path.join(settings.exVim_path, "install/scripts/exVim.nsi"), dest_root_path )
+    # update exvim.nsi
+    print "Update exvim.nsi..."
+    shutil.copy ( os.path.join(settings.exVim_path, "install/scripts/exvim.nsi"), dest_root_path )
 
 # ------------------------------------------------------------------ 
 # Desc: CompileInstaller 
@@ -183,14 +183,14 @@ def CompileInstaller ():
     installer_exe_path = os.path.join(dest_root_path, installer_exe_name + ".exe")
     installer_exe_ver_path = os.path.join(dest_version_path, installer_exe_name + "-" + settings.version + ".exe")
 
-    # compile installer by exVim.nsi
+    # compile installer by exvim.nsi
     if os.path.isfile (installer_exe_ver_path) == True:
         print "%s already exists, if you want to re-generate one, remove it manually." % (installer_exe_name + "-" + settings.version)
         return
 
     cwd = os.getcwd()
     os.chdir( dest_root_path )
-    os.system( 'makensis exVim.nsi')
+    os.system( 'makensis exvim.nsi')
     os.chdir( cwd )
     if os.path.isfile(installer_exe_path) == True :
         os.rename( installer_exe_path, installer_exe_ver_path) 
