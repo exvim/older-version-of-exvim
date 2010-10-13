@@ -36,8 +36,10 @@ set langmenu=none " always use English menu
 " always use english for anaything in vim-editor. 
 if has ("win32")
     silent exec "language english" 
-else
+elseif has ("mac")
     silent exec "language en_US" 
+else
+    silent exec "language en_US.utf8" 
 endif
 
 au FileType c,cpp,cs,swig set nomodeline " this will avoid bug in my project with namespace ex, the vim will tree ex:: as modeline.
