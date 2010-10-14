@@ -20,7 +20,9 @@ if !exists('g:ex_comment_lable_keyword')
 endif
 silent exec ':syn keyword javaScriptCommentTodo contained ' . g:ex_todo_keyword
 silent exec ':syn keyword exCommentLable contained ' . g:ex_comment_lable_keyword
-syn match javaScriptComment "//.*$" contains=@Spell,javaScriptCommentTodo,exCommentLable
+
+syn match javaScriptLineComment "\/\/.*" contains=@Spell,javaScriptCommentTodo,exCommentLable
+syn region javaScriptComment start="/\*"  end="\*/" contains=@Spell,javaScriptCommentTodo,exCommentLable
 
 "/////////////////////////////////////////////////////////////////////////////
 " finish

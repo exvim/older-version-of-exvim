@@ -21,7 +21,7 @@ syn keyword cStatement  ex_malloc ex_malloc_use ex_malloc_nomng ex_malloc_tag ex
 syn keyword cStatement  ex_realloc ex_realloc_use ex_realloc_nomng ex_realloc_tag ex_realloc_tag_use
 syn keyword cStatement  ex_free ex_free_use ex_free_nomng
 syn keyword cStatement  ex_safe_free ex_safe_free_use ex_safe_free_nomng
-syn keyword cStatement  ex_stack_malloc
+syn keyword cStatement  ex_stack_malloc ex_stack_free
 syn keyword cStatement  ex_log ex_error ex_warning ex_log_func ex_assert ex_assert_slow ex_assert_return ex_assert_exec ex_check ex_check_return ex_check_exec ex_static_assert ex_compile_time_assert
 
 if !exists('g:ex_todo_keyword')
