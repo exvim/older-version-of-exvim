@@ -5,6 +5,11 @@
 let s:save_cpo = &cpo
 set cpo&vim
 
+" jwu ADD { 
+autocmd WinEnter \[Lookup\ File\] call lookupfile#AcpLock()
+autocmd WinLeave \[Lookup\ File\] call lookupfile#AcpUnlock()
+" } jwu ADD end 
+
 " Some onetime initialization of variables
 if !exists('s:myBufNum')
   let s:windowName = '[Lookup File]'
@@ -16,6 +21,23 @@ let g:lookupfile#lastResults = []
 let g:lookupfile#lastStatsMsg = []
 let g:lookupfile#recentFiles = []
 
+" jwu ADD { 
+function! lookupfile#AcpLock()
+  " to fix acp conflict with lookup file. termporary disable it.
+  if exists(":AcpLock") != 0
+    silent exec 'AcpLock'
+  endif
+endfunction
+
+function! lookupfile#AcpUnlock()
+  " after we finish lookup file, enable acp again.
+  if exists(":AcpUnlock") != 0
+    silent exec 'AcpUnlock'
+  endif
+endfunction
+" } jwu ADD end 
+
+
 function! lookupfile#OpenWindow(bang, initPat)
   " JWU ADD { 
   " DISABLE { 
@@ -25,6 +47,7 @@ function! lookupfile#OpenWindow(bang, initPat)
   " endif
   " } DISABLE end 
   call exUtility#GotoEditBuffer()
+  call lookupfile#AcpLock()
   " } JWU ADD end 
 
   let origWinnr = winnr()
@@ -45,7 +68,7 @@ function! lookupfile#OpenWindow(bang, initPat)
       endif
       let s:myBufNum = bufnr('%')
       " JWU ADD { 
-      silent exec "nnoremap <buffer> <silent> " . g:ex_keymap_close . " :q<CR>"
+      silent exec "nnoremap <buffer> <silent> " . g:ex_keymap_close . " :call lookupfile#CloseWindow()<CR>"
       " } JWU ADD end 
     else
       let winnr = bufwinnr(s:myBufNum)
