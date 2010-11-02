@@ -1,6 +1,0 @@
-Disable auto command in Vim
-if you want to disable auto command when you editing c/cpp files, just go to "c:\Program Files\Vim\vim70\ftplugin\c.vim" then
------> setlocal comments=sO:*\ -,mO:*\ \ ,exO:*/,s1:/*,mb:*,ex:*/,f://
-the flag f is the key
-:help format-comments for more detail
-
