@@ -3423,7 +3423,7 @@ endfunction " >>>
 " Desc: 
 " ------------------------------------------------------------------ 
 
-function exUtility#GetFileName( text )
+function exUtility#GetFileName( text ) " <<<
     let line = ''
     " if it is a file
     if match(a:text,'[^^]-\C\[[^F]\]') != -1
@@ -3438,7 +3438,7 @@ function exUtility#GetFileName( text )
         endif
     endif
     return line
-endfunction
+endfunction " >>>
 
 " ------------------------------------------------------------------ 
 " Desc: 
@@ -3460,9 +3460,9 @@ endfunction " >>>
 
 " ------------------------------------------------------------------ 
 " Desc: 
+" TODO: can combine args with file,directory search
 " ------------------------------------------------------------------ 
 
-" TODO: can combine args with file,directory search
 function exUtility#CompleteGMakeArgs( arg_lead, cmd_line, cursor_pos ) " <<<
     let idx = strridx(a:arg_lead,'/')+1
     let arg_lead_prefix = strpart(a:arg_lead, 0, idx )
@@ -3720,11 +3720,9 @@ endfunction " >>>
 "/////////////////////////////////////////////////////////////////////////////
 
 " ------------------------------------------------------------------ 
-" Desc: 
+" Desc: Add help Item for current buffer, used in initilization only
 " ------------------------------------------------------------------ 
 
-" --ex_AddHelpItem--
-" Add help Item for current buffer, used in initilization only
 function exUtility#AddHelpItem(HelpText, HelpMode) " <<<
     let BufName = fnamemodify(bufname(""), ':t')
     if !has_key(s:ex_MapHelpText, BufName)
@@ -3740,11 +3738,9 @@ function exUtility#AddHelpItem(HelpText, HelpMode) " <<<
 endfunction " >>>
 
 " ------------------------------------------------------------------ 
-" Desc: 
+" Desc: Add help Item for current buffer, used in initilization only
 " ------------------------------------------------------------------ 
 
-" --ex_AddHelpItem--
-" Add help Item for current buffer, used in initilization only
 function exUtility#DisplayHelp() " <<<
     " If it's not funtional window, do not display help
 
@@ -3807,11 +3803,9 @@ function exUtility#DisplayHelp() " <<<
 endfunction " >>>
 
 " ------------------------------------------------------------------ 
-" Desc: 
+" Desc: Switch between different help text , -1 for toggle between 1 and 0
 " ------------------------------------------------------------------ 
 
-" --ex_SwitchHelpTextMode--
-" Switch between different help text , -1 for toggle between 1 and 0
 function exUtility#SwitchHelpTextMode(HelpMode) " <<<
     " call exUtility#ClearHighlightSelectLine()
     2match none " the function is gone, use the match directly
@@ -3838,11 +3832,9 @@ function exUtility#SwitchHelpTextMode(HelpMode) " <<<
 endfunction " >>>
 
 " ------------------------------------------------------------------ 
-" Desc: 
+" Desc: if Cursor is on the Help, jump to the first line without help
 " ------------------------------------------------------------------ 
 
-" --ex_HelpUpdateCursor--
-" if Cursor is on the Help, jump to the first line without help
 function exUtility#HelpUpdateCursor() " <<<
     " return immidiaetly if help off
     if !g:ex_help_text_on
@@ -3856,11 +3848,9 @@ function exUtility#HelpUpdateCursor() " <<<
 endfunction " >>>
 
 " ------------------------------------------------------------------ 
-" Desc: 
+" Desc: return the length of HelpText
 " ------------------------------------------------------------------ 
 
-" --ex_GetHelpTextLength--
-" return the length of HelpText
 function exUtility#GetHelpTextLength() " <<<
     let linenum = 1
     while getline(linenum)[0] == '"'

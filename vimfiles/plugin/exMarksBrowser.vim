@@ -230,7 +230,7 @@ endfunction " >>>
 " Desc: call when cursor moved
 " ------------------------------------------------------------------ 
 
-function s:exMB_SelectCursorMoved()
+function s:exMB_SelectCursorMoved() " <<<
     let line_num = line('.')
 
     if line_num == s:exMB_cursor_idx
@@ -255,7 +255,7 @@ function s:exMB_SelectCursorMoved()
 
     let s:exMB_cursor_idx = line('.')
     call exUtility#HighlightSelectLine()
-endfunction
+endfunction " >>>
 
 " ------------------------------------------------------------------ 
 " Desc: 

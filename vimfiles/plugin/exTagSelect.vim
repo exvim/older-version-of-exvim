@@ -282,8 +282,8 @@ function g:exTS_InitSelectWindow() " <<<
     endif
 
     "
+    syntax match ex_SynSearchPattern '^\S\+'
     syntax match ex_SynFileName '^\S\+\s(.\+)$'
-    syntax match ex_SynSearchPattern '^\S\+$'
     syntax match ex_SynNormal '^        \S.*$'
     syntax match ex_SynLineNr '^        \d\+:'
 
@@ -324,7 +324,7 @@ endfunction " >>>
 " Desc: call when cursor moved
 " ------------------------------------------------------------------ 
 
-function s:exTS_SelectCursorMoved()
+function s:exTS_SelectCursorMoved() " <<<
     let line_num = line('.')
 
     if line_num == s:exTS_cursor_idx
@@ -349,14 +349,16 @@ function s:exTS_SelectCursorMoved()
 
     let s:exTS_cursor_idx = line('.')
     call exUtility#HighlightSelectLine()
-endfunction
+endfunction " >>>
 
 " ------------------------------------------------------------------ 
 " Desc: Get the result of a word and use :ts record the result
 " ------------------------------------------------------------------ 
 
 function s:exTS_GetTagSelectResult(tag, direct_jump) " <<<
-    let in_tag = strpart( a:tag, match(a:tag, '\S') )
+    " strip white space.
+    " DELME: let in_tag = strpart( a:tag, match(a:tag, '\S') )
+    let in_tag = substitute (a:tag, '\s\+', '', 'g')
     if match(in_tag, '^\(\t\|\s\)') != -1
         return
     endif
@@ -373,14 +375,18 @@ function s:exTS_GetTagSelectResult(tag, direct_jump) " <<<
     endif
 
     " get taglist
+    " NOTE: we use \s\* which allowed the tag have white space at the end.
+    "       this is useful for lua. In current version of cTags(5.8), it
+    "       will parse the lua function with space if you define the function
+    "       as: functon foobar () instead of functoin foobar(). 
     if s:exTS_ignore_case && (match(in_tag, '\u') == -1)
         let in_tag = substitute( in_tag, '\', '\\\', "g" )
         echomsg 'parsing ' . in_tag . '...(ignore case)'
-        let tag_list = taglist('\V\^'.in_tag.'\$')
+        let tag_list = taglist('\V\^'.in_tag.'\s\*\$')
     else
         let in_tag = substitute( in_tag, '\', '\\\', "g" )
         echomsg 'parsing ' . in_tag . '...(no ignore case)'
-        let tag_list = taglist('\V\^\C'.in_tag.'\$')
+        let tag_list = taglist('\V\^\C'.in_tag.'\s\*\$')
     endif
 
     " push entry state if the taglist is not empty

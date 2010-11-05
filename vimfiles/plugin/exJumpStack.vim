@@ -470,7 +470,7 @@ endfunction " >>>
 " Desc: call when cursor moved
 " ------------------------------------------------------------------ 
 
-function s:exJS_SelectCursorMoved()
+function s:exJS_SelectCursorMoved() " <<<
     let line_num = line('.')
 
     if line_num == s:exJS_cursor_idx
@@ -495,7 +495,7 @@ function s:exJS_SelectCursorMoved()
 
     let s:exJS_cursor_idx = line('.')
     call exUtility#HighlightSelectLine()
-endfunction
+endfunction " >>>
 
 " ------------------------------------------------------------------ 
 " Desc: 
