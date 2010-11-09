@@ -284,9 +284,6 @@ function exUtility#InitWindow(init_func_name) " <<<
     silent! setlocal winfixheight
     silent! setlocal winfixwidth
 
-    " Define hightlighting
-    syntax match ex_SynError '^Error:.*'
-
     " Define the ex autocommands
     augroup ex_auto_cmds
         autocmd WinLeave * call exUtility#RecordCurrentBufNum()
@@ -298,10 +295,15 @@ function exUtility#InitWindow(init_func_name) " <<<
         au BufEnter * silent exec 'lcd ' . escape(g:exES_CWD, " ")
     endif
 
+    " call the user define init_function
     if a:init_func_name != 'none'
         exe 'call ' . a:init_func_name . '()'
     endif
 
+    " Define syntax highlight
+    " NOTE: define the syntax highlight after user init. this can prevent user
+    "       override the basic syntax.
+    syntax match ex_SynError '^Error:.*'
 endfunction " >>>
 
 " ------------------------------------------------------------------ 
