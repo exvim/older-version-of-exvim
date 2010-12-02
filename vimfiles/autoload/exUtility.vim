@@ -2516,8 +2516,8 @@ function exUtility#GetUpdateVimentryRefsCommand( type ) " <<<
             let cmd .= ' && echo'
             let cmd .= ' && echo Update vimentry references...'
 
-            let destSymbol = '"' . exUtility#Pathfmt(exUtility#GetVimFile ( g:exES_CWD, 'symbol'),'unix') . '"'
-            let destInherit = '"' . exUtility#Pathfmt(exUtility#GetVimFile ( g:exES_CWD, 'inherits'),'unix') . '"'
+            let destSymbol = '"' . exUtility#Pathfmt(exUtility#GetVimFile ( g:exES_CWD, g:exES_vimfiles_dirname, 'symbol'),'unix') . '"'
+            let destInherit = '"' . exUtility#Pathfmt(exUtility#GetVimFile ( g:exES_CWD, g:exES_vimfiles_dirname, 'inherits'),'unix') . '"'
 
             let symbolFiles = destSymbol
             let inheritFiles = destInherit
