@@ -100,12 +100,22 @@ if $EX_DEV ==# ""
     endif
 endif
 
+" check if the EX_DEV path exists
+if finddir($EX_DEV) == ''
+    call exUtility#WarningMsg("the path define in environment variable $EX_DEV doesn't exist, please check your $EX_DEV definition.")
+endif
+
 " ------------------------------------------------------------------ 
 " Desc: 
 " ------------------------------------------------------------------ 
 
 if !exists ( "g:ex_toolkit_path" )
-    let g:ex_toolkit_path = $EX_DEV.'/exvim/toolkit'
+    let g:ex_toolkit_path = $EX_DEV.'/tools/exvim/toolkit'
+endif
+
+" check if the toolkit path exists
+if finddir(g:ex_toolkit_path) == ''
+    call exUtility#WarningMsg("the toolkit path doesn't exits, please set a right path to the global variable g:ex_toolkit_path in your .vimrc")
 endif
 
 " ------------------------------------------------------------------ 

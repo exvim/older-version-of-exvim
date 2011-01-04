@@ -12,7 +12,7 @@
 
 " set EX_DEV variable for linux
 if has ("unix")
-    let $EX_DEV='~/exDev'
+    let $EX_DEV='~/exdev'
     let g:ex_toolkit_path = $HOME.'/.toolkit'
 
     " NOTE: mac is unix like system, but to use gawk,id-utils correctly, we need to manually set the export path.  
@@ -20,7 +20,7 @@ if has ("unix")
         let $PATH='/usr/local/bin/:'.$PATH
     endif
 else " else if win32 or other system, just set the toolkit path.
-    let g:ex_toolkit_path = $EX_DEV.'/exVim/toolkit'
+    let g:ex_toolkit_path = $EX_DEV.'/tools/exvim/toolkit'
 endif
 
 " put your own user name here
@@ -935,10 +935,13 @@ let g:exES_project_cmd = 'EXProject'
 "       web browser option: 'c:\Program Files\Mozilla Firefox\firefox.exe'
 if has("gui_running")
     if has("win32")
-        let g:exES_WebBrowser = 'c:\Documents and Settings\jie_wu\Local Settings\Application Data\Google\Chrome\Application\chrome.exe'
-        let g:exES_ImageViewer = 'd:\app\IrfanView\i_view32.exe'
+        let g:exES_WebBrowser = 'c:\Users\Johnny\AppData\Local\Google\Chrome\Application\chrome.exe'
+        let g:exES_ImageViewer = 'd:\exdev\tools\IrfanView\i_view32.exe'
     elseif has("unix")
         let g:exES_WebBrowser = 'firefox'
+    elseif has("mac")
+        let g:exES_WebBrowser = 'open'
+        let g:exES_ImageViewer = 'open'
     endif
 endif
 
@@ -1025,7 +1028,7 @@ let g:miniBufExplTabWrap = 1 " make tabs show complete (no broken on two lines)
 let g:miniBufExplModSelTarget = 1 " If you use other explorers like TagList you can (As of 6.2.8) set it at 1:
 let g:miniBufExplUseSingleClick = 1 " If you would like to single click on tabs rather than double clicking on them to goto the selected buffer. 
 let g:miniBufExplMaxSize = 1 " <max lines: default 0> setting this to 0 will mean the window gets as big as needed to fit all your buffers. 
-" comment out this, when we open a single file by we, we don't need minibuf opened. Minibu always open in exDev mode, in EnvironmentUpdate 
+" comment out this, when we open a single file by we, we don't need minibuf opened. Minibu always open in exdev mode, in EnvironmentUpdate 
 " let g:miniBufExplorerMoreThanOne = 0 " Setting this to 0 will cause the MBE window to be loaded even
 
 "let g:miniBufExplForceSyntaxEnable = 1 " There is a VIM bug that can cause buffers to show up without their highlighting. The following setting will cause MBE to
