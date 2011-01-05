@@ -936,7 +936,7 @@ let g:exES_project_cmd = 'EXProject'
 if has("gui_running")
     if has("win32")
         let g:exES_WebBrowser = 'c:\Users\Johnny\AppData\Local\Google\Chrome\Application\chrome.exe'
-        let g:exES_ImageViewer = 'd:\exdev\tools\IrfanView\i_view32.exe'
+        let g:exES_ImageViewer = $EX_DEV.'/tools/IrfanView/i_view32.exe'
     elseif has("unix")
         let g:exES_WebBrowser = 'firefox'
     elseif has("mac")

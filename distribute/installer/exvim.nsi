@@ -17,10 +17,10 @@
 ; /////////////////////////////////////////////////////////////////////////////
 
 ; Name and File
-Name "exvim Installer" 
-Caption "exvim Installer"
-Icon "resource\exvim_icon.ico"
-OutFile "exvim-Installer.exe"
+Name "exvim installer" 
+Caption "exvim installer"
+Icon "rawdata\images\exvim_icon.ico"
+OutFile "exvim_installer.exe"
 
 ; Default installation
 ; DISABLE: InstallDir "$PROGRAMFILES\exdev"
@@ -41,7 +41,7 @@ XPStyle on
 Function .onInit
 	# the plugins dir is automatically deleted when the installer exits
 	InitPluginsDir
-	File /oname=$PLUGINSDIR\splash.bmp "resource\exvim_splash.bmp"
+	File /oname=$PLUGINSDIR\splash.bmp "rawdata\images\exvim_splash.bmp"
 	#optional
 	#File /oname=$PLUGINSDIR\splash.wav "C:\myprog\sound.wav"
 
@@ -51,7 +51,7 @@ Function .onInit
 
     # run the install program to check for already installed versions
     SetOutPath $TEMP
-    File rawdata\exvim\vim\vim72\install.exe
+    File rawdata\vim\vim73\install.exe
     ExecWait "$TEMP\install.exe -uninstall-check"
     Delete $TEMP\install.exe
 FunctionEnd
@@ -60,11 +60,11 @@ FunctionEnd
 ; Interface Settings
 ; /////////////////////////////////////////////////////////////////////////////
 
-!define MUI_ICON "resource\orange-install.ico"
-!define MUI_UNICON "resource\modern-uninstall-full.ico"
+!define MUI_ICON "rawdata\images\orange-install.ico"
+!define MUI_UNICON "rawdata\images\modern-uninstall-full.ico"
 
 !define MUI_HEADERIMAGE
-!define MUI_HEADERIMAGE_BITMAP "resource\exvim_header.bmp" ; optional
+!define MUI_HEADERIMAGE_BITMAP "rawdata\images\exvim_header.bmp" ; optional
 !define MUI_BGCOLOR F0F0F0
 !define MUI_ABORTWARNING
 
@@ -101,139 +101,140 @@ InstType "minimal"
 ;  Desc: exvim
 ;  ------------------------------------------------------------------ 
 
-SectionGroup "!exvim" sec_exvim
+SectionGroup "!vim" sec_vim
 
     ;  ======================================================== 
     ;  vim  
     ;  ======================================================== 
 
-    Section "vim72" sec_vim
+    Section "gvim73" sec_gvim
         SectionIn 1 2
 
         ; copy vim files
-        SetOutPath $INSTDIR\exvim
-        File /r rawdata\exvim\vim\*
+        SetOutPath $INSTDIR\tools\exvim
+        File /r rawdata\vim\vim73\*
 
         ; append GnuWin32 bin path to user PATH environment variable
         ;  DISABLE { 
         ;  ReadRegStr $0 HKCU "Environment" "PATH"
-        ;  WriteRegExpandStr HKCU "Environment" "PATH" "$INSTDIR\exvim\vim72;$0"
+        ;  WriteRegExpandStr HKCU "Environment" "PATH" "$INSTDIR\tools\exvim\vim73;$0"
         ;  } DISABLE end 
-        ${EnvVarUpdate} $0 "PATH" "A" "HKCU" "$INSTDIR\exvim\vim72"  
+        ${EnvVarUpdate} $0 "PATH" "A" "HKCU" "$INSTDIR\tools\exvim\vim73"  
     SectionEnd
 
     ;  ======================================================== 
-    ;  vim-plugins  
+    ;  exvim
     ;  ======================================================== 
 
-    Section "vim-plugins" sec_vim_plugins
+    Section "exvim" sec_exvim
         SectionIn 1 2
 
         ; copy vim-plugin files
-        SetOutPath $INSTDIR\exvim
-        File /r rawdata\exvim\vim-plugins\*
+        SetOutPath $INSTDIR\tools\exvim
+        File /r rawdata\vim\exvim\*
     SectionEnd
 
 SectionGroupEnd
 
 ;  ------------------------------------------------------------------ 
-;  Desc: other tools
+;  Desc: gnu tools
 ;  ------------------------------------------------------------------ 
 
-SectionGroup "other tools" sec_other_tools
+SectionGroup "GNU-tools" sec_gnu_tools
 
-    ;  ------------------------------------------------------------------ 
-    ;  Desc: GnuWin32 
-    ;  ------------------------------------------------------------------ 
+    ;  ======================================================== 
+    ;  gawk  
+    ;  ======================================================== 
 
-    SectionGroup "GnuWin32" sec_gnu_win32
+    Section "gawk" sec_gawk
+        SectionIn 1
 
-        ;  ======================================================== 
-        ;  gawk  
-        ;  ======================================================== 
+        ; copy gawk files
+        SetOutPath $INSTDIR\bin
+        File /r rawdata\gnu\bin\gawk.exe
+    SectionEnd
 
-        Section "gawk" sec_gawk
-            SectionIn 1
+    ;  ======================================================== 
+    ;  diffutils 
+    ;  ======================================================== 
 
-            ; copy gawk files
-            SetOutPath $INSTDIR\tools\GnuWin32
-            File /r rawdata\GnuWin32\gawk\*
-        SectionEnd
+    Section "diffutils" sec_diffutils
+        SectionIn 1
 
-        ;  ======================================================== 
-        ;  diffutils 
-        ;  ======================================================== 
+        ; copy diff files
+        SetOutPath $INSTDIR\bin
+        File /r rawdata\gnu\bin\diff.exe
+        File /r rawdata\gnu\bin\diff3.exe
+    SectionEnd
 
-        Section "diffutils" sec_diffutils
-            SectionIn 1
+    ;  ======================================================== 
+    ;  id-utils
+    ;  ======================================================== 
 
-            ; copy diff files
-            SetOutPath $INSTDIR\tools\GnuWin32
-            File /r rawdata\GnuWin32\diffutils\*
-        SectionEnd
+    Section "id-utils" sec_idutils
+        SectionIn 1
 
-        ;  ======================================================== 
-        ;  id-utils
-        ;  ======================================================== 
+        ; copy id-utils files
+        SetOutPath $INSTDIR\bin
+        File /r rawdata\gnu\bin\lid.exe
+        File /r rawdata\gnu\bin\mkid.exe
 
-        Section "id-utils" sec_idutils
-            SectionIn 1
+        ; copy share files
+        SetOutPath $INSTDIR\share
+        File /r rawdata\gnu\share\id-lang.map
+    SectionEnd
 
-            ; copy libintl files
-            SetOutPath $INSTDIR\tools\GnuWin32
-            File /r rawdata\GnuWin32\libintl\*
+    ;  ======================================================== 
+    ;  sed
+    ;  ======================================================== 
 
-            ; copy libiconv files
-            SetOutPath $INSTDIR\tools\GnuWin32
-            File /r rawdata\GnuWin32\libiconv\*
+    Section "sed" sec_sed
+        SectionIn 1
 
-            ; copy id-utils files
-            SetOutPath $INSTDIR\tools\GnuWin32
-            File /r rawdata\GnuWin32\id-utils\*
-        SectionEnd
+        ; copy sed files
+        SetOutPath $INSTDIR\bin
+        File /r rawdata\gnu\bin\libintl3.dll
+        File /r rawdata\gnu\bin\libiconv2.dll
+        File /r rawdata\gnu\bin\regex2.dll
+        File /r rawdata\gnu\bin\sed.exe
+    SectionEnd
 
-        ;  ======================================================== 
-        ;  sed
-        ;  ======================================================== 
+    ;  ======================================================== 
+    ;  src-highlite
+    ;  ======================================================== 
 
-        Section "sed" sec_sed
-            SectionIn 1
+    Section "src-highlite" sec_src_highlite
+        SectionIn 1
 
-            ; copy sed files
-            SetOutPath $INSTDIR\tools\GnuWin32
-            File /r rawdata\GnuWin32\regex\*
+        ; copy src-highlite files
+        SetOutPath $INSTDIR\bin
+        File /r rawdata\gnu\bin\source-highlight.exe
 
-            ; copy sed files
-            SetOutPath $INSTDIR\tools\GnuWin32
-            File /r rawdata\GnuWin32\sed\*
-        SectionEnd
+        ; copy share files
+        SetOutPath $INSTDIR\share\source-highlight
+        File /r rawdata\gnu\share\source-highlight\*
+    SectionEnd
 
-        ;  ======================================================== 
-        ;  src-highlite
-        ;  ======================================================== 
+    ;  ======================================================== 
+    ;  PostGnuWin32
+    ;  ======================================================== 
 
-        Section "src-highlite" sec_src_highlite
-            SectionIn 1
+    Section # "PostGnuWin32"
+        ; append GnuWin32 bin path to user PATH environment variable
+        ;  DISABLE { 
+        ;  ReadRegStr $0 HKCU "Environment" "PATH"
+        ;  WriteRegExpandStr HKCU "Environment" "PATH" "$INSTDIR\GnuWin32\bin;$0"
+        ;  } DISABLE end 
+        ${EnvVarUpdate} $0 "PATH" "A" "HKCU" "$INSTDIR\bin"  
+    SectionEnd
 
-            ; copy src-highlite files
-            SetOutPath $INSTDIR\tools\GnuWin32
-            File /r rawdata\GnuWin32\src-highlite\*
-        SectionEnd
+SectionGroupEnd
 
-        ;  ======================================================== 
-        ;  PostGnuWin32
-        ;  ======================================================== 
+;  ------------------------------------------------------------------ 
+;  Desc: gnu tools
+;  ------------------------------------------------------------------ 
 
-        Section # "PostGnuWin32"
-            ; append GnuWin32 bin path to user PATH environment variable
-            ;  DISABLE { 
-            ;  ReadRegStr $0 HKCU "Environment" "PATH"
-            ;  WriteRegExpandStr HKCU "Environment" "PATH" "$INSTDIR\GnuWin32\bin;$0"
-            ;  } DISABLE end 
-            ${EnvVarUpdate} $0 "PATH" "A" "HKCU" "$INSTDIR\tools\GnuWin32\bin"  
-        SectionEnd
-
-    SectionGroupEnd
+SectionGroup "other-tools" sec_other_tools
 
     ;  ======================================================== 
     ;  Graphviz 
@@ -244,7 +245,7 @@ SectionGroup "other tools" sec_other_tools
 
         ; copy grpahviz files
         SetOutPath $INSTDIR\tools\Graphviz
-        File /r rawdata\Graphviz\*
+        File /r rawdata\graphviz\*
     
         ; append Graphviz bin path to user PATH environment variable
         ;  DISABLE { 
@@ -254,6 +255,17 @@ SectionGroup "other tools" sec_other_tools
         ${EnvVarUpdate} $0 "PATH" "A" "HKCU" "$INSTDIR\tools\Graphviz\bin"  
     SectionEnd
 
+    ;  ======================================================== 
+    ;  IrfanView 
+    ;  ======================================================== 
+
+    Section "IrfanView" sec_irfanview
+        SectionIn 1
+
+        ; copy grpahviz files
+        SetOutPath $INSTDIR\tools\IrfanView
+        File /r rawdata\irfanview\*
+    SectionEnd
 
     ;  ======================================================== 
     ;  fonts  
@@ -300,7 +312,7 @@ Section # "PostInstall"
     WriteRegStr HKCR ".vimentry" "" "exvim.vimentry"
     WriteRegStr HKCR "exvim.vimentry" "" "exvim vimentry file"
     WriteRegStr HKCR "exvim.vimentry\shell" "" "open"
-    WriteRegStr HKCR "exvim.vimentry\shell\open\command" "" '"$INSTDIR\exvim\vim72\gvim.exe" "%1"'
+    WriteRegStr HKCR "exvim.vimentry\shell\open\command" "" '"$INSTDIR\tools\exvim\vim73\gvim.exe" "%1"'
     ; Add vimentry to new file
     WriteRegStr HKCR ".vimentry\ShellNew" "NullFile" ""
     System::Call 'shell32.dll::SHChangeNotify(i, i, i, i) v (0x08000000, 0, 0, 0)'
@@ -311,32 +323,38 @@ SectionEnd
 ; /////////////////////////////////////////////////////////////////////////////
 
 ;Language strings
-LangString DESC_exvim ${LANG_ENGLISH} "exvim"
-LangString DESC_vim ${LANG_ENGLISH} "Install vim72 (compile with python,cscope)"
-LangString DESC_vim_plugins ${LANG_ENGLISH} "vim-plugins for vim"
-LangString DESC_other_tools ${LANG_ENGLISH} "terminal tools"
-LangString DESC_gnu_win32 ${LANG_ENGLISH} "GnuWin32 tools"
+LangString DESC_vim ${LANG_ENGLISH} "vim"
+LangString DESC_gvim ${LANG_ENGLISH} "Install gvim73 (compile with python,cscope)"
+LangString DESC_exvim ${LANG_ENGLISH} "exvim files"
+
+LangString DESC_gnu_tools ${LANG_ENGLISH} "gnu tools"
 LangString DESC_gawk ${LANG_ENGLISH} "gawk"
 LangString DESC_diffutils ${LANG_ENGLISH} "diffutils"
 LangString DESC_idutils ${LANG_ENGLISH} "id-utils"
 LangString DESC_sed ${LANG_ENGLISH} "sed"
 LangString DESC_src_highlite ${LANG_ENGLISH} "src-highlite"
+
+LangString DESC_other_tools ${LANG_ENGLISH} "other tools"
 LangString DESC_graphviz ${LANG_ENGLISH} "Graphviz"
+LangString DESC_irfanview ${LANG_ENGLISH} "IrfanView"
 LangString DESC_fonts ${LANG_ENGLISH} "Fonts"
 
 ;Assign language strings to sections
 !insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
-    !insertmacro MUI_DESCRIPTION_TEXT ${sec_exvim} $(DESC_exvim)
     !insertmacro MUI_DESCRIPTION_TEXT ${sec_vim} $(DESC_vim)
-    !insertmacro MUI_DESCRIPTION_TEXT ${sec_vim_plugins} $(DESC_vim_plugins)
-    !insertmacro MUI_DESCRIPTION_TEXT ${sec_other_tools} $(DESC_other_tools)
-    !insertmacro MUI_DESCRIPTION_TEXT ${sec_gnu_win32} $(DESC_gnu_win32)
+    !insertmacro MUI_DESCRIPTION_TEXT ${sec_gvim} $(DESC_gvim)
+    !insertmacro MUI_DESCRIPTION_TEXT ${sec_exvim} $(DESC_exvim)
+
+    !insertmacro MUI_DESCRIPTION_TEXT ${sec_gnu_tools} $(DESC_gnu_tools)
     !insertmacro MUI_DESCRIPTION_TEXT ${sec_gawk} $(DESC_gawk)
     !insertmacro MUI_DESCRIPTION_TEXT ${sec_diffutils} $(DESC_diffutils)
     !insertmacro MUI_DESCRIPTION_TEXT ${sec_idutils} $(DESC_idutils)
     !insertmacro MUI_DESCRIPTION_TEXT ${sec_sed} $(DESC_sed)
     !insertmacro MUI_DESCRIPTION_TEXT ${sec_src_highlite} $(DESC_src_highlite)
+
+    !insertmacro MUI_DESCRIPTION_TEXT ${sec_other_tools} $(DESC_other_tools)
     !insertmacro MUI_DESCRIPTION_TEXT ${sec_graphviz} $(DESC_graphviz)
+    !insertmacro MUI_DESCRIPTION_TEXT ${sec_irfanview} $(DESC_irfanview)
     !insertmacro MUI_DESCRIPTION_TEXT ${sec_fonts} $(DESC_fonts)
 !insertmacro MUI_FUNCTION_DESCRIPTION_END
 
@@ -365,12 +383,6 @@ Section "Uninstall"
 	# We may have been put to the background when uninstall did something.
 	BringToFront
     
-    ; remove install directory
-    RMDir /r "$INSTDIR\exvim"
-    RMDir /r "$INSTDIR\tools\GnuWin32"
-    RMDir /r "$INSTDIR\tools\Graphviz"
-    Delete $INSTDIR\uninstall.exe
-    
     ; remove registry value
     DeleteRegKey /ifempty HKCU "Software\exdev"
 
@@ -381,9 +393,9 @@ Section "Uninstall"
     DeleteRegKey HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\exvim"
 
     ; remove from environment
+    ${un.EnvVarUpdate} $0 "PATH" "R" "HKCU" "$INSTDIR\bin"  
     ${un.EnvVarUpdate} $0 "PATH" "R" "HKCU" "$INSTDIR\tools\Graphviz\bin"
-    ${un.EnvVarUpdate} $0 "PATH" "R" "HKCU" "$INSTDIR\tools\GnuWin32\bin"  
-    ${un.EnvVarUpdate} $0 "PATH" "R" "HKCU" "$INSTDIR\exvim\vim72"  
+    ${un.EnvVarUpdate} $0 "PATH" "R" "HKCU" "$INSTDIR\tools\exvim\vim73"  
 
     ; Refresh environment variables
     SendMessage ${HWND_BROADCAST} ${WM_WININICHANGE} 0 "STR:Environment" /TIMEOUT=5000 
@@ -393,7 +405,7 @@ Section "Uninstall"
     System::Call 'shell32.dll::SHChangeNotify(i, i, i, i) v (0x08000000, 0, 0, 0)'
 
     ; remove fonts
-    Push "$FONTS\VeraMono.TTF"
+    Push "$FONTS\VeraMono.ttf"
     System::Call "Gdi32::RemoveFontResource(t s) i .s"
     Pop $0
     IntCmp $0 0 0 +2 +2
@@ -401,5 +413,13 @@ Section "Uninstall"
     SendMessage ${HWND_BROADcast} ${WM_FONTCHANGE} 0 0
 
     Delete "$FONTS\VeraMono.ttf"
-    Delete "$INSTDIR\tools\fonts\VeraMono.ttf"
+    ;  Delete "$INSTDIR\share\fonts\VeraMono.ttf"
+    
+    ; remove install directory
+    RMDir /r "$INSTDIR\bin"
+    RMDir /r "$INSTDIR\share"
+    RMDir /r "$INSTDIR\tools\exvim"
+    RMDir /r "$INSTDIR\tools\Graphviz"
+    RMDir /r "$INSTDIR\tools\IrfanView"
+    Delete $INSTDIR\uninstall.exe
 SectionEnd
