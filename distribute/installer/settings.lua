@@ -17,7 +17,7 @@ module("settings")
 -- defines
 --/////////////////////////////////////////////////////////////////////////////
 
-version = 8.05
+version = "8.05_b2"
 target_path = "e:/dev/release/exvim"
 build_path = target_path .. "/src"
 exvim_path = "d:/exdev/tools/exvim"

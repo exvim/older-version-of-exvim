@@ -9,25 +9,34 @@
 # imports
 #/////////////////////////////////////////////////////////////////////////////
 
+import platform
 import os.path
 import shutil
 import zipfile
-import settings
 import misc
+
+if platform.system() == "Windows":
+    import settings_win
+    settings = settings_win 
+    platform_name = "win"
+else:
+    import settings_unix
+    settings = settings_unix 
+    platform_name = "unix"
+
 
 #/////////////////////////////////////////////////////////////////////////////
 # global variables
 #/////////////////////////////////////////////////////////////////////////////
 
 # general
-str_version = str(settings.version)
 dest_root_path = settings.target_path
-dest_version_path = os.path.join ( settings.target_path, str_version )
+dest_version_path = os.path.join ( settings.target_path, settings.version )
 
 #
 full_package_name = "full_package"
 ex_package_name = "ex_plugins_package"
-patched_package_name = "patched_plugins_package-" + str(settings.patched_plugins_version)
+patched_package_name = "patched_plugins_package"
 
 #/////////////////////////////////////////////////////////////////////////////
 # functions
@@ -44,7 +53,7 @@ def precheck ():
     print "#########################" 
     print ""
 
-    print "version = %s" % str_version
+    print "version = %s" % settings.version
 
     # check source path, if not found, return false
     print "exvim_path = %s" % os.path.abspath(settings.exvim_path)
@@ -76,7 +85,8 @@ def gen_full_package ():
     print "Creating full-package"
 
     # create a full-package zip file
-    full_package_path = dest_version_path + "/" + full_package_name + "-" + str_version + ".zip"
+    fullname = full_package_name + "-" + platform_name + "-" + settings.version + ".zip"
+    full_package_path = dest_version_path + "/" + fullname 
     zipfp = zipfile.ZipFile( full_package_path, "w", zipfile.ZIP_DEFLATED )
 
     # copy toolkit folder
@@ -104,7 +114,8 @@ def gen_ex_plugins_package ():
     print "Creating ex-plugins-package"
 
     # create a ex-package zip file
-    ex_package_path = dest_version_path + "/" + ex_package_name + "-" + str_version + ".zip"
+    fullname = ex_package_name + "-" + platform_name + "-" + settings.version + ".zip"
+    ex_package_path = dest_version_path + "/" + fullname 
     zipfp = zipfile.ZipFile( ex_package_path, "w", zipfile.ZIP_DEFLATED )
 
     # copy toolkit folder
@@ -182,7 +193,8 @@ def gen_patched_plugins_package ():
     print "Creating patched-plugins-package"
 
     # create a patched-package zip file
-    patched_package_path = os.path.join ( dest_version_path,  patched_package_name + ".zip" )
+    fullname = patched_package_name + "-" + platform_name + "-" + settings.patched_plugins_version + ".zip"
+    patched_package_path = os.path.join ( dest_version_path, fullname )
     zipfp = zipfile.ZipFile( patched_package_path, "w", zipfile.ZIP_DEFLATED )
 
     # copy patched-plugins files

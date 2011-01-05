@@ -9,8 +9,8 @@
 # global variables
 #/////////////////////////////////////////////////////////////////////////////
 
-version = 8.05
-patched_plugins_version = 2.2
+version = "8.05_b2"
+patched_plugins_version = "2.2"
 target_path = "e:/dev/release/exvim"
 build_path = target_path + "/src"
 exvim_path = "d:/exdev/tools/exvim"
