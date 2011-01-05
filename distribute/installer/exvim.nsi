@@ -111,7 +111,7 @@ SectionGroup "!vim" sec_vim
         SectionIn 1 2
 
         ; copy vim files
-        SetOutPath $INSTDIR\tools\exvim
+        SetOutPath $INSTDIR\tools\exvim\vim73
         File /r rawdata\vim\vim73\*
 
         ; append GnuWin32 bin path to user PATH environment variable
