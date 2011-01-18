@@ -39,7 +39,11 @@ if has ("win32")
 elseif has ("mac")
     silent exec "language en_US" 
 else
-    silent exec "language en_US.utf8" 
+    " in mac-terminal
+    silent exec "language en_US"
+
+    " in linux-terminal
+    " silent exec "language en_US.utf8" 
 endif
 
 au FileType c,cpp,cs,swig set nomodeline " this will avoid bug in my project with namespace ex, the vim will tree ex:: as modeline.
