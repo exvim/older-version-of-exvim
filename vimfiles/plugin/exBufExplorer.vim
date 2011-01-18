@@ -222,7 +222,7 @@ function s:exBE_GotoInSelectWindow() " <<<
 
     " do not open again if the current buf is the file to be opened
     if fnamemodify(expand("%"),":p") != bufname
-        silent exec 'e ' . bufname
+        silent exec 'e ' . escape(bufname, " ")
     endif
 
     " go back if needed
