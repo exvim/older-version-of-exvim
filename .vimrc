@@ -502,10 +502,11 @@ function s:CheckIfExpandTab()
 endfunction
 
 " DISABLE { 
-" NOTE: may have problem with exUtility
+" NOTE: will have problem with exvim, because exvim use exES_CWD as working directory for tag and other thing
 " Change current directory to the file of the buffer ( from Script#65"CD.vim"
 " au   BufEnter *   execute ":lcd " . expand("%:p:h") 
 " } DISABLE end 
+set noacd " no autochchdir
 
 " ------------------------------------------------------------------ 
 " Desc: 
