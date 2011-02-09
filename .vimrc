@@ -506,7 +506,11 @@ endfunction
 " Change current directory to the file of the buffer ( from Script#65"CD.vim"
 " au   BufEnter *   execute ":lcd " . expand("%:p:h") 
 " } DISABLE end 
-set noacd " no autochchdir
+
+" only supoort in 7.3 or higher
+if v:version >= 703
+    set noacd " no autochchdir
+endif
 
 " ------------------------------------------------------------------ 
 " Desc: 
