@@ -1,8 +1,8 @@
 Site
 **************
 
-* exvim official site: http://www.ex-dev.com/projects/exvim
-* exvim documentation: http://www.ex-dev.com/projects/exvim/wiki
+* exvim official site: http://www.ex-dev.com/exvim
+* exvim documentation: http://www.ex-dev.com/exvim/wiki
 * exvim in github: http://github.com/jwu/exvim
 * exvim in vim scripts: http://www.vim.org/scripts/script.php?script_id=2627 
 
