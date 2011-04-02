@@ -1,10 +1,11 @@
 Site
 **************
 
-* exvim official site: http://www.ex-dev.com/exvim
-* exvim documentation: http://www.ex-dev.com/exvim/wiki
-* exvim in github: http://github.com/jwu/exvim
-* exvim in vim scripts: http://www.vim.org/scripts/script.php?script_id=2627 
+* exVim Official Page: http://www.ex-dev.com/exvim
+* exVim Documentation: http://www.ex-dev.com/exvim/wiki
+* exVim Source Code: https://github.com/jwu/exvim
+* exVim in Vim Script: http://www.vim.org/scripts/script.php?script_id=2627
+* exVim in Google Code (for Download only): http://code.google.com/p/exvim
 
 Introduction
 **************
