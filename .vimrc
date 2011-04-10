@@ -126,7 +126,7 @@ endif
 "/////////////////////////////////////////////////////////////////////////////
 " Variable settings ( set all )
 "/////////////////////////////////////////////////////////////////////////////
-
+  
 " ------------------------------------------------------------------ 
 " Desc: Visual
 " ------------------------------------------------------------------ 
@@ -982,22 +982,24 @@ function g:exES_PostUpdate()
 		let g:visual_studio_find_results_2 = g:exES_vsFindResult2
 	endif
 
-    " set vimwiki
-    if exists( 'g:exES_wikiHome' )
-        " clear the list first
-        if exists( 'g:vimwiki_list' ) && !empty(g:vimwiki_list)
-            silent call remove( g:vimwiki_list, 0, len(g:vimwiki_list)-1 )
-        endif
+    " DISABLE { 
+    " " set vimwiki
+    " if exists( 'g:exES_wikiHome' )
+    "     " clear the list first
+    "     if exists( 'g:vimwiki_list' ) && !empty(g:vimwiki_list)
+    "         silent call remove( g:vimwiki_list, 0, len(g:vimwiki_list)-1 )
+    "     endif
 
-        " assign vimwiki pathes, 
-        " NOTE: vimwiki need full path.
-        let g:vimwiki_list = [ { 'path': fnamemodify(g:exES_wikiHome,":p"), 
-                    \ 'path_html': fnamemodify(g:exES_wikiHomeHtml,":p"),
-                    \ 'html_header': fnamemodify(g:exES_wikiHtmlHeader,":p") } ]
+    "     " assign vimwiki pathes, 
+    "     " NOTE: vimwiki need full path.
+    "     let g:vimwiki_list = [ { 'path': fnamemodify(g:exES_wikiHome,":p"), 
+    "                 \ 'path_html': fnamemodify(g:exES_wikiHomeHtml,":p"),
+    "                 \ 'html_header': fnamemodify(g:exES_wikiHtmlHeader,":p") } ]
 
-        " create vimwiki files
-        call exUtility#CreateVimwikiFiles ()
-    endif
+    "     " create vimwiki files
+    "     call exUtility#CreateVimwikiFiles ()
+    " endif
+    " } DISABLE end 
 endfunction
 
 " ------------------------------------------------------------------ 
@@ -1178,21 +1180,23 @@ let g:LookupFile_AllowNewFiles = 0
 let g:LookupFile_smartcase = 1
 let g:LookupFile_EscCancelsPopup = 1
 
-" ------------------------------------------------------------------ 
-" Desc: VimWiki 
-" ------------------------------------------------------------------ 
+" DISABLE: { 
+" " ------------------------------------------------------------------ 
+" " Desc: VimWiki 
+" " ------------------------------------------------------------------ 
 
-" map <silent><unique> <Leader>wt <Plug>VimwikiTabGoHome
-" map <silent><unique> <Leader>wq <Plug>VimwikiUISelect
-" map <silent><unique> <Leader>ww <Plug>VimwikiGoHome
+" " map <silent><unique> <Leader>wt <Plug>VimwikiTabGoHome
+" " map <silent><unique> <Leader>wq <Plug>VimwikiUISelect
+" " map <silent><unique> <Leader>ww <Plug>VimwikiGoHome
 
-" vimwiki file process
-au FileType vimwiki command! W call exUtility#SaveAndConvertVimwiki(0)
-au FileType vimwiki command! WA call exUtility#SaveAndConvertVimwiki(1)
-au FileType rst command! W call exUtility#SphinxMake('html')
+" " vimwiki file process
+" au FileType vimwiki command! W call exUtility#SaveAndConvertVimwiki(0)
+" au FileType vimwiki command! WA call exUtility#SaveAndConvertVimwiki(1)
+" au FileType rst command! W call exUtility#SphinxMake('html')
 
-let g:vimwiki_camel_case = 0
-let g:vimwiki_hl_headers = 1
+" let g:vimwiki_camel_case = 0
+" let g:vimwiki_hl_headers = 1
+" } DISABLE end 
 
 " ------------------------------------------------------------------ 
 " Desc: snipMate
@@ -1211,7 +1215,7 @@ let g:NERDTreeWinSize = exists('g:exPJ_window_width') ? g:exPJ_window_width : 30
 " Desc: zencoding 
 " ------------------------------------------------------------------ 
 
-let g:user_zen_leader_key = '<c-j>'
+let g:user_zen_leader_key = '<c-z>'
 
 " ------------------------------------------------------------------ 
 " Desc: surround 
