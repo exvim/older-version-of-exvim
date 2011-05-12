@@ -3106,7 +3106,18 @@ function exUtility#Highlight_Visual(match_nr) range " <<<
         let sc = col("'<")-1
         let el = a:lastline+1
         let ec = col("'>")+1
-        let pat = '\%>'.sl.'l'.'\%>'.sc.'v'.'\%<'.el.'l'.'\%<'.ec.'v'
+        if ec == col("$")+1
+            let pat = '\%>'.sl.'l'.'\%>'.sc.'v'.'\%<'.el.'l'.'\%<'.ec.'v'
+        else
+            " get visual selection text
+            try
+                let a_save = @a
+                normal! gv"ay
+                let pat = @a
+            finally
+                let @a = a_save
+            endtry
+        end
     else
         let sl = a:firstline-1
         let el = a:lastline+1

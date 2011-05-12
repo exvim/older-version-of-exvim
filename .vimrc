@@ -1028,8 +1028,10 @@ let Tlist_Compact_Format = 1 " do not show help
 " let Tlist_Process_File_Always = 1 " To use the :TlistShowTag and the :TlistShowPrototype commands without the taglist window and the taglist menu, you should set this variable to 1.
 ":TlistShowPrototype [filename] [linenumber]
 
-" let taglist support shader language as c-like language
+" add hlsl shader language
 let tlist_hlsl_settings = 'c;d:macro;g:enum;s:struct;u:union;t:typedef;v:variable;f:function'
+" add actionscript language
+let tlist_actionscript_settings = 'actionscript;c:class;f:method;p:property;v:variable'
 
 " ------------------------------------------------------------------ 
 " Desc: MiniBufExpl
