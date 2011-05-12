@@ -159,7 +159,7 @@ function s:SetGuiFont()
     elseif has("gui_win32")
         let font_name = ""
         if getfontname( "Bitstream_Vera_Sans_Mono" ) != ""
-            set guifont=Bitstream_Vera_Sans_Mono:h10:cANSI
+            set guifont=Bitstream_Vera_Sans_Mono:h11:cANSI
             let font_name = "Bitstream_Vera_Sans_Mono" 
         elseif getfontname( "Consolas" ) != ""
             set guifont=Consolas:h11:cANSI " this is the default visual studio font
