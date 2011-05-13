@@ -12,15 +12,21 @@
 
 " set EX_DEV variable for linux
 if has ("unix")
-    let $EX_DEV='~/exdev'
-    let g:ex_toolkit_path = $HOME.'/.toolkit'
+    if $EX_DEV ==# ""
+        let $EX_DEV='~/exdev'
+    endif
+    if !exists ( "g:ex_toolkit_path" )
+        let g:ex_toolkit_path = $HOME.'/.toolkit'
+    endif
 
     " NOTE: mac is unix like system, but to use gawk,id-utils correctly, we need to manually set the export path.  
     if has ("mac")
         let $PATH='/usr/local/bin/:'.$PATH
     endif
 else " else if win32 or other system, just set the toolkit path.
-    let g:ex_toolkit_path = $EX_DEV.'/tools/exvim/toolkit'
+    if !exists ( "g:ex_toolkit_path" )
+        let g:ex_toolkit_path = $EX_DEV.'/tools/exvim/toolkit'
+    endif
 endif
 
 " put your own user name here
