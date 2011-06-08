@@ -3330,13 +3330,18 @@ function exUtility#ViewInheritsImage() " <<<
     endif
 
     " try to open the file by image viewer
-    if findfile ( g:exES_ImageViewer ) != ''
-        silent exec '!start ' . g:exES_ImageViewer ' ' . file_name
-    else
-        call exUtility#WarningMsg ("Can't not find image viewer: ".g:exES_ImageViewer . " defined by g:exES_ImageViewer")
-        return
+    if has("win32")
+        if findfile ( g:exES_ImageViewer ) != ''
+            silent exec '!start ' . g:exES_ImageViewer . ' ' . file_name
+        else
+            call exUtility#WarningMsg ("Can't not find image viewer: ".g:exES_ImageViewer . " defined by g:exES_ImageViewer")
+            return
+        endif
+    elseif has("mac") " NOTE: mac also has unix, so do it first
+        silent exec '!' . g:exES_ImageViewer . ' ' . file_name
+    elseif has("unix")
+        " TODO
     endif
-
 endfunction " >>>
 
 " ------------------------------------------------------------------ 

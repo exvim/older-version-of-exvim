@@ -92,18 +92,18 @@ endif
 
 if $EX_DEV ==# ""
     if has ("unix")
-        call confirm ("exvim error: Please set the EX_DEV in .vimrc, default is let $EX_DEV='~/exdev'")
+        " call confirm ("exvim error: Please set the EX_DEV in .vimrc, default is let $EX_DEV='~/exdev'")
         let $EX_DEV='~/exdev'
     elseif has("win32")
-        call confirm ("exvim error: Please set the EX_DEV in .vimrc, default is let $EX_DEV='d:\exdev'")
+        " call confirm ("exvim error: Please set the EX_DEV in .vimrc, default is let $EX_DEV='d:\exdev'")
         let $EX_DEV='d:\exdev'
     endif
 endif
 
 " check if the EX_DEV path exists
-if finddir($EX_DEV) == ''
-    call exUtility#WarningMsg("the path define in environment variable $EX_DEV doesn't exist, please check your $EX_DEV definition.")
-endif
+" if finddir($EX_DEV) == ''
+"     call exUtility#WarningMsg("the path define in environment variable $EX_DEV doesn't exist, please check your $EX_DEV definition.")
+" endif
 
 " ------------------------------------------------------------------ 
 " Desc: 
