@@ -104,12 +104,4 @@ endef
 #  Rules
 # /////////////////////////////////////////////////////////////////////////////
 
-ifeq ($(Platform),Win32) # win32
-include $(EX_DEV)/exvim/toolkit/makefile/gcc/gcc_rule_s.mk
-else
-ifeq ($(Platform),Linux) # unix/linux
-include ~/.toolkit/makefile/gcc/gcc_rule_s.mk
-else # other system
-include ~/.toolkit/makefile/gcc/gcc_rule_s.mk
-endif
-endif
+include $(CWD)/gcc_rule_s.mk
