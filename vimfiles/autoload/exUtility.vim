@@ -723,11 +723,11 @@ function exUtility#PutDeclaration() " <<<
     silent normal! o''
     let space = printf('%*s',indent('.'),'')
     silent call setline ( '.', space . b:ECcommentOpen . "/////////////////////////////////////////////////////////////////////////////" . b:ECcommentClose )
-    silent call append  ( '.', space . b:ECcommentOpen . " \class " . b:ECcommentClose )
+    silent call append  ( '.', space . b:ECcommentOpen . " \\class " . b:ECcommentClose )
     silent normal! j
     silent call append  ( '.', space . b:ECcommentOpen . " " . b:ECcommentClose )
     silent normal! j
-    silent call append  ( '.', space . b:ECcommentOpen . " \brief " . b:ECcommentClose )
+    silent call append  ( '.', space . b:ECcommentOpen . " \\brief " . b:ECcommentClose )
     silent normal! j
     silent call append  ( '.', space . b:ECcommentOpen . " " . b:ECcommentClose )
     silent normal! j
@@ -792,9 +792,9 @@ endfunction " >>>
 
 function exUtility#PutClass( class_type, class_name ) " <<<
     execute 'normal! ' . 'o' . "///////////////////////////////////////////////////////////////////////////////"
-    execute 'normal! ' . 'o' . "/// \class " . a:class_name
+    execute 'normal! ' . 'o' . "/// \\class " . a:class_name
     execute 'normal! ' . 'o' . "/// "
-    execute 'normal! ' . 'o' . "/// \brief: "
+    execute 'normal! ' . 'o' . "/// \\brief: "
     execute 'normal! ' . 'o' . "/// "
     execute 'normal! ' . 'o' . "///////////////////////////////////////////////////////////////////////////////"
     execute 'normal! ' . 'o'
