@@ -1137,7 +1137,7 @@ imap <unique> <C-F11> <ESC><Plug>DeComment
 
 function EnhCommentifyCallback(ft)
     " for hlsl, swig, c
-    if a:ft =~ '^\(hlsl\|swig\|c\|objc\)$' " NOTE: we have to rewrite the c comment behavior. 
+    if a:ft =~ '^\(hlsl\|swig\|c\|proto\|objc\)$' " NOTE: we have to rewrite the c comment behavior. 
         let b:ECcommentOpen = '//'
         let b:ECcommentClose = ''
     elseif a:ft == 'snippet' " for snippet
