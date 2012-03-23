@@ -165,13 +165,13 @@ function s:SetGuiFont()
     elseif has("gui_win32")
         let font_name = ""
         if getfontname( "Bitstream_Vera_Sans_Mono" ) != ""
-            set guifont=Bitstream_Vera_Sans_Mono:h13:cANSI
+            set guifont=Bitstream_Vera_Sans_Mono:h12:cANSI
             let font_name = "Bitstream_Vera_Sans_Mono" 
         elseif getfontname( "Consolas" ) != ""
-            set guifont=Consolas:h13:cANSI " this is the default visual studio font
+            set guifont=Consolas:h12:cANSI " this is the default visual studio font
             let font_name = "Consolas" 
         else
-            set guifont=Lucida_Console:h13:cANSI
+            set guifont=Lucida_Console:h12:cANSI
             let font_name = "Lucida_Console" 
         endif
         silent exec "nnoremap <unique> <M-F1> :set guifont=".font_name.":h11:cANSI<CR>"
