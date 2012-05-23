@@ -55,15 +55,16 @@ CompileMode = Fast
 
 #  ------------------------------------------------------------------ 
 #  Desc: Compiler
-#  parameter: g++ 			( gcc_version_3 )
+#  parameter: gcc 			( gcc )
+#             g++ 			( gcc_version_3 )
 #  			  g++-sjlj 		( gcc_version_4 compiled by sjlj )
 # 			  ppu-lv2-g++ 	( gcc_ps3 )
 # 			  cl 			( msvc )
 #  ------------------------------------------------------------------ 
 
-CPP_COMPILER_WIN32=g++
-CPP_COMPILER_LINUX=g++
-CPP_COMPILER_PS3=ppu-lv2-g++
+COMPILER_WIN32=g++
+COMPILER_LINUX=g++
+COMPILER_PS3=ppu-lv2-g++
 
 #  ------------------------------------------------------------------ 
 #  Desc: Linker
@@ -73,9 +74,9 @@ CPP_COMPILER_PS3=ppu-lv2-g++
 # 			  link 			( msvc linker )
 #  ------------------------------------------------------------------ 
 
-CPP_LINKER_WIN32=ar
-CPP_LINKER_LINUX=ar
-CPP_LINKER_PS3=ppu-lv2-ar
+LINKER_WIN32=ar
+LINKER_LINUX=ar
+LINKER_PS3=ppu-lv2-ar
 
 # /////////////////////////////////////////////////////////////////////////////
 #  Machine built-in functions
@@ -144,22 +145,22 @@ ifeq ($(Platform),Win32)
 EXE_NAME := exe
 LIB_NAME := a
 DLL_NAME := dll
-CC := $(SILENT_CMD)$(CPP_COMPILER_WIN32)
-AR := $(SILENT_CMD)$(CPP_LINKER_WIN32)
+CC := $(SILENT_CMD)$(COMPILER_WIN32)
+AR := $(SILENT_CMD)$(LINKER_WIN32)
 else
 ifeq ($(Platform),Linux)
 EXE_NAME := run
 LIB_NAME := a
 DLL_NAME := so
-CC := $(SILENT_CMD)$(CPP_COMPILER_LINUX)
-AR := $(SILENT_CMD)$(CPP_LINKER_LINUX)
+CC := $(SILENT_CMD)$(COMPILER_LINUX)
+AR := $(SILENT_CMD)$(LINKER_LINUX)
 else
 ifeq ($(Platform),PS3)
 EXE_NAME := elf
 LIB_NAME := a
 DLL_NAME := so
-CC := $(SILENT_CMD)$(CPP_COMPILER_PS3)
-AR := $(SILENT_CMD)$(CPP_LINKER_PS3)
+CC := $(SILENT_CMD)$(COMPILER_PS3)
+AR := $(SILENT_CMD)$(LINKER_PS3)
 else #default
 EXE_NAME := exe
 LIB_NAME := lib

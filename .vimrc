@@ -152,7 +152,7 @@ endif
 " set guifont
 function s:SetGuiFont()
     if has("gui_gtk2")
-        set guifont=Luxi\ Mono\ 10
+        set guifont=Luxi\ Mono\ 13
     elseif has("x11")
         " Also for GTK 1
         set guifont=*-lucidatypewriter-medium-r-normal-*-*-180-*-*-m-*-*
@@ -165,13 +165,13 @@ function s:SetGuiFont()
     elseif has("gui_win32")
         let font_name = ""
         if getfontname( "Bitstream_Vera_Sans_Mono" ) != ""
-            set guifont=Bitstream_Vera_Sans_Mono:h11:cANSI
+            set guifont=Bitstream_Vera_Sans_Mono:h12:cANSI
             let font_name = "Bitstream_Vera_Sans_Mono" 
         elseif getfontname( "Consolas" ) != ""
-            set guifont=Consolas:h11:cANSI " this is the default visual studio font
+            set guifont=Consolas:h12:cANSI " this is the default visual studio font
             let font_name = "Consolas" 
         else
-            set guifont=Lucida_Console:h10:cANSI
+            set guifont=Lucida_Console:h12:cANSI
             let font_name = "Lucida_Console" 
         endif
         silent exec "nnoremap <unique> <M-F1> :set guifont=".font_name.":h11:cANSI<CR>"
@@ -542,7 +542,7 @@ endif
 " ------------------------------------------------------------------ 
 
 " Disable auto-comment for c/cpp, lua, javascript, c# and vim-script
-au FileType c,cpp,javascript set comments=sO:*\ -,mO:*\ \ ,exO:*/,s1:/*,mb:*,ex:*/,f:// 
+au FileType c,cpp,java,javascript set comments=sO:*\ -,mO:*\ \ ,exO:*/,s1:/*,mb:*,ex:*/,f:// 
 au FileType cs set comments=sO:*\ -,mO:*\ \ ,exO:*/,s1:/*,mb:*,ex:*/,f:///,f:// 
 au FileType vim set comments=sO:\"\ -,mO:\"\ \ ,eO:\"\",f:\"
 au FileType lua set comments=f:--
@@ -1137,7 +1137,7 @@ imap <unique> <C-F11> <ESC><Plug>DeComment
 
 function EnhCommentifyCallback(ft)
     " for hlsl, swig, c
-    if a:ft =~ '^\(hlsl\|swig\|c\|objc\)$' " NOTE: we have to rewrite the c comment behavior. 
+    if a:ft =~ '^\(hlsl\|swig\|c\|proto\|objc\)$' " NOTE: we have to rewrite the c comment behavior. 
         let b:ECcommentOpen = '//'
         let b:ECcommentClose = ''
     elseif a:ft == 'snippet' " for snippet

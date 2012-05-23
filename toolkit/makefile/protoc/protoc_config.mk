@@ -1,106 +1,127 @@
 #  ======================================================================================
-#  File         : gcc_project.mk
+#  File         : protoc_config.mk
 #  Author       : Wu Jie 
-#  Last Change  : 10/19/2008 | 11:23:17 AM | Sunday,October
+#  Last Change  : 03/20/2012 | 14:49:31 PM | Tuesday,March
 #  Description  : 
 #  ======================================================================================
 
 # /////////////////////////////////////////////////////////////////////////////
-#  Global Configuration
+#  System Auto Dectect
 # /////////////////////////////////////////////////////////////////////////////
+
+#  ------------------------------------------------------------------ 
+#  Desc: current OS
+#  parameter: Win32
+#  			  Linux
+#  ------------------------------------------------------------------ 
+
+CURRENT_OS := Win32
 
 # /////////////////////////////////////////////////////////////////////////////
 #  User Define
 # /////////////////////////////////////////////////////////////////////////////
 
 #  ------------------------------------------------------------------ 
-#  Desc: Parent Working Directory
+#  Desc: Platform Name
+#  parameter: Linux
+#  			  Win32
+#  			  PS3
+#  			  All
 #  ------------------------------------------------------------------ 
 
-CWD := # TODO: relative-address (sample: ..)
+Platform = Win32
 
 #  ------------------------------------------------------------------ 
-#  Desc: include general config
+#  Desc: Compile Mode
+#  parameter: Safe
+# 		      Fast
 #  ------------------------------------------------------------------ 
 
-include $(CWD)/gcc_config.mk
-
-#  ------------------------------------------------------------------ 
-#  Desc: Project Name
-#  ------------------------------------------------------------------ 
-
-Project := # TODO: current directory name
-ProjectType := # TODO: choose: lib/dll/exe
-
-#  ------------------------------------------------------------------ 
-#  Desc: Include Path
-#  ------------------------------------------------------------------ 
-
-IncDirs += # TODO: relative-address (sample: ./Incs)
-
-#  ------------------------------------------------------------------ 
-#  Desc: Precompiled Headers Dependence Headers
-#  ------------------------------------------------------------------ 
-
-FullPath_GchSrcs += # TODO: relative-address/header-file-name (sample: ./Incs/gch-header.h)
-
-#  ------------------------------------------------------------------ 
-#  Desc: Source Path
-#  ------------------------------------------------------------------ 
-
-SrcDirs += # TODO: relative-address (sample: ./Srcs)
-
-#  ------------------------------------------------------------------ 
-#  Desc: Dependent Library File Paths
-#  NOTE: lib defined in PrjLibs below needn't to specific the lib directory 
-#  ------------------------------------------------------------------ 
-
-LibDirs += # TODO: relative-address (sample: ../Third-Part-Libs)
-
-#  ------------------------------------------------------------------ 
-#  Desc: Dependent Library File Names
-#  ------------------------------------------------------------------ 
-
-PrjLibs += # TODO: lib-file-name (sample: libSDK.a-->SDK) This is libs for project compile depence
-ExtLibs += # TODO: lib-file-name (sample: libSDK.a-->SDK) This is libs for external libaraies
-
-#  ------------------------------------------------------------------ 
-#  Desc: Special Flags
-#   Some space-depent directory flag can't generate automatically, use this instead
-#  ------------------------------------------------------------------ 
-
-CFlag_Spec += # TODO: (sample: -I"C:/Program Files/Microsoft DirectX SDK/Include")
-LFlag_Spec += # TODO: (sample: -L"C:/Program Files/Microsoft DirectX SDK/Lib/x86")
+CompileMode = Fast
 
 # /////////////////////////////////////////////////////////////////////////////
-#  Advanced User Define
-#  NOTE: in this section, you can define advanced macros by uncomment them
+#  C/Cpp Compiler & Linker Choose 
 # /////////////////////////////////////////////////////////////////////////////
 
 #  ------------------------------------------------------------------ 
-#  Desc: Target output directory 
+#  Desc: Compiler
 #  ------------------------------------------------------------------ 
 
-#  OutDir := $(EX_SDK)/_build/gcc/$(Platform)/$(Configuration)
-#  ErrDir := $(CWD)/_logs/errors
-
-#  ------------------------------------------------------------------ 
-#  Desc: Pre defines
-#  ------------------------------------------------------------------ 
-
-# PreDefs +=
+COMPILER=protoc
 
 # /////////////////////////////////////////////////////////////////////////////
-#  Post Build Even
-#   programme after target been built, this is the project specific one (sample: make_fself $(@) $(basename $(@)).self)
+#  Advance User Define
 # /////////////////////////////////////////////////////////////////////////////
 
-define POST_BUILD
-$(ECHO) Post Build $(Project)...
+#  ------------------------------------------------------------------ 
+#  Desc: Choose the shell
+#  ------------------------------------------------------------------ 
+
+SHELL := /bin/sh
+
+#  ------------------------------------------------------------------ 
+#  Desc: Make Debug
+#  ------------------------------------------------------------------ 
+
+SILENT_CMD := @
+
+#  ------------------------------------------------------------------ 
+#  Desc: Make Silent
+#  ------------------------------------------------------------------ 
+
+ifeq ($(SILENT_CMD),@)
+SILENT_MK := --silent
+else
+SILENT_MK :=
+endif
+
+#  ------------------------------------------------------------------ 
+#  Desc: CC
+#  ------------------------------------------------------------------ 
+
+CC := $(SILENT_CMD)$(COMPILER)
+
+#  ------------------------------------------------------------------ 
+#  Desc: General Commands
+#  ------------------------------------------------------------------ 
+
+ECHO := $(SILENT_CMD)echo
+SMAKE := $(SILENT_CMD)$(MAKE) $(SILENT_MK)
+
+#  ------------------------------------------------------------------ 
+#  Desc: OS dependence command
+#  ------------------------------------------------------------------ 
+
+ifeq ($(CURRENT_OS),Linux)
+CMD_PATH_LINUX :=
+ECHO_EMPTY_LINE := $(ECHO)
+VERTICAL_BAR := "|"
+else
+CMD_PATH_LINUX := $(EX_DEV)/tools/MinGW/msys/1.0/bin/
+ECHO_EMPTY_LINE := $(ECHO).
+VERTICAL_BAR := ^|
+endif
+
+#  ------------------------------------------------------------------ 
+#  Desc: Linux Commands
+#  ------------------------------------------------------------------ 
+
+RM := $(SILENT_CMD)$(CMD_PATH_LINUX)rm -f
+RMDIR := $(SILENT_CMD)$(CMD_PATH_LINUX)rmdir
+MKDIR := $(SILENT_CMD)$(CMD_PATH_LINUX)mkdir -p
+CAT := $(SILENT_CMD)$(CMD_PATH_LINUX)cat
+
+#  ------------------------------------------------------------------ 
+#  Desc: Windows Commands
+#  ------------------------------------------------------------------ 
+
+CLS := $(SILENT_CMD)cls # this is the dos command, temp exist here
+COPY := $(SILENT_CMD)copy
+
+# /////////////////////////////////////////////////////////////////////////////
+# Post Build Even for all project
+# /////////////////////////////////////////////////////////////////////////////
+
+define POST_BUILD_ALL_PROJECT
+$(ECHO) Post Build...
 endef
-
-# /////////////////////////////////////////////////////////////////////////////
-#  Rules
-# /////////////////////////////////////////////////////////////////////////////
-
-include $(CWD)/gcc_rule_s.mk
