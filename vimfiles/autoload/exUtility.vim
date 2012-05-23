@@ -2251,11 +2251,14 @@ function exUtility#Terminal( behavior, wait, cmd ) " <<<
         exec 'silent !' . wait_cmd . shell . ' ' . a:cmd . shell_end 
 
     elseif has("unix")
+        let wait_cmd = ''
         let silent_cmd = ''
         if a:behavior ==# 'silent'
             let silent_cmd = 'silent'
+        elseif a:behavior ==# 'remain'
+            let wait_cmd = ';sh'
         endif
-        exec silent_cmd . ' !sh ' . a:cmd
+        exec silent_cmd . ' !' . a:cmd . wait_cmd
     endif
 endfunction " >>>
 
@@ -2497,6 +2500,10 @@ function exUtility#UpdateVimFiles( type ) " <<<
     " ======================================================== 
     " prompt terminal, run the shell programme we gen.
     " ======================================================== 
+
+    if has ("unix")
+        let update_cmd = 'sh ' . update_cmd
+    endif
 
     call exUtility#Terminal ( 'prompt', 'nowait', update_cmd )
 endfunction " >>>
