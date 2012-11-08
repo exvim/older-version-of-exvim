@@ -380,6 +380,8 @@ function s:exQF_ChooseCompiler() " <<<
             endif
         elseif match(line, '^<<<<<< SWIG: ' ) != -1
             let s:exQF_compiler = 'swig'
+        elseif match(line, 'UnityEngine.Debug' ) != -1
+            let s:exQF_compiler = 'unity3d'
         endif
     endfor
 
@@ -416,6 +418,8 @@ function s:exQF_ChooseCompiler() " <<<
         silent set errorformat+=%f(%l\\,%c):\ %m " csharp error-format
     elseif s:exQF_compiler == 'swig'
         silent set errorformat+=%f(%l):\ %m
+    elseif s:exQF_compiler == 'unity3d'
+        silent set errorformat+=%m\ (at\ %f:%l)
     elseif s:exQF_compiler == 'gcc'
         " this is for exGlobaSearch result, some one may copy the global search result to exQuickFix
         silent set errorformat+=%f:%l:%m
