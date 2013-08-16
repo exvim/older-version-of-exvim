@@ -79,6 +79,11 @@ syn match  mkdRule         /^\s*_\s\{0,1}_\s\{0,1}_$/
 syn match  mkdRule         /^\s*-\{3,}$/
 syn match  mkdRule         /^\s*\*\{3,5}$/
 
+" jwu ADD { 
+syn region mkdFrontMatter start=/\%^---$/ end=/^---$/
+syn match mkdFrontMatter /\%^---\_.\{-}---$/ contains=@Spell
+" } jwu ADD end 
+
 "HTML headings
 syn region htmlH1       start="^\s*#"                   end="\($\|#\+\)" contains=@Spell
 syn region htmlH2       start="^\s*##"                  end="\($\|#\+\)" contains=@Spell
@@ -96,6 +101,9 @@ HtmlHiLink mkdFootnote    Comment
 HtmlHiLink mkdBlockquote    Comment
 HtmlHiLink mkdLineContinue  Comment
 HtmlHiLink mkdListItem      Identifier
+" jwu ADD { 
+HtmlHiLink mkdFrontMatter    Comment
+" } jwu ADD end 
 HtmlHiLink mkdRule          Identifier
 HtmlHiLink mkdLineBreak     Todo
 HtmlHiLink mkdFootnotes     htmlLink
