@@ -1,0 +1,98 @@
+---
+layout: layout
+---
+<body class="permalink-page">
+  <div class="container" id="main" role="main">
+    {% if page.type == 'text' %}
+    <article class="text">
+      <header>
+        <h2><a href="{% if site.baseurl %}{{ site.baseurl }}{% endif %}{{ page.url }}">{{ page.title }}</h2></a>
+      </header>
+      <section>
+      {{ content }}
+    <!-- photo post -->
+    {% elsif page.type == 'photo' %}
+    <article class="photo">
+      <header>
+        <a href="{% if site.baseurl %}{{ site.baseurl }}{% endif %}{{ page.url }}"><img src="{% if site.baseurl %}{{ site.baseurl }}{% endif %}{{ page.photo_url }}" alt="{{ page.title }}" /></a>  
+        <a class="highres photo-link etp-zoom" href="{% if site.baseurl %}{{ site.baseurl }}{% endif %}{{ page.photo_url }}">Zoom</a>
+        <a href="{% if site.baseurl %}{{ site.baseurl }}{% endif %}{{ page.url }}" class="permalink-button photo-link">
+          <span class="icon-link etp-permalink"></span>
+          <strong>Permalink</strong>
+        </a>
+      </header>
+      <section>
+        <ul class="exif">
+          {% if page.camera %}
+          <li class="etp-camera">Camera: <strong>{{ page.camera }}</strong></li>
+          {% endif %}
+          {% if page.apeture %}
+          <li>Apeture: <strong>{{ page.apeture }}</strong></li>
+          {% endif %}
+          {% if page.exposure %}
+          <li>Exposure: <strong>{{ page.exposure }}</strong></li>
+          {% endif %}
+          {% if page.focal_length %}
+          <li>Focal: <strong>{{ page.focal_length }}</strong></li>
+          {% endif %}
+        </ul>
+        {{ content }}
+    <!-- quote post -->
+    {% elsif page.type == 'quote' %}
+    <article class="quote">
+      <header>
+        <p><span class="quote_start">&ldquo;</span>{{ page.title }}<span class="quote_end">&rdquo;</span></p>
+      </header>
+      <section>
+        {% if page.source %}<p>{{ page.source }}</p>{% endif %}
+        {{ content }}
+    <!-- link post -->
+    {% elsif page.type == 'link' %}
+    <article class="link">
+      <header>
+        <h2><a href="{{ page.link }}"><span>{{ page.title }}</span></a></h2>
+      </header>
+      <section>
+        {{ content }}
+    <!-- embed post -->
+    {% elsif page.type == 'embed' %}
+    <article class="video">
+      <header>
+        {{ page.embed_code }}
+      </header>
+      <section>
+        {{ content }}
+    <!-- any other post -->
+    {% else %}
+    <article class="text">
+      <header>
+        <h2><a href="{% if site.baseurl %}{{ site.baseurl }}{% endif %}{{ page.url }}">{{ page.title }}</h2></a>
+      </header>
+      <section>
+      {{ content }}
+    {% endif %}
+      <!-- post footer -->
+      </section>
+      <footer>
+        <ul class="meta">
+        <li class="time"><a href="{% if site.baseurl %}{{ site.baseurl }}{% endif %}{{ page.url }}" class="etp-timeago">{{ page.date | date_to_string }}</a></li>
+        </ul>
+      </footer>
+      {% if site.disqus_shortname %}
+      <div id="disqus_thread"></div>
+      <script type="text/javascript">
+          /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+          var disqus_shortname = '{{ site.disqus_shortname }}'; // required: replace example with your forum shortname
+
+          /* * * DON'T EDIT BELOW THIS LINE * * */
+          (function() {
+              var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+              dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+              (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+          })();
+      </script>
+      <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+      <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+      {% endif %}
+    </article>
+  </div>

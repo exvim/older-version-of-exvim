@@ -1,0 +1,107 @@
+  <style type="text/css">
+/* COLORS */
+  /* Text Color */
+  body, article section ul.credit li.author a:hover, article footer a:hover, body.permalink-page article ul.credit li a:hover, body.permalink-page article ul.tags li a:hover, body.permalink-page article div.comments, body.permalink-page article div.notes {
+     color: {{ site.text_color }};
+   }
+  /* Accent Color */
+   a, ul.post-archive a:hover .title {
+     color: {{ site.accent_color }};
+   }
+  /* Hover Color */
+   a:hover, article.text header h2 a:hover {
+     color: {{ site.hover_color }};
+   }
+  /* Sublte Color */
+  header.site-fixed nav.pages ul li:after, a.highres, a.permalink-button, article section ul.credit, article section ul.credit li.author a, article footer, article footer a, article.chat strong, article.ask header div.asker-wrap p.asker, article.photo ul.exif, body.permalink-page article ul.credit, body.permalink-page article ul.tags, body.permalink-page article ul.credit li a, body.permalink-page article ul.tags li a, ul.post-archive .date {
+     color: {{ site.subtle_color }};
+   }
+  /* Subtle Icon Color */
+   a.highres span:before, a.permalink-button span:before, a.highres:after, article footer a:before, article footer ul.meta li span:before, article.link header h2 a:after {
+     color: {{ site.subtle_color }};
+     opacity: 0.6;
+   }
+  /* Subtle Color Hover */
+   a.highres span:hover:before, a.permalink-button span:hover:before, a.highres:hover:after, article footer a:hover:before, article footer ul.meta li span:hover:before, article.link header h2 a:hover:after {
+     color: {{ site.subtle_color }};
+   }
+  /* Title Color */
+   h1, article.photo h2:first-of-type, article.video h2:first-of-type, article.photoset h2:first-of-type, article.audio h2:first-of-type, article.text header h2, article.text header p, article.chat header h2, article.chat header p, article.quote header h2, article.quote header p, article.text header h2 a, ul.post-archive .title {
+    color: {{ site.title_color }};
+   }
+  /* Text On Accent Color */
+   a.button {
+     color: {{ site.text_on_accent_color }};
+   }
+  /* Text On Accent Color */
+   a.read-more.button:after, nav#pagination ul li.prev a:before, nav#pagination ul li.next a:after {
+     color: {{ site.text_on_accent_color }}; 
+     opacity: 0.4;
+   }
+  /* Header Area */
+  /* Header Title Color */
+  header.site-info section.description h1 a, header.site-info nav.pages ul li a:hover, footer.page-foot a:hover, header.site-info ul.util a:hover, footer.page-foot section h1, footer.page-foot section h2, footer.page-foot section h3, footer.page-foot section h4, footer.page-foot section h5, footer.page-foot section.social-links ul li a:hover {
+    color: {{ site.header_title_color }};
+  }
+  /* Header Text Color */
+   header.site-info section.description p, footer.page-foot, footer.page-foot section.bottom a:hover {
+     color: {{ site.header_text_color }};
+   }
+  /* Header Accent Color */
+   header.site-info nav.pages ul li a, footer.page-foot section.social-links ul li a {
+     color: {{ site.header_accent_color }};
+   }
+  /* Header Subtle Color */
+   header.site-info ul.util, header.site-info ul.util a, header.site-info nav.pages ul li:after, footer.page-foot section.bottom, footer.page-foot section.instagram a.btn {
+     color: {{ site.header_subtle_color }};
+   }
+  /* Backgrounds */
+  article.audio header .audio-embed, p > code, li > code {
+    background-color: {{ site.subtle_border }};
+  }
+  /* Background */
+   body, header.site-fixed nav.pages, a.highres, a.permalink-button {
+     background-color: {{ site.background }};
+   }
+  /* Header Background */
+   header.site-info, footer.page-foot {
+     background-color: {{ site.header_background }};
+   }
+   /* Post Background */
+   header.site-fixed nav.pages {
+    background-color: {{ site.post_background }};
+   }
+  /* Accent Background */
+   a.button {
+     background-color: {{ site.accent_color }}
+   }
+  /* Borders */
+  /* subtleBorder */
+   blockquote, article footer, article.photo h2:first-of-type, article.video h2:first-of-type, article.photoset h2:first-of-type, article.audio h2:first-of-type, article.text header, article.ask header, article.chat header, article.quote header, article.link header, body.permalink-page article div.notes, ul.post-archive li {
+     border-color: {{ site.subtle_border }};
+   }
+  /* headerSubtleBorder */
+   header.site-info nav.pages, footer.page-foot section.bottom {
+     border-color: {{ site.header_subtle_border }};
+   }
+
+/* if posts have background color set */
+   {% if site.post_background %}
+   article, header.site-fixed nav.pages {
+     background-color: {{ site.post_background }};
+   }
+   article.photo header, article.video header, article.photoset header, article.audio header {
+     margin-top: 0em;
+   }
+   article {
+     padding-bottom: 0;
+   }
+   hr {
+     visibility: hidden;
+   }
+   div.comments {
+     background-color: {{ site.post_background }};
+   }
+   {% endif %}
+
+  </style>

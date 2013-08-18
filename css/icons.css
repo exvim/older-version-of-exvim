@@ -1,0 +1,323 @@
+/* Local Web Fonts Loaded */
+/* DIRECTORY:
+ * assets 
+ *  |-- css 
+ *  |    `-- this CSS
+ *  `-- fonts
+ *       `-- font-files.*
+ */
+
+/* Entypo Web Fonts       */
+/* http://www.entypo.com/ */
+@font-face {
+  font-family: "Entypo";
+  src: url("../fonts/entypo.eot");
+  src: url("../fonts/entypo.eot?#iefix") format("embedded-opentype"), url("../fonts/entypo.woff") format("woff"), url("../fonts/entypo.ttf") format("truetype"), url("../fonts/entypo.svg#entypo") format("svg");
+  font-weight: normal;
+  font-style: normal; }
+
+/* Use the following CSS code if you want to use data attributes for inserting your icons */
+[data-icon]:before {
+  font-family: "Entypo";
+  content: attr(data-icon);
+  speak: none;
+  font-weight: normal;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased; }
+
+/* Use the following CSS code if you want to have a class per icon */
+/*   Instead of a list of all class selectors,
+ *   you can use the generic selector below, but it's slower:
+ *   [class*="etp-"]:before { */
+.etp-phone:before, .etp-mobile:before, .etp-mouse:before, .etp-address:before, .etp-mail:before, .etp-paper-plane:before, .etp-pencil:before, .etp-feather:before, .etp-attach:before, .etp-inbox:before, 
+.etp-reply:before, .etp-reply-all:before, .etp-forward:before, .etp-user:before, .etp-users:before, .etp-add-user:before, .etp-vcard:before, .etp-export:before, .etp-location:before, .etp-map:before,
+.etp-timeago:before, .etp-rss:before, .etp-camera:before, .etp-next:after, .etp-previous:before, .etp-comments:before, .etp-zoom:after, .etp-permalink:before {
+  font-family: "Entypo";
+  speak: none;
+  font-size: 210%;
+  font-style: normal;
+  font-weight: normal;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  margin-right: 4px;
+  position: relative;
+  top: 2px; }
+
+/* mapping characters:: http://www.entypo.com/characters/ */
+.etp-phone:before {
+  content: "\1F4DE"; }
+
+.etp-mobile:before {
+  content: "\1F4F1"; }
+
+.etp-mouse:before {
+  content: "\E789"; }
+
+.etp-address:before {
+  content: "\E723"; }
+
+.etp-mail:before {
+  content: "\1F53F"; }
+
+.etp-timeago:before {
+  content: "\E771"; }
+
+.etp-paper-plane:before {
+  content: "\1F53F"; }
+
+.etp-pencil:before {
+  content: "\270E"; }
+
+.etp-feather:before {
+  content: "\2712"; }
+
+.etp-attach:before {
+  content: "\1F4CE"; }
+
+.etp-inbox:before {
+  content: "\E777"; }
+
+.etp-reply:before {
+  content: "\E712"; }
+
+.etp-reply-all:before {
+  content: "\E713"; }
+
+.etp-forward:before {
+  content: "\27A6"; }
+
+.etp-user:before {
+  content: "\1F464"; }
+
+.etp-users:before {
+  content: "\1F465"; }
+
+.etp-add-user:before {
+  content: "\E700"; }
+
+.etp-vcard:before {
+  content: "\E722"; }
+
+.etp-export:before {
+  content: "\E715"; }
+
+.etp-location:before {
+  content: "\E724"; }
+
+.etp-map:before {
+  content: "\E727"; }
+
+.etp-rss:before {
+  content: "\1F4F6";
+}
+
+.etp-camera:before {
+  content: "\1F4F7";
+}
+
+.etp-previous:before {
+  content: "\E759";
+  margin: 0;
+}
+
+.etp-next:after {
+  content: "\E75A";
+  margin: 0;
+}
+
+.etp-comments:before {
+  content: "\E718";
+}
+
+.etp-zoom:after {
+  content: "\E744";
+  margin: 0 0 0 4px;
+  font-size: 2.5em;
+  line-height: 0.35;
+}
+
+.etp-permalink:before {
+  content: "\1F517";
+  margin: 0;
+  font-size: 2.5em;
+  line-height: 0.35;
+}
+
+
+/* to be. */
+
+
+/* Entypo Social Web Fonts */
+/* http://www.entypo.com/  */
+/* caution: It's doesn't work with Chrome (;_;) */
+@font-face {
+  font-family: "Entypo Social";
+  src: url("../fonts/entypo-social.eot");
+  src: url("../fonts/entypo-social.eot?#iefix") format("embedded-opentype"), url("../fonts/entypo-social.woff") format("woff"), url("../fonts/entypo-social.ttf") format("truetype"), url("../fonts/entypo-social.svg#entypo-social") format("svg");
+  font-weight: normal;
+  font-style: normal; }
+
+/* Use the following CSS code if you want to use data attributes for inserting your icons */
+[data-icon]:before {
+  font-family: "Entypo Social";
+  content: attr(data-icon);
+  speak: none;
+  font-weight: normal;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased; }
+
+/* Use the following CSS code if you want to have a class per icon */
+/*   Instead of a list of all class selectors,
+ *   you can use the generic selector below, but it's slower:
+ *   [class*="ets-"]:before { */
+.ets-github:before, .ets-c-github:before, .ets-flickr:before, .ets-flickr:before, .ets-c-flickr:before, .ets-vimeo:before, .ets-c-vimeo:before, .ets-twitter:before, .ets-c-twitter:before, .ets-facebook:before, .ets-c-facebook:before, .ets-s-facebook:before, 
+.ets-google-plus:before, .ets-c-google-plus:before, .ets-pinterest:before, .ets-c-pinterest:before, .ets-tumblr:before, .ets-c-tumblr:before, .ets-linkedin:before, .ets-c-linkedin:before, .ets-dribbble:before, .ets-c-dribbble:before, 
+.ets-stumbleupon:before, .ets-c-stumbleupon:before, .ets-lastfm:before, .ets-c-lastfm:before, .ets-rdio:before, .ets-c-rdio:before, .ets-spotify:before, .ets-c-spotify:before, .ets-qq:before, .ets-instagram:before, .ets-dropbox:before, .ets-evernote:before, 
+.ets-flattr:before, .ets-skype:before, .ets-c-skype:before, .ets-renren:before, .ets-sina-weibo:before, .ets-paypal:before, .ets-picasa:before, .ets-soundcloud:before, .ets-mixi:before, .ets-behance:before, .ets-google-circles:before, 
+.ets-hatena-bookmark:before, .ets-smashing:before {
+  font-family: "Entypo Social";
+  speak: none;
+  font-size: 200%;
+  font-style: normal;
+  font-weight: normal;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased; }
+
+/* mapping characters:: http://www.entypo.com/characters/ */
+.ets-github:before {
+  content: "\F300"; }
+
+.ets-c-github:before {
+  content: "\F301"; }
+
+.ets-flickr:before {
+  content: "\F303"; }
+
+.ets-c-flickr:before {
+  content: "\F304"; }
+
+.ets-vimeo:before {
+  content: "\F306"; }
+
+.ets-c-vimeo:before {
+  content: "\F307"; }
+
+.ets-twitter:before {
+  content: "\F309"; }
+
+.ets-c-twitter:before {
+  content: "\F30A"; }
+
+.ets-facebook:before {
+  content: "\F30C"; }
+
+.ets-c-facebook:before {
+  content: "\F30D"; }
+
+.ets-s-facebook:before {
+  content: "\F30E"; }
+
+.ets-google-plus:before {
+  content: "\F30F"; }
+
+.ets-c-google-plus:before {
+  content: "\F310"; }
+
+.ets-pinterest:before {
+  content: "\F312"; }
+
+.ets-c-pinterest:before {
+  content: "\F313"; }
+
+.ets-tumblr:before {
+  content: "\F315"; }
+
+.ets-c-tumblr:before {
+  content: "\F316"; }
+
+.ets-linkedin:before {
+  content: "\F318"; }
+
+.ets-c-linkedin:before {
+  content: "\F319"; }
+
+.ets-dribbble:before {
+  content: "\F31B"; }
+
+.ets-c-dribbble:before {
+  content: "\F31C"; }
+
+.ets-stumbleupon:before {
+  content: "\F31E"; }
+
+.ets-c-stumbleupon:before {
+  content: "\F31F"; }
+
+.ets-lastfm:before {
+  content: "\F321"; }
+
+.ets-c-lastfm:before {
+  content: "\F322"; }
+
+.ets-rdio:before {
+  content: "\F324"; }
+
+.ets-c-rdio:before {
+  content: "\F325"; }
+
+.ets-spotify:before {
+  content: "\F327"; }
+
+.ets-c-spotify:before {
+  content: "\F328"; }
+
+.ets-qq:before {
+  content: "\F32A"; }
+
+.ets-instagram:before {
+  content: "\F32D"; }
+
+.ets-dropbox:before {
+  content: "\F330"; }
+
+.ets-evernote:before {
+  content: "\F333"; }
+
+.ets-flattr:before {
+  content: "\F336"; }
+
+.ets-skype:before {
+  content: "\F339"; }
+
+.ets-c-skype:before {
+  content: "\F33A"; }
+
+.ets-renren:before {
+  content: "\F33C"; }
+
+.ets-sina-weibo:before {
+  content: "\F33F"; }
+
+.ets-paypal:before {
+  content: "\F342"; }
+
+.ets-picasa:before {
+  content: "\F345"; }
+
+.ets-soundcloud:before {
+  content: "\F348"; }
+
+.ets-mixi:before {
+  content: "\F34B"; }
+
+.ets-behance:before {
+  content: "\F34E"; }
+
+.ets-google-circles:before {
+  content: "\F351"; }
+
+.ets-hatena-bookmark:before {
+  content: "\F354"; }
+
+.ets-smashing:before {
+  content: "\F357"; }

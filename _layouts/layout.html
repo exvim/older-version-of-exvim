@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]> <html class="no-js ie6 oldie" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js ie7 oldie" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js ie8 oldie" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>
+    {% if page.title != 'index' %}
+      {{ page.title }} &ndash;
+    {% endif %}
+    {{ site.name }}
+  </title>
+
+  <meta name="author" content="{{ site.name }}" />
+  <meta name="description" content="{{ site.description }}" />
+
+    <!--
+      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      Bryant - 1.0.0
+      Premium Jekyll Theme
+      https://github.com/stylehatch
+      Theme by: Style Hatch - http://stylehatch.co - @stylehatch 
+         _____ __        __        __  __      __       __
+        / ___// /___  __/ /__     / / / /___ _/ /______/ /_
+        \__ \/ __/ / / / / _ \   / /_/ / __ `/ __/ ___/ __ \
+       ___/ / /_/ /_/ / /  __/  / __  / /_/ / /_/ /__/ / / /
+      /____/\__/\__, /_/\___/  /_/ /_/\__,_/\__/\___/_/ /_/
+               /____/
+      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    -->
+
+  <link rel="alternate" type="application/rss+xml" href="{{ site.baseurl }}/atom.xml" />
+
+  <link rel="stylesheet" href="{{ site.baseurl }}/css/icons.css" type="text/css" />
+  <link rel="stylesheet" href="{{ site.baseurl }}/css/base.css" type="text/css" media="screen, projection" />
+  <link rel="stylesheet" href="{{ site.baseurl }}/css/pygments.css" type="text/css" />
+  <link rel="shortcut icon" href="{{ site.baseurl }}/favicon.ico" />
+  <!--[if IE]><link media="screen" type="text/css" href="stylesheets/spinner-old-ie.css" rel="stylesheet" /><![endif]-->
+<!-- Google Fonts -->
+  <link href='http://fonts.googleapis.com/css?family=PT+Sans:700,700italic|PT+Serif:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+
+  <link rel="apple-touch-icon" href="{{ site.baseurl }}/apple-touch-icon.png" />
+
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>window.jQuery || document.write('<script src="js/jquery-1.9.1.min.js"><\/script>')</script>
+
+  <script type="text/javascript">
+    var StyleHatch = window.StyleHatch || {};
+    StyleHatch.themeName = "Bryant";
+    StyleHatch.siteTitle = "{{ site.name }}";
+    StyleHatch.customizeMode = true;
+
+    {% if site.twitter %}
+    StyleHatch.twitterUser = "{{ site.twitter }}";
+    {% endif %}
+
+    StyleHatch.disqusID = "{{ site.disqus_shortname }}";
+    
+  </script>
+
+  {% include override.html %}
+  <!-- <link rel="stylesheet" href="/css/screen.css" type="text/css" /> -->
+</head>
+
+<header class="site-info">
+  <div class="container">
+    <section class="description">
+      {% if site.icon_url %}
+      <a href="{% if site.baseurl %}{{ site.baseurl }}{% endif %}/" title="{{ site.name }} - Home" class="portrait-icon"><img src="{% if site.baseurl %}{{ site.baseurl }}{% endif %}{{ site.icon_url }}" alt="{{ site.name }}"></a>
+      {% else %}
+      <h1><a href="{% if site.baseurl %}{{ site.baseurl }}{% endif %}/" title="{{ site.name }} - Home">{{ site.name }}</a></h1>
+      {% endif %}
+      <p>{{ site.description }}</p>
+      <ul class="util">
+        <li class="release"><a href="{% if site.baseurl %}{{ site.baseurl }}{% endif %}/release/" class="etp-timeago">Releases</a></li>
+        <li class="faq"><a href="{% if site.baseurl %}{{ site.baseurl }}{% endif %}/docs/faq/" class="etp-comments">FAQ</a></li>
+        <li class="rss"><a href="{% if site.baseurl %}{{ site.baseurl }}{% endif %}/atom.xml" class="etp-rss">RSS</a></li>
+        {% if site.email %}
+        <li class="ask"><a href="{% if site.baseurl %}{{ site.baseurl }}{% endif %}/contact/" class="etp-mail">Contact</a></li>
+        {% endif %}
+        <li class="exdev"><a href="http://ex-dev.com" class="etp-users">exDev</a></li>
+      </ul>
+    </section>
+
+    <nav class="pages">
+      <a href="{% if site.baseurl %}{{ site.baseurl }}{% endif %}/" title="{{ site.name }} - Home" class="portrait-icon user-icon"><img src="{% if site.baseurl %}{{ site.baseurl }}{% endif %}{{ site.icon_url }}" alt="{{ site.name }}"></a>
+      <ul>
+      <li>
+        <a href="{% if site.baseurl %}{{ site.baseurl }}{% endif %}/">Home</a>
+      </li>
+      {% for weight in (1..10) %}
+        {% for p in site.pages %}
+          {% if p.weight == weight %}
+            {% if p.title != 'index' %}
+            <li>
+              <a {% if p.url == page.url %}class="active"{% endif %} href="{% if site.baseurl %}{{ site.baseurl }}{% endif %}{{ p.url }}">
+                {{ p.title }}
+              </a>
+            </li>
+            {% endif %}
+          {% endif %}
+        {% endfor %}
+      {% endfor %}
+      </ul>
+    </nav>
+  </div>
+</header>
+
+  {{ content }}
+  {% include footer.html %}
+
+  {% if site.disqus_shortname %}
+  <script type="text/javascript">
+  /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+  var disqus_shortname = '{{ site.disqus_shortname }}'; // required: replace example with your forum shortname
+
+  /* * * DON'T EDIT BELOW THIS LINE * * */
+  (function () {
+      var s = document.createElement('script'); s.async = true;
+      s.type = 'text/javascript';
+      s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+      (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+  }());
+  </script>
+  {% endif %}
+  <script type="text/javascript" src="{% if site.baseurl %}{{ site.baseurl }}{% endif %}/js/plugins.min.js"></script>
+  <script type="text/javascript" src="{% if site.baseurl %}{{ site.baseurl }}{% endif %}/js/application.js"></script>
+
+</body>
+</html>

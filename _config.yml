@@ -1,0 +1,55 @@
+# Jekyll Specific Stuff
+markdown: rdiscount
+pygments: true
+paginate: 10 # the number of post per page
+paginate_path: 'blog/page:num'
+relative_permalinks: false
+rdiscount:
+  extensions: [smart]
+
+# User Options
+name: exVim
+baseurl: /exvim  # Leave this blank unless you are using a directory other than the root directory (Do not use a trailing slash '/')
+description: 'Make Vim like IDE!'
+email: studio@ex-dev.com 
+#  twitter: abitgames 
+icon_url: /images/logo.png 
+disqus_shortname: 
+
+# Color Options
+text_color: '#424242'
+accent_color: '#1f7fff'
+hover_color: '#a7543f'
+subtle_color: '#999999'
+subtle_border: '#e9e9e9'
+title_color: '#222222'
+text_on_accent_color: '#ffffff'
+header_background: '#cccc99'
+header_text_color: '#000000'
+header_accent_color: '#007f00'
+header_title_color: '#E9E9E9'
+header_subtle_color: '#0000BC'
+header_subtle_border: '#000000'
+background: '#f8f8f8'
+post_background:
+
+# Footer
+footer_title: 
+footer_description: 
+social_links_title: 
+github_url: https://github.com/exdev/exvim 
+flickr_url: 
+instagram_url: 
+vimeo_url: 
+facebook_url: 
+google_plus_url: 
+pinterest_url: 
+tumblr_url: 
+linkedin_url: 
+dribbble_url: 
+lastfm_url: 
+rdio_url: 
+spotify_url: 
+skype_url: 
+soundcloud_url: 
+behance_url: 

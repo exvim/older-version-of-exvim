@@ -1,0 +1,44 @@
+<footer class="page-foot">
+  <div class="container">
+    <div class="iso">
+    <section class="description">
+      {% if site.footer_title %}<h3>{{ site.footer_title }}</h3>{% endif %}
+      {% if site.footer_description %}<p>{{ site.footer_description }}</p>{% endif %}
+    </section>
+    <section class="social-links">
+      {% if site.social_links_title %}<h4>{{ site.social_links_title }}</h4>{% endif %}
+      <ul>
+        {% if site.github_url %}<li class="social_github"><a href="{{ site.github_url }}" class="ets-github">&nbsp;</a></li>{% endif %}
+        {% if site.flickr_url %}<li class="social_flickr"><a href="{{ site.flickr_url }}" class="ets-flickr">&nbsp;</a></li>{% endif %}
+        {% if site.instagram_url %}<li class="social_instagram"><a href="{{ site.instagram_url }}" class="ets-instagram">&nbsp;</a></li>{% endif %}
+        {% if site.vimeo_url %}<li class="social_vimeo"><a href="{{ site.vimeo_url }}" class="ets-vimeo">&nbsp;</a></li>{% endif %}
+        {% if site.facebook_url %}<li class="social_facebook"><a href="{{ site.facebook_url }}" class="ets-facebook">&nbsp;</a></li>{% endif %}
+        {% if site.google_plus_url %}<li class="social_google"><a href="{{ site.google_plus_url }}" class="ets-google-plus">&nbsp;</a></li>{% endif %}
+        {% if site.pinterest_url %}<li class="social_pinterest"><a href="{{ site.pinterest_url }}" class="ets-pinterest">&nbsp;</a></li>{% endif %}
+        {% if site.tumblr_url %}<li class="social_etsy"><a href="{{ site.tumblr_url }}" class="ets-tumblr">&nbsp;</a></li>{% endif %}
+        {% if site.linkedin_url %}<li class="social_linkedin"><a href="{{ site.linkedin_url }}" class="ets-linkedin">&nbsp;</a></li>{% endif %}
+        {% if site.dribbble_url %}<li class="social_dribbble"><a href="{{ site.dribbble_url }}" class="ets-dribbble">&nbsp;</a></li>{% endif %}
+        {% if site.lastfm_url %}<li class="social_lastfm"><a href="{{ site.lastfm_url }}" class="ets-lastfm">&nbsp;</a></li>{% endif %}
+        {% if site.rdio_url %}<li class="social_rdio"><a href="{{ site.rdio_url }}" class="ets-rdio">&nbsp;</a></li>{% endif %}
+        {% if site.spotify_url %}<li class="social_spotify"><a href="{{ site.spotify_url }}" class="ets-spotify">&nbsp;</a></li>{% endif %}
+        {% if site.skype_url %}<li class="social_skype"><a href="{{ site.skype_url }}" class="ets-skype">&nbsp;</a></li>{% endif %}
+        {% if site.soundcloud_url %}<li class="social_soundcloud"><a href="{{ site.soundcloud_url }}" class="ets-soundcloud">&nbsp;</a></li>{% endif %}
+        {% if site.behance_url %}<li class="social_behance"><a href="{{ site.behance_url }}" class="ets-behance">&nbsp;</a></li>{% endif %}
+      </ul>
+      {% if site.twitter %}
+      <a href="https://twitter.com/{{ site.twitter }}" class="twitter-follow-button" data-show-count="true" data-lang="en">Follow @{{ site.twitter }}</a>
+      {% endif %}
+    </section>
+    
+    </section>
+    </div>
+    
+    <section class="bottom">
+      <ul>
+        <li class="copyright">&copy; Copyright {{ site.time | date: "%Y" }} {{ site.name }}</li>
+        <li class="credit"><a href="https://github.com/stylehatch/bryant" window="_blank">Bryant</a> created by <a href="http://stylehatch.co" window="_blank">Style Hatch</a></li>
+        <li class="tumblr">Powered by Jekyll</li>
+      </ul>
+    </section> 
+  </div>
+</footer>
