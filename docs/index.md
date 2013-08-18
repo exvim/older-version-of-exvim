@@ -6,8 +6,6 @@ permalink: /docs/
 published: true
 ---
 
-![exvim_logo]({{ site.baseurl }}/images/logo.png)
-
 ## Websites
 
 * exVim Official Page: http://www.ex-dev.com/exvim
