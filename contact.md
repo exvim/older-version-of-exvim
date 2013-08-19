@@ -9,9 +9,6 @@ permalink: /contact/
 You can use one of the following channels to get back to us or talk to the community.
 
 - [Report an issue on Github][issue]
-<!--
-- [exVim Forum][forum]
--->
 - [Send Us Email][email]
 
 [forum]: http://forum.ex-dev.com/

@@ -33,9 +33,6 @@ exVim is a package intgerate ex-vim-plugins, 3rd-vim-plugins and external-tools 
 ## Contact Us
 
 - [Report An Issue][issue]
-<!--
-- [Discuss in Our Forum][forum]
--->
 - [Send Us Email][email]
 
 ## Vote exVim if you love it
