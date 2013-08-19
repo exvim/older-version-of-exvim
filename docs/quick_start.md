@@ -28,7 +28,7 @@ permalink: /docs/quick_start/
 
 **4.** Move your cursor to the project-window, press `<leader>R`, it will explore the project file in project window as the picture show: 
 
-**Note:** `<leader>R` here means press key \, then press shift + r (uppercase "r"). vim recommend 3rd-party plugins use <leader> (aka. \) to begin their operations, and the operations in vim are case sensitive.
+**Note:** `<leader>R` here means press key \, then press shift + r (uppercase "r"). vim recommend 3rd-party plugins use `<leader>` (aka. \) to begin their operations, and the operations in vim are case sensitive.
 
 ![after_explored_the_project.png](../images/after_explored_the_project.png)
 

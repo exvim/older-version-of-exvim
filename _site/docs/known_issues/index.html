@@ -1,0 +1,1343 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]> <html class="no-js ie6 oldie" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js ie7 oldie" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js ie8 oldie" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>
+    
+      KnownIssues &ndash;
+    
+    exVim
+  </title>
+
+  <meta name="author" content="exVim" />
+  <meta name="description" content="Make Vim like IDE!" />
+
+    <!--
+      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      Bryant - 1.0.0
+      Premium Jekyll Theme
+      https://github.com/stylehatch
+      Theme by: Style Hatch - http://stylehatch.co - @stylehatch 
+         _____ __        __        __  __      __       __
+        / ___// /___  __/ /__     / / / /___ _/ /______/ /_
+        \__ \/ __/ / / / / _ \   / /_/ / __ `/ __/ ___/ __ \
+       ___/ / /_/ /_/ / /  __/  / __  / /_/ / /_/ /__/ / / /
+      /____/\__/\__, /_/\___/  /_/ /_/\__,_/\__/\___/_/ /_/
+               /____/
+      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    -->
+
+  <link rel="alternate" type="application/rss+xml" href="/atom.xml" />
+
+  <link rel="stylesheet" href="/css/icons.css" type="text/css" />
+  <link rel="stylesheet" href="/css/base.css" type="text/css" media="screen, projection" />
+  <link rel="stylesheet" href="/css/pygments.css" type="text/css" />
+  <link rel="shortcut icon" href="/favicon.ico" />
+  <!--[if IE]><link media="screen" type="text/css" href="stylesheets/spinner-old-ie.css" rel="stylesheet" /><![endif]-->
+<!-- Google Fonts -->
+  <link href='http://fonts.googleapis.com/css?family=PT+Sans:700,700italic|PT+Serif:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>window.jQuery || document.write('<script src="js/jquery-1.9.1.min.js"><\/script>')</script>
+
+  <script type="text/javascript">
+    var StyleHatch = window.StyleHatch || {};
+    StyleHatch.themeName = "Bryant";
+    StyleHatch.siteTitle = "exVim";
+    StyleHatch.customizeMode = true;
+
+    
+
+    StyleHatch.disqusID = "";
+    
+  </script>
+
+    <style type="text/css">
+/* COLORS */
+  /* Text Color */
+  body, article section ul.credit li.author a:hover, article footer a:hover, body.permalink-page article ul.credit li a:hover, body.permalink-page article ul.tags li a:hover, body.permalink-page article div.comments, body.permalink-page article div.notes {
+     color: #424242;
+   }
+  /* Accent Color */
+   a, ul.post-archive a:hover .title {
+     color: #1f7fff;
+   }
+  /* Hover Color */
+   a:hover, article.text header h2 a:hover {
+     color: #a7543f;
+   }
+  /* Sublte Color */
+  header.site-fixed nav.pages ul li:after, a.highres, a.permalink-button, article section ul.credit, article section ul.credit li.author a, article footer, article footer a, article.chat strong, article.ask header div.asker-wrap p.asker, article.photo ul.exif, body.permalink-page article ul.credit, body.permalink-page article ul.tags, body.permalink-page article ul.credit li a, body.permalink-page article ul.tags li a, ul.post-archive .date {
+     color: #999999;
+   }
+  /* Subtle Icon Color */
+   a.highres span:before, a.permalink-button span:before, a.highres:after, article footer a:before, article footer ul.meta li span:before, article.link header h2 a:after {
+     color: #999999;
+     opacity: 0.6;
+   }
+  /* Subtle Color Hover */
+   a.highres span:hover:before, a.permalink-button span:hover:before, a.highres:hover:after, article footer a:hover:before, article footer ul.meta li span:hover:before, article.link header h2 a:hover:after {
+     color: #999999;
+   }
+  /* Title Color */
+   h1, article.photo h2:first-of-type, article.video h2:first-of-type, article.photoset h2:first-of-type, article.audio h2:first-of-type, article.text header h2, article.text header p, article.chat header h2, article.chat header p, article.quote header h2, article.quote header p, article.text header h2 a, ul.post-archive .title {
+    color: #222222;
+   }
+  /* Text On Accent Color */
+   a.button {
+     color: #ffffff;
+   }
+  /* Text On Accent Color */
+   a.read-more.button:after, nav#pagination ul li.prev a:before, nav#pagination ul li.next a:after {
+     color: #ffffff; 
+     opacity: 0.4;
+   }
+  /* Header Area */
+  /* Header Title Color */
+  header.site-info section.description h1 a, header.site-info nav.pages ul li a:hover, footer.page-foot a:hover, header.site-info ul.util a:hover, footer.page-foot section h1, footer.page-foot section h2, footer.page-foot section h3, footer.page-foot section h4, footer.page-foot section h5, footer.page-foot section.social-links ul li a:hover {
+    color: #E9E9E9;
+  }
+  /* Header Text Color */
+   header.site-info section.description p, footer.page-foot, footer.page-foot section.bottom a:hover {
+     color: #000000;
+   }
+  /* Header Accent Color */
+   header.site-info nav.pages ul li a, footer.page-foot section.social-links ul li a {
+     color: #007f00;
+   }
+  /* Header Subtle Color */
+   header.site-info ul.util, header.site-info ul.util a, header.site-info nav.pages ul li:after, footer.page-foot section.bottom, footer.page-foot section.instagram a.btn {
+     color: #0000BC;
+   }
+  /* Backgrounds */
+  article.audio header .audio-embed, p > code, li > code {
+    background-color: #e9e9e9;
+  }
+  /* Background */
+   body, header.site-fixed nav.pages, a.highres, a.permalink-button {
+     background-color: #f8f8f8;
+   }
+  /* Header Background */
+   header.site-info, footer.page-foot {
+     background-color: #cccc99;
+   }
+   /* Post Background */
+   header.site-fixed nav.pages {
+    background-color: ;
+   }
+  /* Accent Background */
+   a.button {
+     background-color: #1f7fff
+   }
+  /* Borders */
+  /* subtleBorder */
+   blockquote, article footer, article.photo h2:first-of-type, article.video h2:first-of-type, article.photoset h2:first-of-type, article.audio h2:first-of-type, article.text header, article.ask header, article.chat header, article.quote header, article.link header, body.permalink-page article div.notes, ul.post-archive li {
+     border-color: #e9e9e9;
+   }
+  /* headerSubtleBorder */
+   header.site-info nav.pages, footer.page-foot section.bottom {
+     border-color: #000000;
+   }
+
+/* if posts have background color set */
+   
+
+  </style>
+  <!-- <link rel="stylesheet" href="/css/screen.css" type="text/css" /> -->
+</head>
+
+<header class="site-info">
+  <div class="container">
+    <section class="description">
+      
+      <a href="/" title="exVim - Home" class="portrait-icon"><img src="/images/logo.png" alt="exVim"></a>
+      
+      <p>Make Vim like IDE!</p>
+      <ul class="util">
+        <li class="release"><a href="/release/" class="etp-timeago">Releases</a></li>
+        <li class="faq"><a href="/docs/faq/" class="etp-comments">FAQ</a></li>
+        <li class="rss"><a href="/atom.xml" class="etp-rss">RSS</a></li>
+        
+        <li class="ask"><a href="/contact/" class="etp-mail">Contact</a></li>
+        
+        <li class="exdev"><a href="http://ex-dev.com" class="etp-users">exDev</a></li>
+      </ul>
+    </section>
+
+    <nav class="pages">
+      <a href="/" title="exVim - Home" class="portrait-icon user-icon"><img src="/images/logo.png" alt="exVim"></a>
+      <ul>
+      <li>
+        <a href="/">Home</a>
+      </li>
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+            
+          
+        
+          
+        
+          
+        
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+            
+            <li>
+              <a  href="/docs/">
+                Documentation
+              </a>
+            </li>
+            
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+      </ul>
+    </nav>
+  </div>
+</header>
+
+  <body class="page">
+  <div class="container" id="main" role="main">
+    <h2>Loose window when use &ldquo;:q&rdquo; close buffer in edit-window</h2>
+
+<p><strong>Issue</strong></p>
+
+<p>When you use &ldquo;:q&rdquo; close a buffer in edit-window, you will see the scene like the picture shows below:</p>
+
+<p><img src="../images/issue1.png" alt="issue1.png" /></p>
+
+<p><strong>Solution</strong></p>
+
+<p>Never use :q in edit-window. Instead, use <code>&lt;leader&gt;bd</code> You need to map the the <code>&lt;leader&gt;bd</code> as the code below in your .vimrc.</p>
+
+<div class="highlight"><pre><code class="vim"><span class="nb">nnoremap</span> <span class="p">&lt;</span>unique<span class="p">&gt;</span> <span class="p">&lt;</span>Leader<span class="p">&gt;</span><span class="k">bd</span> :<span class="k">call</span> exUtility#Kwbd<span class="p">(</span><span class="m">1</span><span class="p">)&lt;</span>CR<span class="p">&gt;</span>
+</code></pre></div>
+
+
+<p>The solution is come from the VimTip 1119: Use Vim like an IDE. But I changes some of the code so that it works correctly with other plugin window.</p>
+
+<h2>I run the :Up[date] command, but nothing happend</h2>
+
+<p><strong>Issue</strong></p>
+
+<p>I install the exVim in MS-Windows When I run the :Up[date] command, a command line window flash out then disappeared like nothing happend. And I check the .vimfiles folder in my project, no file generated.</p>
+
+<p><strong>Solution</strong></p>
+
+<ol>
+<li>check if you install the tools below:
+
+<ol>
+<li><a href="http://ctags.sourceforge.net">cTags</a></li>
+<li><a href="http://cscope.sourceforge.net">cscope</a></li>
+<li><a href="http://gnuwin32.sourceforge.net">gnuwin32</a></li>
+</ol>
+</li>
+<li><a href="http://gnuwin32.sourceforge.net/packages/gawk.htm">gawk</a></li>
+<li><a href="http://gnuwin32.sourceforge.net/packages/id-utils.htm">id-utils</a></li>
+<li>check if you create and set the environment EX_DEV.</li>
+<li>check if you set the installed path of the tools above into environment.</li>
+</ol>
+
+
+<h2>can&rsquo;t Create ID in c:\ in Win32, got error message &ldquo;mkid: can&rsquo;t get working directory: Permission denied&rdquo;</h2>
+
+<p>It is a bug for id-utils, looks like it can&rsquo;t create ID in c:\, I don&rsquo;t have time to debug the mkid win32 souce code, so currently the solution is don&rsquo;t put you project in c:\, in d:\ or other instead :(.</p>
+
+<p>If some one know this problem, and have a better solution, please tell me.</p>
+
+<h2>I got &ldquo;Error: tag not found ===> xxx&rdquo; when I use exTagSelect search a tag.</h2>
+
+<p><strong>Issue</strong></p>
+
+<p>I successfully create the tag file in .vimfiles by :Up[date] or running quick_gen_project, but when I running the project, and use exTagSelect plugin search a tag, it shows the message: <code>"Error: tag not found ===&gt; xxx"</code>.</p>
+
+<p><strong>Solution</strong></p>
+
+<p>First check if the tag you find is in the tag file. If yes, it probably because you miss setting the script below in your rc file.</p>
+
+<p>Add the following auto-command to your vimrc:</p>
+
+<div class="highlight"><pre><code class="vim"><span class="k">au</span> <span class="nb">BufNewFile</span><span class="p">,</span><span class="nb">BufEnter</span> * <span class="k">set</span> <span class="nb">cpoptions</span><span class="p">+=</span><span class="k">d</span>
+</code></pre></div>
+
+
+<h2>When I use :GS search the text &ldquo;vector.h&rdquo;, it give me a blank page.</h2>
+
+<p><strong>Issue</strong></p>
+
+<p>I use :GS command doing global search in stl project, I search text &ldquo;vector.h&rdquo;, but no result lists in the plugin window. I&rsquo;m sure the project in somewhere exists text &ldquo;vector.h&rdquo;.  Also I try &ldquo;vector::push_back&rdquo; it give me the same result. It looks like :GS can&rsquo;t accept signs in the search pattern.</p>
+
+<p><strong>Solution</strong></p>
+
+<p>Yes, you are right! The :GS can only accept alphabetic character and digit in a word, you even can&rsquo;t use <space> in the argument or it will split the words by <code>&lt;space&gt;</code>, and search them one by one.</p>
+
+<p>So if you want to search &ldquo;vector.h&rdquo;, you can first use :GS search &ldquo;vector&rdquo; (use :GSW would be much better). Then in the search result, type /vector.h and press <code>&lt;leader&gt;r</code> to pick up thoes item you need. Same as &ldquo;vector::push_back&rdquo;. Search &ldquo;vector&rdquo; or &ldquo;push_back&rdquo; first, then apply your own pattern in the listed results.</p>
+
+<p>You will get use to it, finally love it :p</p>
+
+<h2>When I use :SHL I got a blank pages in my web-browser</h2>
+
+<p><strong>Issue</strong></p>
+
+<p>When I use :SHL command to convert a source file into html, I got a blank page.</p>
+
+<p><strong>Solution</strong></p>
+
+<p>Copy %EX_DEV%\exVim\toolkit\src-highlight\ex**.** to your src-highlite share directory.  in win32 it could be: %EX_DEV%\tools\GnuWin32\share\source-highlight.</p>
+
+<h2>I can&rsquo;t used \ws,\wd,\we&hellip;.</h2>
+
+<p><strong>Issue</strong></p>
+
+<p>When I use <code>&lt;leader&gt;ws</code>, <code>&lt;leader&gt;wd</code>&hellip; to put a comment segement, define or some other similar stuff, it prompt a error said b:ECcommentOpen and b:ECcommentClose undefined.</p>
+
+<p><strong>Solution</strong></p>
+
+<p>You probably download and install only ex-plugin package, but this feature need EnhancedCommentify plugin. Click here http://www.vim.org/scripts/script.php?script_id=23 to download and install it.</p>
+
+<h2>When create ctags of boost library, it keep updating but never stop</h2>
+
+<p><strong>Issue</strong></p>
+
+<p>When update ctags in boost project, it will keep updating, the tags file keep increasing but never stop.</p>
+
+<p><strong>Solution</strong></p>
+
+<p>It could be a bug in ctags in parsing some cpp templates. Go to the boost/typeof directory, rename the vector50.hpp, vector100.hpp, vector150.hpp, vector200.hpp to other name which ctags can&rsquo;t detected them by its language map, (e.g vector50.dummy). Then update the project.</p>
+
+<h2>can&rsquo;t open new .vimentry file when in ex-plugin window (except exProject window)</h2>
+
+<p><strong>Issue</strong></p>
+
+<p>When I already in a exVim project, and try to use :e command to open another exVim project (.vimentry file), it will be failed if I did this operation in ex-plugin window.</p>
+
+<p><strong>Solution</strong></p>
+
+<p>Always do this in edit-window.</p>
+
+  </div>
+  <footer class="page-foot">
+  <div class="container">
+    <div class="iso">
+    <section class="description">
+      
+      
+    </section>
+    <section class="social-links">
+      
+      <ul>
+        <li class="social_github"><a href="https://github.com/exdev/exvim" class="ets-github">&nbsp;</a></li>
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+      </ul>
+      
+    </section>
+    
+    </section>
+    </div>
+    
+    <section class="bottom">
+      <ul>
+        <li class="copyright">&copy; Copyright 2013 exVim</li>
+        <li class="credit"><a href="https://github.com/stylehatch/bryant" window="_blank">Bryant</a> created by <a href="http://stylehatch.co" window="_blank">Style Hatch</a></li>
+        <li class="tumblr">Powered by Jekyll</li>
+      </ul>
+    </section> 
+  </div>
+</footer>
+
+  
+  <script type="text/javascript" src="/js/plugins.min.js"></script>
+  <script type="text/javascript" src="/js/application.js"></script>
+
+</body>
+</html>

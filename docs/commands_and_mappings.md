@@ -28,7 +28,7 @@ permalink: /docs/commands_and_mappings/
 - `<leader>mk (normal mode)`: Remove special mark lable while your cursor in it.
 - `<leader>sub (visual mode)`: substitue highlight word 1(alt-1) to highlight word 2(alt-2) in the visual block.
 - `<leader>sub (normal mode)`: substitue highlight word 1(alt-1) to highlight word 2(alt-2) in the whole buffer.
-- `alt-<F1>, <leader><F1> (terminal ver)`: <leader><F1> Switch to encoding latin1 (Default).
+- `alt-<F1>, <leader><F1> (terminal ver)`: Switch to encoding latin1 (Default).
 - `alt-<F2>, <leader><F2> (terminal ver)`: Switch to encoding cp936(Chinese).
 - `alt-<F3>, <leader><F3> (terminal ver)`: Switch to encoding cp932(Japanese).
 - `shift-<up>/<down>/<left>/<right>`: move cursor to up/down/left/right window (these mappings help quick jump between windows ).

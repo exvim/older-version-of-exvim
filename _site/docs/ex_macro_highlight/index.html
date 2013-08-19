@@ -1,0 +1,1394 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]> <html class="no-js ie6 oldie" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js ie7 oldie" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js ie8 oldie" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>
+    
+      exMacroHighlight &ndash;
+    
+    exVim
+  </title>
+
+  <meta name="author" content="exVim" />
+  <meta name="description" content="Make Vim like IDE!" />
+
+    <!--
+      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      Bryant - 1.0.0
+      Premium Jekyll Theme
+      https://github.com/stylehatch
+      Theme by: Style Hatch - http://stylehatch.co - @stylehatch 
+         _____ __        __        __  __      __       __
+        / ___// /___  __/ /__     / / / /___ _/ /______/ /_
+        \__ \/ __/ / / / / _ \   / /_/ / __ `/ __/ ___/ __ \
+       ___/ / /_/ /_/ / /  __/  / __  / /_/ / /_/ /__/ / / /
+      /____/\__/\__, /_/\___/  /_/ /_/\__,_/\__/\___/_/ /_/
+               /____/
+      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    -->
+
+  <link rel="alternate" type="application/rss+xml" href="/atom.xml" />
+
+  <link rel="stylesheet" href="/css/icons.css" type="text/css" />
+  <link rel="stylesheet" href="/css/base.css" type="text/css" media="screen, projection" />
+  <link rel="stylesheet" href="/css/pygments.css" type="text/css" />
+  <link rel="shortcut icon" href="/favicon.ico" />
+  <!--[if IE]><link media="screen" type="text/css" href="stylesheets/spinner-old-ie.css" rel="stylesheet" /><![endif]-->
+<!-- Google Fonts -->
+  <link href='http://fonts.googleapis.com/css?family=PT+Sans:700,700italic|PT+Serif:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>window.jQuery || document.write('<script src="js/jquery-1.9.1.min.js"><\/script>')</script>
+
+  <script type="text/javascript">
+    var StyleHatch = window.StyleHatch || {};
+    StyleHatch.themeName = "Bryant";
+    StyleHatch.siteTitle = "exVim";
+    StyleHatch.customizeMode = true;
+
+    
+
+    StyleHatch.disqusID = "";
+    
+  </script>
+
+    <style type="text/css">
+/* COLORS */
+  /* Text Color */
+  body, article section ul.credit li.author a:hover, article footer a:hover, body.permalink-page article ul.credit li a:hover, body.permalink-page article ul.tags li a:hover, body.permalink-page article div.comments, body.permalink-page article div.notes {
+     color: #424242;
+   }
+  /* Accent Color */
+   a, ul.post-archive a:hover .title {
+     color: #1f7fff;
+   }
+  /* Hover Color */
+   a:hover, article.text header h2 a:hover {
+     color: #a7543f;
+   }
+  /* Sublte Color */
+  header.site-fixed nav.pages ul li:after, a.highres, a.permalink-button, article section ul.credit, article section ul.credit li.author a, article footer, article footer a, article.chat strong, article.ask header div.asker-wrap p.asker, article.photo ul.exif, body.permalink-page article ul.credit, body.permalink-page article ul.tags, body.permalink-page article ul.credit li a, body.permalink-page article ul.tags li a, ul.post-archive .date {
+     color: #999999;
+   }
+  /* Subtle Icon Color */
+   a.highres span:before, a.permalink-button span:before, a.highres:after, article footer a:before, article footer ul.meta li span:before, article.link header h2 a:after {
+     color: #999999;
+     opacity: 0.6;
+   }
+  /* Subtle Color Hover */
+   a.highres span:hover:before, a.permalink-button span:hover:before, a.highres:hover:after, article footer a:hover:before, article footer ul.meta li span:hover:before, article.link header h2 a:hover:after {
+     color: #999999;
+   }
+  /* Title Color */
+   h1, article.photo h2:first-of-type, article.video h2:first-of-type, article.photoset h2:first-of-type, article.audio h2:first-of-type, article.text header h2, article.text header p, article.chat header h2, article.chat header p, article.quote header h2, article.quote header p, article.text header h2 a, ul.post-archive .title {
+    color: #222222;
+   }
+  /* Text On Accent Color */
+   a.button {
+     color: #ffffff;
+   }
+  /* Text On Accent Color */
+   a.read-more.button:after, nav#pagination ul li.prev a:before, nav#pagination ul li.next a:after {
+     color: #ffffff; 
+     opacity: 0.4;
+   }
+  /* Header Area */
+  /* Header Title Color */
+  header.site-info section.description h1 a, header.site-info nav.pages ul li a:hover, footer.page-foot a:hover, header.site-info ul.util a:hover, footer.page-foot section h1, footer.page-foot section h2, footer.page-foot section h3, footer.page-foot section h4, footer.page-foot section h5, footer.page-foot section.social-links ul li a:hover {
+    color: #E9E9E9;
+  }
+  /* Header Text Color */
+   header.site-info section.description p, footer.page-foot, footer.page-foot section.bottom a:hover {
+     color: #000000;
+   }
+  /* Header Accent Color */
+   header.site-info nav.pages ul li a, footer.page-foot section.social-links ul li a {
+     color: #007f00;
+   }
+  /* Header Subtle Color */
+   header.site-info ul.util, header.site-info ul.util a, header.site-info nav.pages ul li:after, footer.page-foot section.bottom, footer.page-foot section.instagram a.btn {
+     color: #0000BC;
+   }
+  /* Backgrounds */
+  article.audio header .audio-embed, p > code, li > code {
+    background-color: #e9e9e9;
+  }
+  /* Background */
+   body, header.site-fixed nav.pages, a.highres, a.permalink-button {
+     background-color: #f8f8f8;
+   }
+  /* Header Background */
+   header.site-info, footer.page-foot {
+     background-color: #cccc99;
+   }
+   /* Post Background */
+   header.site-fixed nav.pages {
+    background-color: ;
+   }
+  /* Accent Background */
+   a.button {
+     background-color: #1f7fff
+   }
+  /* Borders */
+  /* subtleBorder */
+   blockquote, article footer, article.photo h2:first-of-type, article.video h2:first-of-type, article.photoset h2:first-of-type, article.audio h2:first-of-type, article.text header, article.ask header, article.chat header, article.quote header, article.link header, body.permalink-page article div.notes, ul.post-archive li {
+     border-color: #e9e9e9;
+   }
+  /* headerSubtleBorder */
+   header.site-info nav.pages, footer.page-foot section.bottom {
+     border-color: #000000;
+   }
+
+/* if posts have background color set */
+   
+
+  </style>
+  <!-- <link rel="stylesheet" href="/css/screen.css" type="text/css" /> -->
+</head>
+
+<header class="site-info">
+  <div class="container">
+    <section class="description">
+      
+      <a href="/" title="exVim - Home" class="portrait-icon"><img src="/images/logo.png" alt="exVim"></a>
+      
+      <p>Make Vim like IDE!</p>
+      <ul class="util">
+        <li class="release"><a href="/release/" class="etp-timeago">Releases</a></li>
+        <li class="faq"><a href="/docs/faq/" class="etp-comments">FAQ</a></li>
+        <li class="rss"><a href="/atom.xml" class="etp-rss">RSS</a></li>
+        
+        <li class="ask"><a href="/contact/" class="etp-mail">Contact</a></li>
+        
+        <li class="exdev"><a href="http://ex-dev.com" class="etp-users">exDev</a></li>
+      </ul>
+    </section>
+
+    <nav class="pages">
+      <a href="/" title="exVim - Home" class="portrait-icon user-icon"><img src="/images/logo.png" alt="exVim"></a>
+      <ul>
+      <li>
+        <a href="/">Home</a>
+      </li>
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+            
+          
+        
+          
+        
+          
+        
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+            
+            <li>
+              <a  href="/docs/">
+                Documentation
+              </a>
+            </li>
+            
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+      </ul>
+    </nav>
+  </div>
+</header>
+
+  <body class="page">
+  <div class="container" id="main" role="main">
+    <h2>Intro</h2>
+
+<p>exMacroHighlight is a plugin working with projects have c-like macro define syntax: #ifdef. The basic idea is come from visual studio.net 2005, in vs.net 2005 and above, it support gray highlight between disabled macro block. In other word, if you define macro <em>MA_DISABLE</em> equals to 0, then in codes between #if <em>MA_DISABLE</em> and #endif, it shows gray color to represent the code doesn&rsquo;t work at all. This help programmer reading code with macros without knowing what the real value are of the macros.</p>
+
+<p>Unfortunately, vs.net did a bad job in this, and it even create side effect since the internal macro parsing programme sometimes gets wrong value and disable the valid codes (I always get this error when I switch configuration from Debug to Release). Also its gray color make you hard to read disable code even if you want to read it! And you can&rsquo;t manually switch your macro highlight from one define to another since all process is automatically done in the background. I&rsquo;ve been receive lots of complaining of this feature in my company from other programmer, and then decide to develop this plugin to solve the problem.</p>
+
+<p>exMacroHighlight is not the plugin that can doing the macro parsing automatcally in the background, actually it never read macro from codes which will consume lots of performance from vim. Instead, it will let you write down those macro you care about, and save it as a file, read these defined macro create syntax highlight then apply to those c-like filetype.</p>
+
+<p>Base on this idea, exMacroHighlight will be efficient, controllable and easy to switch to different macro defines.</p>
+
+<h2>Variables</h2>
+
+<h3>exMH_window_height</h3>
+
+<p>Set the height of the window. This variable only effect when the g:exMH_use_vertical_window = 0</p>
+
+<div class="highlight"><pre><code class="vim"><span class="k">let</span> <span class="k">g</span>:exMH_window_height <span class="p">=</span> <span class="m">20</span>
+</code></pre></div>
+
+
+<h3>exMH_window_width</h3>
+
+<p>Set the width of the window. This variable only effect when the g:exMH_use_vertical_window = 1</p>
+
+<div class="highlight"><pre><code class="vim"><span class="k">let</span> <span class="k">g</span>:exMH_window_width <span class="p">=</span> <span class="m">30</span>
+</code></pre></div>
+
+
+<h3>exMH_window_height_increment</h3>
+
+<p>Set the height increase value of window. This variable only effect when the g:exMH_use_vertical_window = 0</p>
+
+<div class="highlight"><pre><code class="vim"><span class="k">let</span> <span class="k">g</span>:exMH_window_height_increment <span class="p">=</span> <span class="m">30</span>
+</code></pre></div>
+
+
+<h3>exMH_window_width_increment</h3>
+
+<p>Set the width increase value of window. This variable only effect when the g:exMH_use_vertical_window = 1</p>
+
+<div class="highlight"><pre><code class="vim"><span class="k">let</span> <span class="k">g</span>:exMH_window_width_increment <span class="p">=</span> <span class="m">100</span>
+</code></pre></div>
+
+
+<h3>exMH_window_direction</h3>
+
+<ul>
+<li>topleft</li>
+<li>botright</li>
+<li>belowright</li>
+</ul>
+
+
+<p>Set the window direction. This variable will be affect by g:exMH_use_vertical_window.  When the vertical is true. it picked left, right direction, when the vertical is false, it picked top, bot direction.</p>
+
+<div class="highlight"><pre><code class="vim"><span class="k">let</span> <span class="k">g</span>:exMH_window_direction <span class="p">=</span> <span class="s1">&#39;botright&#39;</span>
+</code></pre></div>
+
+
+<h3>exMH_use_vertical_window</h3>
+
+<p>Use the vertical window or the horizontal window</p>
+
+<div class="highlight"><pre><code class="vim"><span class="k">let</span> <span class="k">g</span>:exMH_use_vertical_window <span class="p">=</span> <span class="m">1</span>
+</code></pre></div>
+
+
+<h2>Commands</h2>
+
+<h3>:ExmhSelectToggle</h3>
+
+<p>Open/Close exMacroHighlight window. Recommend mapping:</p>
+
+<div class="highlight"><pre><code class="vim"><span class="nb">nnoremap</span> <span class="p">&lt;</span>unique<span class="p">&gt;</span> <span class="p">&lt;</span><span class="k">silent</span><span class="p">&gt;</span> <span class="p">&lt;</span>Leader<span class="p">&gt;</span>aa :ExmhSelectToggle<span class="p">&lt;</span>CR<span class="p">&gt;</span>
+</code></pre></div>
+
+
+<p>When you open a exMacroHighlight window in a new project, it is a blank page. The window used for writing macro defines in groups. The syntax as shows as:</p>
+
+<div class="highlight"><pre><code class="bash">GroupName_1:
+    MacroName_11
+    MacroName_12
+    MacroName_13
+    ...
+    MacroName_1n
+
+GroupName_2:
+    MacroName_21
+    MacroName_22
+    MacroName_23
+    ...
+    MacroName_2n
+
+...
+
+GroupName_n:
+    MacroName_n1
+    MacroName_n2
+    MacroName_n3
+    ...
+    MacroName_nn
+</code></pre></div>
+
+
+<p>The GroupName is the name of a group consist of macros, you can named what ever you want just help you group that macros. And the MacroName is the name of the macro same as they in the code of your project. For example, you have macro M_WIN32, M_LINUX, M_XB360, M_PS3, you can named your group as Platform, the text in exMacroHighlight should be like:</p>
+
+<div class="highlight"><pre><code class="bash">Platform:
+    M_WIN32
+    M_LINUX
+    M_XB360
+    M_PS3
+</code></pre></div>
+
+
+<p>Here shows how it looks like in plugin:</p>
+
+<p><img src="../images/macro_highlight_syntax.png" alt="macro_highlight_syntax.png" /></p>
+
+<p><strong>Note</strong>: a macro group is not create to organize similar meaning of macro in one group, It is said there can only be one item (macro) been enable/define in one group. Which means, when you choose M_WIN32, the M_LINUX, M_XB360, M_PS3 will be treat as they are undefined, or define as 0.  And that is how macro highlight works.</p>
+
+<p>When you choose a macro by <code>&lt;return&gt;</code>, the choosing macro will have a &ldquo;star&rdquo; marks in fron of it, like the picture shows below. Also its color will be different than others. And the code in edit window will highlight obey the rules.</p>
+
+<p><img src="../images/macro_highlight_disable_group.png" alt="macro_highlight_select_item.png" /></p>
+
+<p>If you don&rsquo;t want any macros in one group have affect with exMacroHighlight, just disable that group by press <code>&lt;return&gt;</code> in the GroupName. If disable you will see [x] marks behind the group name as picture shows below. press <code>&lt;return&gt;</code> again to re-enable it.</p>
+
+<p><img src="../images/macro_highlight_disable_group.png" alt="macro_highlight_disable_group.png" /></p>
+
+<p><strong>Note</strong>: You can combined several group macro together, for example, it is valid to highlight codes with #if defined (M_WIN32) &amp;&amp; defined (M_DEBUG), and here is the example:</p>
+
+<p><img src="../images/macro_highlight_combine_group.png" alt="macro_highlight_combine_group.png" /></p>
+
+<p>when I switch the macro define in group Configuration from M_DEBUG to M_RELEASE, the highlight of code changes:</p>
+
+<p><img src="../images/macro_highlight_combine_group_2.png" alt="macro_highlight_combine_group_2.png" /></p>
+
+<p>There are tones of way to combine macro highlights, I can&rsquo;t guaranty the plugin works all right for all of them. For example you may have problem with #if defined (M_WIN32) &amp;&amp; defined (M_UNKNOWN) where the M_UNKNOWN macro is not define in the macro highlight window. But for common use, it is enough. Complexity brings inefficient, why don&rsquo;t we keep everything like vim :p.</p>
+
+<h3>:ExmhHL {args}</h3>
+
+<p>Enable/Disable the macro highlight depends on {args} you give.</p>
+
+<ul>
+<li>0 means disable.</li>
+<li>1 means enable.</li>
+</ul>
+
+
+<p><strong>Note</strong>: You seldom need to disable macro highlight since it consume less performance than you think. But when you edit a very huge file, or running vim in a poor PC, this command may save your life. Recommend mapping:</p>
+
+<div class="highlight"><pre><code class="vim"><span class="nb">nnoremap</span> <span class="p">&lt;</span>unique<span class="p">&gt;</span> <span class="p">&lt;</span><span class="k">silent</span><span class="p">&gt;</span> <span class="p">&lt;</span>Leader<span class="p">&gt;</span>ae :ExmhHL <span class="m">1</span> <span class="p">&lt;</span>CR<span class="p">&gt;</span>
+<span class="nb">nnoremap</span> <span class="p">&lt;</span>unique<span class="p">&gt;</span> <span class="p">&lt;</span><span class="k">silent</span><span class="p">&gt;</span> <span class="p">&lt;</span>Leader<span class="p">&gt;</span>ad :ExmhHL <span class="m">0</span> <span class="p">&lt;</span>CR<span class="p">&gt;</span>
+</code></pre></div>
+
+
+<h2>Key Mappings</h2>
+
+<h3>&lt;return></h3>
+
+<p>Enable/Disable macro highlight or group highlight</p>
+
+<h3>&lt;space></h3>
+
+<p>Resize the exMacroHighlight plugin window by exMH_window_height_increment or exMH_window_width_increment</p>
+
+<h3>&lt;esc></h3>
+
+<p>Close the exMacroHighlight plugin window.</p>
+
+  </div>
+  <footer class="page-foot">
+  <div class="container">
+    <div class="iso">
+    <section class="description">
+      
+      
+    </section>
+    <section class="social-links">
+      
+      <ul>
+        <li class="social_github"><a href="https://github.com/exdev/exvim" class="ets-github">&nbsp;</a></li>
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+      </ul>
+      
+    </section>
+    
+    </section>
+    </div>
+    
+    <section class="bottom">
+      <ul>
+        <li class="copyright">&copy; Copyright 2013 exVim</li>
+        <li class="credit"><a href="https://github.com/stylehatch/bryant" window="_blank">Bryant</a> created by <a href="http://stylehatch.co" window="_blank">Style Hatch</a></li>
+        <li class="tumblr">Powered by Jekyll</li>
+      </ul>
+    </section> 
+  </div>
+</footer>
+
+  
+  <script type="text/javascript" src="/js/plugins.min.js"></script>
+  <script type="text/javascript" src="/js/application.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,1496 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]> <html class="no-js ie6 oldie" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js ie7 oldie" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js ie8 oldie" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>
+    
+      FAQ &ndash;
+    
+    exVim
+  </title>
+
+  <meta name="author" content="exVim" />
+  <meta name="description" content="Make Vim like IDE!" />
+
+    <!--
+      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      Bryant - 1.0.0
+      Premium Jekyll Theme
+      https://github.com/stylehatch
+      Theme by: Style Hatch - http://stylehatch.co - @stylehatch 
+         _____ __        __        __  __      __       __
+        / ___// /___  __/ /__     / / / /___ _/ /______/ /_
+        \__ \/ __/ / / / / _ \   / /_/ / __ `/ __/ ___/ __ \
+       ___/ / /_/ /_/ / /  __/  / __  / /_/ / /_/ /__/ / / /
+      /____/\__/\__, /_/\___/  /_/ /_/\__,_/\__/\___/_/ /_/
+               /____/
+      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    -->
+
+  <link rel="alternate" type="application/rss+xml" href="/atom.xml" />
+
+  <link rel="stylesheet" href="/css/icons.css" type="text/css" />
+  <link rel="stylesheet" href="/css/base.css" type="text/css" media="screen, projection" />
+  <link rel="stylesheet" href="/css/pygments.css" type="text/css" />
+  <link rel="shortcut icon" href="/favicon.ico" />
+  <!--[if IE]><link media="screen" type="text/css" href="stylesheets/spinner-old-ie.css" rel="stylesheet" /><![endif]-->
+<!-- Google Fonts -->
+  <link href='http://fonts.googleapis.com/css?family=PT+Sans:700,700italic|PT+Serif:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>window.jQuery || document.write('<script src="js/jquery-1.9.1.min.js"><\/script>')</script>
+
+  <script type="text/javascript">
+    var StyleHatch = window.StyleHatch || {};
+    StyleHatch.themeName = "Bryant";
+    StyleHatch.siteTitle = "exVim";
+    StyleHatch.customizeMode = true;
+
+    
+
+    StyleHatch.disqusID = "";
+    
+  </script>
+
+    <style type="text/css">
+/* COLORS */
+  /* Text Color */
+  body, article section ul.credit li.author a:hover, article footer a:hover, body.permalink-page article ul.credit li a:hover, body.permalink-page article ul.tags li a:hover, body.permalink-page article div.comments, body.permalink-page article div.notes {
+     color: #424242;
+   }
+  /* Accent Color */
+   a, ul.post-archive a:hover .title {
+     color: #1f7fff;
+   }
+  /* Hover Color */
+   a:hover, article.text header h2 a:hover {
+     color: #a7543f;
+   }
+  /* Sublte Color */
+  header.site-fixed nav.pages ul li:after, a.highres, a.permalink-button, article section ul.credit, article section ul.credit li.author a, article footer, article footer a, article.chat strong, article.ask header div.asker-wrap p.asker, article.photo ul.exif, body.permalink-page article ul.credit, body.permalink-page article ul.tags, body.permalink-page article ul.credit li a, body.permalink-page article ul.tags li a, ul.post-archive .date {
+     color: #999999;
+   }
+  /* Subtle Icon Color */
+   a.highres span:before, a.permalink-button span:before, a.highres:after, article footer a:before, article footer ul.meta li span:before, article.link header h2 a:after {
+     color: #999999;
+     opacity: 0.6;
+   }
+  /* Subtle Color Hover */
+   a.highres span:hover:before, a.permalink-button span:hover:before, a.highres:hover:after, article footer a:hover:before, article footer ul.meta li span:hover:before, article.link header h2 a:hover:after {
+     color: #999999;
+   }
+  /* Title Color */
+   h1, article.photo h2:first-of-type, article.video h2:first-of-type, article.photoset h2:first-of-type, article.audio h2:first-of-type, article.text header h2, article.text header p, article.chat header h2, article.chat header p, article.quote header h2, article.quote header p, article.text header h2 a, ul.post-archive .title {
+    color: #222222;
+   }
+  /* Text On Accent Color */
+   a.button {
+     color: #ffffff;
+   }
+  /* Text On Accent Color */
+   a.read-more.button:after, nav#pagination ul li.prev a:before, nav#pagination ul li.next a:after {
+     color: #ffffff; 
+     opacity: 0.4;
+   }
+  /* Header Area */
+  /* Header Title Color */
+  header.site-info section.description h1 a, header.site-info nav.pages ul li a:hover, footer.page-foot a:hover, header.site-info ul.util a:hover, footer.page-foot section h1, footer.page-foot section h2, footer.page-foot section h3, footer.page-foot section h4, footer.page-foot section h5, footer.page-foot section.social-links ul li a:hover {
+    color: #E9E9E9;
+  }
+  /* Header Text Color */
+   header.site-info section.description p, footer.page-foot, footer.page-foot section.bottom a:hover {
+     color: #000000;
+   }
+  /* Header Accent Color */
+   header.site-info nav.pages ul li a, footer.page-foot section.social-links ul li a {
+     color: #007f00;
+   }
+  /* Header Subtle Color */
+   header.site-info ul.util, header.site-info ul.util a, header.site-info nav.pages ul li:after, footer.page-foot section.bottom, footer.page-foot section.instagram a.btn {
+     color: #0000BC;
+   }
+  /* Backgrounds */
+  article.audio header .audio-embed, p > code, li > code {
+    background-color: #e9e9e9;
+  }
+  /* Background */
+   body, header.site-fixed nav.pages, a.highres, a.permalink-button {
+     background-color: #f8f8f8;
+   }
+  /* Header Background */
+   header.site-info, footer.page-foot {
+     background-color: #cccc99;
+   }
+   /* Post Background */
+   header.site-fixed nav.pages {
+    background-color: ;
+   }
+  /* Accent Background */
+   a.button {
+     background-color: #1f7fff
+   }
+  /* Borders */
+  /* subtleBorder */
+   blockquote, article footer, article.photo h2:first-of-type, article.video h2:first-of-type, article.photoset h2:first-of-type, article.audio h2:first-of-type, article.text header, article.ask header, article.chat header, article.quote header, article.link header, body.permalink-page article div.notes, ul.post-archive li {
+     border-color: #e9e9e9;
+   }
+  /* headerSubtleBorder */
+   header.site-info nav.pages, footer.page-foot section.bottom {
+     border-color: #000000;
+   }
+
+/* if posts have background color set */
+   
+
+  </style>
+  <!-- <link rel="stylesheet" href="/css/screen.css" type="text/css" /> -->
+</head>
+
+<header class="site-info">
+  <div class="container">
+    <section class="description">
+      
+      <a href="/" title="exVim - Home" class="portrait-icon"><img src="/images/logo.png" alt="exVim"></a>
+      
+      <p>Make Vim like IDE!</p>
+      <ul class="util">
+        <li class="release"><a href="/release/" class="etp-timeago">Releases</a></li>
+        <li class="faq"><a href="/docs/faq/" class="etp-comments">FAQ</a></li>
+        <li class="rss"><a href="/atom.xml" class="etp-rss">RSS</a></li>
+        
+        <li class="ask"><a href="/contact/" class="etp-mail">Contact</a></li>
+        
+        <li class="exdev"><a href="http://ex-dev.com" class="etp-users">exDev</a></li>
+      </ul>
+    </section>
+
+    <nav class="pages">
+      <a href="/" title="exVim - Home" class="portrait-icon user-icon"><img src="/images/logo.png" alt="exVim"></a>
+      <ul>
+      <li>
+        <a href="/">Home</a>
+      </li>
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+            
+          
+        
+          
+        
+          
+        
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+            
+            <li>
+              <a  href="/docs/">
+                Documentation
+              </a>
+            </li>
+            
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+      </ul>
+    </nav>
+  </div>
+</header>
+
+  <body class="page">
+  <div class="container" id="main" role="main">
+    <h2>Concept</h2>
+
+<p>(g)lobal search:</p>
+
+<p>(q)uick view, (s)elect window</p>
+
+<ol>
+<li>The character in Bracket is name of window. &ldquo;g&rdquo; is global search&rsquo;s name.</li>
+<li><code>&lt;leader&gt;gs</code> to open global search window, the main window is the select window. Shortcut: <code>ctrl-&lt;up&gt;</code></li>
+<li><code>&lt;leader&gt;gq</code> to open quick view of global search window.  Shortcut: <code>ctrl-&lt;left&gt;</code></li>
+<li><code>Ctrl-R u</code> to navigate in history select window</li>
+</ol>
+
+
+<p>(t)ag search:</p>
+
+<p>(s)elect window</p>
+
+<ol>
+<li>the character in bracket is name of window. &ldquo;t&rdquo; is tag search&rsquo;s name.</li>
+<li><code>&lt;leader&gt;ts</code> to open the tag search window. Shortcut: <code>ctrl-&lt;left&gt;</code></li>
+<li><code>ctrl-R u</code> to navigate in history select window</li>
+</ol>
+
+
+<p>(s)ymbol list:</p>
+
+<p>(q)uick view, (s)elect window</p>
+
+<ol>
+<li>the character in bracket is name of window. &ldquo;s&rdquo; is symbol list&rsquo;s name.</li>
+<li><code>&lt;leader&gt;ss</code> to open the tag search window. Shortcut: <code>ctrl-&lt;right&gt;</code></li>
+<li><code>&lt;leader&gt;sq</code> to open the quick view of symbol list. Shortcut: <code>ctrl-&lt;left&gt;</code></li>
+</ol>
+
+
+<h2>Questions</h2>
+
+<h3>Q0: How to install and quick start?</h3>
+
+<p>A0: Refer to the install.txt.</p>
+
+<h3>Q1: How to search in project?</h3>
+
+<p>A1:</p>
+
+<ol>
+<li><code>\gg</code>: Global search current word</li>
+<li><code>:GS</code>: Global search ( similar with &ldquo;word&rdquo; )</li>
+<li><code>:GSW</code>: Global search a word ( similar with &lt;&ldquo;word&rdquo;> )</li>
+<li><code>:GSR</code>: Global search using regular expression ( seems the regular expression search in id-utils not so powerful, not recommend )</li>
+<li><code>:GSigc/</code>, <code>GSnoigc</code>: case setting, ignore/no ignore case for search</li>
+</ol>
+
+
+<h3>Q2: How to filter in select window?</h3>
+
+<p>A2: Search Result Formation:</p>
+
+<p>filepath:line:    pattern</p>
+
+<ol>
+<li>search a &ldquo;key&rdquo;</li>
+<li>use filter method</li>
+<li><code>\r</code> to remove all lines that do not include the &ldquo;key&rdquo; in the part of pattern.</li>
+<li><code>\fr</code> to remove all lines that do not include &ldquo;key&rdquo; in the part of file name.</li>
+<li><code>\gr</code> to remove all lines that do not include &ldquo;key&rdquo;.</li>
+<li><code>\d</code> to remove all lines that include the &ldquo;key&rdquo; in the part of pattern.</li>
+<li><code>\fd</code> to remove all lines that include the &ldquo;key&rdquo; in the part of file name.</li>
+<li><code>\gd</code> to remove all lines that include the &ldquo;key&rdquo;.</li>
+</ol>
+
+
+<h3>Q3: How to use the Perforce?</h3>
+
+<p>A3:</p>
+
+<ol>
+<li>Login to perforce to create a ticket for you.</li>
+<li>:Checkout, :Revert</li>
+</ol>
+
+
+<h3>Q4: How to create id, symbol and tags file?</h3>
+
+<p>A4:</p>
+
+<ol>
+<li>Copy the quick_gen_project_general.bat to your root path. Or type <code>:QC</code> general in <code>V</code></li>
+<li><code>:Up</code>, <code>:Up ID</code>, <code>:Up symbol</code>, <code>:Up tags</code>, <code>:Up inherits</code>, <code>:Up cscope</code></li>
+</ol>
+
+
+<h3>Q5: How to mark different colors on marks?</h3>
+
+<p>A5:</p>
+
+<ol>
+<li>Use the <code>alt + 1</code>, <code>alt + 2</code> and <code>alt + 3</code> to switch whether mark color or not.</li>
+<li>Use the <code>alt + 4</code> to disable all mark&rsquo;s colors.</li>
+<li>Use <code>\1</code>, <code>\2</code>, <code>\3</code> to remove specified mark color.</li>
+</ol>
+
+
+<p><strong>Note</strong>: when you use <code>alt + 1/2/3</code>, it will save the mark word into register q/w/e (you can see they are under key 1,2,3), and then you can use them for quick replace.</p>
+
+<p>you mark word &ldquo;foo&rdquo; as <code>alt+1</code>, word &ldquo;bar&rdquo; as   alt+2   , and now you want to change &ldquo;foo&rdquo; to &ldquo;bar&rdquo;, type <code>:%s/&lt;ctrl+R&gt;q/&lt;ctrl+R&gt;w/g</code></p>
+
+<h3>Q6: How to jump?</h3>
+
+<p>A6:</p>
+
+<ol>
+<li>\ to jump to current tag and <code>\tb</code>, <code>\tf</code> to navigate.</li>
+<li><code>:TS</code> like <code>:GS</code>, you can type the symbol directly.</li>
+<li><code>\ss</code> to open the global symbol list and \</li>
+<li><code>gd</code> to jump to local symbol (this is the default command of vim)</li>
+<li><code>alt + shift + l</code> to open the symbol list window and start search (by automatic add &ldquo;/&rdquo; for you)</li>
+</ol>
+
+
+<h3>Q7: How to build solution of msvc.</h3>
+
+<p>A7:</p>
+
+<ol>
+<li>Copy the gVim/Vim/toolKit/makfile/msvc/msvc_config.mk &amp; gVim/Vim/toolKit/makfile/msvc/msvc_entry.mk to project folder. (only for msvc project)</li>
+<li><code>:VM</code>, <code>:VM all</code>, <code>:VM clean-all</code>, <code>:VM rebuild</code> for msvc</li>
+<li><code>:GM</code> for gcc (for gcc, you need to copy gcc_config.mk, gcc_entry_m.mk, gcc_rule.mk and project.mk, and distribute them properly )</li>
+<li><code>ctrl + up</code>, <code>ctrl + down</code> can quick jump to quick fix file in project-window.</li>
+</ol>
+
+
+<h3>Q8: How to create a item in project?</h3>
+
+<p>A8:</p>
+
+<ol>
+<li>move cursor to a file line or folder line, type o to create a file.</li>
+<li>move cursor to a exist folder line, type O to create a new folder under that folder. (there is a bug for create folder, you must create the folder manually in your system. can be fixed. )</li>
+</ol>
+
+
+<h3>Q9: How to call back the project window?</h3>
+
+<p>A9: <code>alt + shift + p</code></p>
+
+<h3>Q10: How to create macro highlight?</h3>
+
+<p>A10:</p>
+
+<ol>
+<li><code>\aa</code> to open the macro window.</li>
+<li>syntax:</li>
+</ol>
+
+
+<div class="highlight"><pre><code class="bash">&lt;group&gt;:
+    &lt;macro1&gt;
+    &lt;macro2&gt;
+</code></pre></div>
+
+
+<h3>Q11: How to close a buffer?</h3>
+
+<p>A11: <code>\bd</code> (notice: can not use the :q)</p>
+
+<h3>Q12: How to find out all defined of functions and class in one file?</h3>
+
+<p>A12: <code>F4</code></p>
+
+<h3>Q13: How to quick open a file?</h3>
+
+<p>A13: <code>alt + shift + o</code></p>
+
+<h3>Q14: How to exchange data with clipboard?</h3>
+
+<p>A14: <code>\y</code>, <code>\p</code></p>
+
+<h3>Q15: How to quick switch file in buffer?</h3>
+
+<p>A15: <code>ctrl + right</code>, <code>ctrl + left</code></p>
+
+<h3>Q16: How to quick switch window?</h3>
+
+<p>A16:</p>
+
+<ol>
+<li><code>shift + direction</code></li>
+<li><code>\TAB</code>: switch between last edit window. (failed if you close last edit window.) useful when you want to have frequency operation between GS/TS/SS/Project and Edit Window</li>
+</ol>
+
+
+<h3>Q17: How to create a inherited class diagram?</h3>
+
+<p>A17:</p>
+
+<ol>
+<li><code>\gv</code> to draw all inherited class diagram of current class</li>
+<li><code>:GVC</code> &ldquo;class_name&rdquo; to get derived class diagram (put in .vimfiles.hierarchies\class_name.png)</li>
+<li><code>:GVP</code> &ldquo;class_name&rdquo; to get base class diagram (put in .vimfiles.hierarchies\class_name.png)</li>
+</ol>
+
+
+<h3>Q18: How to quick locate file in project.</h3>
+
+<p>A18:</p>
+
+<ol>
+<li><code>\fc</code> can locate current file</li>
+<li><code>\ff</code> only locate file in project files tree.</li>
+<li><code>\fd</code> only locate folder in project files tree.</li>
+</ol>
+
+
+<h3>Q19: How to list all files &ldquo;#include&rdquo; current edit file.</h3>
+
+<p>A19: <code>F2</code> if there have files include current edit file, it will list at the left of a new window.</p>
+
+<h3>Q20: How to use bookmarks?</h3>
+
+<p>A20:</p>
+
+<ol>
+<li><code>\mm</code> to place the next available bookmark on the current line.</li>
+<li><code>\mh</code> to clear the mark at the current line.</li>
+<li><code>\ma</code> to clear all bookmark in the current buffer.</li>
+<li><code>\mt</code> to toggles whether show the &ldquo;ShowMarks zone&rdquo; or not.</li>
+<li><code>\mo</code> to force show the &ldquo;ShowMarks zone&rdquo;.</li>
+<li>you can use <code>mA</code>&hellip; <code>mZ</code> to mark a global bookmark.</li>
+<li>you can use <code>'</code> or <code>\\</code> to lead a name of bookmark to jump to the bookmark.</li>
+</ol>
+
+
+<h3>Q21: How to show/hide project window</h3>
+
+<p>A21:</p>
+
+<ul>
+<li>show: <code>alt+shift+p</code></li>
+<li>hide: <code>:q</code></li>
+</ul>
+
+
+<h3>Q22: How to quick add surround symbol for something I select</h3>
+
+<p>A22:</p>
+
+<p>In visual mode, type s, then type the surround symbol you want, for example {,(,[, note: space need type twice, the direction of the surround represent to different result, {,(,[ will not add space when surround, otherwise },),] will.</p>
+
+<h3>Q23: How to quick remove surround symbol</h3>
+
+<p>A23:</p>
+
+<p>In the surround symbol, type ds, then fill the symbol surrounded.</p>
+
+<h3>Q24: How to quick close a plugin window.</h3>
+
+<p>A24:</p>
+
+<p>When you in edit window(and you have several plugin windows opened), you don&rsquo;t
+need to go to plugin window and press ESC to close it, press \ESC, it will close plugin
+windows by the time you visited them. And don&rsquo;t worry about any side effect, when you
+in press <code>\ESC</code> plugin window, the script is smart enough to judge all the situation.</p>
+
+<h3>Q25: How to copy source code with format information?</h3>
+
+<p>A25:</p>
+
+<p>Use <code>:SHL</code> or <code>:range SHL</code>, the commands will convert your source code with highlight information into html file, and open it by a specific web-browser. You need to copy settings from %EX_DEV%\exVim\toolkit\src-highlight\ex\&lsquo;&rsquo;&lsquo;.&rsquo;&lsquo;&rsquo; to %EX_DEV%\tools\GnuWin32\share\source-highlight if you get a blank page.</p>
+
+  </div>
+  <footer class="page-foot">
+  <div class="container">
+    <div class="iso">
+    <section class="description">
+      
+      
+    </section>
+    <section class="social-links">
+      
+      <ul>
+        <li class="social_github"><a href="https://github.com/exdev/exvim" class="ets-github">&nbsp;</a></li>
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+      </ul>
+      
+    </section>
+    
+    </section>
+    </div>
+    
+    <section class="bottom">
+      <ul>
+        <li class="copyright">&copy; Copyright 2013 exVim</li>
+        <li class="credit"><a href="https://github.com/stylehatch/bryant" window="_blank">Bryant</a> created by <a href="http://stylehatch.co" window="_blank">Style Hatch</a></li>
+        <li class="tumblr">Powered by Jekyll</li>
+      </ul>
+    </section> 
+  </div>
+</footer>
+
+  
+  <script type="text/javascript" src="/js/plugins.min.js"></script>
+  <script type="text/javascript" src="/js/application.js"></script>
+
+</body>
+</html>

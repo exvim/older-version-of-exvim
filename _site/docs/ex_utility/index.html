@@ -1,0 +1,1825 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]> <html class="no-js ie6 oldie" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js ie7 oldie" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js ie8 oldie" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>
+    
+      exUtility &ndash;
+    
+    exVim
+  </title>
+
+  <meta name="author" content="exVim" />
+  <meta name="description" content="Make Vim like IDE!" />
+
+    <!--
+      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      Bryant - 1.0.0
+      Premium Jekyll Theme
+      https://github.com/stylehatch
+      Theme by: Style Hatch - http://stylehatch.co - @stylehatch 
+         _____ __        __        __  __      __       __
+        / ___// /___  __/ /__     / / / /___ _/ /______/ /_
+        \__ \/ __/ / / / / _ \   / /_/ / __ `/ __/ ___/ __ \
+       ___/ / /_/ /_/ / /  __/  / __  / /_/ / /_/ /__/ / / /
+      /____/\__/\__, /_/\___/  /_/ /_/\__,_/\__/\___/_/ /_/
+               /____/
+      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    -->
+
+  <link rel="alternate" type="application/rss+xml" href="/atom.xml" />
+
+  <link rel="stylesheet" href="/css/icons.css" type="text/css" />
+  <link rel="stylesheet" href="/css/base.css" type="text/css" media="screen, projection" />
+  <link rel="stylesheet" href="/css/pygments.css" type="text/css" />
+  <link rel="shortcut icon" href="/favicon.ico" />
+  <!--[if IE]><link media="screen" type="text/css" href="stylesheets/spinner-old-ie.css" rel="stylesheet" /><![endif]-->
+<!-- Google Fonts -->
+  <link href='http://fonts.googleapis.com/css?family=PT+Sans:700,700italic|PT+Serif:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>window.jQuery || document.write('<script src="js/jquery-1.9.1.min.js"><\/script>')</script>
+
+  <script type="text/javascript">
+    var StyleHatch = window.StyleHatch || {};
+    StyleHatch.themeName = "Bryant";
+    StyleHatch.siteTitle = "exVim";
+    StyleHatch.customizeMode = true;
+
+    
+
+    StyleHatch.disqusID = "";
+    
+  </script>
+
+    <style type="text/css">
+/* COLORS */
+  /* Text Color */
+  body, article section ul.credit li.author a:hover, article footer a:hover, body.permalink-page article ul.credit li a:hover, body.permalink-page article ul.tags li a:hover, body.permalink-page article div.comments, body.permalink-page article div.notes {
+     color: #424242;
+   }
+  /* Accent Color */
+   a, ul.post-archive a:hover .title {
+     color: #1f7fff;
+   }
+  /* Hover Color */
+   a:hover, article.text header h2 a:hover {
+     color: #a7543f;
+   }
+  /* Sublte Color */
+  header.site-fixed nav.pages ul li:after, a.highres, a.permalink-button, article section ul.credit, article section ul.credit li.author a, article footer, article footer a, article.chat strong, article.ask header div.asker-wrap p.asker, article.photo ul.exif, body.permalink-page article ul.credit, body.permalink-page article ul.tags, body.permalink-page article ul.credit li a, body.permalink-page article ul.tags li a, ul.post-archive .date {
+     color: #999999;
+   }
+  /* Subtle Icon Color */
+   a.highres span:before, a.permalink-button span:before, a.highres:after, article footer a:before, article footer ul.meta li span:before, article.link header h2 a:after {
+     color: #999999;
+     opacity: 0.6;
+   }
+  /* Subtle Color Hover */
+   a.highres span:hover:before, a.permalink-button span:hover:before, a.highres:hover:after, article footer a:hover:before, article footer ul.meta li span:hover:before, article.link header h2 a:hover:after {
+     color: #999999;
+   }
+  /* Title Color */
+   h1, article.photo h2:first-of-type, article.video h2:first-of-type, article.photoset h2:first-of-type, article.audio h2:first-of-type, article.text header h2, article.text header p, article.chat header h2, article.chat header p, article.quote header h2, article.quote header p, article.text header h2 a, ul.post-archive .title {
+    color: #222222;
+   }
+  /* Text On Accent Color */
+   a.button {
+     color: #ffffff;
+   }
+  /* Text On Accent Color */
+   a.read-more.button:after, nav#pagination ul li.prev a:before, nav#pagination ul li.next a:after {
+     color: #ffffff; 
+     opacity: 0.4;
+   }
+  /* Header Area */
+  /* Header Title Color */
+  header.site-info section.description h1 a, header.site-info nav.pages ul li a:hover, footer.page-foot a:hover, header.site-info ul.util a:hover, footer.page-foot section h1, footer.page-foot section h2, footer.page-foot section h3, footer.page-foot section h4, footer.page-foot section h5, footer.page-foot section.social-links ul li a:hover {
+    color: #E9E9E9;
+  }
+  /* Header Text Color */
+   header.site-info section.description p, footer.page-foot, footer.page-foot section.bottom a:hover {
+     color: #000000;
+   }
+  /* Header Accent Color */
+   header.site-info nav.pages ul li a, footer.page-foot section.social-links ul li a {
+     color: #007f00;
+   }
+  /* Header Subtle Color */
+   header.site-info ul.util, header.site-info ul.util a, header.site-info nav.pages ul li:after, footer.page-foot section.bottom, footer.page-foot section.instagram a.btn {
+     color: #0000BC;
+   }
+  /* Backgrounds */
+  article.audio header .audio-embed, p > code, li > code {
+    background-color: #e9e9e9;
+  }
+  /* Background */
+   body, header.site-fixed nav.pages, a.highres, a.permalink-button {
+     background-color: #f8f8f8;
+   }
+  /* Header Background */
+   header.site-info, footer.page-foot {
+     background-color: #cccc99;
+   }
+   /* Post Background */
+   header.site-fixed nav.pages {
+    background-color: ;
+   }
+  /* Accent Background */
+   a.button {
+     background-color: #1f7fff
+   }
+  /* Borders */
+  /* subtleBorder */
+   blockquote, article footer, article.photo h2:first-of-type, article.video h2:first-of-type, article.photoset h2:first-of-type, article.audio h2:first-of-type, article.text header, article.ask header, article.chat header, article.quote header, article.link header, body.permalink-page article div.notes, ul.post-archive li {
+     border-color: #e9e9e9;
+   }
+  /* headerSubtleBorder */
+   header.site-info nav.pages, footer.page-foot section.bottom {
+     border-color: #000000;
+   }
+
+/* if posts have background color set */
+   
+
+  </style>
+  <!-- <link rel="stylesheet" href="/css/screen.css" type="text/css" /> -->
+</head>
+
+<header class="site-info">
+  <div class="container">
+    <section class="description">
+      
+      <a href="/" title="exVim - Home" class="portrait-icon"><img src="/images/logo.png" alt="exVim"></a>
+      
+      <p>Make Vim like IDE!</p>
+      <ul class="util">
+        <li class="release"><a href="/release/" class="etp-timeago">Releases</a></li>
+        <li class="faq"><a href="/docs/faq/" class="etp-comments">FAQ</a></li>
+        <li class="rss"><a href="/atom.xml" class="etp-rss">RSS</a></li>
+        
+        <li class="ask"><a href="/contact/" class="etp-mail">Contact</a></li>
+        
+        <li class="exdev"><a href="http://ex-dev.com" class="etp-users">exDev</a></li>
+      </ul>
+    </section>
+
+    <nav class="pages">
+      <a href="/" title="exVim - Home" class="portrait-icon user-icon"><img src="/images/logo.png" alt="exVim"></a>
+      <ul>
+      <li>
+        <a href="/">Home</a>
+      </li>
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+            
+          
+        
+          
+        
+          
+        
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+            
+            <li>
+              <a  href="/docs/">
+                Documentation
+              </a>
+            </li>
+            
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+      </ul>
+    </nav>
+  </div>
+</header>
+
+  <body class="page">
+  <div class="container" id="main" role="main">
+    <h2>Intro</h2>
+
+<p>The exUtility is the base scripts in ex-plugins. It including functions, global variable settings, mappings and commands.</p>
+
+<p>The exUtility separate to two scripts, one in plugin directory, and the other one in autoload directory. Also user can configure some of the settings in _vimrc.</p>
+
+<h2>Variables</h2>
+
+<h3>ex_plugin_registered_bufnames</h3>
+
+<p>ex_plugin_registered_bufnames is a variable let user input its plugin window buffer name into it, so that the window will be recognized as a register-plugin-window, and the edit file will not opened in that window to prevent unexpect error.</p>
+
+<div class="highlight"><pre><code class="vim"><span class="k">let</span> <span class="k">g</span>:ex_plugin_registered_bufnames <span class="p">=</span> [<span class="s2">&quot;-MiniBufExplorer-&quot;</span><span class="p">,</span><span class="s2">&quot;__Tag_List__&quot;</span><span class="p">,</span><span class="s2">&quot;\[Lookup File\]&quot;</span><span class="p">,</span> <span class="s2">&quot;\[BufExplorer\]&quot;</span>] 
+</code></pre></div>
+
+
+<h3>ex_plugin_registered_filetypes</h3>
+
+<p>ex_plugin_registered_filetypes is a variable let user input its plugin window filetype into it, so that the window will be recognized as a register-plugin-window, and the edit file will not opened in that window to prevent unexpect error.</p>
+
+<div class="highlight"><pre><code class="vim"><span class="k">let</span> <span class="k">g</span>:ex_plugin_registered_filetypes <span class="p">=</span> [<span class="s2">&quot;ex_plugin&quot;</span><span class="p">,</span><span class="s2">&quot;ex_project&quot;</span><span class="p">,</span><span class="s2">&quot;taglist&quot;</span><span class="p">,</span><span class="s2">&quot;nerdtree&quot;</span>] 
+</code></pre></div>
+
+
+<h3>ex_usr_name</h3>
+
+<p>ex_usr_name will used the name you give as the author name, and fill it in the author column when you use exUtility#PutHeader() function to put a head title for a file.</p>
+
+<div class="highlight"><pre><code class="vim"><span class="k">let</span> <span class="k">g</span>:ex_usr_name <span class="p">=</span> <span class="s2">&quot;Wu Jie&quot;</span>
+</code></pre></div>
+
+
+<h3>ex_default_langs</h3>
+
+<p>ex_default_langs will let the user input a list of the languages as the default languages when start a new project. The languages you input will link to the language maps, which includes all filetype mappings to that languages. For example, the languages &lsquo;cpp&rsquo; will have the filetype list: [&lsquo;c++&rsquo;, &lsquo;cc&rsquo;, &lsquo;cp&rsquo;, &lsquo;cpp&rsquo;, &lsquo;cxx&rsquo;, &lsquo;h&rsquo;, &lsquo;H&rsquo;, &lsquo;h++&rsquo;, &lsquo;hh&rsquo;, &lsquo;hp&rsquo;, &lsquo;hpp&rsquo;, &lsquo;hxx&rsquo;, &lsquo;inl&rsquo;, &lsquo;ipp&rsquo; ].  You can check all the file type mappings in autoload/exUtility.vim, at the define s:ex_exvim_lang_map. If you want to add your own mappings, you need to call the function exUtility#AddLangMap and exUtility#ResetLangMap in your .vimrc.</p>
+
+<div class="highlight"><pre><code class="vim"><span class="k">let</span> <span class="k">g</span>:ex_default_langs <span class="p">=</span> [<span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="s1">&#39;cpp&#39;</span><span class="p">,</span> <span class="s1">&#39;c#&#39;</span><span class="p">,</span> <span class="s1">&#39;java&#39;</span><span class="p">,</span> <span class="s1">&#39;shader&#39;</span><span class="p">,</span> <span class="s1">&#39;python&#39;</span><span class="p">,</span> <span class="s1">&#39;vim&#39;</span><span class="p">,</span> <span class="s1">&#39;uc&#39;</span><span class="p">,</span> <span class="s1">&#39;math&#39;</span><span class="p">,</span> <span class="s1">&#39;wiki&#39;</span><span class="p">,</span> <span class="s1">&#39;ini&#39;</span><span class="p">,</span> <span class="s1">&#39;make&#39;</span><span class="p">,</span> <span class="s1">&#39;sh&#39;</span><span class="p">,</span> <span class="s1">&#39;batch&#39;</span><span class="p">,</span> <span class="s1">&#39;debug&#39;</span> ] 
+</code></pre></div>
+
+
+<h3>ex_cscope_langs</h3>
+
+<p>ex_cscope_langs let user setup the language so that cscope will parse them by their file types.</p>
+
+<div class="highlight"><pre><code class="vim"><span class="k">let</span> <span class="k">g</span>:ex_cscope_langs <span class="p">=</span> [<span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="s1">&#39;cpp&#39;</span><span class="p">,</span> <span class="s1">&#39;shader&#39;</span><span class="p">,</span> <span class="s1">&#39;asm&#39;</span> ] 
+</code></pre></div>
+
+
+<h3>ex_todo_keyword</h3>
+
+<p>the variable will record giving words as todo keyword, which will have todo highlight.  Similar like word TODO in comments.</p>
+
+<div class="highlight"><pre><code class="vim"><span class="k">let</span> <span class="k">g</span>:ex_todo_keyword <span class="p">=</span> <span class="s1">&#39;NOTE REF EXAMPLE SAMPLE CHECK&#39;</span>
+</code></pre></div>
+
+
+<h3>ex_ctags_cmd</h3>
+
+<p>this variable is designed to let the user input the name of ctags programme manually. Cause the command of ctags may be different in different platform, if nothing was set, the exVim will check the executable list below in order to set the variable:</p>
+
+<ol>
+<li>exuberant-ctags</li>
+<li>exctags</li>
+<li>ctags</li>
+<li>ctags.exe</li>
+<li>tags</li>
+</ol>
+
+
+<h3>ex_comment_lable_keyword</h3>
+
+<p>the variable will record giving words as comment lable keyword, which will have exCommentLable highlight.</p>
+
+<div class="highlight"><pre><code class="vim"><span class="k">let</span> <span class="k">g</span>:ex_comment_lable_keyword <span class="p">=</span> <span class="s1">&#39;DELME TEMP MODIFY ADD KEEPME DISABLE &#39;</span>
+<span class="k">let</span> <span class="k">g</span>:ex_comment_lable_keyword .<span class="p">=</span> <span class="s1">&#39;DEBUG CRASH DUMMY UNUSED TESTME &#39;</span>
+<span class="k">let</span> <span class="k">g</span>:ex_comment_lable_keyword .<span class="p">=</span> <span class="s1">&#39;HACK OPTME HARDCODE REFACTORING DUPLICATE REDUNDANCY &#39;</span>
+</code></pre></div>
+
+
+<p>Here are a example of ex_todo_keyword and ex_comment_lable_keyword in the code:</p>
+
+<p><img src="../images/special_comment_text.png" alt="special_comment_text.png" /></p>
+
+<h3>ex_toolkit_path</h3>
+
+<p>By default, exVim install the toolkit folder in the path $EX_DEV/exVim/toolkit. But you can change this path to your own place. To change the path, you need to set ex_toolkit_path variable in .vimrc, and copy the toolkit folder to that path.</p>
+
+<div class="highlight"><pre><code class="vim"><span class="k">let</span> <span class="k">g</span>:ex_toolkit_path <span class="p">=</span> $EX_DEV.<span class="s1">&#39;/exVim/toolkit&#39;</span>
+</code></pre></div>
+
+
+<h3>ex_auto_hl_cursor_word</h3>
+
+<p>if ex_auto_hl_cursor_word set to 1, exVim will use ex_SynHLTemp syntax highlight color to highlight the word under current cursor when cursor holds.</p>
+
+<div class="highlight"><pre><code class="vim"><span class="k">let</span> <span class="k">g</span>:ex_auto_hl_cursor_word <span class="p">=</span> <span class="m">1</span>
+</code></pre></div>
+
+
+<h2>Commands</h2>
+
+<h3>:HL{1-4} [{pattern}]</h3>
+
+<p>Highlight a {pattern} with &frac12;/&frac34; color. If the {pattern} is empty, it will remove the highlight of last one. You can set syntax highlight of each number by overwrite default highlight of ex_SynHL1 to ex_SynHL4. Also the highlight color of higher number will cover the lower one if they highlights same word/pattern.</p>
+
+<h3>:Up[date] [{args}]</h3>
+
+<p>Update exVim project files. This command will call quick_gen_project_{&hellip;}.(bat\|sh).  Use <code>&lt;TAB&gt;</code> to check possible arguments. If no arguments given, it will update all project files.</p>
+
+<p><strong>Note</strong>: if there is not quick_gen_project_{&hellip;}.(bat\|sh) under the project working directory, exVim will list several project types let user choose.</p>
+
+<h3>:QC[opy] {args}</h3>
+
+<p>Copy the quick_gen_project<em>{&hellip;}.(bat\|sh) file from toolkit/(bash\|batch)/quick_gen_project</em>{&hellip;}.(bat\|sh) to the project working directory.  Use <code>&lt;TAB&gt;</code> to check possible arguments.</p>
+
+<h3>:GV {class-name}</h3>
+
+<p>Draw the class hierarchy graphic by the name user gives and save the picture in .vimfiles.hierarchies\SymbolName.png</p>
+
+<p><strong>Note</strong>: you need to install tool <a href="http://www.graphviz.org/">Graphviz</a></p>
+
+<h3>:GVP {class-name}</h3>
+
+<p>Similar like :GV command, but draw only hierarchy of the parent classes for {class-name} you give.</p>
+
+<h3>:GVC {class-name}</h3>
+
+<p>Similar like :GV command, but draw only hierarchy of the children classes for {class-name} you give.  Here is a example of drawing hierarchy by :GV in qt-4.5.0 project.</p>
+
+<p><img src="../images/q_label_all.png" alt="q_label_all.png" /></p>
+
+<h3>:[range]SHL</h3>
+
+<p>convert the highlight of the source code in visual block into html. If no range gvien, it will convert the whole file. The converted html file will saved in .vimfiles.temp_src_highlight.txt.html.</p>
+
+<p><strong>Note</strong>: you need to install <a href="http://gnuwin32.sourceforge.net/packages/src-highlite.htm">src-highlite</a>.</p>
+
+<p><strong>Note</strong>: if you define the path of the web browser you are using in g:exES_WebBrowser, after the convert, the command will use the browser you defined to open the html automatically.</p>
+
+<p><strong>Note</strong>: if you got blank page in web-browser after execute the command, that means you failed. It is probably you didn&rsquo;t copy the language setup files into the src-highlite share directory. So copy %EX_DEV%\exVim\toolkit\src-highlight\ex\ to your src-highlite share directory. in win32 it could be: %EX_DEV%\tools\GnuWin32\share\source-highlight.</p>
+
+<h3>:[range]MK {args}</h3>
+
+<p>Mark a visual block of code with the {args} you give, as showed below:</p>
+
+<p><img src="../images/mark_steps.png" alt="mark_steps.png" /></p>
+
+<h3>:LINE</h3>
+
+<p>The command will put a 86 words long line in the line current cursor in. Here is the command scripts.</p>
+
+<div class="highlight"><pre><code class="vim">command LINE <span class="k">call</span> exUtility#PutLine<span class="p">(</span><span class="m">86</span><span class="p">,</span> <span class="s1">&#39;-&#39;</span><span class="p">)</span>
+</code></pre></div>
+
+
+<p>You can change to other style or add other commands by copying and modifying the code above. For example you want 14 dot (&lsquo;.&rsquo;) line, you write:</p>
+
+<div class="highlight"><pre><code class="vim">command LINE <span class="k">call</span> exUtility#PutLine<span class="p">(</span><span class="m">14</span><span class="p">,</span> <span class="s1">&#39;.&#39;</span><span class="p">)</span>
+</code></pre></div>
+
+
+<h3>:[range]NS {args}</h3>
+
+<p>Put a namespace pair between a visual block like the code below:</p>
+
+<div class="highlight"><pre><code class="cpp"><span class="c1">// ######################### </span>
+<span class="k">namespace</span> <span class="n">NS_NAME</span> <span class="p">{</span> 
+<span class="c1">// ######################### </span>
+
+    <span class="n">visual</span> <span class="n">block</span>
+    <span class="p">...</span>
+    <span class="p">...</span>
+    <span class="n">visual</span> <span class="n">block</span>
+
+<span class="c1">// ######################### </span>
+<span class="p">}</span> <span class="c1">// end namespace NS_NAME </span>
+<span class="c1">// ######################### </span>
+</code></pre></div>
+
+
+<p><strong>Note</strong>: the NS_NAME in the code is the {args} you input</p>
+
+<h3>:NSS {args}</h3>
+
+<p>Similar like :NS command, but put only namespace header.</p>
+
+<h3>:NSE {args}</h3>
+
+<p>Similar like :NS command, but put only namespace tail.</p>
+
+<h3>:HEADER</h3>
+
+<p>Put a header at the beginning of a file you edit, the header like the code below:</p>
+
+<div class="highlight"><pre><code class="cpp"><span class="c1">// ======================================================================================</span>
+<span class="c1">// File         : exVim.txt</span>
+<span class="c1">// Author       : Wu Jie </span>
+<span class="c1">// Last Change  : 04/19/2009 | 16:43:03 PM | Sunday,April</span>
+<span class="c1">// Description  : </span>
+<span class="c1">// ======================================================================================</span>
+</code></pre></div>
+
+
+<p><strong>Note</strong>: The content of the &ldquo;Author&rdquo; will be the text defined in g:ex_usr_name. Once you have a header in your file, you run this command again, it will only update the &ldquo;Last Change: &rdquo; line.</p>
+
+<h3>:SEP</h3>
+
+<p>Put a separator under the cursor line, as showed below:</p>
+
+<div class="highlight"><pre><code class="cpp"><span class="c1">// ======================================================== </span>
+<span class="c1">// </span>
+<span class="c1">// ======================================================== </span>
+</code></pre></div>
+
+
+<p><strong>Note</strong>: The separator help user define a name for a block of codes, also separte two defferent group of codes.</p>
+
+<p><strong>Note</strong>: Put a note under the cursor line, as showed below:</p>
+
+<div class="highlight"><pre><code class="cpp"><span class="c1">// ############################################################################ </span>
+<span class="c1">// Note: </span>
+<span class="c1">// ############################################################################ </span>
+</code></pre></div>
+
+
+<p><strong>Note</strong>: The note marks a block to write note info.</p>
+
+<h3>:DEF</h3>
+
+<p>Put a define under the cursor line, as showed below:</p>
+
+<div class="highlight"><pre><code class="cpp"><span class="c1">// ------------------------------------------------------------------ </span>
+<span class="c1">// Desc: </span>
+<span class="c1">// ------------------------------------------------------------------ </span>
+</code></pre></div>
+
+
+<p><strong>Note</strong>: The define indicates the code below is a definition.</p>
+
+<h3>:DEC</h3>
+
+<p>Put a declaration under the cursor line, as showed below:</p>
+
+<div class="highlight"><pre><code class="cpp"><span class="c1">///////////////////////////////////////////////////////////////////////////////</span>
+<span class="c1">// class </span>
+<span class="c1">// </span>
+<span class="c1">// Purpose: </span>
+<span class="c1">// </span>
+<span class="c1">///////////////////////////////////////////////////////////////////////////////</span>
+</code></pre></div>
+
+
+<p><strong>Note</strong>: The declaration indicates the code below is a class declaration.</p>
+
+<h3>:MAIN</h3>
+
+<p>Put a simple main function under the cursor line, as showed below:</p>
+
+<div class="highlight"><pre><code class="cpp"><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span> <span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span><span class="o">*</span> <span class="n">argv</span><span class="p">[]</span> <span class="p">)</span>
+<span class="p">{</span>
+<span class="p">}</span>
+</code></pre></div>
+
+
+<p><strong>Note</strong>: This help start a project for testing quickly.</p>
+
+<h3>:CLASS {class-name}</h3>
+
+<h3>:STRUCT {struct-name}</h3>
+
+<p>Put a class/struct with constructor and destructor, as showed below:</p>
+
+<div class="highlight"><pre><code class="cpp"><span class="c1">///////////////////////////////////////////////////////////////////////////////</span>
+<span class="c1">// class CTest</span>
+<span class="c1">// </span>
+<span class="c1">// Purpose: </span>
+<span class="c1">// </span>
+<span class="c1">///////////////////////////////////////////////////////////////////////////////</span>
+
+<span class="k">class</span> <span class="nc">CTest</span>
+<span class="p">{</span>
+<span class="nl">public:</span>
+    <span class="c1">// internal typedef</span>
+    <span class="k">typedef</span> <span class="n">CTest</span> <span class="kt">self_t</span><span class="p">;</span>
+
+<span class="nl">public:</span>
+    <span class="c1">// con/de-structor</span>
+    <span class="n">CTest</span> <span class="p">();</span>
+    <span class="k">virtual</span> <span class="o">~</span><span class="n">CTest</span> <span class="p">();</span>
+
+<span class="nl">public:</span>
+    <span class="c1">// copy constructor</span>
+    <span class="n">CTest</span> <span class="p">(</span> <span class="k">const</span> <span class="kt">self_t</span><span class="o">&amp;</span> <span class="n">_copy</span> <span class="p">);</span>
+    <span class="kt">self_t</span><span class="o">&amp;</span> <span class="k">operator</span> <span class="o">=</span> <span class="p">(</span> <span class="k">const</span> <span class="kt">self_t</span><span class="o">&amp;</span> <span class="n">_copy</span> <span class="p">);</span>
+
+<span class="p">};</span> <span class="c1">// end class CTest</span>
+</code></pre></div>
+
+
+<p><strong>Note</strong>: This help quick create a class/struct.</p>
+
+<h2>Mappings</h2>
+
+<h3>&lt;F9></h3>
+
+<div class="highlight"><pre><code class="vim"><span class="nb">vnoremap</span> <span class="p">&lt;</span>unique<span class="p">&gt;</span> <span class="p">&lt;</span>F9<span class="p">&gt;</span> :<span class="k">call</span> exUtility#InsertRemoveExtend<span class="p">()&lt;</span>CR<span class="p">&gt;</span>
+</code></pre></div>
+
+
+<p>This map help insert/remove &lsquo;\&rsquo; at the end of the line. It is useful when writing large block of macro define code in c/cpp.</p>
+
+<h3>&lt;F12></h3>
+
+<div class="highlight"><pre><code class="vim"><span class="nb">vnoremap</span> <span class="p">&lt;</span>unique<span class="p">&gt;</span> <span class="p">&lt;</span>F12<span class="p">&gt;</span> :<span class="k">call</span> exUtility#InsertIFZero<span class="p">()&lt;</span>CR<span class="p">&gt;</span>
+<span class="nb">nnoremap</span> <span class="p">&lt;</span>unique<span class="p">&gt;</span> <span class="p">&lt;</span>F12<span class="p">&gt;</span> :<span class="k">call</span> exUtility#RemoveIFZero<span class="p">()&lt;</span>CR<span class="p">&gt;</span>
+</code></pre></div>
+
+
+<p>When you want to insert/remove #if 0, #endif between a visual block of codes, use this map. The picture below shows how it work:</p>
+
+<p><img src="../images/mark_if_zero.png" alt="mark_if_zero.png" /></p>
+
+<p><strong>Note</strong>: you want to remove a #if 0, #endif block, you need to move your cursor in it then press</p>
+
+<p><strong>Note</strong>: you can remove a #if 0, #endif block with #else. The #else will not be remove directly,instead it will be comment out as:  &ldquo;// XXX #else XXX&rdquo;. The picture shows how it work:</p>
+
+<p><img src="../images/mark_if_zero_with_else.png" alt="mark_if_zero_with_else.png" /></p>
+
+<h3>&lt;leader>&lt;tab></h3>
+
+<div class="highlight"><pre><code class="vim"><span class="nb">nnoremap</span> <span class="p">&lt;</span>unique<span class="p">&gt;</span> <span class="p">&lt;</span><span class="k">silent</span><span class="p">&gt;&lt;</span>Leader<span class="p">&gt;&lt;</span>Tab<span class="p">&gt;</span> :<span class="k">call</span> exUtility#SwitchBuffer<span class="p">()&lt;</span>CR<span class="p">&gt;</span>
+</code></pre></div>
+
+
+<p>When you want to move cursor quickly between edit window and last ex-plugin window, use this map. (I&rsquo;m em&hellip; too lazy to type <c-w><h/i/j/k>, even more, I&rsquo;m lazy to thinking the direction of the next window :p )</p>
+
+<h3>&lt;leader>&lt;esc></h3>
+
+<div class="highlight"><pre><code class="vim">nmap <span class="p">&lt;</span>unique<span class="p">&gt;</span> <span class="p">&lt;</span><span class="k">silent</span><span class="p">&gt;&lt;</span>Leader<span class="p">&gt;&lt;</span>ESC<span class="p">&gt;</span> :<span class="k">call</span> exUtility#SwitchBuffer<span class="p">()&lt;</span>CR<span class="p">&gt;&lt;</span>ESC<span class="p">&gt;</span>
+</code></pre></div>
+
+
+<p>When your cursor are in edit window, and you want to close last ex-plugin window you are in without move the cursor to it then press <esc>, use this map.</p>
+
+<p><strong>Note</strong>: you have multiple ex-plugin window, and you use <leader><esc> close the last one, you can use <leader><esc> again to close the last second one, and again and again&hellip; It is a nice mapping for me to close ex-plugin windows without thinking how to move my cursor to that window. Again, I&rsquo;m lazy :p.</p>
+
+<h3>ctrl-&lt;right></h3>
+
+<h3>ctrl-&lt;left></h3>
+
+<div class="highlight"><pre><code class="vim"><span class="nb">nnoremap</span> <span class="p">&lt;</span>unique<span class="p">&gt;</span> <span class="p">&lt;</span><span class="k">silent</span><span class="p">&gt;</span> <span class="p">&lt;</span>C<span class="p">-</span>Right<span class="p">&gt;</span> :<span class="k">call</span> exUtility#GotoBuffer<span class="p">(</span><span class="s1">&#39;next&#39;</span><span class="p">)&lt;</span>CR<span class="p">&gt;</span>
+<span class="nb">nnoremap</span> <span class="p">&lt;</span>unique<span class="p">&gt;</span> <span class="p">&lt;</span><span class="k">silent</span><span class="p">&gt;</span> <span class="p">&lt;</span>C<span class="p">-</span>Left<span class="p">&gt;</span> :<span class="k">call</span> exUtility#GotoBuffer<span class="p">(</span><span class="s1">&#39;prev&#39;</span><span class="p">)&lt;</span>CR<span class="p">&gt;</span>
+</code></pre></div>
+
+
+<p>These two maps will process bn and bp command in a quick way.</p>
+
+<h3>ctrl-&lt;tab></h3>
+
+<div class="highlight"><pre><code class="vim"><span class="nb">nnoremap</span> <span class="p">&lt;</span>unique<span class="p">&gt;</span> <span class="p">&lt;</span><span class="k">silent</span><span class="p">&gt;</span> <span class="p">&lt;</span>C<span class="p">-</span>Tab<span class="p">&gt;</span> :<span class="k">call</span> exUtility#SwapToLastEditBuffer<span class="p">()&lt;</span>CR<span class="p">&gt;</span>
+</code></pre></div>
+
+
+<p>When you want to swap between two edit buffers, use this map, it is similar like the ctrl-tab operation in visual studio and other text editors.</p>
+
+<h3>&lt;leader>bd</h3>
+
+<div class="highlight"><pre><code class="vim"><span class="nb">nnoremap</span> <span class="p">&lt;</span>unique<span class="p">&gt;</span> <span class="p">&lt;</span>Leader<span class="p">&gt;</span><span class="k">bd</span> :<span class="k">call</span> exUtility#Kwbd<span class="p">(</span><span class="m">1</span><span class="p">)&lt;</span>CR<span class="p">&gt;</span>
+</code></pre></div>
+
+
+<p>The exVim assume there is always at least one edit window exists. When you try to close a buffer in edit window, since the gVim&rsquo;s :q method will close the buffer with the window, the exVim will loose a edit window at the end, and this will cause uncontrollable windows composition problem. So in exVim, the rule #1 is always use the map below to close a edit buffer. The function is come from VimTip #1119: How to use Vim like an IDE, with a little bit modification to work with ex-plugin window.</p>
+
+<p><strong>Note</strong>: Check section <a href="../known_issues">Known Issues</a> for more details.</p>
+
+<h3>&lt;alt-1></h3>
+
+<h3>&lt;alt-2></h3>
+
+<h3>&lt;alt-3></h3>
+
+<h3>&lt;alt-4></h3>
+
+<h3>&lt;alt-0></h3>
+
+<div class="highlight"><pre><code class="vim"><span class="nb">nnoremap</span> <span class="p">&lt;</span>unique<span class="p">&gt;</span> <span class="p">&lt;</span><span class="k">silent</span><span class="p">&gt;</span> <span class="p">&lt;</span><span class="k">a</span><span class="m">-1</span><span class="p">&gt;</span> :<span class="k">call</span> exUtility#Highlight_Normal<span class="p">(</span><span class="m">1</span><span class="p">)&lt;</span>CR<span class="p">&gt;</span>
+<span class="nb">vnoremap</span> <span class="p">&lt;</span>unique<span class="p">&gt;</span> <span class="p">&lt;</span><span class="k">silent</span><span class="p">&gt;</span> <span class="p">&lt;</span><span class="k">a</span><span class="m">-1</span><span class="p">&gt;</span> :<span class="k">call</span> exUtility#Highlight_Visual<span class="p">(</span><span class="m">1</span><span class="p">)&lt;</span>CR<span class="p">&gt;</span>
+<span class="nb">nnoremap</span> <span class="p">&lt;</span>unique<span class="p">&gt;</span> <span class="p">&lt;</span><span class="k">silent</span><span class="p">&gt;</span> <span class="p">&lt;</span><span class="k">a</span><span class="m">-2</span><span class="p">&gt;</span> :<span class="k">call</span> exUtility#Highlight_Normal<span class="p">(</span><span class="m">2</span><span class="p">)&lt;</span>CR<span class="p">&gt;</span>
+<span class="nb">vnoremap</span> <span class="p">&lt;</span>unique<span class="p">&gt;</span> <span class="p">&lt;</span><span class="k">silent</span><span class="p">&gt;</span> <span class="p">&lt;</span><span class="k">a</span><span class="m">-2</span><span class="p">&gt;</span> :<span class="k">call</span> exUtility#Highlight_Visual<span class="p">(</span><span class="m">2</span><span class="p">)&lt;</span>CR<span class="p">&gt;</span>
+<span class="nb">nnoremap</span> <span class="p">&lt;</span>unique<span class="p">&gt;</span> <span class="p">&lt;</span><span class="k">silent</span><span class="p">&gt;</span> <span class="p">&lt;</span><span class="k">a</span><span class="m">-3</span><span class="p">&gt;</span> :<span class="k">call</span> exUtility#Highlight_Normal<span class="p">(</span><span class="m">3</span><span class="p">)&lt;</span>CR<span class="p">&gt;</span>
+<span class="nb">vnoremap</span> <span class="p">&lt;</span>unique<span class="p">&gt;</span> <span class="p">&lt;</span><span class="k">silent</span><span class="p">&gt;</span> <span class="p">&lt;</span><span class="k">a</span><span class="m">-3</span><span class="p">&gt;</span> :<span class="k">call</span> exUtility#Highlight_Visual<span class="p">(</span><span class="m">3</span><span class="p">)&lt;</span>CR<span class="p">&gt;</span>
+<span class="nb">nnoremap</span> <span class="p">&lt;</span>unique<span class="p">&gt;</span> <span class="p">&lt;</span><span class="k">silent</span><span class="p">&gt;</span> <span class="p">&lt;</span><span class="k">a</span><span class="m">-4</span><span class="p">&gt;</span> :<span class="k">call</span> exUtility#Highlight_Normal<span class="p">(</span><span class="m">4</span><span class="p">)&lt;</span>CR<span class="p">&gt;</span>
+<span class="nb">vnoremap</span> <span class="p">&lt;</span>unique<span class="p">&gt;</span> <span class="p">&lt;</span><span class="k">silent</span><span class="p">&gt;</span> <span class="p">&lt;</span><span class="k">a</span><span class="m">-4</span><span class="p">&gt;</span> :<span class="k">call</span> exUtility#Highlight_Visual<span class="p">(</span><span class="m">4</span><span class="p">)&lt;</span>CR<span class="p">&gt;</span>
+<span class="nb">nnoremap</span> <span class="p">&lt;</span>unique<span class="p">&gt;</span> <span class="p">&lt;</span><span class="k">silent</span><span class="p">&gt;</span> <span class="p">&lt;</span><span class="k">a</span><span class="m">-0</span><span class="p">&gt;</span> :<span class="k">call</span> exUtility#HighlightCancle<span class="p">(</span><span class="m">0</span><span class="p">)&lt;</span>CR<span class="p">&gt;</span>
+</code></pre></div>
+
+
+<p>Sometimes you want to highlight a word temporarily, these for mappings will help you highlight a word or a visual block. And you can easily turn off the highlight by moving cursor to the highlighted word, and highlight it again.</p>
+
+<p><strong>Note</strong>: it is similar with highlight command :HL{1-4}.</p>
+
+<p><strong>Note</strong>: alt-0 will remove all 4 highlights.</p>
+
+<p><strong>Note</strong>: Check section <a href="../tips_and_tricks">Tips And Tricks</a> to see how to substitute highlighted words quickly.</p>
+
+<h3>&lt;leader>1</h3>
+
+<h3>&lt;leader>2</h3>
+
+<h3>&lt;leader>3</h3>
+
+<h3>&lt;leader>4</h3>
+
+<h3>&lt;leader>0</h3>
+
+<div class="highlight"><pre><code class="vim"><span class="nb">nnoremap</span> <span class="p">&lt;</span>unique<span class="p">&gt;</span> <span class="p">&lt;</span><span class="k">silent</span><span class="p">&gt;</span> <span class="p">&lt;</span>Leader<span class="p">&gt;</span><span class="m">0</span> :<span class="k">call</span> exUtility#HighlightCancle<span class="p">(</span><span class="m">0</span><span class="p">)&lt;</span>CR<span class="p">&gt;</span>
+<span class="nb">nnoremap</span> <span class="p">&lt;</span>unique<span class="p">&gt;</span> <span class="p">&lt;</span><span class="k">silent</span><span class="p">&gt;</span> <span class="p">&lt;</span>Leader<span class="p">&gt;</span><span class="m">1</span> :<span class="k">call</span> exUtility#HighlightCancle<span class="p">(</span><span class="m">1</span><span class="p">)&lt;</span>CR<span class="p">&gt;</span>
+<span class="nb">nnoremap</span> <span class="p">&lt;</span>unique<span class="p">&gt;</span> <span class="p">&lt;</span><span class="k">silent</span><span class="p">&gt;</span> <span class="p">&lt;</span>Leader<span class="p">&gt;</span><span class="m">2</span> :<span class="k">call</span> exUtility#HighlightCancle<span class="p">(</span><span class="m">2</span><span class="p">)&lt;</span>CR<span class="p">&gt;</span>
+<span class="nb">nnoremap</span> <span class="p">&lt;</span>unique<span class="p">&gt;</span> <span class="p">&lt;</span><span class="k">silent</span><span class="p">&gt;</span> <span class="p">&lt;</span>Leader<span class="p">&gt;</span><span class="m">3</span> :<span class="k">call</span> exUtility#HighlightCancle<span class="p">(</span><span class="m">3</span><span class="p">)&lt;</span>CR<span class="p">&gt;</span>
+<span class="nb">nnoremap</span> <span class="p">&lt;</span>unique<span class="p">&gt;</span> <span class="p">&lt;</span><span class="k">silent</span><span class="p">&gt;</span> <span class="p">&lt;</span>Leader<span class="p">&gt;</span><span class="m">4</span> :<span class="k">call</span> exUtility#HighlightCancle<span class="p">(</span><span class="m">4</span><span class="p">)&lt;</span>CR<span class="p">&gt;</span>
+</code></pre></div>
+
+
+<p>Cancle the highlight manually.</p>
+
+<p><strong>Note</strong>: <code>&lt;leader&gt;0</code> will remove all 4 highlights.</p>
+
+<h3>&lt;leader>gv</h3>
+
+<div class="highlight"><pre><code class="vim"><span class="nb">nnoremap</span> <span class="p">&lt;</span>unique<span class="p">&gt;</span> <span class="p">&lt;</span><span class="k">silent</span><span class="p">&gt;</span> <span class="p">&lt;</span>Leader<span class="p">&gt;</span>gv :<span class="k">call</span> exUtility#ViewInheritsImage<span class="p">()&lt;</span>CR<span class="p">&gt;</span>
+</code></pre></div>
+
+
+<p>The map below will use current word as a class name, process and draw a class hierarchy picture saved in  .vimfiles.hierarchies\SymbolName.png, then open it by a predefined picture viewer tool.</p>
+
+<p><strong>Note</strong>: you need to install tool <a href="http://www.graphviz.org/">Graphviz</a></p>
+
+<p><strong>Note</strong>: you need to create inherits file in .vimfiles directory first. This will be done during project update by using <code>:Up[date]</code> command</p>
+
+<p><strong>Note</strong>: you need to define g:exES_ImageViewer, for example:</p>
+
+<div class="highlight"><pre><code class="vim"><span class="k">let</span> <span class="k">g</span>:exES_ImageViewer <span class="p">=</span> <span class="s1">&#39;d:\exDev\IrfanView\i_view32.exe&#39;</span> 
+</code></pre></div>
+
+
+<h3>&lt;leader>mk</h3>
+
+<div class="highlight"><pre><code class="vim"><span class="nb">vnoremap</span> <span class="p">&lt;</span>unique<span class="p">&gt;</span> <span class="p">&lt;</span>Leader<span class="p">&gt;</span><span class="k">mk</span> :MK 
+<span class="nb">nnoremap</span> <span class="p">&lt;</span>unique<span class="p">&gt;</span> <span class="p">&lt;</span>Leader<span class="p">&gt;</span><span class="k">mk</span> :<span class="k">call</span> exUtility#RemoveSpecialMarkText<span class="p">()</span> <span class="p">&lt;</span>CR<span class="p">&gt;</span>
+</code></pre></div>
+
+
+<p>This map will run :MK commmand between a visual block, and if you input some text, it will mark the block with the text like:</p>
+
+<div class="highlight"><pre><code class="cpp"><span class="c1">// MARK DELME { </span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">20</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="p">...</span>
+        <span class="p">...</span>
+        <span class="p">...</span>
+    <span class="p">}</span>
+<span class="c1">// } MARK DELME end </span>
+</code></pre></div>
+
+
+<p>And you can remove the mark by use the map again in the marked code block.</p>
+
+<h3>&lt;leader>ve</h3>
+
+<div class="highlight"><pre><code class="vim"><span class="nb">nnoremap</span> <span class="p">&lt;</span>unique<span class="p">&gt;</span> <span class="p">&lt;</span>leader<span class="p">&gt;</span><span class="k">ve</span> :<span class="k">call</span> exUtility#EditVimEntry <span class="p">()&lt;</span>CR<span class="p">&gt;</span>
+</code></pre></div>
+
+
+<p>The map can help you open the vimentry file of current project for editing.</p>
+
+<h2>Custom Highlights</h2>
+
+<p>Some times you need to custom highlight by your self, you have to write a function in _vimrc named g:ex_CustomHighlight and overwrite highlights of exUtility there.  Here is a sample of highlights:</p>
+
+<div class="highlight"><pre><code class="vim">    <span class="k">function</span> <span class="k">g</span>:ex_CustomHighlight<span class="p">()</span> <span class="c">&quot; &lt;&lt;&lt;</span>
+<span class="c">    </span>
+<span class="c">        &quot; ======================================================== </span>
+<span class="c">        &quot; exUtility</span>
+<span class="c">        &quot; ======================================================== </span>
+    
+        <span class="k">hi</span> ex_SynHL1 <span class="k">gui</span><span class="p">=</span>none guibg<span class="p">=</span>LightCyan <span class="nb">term</span><span class="p">=</span>none cterm<span class="p">=</span>none ctermbg<span class="p">=</span>LightCyan
+        <span class="k">hi</span> ex_SynHL2 <span class="k">gui</span><span class="p">=</span>none guibg<span class="p">=</span>LightMagenta <span class="nb">term</span><span class="p">=</span>none cterm<span class="p">=</span>none ctermbg<span class="p">=</span>LightMagenta
+        <span class="k">hi</span> ex_SynHL3 <span class="k">gui</span><span class="p">=</span>none guibg<span class="p">=</span>LightRed <span class="nb">term</span><span class="p">=</span>none cterm<span class="p">=</span>none ctermbg<span class="p">=</span>LightRed
+        <span class="k">hi</span> ex_SynHL4 <span class="k">gui</span><span class="p">=</span>none guibg<span class="p">=</span>LightGreen <span class="nb">term</span><span class="p">=</span>none cterm<span class="p">=</span>none ctermbg<span class="p">=</span>LightGreen
+    
+        <span class="k">hi</span> ex_SynSelectLine <span class="k">gui</span><span class="p">=</span>none guibg<span class="p">=</span><span class="mh">#bfffff</span> <span class="nb">term</span><span class="p">=</span>none cterm<span class="p">=</span>none ctermbg<span class="p">=</span>LightCyan
+        <span class="k">hi</span> ex_SynConfirmLine <span class="k">gui</span><span class="p">=</span>none guibg<span class="p">=</span><span class="mh">#ffe4b3</span> <span class="nb">term</span><span class="p">=</span>none cterm<span class="p">=</span>none ctermbg<span class="p">=</span>DarkYellow
+        <span class="k">hi</span> ex_SynObjectLine <span class="k">gui</span><span class="p">=</span>none guibg<span class="p">=</span><span class="mh">#ffe4b3</span> <span class="nb">term</span><span class="p">=</span>none cterm<span class="p">=</span>none ctermbg<span class="p">=</span>DarkYellow
+    
+        <span class="k">hi</span> link ex_SynError <span class="k">Error</span>
+        <span class="k">hi</span> link ex_SynFold Comment
+        <span class="k">hi</span> link ex_SynFileName Statement
+        <span class="k">hi</span> link ex_SynLineNr LineNr
+        <span class="k">hi</span> link ex_SynNormal Normal
+    
+        <span class="k">hi</span> ex_SynTransparent <span class="k">gui</span><span class="p">=</span>none guifg<span class="p">=</span><span class="nb">background</span> <span class="nb">term</span><span class="p">=</span>none cterm<span class="p">=</span>none ctermfg<span class="p">=</span>DarkGray
+        <span class="k">hi</span> ex_SynSearchPattern <span class="k">gui</span><span class="p">=</span><span class="nb">bold</span> guifg<span class="p">=</span>DarkRed guibg<span class="p">=</span>LightGray <span class="nb">term</span><span class="p">=</span><span class="nb">bold</span> cterm<span class="p">=</span><span class="nb">bold</span> ctermfg<span class="p">=</span>DarkRed ctermbg<span class="p">=</span>LightGray
+        <span class="k">hi</span> ex_SynTitle <span class="nb">term</span><span class="p">=</span><span class="nb">bold</span> cterm<span class="p">=</span><span class="nb">bold</span> ctermfg<span class="p">=</span>DarkYellow <span class="k">gui</span><span class="p">=</span><span class="nb">bold</span> guifg<span class="p">=</span>Brown
+    
+        <span class="k">hi</span> ex_SynJumpMethodS <span class="nb">term</span><span class="p">=</span>none cterm<span class="p">=</span>none ctermfg<span class="p">=</span>Red <span class="k">gui</span><span class="p">=</span>none guifg<span class="p">=</span>Red 
+        <span class="k">hi</span> ex_SynJumpMethodG <span class="nb">term</span><span class="p">=</span>none cterm<span class="p">=</span>none ctermfg<span class="p">=</span>Blue <span class="k">gui</span><span class="p">=</span>none guifg<span class="p">=</span>Blue 
+        <span class="k">hi</span> link ex_SynJumpSymbol Comment
+    
+        <span class="k">hi</span> exCommentLable <span class="nb">term</span><span class="p">=</span>standout ctermfg<span class="p">=</span>DarkYellow ctermbg<span class="p">=</span>Red <span class="k">gui</span><span class="p">=</span>none guifg<span class="p">=</span>LightYellow guibg<span class="p">=</span>Red
+<span class="c">    </span>
+<span class="c">        &quot; ======================================================== </span>
+<span class="c">        &quot; exMacroHighlight</span>
+<span class="c">        &quot; ======================================================== </span>
+    
+        <span class="k">hi</span> exMacroDisable <span class="nb">term</span><span class="p">=</span>none cterm<span class="p">=</span>none ctermfg<span class="p">=</span>DarkGray <span class="k">gui</span><span class="p">=</span>none guifg<span class="p">=</span>DarkGray
+        <span class="k">hi</span> link cCppOut exMacroDisable                
+        <span class="k">hi</span> exMH_GroupNameEnable <span class="nb">term</span><span class="p">=</span><span class="nb">bold</span> cterm<span class="p">=</span><span class="nb">bold</span> ctermfg<span class="p">=</span>DarkRed ctermbg<span class="p">=</span>LightGray <span class="k">gui</span><span class="p">=</span><span class="nb">bold</span> guifg<span class="p">=</span>DarkRed guibg<span class="p">=</span>LightGray
+        <span class="k">hi</span> exMH_GroupNameDisable <span class="nb">term</span><span class="p">=</span><span class="nb">bold</span> cterm<span class="p">=</span><span class="nb">bold</span> ctermfg<span class="p">=</span>Red ctermbg<span class="p">=</span>DarkGray <span class="k">gui</span><span class="p">=</span><span class="nb">bold</span> guifg<span class="p">=</span>DarkGray guibg<span class="p">=</span>LightGray
+        <span class="k">hi</span> link exMH_MacroEnable cPreProc
+        <span class="k">hi</span> link exMH_MacroDisable exMacroDisable
+<span class="c">    </span>
+<span class="c">        &quot; ======================================================== </span>
+<span class="c">        &quot; exProject</span>
+<span class="c">        &quot; ======================================================== </span>
+    
+        <span class="k">hi</span> exPJ_TreeLine <span class="k">gui</span><span class="p">=</span>none guifg<span class="p">=</span>DarkGray <span class="nb">term</span><span class="p">=</span>none cterm<span class="p">=</span>none ctermfg<span class="p">=</span>Gray
+        <span class="k">hi</span> exPJ_SynDir <span class="k">gui</span><span class="p">=</span><span class="nb">bold</span> guifg<span class="p">=</span>Brown <span class="nb">term</span><span class="p">=</span><span class="nb">bold</span> cterm<span class="p">=</span><span class="nb">bold</span> ctermfg<span class="p">=</span>DarkRed
+        <span class="k">hi</span> exPJ_SynFile <span class="k">gui</span><span class="p">=</span>none guifg<span class="p">=</span>Magenta <span class="nb">term</span><span class="p">=</span>none cterm<span class="p">=</span>none ctermfg<span class="p">=</span>Magenta
+    
+        <span class="k">hi</span> exPJ_SynSrcFile <span class="k">gui</span><span class="p">=</span>none guifg<span class="p">=</span>Blue <span class="nb">term</span><span class="p">=</span>none cterm<span class="p">=</span>none ctermfg<span class="p">=</span>Blue
+        <span class="k">hi</span> exPJ_SynHeaderFile <span class="k">gui</span><span class="p">=</span>none guifg<span class="p">=</span>DarkGreen <span class="nb">term</span><span class="p">=</span>none cterm<span class="p">=</span>none ctermfg<span class="p">=</span>DarkGreen
+        <span class="k">hi</span> exPJ_SynErrorFile <span class="k">gui</span><span class="p">=</span>none guifg<span class="p">=</span>Red <span class="nb">term</span><span class="p">=</span>none cterm<span class="p">=</span>none ctermfg<span class="p">=</span>Red
+<span class="c">    </span>
+<span class="c">        &quot; ======================================================== </span>
+<span class="c">        &quot; exCScope</span>
+<span class="c">        &quot; ======================================================== </span>
+    
+        <span class="k">hi</span> exCS_SynQfNumber <span class="k">gui</span><span class="p">=</span>none guifg<span class="p">=</span>Red <span class="nb">term</span><span class="p">=</span>none cterm<span class="p">=</span>none ctermfg<span class="p">=</span>Red
+    
+    <span class="k">endfunction</span> <span class="c">&quot; &gt;&gt;&gt;</span>
+</code></pre></div>
+
+
+<p>Also, it is recommended to add your own highlights or highlights from other plugins in this function. Because the function will be called when colorscheme changed, and as I known, you have to reset your highlights everytime you change a colorscheme, or you will loose them.  So write highlights in this function help you solve the problem.</p>
+
+<p>Here is another example of my third part plugin highlights in my rc:</p>
+
+<div class="highlight"><pre><code class="vim">    <span class="k">function</span> <span class="k">g</span>:ex_CustomHighlight<span class="p">()</span>
+<span class="c">    </span>
+<span class="c">        &quot; ======================================================== </span>
+<span class="c">        &quot; ShowMarks</span>
+<span class="c">        &quot; ======================================================== </span>
+<span class="c">    </span>
+<span class="c">        &quot; For marks a-z</span>
+        <span class="k">hi</span> clear ShowMarksHLl
+        <span class="k">hi</span> ShowMarksHLl <span class="nb">term</span><span class="p">=</span><span class="nb">bold</span> cterm<span class="p">=</span>none ctermbg<span class="p">=</span>LightBlue <span class="k">gui</span><span class="p">=</span>none guibg<span class="p">=</span>LightBlue
+<span class="c">        &quot; For marks A-Z</span>
+        <span class="k">hi</span> clear ShowMarksHLu
+        <span class="k">hi</span> ShowMarksHLu <span class="nb">term</span><span class="p">=</span><span class="nb">bold</span> cterm<span class="p">=</span><span class="nb">bold</span> ctermbg<span class="p">=</span>LightRed ctermfg<span class="p">=</span>DarkRed <span class="k">gui</span><span class="p">=</span><span class="nb">bold</span> guibg<span class="p">=</span>LightRed guifg<span class="p">=</span>DarkRed
+<span class="c">        &quot; For all other marks</span>
+        <span class="k">hi</span> clear ShowMarksHLo
+        <span class="k">hi</span> ShowMarksHLo <span class="nb">term</span><span class="p">=</span><span class="nb">bold</span> cterm<span class="p">=</span><span class="nb">bold</span> ctermbg<span class="p">=</span>LightYellow ctermfg<span class="p">=</span>DarkYellow <span class="k">gui</span><span class="p">=</span><span class="nb">bold</span> guibg<span class="p">=</span>LightYellow guifg<span class="p">=</span>DarkYellow
+<span class="c">        &quot; For multiple marks on the same line.</span>
+        <span class="k">hi</span> clear ShowMarksHLm
+        <span class="k">hi</span> ShowMarksHLm <span class="nb">term</span><span class="p">=</span><span class="nb">bold</span> cterm<span class="p">=</span>none ctermbg<span class="p">=</span>LightBlue <span class="k">gui</span><span class="p">=</span>none guibg<span class="p">=</span>SlateBlue
+<span class="c">    </span>
+<span class="c">        &quot; ======================================================== </span>
+<span class="c">        &quot; MiniBufExplorer</span>
+<span class="c">        &quot; ======================================================== </span>
+<span class="c">    </span>
+<span class="c">        &quot; for buffers that have NOT CHANGED and are NOT VISIBLE.</span>
+        <span class="k">hi</span> MBENormal ctermbg<span class="p">=</span>LightGray ctermfg<span class="p">=</span>DarkGray guibg<span class="p">=</span>LightGray guifg<span class="p">=</span>DarkGray
+<span class="c">        &quot; for buffers that HAVE CHANGED and are NOT VISIBLE</span>
+        <span class="k">hi</span> MBEChanged ctermbg<span class="p">=</span>Red ctermfg<span class="p">=</span>DarkRed guibg<span class="p">=</span>Red guifg<span class="p">=</span>DarkRed
+<span class="c">        &quot; buffers that have NOT CHANGED and are VISIBLE</span>
+        <span class="k">hi</span> MBEVisibleNormal <span class="nb">term</span><span class="p">=</span><span class="nb">bold</span> cterm<span class="p">=</span><span class="nb">bold</span> ctermbg<span class="p">=</span>Gray ctermfg<span class="p">=</span>Black <span class="k">gui</span><span class="p">=</span><span class="nb">bold</span> guibg<span class="p">=</span>Gray guifg<span class="p">=</span>Black
+<span class="c">        &quot; buffers that have CHANGED and are VISIBLE</span>
+        <span class="k">hi</span> MBEVisibleChanged <span class="nb">term</span><span class="p">=</span><span class="nb">bold</span> cterm<span class="p">=</span><span class="nb">bold</span> ctermbg<span class="p">=</span>DarkRed ctermfg<span class="p">=</span>Black <span class="k">gui</span><span class="p">=</span><span class="nb">bold</span> guibg<span class="p">=</span>DarkRed guifg<span class="p">=</span>Black
+<span class="c">    </span>
+<span class="c">        &quot; ======================================================== </span>
+<span class="c">        &quot; TagList</span>
+<span class="c">        &quot; ======================================================== </span>
+<span class="c">    </span>
+<span class="c">        &quot; TagListTagName  - Used for tag names</span>
+        <span class="k">hi</span> MyTagListTagName <span class="nb">term</span><span class="p">=</span><span class="nb">bold</span> cterm<span class="p">=</span>none ctermfg<span class="p">=</span>Black ctermbg<span class="p">=</span>DarkYellow <span class="k">gui</span><span class="p">=</span>none guifg<span class="p">=</span>Black guibg<span class="p">=</span><span class="mh">#ffe4b3</span>
+<span class="c">        &quot; TagListTagScope - Used for tag scope</span>
+        <span class="k">hi</span> MyTagListTagScope <span class="nb">term</span><span class="p">=</span><span class="nb">NONE</span> cterm<span class="p">=</span><span class="nb">NONE</span> ctermfg<span class="p">=</span>Blue <span class="k">gui</span><span class="p">=</span><span class="nb">NONE</span> guifg<span class="p">=</span>Blue 
+<span class="c">        &quot; TagListTitle    - Used for tag titles</span>
+        <span class="k">hi</span> MyTagListTitle <span class="nb">term</span><span class="p">=</span><span class="nb">bold</span> cterm<span class="p">=</span><span class="nb">bold</span> ctermfg<span class="p">=</span>DarkRed ctermbg<span class="p">=</span>LightGray <span class="k">gui</span><span class="p">=</span><span class="nb">bold</span> guifg<span class="p">=</span>DarkRed guibg<span class="p">=</span>LightGray 
+<span class="c">        &quot; TagListComment  - Used for comments</span>
+        <span class="k">hi</span> MyTagListComment ctermfg<span class="p">=</span>DarkGreen guifg<span class="p">=</span>DarkGreen 
+<span class="c">        &quot; TagListFileName - Used for filenames</span>
+        <span class="k">hi</span> MyTagListFileName <span class="nb">term</span><span class="p">=</span><span class="nb">bold</span> cterm<span class="p">=</span><span class="nb">bold</span> ctermfg<span class="p">=</span>Black ctermbg<span class="p">=</span>LightBlue <span class="k">gui</span><span class="p">=</span><span class="nb">bold</span> guifg<span class="p">=</span>Black guibg<span class="p">=</span>LightBlue
+    
+    <span class="k">endfunction</span>
+</code></pre></div>
+
+
+
+
+  </div>
+  <footer class="page-foot">
+  <div class="container">
+    <div class="iso">
+    <section class="description">
+      
+      
+    </section>
+    <section class="social-links">
+      
+      <ul>
+        <li class="social_github"><a href="https://github.com/exdev/exvim" class="ets-github">&nbsp;</a></li>
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+      </ul>
+      
+    </section>
+    
+    </section>
+    </div>
+    
+    <section class="bottom">
+      <ul>
+        <li class="copyright">&copy; Copyright 2013 exVim</li>
+        <li class="credit"><a href="https://github.com/stylehatch/bryant" window="_blank">Bryant</a> created by <a href="http://stylehatch.co" window="_blank">Style Hatch</a></li>
+        <li class="tumblr">Powered by Jekyll</li>
+      </ul>
+    </section> 
+  </div>
+</footer>
+
+  
+  <script type="text/javascript" src="/js/plugins.min.js"></script>
+  <script type="text/javascript" src="/js/application.js"></script>
+
+</body>
+</html>

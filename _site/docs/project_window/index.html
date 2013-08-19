@@ -1,0 +1,1347 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]> <html class="no-js ie6 oldie" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js ie7 oldie" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js ie8 oldie" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>
+    
+      Using the project window &ndash;
+    
+    exVim
+  </title>
+
+  <meta name="author" content="exVim" />
+  <meta name="description" content="Make Vim like IDE!" />
+
+    <!--
+      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      Bryant - 1.0.0
+      Premium Jekyll Theme
+      https://github.com/stylehatch
+      Theme by: Style Hatch - http://stylehatch.co - @stylehatch 
+         _____ __        __        __  __      __       __
+        / ___// /___  __/ /__     / / / /___ _/ /______/ /_
+        \__ \/ __/ / / / / _ \   / /_/ / __ `/ __/ ___/ __ \
+       ___/ / /_/ /_/ / /  __/  / __  / /_/ / /_/ /__/ / / /
+      /____/\__/\__, /_/\___/  /_/ /_/\__,_/\__/\___/_/ /_/
+               /____/
+      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    -->
+
+  <link rel="alternate" type="application/rss+xml" href="/atom.xml" />
+
+  <link rel="stylesheet" href="/css/icons.css" type="text/css" />
+  <link rel="stylesheet" href="/css/base.css" type="text/css" media="screen, projection" />
+  <link rel="stylesheet" href="/css/pygments.css" type="text/css" />
+  <link rel="shortcut icon" href="/favicon.ico" />
+  <!--[if IE]><link media="screen" type="text/css" href="stylesheets/spinner-old-ie.css" rel="stylesheet" /><![endif]-->
+<!-- Google Fonts -->
+  <link href='http://fonts.googleapis.com/css?family=PT+Sans:700,700italic|PT+Serif:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>window.jQuery || document.write('<script src="js/jquery-1.9.1.min.js"><\/script>')</script>
+
+  <script type="text/javascript">
+    var StyleHatch = window.StyleHatch || {};
+    StyleHatch.themeName = "Bryant";
+    StyleHatch.siteTitle = "exVim";
+    StyleHatch.customizeMode = true;
+
+    
+
+    StyleHatch.disqusID = "";
+    
+  </script>
+
+    <style type="text/css">
+/* COLORS */
+  /* Text Color */
+  body, article section ul.credit li.author a:hover, article footer a:hover, body.permalink-page article ul.credit li a:hover, body.permalink-page article ul.tags li a:hover, body.permalink-page article div.comments, body.permalink-page article div.notes {
+     color: #424242;
+   }
+  /* Accent Color */
+   a, ul.post-archive a:hover .title {
+     color: #1f7fff;
+   }
+  /* Hover Color */
+   a:hover, article.text header h2 a:hover {
+     color: #a7543f;
+   }
+  /* Sublte Color */
+  header.site-fixed nav.pages ul li:after, a.highres, a.permalink-button, article section ul.credit, article section ul.credit li.author a, article footer, article footer a, article.chat strong, article.ask header div.asker-wrap p.asker, article.photo ul.exif, body.permalink-page article ul.credit, body.permalink-page article ul.tags, body.permalink-page article ul.credit li a, body.permalink-page article ul.tags li a, ul.post-archive .date {
+     color: #999999;
+   }
+  /* Subtle Icon Color */
+   a.highres span:before, a.permalink-button span:before, a.highres:after, article footer a:before, article footer ul.meta li span:before, article.link header h2 a:after {
+     color: #999999;
+     opacity: 0.6;
+   }
+  /* Subtle Color Hover */
+   a.highres span:hover:before, a.permalink-button span:hover:before, a.highres:hover:after, article footer a:hover:before, article footer ul.meta li span:hover:before, article.link header h2 a:hover:after {
+     color: #999999;
+   }
+  /* Title Color */
+   h1, article.photo h2:first-of-type, article.video h2:first-of-type, article.photoset h2:first-of-type, article.audio h2:first-of-type, article.text header h2, article.text header p, article.chat header h2, article.chat header p, article.quote header h2, article.quote header p, article.text header h2 a, ul.post-archive .title {
+    color: #222222;
+   }
+  /* Text On Accent Color */
+   a.button {
+     color: #ffffff;
+   }
+  /* Text On Accent Color */
+   a.read-more.button:after, nav#pagination ul li.prev a:before, nav#pagination ul li.next a:after {
+     color: #ffffff; 
+     opacity: 0.4;
+   }
+  /* Header Area */
+  /* Header Title Color */
+  header.site-info section.description h1 a, header.site-info nav.pages ul li a:hover, footer.page-foot a:hover, header.site-info ul.util a:hover, footer.page-foot section h1, footer.page-foot section h2, footer.page-foot section h3, footer.page-foot section h4, footer.page-foot section h5, footer.page-foot section.social-links ul li a:hover {
+    color: #E9E9E9;
+  }
+  /* Header Text Color */
+   header.site-info section.description p, footer.page-foot, footer.page-foot section.bottom a:hover {
+     color: #000000;
+   }
+  /* Header Accent Color */
+   header.site-info nav.pages ul li a, footer.page-foot section.social-links ul li a {
+     color: #007f00;
+   }
+  /* Header Subtle Color */
+   header.site-info ul.util, header.site-info ul.util a, header.site-info nav.pages ul li:after, footer.page-foot section.bottom, footer.page-foot section.instagram a.btn {
+     color: #0000BC;
+   }
+  /* Backgrounds */
+  article.audio header .audio-embed, p > code, li > code {
+    background-color: #e9e9e9;
+  }
+  /* Background */
+   body, header.site-fixed nav.pages, a.highres, a.permalink-button {
+     background-color: #f8f8f8;
+   }
+  /* Header Background */
+   header.site-info, footer.page-foot {
+     background-color: #cccc99;
+   }
+   /* Post Background */
+   header.site-fixed nav.pages {
+    background-color: ;
+   }
+  /* Accent Background */
+   a.button {
+     background-color: #1f7fff
+   }
+  /* Borders */
+  /* subtleBorder */
+   blockquote, article footer, article.photo h2:first-of-type, article.video h2:first-of-type, article.photoset h2:first-of-type, article.audio h2:first-of-type, article.text header, article.ask header, article.chat header, article.quote header, article.link header, body.permalink-page article div.notes, ul.post-archive li {
+     border-color: #e9e9e9;
+   }
+  /* headerSubtleBorder */
+   header.site-info nav.pages, footer.page-foot section.bottom {
+     border-color: #000000;
+   }
+
+/* if posts have background color set */
+   
+
+  </style>
+  <!-- <link rel="stylesheet" href="/css/screen.css" type="text/css" /> -->
+</head>
+
+<header class="site-info">
+  <div class="container">
+    <section class="description">
+      
+      <a href="/" title="exVim - Home" class="portrait-icon"><img src="/images/logo.png" alt="exVim"></a>
+      
+      <p>Make Vim like IDE!</p>
+      <ul class="util">
+        <li class="release"><a href="/release/" class="etp-timeago">Releases</a></li>
+        <li class="faq"><a href="/docs/faq/" class="etp-comments">FAQ</a></li>
+        <li class="rss"><a href="/atom.xml" class="etp-rss">RSS</a></li>
+        
+        <li class="ask"><a href="/contact/" class="etp-mail">Contact</a></li>
+        
+        <li class="exdev"><a href="http://ex-dev.com" class="etp-users">exDev</a></li>
+      </ul>
+    </section>
+
+    <nav class="pages">
+      <a href="/" title="exVim - Home" class="portrait-icon user-icon"><img src="/images/logo.png" alt="exVim"></a>
+      <ul>
+      <li>
+        <a href="/">Home</a>
+      </li>
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+            
+          
+        
+          
+        
+          
+        
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+            
+            <li>
+              <a  href="/docs/">
+                Documentation
+              </a>
+            </li>
+            
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+      </ul>
+    </nav>
+  </div>
+</header>
+
+  <body class="page">
+  <div class="container" id="main" role="main">
+    <h2>Create Project Tree</h2>
+
+<p>When you running a new project through vimentry file, you will have a blank vertical window in the left of vim, that is exProject window.</p>
+
+<p>By default, you can use <code>&lt;leader&gt;C</code> <a href="#footnotes">[1]</a> or <code>&lt;leader&gt;R</code> <a href="#footnotes">[1]</a> to create project tree. The <code>&lt;leader&gt;C</code> <a href="#footnotes">[1]</a> create the project tree with dialog, however <code>&lt;leader&gt;R</code> <a href="#footnotes">[1]</a> create the project by reading the file filter and dir filter settings (if not, it read the default settings).</p>
+
+<p>When you use <code>&lt;leader&gt;C</code> <a href="#footnotes">[1]</a> command, it will show 2 dialogs.</p>
+
+<p>The first one is the file filters dialog, which will let you input the suffix of files, exProject will only show these files in project window:</p>
+
+<p><img src="../images/exProject_filefilter_dialog.png" alt="exProject_filefilter_dialog.png" /></p>
+
+<p>The second one is the dir filters dialog, which will let you input the sub-directory names under the root path, exProject will only show these directories in project window:</p>
+
+<p><img src="../images/exProject_dirfilter_dialog.png" alt="exProject_dirfilter_dialog.png" /></p>
+
+<p>The syntax of file filter and dir filter are:</p>
+
+<p><code>
+filter = item1,item2,item3...
+</code></p>
+
+<p>No matter which kind of method you use to create project tree, after generating the project tree, you will see a similar scene like the picture below:</p>
+
+<p><img src="../images/exProject_window_detail.png" alt="exProject_window_detail.png" /></p>
+
+<p>The first two line records the file filter and dir filter you&rsquo;ve input before. ( <strong>Note</strong>: if you use <code>&lt;leader&gt;R</code>, it use the default filter settings ). You can edit the value directly, when you save the file, the new settings will applied, and after that use <code>&lt;leader&gt;R</code> to refresh your project tree.</p>
+
+<p>The line with prefix <code>[F]</code> represents a folder.</p>
+
+<p>The other line represents files, and the first character of the file suffix will be inside the []. The exProject window support different highlight for some special filetype, like .h, .cpp. You could add your own file suffix highlight in exProject.</p>
+
+<h2>NULL type file filter</h2>
+
+<p>Some times we may want to add files without suffix, for example: Makefile, configure and thoes old c/cpp project write source code without suffix. By default, exVim will skip add these files. In order to add it, you must explicit write NULL filter in the file filter.  (e.g filter = NULL,item1,item2,&hellip;),</p>
+
+<p><strong>Note</strong>: the NULL must write in uppercase.</p>
+
+<h2>Folding the directory</h2>
+
+<p>You are able to fold a directory by moving the cursor to the line of the folder and press <code>&lt;Enter&gt;</code>, press <code>&lt;Enter&gt;</code> again will unfold it.</p>
+
+<p><img src="../images/exProject_folding.png" alt="exProject_folding.png" /></p>
+
+<p>You can use the vim&rsquo;s builtin fold command under exProject window, for example:</p>
+
+<ul>
+<li>To fold up the whole project, use <code>zM</code>, and use <code>zO</code> to unfold all, or use <code>zr</code> to unfold a level.</li>
+<li>When you are in a directory ( your cursor are not in the line of the directory name but in the line of the file of the directory ).  You can use <code>zc</code> and <code>zo</code> for folding a single directory.</li>
+<li>You can use <code>zk</code>, <code>zj</code> to move between folds. The exProject provide <code>ctrl-k</code> and <code>ctrl-j</code> for faster moving around the directory.</li>
+</ul>
+
+
+<h2>Moving around in exProject window</h2>
+
+<p>Basically you use <code>h</code>,<code>j</code>,<code>k</code>,<code>l</code> or <code>arrow keys</code> moving in the project window, exProject provide several feature to help moving faster for different purpose.</p>
+
+<p>To move around the directory, you can use <code>ctrl-k</code> and <code>ctrl-j</code> no matter where your cursor are.</p>
+
+<p>If you are careful enought, you can see the end of the line in each directory, there have a {, and it would have another one } at the last file of the folder.</p>
+
+<p>As the picture shows below:</p>
+
+<p><img src="../images/exProject_directory_mark_pair.png" alt="exProject_directory_mark_pair.png" /></p>
+
+<p><strong>Note</strong>: There have two } at the end of text FileUtility.h, and that is becuase the FileUtility.h is in the path of platform/win32/ and it happend to be the last file in these two folders.</p>
+
+<p>You can use these brackets to help you move around between a folder. The % is perfact for the job to jump between the begin and end, and even better when you use [{, ]}.</p>
+
+<p>When you edit a file in edit window, and you want to locate the file in project window, try <code>&lt;leader&gt;fc</code>, this operation will move the cursor to the project window, and search current edit buffer, if the file founded, it will jump the cursor to it.</p>
+
+<p><img src="../images/exProject_leader_fc.png" alt="exProject_leader_fc.png" /></p>
+
+<h2>Open and edit files</h2>
+
+<p>You can open a file in edit window through exProject by pressing <code>&lt;enter&gt;</code> on the file line.  Also you can try open it in a split window by pressing <code>shift-&lt;enter&gt;</code>.</p>
+
+<p>When you press <code>shift-&lt;enter&gt;</code> on the directory line, it will open a command window with the path of the directory to help you do some operation outside exVim.</p>
+
+<p><img src="../images/exProject_prompt_terminal.png" alt="exProject_prompt_terminal.png" /></p>
+
+<p><strong>Note</strong>: the exProject can let you define open behavior for different filetype.  currently it just internal define two additional behavior for .exe and .err. For .exe it try to run it. For .err it will call exQuickFix to open up a window and load the errors into it.</p>
+
+<h2>Create new file or folder</h2>
+
+<p>To create a new file in exProject window, you can move your cursor under a file line or a directory line, and press o. After that yo will see a line with mark |&ndash;[] under your cursor like the picture shows below:</p>
+
+<p><img src="../images/exProject_prepare_new_file.png" alt="exProject_prepare_new_file.png" /></p>
+
+<p>Swith to insert mode, and type the filename with the suffix you expect to create the new file. For example I type &lsquo;'NewFileMng.h&rsquo;&lsquo;. It is ok to leave the [] empty.  When you finish input, press <code>&lt;enter&gt;</code> to open the new file in edit window, and save it to complete the file.</p>
+
+<p><strong>Note</strong>: the file will be created under the directory if you press o on a directory line, or under the file with same directory if you press o on a file line.</p>
+
+<p>To create a new folder in exProject window, you can move your cursor under a directory line, and press O. After that you will see a line with mark |&ndash;[F] { } at the line above your cursor like the picture shows below:</p>
+
+<p><img src="../images/exProject_prepare_new_folder.png" alt="exProject_prepare_new_folder.png" /></p>
+
+<p>Swith to insert mode, and fill up the directory name right behind [F].</p>
+
+<p><strong>Note</strong>: the feature never done, it create the directory virtually. That means if you don&rsquo;t create the directory with same path same name manually in your file system, it will never be access in exProject.</p>
+
+<h2>Refresh local folder</h2>
+
+<p>If you do some changes file operation (add,remove,rename files) outside exVim, you probably like to sync it in exProject window. But use <code>&lt;leader&gt;R</code> sometimes cause too much time since it refresh the whole project.</p>
+
+<p>You can use <code>&lt;leader&gt;r</code> instead. Move your cursor under/inside a directory, and press <code>&lt;leader&gt;r</code>, it will only refresh the directory your cursor in.</p>
+
+<p><strong>Note</strong>: this also helpful when you use o to add several files. it will refresh them by automatically fill the filetype in the [], and sort them in the directory.</p>
+
+<h2>Settings</h2>
+
+<p>The chapter <a href="../ex_project">exProject</a> introduces all the exProject settings.</p>
+
+<p><a name="footnotes"></a></p>
+
+<h2>Footnotes</h2>
+
+<ol>
+<li><code>&lt;leader&gt;C</code> here means press key \, then press <code>shift + c</code> (uppercase &ldquo;c&rdquo;). vim recommend 3rd-party plugins use <code>&lt;leader&gt;</code> (aka. ) to begin their operations, and the operations in vim are case sensitive.</li>
+</ol>
+
+
+  </div>
+  <footer class="page-foot">
+  <div class="container">
+    <div class="iso">
+    <section class="description">
+      
+      
+    </section>
+    <section class="social-links">
+      
+      <ul>
+        <li class="social_github"><a href="https://github.com/exdev/exvim" class="ets-github">&nbsp;</a></li>
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+      </ul>
+      
+    </section>
+    
+    </section>
+    </div>
+    
+    <section class="bottom">
+      <ul>
+        <li class="copyright">&copy; Copyright 2013 exVim</li>
+        <li class="credit"><a href="https://github.com/stylehatch/bryant" window="_blank">Bryant</a> created by <a href="http://stylehatch.co" window="_blank">Style Hatch</a></li>
+        <li class="tumblr">Powered by Jekyll</li>
+      </ul>
+    </section> 
+  </div>
+</footer>
+
+  
+  <script type="text/javascript" src="/js/plugins.min.js"></script>
+  <script type="text/javascript" src="/js/application.js"></script>
+
+</body>
+</html>

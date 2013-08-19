@@ -57,7 +57,7 @@ jump to the select line directly in the plugin window:
 ![global_search_window.png](../images/global_search_window.png)
 
 The plugin provides useful way to help user filter the search result, which can let the user
-search new patterns based on the last search results. For example, when we apply TArray<string_t>
+search new patterns based on the last search results. For example, when we apply TArray\<string_t\>
 as the filter pattern in TArray search results, it shows:
 
 ![global_search_filter_results.png](../images/global_search_filter_results.png)

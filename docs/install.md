@@ -252,7 +252,7 @@ To avoid buffer close problem, you need to have:
 nnoremap <unique> <Leader>bd :call exUtility#Kwbd(1)<CR>
 {% endhighlight %}
 
-And keep in mind never use :q close a edit-buffer, instead use <leader>bd. Actually this is a problem discussed in vim tips wiki -- [tip 165](http://takewii.com/index.php?hl=f5&q=uggc%3A%2F%2Fivz.jvxvn.pbz%2Fjvxv%2FQryrgvat_n_ohssre_jvgubhg_pybfvat_gur_jvaqbj) For more details, [Known Issues](../KnownIssues)
+And keep in mind never use :q close a edit-buffer, instead use `<leader>bd`. Actually this is a problem discussed in vim tips wiki -- [tip 165](http://takewii.com/index.php?hl=f5&q=uggc%3A%2F%2Fivz.jvxvn.pbz%2Fjvxv%2FQryrgvat_n_ohssre_jvgubhg_pybfvat_gur_jvaqbj) For more details, [Known Issues](../known_issues)
 
 ## Partially install exVim
 
