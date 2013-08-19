@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <title>
     
-      archive &ndash;
+      Overview &ndash;
     
     exVim
   </title>
@@ -511,12 +511,102 @@
   </div>
 </header>
 
-  <body class="archive-page">
+  <body class="page">
   <div class="container" id="main" role="main">
-    <!-- Posts -->
-    <ul class="post-archive">
-    
-    </ul>
+    <h2>Project Entry File</h2>
+
+<p>exVim provide a way to orginze things together &mdash;&ndash; .vimentry file. You may working in
+different project at the same time, and you probably like to use different settings for
+them. By solving this problem, exVim let the user create a your_project.vimentry, and
+store the project settings in it. Each time you run a project, just use vim open this file,
+the exVim will automatically invoked and help you process the reset of the things.</p>
+
+<p>For instance, you are now developing stl-3.3 project. then you can create a .vimentry file,
+named what ever you want, let&rsquo;s say &ldquo;stl-3.3.vimentry&rdquo; and put it in your project root directory.</p>
+
+<p><img src="../images/create_vimentry_file.png" alt="create_vimentry_file.png" /></p>
+
+<p>Use your vim open the .vimentry file and you will see the picture:</p>
+
+<p><img src="../images/first_time_run_vimentry.png" alt="first_time_run_vimentry.png" /></p>
+
+<p>That is the default layout of exVim. You can see the settings automatically write into .vimentry
+files. You can custom the settings, and even add your own settings in it to fulfill your demands.</p>
+
+<h2>Browse Project Files</h2>
+
+<p>The exProject plugin &mdash;&ndash; the builtin file browser in exVim provides you a faster algorithm to explore
+source file than any other file browser plugin in vim. You can manage your file in the exProject
+dynamically, also allow you to filter files and directories in several methods.</p>
+
+<p><img src="../images/exProject_window.png" alt="exProject_window.png" /></p>
+
+<p>The project/file browser in exVim is switchable, which means you can keep your favorite file browse
+plugin such as NERDTree, even more you can let the two plugins working together. The exVim already
+integrate NERDTree with exProject, by ctrl-left/right in project window, you can swith between two
+plugins.</p>
+
+<h2>Tag Operations</h2>
+
+<p>The exTagSelect and exSymbolTable plugins work together to help user operate tags in exVim.
+You can browse the tag of current code, select and jump to the tag define in plugin window.</p>
+
+<p><img src="../images/begin_tag_search.png" alt="begin_tag_search.png" /></p>
+
+<p>exVim provide a symbol list extract from tag file, help you search tags faster.</p>
+
+<h2>Global Search</h2>
+
+<p>The exGlobalSearch plugins integrate the id-utils in vim for searching words in your project.
+This is faster than grep search except it needs user update the IDs to build up the search data.</p>
+
+<p>When searching a word, the plugin will list the search result in the plugin window and user can
+jump to the select line directly in the plugin window:</p>
+
+<p><img src="../images/global_search_window.png" alt="global_search_window.png" /></p>
+
+<p>The plugin provides useful way to help user filter the search result, which can let the user
+search new patterns based on the last search results. For example, when we apply TArray<string_t>
+as the filter pattern in TArray search results, it shows:</p>
+
+<p><img src="../images/global_search_filter_results.png" alt="global_search_filter_results.png" /></p>
+
+<h2>Jump Stack</h2>
+
+<p>When jumping to the search result in exVim, it will records your jump history and genreate
+the jump stack to help you trace your code. Unlike jumplist in vim, the exVim jump stack
+only records jumps for ex-vim-pluings and 3rd-party-pluings, and skip recording jumps happended
+in the plugin window.</p>
+
+<p><img src="../images/exJumpStack_items.png" alt="exJumpStack_items.png" /></p>
+
+<h2>Quick Fix</h2>
+
+<p>exQuickFix plugin enhanced vim&rsquo;s original quickfix method, provide user friendly operations to
+locate warnings or errors. With the enhanced script, it checks the error information and determine
+the proper errorformat to the result. It also provide nice highlight and allow user search or filter
+results by search pattern.</p>
+
+<h2>Macro Highlight</h2>
+
+<p>exMacroHighlight plugin provides a windows let the user input the macro group they want and parse
+the macros to generate enabled and disabled macro highlight in c/c++ codes.</p>
+
+<p>Instead of process all the macros defines in the project, the plugin only care about thoes macros
+user defined in the plugin window.</p>
+
+<p>The picture below illustrate how macro highlight work in exVim, and what is the result looks like:</p>
+
+<p><img src="../images/macro_highlight_overview.png" alt="macro_highlight_overview.png" /></p>
+
+<h2>Generate Class Hierarchy</h2>
+
+<p>When working with Object-Orient programming languages, exVim will create an inherits list extract from
+tag file. User can use the file generate class hierarchy diagram by exVim&rsquo;s &lsquo;&rsquo;:GV'&lsquo; command for specific
+class, similar like the picture shows:</p>
+
+<p><img src="../images/generate_class_hierarchy.png" alt="generate_class_hierarchy.png" /></p>
+
   </div>
   <footer class="page-foot">
   <div class="container">

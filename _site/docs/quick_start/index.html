@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <title>
     
-      archive &ndash;
+      Quick Start &ndash;
     
     exVim
   </title>
@@ -511,12 +511,56 @@
   </div>
 </header>
 
-  <body class="archive-page">
+  <body class="page">
   <div class="container" id="main" role="main">
-    <!-- Posts -->
-    <ul class="post-archive">
-    
-    </ul>
+    <h2>Quick Start in Windows</h2>
+
+<h3>Install</h3>
+
+<p><strong>1.</strong> download the exVim-installer-x.xx.exe from <a href="http://code.google.com/p/exvim/downloads/list">download list</a></p>
+
+<p><img src="../images/download_list.png" alt="download_list.png" /></p>
+
+<p><strong>2.</strong> full install it. ( for example: d:\exDev )</p>
+
+<p><strong>Warning:</strong> The id-utils in exVim have permission issue to access files under c:/Programme Files/, please avoid to install exVim in this directory.</p>
+
+<h3>Getting Start</h3>
+
+<p><strong>1.</strong> Go to a project you are working on, for example &ldquo;d:/project/my_project&rdquo;.</p>
+
+<p><strong>2.</strong> In the root of the project, create an empty file with suffix .vimentry, For example &ldquo;d:/project/my_project/my_project.vimentry&rdquo;.</p>
+
+<p><strong>3.</strong> Use vim open (&ldquo;open with&hellip;&rdquo; vim for example) the .vimentry file you create. If every thing are right, the exVim will create a quick_gen_project[your project name]_autogen.bat file and a .vimfiles.[your project name] folder, and then you will see your vim open like the picture below:</p>
+
+<p><img src="../images/first_time_run_vimentry.png" alt="first_time_run_vimentry.png" /></p>
+
+<p><strong>4.</strong> Move your cursor to the project-window, press <code>&lt;leader&gt;R</code>, it will explore the project file in project window as the picture show:</p>
+
+<p><strong>Note:</strong> <code>&lt;leader&gt;R</code> here means press key \, then press shift + r (uppercase &ldquo;r&rdquo;). vim recommend 3rd-party plugins use <leader> (aka. ) to begin their operations, and the operations in vim are case sensitive.</p>
+
+<p><img src="../images/after_explored_the_project.png" alt="after_explored_the_project.png" /></p>
+
+<p><strong>5.</strong> Type <code>:Up</code> command, the command will run the quick_gen_project<em>[your project name]</em>autogen.bat script, it will generate files such as tags, IDs, symbols&hellip; and store them in .vimfiles.[your project name] folder. exVim will use these these files when you editing codes in it.</p>
+
+<p><strong>Note:</strong> <code>:Up</code> command is the short of :Up[date] command. In vim you can type command in short name.</p>
+
+<p>You are now ready to use exVim in your project.</p>
+
+<h2>Useful Operations</h2>
+
+<ul>
+<li><code>&lt;leader&gt;gg</code>: Global search current word under cursor, show the result in exGlobalSearch select window.</li>
+<li><code>&lt;leader&gt;]</code>: Search current word under cursor as tags(defines and declarations), show the result in exTagSelect window.</li>
+<li><code>&lt;leader&gt;sg</code>: Search current word under cursor, filter and show the result in exSymbolTable quick-view window.</li>
+<li><code>&lt;leader&gt;gv</code>: Process current word under cursor as class-name, show its inherit map by your image viewer.</li>
+<li><code>alt-1/2/3/4, &lt;header&gt;h1/2/3/4 (Terminal)</code>: Hilight/UnHighlight words with highlight color 1,2,3,4 (can be used in visual mode).</li>
+<li><code>:GS {word}</code>: Search {word} in ID database, and list the matched results in exGlobalSearch select-window.</li>
+<li><code>:TS {tag-name}</code>: Search a tag by {tag-name}, list the possible results in select-window.</li>
+<li><code>:Up[date] [{args}]</code>: Update exVim project files.</li>
+</ul>
+
+
   </div>
   <footer class="page-foot">
   <div class="container">

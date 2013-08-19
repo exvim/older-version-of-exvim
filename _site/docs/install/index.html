@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]> <html class="no-js ie6 oldie" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js ie7 oldie" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js ie8 oldie" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>
+    
+      Install &ndash;
+    
+    exVim
+  </title>
+
+  <meta name="author" content="exVim" />
+  <meta name="description" content="Make Vim like IDE!" />
+
+    <!--
+      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      Bryant - 1.0.0
+      Premium Jekyll Theme
+      https://github.com/stylehatch
+      Theme by: Style Hatch - http://stylehatch.co - @stylehatch 
+         _____ __        __        __  __      __       __
+        / ___// /___  __/ /__     / / / /___ _/ /______/ /_
+        \__ \/ __/ / / / / _ \   / /_/ / __ `/ __/ ___/ __ \
+       ___/ / /_/ /_/ / /  __/  / __  / /_/ / /_/ /__/ / / /
+      /____/\__/\__, /_/\___/  /_/ /_/\__,_/\__/\___/_/ /_/
+               /____/
+      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    -->
+
+  <link rel="alternate" type="application/rss+xml" href="/atom.xml" />
+
+  <link rel="stylesheet" href="/css/icons.css" type="text/css" />
+  <link rel="stylesheet" href="/css/base.css" type="text/css" media="screen, projection" />
+  <link rel="stylesheet" href="/css/pygments.css" type="text/css" />
+  <link rel="shortcut icon" href="/favicon.ico" />
+  <!--[if IE]><link media="screen" type="text/css" href="stylesheets/spinner-old-ie.css" rel="stylesheet" /><![endif]-->
+<!-- Google Fonts -->
+  <link href='http://fonts.googleapis.com/css?family=PT+Sans:700,700italic|PT+Serif:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>window.jQuery || document.write('<script src="js/jquery-1.9.1.min.js"><\/script>')</script>
+
+  <script type="text/javascript">
+    var StyleHatch = window.StyleHatch || {};
+    StyleHatch.themeName = "Bryant";
+    StyleHatch.siteTitle = "exVim";
+    StyleHatch.customizeMode = true;
+
+    
+
+    StyleHatch.disqusID = "";
+    
+  </script>
+
+    <style type="text/css">
+/* COLORS */
+  /* Text Color */
+  body, article section ul.credit li.author a:hover, article footer a:hover, body.permalink-page article ul.credit li a:hover, body.permalink-page article ul.tags li a:hover, body.permalink-page article div.comments, body.permalink-page article div.notes {
+     color: #424242;
+   }
+  /* Accent Color */
+   a, ul.post-archive a:hover .title {
+     color: #1f7fff;
+   }
+  /* Hover Color */
+   a:hover, article.text header h2 a:hover {
+     color: #a7543f;
+   }
+  /* Sublte Color */
+  header.site-fixed nav.pages ul li:after, a.highres, a.permalink-button, article section ul.credit, article section ul.credit li.author a, article footer, article footer a, article.chat strong, article.ask header div.asker-wrap p.asker, article.photo ul.exif, body.permalink-page article ul.credit, body.permalink-page article ul.tags, body.permalink-page article ul.credit li a, body.permalink-page article ul.tags li a, ul.post-archive .date {
+     color: #999999;
+   }
+  /* Subtle Icon Color */
+   a.highres span:before, a.permalink-button span:before, a.highres:after, article footer a:before, article footer ul.meta li span:before, article.link header h2 a:after {
+     color: #999999;
+     opacity: 0.6;
+   }
+  /* Subtle Color Hover */
+   a.highres span:hover:before, a.permalink-button span:hover:before, a.highres:hover:after, article footer a:hover:before, article footer ul.meta li span:hover:before, article.link header h2 a:hover:after {
+     color: #999999;
+   }
+  /* Title Color */
+   h1, article.photo h2:first-of-type, article.video h2:first-of-type, article.photoset h2:first-of-type, article.audio h2:first-of-type, article.text header h2, article.text header p, article.chat header h2, article.chat header p, article.quote header h2, article.quote header p, article.text header h2 a, ul.post-archive .title {
+    color: #222222;
+   }
+  /* Text On Accent Color */
+   a.button {
+     color: #ffffff;
+   }
+  /* Text On Accent Color */
+   a.read-more.button:after, nav#pagination ul li.prev a:before, nav#pagination ul li.next a:after {
+     color: #ffffff; 
+     opacity: 0.4;
+   }
+  /* Header Area */
+  /* Header Title Color */
+  header.site-info section.description h1 a, header.site-info nav.pages ul li a:hover, footer.page-foot a:hover, header.site-info ul.util a:hover, footer.page-foot section h1, footer.page-foot section h2, footer.page-foot section h3, footer.page-foot section h4, footer.page-foot section h5, footer.page-foot section.social-links ul li a:hover {
+    color: #E9E9E9;
+  }
+  /* Header Text Color */
+   header.site-info section.description p, footer.page-foot, footer.page-foot section.bottom a:hover {
+     color: #000000;
+   }
+  /* Header Accent Color */
+   header.site-info nav.pages ul li a, footer.page-foot section.social-links ul li a {
+     color: #007f00;
+   }
+  /* Header Subtle Color */
+   header.site-info ul.util, header.site-info ul.util a, header.site-info nav.pages ul li:after, footer.page-foot section.bottom, footer.page-foot section.instagram a.btn {
+     color: #0000BC;
+   }
+  /* Backgrounds */
+  article.audio header .audio-embed, p > code, li > code {
+    background-color: #e9e9e9;
+  }
+  /* Background */
+   body, header.site-fixed nav.pages, a.highres, a.permalink-button {
+     background-color: #f8f8f8;
+   }
+  /* Header Background */
+   header.site-info, footer.page-foot {
+     background-color: #cccc99;
+   }
+   /* Post Background */
+   header.site-fixed nav.pages {
+    background-color: ;
+   }
+  /* Accent Background */
+   a.button {
+     background-color: #1f7fff
+   }
+  /* Borders */
+  /* subtleBorder */
+   blockquote, article footer, article.photo h2:first-of-type, article.video h2:first-of-type, article.photoset h2:first-of-type, article.audio h2:first-of-type, article.text header, article.ask header, article.chat header, article.quote header, article.link header, body.permalink-page article div.notes, ul.post-archive li {
+     border-color: #e9e9e9;
+   }
+  /* headerSubtleBorder */
+   header.site-info nav.pages, footer.page-foot section.bottom {
+     border-color: #000000;
+   }
+
+/* if posts have background color set */
+   
+
+  </style>
+  <!-- <link rel="stylesheet" href="/css/screen.css" type="text/css" /> -->
+</head>
+
+<header class="site-info">
+  <div class="container">
+    <section class="description">
+      
+      <a href="/" title="exVim - Home" class="portrait-icon"><img src="/images/logo.png" alt="exVim"></a>
+      
+      <p>Make Vim like IDE!</p>
+      <ul class="util">
+        <li class="release"><a href="/release/" class="etp-timeago">Releases</a></li>
+        <li class="faq"><a href="/docs/faq/" class="etp-comments">FAQ</a></li>
+        <li class="rss"><a href="/atom.xml" class="etp-rss">RSS</a></li>
+        
+        <li class="ask"><a href="/contact/" class="etp-mail">Contact</a></li>
+        
+        <li class="exdev"><a href="http://ex-dev.com" class="etp-users">exDev</a></li>
+      </ul>
+    </section>
+
+    <nav class="pages">
+      <a href="/" title="exVim - Home" class="portrait-icon user-icon"><img src="/images/logo.png" alt="exVim"></a>
+      <ul>
+      <li>
+        <a href="/">Home</a>
+      </li>
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+            
+          
+        
+          
+        
+          
+        
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+            
+            <li>
+              <a  href="/docs/">
+                Documentation
+              </a>
+            </li>
+            
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+      </ul>
+    </nav>
+  </div>
+</header>
+
+  <body class="page">
+  <div class="container" id="main" role="main">
+    <h2>Choose Your Install Method</h2>
+
+<p>exVim provide several install method for different vim user.</p>
+
+<p><strong>exVim Installer</strong>:</p>
+
+<p>The exVim installer is a windows install rountine contains original vim, ex-vim-plugins 3rd-party-vim-plugins and 3rd-party-external-tools. The installer will automatically configure the environment variable in windows. If you are new in vim, or if you don&rsquo;t like to do too much configuration for exVim, download and install this pacakge.</p>
+
+<p><strong>Full Package</strong>:</p>
+
+<p>The full-package contains ex-vim-plugins and 3rd-party-vim-plugins used in exVim. You can use this packages install exVim manually into your original vim. You have to download and install 3rd-party-external-tools used by exVim manually. This package is prepared for advanced vim user.</p>
+
+<p><strong>exVim Plugins Package</strong>:</p>
+
+<p>The ex-vim-plugins packages only contains plugins I wrote for exVim. Those user who would like to partially integrate exVim can use this package.</p>
+
+<p><strong>3rd Party Vim Plugins Package</strong>:</p>
+
+<p>The 3rd-party-vim-plugins pacakge contains all patched version of 3rd-party vim plugins used in exVim. The vim plugins have sometimes compatible problem when use together, it is necessary to do some modification, and this packages contains those modified version of those plugins. When you integrate exVim, you probably want to compare the difference of those plugins you already install, and make a decision for those modifications by yourself.</p>
+
+<h2>Which one should I choose?</h2>
+
+<p>For new comer of vim, lazy vim user and those who want to have a try exVim, I recommend choose exVim Installer.</p>
+
+<p>For user who already uses vim, and have their own custom .vimrc and plugins, I recommend choose full-packages or ex-vim-plugins packages + 3rd-party-vim-plugins packages, and follow the manually install instruction below to integrate it.</p>
+
+<h2>Install exVim in Windows</h2>
+
+<p><strong>Note:</strong> you can skip this section if you choose exVim installer.</p>
+
+<p><strong>1. install/compile vim</strong></p>
+
+<p>Please go to the <a href="http://www.vim.org/download.php">Vim download page</a> download Vim first.</p>
+
+<p>Some user probably like to compile vim by himself. I recommend compile the vim with +python. Since a great 3rd-party vim plugin &mdash; visual-studio.vim use it!</p>
+
+<p>Here is my compile options:</p>
+
+<div class="highlight"><pre><code class="bash">nmake -f Make_mvc.mak <span class="nv">GUI</span><span class="o">=</span>yes <span class="nv">PYTHON</span><span class="o">=</span>d:<span class="se">\e</span>xDev<span class="se">\t</span>ools<span class="se">\P</span>ython25 <span class="nv">DYNAMIC_PYTHON</span><span class="o">=</span>YES <span class="nv">PYTHON_VER</span><span class="o">=</span>25
+</code></pre></div>
+
+
+<p><strong>2. install vim-plugins</strong></p>
+
+<p>extract the full-package to your vim directory.</p>
+
+<p><strong>3. install external tools</strong></p>
+
+<p>There are several external tools exVim used.</p>
+
+<p><strong>Tools must have</strong></p>
+
+<ul>
+<li><a href="http://ctags.sourceforge.net">cTags</a></li>
+<li>Gnu Win32
+
+<ul>
+<li><a href="http://gnuwin32.sourceforge.net/packages/gawk.htm">gawk</a></li>
+<li><a href="http://gnuwin32.sourceforge.net/packages/id-utils.htm">id-utils</a>
+
+<ul>
+<li><a href="http://gnuwin32.sourceforge.net/packages/libiconv.htm">libiconv</a></li>
+<li><a href="http://gnuwin32.sourceforge.net/packages/libintl.htm">libintl</a></li>
+</ul>
+</li>
+<li><a href="http://gnuwin32.sourceforge.net/packages/sed.htm">sed</a>
+
+<ul>
+<li><a href="http://gnuwin32.sourceforge.net/packages/regex.htm">regex</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+
+<p><strong>Optional tools</strong></p>
+
+<p>if you want to use <a href="http://www.vim.org/scripts/script.php?script_id=864">visual-studio.vim</a> help you work with visual studio, you need to install python and pywin32:</p>
+
+<ul>
+<li><a href="http://www.python.org">python</a></li>
+<li><a href="http://sourceforge.net/projects/pywin32">pywin32</a></li>
+</ul>
+
+
+<p>if you want to use makefiles provided in toolkit/makefile/gcc to compile cpp projects, you need to install MinGW and make.</p>
+
+<ul>
+<li><a href="http://www.mingw.org">MinGW</a></li>
+<li><a href="http://gnuwin32.sourceforge.net/packages/make.htm">make</a></li>
+</ul>
+
+
+<p>if you want to use exCscope plugin which helping you work with cscope, you need to install cscope:</p>
+
+<ul>
+<li><a href="http://cscope.sourceforge.net">cscope</a></li>
+</ul>
+
+
+<p>if you want to use :GV command drawing class hierarchies for OO language project, you need to install graphviz:</p>
+
+<ul>
+<li><a href="http://www.graphviz.org">graphviz</a></li>
+</ul>
+
+
+<p>if you want to use the exVim command :SHL to generate source code with highlights in html format, you need to install src-highlite:</p>
+
+<ul>
+<li><a href="http://gnuwin32.sourceforge.net/packages/src-highlite.htm">src-highlite</a></li>
+</ul>
+
+
+<p><strong>4. Setup Environment Variables</strong></p>
+
+<p>Create an environment variable named EX_DEV in &ldquo;System Properties&rdquo; &ndash;> &ldquo;Advanced&rdquo; &ndash;> &ldquo;Environment Variables&rdquo; The value must be the <strong>parent</strong> driectory you install vim. For example, if you install vim in &ldquo;d:\exDev\vim&rdquo;, the value is</p>
+
+<div class="highlight"><pre><code class="bash"><span class="nv">EX_DEV</span> <span class="o">=</span> d:<span class="se">\e</span>xDev
+</code></pre></div>
+
+
+<p>Also you need to add the path of external tools you installed into environment variables Here is what I set:</p>
+
+<div class="highlight"><pre><code class="bash"><span class="nv">EX_DEV</span> <span class="o">=</span> d:<span class="se">\e</span>xDev
+PATH +<span class="o">=</span> %EX_DEV%<span class="se">\e</span>xVim<span class="se">\v</span>im72
+PATH +<span class="o">=</span> %EX_DEV%<span class="se">\t</span>ools<span class="se">\M</span>inGW<span class="se">\b</span>in
+PATH +<span class="o">=</span> %EX_DEV%<span class="se">\t</span>ools<span class="se">\G</span>nuWin32<span class="se">\b</span>in
+PATH +<span class="o">=</span> %EX_DEV%<span class="se">\t</span>ools<span class="se">\G</span>raphviz<span class="se">\b</span>in
+</code></pre></div>
+
+
+<p><strong>5. Setup .vimrc</strong></p>
+
+<p>The last step of installation is setup your .vimrc file. Check the <a href="#setup_vimrc">Setup .vimrc</a> section below for detail.</p>
+
+<h2>Install exVim in Linux/Mac</h2>
+
+<p><strong>1. install/compile vim</strong></p>
+
+<p>You can get a vim by apt-get in linux. If you want to have python, cscope integrate in vim, you would probably like me, compile vim by yourself.</p>
+
+<p>Before you compile vim in linux/unix, you need to install several develop libraries. I choose gtk-2.0 as my gui library for vim, and here is my install commands</p>
+
+<div class="highlight"><pre><code class="bash">sudo apt-get install ncurses-dev
+sudo apt-get install libqt4-dev
+sudo apt-get install libgtk2.0-dev
+</code></pre></div>
+
+
+<p>Once you done, you need to config Makefile of vim. Here is my configuration:</p>
+
+<div class="highlight"><pre><code class="bash"><span class="nv">CONF_OPT_PYTHON</span> <span class="o">=</span> --enable-pythoninterp
+<span class="nv">CONF_OPT_CSCOPE</span> <span class="o">=</span> --enable-cscope
+<span class="nv">CONF_OPT_GUI</span> <span class="o">=</span> --enable-gui<span class="o">=</span>gtk
+<span class="nv">CONF_OPT_GUI</span> <span class="o">=</span> --enable-gui<span class="o">=</span>gtk2
+</code></pre></div>
+
+
+<p>Then compile the vim:</p>
+
+<div class="highlight"><pre><code class="vim">sudo <span class="k">make</span> distclean
+sudo <span class="k">make</span> config
+sudo <span class="k">make</span>
+sudo <span class="k">make</span> install
+</code></pre></div>
+
+
+<p>For Mac user, there is greate project <a href="http://code.google.com/p/macvim">MacVim</a> which contains a runnable version of vim in Mac-OS.</p>
+
+<p><strong>2. install exVim packages</strong></p>
+
+<p>After you install vim, extract your chosen package, copy and rename the folders as:</p>
+
+<div class="highlight"><pre><code class="bash">cp -R toolkit ~/.toolkit
+cp -R vimfiles ~/.vim
+</code></pre></div>
+
+
+<p><strong>3. install external tools</strong></p>
+
+<p><strong>tools you must have</strong></p>
+
+<div class="highlight"><pre><code class="bash">sudo apt-get install exuberant-ctags
+sudo apt-get install id-utils
+sudo apt-get install gawk
+sudo apt-get install sed
+sudo apt-get install findutils
+</code></pre></div>
+
+
+<p><strong>optional tools</strong></p>
+
+<div class="highlight"><pre><code class="bash">sudo apt-get install cscope
+sudo apt-get install graphviz
+sudo apt-get install src-highlite
+sudo apt-get install python
+</code></pre></div>
+
+
+<p><strong>4. Setup toolkit path</strong></p>
+
+<p>By default, exVim install the toolkit folder in the path $EX_DEV/exVim/toolkit. But you can specific the path. set ex_toolkit_path variable in .vimrc to the path you want:</p>
+
+<div class="highlight"><pre><code class="vim"><span class="k">let</span> <span class="k">g</span>:ex_toolkit_path <span class="p">=</span> <span class="s1">&#39;~/.toolkit&#39;</span>
+</code></pre></div>
+
+
+<p><strong>5. Setup .vimrc</strong></p>
+
+<p>The last step of installation is setup your .vimrc file. Check the <a href="#setup_vimrc">Setup .vimrc</a> section below for detail.</p>
+
+<p><strong>6. Setup gvimrc in MacVim</strong></p>
+
+<p>If you are installing exVim in Mac, you also need to setup gvimrc file in MacVim. Go to <strong>/Applications/MacVim.app/Contents/Resources/vim</strong>, edit file gvimrc, <strong>comment out</strong> the script below:</p>
+
+<div class="highlight"><pre><code class="vim">  no   <span class="p">&lt;</span>M<span class="p">-</span>Left<span class="p">&gt;</span>       <span class="p">&lt;</span>C<span class="p">-</span>Left<span class="p">&gt;</span>
+  no<span class="p">!</span>  <span class="p">&lt;</span>M<span class="p">-</span>Left<span class="p">&gt;</span>       <span class="p">&lt;</span>C<span class="p">-</span>Left<span class="p">&gt;</span>
+
+  no   <span class="p">&lt;</span>M<span class="p">-</span>Right<span class="p">&gt;</span>      <span class="p">&lt;</span>C<span class="p">-</span>Right<span class="p">&gt;</span>
+  no<span class="p">!</span>  <span class="p">&lt;</span>M<span class="p">-</span>Right<span class="p">&gt;</span>      <span class="p">&lt;</span>C<span class="p">-</span>Right<span class="p">&gt;</span>
+</code></pre></div>
+
+
+<p>These mappings are conflict with exJumpStack.</p>
+
+<p><a name="setup_vimrc"></a></p>
+
+<h2>Setup .vimrc</h2>
+
+<p><strong>1. set from .vimrc_ex</strong></p>
+
+<p>You have two way to setup your .vimrc:</p>
+
+<ul>
+<li>source the .vimrc_ex directly.</li>
+<li>merge the .vimrc_ex to your .vimrc.</li>
+</ul>
+
+
+<p>By sourcing the .vimrc_ex, you can write code below at the end of you .vimrc:</p>
+
+<div class="highlight"><pre><code class="vim">source $VIM\.vimrc_ex
+</code></pre></div>
+
+
+<p>By merging, here is my suggestions. Go to the section mark:</p>
+
+<div class="highlight"><pre><code class="vim"><span class="c">&quot;/////////////////////////////////////////////////////////////////////////////</span>
+<span class="c">&quot; Plugin Configurations</span>
+<span class="c">&quot;/////////////////////////////////////////////////////////////////////////////</span>
+</code></pre></div>
+
+
+<p>Check the script below it. The settings of each plugin are separate by the mark:</p>
+
+<div class="highlight"><pre><code class="vim"><span class="c">&quot; ------------------------------------------------------------------ </span>
+<span class="c">&quot; Desc: plugin-name</span>
+<span class="c">&quot; ------------------------------------------------------------------ </span>
+</code></pre></div>
+
+
+<p>You could copy all of them to your .vimrc.</p>
+
+<p><strong>2. must have .vimrc settings</strong></p>
+
+<p>exVim provides lots of variable for customization. For more details, check Details Of ex-vim-plugins. But there are settings you must have before using exVim.</p>
+
+<p>The setting below let tags jump relate to current directory, since we will put tags in .vimfiles_your_project, it is important to have it for every buffer we used:</p>
+
+<div class="highlight"><pre><code class="vim"><span class="k">au</span> <span class="nb">BufNewFile</span><span class="p">,</span><span class="nb">BufEnter</span> * <span class="k">set</span> <span class="nb">cpoptions</span><span class="p">+=</span><span class="k">d</span>
+</code></pre></div>
+
+
+<p>To avoid buffer close problem, you need to have:</p>
+
+<div class="highlight"><pre><code class="vim"><span class="nb">nnoremap</span> <span class="p">&lt;</span>unique<span class="p">&gt;</span> <span class="p">&lt;</span>Leader<span class="p">&gt;</span><span class="k">bd</span> :<span class="k">call</span> exUtility#Kwbd<span class="p">(</span><span class="m">1</span><span class="p">)&lt;</span>CR<span class="p">&gt;</span>
+</code></pre></div>
+
+
+<p>And keep in mind never use :q close a edit-buffer, instead use <leader>bd. Actually this is a problem discussed in vim tips wiki &mdash; <a href="http://takewii.com/index.php?hl=f5&amp;q=uggc%3A%2F%2Fivz.jvxvn.pbz%2Fjvxv%2FQryrgvat_n_ohssre_jvgubhg_pybfvat_gur_jvaqbj">tip 165</a> For more details, <a href="../KnownIssues">Known Issues</a></p>
+
+<h2>Partially install exVim</h2>
+
+<p>You can pick up the ex-vim-plugins you want, and partially install them. Though this is not recommended, you can check chapter <a href="../misc">Misc</a> for details.</p>
+
+  </div>
+  <footer class="page-foot">
+  <div class="container">
+    <div class="iso">
+    <section class="description">
+      
+      
+    </section>
+    <section class="social-links">
+      
+      <ul>
+        <li class="social_github"><a href="https://github.com/exdev/exvim" class="ets-github">&nbsp;</a></li>
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+      </ul>
+      
+    </section>
+    
+    </section>
+    </div>
+    
+    <section class="bottom">
+      <ul>
+        <li class="copyright">&copy; Copyright 2013 exVim</li>
+        <li class="credit"><a href="https://github.com/stylehatch/bryant" window="_blank">Bryant</a> created by <a href="http://stylehatch.co" window="_blank">Style Hatch</a></li>
+        <li class="tumblr">Powered by Jekyll</li>
+      </ul>
+    </section> 
+  </div>
+</footer>
+
+  
+  <script type="text/javascript" src="/js/plugins.min.js"></script>
+  <script type="text/javascript" src="/js/application.js"></script>
+
+</body>
+</html>

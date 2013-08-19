@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <title>
     
-      archive &ndash;
+      Introduction &ndash;
     
     exVim
   </title>
@@ -511,12 +511,63 @@
   </div>
 </header>
 
-  <body class="archive-page">
+  <body class="page">
   <div class="container" id="main" role="main">
-    <!-- Posts -->
-    <ul class="post-archive">
-    
-    </ul>
+    <h2>What is exVim ?</h2>
+
+<p>exVim is a package intgerate ex-vim-plugins, 3rd-vim-plugins and external-tools for developing.
+By solving the complex communication problem among plugins, external tools, the exVim make
+the vim as an IDE like environment all in vimscript.</p>
+
+<h2>What can exVim do ?</h2>
+
+<p>With exVim you can:</p>
+
+<ul>
+<li>use one single file your_project.vimentry to access your project.</li>
+<li>update tags, IDs and other things you used in your project in one command.</li>
+<li>browse project files in project window.</li>
+<li>search files, tags, and words in source code by the builtin method.</li>
+<li>a powful way to filter search result.</li>
+<li>trace your code by jump stack.</li>
+<li>reading code easily by word highlight and macro highlight.</li>
+<li>view classes hierarchy pictures.</li>
+<li>compile project in vc/gcc and get error results from them directly through vim.</li>
+<li>enhanced quick-fix window.</li>
+<li>communicate with visual studio &mdash;&ndash; get build errors, open files, add break point and send command make vs.net compiling current file.</li>
+</ul>
+
+
+<h2>Usage</h2>
+
+<p>The exVim use your_project.vimentry file as the entry of a project. When you put this
+file in the root directory of the project, and open it by vim, ex-vim-plugins will awared
+and do the rest of the work to help you generate tags, symbols, IDs and other things
+could be used in your project.</p>
+
+<p>When edit a project, exVim provides several method to help you locate the code, get global
+seach results, also an easy and powerful way to filter the search result!</p>
+
+<h2>Compatible</h2>
+
+<p>exVim is compatible with your original vim. The exVim is nothing but several vim-plugins,
+there are not too much reasons make it unable to work in your vim.</p>
+
+<h2>Small, Fast and Stable</h2>
+
+<p>The principle for solving problem in exVim are:</p>
+
+<ol>
+<li>try to interact with user dynamically.</li>
+<li>if the dynamic interactive sufferred performance issue, go for static method.</li>
+<li>try the best to fulfill a demand in vimscript.</li>
+<li>if it can&rsquo;t, try the best to fulfill the demand by external tools.</li>
+<li>if it still can&rsquo;t, try the best to preprocess the result and return to rule No.1</li>
+</ol>
+
+
+<p>exVim is designed to follow this principle which make it small, fast and stable.</p>
+
   </div>
   <footer class="page-foot">
   <div class="container">

@@ -6,132 +6,123 @@ permalink: /docs/
 published: true
 ---
 
-## Websites
-
-* exVim Official Page: http://www.ex-dev.com/exvim
-* exVim Documentation: http://www.ex-dev.com/exvim/wiki
-* exVim Source Code: https://github.com/jwu/exvim
-* exVim in Vim Script: http://www.vim.org/scripts/script.php?script_id=2627
-* exVim in Google Code (for Download only): http://code.google.com/p/exvim
-
 ## Index
 
-* [[intro|Introduction]]
-* [[overview|Overview]]
-* [[commands_and_mappings|Default Commands and Mappings]]
+* [Introduction](./intro)
+* [Overview](./overview)
+* [Default Commands and Mappings](./commands_and_mappings)
 * Tutorial
-  * [[quick_start|Quick Start]]
-  * [[install|Install]]
-  * [[setup_vimentry|Setup vimentry file]]
-  * [[project_window|Using the project window]]
-  * [[tags_and_symbols|Search tags and symbols]]
-  * [[global_search|Global Search]]
-  * [[jump_stack|Jump Stack]]
-  * [[macro_highlight|Macro Highlight]]
-  * [[edit_code|Edit Code Quickly]]
-  * [[work_with_compiler|Working with compiler]]
+  * [Quick Start](./quick_start)
+  * [Install](./install)
+  * [Setup vimentry file](./setup_vimentry)
+  * [Using the project window](./project_window)
+  * [Search tags and symbols](./tags_and_symbols)
+  * [Global Search](./global_search)
+  * [Jump Stack](./jump_stack)
+  * [Macro Highlight](./macro_highlight)
+  * [Edit Code Quickly](./edit_code)
+  * [Working with compiler](./work_with_compiler)
 * Details of ex-vim-plugins
-  * [[exBufExplorer]]
-  * [[exCscope]]
-  * [[exEnvironment]]
-  * [[exGlobalSearch]]
-  * [[exJumpStack]]
-  * [[exMacroHighlight]]
-  * [[exMarksBrowser]]
-  * [[exProject]]
-  * [[exQuickFix]]
-  * [[exSearchComplete]]
-  * [[exSymbolTable]]
-  * [[exTagSelect]]
-  * [[exUtility]]
+  * [exBufExplorer](./exBufExplorer)
+  * [exCscope](./exCscope)
+  * [exEnvironment](./exEnvironment)
+  * [exGlobalSearch](./exGlobalSearch)
+  * [exJumpStack](./exJumpStack)
+  * [exMacroHighlight](./exMacroHighlight)
+  * [exMarksBrowser](./exMarksBrowser)
+  * [exProject](./exProject)
+  * [exQuickFix](./exQuickFix)
+  * [exSearchComplete](./exSearchComplete)
+  * [exSymbolTable](./exSymbolTable)
+  * [exTagSelect](./exTagSelect)
+  * [exUtility](./exUtility)
 * Details of patched-vim-plugins
-  * [[EchoFunc]]
-  * [[LookupFile]]
-  * [[MiniBufExpl]]
-  * [[ShowMarks]]
-  * [[TagList]]
-  * [[VisualStudio]]
+  * [EchoFunc](./EchoFunc)
+  * [LookupFile](./LookupFile)
+  * [MiniBufExpl](./MiniBufExpl)
+  * [ShowMarks](./ShowMarks)
+  * [TagList](./TagList)
+  * [VisualStudio](./VisualStudio)
 * Other vim plugins
-  * [[vimwiki|VimWiki]]
-  * [[EnhancedCommentify]]
-  * [[OmniCppComplete]]
-  * [http://www.vim.org/scripts/script.php?script_id=670 visincr on vim scripts]
-  * [http://www.vim.org/scripts/script.php?script_id=1697 surround on vim scripts]
-  * [http://www.vim.org/scripts/script.php?script_id=2222 cmdline-complete on vim scripts]
-  * [http://www.vim.org/scripts/script.php?script_id=614 CRefVim]
-  * [http://www.vim.org/scripts/script.php?script_id=31 AlternateFiles]
-  * [http://www.vim.org/scripts/script.php?script_id=102 DirDiff]
-  * [http://www.vim.org/scripts/script.php?script_id=2540 snipMate]
-  * [http://www.vim.org/scripts/script.php?script_id=1542 pythoncomplete]
-  * [http://www.vim.org/scripts/script.php?script_id=2150 css-color-preview]
-  * [http://www.vim.org/scripts/script.php?script_id=2981 zencoding]
-  * [http://www.vim.org/scripts/script.php?script_id=39 matchit]
-  * [http://www.vim.org/scripts/script.php?script_id=1487 django]
-* [[TipsAndTricks|Tips and Tricks]]
-* [[KnownIssues|Known Issues]]
-* [[FAQ]]
-* [[Misc]]
-* [[About]]
-* [[ChangeLog|Change Log]]
-* [[QuickTodoList|Quick Todo List]]
+  * [VimWiki](./vimwiki)
+  * [EnhancedCommentify](./EnhancedCommentify)
+  * [OmniCppComplete](./OmniCppComplete)
+  * [visincr on vim scripts](http://www.vim.org/scripts/script.php?script_id=670 )
+  * [surround on vim scripts](http://www.vim.org/scripts/script.php?script_id=1697)
+  * [cmdline-complete on vim scripts](http://www.vim.org/scripts/script.php?script_id=2222)
+  * [CRefVim](http://www.vim.org/scripts/script.php?script_id=614)
+  * [AlternateFiles](http://www.vim.org/scripts/script.php?script_id=31)
+  * [DirDiff](http://www.vim.org/scripts/script.php?script_id=102)
+  * [snipMate](http://www.vim.org/scripts/script.php?script_id=2540)
+  * [pythoncomplete](http://www.vim.org/scripts/script.php?script_id=1542)
+  * [css-color-preview](http://www.vim.org/scripts/script.php?script_id=2150)
+  * [zencoding](http://www.vim.org/scripts/script.php?script_id=2981)
+  * [matchit](http://www.vim.org/scripts/script.php?script_id=39)
+  * [django](http://www.vim.org/scripts/script.php?script_id=1487)
+* [Tips and Tricks](./TipsAndTricks)
+* [Known Issues](./KnownIssues)
+* [FAQ](./FAQ)
+* [Misc](./Misc)
+* [About](./About)
+* [Change Log](./ChangeLog)
+* [Quick Todo List](./QuickTodoList)
 
 ## Vim Tips
 
-* [[UsefulCommands|Useful Commands]]
-* [[VimTips|Vim Tips]]
+* [Useful Commands](./UsefulCommands)
+* [Vim Tips](./VimTips)
 
 ## Links
 
 * vim
-  * [http://www.vim.org vim official site]
+  * [Vim Website](http://www.vim.org)
 * exVim
-  * [http://code.google.com/p/exvim exVim Google Code]
-  * [http://code.google.com/p/exvimeasy exVim Easy Edition]
-  * [https://groups.google.com/group/exVim exVim Discuss Group]
-  * [http://github.com/jwu/exVim exVim github]
+  * [exVim on GitHub](http://github.com/exdev/exvim)
+  * [exVim on Google Code](http://code.google.com/p/exvim)
+  * [exVim Discuss Group](https://groups.google.com/group/exVim)
 * MacVim
-  * [http://code.google.com/p/macvim MacVim official site]
+  * [MacVim Website](http://code.google.com/p/macvim)
 * 3rd external tools
-  * [http://ctags.sourceforge.net cTags]
-  * [http://cscope.sourceforge.net cscope]
-  * [http://gnuwin32.sourceforge.net gnuwin32]
-    * [http://gnuwin32.sourceforge.net/packages/gawk.htm gawk]
-    * [http://gnuwin32.sourceforge.net/packages/diffutils.htm diffutils]
-    * [http://gnuwin32.sourceforge.net/packages/id-utils.htm id-utils]
-    * [http://gnuwin32.sourceforge.net/packages/sed.htm sed]
-    * [http://gnuwin32.sourceforge.net/packages/src-highlite.htm src-highlite]
-    * [http://gnuwin32.sourceforge.net/packages/make.htm make]
-  * [http://www.graphviz.org graphviz]
-  * [http://alexgorbatchev.com/wiki/SyntaxHighlighter SyntaxHighlighter]
-  * [http://www.mingw.org MinGW]
-  * [http://www.python.org python]
-    * [http://sourceforge.net/projects/pywin32 pywin32]
+  * [cTags](http://ctags.sourceforge.net)
+  * [cscope](http://cscope.sourceforge.net)
+  * [gnuwin32](http://gnuwin32.sourceforge.net)
+    * [gawk](http://gnuwin32.sourceforge.net/packages/gawk.htm)
+    * [diffutils](http://gnuwin32.sourceforge.net/packages/diffutils.htm)
+    * [id-utils](http://gnuwin32.sourceforge.net/packages/id-utils.htm)
+    * [sed](http://gnuwin32.sourceforge.net/packages/sed.htm)
+    * [src-highlite](http://gnuwin32.sourceforge.net/packages/src-highlite.htm)
+    * [make](http://gnuwin32.sourceforge.net/packages/make.htm)
+  * [graphviz](http://www.graphviz.org)
+  * [SyntaxHighlighter](http://alexgorbatchev.com/wiki/SyntaxHighlighter)
+  * [MinGW](http://www.mingw.org)
+  * [python](http://www.python.org)
+    * [pywin32](http://sourceforge.net/projects/pywin32)
 * 3rd vim-plugins
   * default installed
-    * [http://www.vim.org/scripts/script.php?script_id=31 AlternateFiles]
-    * [http://www.vim.org/scripts/script.php?script_id=1879 AutoComplPop]
-    * [http://www.vim.org/scripts/script.php?script_id=2222 cmdline-complete]
-    * [http://www.vim.org/scripts/script.php?script_id=1735 echofunc]
-    * [http://www.vim.org/scripts/script.php?script_id=23 EnhancedCommentify]
-    * [http://www.vim.org/scripts/script.php?script_id=614 CRefVim] 
-    * [http://www.vim.org/scripts/script.php?script_id=39 matchit]
-    * [http://www.vim.org/scripts/script.php?script_id=159 MiniBufExpl]
-    * [http://www.vim.org/scripts/script.php?script_id=1658 NERD_tree]
-    * [http://www.vim.org/scripts/script.php?script_id=1520 OmniCppComplete]
-    * [http://www.vim.org/scripts/script.php?script_id=1936 OOP javascript indentation]
-    * [http://www.vim.org/scripts/script.php?script_id=1581 lookupfile]
-      * [http://www.vim.org/scripts/script.php?script_id=197 genutils]
-    * [http://www.vim.org/scripts/script.php?script_id=152 ShowMarks]
-    * [http://www.vim.org/scripts/script.php?script_id=1697 surround]
-    * [http://www.vim.org/scripts/script.php?script_id=273 TagList]
-    * [http://www.vim.org/scripts/script.php?script_id=670 Visincr]
-    * [http://www.vim.org/scripts/script.php?script_id=864 visual_studio]
-    * [http://www.vim.org/scripts/script.php?script_id=1542 pythoncomplete]
-    * [http://www.vim.org/scripts/script.php?script_id=102 DirDiff]
-    * [http://www.vim.org/scripts/script.php?script_id=2540 snipMate]
-    * [http://www.vim.org/scripts/script.php?script_id=2981 zencoding]
+    * [AlternateFiles](http://www.vim.org/scripts/script.php?script_id=31)
+    * [AutoComplPop](http://www.vim.org/scripts/script.php?script_id=1879)
+    * [cmdline-complete](http://www.vim.org/scripts/script.php?script_id=2222)
+    * [echofunc](http://www.vim.org/scripts/script.php?script_id=1735)
+    * [EnhancedCommentify](http://www.vim.org/scripts/script.php?script_id=23)
+    * [CRefVim](http://www.vim.org/scripts/script.php?script_id=614) 
+    * [matchit](http://www.vim.org/scripts/script.php?script_id=39)
+    * [MiniBufExpl](http://www.vim.org/scripts/script.php?script_id=159)
+    * [NERD_tree](http://www.vim.org/scripts/script.php?script_id=1658)
+    * [OmniCppComplete](http://www.vim.org/scripts/script.php?script_id=1520)
+    * [OOP javascript indentation](http://www.vim.org/scripts/script.php?script_id=1936)
+    * [lookupfile](http://www.vim.org/scripts/script.php?script_id=1581)
+      * [genutils](http://www.vim.org/scripts/script.php?script_id=197)
+    * [ShowMarks](http://www.vim.org/scripts/script.php?script_id=152)
+    * [surround](http://www.vim.org/scripts/script.php?script_id=1697)
+    * [TagList](http://www.vim.org/scripts/script.php?script_id=273)
+    * [Visincr](http://www.vim.org/scripts/script.php?script_id=670)
+    * [visual_studio](http://www.vim.org/scripts/script.php?script_id=864)
+    * [pythoncomplete](http://www.vim.org/scripts/script.php?script_id=1542)
+    * [DirDiff](http://www.vim.org/scripts/script.php?script_id=102)
+    * [snipMate](http://www.vim.org/scripts/script.php?script_id=2540)
+    * [zencoding](http://www.vim.org/scripts/script.php?script_id=2981)
   * optional
-    * [http://www.vim.org/scripts/script.php?script_id=2778 gui2term.py] - script that converts GUI only colorschemes to support 256-color terminal 
-    * [http://www.vim.org/scripts/script.php?script_id=2150 css-color-preview]
-    * [http://www.vim.org/scripts/script.php?script_id=1487 django]
-    * [http://www.vim.org/scripts/script.php?script_id=2226 vimwiki]
+    * [gui2term.py](http://www.vim.org/scripts/script.php?script_id=2778) - script that converts GUI only colorschemes to support 256-color terminal 
+    * [css-color-preview](http://www.vim.org/scripts/script.php?script_id=2150)
+    * [django](http://www.vim.org/scripts/script.php?script_id=1487)
+    * [vimwiki](http://www.vim.org/scripts/script.php?script_id=2226)
