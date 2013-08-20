@@ -12,7 +12,7 @@
 .vimfiles.*/
 *.vimentry
 quick_gen_project_*_autogen.*
-vim73/
+vim74/
 
 #/////////////////////////////////////////////////////////////////////////////
 # gen by python
