@@ -2,8 +2,7 @@
 
 The new exVim project is moving to https://github.com/exvim/main.
 
-This repository is deprected! The repository here is for old version maintains, and for website temporary runnings.
-We've start the new exVim project with better structure for Vim community!
+This repository is deprected! The repository here is for old version maintains. We've start new version of exVim project with better structure for Vim community!
 
 # Reference
 
