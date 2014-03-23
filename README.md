@@ -1,6 +1,10 @@
 # Imporatant!!!
 
-This repository is deprected! The new version of exVim is in https://github.com/exvim/main. The repository here is for the purpose to hold older versions. 
+This repository is deprected! 
+
+The new version of exVim is in https://github.com/exvim/main. 
+
+The repository here is for the purpose to hold older versions. 
 
 # Reference
 
